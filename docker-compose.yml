@@ -3,7 +3,7 @@ services:
   websocket-server:
     image: $repository/docker/bourse/$CONTAINER_NAME:TestStage
     ports:
-       - "9580:8003"
+       - "9580:8000"
     networks:
       - loan-net
     environment:
