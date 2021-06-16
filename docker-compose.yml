@@ -1,0 +1,15 @@
+version: "3.7"  
+services:
+  websocket-server:
+    image: $repository/docker/bourse/$CONTAINER_NAME:TestStage
+    # ports:
+    #   - "9580:8003"
+    networks:
+      - loan-net
+    environment:
+      - TZ=Asia/Tehran      
+    #   - RUST_LOG=debug
+
+networks:
+  loan-net:
+    external: true

@@ -1,0 +1,45 @@
+stages:
+  - build-image
+  - deploy
+# variables:
+#   VUE_APP_BASE_ROUTE: "/card-reissue-panel/"
+#   VUE_APP_I18N_LOCALE: "fa"
+#   VUE_APP_I18N_FALLBACK_LOCALE: "en"
+#   VUE_APP_Host: "https://mehrmb.asr24.com/card-reissue/"
+#   VUE_APP_NAME: "Card Reissue Panel"
+
+build-image-Development:
+  stage: build-image
+  tags:
+    - loan-build
+  script:
+    #- echo $VUE_APP_BASE_ROUTE
+    - docker login -u $user_repository -p $pass_repository https://$repository
+    # - docker build 
+    #   --build-arg VUE_APP_BASE_ROUTE=$VUE_APP_BASE_ROUTE
+    #   --build-arg VUE_APP_I18N_LOCALE=$VUE_APP_I18N_LOCALE 
+    #   --build-arg VUE_APP_I18N_FALLBACK_LOCALE=$VUE_APP_I18N_FALLBACK_LOCALE 
+    #   --build-arg VUE_APP_Host=$VUE_APP_Host
+    #   -t $CONTAINER_NAME .
+    - docker build -t $CONTAINER_NAME .
+    - docker tag $CONTAINER_NAME  $repository/docker/bourse/$CONTAINER_NAME:TestStage
+    - docker push $repository/docker/bourse/$CONTAINER_NAME:TestStage
+    - docker logout
+  when : manual
+  only:
+    refs:
+      - development
+  
+
+Development:
+  stage: deploy
+  tags:
+    - prep
+  script:
+    - docker login -u $user_repository -p $pass_repository https://$repository
+    - docker pull $repository/docker/bourse/$CONTAINER_NAME:TestStage
+    - docker-compose up -d --force-recreate
+  when : manual
+  only:
+    - development
+
