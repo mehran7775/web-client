@@ -7,6 +7,6 @@ RUN  ls
 RUN npm install
 COPY . .
 WORKDIR /usr/src/app
-###RUN npm run build
+####RUN npm run build
 RUN yarn build
 CMD [ "npm", "run", "start" ]
