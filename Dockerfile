@@ -2,7 +2,8 @@ FROM artifactory.asredanesh.com/docker/node:current-buster-slim
 
 WORKDIR /usr/src/app
 COPY client/package.json ./
-RUN cd client 
+RUN  ls 
+#cd client 
 RUN npm install
 COPY . .
 WORKDIR /usr/src/app
