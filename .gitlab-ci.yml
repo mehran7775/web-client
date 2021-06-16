@@ -29,6 +29,11 @@ build-image-Development:
   only:
     refs:
       - development
+  except:
+    changes:
+      - docker-compose.yml
+      - .gitlab-ci.yml
+
   
 
 Development:
