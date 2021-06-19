@@ -5,7 +5,7 @@ COPY client/package.json ./
 RUN  ls 
 #cd client 
 RUN npm install
-COPY client/* .
+COPY client/* ./
 WORKDIR /usr/src/app
 ####RUN npm run build
 RUN yarn build
