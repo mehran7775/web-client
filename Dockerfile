@@ -1,16 +1,15 @@
 FROM artifactory.asredanesh.com/docker/node:current-buster-slim
 
+# Install node packages
 WORKDIR /usr/src/app
 COPY client/package.json ./
-RUN  ls 
-#cd client
 RUN yarn install
+# Copy application source
 WORKDIR /usr/src
 COPY client/ ./app
-RUN ls
 WORKDIR /usr/src/app
-RUN ls
-####RUN npm run build
+# Build App
 RUN yarn build
+# Deploy
 EXPOSE 3000
 CMD [ "yarn", "start" ]
