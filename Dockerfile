@@ -7,6 +7,7 @@ RUN  ls
 RUN npm install
 COPY . .
 WORKDIR /usr/src/app
-EXPOSE 8003
-RUN npm run build
+####RUN npm run build
+RUN yarn build
+EXPOSE 3000
 CMD [ "npm", "run", "start" ]
