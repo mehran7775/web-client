@@ -53,7 +53,7 @@ export default defineComponent({
     const subscrib = function () {
       // TODO read from user profile
       let pack = {
-        Subscribe: new Subscrib(["test"])
+        Subscribe: new Subscrib(["test", "notifications"])
       };
       sendMsg(pack);
     };
