@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 COPY client/package.json ./
 RUN  ls 
 #cd client
-RUN npm install
+RUN yarn install
 COPY client/* ./
 RUN ls
 WORKDIR /usr/src/app
