@@ -5,7 +5,8 @@ COPY client/package.json ./
 RUN  ls 
 #cd client
 RUN yarn install
-COPY client/* ./
+WORKDIR /usr/src
+COPY client/ ./app
 RUN ls
 WORKDIR /usr/src/app
 RUN ls
