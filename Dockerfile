@@ -3,8 +3,7 @@ FROM artifactory.asredanesh.com/docker/node:current-buster-slim
 WORKDIR /usr/src/app
 COPY client/package.json ./
 RUN  ls 
-#cd client 
-RUN ls 
+#cd client
 RUN npm install
 COPY client/* ./
 RUN ls
