@@ -138,7 +138,7 @@ export const getters = {
   },
   isLogin: (state) => {
     // TODO Uncomment
-    //return state && state.user
-    return true;
+    return state && state.user
+    // return true;
   }
 }
