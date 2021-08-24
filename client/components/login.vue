@@ -65,6 +65,7 @@ export default {
         })
         .then(
           function (data) {
+            console.log('login component ' , data)
             if (data >= 200 && data < 300) {
               self.$router.push({ path: '/' })
               self.alert({
