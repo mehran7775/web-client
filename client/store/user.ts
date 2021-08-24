@@ -1,15 +1,26 @@
+import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import umanager from '@/repositories/user_manager'
 import jwttoken from '@/repositories/jwt_token'
 
-const anonymousUser = {
+export type User = {
+  userName: string,
+  nikname: string,
+  profile: object
+}
+
+export type UserCredentials = {
+  userName: string,
+  password: string,
+}
+
+const RefreshKey: string = 'jwtRefreshKey';
+const tokenKey: string = 'jwtKey';
+const userKey: string = 'userCache';
+const anonymousUser: User = {
   userName: 'anonymous',
   nikname: 'Anonymous',
   profile: {}
 }
-
-const RefreshKey = 'jwtRefreshKey'
-const tokenKey = 'jwtKey'
-const userKey = 'userCache'
 
 export const state = () => ({
   token: null,
@@ -17,7 +28,27 @@ export const state = () => ({
   refresh: null
 })
 
-export const mutations = {
+export type RootState = ReturnType<typeof state>
+
+export const getters: GetterTree<RootState, RootState> = {
+  getToken: (state, getters, store) => {
+    return state.token
+  },
+  me: (state) => {
+    if (state && state.user) {
+      return state.user
+    } else {
+      return anonymousUser
+    }
+  },
+  isLogin: (state) => {
+    // TODO Uncomment
+    return state && state.user
+    // return true;
+  }
+}
+
+export const mutations: MutationTree<RootState> = {
   setToken(state, token) {
     if (sessionStorage && token) {
       sessionStorage.setItem(tokenKey, token)
@@ -46,34 +77,44 @@ export const mutations = {
   }
 }
 
-export const actions = {
-  async init(context) {
+export const actions: ActionTree<RootState, RootState> = {
+
+  async init({ commit, dispatch }) {
+    console.log('init')
     if (typeof sessionStorage !== typeof undefined) {
+      console.log('init sessionStorage')
       const refresh = localStorage.getItem(RefreshKey)
+      console.log('init refresh' , refresh)
       if (refresh) {
-        context.commit('setRefresh', refresh)
+        commit('setRefresh', refresh)
         const jwt = sessionStorage.getItem(tokenKey)
+        console.log('init jwt' , jwt)
         if (jwt) {
-          context.commit('setToken', jwt)
+          commit('setToken', jwt)
           const user = sessionStorage.getItem(userKey)
+          console.log('init user' , user)
           if (user) {
-            context.commit('setUser', JSON.parse(user))
+            console.log('init user' , user)
+            commit('setUser', JSON.parse(user))
           } else {
-            await context.dispatch('getMe')
+            console.log('init getMe' , user)
+            await dispatch('getMe')
           }
         } else {
-          await context.dispatch('refreshToken')
-          await context.dispatch('getMe')
+          await dispatch('refreshToken')
+          await dispatch('getMe')
         }
       } else {
-        context.commit('logout')
+        commit('logout')
       }
     }
   },
-  async getMe(context) {
+  async getMe({ commit }) {
     try {
       const { data, status } = await umanager.getUser(null, this.$axios)
-      context.commit('setUser', data)
+      console.log(data,'user');
+
+      commit('setUser', data)
       return status
     } catch (err) {
       if (err.response) {
@@ -82,16 +123,16 @@ export const actions = {
       return 450
     }
   },
-  async login(context, payload) {
+  async login({ commit, dispatch }, payload) {
     try {
       const { data, status } = await jwttoken.login(
         payload.userName,
         payload.password,
         this.$axios
       )
-      context.commit('setToken', 'bearer ' + data.token)
-      context.commit('setRefresh', data.refresh)
-      context.dispatch('getMe')
+      commit('setToken', 'bearer ' + data.token)
+      commit('setRefresh', data.refresh)
+      // dispatch('getMe')
       return status
     } catch (err) {
       if (err.response) {
@@ -100,45 +141,31 @@ export const actions = {
       return 500
     }
   },
-  logout(context) {
-    context.commit('logout')
+
+
+  logout({ commit }) {
+    commit('logout')
   },
-  async refreshToken(context) {
+
+
+  async refreshToken({ commit }) {
     if (typeof localStorage !== typeof undefined) {
       const token = localStorage.getItem(RefreshKey)
       if (token) {
         try {
           const { data, status } = await jwttoken.refreshToken(token)
           if (status >= 200 && status < 300 && !!data.token) {
-            context.commit('setToken', 'bearer ' + data.token)
-            context.commit('setRefresh', data.refresh)
+            commit('setToken', 'bearer ' + data.token)
+            commit('setRefresh', data.refresh)
           } else if (status >= 400) {
-            context.commit('logout')
+            commit('logout')
           }
           return status
         } catch (err) {
-          context.commit('logout')
+          commit('logout')
         }
       }
       return 401
     }
-  }
-}
-
-export const getters = {
-  getToken: (state, getters, store) => {
-    return state.token
-  },
-  me: (state) => {
-    if (state && state.user) {
-      return state.user
-    } else {
-      return anonymousUser
-    }
-  },
-  isLogin: (state) => {
-    // TODO Uncomment
-    //return state && state.user
-    return true;
   }
 }

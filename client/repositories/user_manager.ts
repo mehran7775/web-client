@@ -1,4 +1,7 @@
-async function getUser (userName, axios) {
+import { NuxtAxiosInstance } from "@nuxtjs/axios"
+
+
+async function getUser(userName: string | null, axios: NuxtAxiosInstance) {
   if (userName) {
     return await axios.get('user/' + userName)
   } else {
@@ -6,23 +9,23 @@ async function getUser (userName, axios) {
   }
 }
 
-async function getUserList (searchModel, axios) {
+async function getUserList(searchModel: string, axios: NuxtAxiosInstance) {
   return await axios.post('user/list', searchModel)
 }
 
-async function updateUser (form, axios) {
+async function updateUser(form: object, axios: NuxtAxiosInstance) {
   return await axios.post('user/update', form)
 }
 
-async function createUser (form, axios) {
+async function createUser(form: object, axios: NuxtAxiosInstance) {
   return await axios.post('user/', form)
 }
 
-async function deleteUser (form, axios) {
+async function deleteUser(form: object, axios: NuxtAxiosInstance) {
   return await axios.get('user/delete/' + form)
 }
 
-const userRoles = [
+const userRoles: object[] = [
   {
     value: 'ADMIN',
     text: 'user.roles.ADMIN'
