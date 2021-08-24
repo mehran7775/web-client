@@ -15,7 +15,7 @@ async function refreshToken(refresh: string) {
 }
 
 async function login(username: string, password: string, axios:  NuxtAxiosInstance, session = null) {
-  return await axios.post('/sso/token', {
+  return await axios.post('/jwt', {
     username: username,
     password: password,
     session: session
