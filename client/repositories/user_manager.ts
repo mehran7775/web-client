@@ -1,5 +1,6 @@
 import { NuxtAxiosInstance } from "@nuxtjs/axios"
 
+
 async function getUser(userName: string | null, axios: NuxtAxiosInstance) {
   if (userName) {
     return await axios.get('user/' + userName)

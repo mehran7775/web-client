@@ -3,7 +3,8 @@ export default function ({ $axios, redirect, store }) {
     checkRefresh()
     Object.assign(config, {
       withCredentials: true,
-      crossdomain: true,
+      // crossdomain: true,
+      baseURL: process.env.VUE_APP_Host,
       headers: {
         ...config.headers,
         ...{

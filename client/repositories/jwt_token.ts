@@ -10,12 +10,12 @@ const instance = axios.create({
 })
 
 async function refreshToken(refresh: string) {
-  const res = await instance.post('/sso/refresh', { token: refresh })
+  const res = await instance.put('/jwt', { refresh: refresh })
   return res
 }
 
 async function login(username: string, password: string, axios:  NuxtAxiosInstance, session = null) {
-  return await axios.post('/jwt', {
+  return await instance.post('/jwt', {
     username: username,
     password: password,
     session: session

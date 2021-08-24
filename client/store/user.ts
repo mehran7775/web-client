@@ -80,17 +80,24 @@ export const mutations: MutationTree<RootState> = {
 export const actions: ActionTree<RootState, RootState> = {
 
   async init({ commit, dispatch }) {
+    console.log('init')
     if (typeof sessionStorage !== typeof undefined) {
+      console.log('init sessionStorage')
       const refresh = localStorage.getItem(RefreshKey)
+      console.log('init refresh' , refresh)
       if (refresh) {
         commit('setRefresh', refresh)
         const jwt = sessionStorage.getItem(tokenKey)
+        console.log('init jwt' , jwt)
         if (jwt) {
           commit('setToken', jwt)
           const user = sessionStorage.getItem(userKey)
+          console.log('init user' , user)
           if (user) {
+            console.log('init user' , user)
             commit('setUser', JSON.parse(user))
           } else {
+            console.log('init getMe' , user)
             await dispatch('getMe')
           }
         } else {
@@ -105,6 +112,8 @@ export const actions: ActionTree<RootState, RootState> = {
   async getMe({ commit }) {
     try {
       const { data, status } = await umanager.getUser(null, this.$axios)
+      console.log(data,'user');
+
       commit('setUser', data)
       return status
     } catch (err) {
@@ -123,7 +132,7 @@ export const actions: ActionTree<RootState, RootState> = {
       )
       commit('setToken', 'bearer ' + data.token)
       commit('setRefresh', data.refresh)
-      dispatch('getMe')
+      // dispatch('getMe')
       return status
     } catch (err) {
       if (err.response) {
@@ -132,9 +141,13 @@ export const actions: ActionTree<RootState, RootState> = {
       return 500
     }
   },
+
+
   logout({ commit }) {
     commit('logout')
   },
+
+
   async refreshToken({ commit }) {
     if (typeof localStorage !== typeof undefined) {
       const token = localStorage.getItem(RefreshKey)
