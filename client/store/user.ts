@@ -72,32 +72,26 @@ export const mutations: MutationTree<RootState> = {
   },
   setUser(state, data) {
     state.user = data
-    if (sessionStorage)
+    if (sessionStorage){
       sessionStorage.setItem(userKey, JSON.stringify(data))
+    }
   }
 }
 
 export const actions: ActionTree<RootState, RootState> = {
 
   async init({ commit, dispatch }) {
-    console.log('init')
     if (typeof sessionStorage !== typeof undefined) {
-      console.log('init sessionStorage')
       const refresh = localStorage.getItem(RefreshKey)
-      console.log('init refresh' , refresh)
       if (refresh) {
         commit('setRefresh', refresh)
         const jwt = sessionStorage.getItem(tokenKey)
-        console.log('init jwt' , jwt)
         if (jwt) {
           commit('setToken', jwt)
           const user = sessionStorage.getItem(userKey)
-          console.log('init user' , user)
           if (user) {
-            console.log('init user' , user)
             commit('setUser', JSON.parse(user))
           } else {
-            console.log('init getMe' , user)
             await dispatch('getMe')
           }
         } else {
@@ -112,7 +106,6 @@ export const actions: ActionTree<RootState, RootState> = {
   async getMe({ commit }, userName) {
     try {
       const { data, status } = await umanager.getUser(userName, this.$axios)
-      console.log(data,'user');
       commit('setUser', data)
       return status
     } catch (err) {
@@ -154,7 +147,7 @@ export const actions: ActionTree<RootState, RootState> = {
         try {
           const { data, status } = await jwttoken.refreshToken(token)
           if (status >= 200 && status < 300 && !!data.token) {
-            commit('setToken', 'bearer ' + data.token)
+            commit('setToken', 'Bearer ' + data.token)
             commit('setRefresh', data.refresh)
           } else if (status >= 400) {
             commit('logout')

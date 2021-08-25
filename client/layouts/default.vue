@@ -90,7 +90,6 @@
 </template>
 
 <script>
-console.log('load layout')
 import colors from 'vuetify/es5/util/colors'
 import { mapGetters, mapActions } from 'vuex'
 import snackbar from '@/components/snacks'
