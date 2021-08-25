@@ -1,7 +1,6 @@
 export default function ({ $axios, redirect, store }) {
   $axios.onRequest((config) => {
     checkRefresh()
-    console.log(store.getters['user/getToken']);
     Object.assign(config, {
       withCredentials: true,
       baseURL: process.env.VUE_APP_Host,
@@ -12,7 +11,6 @@ export default function ({ $axios, redirect, store }) {
         }
       }
     })
-    console.log(config);
   })
 
   $axios.onError(async (error) => {
@@ -39,8 +37,6 @@ export default function ({ $axios, redirect, store }) {
       })
     }
   })
-
-  console.log('every time ??');
   store.dispatch('user/init')
 }
 
