@@ -109,9 +109,9 @@ export const actions: ActionTree<RootState, RootState> = {
       }
     }
   },
-  async getMe({ commit }) {
+  async getMe({ commit }, userName) {
     try {
-      const { data, status } = await umanager.getUser(null, this.$axios)
+      const { data, status } = await umanager.getUser(userName, this.$axios)
       console.log(data,'user');
       commit('setUser', data)
       return status
@@ -129,9 +129,9 @@ export const actions: ActionTree<RootState, RootState> = {
         payload.password,
         this.$axios
       )
-      commit('setToken', 'bearer ' + data.token)
+      commit('setToken', 'Bearer ' + data.token)
       commit('setRefresh', data.refresh)
-      dispatch('getMe')
+      dispatch('getMe', payload.userName)
       return status
     } catch (err) {
       if (err.response) {

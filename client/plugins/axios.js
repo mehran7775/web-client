@@ -4,7 +4,6 @@ export default function ({ $axios, redirect, store }) {
     console.log(store.getters['user/getToken']);
     Object.assign(config, {
       withCredentials: true,
-      // crossdomain: true,
       baseURL: process.env.VUE_APP_Host,
       headers: {
         ...config.headers,
