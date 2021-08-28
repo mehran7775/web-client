@@ -24,18 +24,37 @@
       <v-list v-model="selected">
         <v-list-item>
           <v-list-item-title>
-            <span>دیدبان</span>
+            
           </v-list-item-title>
         </v-list-item>
-
         <v-list-item
-          v-for="(watchList, i) in watchLists"
+          v-for="(item, i) in items"
           :key="i"
+          :to="item.to"
           router
           exact
         >
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="i" />
+            <v-list-item-title v-text="$t(item.title)" />
+            <v-list v-if="item.children">
+              <v-list-item
+                v-for="(subitem, j) in item.children"
+                :key="j"
+                :to="subitem.to"
+                router
+                exact
+              >
+              <v-list-item-action>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title v-text="subitem.title" />
+              </v-list-item-content>
+              </v-list-item>
+            </v-list>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -87,19 +106,35 @@
 </template>
 
 <script>
+import { defineComponent, ref, computed, useStore } from "@nuxtjs/composition-api";
 import colors from 'vuetify/es5/util/colors'
 import { mapGetters, mapActions } from 'vuex'
 import snackbar from '@/components/snacks'
 
-export default {
+export default defineComponent({
   components: {
     snackbar
   },
-  middleware: [
-    'auth'
-  ],
-  data () {
+  setup(props, context) {
+    const store = useStore()
+    const isLogin = computed(() => store.getters['user/isLogin']);
+    const rtl = computed(() => store.getters['rtl']);
+    const currentUser = computed(() => store.getters['user/me'])
+
+    const getMe = () => store.dispatch('user/getMe')
+    const logout= () => store.dispatch('user/logout');
+
+    function doLogout() {
+      logout()
+      this.$router.push('/login')
+    }
+
     return {
+      doLogout,
+      getMe,
+      isLogin,
+      rtl,
+      currentUser,
       colors,
       barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
       clipped: true,
@@ -110,39 +145,27 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'menu.dashboard',
-          to: '/'
+          children: [
+            {
+              icon: 'mdi-apps',
+              title: '',
+              to: '/?1',
+            },
+            {
+              icon: 'mdi-apps',
+              title: 'اول',
+              to: '/?2',
+            },
+          ]
         },
         {
-          icon: 'mdi-chart-bar',
+          icon: 'mdi-chart-bubble',
           title: 'menu.reports',
           to: '/inspire'
-        },
-        {
-          icon: 'mdi-file-document-multiple-outline',
-          title: 'menu.about',
-          to: '/contents/hello'
         }
       ]
     }
-  },
-  computed: {
-    ...mapGetters({
-      currentUser: 'user/me',
-      isLogin: 'user/isLogin',
-      watchLists: 'user/getWatchList',
-      rtl: 'rtl'
-    })
-  },
-  methods: {
-    ...mapActions({
-      init: 'user/init',
-      getMe: 'user/getMe',
-      logout: 'user/logout'
-    }),
-    doLogout () {
-      this.logout()
-      this.$router.push('/login')
-    }
   }
-}
+})
+
 </script>

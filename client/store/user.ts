@@ -44,9 +44,7 @@ export const getters: GetterTree<RootState, RootState> = {
     }
   },
   isLogin: (state) => {
-    // TODO Uncomment
     return state && state.token
-    // return true;
   },
   getWatchList(state){
     return state.watch_lists
@@ -55,8 +53,8 @@ export const getters: GetterTree<RootState, RootState> = {
 
 export const mutations: MutationTree<RootState> = {
   setToken(state, token) {
-    if (localStorage && token) {
-      localStorage.setItem(tokenKey, token)
+    if (sessionStorage && token) {
+      sessionStorage.setItem(tokenKey, token)
       state.token = token
     }
   },
@@ -91,14 +89,17 @@ export const mutations: MutationTree<RootState> = {
 
 export const actions: ActionTree<RootState, RootState> = {
 
-  async init({ commit, dispatch }) {
+  init({ commit, dispatch }) {
+    console.log('Start init')
     if (typeof localStorage !== typeof undefined) {
+      console.log(1)
       const refresh = localStorage.getItem(RefreshKey)
       if (refresh) {
-
+        console.log('refresh', refresh)
         commit('setRefresh', refresh)
-        const jwt = localStorage.getItem(tokenKey)
+        const jwt = sessionStorage.getItem(tokenKey)
         if (jwt) {
+          console.log('token', jwt)
 
           commit('setToken', jwt)
           const user = localStorage.getItem(userKey)
@@ -106,14 +107,15 @@ export const actions: ActionTree<RootState, RootState> = {
 
             commit('setUser', JSON.parse(user))
           } else {
-            await dispatch('getMe',localStorage.getItem('userName'))
+            //await dispatch('getMe',localStorage.getItem('userName'))
           }
         } else {
-          await dispatch('refreshToken')
-          await dispatch('getMe',localStorage.getItem('userName'))
+          //await dispatch('refreshToken')
+          //await dispatch('getMe',localStorage.getItem('userName'))
         }
       } else {
-        // commit('logout')
+        console.log('token not found')
+        commit('logout')
       }
     }
   },
@@ -165,11 +167,11 @@ export const actions: ActionTree<RootState, RootState> = {
             commit('setToken', 'Bearer ' + data.token)
             commit('setRefresh', data.refresh)
           } else if (status >= 400) {
-            // commit('logout')
+            commit('logout')
           }
           return status
         } catch (err) {
-          // commit('logout')
+          commit('logout')
         }
       }
       return 401
