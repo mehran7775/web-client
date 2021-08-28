@@ -25,7 +25,9 @@ const anonymousUser: User = {
 export const state = () => ({
   token: null,
   user: null,
-  refresh: null
+  refresh: null,
+  userName: null,
+  watch_lists: null,
 })
 
 export type RootState = ReturnType<typeof state>
@@ -43,15 +45,18 @@ export const getters: GetterTree<RootState, RootState> = {
   },
   isLogin: (state) => {
     // TODO Uncomment
-    return state && state.user
+    return state && state.token
     // return true;
+  },
+  getWatchList(state){
+    return state.watch_lists
   }
 }
 
 export const mutations: MutationTree<RootState> = {
   setToken(state, token) {
-    if (sessionStorage && token) {
-      sessionStorage.setItem(tokenKey, token)
+    if (localStorage && token) {
+      localStorage.setItem(tokenKey, token)
       state.token = token
     }
   },
@@ -62,44 +67,53 @@ export const mutations: MutationTree<RootState> = {
     }
   },
   logout(state) {
-    if (sessionStorage) {
+    if (localStorage) {
       localStorage.clear()
-      sessionStorage.clear()
+      localStorage.clear()
     }
     state.token = null
     state.user = null
     state.refresh = null
   },
   setUser(state, data) {
+    state.userName = data.user_name
     state.user = data
-    if (sessionStorage){
-      sessionStorage.setItem(userKey, JSON.stringify(data))
+
+    if (localStorage){
+      localStorage.setItem(userKey, JSON.stringify(data))
+      localStorage.setItem('userName', data.user_name)
     }
+  },
+  setWatchList(state,data){
+    state.watch_lists = data.settings.watch_lists
   }
 }
 
 export const actions: ActionTree<RootState, RootState> = {
 
   async init({ commit, dispatch }) {
-    if (typeof sessionStorage !== typeof undefined) {
+    if (typeof localStorage !== typeof undefined) {
       const refresh = localStorage.getItem(RefreshKey)
       if (refresh) {
+
         commit('setRefresh', refresh)
-        const jwt = sessionStorage.getItem(tokenKey)
+        const jwt = localStorage.getItem(tokenKey)
         if (jwt) {
+
           commit('setToken', jwt)
-          const user = sessionStorage.getItem(userKey)
+          const user = localStorage.getItem(userKey)
           if (user) {
+
             commit('setUser', JSON.parse(user))
           } else {
-            await dispatch('getMe')
+            await dispatch('getMe',localStorage.getItem('userName'))
           }
         } else {
           await dispatch('refreshToken')
-          await dispatch('getMe')
+          await dispatch('getMe',localStorage.getItem('userName'))
         }
       } else {
-        commit('logout')
+        // commit('logout')
       }
     }
   },
@@ -107,6 +121,7 @@ export const actions: ActionTree<RootState, RootState> = {
     try {
       const { data, status } = await umanager.getUser(userName, this.$axios)
       commit('setUser', data)
+      commit('setWatchList',data)
       return status
     } catch (err) {
       if (err.response) {
@@ -150,11 +165,11 @@ export const actions: ActionTree<RootState, RootState> = {
             commit('setToken', 'Bearer ' + data.token)
             commit('setRefresh', data.refresh)
           } else if (status >= 400) {
-            commit('logout')
+            // commit('logout')
           }
           return status
         } catch (err) {
-          commit('logout')
+          // commit('logout')
         }
       }
       return 401
