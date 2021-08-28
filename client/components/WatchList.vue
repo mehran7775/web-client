@@ -1,30 +1,96 @@
 
+
 <template>
-  <v-list>
-    <template v-for="(watchlist, name) in watchlists">
-      <v-list-item two-line :key="name">
-        <v-list-item-content>
-          <v-list-item-title>{{ name }}</v-list-item-title>
-          <v-list-item-subtitle>
-            <template v-for="(instrument, index) in watchlist">
-              <v-list-item :key="index">
-                <v-list-item-content>
-                  <v-list-item-title>{{instrument}}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </template>
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-    </template>
-  </v-list>
+  <v-data-table
+    :headers="headers"
+    :items="inst"
+    class="elevation-1"
+  ></v-data-table>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref } from "@nuxtjs/composition-api";
+import { computed, defineComponent, ref, Ref, useStore } from "@nuxtjs/composition-api";
 
 export default defineComponent({
   props: ["watchlists"],
-  setup() {},
+
+  setup(context) {
+
+    let store = useStore();
+    return {
+      headers: [
+          {
+            text: 'نماد',
+            align: 'start',
+            sortable: false,
+            value: 'name',
+          },
+          {
+            text: 'دارایی سهم',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'قیمت دیروز',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'تعداد معادلات',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'حجم معادلات',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'ارزش معادلات',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'کمترین قیمت',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'بیشترین قیمت',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'اولین قیمت',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'أخرین قیمت',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'قیمت پایانی',
+            align: 'start',
+            sortable: false,
+            
+          },
+
+        ],
+        inst: context.watchlists.map((e:string)=>{
+          return {name:e}
+        })
+    };
+  },
 });
 </script>

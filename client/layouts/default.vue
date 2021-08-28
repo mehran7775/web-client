@@ -24,13 +24,15 @@
       <v-list v-model="selected">
         <v-list-item>
           <v-list-item-title>
-            <span>دیدبان</span>
+            <nuxt-link :to="`/`">دیدبان</nuxt-link>
           </v-list-item-title>
         </v-list-item>
 
         <v-list-item
           v-for="(watchList, i) in watchLists"
           :key="i"
+          :to="`/watchList/`+i"
+          :watchList=watchList
           router
           exact
         >
