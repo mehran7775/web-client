@@ -21,7 +21,6 @@ export default defineComponent({
     const store = useStore();
     let watchlists = computed(() => store.getters["user/getWatchList"])
     const instruments = watchlists.value[Object.keys(watchlists.value)[0]]
-    console.log(instruments)
     return {
       instruments
     };

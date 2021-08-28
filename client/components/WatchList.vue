@@ -20,11 +20,72 @@ export default defineComponent({
     return {
       headers: [
           {
-            text: 'Dessert (100g serving)',
+            text: 'نماد',
             align: 'start',
             sortable: false,
             value: 'name',
           },
+          {
+            text: 'دارایی سهم',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'قیمت دیروز',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'تعداد معادلات',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'حجم معادلات',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'ارزش معادلات',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'کمترین قیمت',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'بیشترین قیمت',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'اولین قیمت',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'أخرین قیمت',
+            align: 'start',
+            sortable: false,
+            
+          },
+          {
+            text: 'قیمت پایانی',
+            align: 'start',
+            sortable: false,
+            
+          },
+
         ],
         inst: context.watchlists.map((e:string)=>{
           return {name:e}
