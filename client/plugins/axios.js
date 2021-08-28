@@ -37,7 +37,7 @@ export default function ({ $axios, redirect, store }) {
       })
     }
   })
-  store.dispatch('user/init')
+  // store.dispatch('user/init')
 }
 
 const checkRefresh = function () {

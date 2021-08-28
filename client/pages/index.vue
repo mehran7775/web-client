@@ -1,14 +1,30 @@
 <template>
-  <span>Index</span>
+  <WatchList :watchlists=watchlists />
 </template>
 
+
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import {
+  computed,
+  defineComponent,
+  ref,
+  Ref,
+  useStore,
+} from "@nuxtjs/composition-api";
+import WatchList from "~/components/WatchList.vue";
 
 export default defineComponent({
-  setup() {
-    
+  components: {
+    WatchList,
   },
-})
+  setup() {
+    const store = useStore();
+
+    return {
+      watchlists: computed(() => store.getters["user/getWatchList"]),
+    };
+  },
+});
 </script>
+
 

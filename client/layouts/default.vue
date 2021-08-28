@@ -24,21 +24,18 @@
       <v-list v-model="selected">
         <v-list-item>
           <v-list-item-title>
-            <span></span>
+            <span>دیدبان</span>
           </v-list-item-title>
         </v-list-item>
+
         <v-list-item
-          v-for="(item, i) in items"
+          v-for="(watchList, i) in watchLists"
           :key="i"
-          :to="item.to"
           router
           exact
         >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="$t(item.title)" />
+            <v-list-item-title v-text="i" />
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -132,6 +129,7 @@ export default {
     ...mapGetters({
       currentUser: 'user/me',
       isLogin: 'user/isLogin',
+      watchLists: 'user/getWatchList',
       rtl: 'rtl'
     })
   },
