@@ -1,5 +1,5 @@
 <template>
-  <WatchList :watchlists=watchlists />
+  <WatchList :watchlists=instruments />
 </template>
 
 
@@ -19,9 +19,11 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-
+    let watchlists = computed(() => store.getters["user/getWatchList"])
+    const instruments = watchlists.value[Object.keys(watchlists.value)[0]]
+    console.log(instruments)
     return {
-      watchlists: computed(() => store.getters["user/getWatchList"]),
+      instruments
     };
   },
 });

@@ -31,6 +31,8 @@
         <v-list-item
           v-for="(watchList, i) in watchLists"
           :key="i"
+          :to="`/watchList/`+i"
+          :watchList=watchList
           router
           exact
         >
