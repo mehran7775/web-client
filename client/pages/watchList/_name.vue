@@ -16,7 +16,7 @@ export default defineComponent({
     let route = useRoute();
     let name = route.value.params.name;
     const store = useStore();
-    let watchlists = computed(() => store.getters["user/getWatchList"]);
+    let watchlists = computed(() => store.getters["user/watchList"]);
     const instruments = watchlists.value[name]
     return {
       instruments

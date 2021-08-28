@@ -2,10 +2,17 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import umanager from '@/repositories/user_manager'
 import jwttoken from '@/repositories/jwt_token'
 
+export type Setting = {
+  lang: string,
+  columns: Array<string>,
+  watch_lists: object,
+}
+
 export type User = {
   userName: string,
   nikname: string,
-  profile: object
+  profile: object,
+  settings: Setting,
 }
 
 export type UserCredentials = {
@@ -19,15 +26,20 @@ const userKey: string = 'userCache';
 const anonymousUser: User = {
   userName: 'anonymous',
   nikname: 'Anonymous',
-  profile: {}
+  profile: {},
+  settings: {
+    lang: 'fa-IR',
+    columns: [],
+    watch_lists: {}
+  }
 }
 
 export const state = () => ({
   token: null,
-  user: null,
+  user: anonymousUser,
   refresh: null,
   userName: null,
-  watch_lists: null,
+  watch_lists: {},
 })
 
 export type RootState = ReturnType<typeof state>
@@ -46,8 +58,12 @@ export const getters: GetterTree<RootState, RootState> = {
   isLogin: (state) => {
     return state && state.token
   },
-  getWatchList(state){
-    return state.watch_lists
+  watchList(state){
+    if (state && state.user && state.user.settings) {
+      return state.user.settings.watch_lists
+    } else {
+      return {}
+    }
   }
 }
 
@@ -70,7 +86,7 @@ export const mutations: MutationTree<RootState> = {
       localStorage.clear()
     }
     state.token = null
-    state.user = null
+    state.user = anonymousUser
     state.refresh = null
   },
   setUser(state, data) {
@@ -89,29 +105,23 @@ export const mutations: MutationTree<RootState> = {
 
 export const actions: ActionTree<RootState, RootState> = {
 
-  init({ commit, dispatch }) {
-    console.log('Start init')
+  async init({ commit, dispatch }) {
     if (typeof localStorage !== typeof undefined) {
-      console.log(1)
       const refresh = localStorage.getItem(RefreshKey)
       if (refresh) {
-        console.log('refresh', refresh)
         commit('setRefresh', refresh)
         const jwt = sessionStorage.getItem(tokenKey)
         if (jwt) {
-          console.log('token', jwt)
-
           commit('setToken', jwt)
           const user = localStorage.getItem(userKey)
           if (user) {
-
             commit('setUser', JSON.parse(user))
           } else {
-            //await dispatch('getMe',localStorage.getItem('userName'))
+            await dispatch('getMe',localStorage.getItem('userName'))
           }
         } else {
-          //await dispatch('refreshToken')
-          //await dispatch('getMe',localStorage.getItem('userName'))
+          await dispatch('refreshToken')
+          await dispatch('getMe',localStorage.getItem('userName'))
         }
       } else {
         console.log('token not found')

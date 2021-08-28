@@ -41,15 +41,12 @@
             <v-list-item-title v-text="$t(item.title)" />
             <v-list v-if="item.children">
               <v-list-item
-                v-for="(subitem, j) in item.children"
-                :key="j"
+                v-for="subitem in item.children.value"
+                :key="subitem.title"
                 :to="subitem.to"
                 router
                 exact
               >
-              <v-list-item-action>
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title v-text="subitem.title" />
               </v-list-item-content>
@@ -121,6 +118,18 @@ export default defineComponent({
     const rtl = computed(() => store.getters['rtl']);
     const currentUser = computed(() => store.getters['user/me'])
 
+    const watchList = computed(()=> {
+        const lists = store.getters['user/watchList']
+        const res = []
+        for(let k in lists) {
+          res.push({
+            title: k,
+            to: '/watchList/' + k
+          })
+        }
+        return res
+    });
+
     const getMe = () => store.dispatch('user/getMe')
     const logout= () => store.dispatch('user/logout');
 
@@ -145,18 +154,7 @@ export default defineComponent({
         {
           icon: 'mdi-apps',
           title: 'menu.dashboard',
-          children: [
-            {
-              icon: 'mdi-apps',
-              title: '',
-              to: '/?1',
-            },
-            {
-              icon: 'mdi-apps',
-              title: 'اول',
-              to: '/?2',
-            },
-          ]
+          children: watchList
         },
         {
           icon: 'mdi-chart-bubble',
