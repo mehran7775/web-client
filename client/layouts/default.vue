@@ -129,8 +129,7 @@ export default defineComponent({
         }
         return res
     });
-
-    const getMe = () => store.dispatch('user/getMe')
+    
     const logout= () => store.dispatch('user/logout');
 
     function doLogout() {
@@ -140,7 +139,6 @@ export default defineComponent({
 
     return {
       doLogout,
-      getMe,
       isLogin,
       rtl,
       currentUser,

@@ -50,7 +50,6 @@ export default {
   methods: {
     ...mapActions({
       dologin: 'user/login',
-      getUser: 'user/getUser'
     }),
     ...mapMutations({
       alert: 'snacks/showMessage'

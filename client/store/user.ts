@@ -39,7 +39,6 @@ export const state = () => ({
   user: anonymousUser,
   refresh: null,
   userName: null,
-  watch_lists: {},
 })
 
 export type RootState = ReturnType<typeof state>
@@ -90,16 +89,13 @@ export const mutations: MutationTree<RootState> = {
     state.refresh = null
   },
   setUser(state, data) {
-    state.userName = data.user_name
+    state.userName = data.username
     state.user = data
 
     if (localStorage){
       localStorage.setItem(userKey, JSON.stringify(data))
-      localStorage.setItem('userName', data.user_name)
+      localStorage.setItem('userName', data.username)
     }
-  },
-  setWatchList(state,data){
-    state.watch_lists = data.settings.watch_lists
   }
 }
 
@@ -114,6 +110,7 @@ export const actions: ActionTree<RootState, RootState> = {
         if (jwt) {
           commit('setToken', jwt)
           const user = localStorage.getItem(userKey)
+          console.log(localStorage)
           if (user) {
             commit('setUser', JSON.parse(user))
           } else {
@@ -124,16 +121,15 @@ export const actions: ActionTree<RootState, RootState> = {
           await dispatch('getMe',localStorage.getItem('userName'))
         }
       } else {
-        console.log('token not found')
         commit('logout')
       }
     }
   },
   async getMe({ commit }, userName) {
     try {
+      console.log(userName)
       const { data, status } = await umanager.getUser(userName, this.$axios)
       commit('setUser', data)
-      commit('setWatchList',data)
       return status
     } catch (err) {
       if (err.response) {
