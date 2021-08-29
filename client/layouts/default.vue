@@ -73,11 +73,11 @@
         v-text="currentUser.name + ' ' + currentUser.lastName"
       />
       <v-spacer />
-      <v-toolbar-title
+      <v-toolbar-title v-if="isLogin"
         >بلوکه شده
         <v-chip class="ma-2" label> {{ blockedMoney }} </v-chip>
       </v-toolbar-title>
-      <v-toolbar-title
+      <v-toolbar-title v-if="isLogin"
         >قدرت خرید
         <v-chip class="ma-2" label> {{ freeMoney }} </v-chip>
       </v-toolbar-title>
@@ -91,7 +91,18 @@
         <v-icon>mdi-account-arrow-right</v-icon>
       </v-btn>
     </v-app-bar>
+    <v-card v-if="isLogin" class="mt-10">
+      <v-toolbar dense>
+        <v-spacer></v-spacer>
+        <v-btn
 
+      > واریز وجه </v-btn>
+        <v-btn
+
+      >دریافت وجه </v-btn>
+        <v-spacer></v-spacer>
+      </v-toolbar>
+    </v-card>
     <v-main>
       <nuxt />
     </v-main>
