@@ -86,6 +86,7 @@
       "error": "An unexpected error happen's during login!"
     },
     "menu": {
+      "watchList": "Watch-Lists",
       "dashboard": "Dashboard",
       "reports": "Reports",
       "users": "Users",

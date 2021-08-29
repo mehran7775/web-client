@@ -103,9 +103,8 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, useStore } from "@nuxtjs/composition-api";
+import { defineComponent, computed, useStore } from "@nuxtjs/composition-api";
 import colors from 'vuetify/es5/util/colors'
-import { mapGetters, mapActions } from 'vuex'
 import snackbar from '@/components/snacks'
 
 export default defineComponent({
@@ -128,12 +127,10 @@ export default defineComponent({
           })
         }
         return res
-    });
+    })
     
-    const logout= () => store.dispatch('user/logout');
-
     function doLogout() {
-      logout()
+      store.dispatch('user/logout')
       this.$router.push('/login')
     }
 
@@ -150,12 +147,12 @@ export default defineComponent({
       selected: {},
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'menu.dashboard',
+          icon: 'mdi-eye',
+          title: 'menu.watchList',
           children: watchList
         },
         {
-          icon: 'mdi-chart-bubble',
+          icon: 'mdi-chart-bar',
           title: 'menu.reports',
           to: '/inspire'
         }

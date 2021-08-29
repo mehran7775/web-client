@@ -110,7 +110,6 @@ export const actions: ActionTree<RootState, RootState> = {
         if (jwt) {
           commit('setToken', jwt)
           const user = localStorage.getItem(userKey)
-          console.log(localStorage)
           if (user) {
             commit('setUser', JSON.parse(user))
           } else {
@@ -126,8 +125,9 @@ export const actions: ActionTree<RootState, RootState> = {
     }
   },
   async getMe({ commit }, userName) {
+    if(!userName)
+      return
     try {
-      console.log(userName)
       const { data, status } = await umanager.getUser(userName, this.$axios)
       commit('setUser', data)
       return status
