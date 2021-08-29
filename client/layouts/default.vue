@@ -91,7 +91,18 @@
         <v-icon>mdi-account-arrow-right</v-icon>
       </v-btn>
     </v-app-bar>
+    <v-card class="mt-10">
+      <v-toolbar dense>
+        <v-spacer></v-spacer>
+        <v-btn
 
+      > واریز وجه </v-btn>
+        <v-btn
+
+      >دریافت وجه </v-btn>
+        <v-spacer></v-spacer>
+      </v-toolbar>
+    </v-card>
     <v-main>
       <nuxt />
     </v-main>
