@@ -9,14 +9,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, Ref, useStore } from "@nuxtjs/composition-api";
+import {  defineComponent } from "@nuxtjs/composition-api";
 
 export default defineComponent({
   props: ["watchlists"],
 
   setup(context) {
-
-    let store = useStore();
     return {
       headers: [
           {
@@ -29,61 +27,61 @@ export default defineComponent({
             text: 'دارایی سهم',
             align: 'start',
             sortable: false,
-            
+
           },
           {
             text: 'قیمت دیروز',
             align: 'start',
             sortable: false,
-            
+
           },
           {
             text: 'تعداد معادلات',
             align: 'start',
             sortable: false,
-            
+
           },
           {
             text: 'حجم معادلات',
             align: 'start',
             sortable: false,
-            
+
           },
           {
             text: 'ارزش معادلات',
             align: 'start',
             sortable: false,
-            
+
           },
           {
             text: 'کمترین قیمت',
             align: 'start',
             sortable: false,
-            
+
           },
           {
             text: 'بیشترین قیمت',
             align: 'start',
             sortable: false,
-            
+
           },
           {
             text: 'اولین قیمت',
             align: 'start',
             sortable: false,
-            
+
           },
           {
             text: 'أخرین قیمت',
             align: 'start',
             sortable: false,
-            
+
           },
           {
             text: 'قیمت پایانی',
             align: 'start',
             sortable: false,
-            
+
           },
 
         ],
