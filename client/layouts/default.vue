@@ -16,15 +16,12 @@
       width="260"
     >
       <template #img="props">
-        <v-img
-          :gradient="`to top, ${barColor}`"
-          v-bind="props"
-        />
+        <v-img :gradient="`to top, ${barColor}`" v-bind="props" />
       </template>
       <v-list v-model="selected">
         <v-list-item>
           <v-list-item-title>
-            
+            <v-spacer />
           </v-list-item-title>
         </v-list-item>
         <v-list-item
@@ -47,9 +44,9 @@
                 router
                 exact
               >
-              <v-list-item-content>
-                <v-list-item-title v-text="subitem.title" />
-              </v-list-item-content>
+                <v-list-item-content>
+                  <v-list-item-title v-text="subitem.title" />
+                </v-list-item-content>
               </v-list-item>
             </v-list>
           </v-list-item-content>
@@ -66,35 +63,41 @@
       :clipped-right="rtl"
       color="primary"
     >
-      <v-app-bar-nav-icon v-show="isLogin" color="accent" @click.stop="drawer=!drawer" />
-      <v-toolbar-title v-if="isLogin" v-text="currentUser.name + ' ' + currentUser.lastName" />
+      <v-app-bar-nav-icon
+        v-show="isLogin"
+        color="accent"
+        @click.stop="drawer = !drawer"
+      />
+      <v-toolbar-title
+        v-if="isLogin"
+        v-text="currentUser.name + ' ' + currentUser.lastName"
+      />
       <v-spacer />
-      <v-btn
-        v-if="!isLogin"
-        color="success"
-        nuxt
-        to="/login"
-        depressed
-      >
-        {{ $t('login.login') }}
+      <v-toolbar-title
+        >بلوکه شده
+        <v-chip class="ma-2" label> {{ blockedMoney }} </v-chip>
+      </v-toolbar-title>
+      <v-toolbar-title
+        >قدرت خرید
+        <v-chip class="ma-2" label> {{ freeMoney }} </v-chip>
+      </v-toolbar-title>
+      <v-spacer />
+      <v-btn v-if="!isLogin" color="success" nuxt to="/login" depressed>
+        {{ $t("login.login") }}
         <v-icon>mdi-account-arrow-left</v-icon>
       </v-btn>
-      <v-btn
-        v-if="isLogin"
-        color="error"
-        depressed
-        @click="doLogout"
-      >
-        {{ $t('login.logout') }}
+      <v-btn v-if="isLogin" color="error" depressed @click="doLogout">
+        {{ $t("login.logout") }}
         <v-icon>mdi-account-arrow-right</v-icon>
       </v-btn>
     </v-app-bar>
+
     <v-main>
       <nuxt />
     </v-main>
     <v-footer :absolute="true" app>
       <span>
-        &copy; {{ new Date().getFullYear() }} {{ $t('company') }}
+        &copy; {{ new Date().getFullYear() }} {{ $t("company") }}
         <v-icon small>mdi-account-group</v-icon>
       </span>
     </v-footer>
@@ -104,34 +107,36 @@
 
 <script>
 import { defineComponent, computed, useStore } from "@nuxtjs/composition-api";
-import colors from 'vuetify/es5/util/colors'
-import snackbar from '@/components/snacks'
+import colors from "vuetify/es5/util/colors";
+import snackbar from "@/components/snacks";
 
 export default defineComponent({
   components: {
-    snackbar
+    snackbar,
   },
   setup(props, context) {
-    const store = useStore()
-    const isLogin = computed(() => store.getters['user/isLogin']);
-    const rtl = computed(() => store.getters['rtl']);
-    const currentUser = computed(() => store.getters['user/me'])
+    const store = useStore();
+    const isLogin = computed(() => store.getters["user/isLogin"]);
+    const rtl = computed(() => store.getters["rtl"]);
+    const currentUser = computed(() => store.getters["user/me"]);
+    const blockedMoney = 0;
+    const freeMoney = 0;
 
-    const watchList = computed(()=> {
-        const lists = store.getters['user/watchList']
-        const res = []
-        for(let k in lists) {
-          res.push({
-            title: k,
-            to: '/watchList/' + k
-          })
-        }
-        return res
-    })
-    
+    const watchList = computed(() => {
+      const lists = store.getters["user/watchList"];
+      const res = [];
+      for (let k in lists) {
+        res.push({
+          title: k,
+          to: "/watchList/" + k,
+        });
+      }
+      return res;
+    });
+
     function doLogout() {
-      store.dispatch('user/logout')
-      this.$router.push('/login')
+      store.dispatch("user/logout");
+      this.$router.push("/login");
     }
 
     return {
@@ -140,25 +145,26 @@ export default defineComponent({
       rtl,
       currentUser,
       colors,
-      barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
+      barColor: "rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)",
       clipped: true,
       drawer: true,
       mini: true,
       selected: {},
       items: [
         {
-          icon: 'mdi-eye',
-          title: 'menu.watchList',
-          children: watchList
+          icon: "mdi-eye",
+          title: "menu.watchList",
+          children: watchList,
         },
         {
-          icon: 'mdi-chart-bar',
-          title: 'menu.reports',
-          to: '/inspire'
-        }
-      ]
-    }
-  }
-})
-
+          icon: "mdi-chart-bar",
+          title: "menu.reports",
+          to: "/inspire",
+        },
+      ],
+      blockedMoney,
+      freeMoney,
+    };
+  },
+});
 </script>
