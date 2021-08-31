@@ -11,7 +11,7 @@ const instance = axios.create({
 
 async function getInstrumentsDetail(instruments:[string,number]) {
   console.log(instruments)
-  return await instance.get('oms/instrument/daily-detail?' + instruments)
+  return await instance.get('oms/instruments/daily-detail?ids=' + instruments)
 }
 
 export default {
