@@ -1,24 +1,8 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import umanager from '@/repositories/user_manager'
 import jwttoken from '@/repositories/jwt_token'
+import { User, Setting, UserCredentials } from '@/types/sso'
 
-export type Setting = {
-  lang: string,
-  columns: Array<string>,
-  watch_lists: object,
-}
-
-export type User = {
-  userName: string,
-  nikname: string,
-  profile: object,
-  settings: Setting,
-}
-
-export type UserCredentials = {
-  userName: string,
-  password: string,
-}
 
 const RefreshKey: string = 'jwtRefreshKey';
 const tokenKey: string = 'jwtKey';

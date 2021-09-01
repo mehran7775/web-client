@@ -2,7 +2,7 @@ import axios from 'axios';
 const instance = axios.create({
   withCredentials: true,
   // crossdomain: true,
-  baseURL: process.env.VUE_APP_Host,
+  baseURL: "http://localhost:1201",
   headers: {
     authorization: sessionStorage.getItem('jwtKey')
   }
@@ -11,7 +11,7 @@ const instance = axios.create({
 
 async function getInstrumentsDetail(instruments:[string,number]) {
   console.log(instruments)
-  return await instance.get('oms/instruments/daily-detail?ids=' + instruments)
+  return await instance.get('instruments/daily-detail?ids=' + instruments)
 }
 
 export default {
