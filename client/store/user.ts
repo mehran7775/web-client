@@ -115,7 +115,7 @@ export const actions: ActionTree<RootState, RootState> = {
       const { data, status } = await umanager.getUser(userName, this.$axios)
       commit('setUser', data)
       return status
-    } catch (err) {
+    } catch (err:any) {
       if (err.response) {
         return err.response.status
       }
@@ -133,7 +133,7 @@ export const actions: ActionTree<RootState, RootState> = {
       commit('setRefresh', data.refresh)
       dispatch('getMe', payload.userName)
       return status
-    } catch (err) {
+    } catch (err:any) {
       if (err.response) {
         return err.response.status
       }
