@@ -4,9 +4,7 @@ import { NuxtAxiosInstance } from "@nuxtjs/axios"
 async function getUser(userName: string | null, axios: NuxtAxiosInstance) {
   if (userName) {
     let user = await axios.get('/sso/user/' + userName)
-    console.log(user)
     user.data.settings = JSON.parse(user.data.settings)
-    console.log(user)
     return user
   } else {
     return await axios.get('/sso/user/')
