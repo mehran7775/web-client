@@ -22,7 +22,6 @@ export default defineComponent({
     const getUserInstruments = async () => {
       const { data ,status } = await daily_instruments
       .getInstrumentsDetail(context.watchlists)
-      console.log(data)
       instruments.value = data
     };
 
