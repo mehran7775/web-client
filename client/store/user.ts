@@ -73,7 +73,6 @@ export const mutations: MutationTree<RootState> = {
     state.refresh = null
   },
   setUser(state, data) {
-    console.log('setUser' , data);
 
     state.userName = data.user_name
     state.user = data

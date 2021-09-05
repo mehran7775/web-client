@@ -13,18 +13,23 @@ export class RootState {
 export const getters: GetterTree<RootState, RootState> = {
   getAll: (state): KeyValuePaire<BigInt,Instrument>[] => {
     return state.cache
+  },
+  getByKey: (state) => (key:string) => {
+    
   }
 }
 
 export const mutations: MutationTree<RootState> = {
-
+  setInstruments(state,data){
+    state.cache = data
+  }
 }
 
 export const actions: ActionTree<RootState, RootState> = {
-    async getInstrimentsDetail({},payload){
+    async getInstrimentsDetail({commit},payload){
       try {
         const { data, status } = await daily_instruments.getInstrumentsDetail(payload, this.$axios)
-        return data
+        commit('setInstruments',data)
       } catch (err:any) {
         if (err.response) {
           return err.response.status

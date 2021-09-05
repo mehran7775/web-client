@@ -12,6 +12,7 @@ import {
   onMounted,
   ref,
   useContext,
+  useStore,
 } from "@nuxtjs/composition-api";
 import daily_instruments from "@/repositories/daily_instruments";
 
@@ -20,12 +21,14 @@ export default defineComponent({
   props: ["watchlists"],
 
   setup(context) {
+
     const ctnx  = useContext()
+
     const instruments = ref([]);
     const getUserInstruments = async () => {
-      const { data ,status } = await daily_instruments
-      .getInstrumentsDetail(context.watchlists,ctnx.$axios)
-      instruments.value = data
+      await ctnx.store.dispatch('instruments/getInstrimentsDetail',context.watchlists)
+
+      instruments.value = await ctnx.store.getters['instruments/getAll']
     };
 
     onMounted(getUserInstruments)
