@@ -70,10 +70,12 @@ export default defineComponent({
         res.push({
           id: i++,
           name: key,
-          children: [...current[key]]
+          children: current[key].map((inst: number) => ({
+            id: i++,
+            name: inst
+          }))
         })
       }
-      console.log(res)
       return res;
     }
 
@@ -84,7 +86,6 @@ export default defineComponent({
       }
       return res
     }
-
     return {
       save,
       search,

@@ -11,19 +11,21 @@ import {
   defineComponent,
   onMounted,
   ref,
+  useContext,
 } from "@nuxtjs/composition-api";
 import daily_instruments from "@/repositories/daily_instruments";
+
 
 export default defineComponent({
   props: ["watchlists"],
 
   setup(context) {
+    const ctnx  = useContext()
     const instruments = ref([]);
     const getUserInstruments = async () => {
-      // const { data ,status } = await daily_instruments
-      // .getInstrumentsDetail(context.watchlists,this.$axios)
-      // console.log(data)
-      // instruments.value = data
+      const { data ,status } = await daily_instruments
+      .getInstrumentsDetail(context.watchlists,ctnx.$axios)
+      instruments.value = data
     };
 
     onMounted(getUserInstruments)

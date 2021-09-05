@@ -73,6 +73,8 @@ export const mutations: MutationTree<RootState> = {
     state.refresh = null
   },
   setUser(state, data) {
+    console.log('setUser' , data);
+
     state.userName = data.user_name
     state.user = data
     if (localStorage){
@@ -109,8 +111,6 @@ export const actions: ActionTree<RootState, RootState> = {
           await dispatch('refreshToken')
           await dispatch('getMe',localStorage.getItem('userName'))
         }
-        console.log('state is',this.state)
-        await this.dispatch('instruments/getInstrimentsDetail')
       } else {
         commit('logout')
       }
@@ -123,7 +123,7 @@ export const actions: ActionTree<RootState, RootState> = {
       const { data, status } = await umanager.getUser(userName, this.$axios)
       commit('setUser', data)
       return status
-    } catch (err:any) {
+    } catch (err: any) {
       if (err.response) {
         return err.response.status
       }
@@ -141,7 +141,7 @@ export const actions: ActionTree<RootState, RootState> = {
       commit('setRefresh', data.refresh)
       await dispatch('getMe',payload.userName)
       return status
-    } catch (err:any) {
+    } catch (err: any) {
       if (err.response) {
         return err.response.status
       }

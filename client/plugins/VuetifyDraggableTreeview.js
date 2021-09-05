@@ -1,4 +1,4 @@
 import Vue from 'vue'
-import VuetifyDraggableTreeview from 'vuetify-draggable-treeview'
+import VDraggableTreeView from "vuetify-draggable-treeview";
 
-Vue.use(VuetifyDraggableTreeview)
+Vue.use(VDraggableTreeView)
