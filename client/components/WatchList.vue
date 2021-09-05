@@ -20,10 +20,10 @@ export default defineComponent({
   setup(context) {
     const instruments = ref([]);
     const getUserInstruments = async () => {
-      const { data ,status } = await daily_instruments
-      .getInstrumentsDetail(context.watchlists)
-      console.log(data)
-      instruments.value = data
+      // const { data ,status } = await daily_instruments
+      // .getInstrumentsDetail(context.watchlists,this.$axios)
+      // console.log(data)
+      // instruments.value = data
     };
 
     onMounted(getUserInstruments)

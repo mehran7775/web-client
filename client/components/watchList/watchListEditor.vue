@@ -23,11 +23,11 @@
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
-    <v-draggable-treeview
+    <!-- <v-draggable-treeview
       v-model="watchlist"
       group="test"
     >
-    </v-draggable-treeview>
+    </v-draggable-treeview> -->
   </v-card>
 </template>
 
@@ -35,11 +35,11 @@
 import { defineComponent, useStore, ref, Ref, watch } from '@nuxtjs/composition-api'
 import {KeyValuePaire} from '@/types/collection'
 import { Instrument } from '@/types/oms'
-import VuetifyDraggableTreeview from 'vuetify-draggable-treeview'
+// import VuetifyDraggableTreeview from 'vuetify-draggable-treeview'
 
 export default defineComponent({
   components: {
-    'v-draggable-treeview': VuetifyDraggableTreeview
+    // 'v-draggable-treeview': VuetifyDraggableTreeview
   },
   emits: ["close"],
   setup(props, {emit}) {
@@ -49,7 +49,7 @@ export default defineComponent({
     let search = ref(null)
     let items: Ref<KeyValuePaire<BigInt,Instrument>[]> = ref([]);
     items.value = loadCache()
-    
+
     function save() {
       console.log(editableToMap(watchlist))
       //emit("close")
