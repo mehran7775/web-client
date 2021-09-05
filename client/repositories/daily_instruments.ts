@@ -2,7 +2,7 @@ import axios from 'axios';
 const instance = axios.create({
   withCredentials: true,
   // crossdomain: true,
-  baseURL: process.env.VUE_APP_Host,
+  baseURL: "http://localhost:4010",
   headers: {
     authorization: sessionStorage.getItem('jwtKey')
   }

@@ -1,57 +1,33 @@
 <template>
   <v-card>
-    <v-row>
-      <v-toolbar
+    <v-toolbar
+      dark
+      color="primary"
+    >
+      <v-btn
+        icon
         dark
-        color="primary"
+        @click='$emit("close", $event.target.value)'
       >
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+      <v-toolbar-title>{{$t("watchList.editor.title")}}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
         <v-btn
-          icon
           dark
-          @click='$emit("close", $event.target.value)'
+          text
+          @click="save"
         >
-          <v-icon>mdi-close</v-icon>
+          Save
         </v-btn>
-        <v-toolbar-title>{{$t("watchList.editor.title")}}</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <v-btn
-            dark
-            text
-            @click="save"
-          >
-            Save
-          </v-btn>
-        </v-toolbar-items>
-      </v-toolbar>
-    </v-row>
-    <v-row v-for="item in watchlist" :key="item.key">
-      <v-col xs="1" sm="2" md="3" />
-      <v-col xs="10" sm="8" md="6" >
-        <v-card>
-          <v-card-title>
-            <v-col>
-              <v-text-field v-model="item.key" />
-            </v-col>
-            <v-col />
-          </v-card-title>
-          <v-divider />
-          <v-card-text>
-            <v-autocomplete
-              v-model="item.value"
-              :items="items"
-              :loading="loading"
-              :search-input.sync="search"
-              item-text="value"
-              item-value="key"
-              multiple
-              chips
-            />
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-    
+      </v-toolbar-items>
+    </v-toolbar>
+    <v-draggable-treeview
+      v-model="watchlist"
+      group="test"
+    >
+    </v-draggable-treeview>
   </v-card>
 </template>
 
@@ -59,8 +35,12 @@
 import { defineComponent, useStore, ref, Ref, watch } from '@nuxtjs/composition-api'
 import {KeyValuePaire} from '@/types/collection'
 import { Instrument } from '@/types/oms'
+import VuetifyDraggableTreeview from 'vuetify-draggable-treeview'
 
 export default defineComponent({
+  components: {
+    'v-draggable-treeview': VuetifyDraggableTreeview
+  },
   emits: ["close"],
   setup(props, {emit}) {
     const store = useStore();
@@ -85,19 +65,22 @@ export default defineComponent({
 
     function mapToEditable(current: any) {
       const res = []
+      let i = 0
       for(let key in current) {
         res.push({
-          key: key,
-          value: [...current[key]]
+          id: i++,
+          name: key,
+          children: [...current[key]]
         })
       }
+      console.log(res)
       return res;
     }
 
-    function editableToMap(edited: Array<KeyValuePaire<any,any>>) {
+    function editableToMap(edited: any) {
       const res: any = {}
       for(let index in edited) {
-        res[edited[index].key] = edited[index].value
+        res[edited[index].name] = edited[index].children
       }
       return res
     }
