@@ -52,16 +52,16 @@ export const getters: GetterTree<RootState, RootState> = {
 
 export const mutations: MutationTree<RootState> = {
   setToken(state, token) {
-    if (sessionStorage && token) {
-      sessionStorage.setItem(tokenKey, token)
-      state.token = token
+    if (localStorage && token) {
+      localStorage.setItem(tokenKey, token)
     }
+    state.token = token
   },
   setRefresh(state, refresh) {
     if (localStorage && refresh) {
       localStorage.setItem(RefreshKey, refresh)
-      state.refresh = refresh
     }
+    state.refresh = refresh
   },
   logout(state) {
     if (localStorage) {
@@ -73,9 +73,10 @@ export const mutations: MutationTree<RootState> = {
     state.refresh = null
   },
   setUser(state, data) {
-    state.userName = data.username
-    state.user = data
+    console.log('setUser' , data);
 
+    state.userName = data.user_name
+    state.user = data
     if (localStorage){
       localStorage.setItem(userKey, JSON.stringify(data))
       localStorage.setItem('userName', data.username)
@@ -86,20 +87,27 @@ export const mutations: MutationTree<RootState> = {
 export const actions: ActionTree<RootState, RootState> = {
 
   async init({ commit, dispatch }) {
+
     if (typeof localStorage !== typeof undefined) {
+
       const refresh = localStorage.getItem(RefreshKey)
       if (refresh) {
+
         commit('setRefresh', refresh)
-        const jwt = sessionStorage.getItem(tokenKey)
+        const jwt = localStorage.getItem(tokenKey)
         if (jwt) {
+
           commit('setToken', jwt)
           const user = localStorage.getItem(userKey)
           if (user) {
+
             commit('setUser', JSON.parse(user))
           } else {
+
             await dispatch('getMe',localStorage.getItem('userName'))
           }
         } else {
+
           await dispatch('refreshToken')
           await dispatch('getMe',localStorage.getItem('userName'))
         }
@@ -131,7 +139,7 @@ export const actions: ActionTree<RootState, RootState> = {
       )
       commit('setToken', 'Bearer ' + data.token)
       commit('setRefresh', data.refresh)
-      dispatch('getMe', payload.userName)
+      await dispatch('getMe',payload.userName)
       return status
     } catch (err: any) {
       if (err.response) {
