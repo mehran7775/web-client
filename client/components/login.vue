@@ -65,7 +65,7 @@ export default {
         .then(
           function (data) {
             if (data >= 200 && data < 300) {
-              self.$router.push({ path: '/' })
+              self.$router.push({ path: '/watchlist/' })
               self.alert({
                 color: 'success',
                 content: 'login.successful'
