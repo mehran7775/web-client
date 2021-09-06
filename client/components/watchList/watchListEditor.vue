@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, ref, Ref, watch } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, ref, Ref, watch, reactive } from '@nuxtjs/composition-api'
 import {KeyValuePaire} from '@/types/collection'
 import { Instrument } from '@/types/oms'
 import VuetifyDraggableTreeview from 'vuetify-draggable-treeview'
@@ -76,7 +76,7 @@ export default defineComponent({
           }))
         })
       }
-      return res;
+      return reactive(res);
     }
 
     function editableToMap(edited: any) {
