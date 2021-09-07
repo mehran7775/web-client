@@ -13,11 +13,11 @@ export default defineComponent({
     WatchList,
   },
   setup(context) {
-    let route = useRoute();
-    let name = route.value.params.name;
+    const route = useRoute();
     const store = useStore();
+    let name = route.value.params.name;
     let watchlists = computed(() => store.getters["user/watchList"]);
-    const instruments = watchlists.value[name]
+    const instruments = watchlists.value[name ?? Object.keys(watchlists.value)[0]]
     return {
       instruments
     };
