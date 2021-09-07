@@ -15,10 +15,13 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="item in watchlist" :key="item.id" md="2">
+      <v-col v-for="item in watchlist" :key="item.id" md="3">
         <v-card>
           <v-card-title>
             <v-text-field v-model="item.name" />
+            <v-autocomplete 
+              :placeholder="$t('global.new')"
+            />
           </v-card-title>
           <v-divider />
           <v-card-text>
@@ -26,7 +29,14 @@
               <v-row v-for="child in item.children" :key="child.id">
                 <v-col>
                   <v-card>
-                    <instrument-view :code="child.name" />
+                    <v-row>
+                      <v-col md="8" sm="6">
+                        <instrument-view :code="child.name" />
+                      </v-col>
+                      <v-col md="4" sm="6">
+                        <v-btn color="error"> - </v-btn>
+                      </v-col>
+                    </v-row>
                   </v-card>
                 </v-col>
               </v-row>

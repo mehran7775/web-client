@@ -3,7 +3,8 @@
       "actions": "Actions",
       "close": "Close",
       "ok": "Ok",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "new": "New"
     },
     "user": {
       "title": "User Search",
