@@ -20,6 +20,18 @@
           <v-card-title>
             <v-text-field v-model="item.name" />
           </v-card-title>
+          <v-divider />
+          <v-card-text>
+            <draggable :list="item.children" group="instruments">
+              <v-row v-for="child in item.children" :key="child.id">
+                <v-col>
+                  <v-card>
+                    <instrument-view :code="child.name" />
+                  </v-card>
+                </v-col>
+              </v-row>
+            </draggable>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -33,22 +45,27 @@ import {
   ref,
   reactive,
 } from "@nuxtjs/composition-api";
+import draggable from "vuedraggable";
+import instrumentView from "@/components/oms/instrument.vue";
 
 export default defineComponent({
   emits: ["close"],
   props: ["value"],
+  components: {
+    draggable,
+    "instrument-view": instrumentView,
+  },
   setup(props, { emit }) {
     const store = useStore();
     const watchlist = mapToEditable(store.getters["user/watchList"]);
     const loading = ref(false);
-    
 
     async function save() {
       console.log(editableToMap(watchlist));
-      await store.dispatch("user/update_watchlist", editableToMap(watchlist))
+      await store.dispatch("user/update_watchlist", editableToMap(watchlist));
       emit("close");
     }
-    
+
     function mapToEditable(current: any) {
       const res = [];
       let i = 0;
@@ -68,7 +85,9 @@ export default defineComponent({
     function editableToMap(edited: any) {
       const res: any = {};
       for (let index in edited) {
-        res[edited[index].name] = edited[index].children.map((inst: any) => inst.name);
+        res[edited[index].name] = edited[index].children.map(
+          (inst: any) => inst.name
+        );
       }
       return res;
     }
