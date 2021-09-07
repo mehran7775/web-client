@@ -68,7 +68,7 @@ export default defineComponent({
     function editableToMap(edited: any) {
       const res: any = {};
       for (let index in edited) {
-        res[edited[index].name] = edited[index].children;
+        res[edited[index].name] = edited[index].children.map((inst: any) => inst.name);
       }
       return res;
     }
