@@ -1,98 +1,82 @@
 <template>
   <v-card>
-    <v-toolbar
-      dark
-      color="primary"
-    >
-      <v-btn
-        icon
-        dark
-        @click='$emit("close", $event.target.value)'
-      >
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-      <v-toolbar-title>{{$t("watchList.editor.title")}}</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-toolbar-items>
-        <v-btn
-          dark
-          text
-          @click="save"
-        >
-          Save
-        </v-btn>
-      </v-toolbar-items>
-    </v-toolbar>
-    <v-draggable-treeview
-      v-model="watchlist"
-      group="test"
-    >
-    </v-draggable-treeview>
+    <v-row>
+      <v-col>
+        <v-toolbar dark color="primary">
+          <v-btn icon @click="$emit('close', $event.target.value)">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>{{ $t("watchList.editor.title") }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn dark text @click="save"> Save </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col v-for="item in watchlist" :key="item.id" md="2">
+        <v-card>
+          <v-card-title>
+            <v-text-field v-model="item.name" />
+          </v-card-title>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, ref, Ref, watch, reactive } from '@nuxtjs/composition-api'
-import {KeyValuePaire} from '@/types/collection'
-import { Instrument } from '@/types/oms'
-import VuetifyDraggableTreeview from 'vuetify-draggable-treeview'
+import {
+  defineComponent,
+  useStore,
+  ref,
+  reactive,
+} from "@nuxtjs/composition-api";
 
 export default defineComponent({
-  components: {
-    'v-draggable-treeview': VuetifyDraggableTreeview
-  },
   emits: ["close"],
-  setup(props, {emit}) {
+  props: ["value"],
+  setup(props, { emit }) {
     const store = useStore();
-    const watchlist = mapToEditable(store.getters['user/watchList'])
+    const watchlist = mapToEditable(store.getters["user/watchList"]);
     const loading = ref(false);
-    let search = ref(null)
-    let items: Ref<KeyValuePaire<BigInt,Instrument>[]> = ref([]);
-    items.value = loadCache()
+    
 
-    function save() {
-      console.log(editableToMap(watchlist))
-      emit("close")
+    async function save() {
+      console.log(editableToMap(watchlist));
+      await store.dispatch("user/update_watchlist", editableToMap(watchlist))
+      emit("close");
     }
-
-    watch(search, (fresh, old) => {
-      console.log(old, fresh)
-    })
-
-    function loadCache() :KeyValuePaire<BigInt,Instrument>[] {
-      return []
-    }
-
+    
     function mapToEditable(current: any) {
-      const res = []
-      let i = 0
-      for(let key in current) {
+      const res = [];
+      let i = 0;
+      for (let key in current) {
         res.push({
           id: i++,
           name: key,
           children: current[key].map((inst: number) => ({
             id: i++,
-            name: inst
-          }))
-        })
+            name: inst,
+          })),
+        });
       }
       return reactive(res);
     }
 
     function editableToMap(edited: any) {
-      const res: any = {}
-      for(let index in edited) {
-        res[edited[index].name] = edited[index].children
+      const res: any = {};
+      for (let index in edited) {
+        res[edited[index].name] = edited[index].children;
       }
-      return res
+      return res;
     }
     return {
       save,
-      search,
       loading,
-      items,
-      watchlist
-    }
+      watchlist,
+    };
   },
-})
+});
 </script>

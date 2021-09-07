@@ -2,13 +2,14 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import umanager from '@/repositories/user_manager'
 import jwttoken from '@/repositories/jwt_token'
 import { User, Setting, UserCredentials } from '@/types/sso'
+import user_manager from '@/repositories/user_manager';
 
 
 const RefreshKey: string = 'jwtRefreshKey';
 const tokenKey: string = 'jwtKey';
 const userKey: string = 'userCache';
 const anonymousUser: User = {
-  userName: 'anonymous',
+  user_name: 'anonymous',
   nikname: 'Anonymous',
   profile: {},
   settings: {
@@ -41,7 +42,7 @@ export const getters: GetterTree<RootState, RootState> = {
   isLogin: (state) => {
     return state && state.token
   },
-  watchList(state){
+  watchList(state) {
     if (state && state.user && state.user.settings) {
       return state.user.settings.watch_lists
     } else {
@@ -76,7 +77,7 @@ export const mutations: MutationTree<RootState> = {
 
     state.userName = data.user_name
     state.user = data
-    if (localStorage){
+    if (localStorage) {
       localStorage.setItem(userKey, JSON.stringify(data))
       localStorage.setItem('userName', data.username)
     }
@@ -103,12 +104,12 @@ export const actions: ActionTree<RootState, RootState> = {
             commit('setUser', JSON.parse(user))
           } else {
 
-            await dispatch('getMe',localStorage.getItem('userName'))
+            await dispatch('getMe', localStorage.getItem('userName'))
           }
         } else {
 
           await dispatch('refreshToken')
-          await dispatch('getMe',localStorage.getItem('userName'))
+          await dispatch('getMe', localStorage.getItem('userName'))
         }
       } else {
         commit('logout')
@@ -116,7 +117,7 @@ export const actions: ActionTree<RootState, RootState> = {
     }
   },
   async getMe({ commit }, userName) {
-    if(!userName)
+    if (!userName)
       return
     try {
       const { data, status } = await umanager.getUser(userName, this.$axios)
@@ -138,7 +139,7 @@ export const actions: ActionTree<RootState, RootState> = {
       )
       commit('setToken', 'Bearer ' + data.token)
       commit('setRefresh', data.refresh)
-      await dispatch('getMe',payload.userName)
+      await dispatch('getMe', payload.userName)
       return status
     } catch (err: any) {
       if (err.response) {
@@ -147,13 +148,9 @@ export const actions: ActionTree<RootState, RootState> = {
       return 500
     }
   },
-
-
   logout({ commit }) {
     commit('logout')
   },
-
-
   async refreshToken({ commit }) {
     if (typeof localStorage !== typeof undefined) {
       const token = localStorage.getItem(RefreshKey)
@@ -173,5 +170,16 @@ export const actions: ActionTree<RootState, RootState> = {
       }
       return 401
     }
+  },
+  async update_watchlist({ commit, getters }, watchlist) {
+    try {
+      await user_manager.updateUserWatchlist(watchlist, this.$axios)
+      const user: User = getters["me"]
+      user.settings.watch_lists = watchlist
+      commit("setUser", user)
+    } catch (err: any) {
+      return 500
+    }
   }
+
 }

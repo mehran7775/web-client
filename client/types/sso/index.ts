@@ -10,7 +10,7 @@ export type UserCredentials = {
 }
 
 export type User = {
-  userName: string,
+  user_name: string,
   nikname: string,
   profile: object,
   settings: Setting,

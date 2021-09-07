@@ -74,7 +74,7 @@
       />
       <v-toolbar-title
         v-if="isLogin"
-        v-text="currentUser.name + ' ' + currentUser.lastName"
+        v-text="currentUser.user_name"
       />
       <v-spacer />
       <v-toolbar-title v-if="isLogin"
@@ -151,7 +151,7 @@ export default defineComponent({
     const wlEditor = ref(null)
 
     const watchList = computed(() => {
-      const lists = store.getters["user/watchList"];
+      const lists = store.getters["user/watchList"]
       const res = [ {
           icon: "mdi-pen",
           click: togDialog

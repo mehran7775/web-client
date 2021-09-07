@@ -19,7 +19,11 @@ async function getUserList(searchModel: string, axios: NuxtAxiosInstance) {
 }
 
 async function updateUser(form: object, axios: NuxtAxiosInstance) {
-  return await axios.post('/sso/user/update', form)
+  return await axios.put('/sso/user/update', form)
+}
+
+async function updateUserWatchlist(watchlist: object, axios: NuxtAxiosInstance) {
+  return await axios.put('/sso/user/update-watchlist', watchlist)
 }
 
 async function createUser(form: object, axios: NuxtAxiosInstance) {
@@ -27,7 +31,7 @@ async function createUser(form: object, axios: NuxtAxiosInstance) {
 }
 
 async function deleteUser(form: object, axios: NuxtAxiosInstance) {
-  return await axios.get('/sso/user/delete/' + form)
+  return await axios.delete('/sso/user/delete/' + form)
 }
 
 const userRoles: object[] = [
@@ -51,5 +55,6 @@ export default {
   createUser,
   deleteUser,
   updateUser,
+  updateUserWatchlist,
   userRoles
 }
