@@ -14,7 +14,7 @@ import {
   useContext,
   useStore,
 } from "@nuxtjs/composition-api";
-import daily_instruments from "@/repositories/daily_instruments";
+import daily_instruments from "~/repositories/instruments_manager";
 
 
 export default defineComponent({

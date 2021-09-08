@@ -1,7 +1,7 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { KeyValuePaire } from '@/types/collection'
 import { Instrument } from '@/types/oms'
-import daily_instruments from '~/repositories/daily_instruments'
+import daily_instruments from '~/repositories/instruments_manager'
 
 
 export const state = () => (new RootState())

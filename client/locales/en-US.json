@@ -30,50 +30,6 @@
         "length": "Input length is not valid!"
       }
     },
-    "issue": {
-      "title": "Search Filters",
-      "pan": "PAN",
-      "nationalId": "National ID",
-      "id": "Issue ID",
-      "deposit": "Deposit Number",
-      "defect": "Defected Informations",
-      "status": "Status",
-      "branch_code": "Branch Code",
-      "customer_number" : "Customer Number",
-      "fromDate": "From",
-      "toDate" : "To",
-      "issueStatus": {
-        "0": "در حال تکمیل",
-        "1": "آماده بررسی",
-        "2": "درحال بررسی",
-        "3": "رد شده",
-        "4": "تایید شده",
-        "5": "کارت صادرشده",
-        "6": "دارای رمز اول",
-        "7": "دارای رمز دوم",
-        "8": "لغو شده"
-      },
-      "issueDefect": {
-        "0": "OK",
-        "1": "NID Card",
-        "2": "Address",
-        "3": "NID Card & Address"
-      },
-      "dateOfRegistration": "Creation Date",
-      "lastChangeDate": "Modification Date"
-    },
-    "delivery": {
-      "title": "Delivery",
-      "created": "Create On",
-      "status": "Status",
-      "city": "City",
-      "branch": "Branch",
-      "postalCode": "Postal Code",
-      "address": "Address",
-      "deliveryStatus": {
-        "0" : ""
-      }
-    },
     "login": {
       "login": "Login",
       "logout": "Logout",
@@ -93,5 +49,10 @@
       "users": "Users",
       "about": "About"
     },
-    "company": "Asre Danesh Afzar"
+    "company": "Asre Danesh Afzar",
+    "watchList": {
+      "editor": {
+        "title": "ٍEdit Watch-Lists"
+      }
+    }
   }

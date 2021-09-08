@@ -19,27 +19,31 @@
         <v-card>
           <v-card-title>
             <v-text-field v-model="item.name" />
-            <v-autocomplete 
+            <v-autocomplete
               :placeholder="$t('global.new')"
+              :loading="loading"
+              :items="entries[item.name]"
+              @update:search-input="
+                (val) => {
+                  search(item.name, val);
+                }
+              "
+              return-object
             />
           </v-card-title>
           <v-divider />
           <v-card-text>
             <draggable :list="item.children" group="instruments">
-              <v-row v-for="child in item.children" :key="child.id">
-                <v-col>
-                  <v-card>
-                    <v-row>
-                      <v-col md="8" sm="6">
-                        <instrument-view :code="child.name" />
-                      </v-col>
-                      <v-col md="4" sm="6">
-                        <v-btn color="error"> - </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-card>
-                </v-col>
-              </v-row>
+              <v-card color="info" v-for="child in item.children" :key="child.id">
+                <v-row>
+                  <v-col md="8" sm="6">
+                    <instrument-view :code="child.name" />
+                  </v-col>
+                  <v-col md="4" sm="6">
+                    <v-btn color="error"> - </v-btn>
+                  </v-col>
+                </v-row>
+              </v-card>
             </draggable>
           </v-card-text>
         </v-card>
@@ -57,6 +61,7 @@ import {
 } from "@nuxtjs/composition-api";
 import draggable from "vuedraggable";
 import instrumentView from "@/components/oms/instrument.vue";
+import { autoComplete } from "@/repositories/instruments_manager"
 
 export default defineComponent({
   emits: ["close"],
@@ -69,6 +74,7 @@ export default defineComponent({
     const store = useStore();
     const watchlist = mapToEditable(store.getters["user/watchList"]);
     const loading = ref(false);
+    const entries = {};
 
     async function save() {
       console.log(editableToMap(watchlist));
@@ -101,10 +107,23 @@ export default defineComponent({
       }
       return res;
     }
+
+    async function search(name: string, value: string) {
+      if (value && value.length > 2) {
+        loading.value = true;
+        const res = await autoComplete(value)
+        console.log('res', res)
+        loading.value = false;
+      }
+    }
+
     return {
       save,
-      loading,
       watchlist,
+      // auto-complete
+      loading,
+      entries,
+      search,
     };
   },
 });
