@@ -29,7 +29,7 @@
               @input="
                 (val) => {
                   model = null;
-                  entries = []
+                  entries.splice(0, entries.length);
                   if (item.children.indexOf(val) == -1) item.children.push(val);
                 }
               "
@@ -150,10 +150,6 @@ export default defineComponent({
       }
     }
 
-    function select() {
-      model.value = null;
-    }
-
     return {
       save,
       watchlist,
@@ -162,7 +158,6 @@ export default defineComponent({
       entries,
       search,
       model,
-      select,
     };
   },
 });
