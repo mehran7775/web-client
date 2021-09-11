@@ -14,24 +14,24 @@ import {
   useContext,
   useStore,
 } from "@nuxtjs/composition-api";
-import daily_instruments from "~/repositories/instruments_manager";
-
 
 export default defineComponent({
   props: ["watchlists"],
 
   setup(context) {
-
-    const ctnx  = useContext()
+    const ctnx = useContext();
 
     const instruments = ref([]);
     const getUserInstruments = async () => {
-      await ctnx.store.dispatch('instruments/getInstrimentsDetail',context.watchlists)
+      await ctnx.store.dispatch(
+        "instruments/getInstrimentsDetail",
+        context.watchlists
+      );
 
-      instruments.value = await ctnx.store.getters['instruments/getAll']
+      instruments.value = await ctnx.store.getters["instruments/getAll"];
     };
 
-    onMounted(getUserInstruments)
+    onMounted(getUserInstruments);
 
     return {
       headers: [
@@ -105,7 +105,7 @@ export default defineComponent({
       // inst: context.watchlists.map((e: string) => {
       //   return { name: e };
       // }),
-      inst: instruments
+      inst: instruments,
     };
   },
 });

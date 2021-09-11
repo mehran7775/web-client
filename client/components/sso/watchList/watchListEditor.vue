@@ -20,9 +20,18 @@
           <v-card-title>
             <v-text-field v-model="item.name" />
             <v-autocomplete
+              v-model="model"
               :placeholder="$t('global.new')"
               :loading="loading"
-              :items="entries[item.name]"
+              :items="entries"
+              item-text="name"
+              item-value="id"
+              @input="
+                (val) => {
+                  model = null;
+                  if (item.children.indexOf(val) == -1) item.children.push(val);
+                }
+              "
               @update:search-input="
                 (val) => {
                   search(item.name, val);
@@ -34,13 +43,26 @@
           <v-divider />
           <v-card-text>
             <draggable :list="item.children" group="instruments">
-              <v-card color="info" v-for="child in item.children" :key="child.id">
+              <v-card
+                color="info"
+                v-for="(child, index) in item.children"
+                :key="child.id"
+              >
                 <v-row>
                   <v-col md="8" sm="6">
                     <instrument-view :code="child.name" />
                   </v-col>
                   <v-col md="4" sm="6">
-                    <v-btn color="error"> - </v-btn>
+                    <v-btn
+                      color="error"
+                      @click="
+                        () => {
+                          item.children.splice(index, 1);
+                        }
+                      "
+                    >
+                      -
+                    </v-btn>
                   </v-col>
                 </v-row>
               </v-card>
@@ -57,11 +79,14 @@ import {
   defineComponent,
   useStore,
   ref,
+  Ref,
   reactive,
+  useContext,
 } from "@nuxtjs/composition-api";
 import draggable from "vuedraggable";
 import instrumentView from "@/components/oms/instrument.vue";
-import { autoComplete } from "@/repositories/instruments_manager"
+import { autoComplete } from "@/repositories/instruments_manager";
+import { AutoCompleteItem } from "@/types/collection";
 
 export default defineComponent({
   emits: ["close"],
@@ -72,9 +97,11 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const store = useStore();
+    const context = useContext();
     const watchlist = mapToEditable(store.getters["user/watchList"]);
     const loading = ref(false);
-    const entries = {};
+    const entries: Array<AutoCompleteItem> = reactive([]);
+    const model: Ref<any> = ref(null);
 
     async function save() {
       console.log(editableToMap(watchlist));
@@ -111,10 +138,19 @@ export default defineComponent({
     async function search(name: string, value: string) {
       if (value && value.length > 2) {
         loading.value = true;
-        const res = await autoComplete(value)
-        console.log('res', res)
-        loading.value = false;
+        try {
+          const res = await autoComplete(value, context.$axios);
+          entries.push(...res.data);
+          console.log("res", res);
+          console.log("entries", entries);
+        } finally {
+          loading.value = false;
+        }
       }
+    }
+
+    function select() {
+      model.value = null;
     }
 
     return {
@@ -124,6 +160,8 @@ export default defineComponent({
       loading,
       entries,
       search,
+      model,
+      select,
     };
   },
 });

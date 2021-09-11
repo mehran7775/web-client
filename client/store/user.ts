@@ -54,7 +54,7 @@ export const getters: GetterTree<RootState, RootState> = {
 export const mutations: MutationTree<RootState> = {
   setToken(state, token) {
     if (localStorage && token) {
-      localStorage.setItem(tokenKey, token)
+      sessionStorage.setItem(tokenKey, token)
     }
     state.token = token
   },
@@ -66,7 +66,7 @@ export const mutations: MutationTree<RootState> = {
   },
   logout(state) {
     if (localStorage) {
-      localStorage.clear()
+      sessionStorage.clear()
       localStorage.clear()
     }
     state.token = null
@@ -77,9 +77,9 @@ export const mutations: MutationTree<RootState> = {
 
     state.userName = data.user_name
     state.user = data
-    if (localStorage) {
-      localStorage.setItem(userKey, JSON.stringify(data))
-      localStorage.setItem('userName', data.username)
+    if (sessionStorage) {
+      sessionStorage.setItem(userKey, JSON.stringify(data))
+      sessionStorage.setItem('userName', data.username)
     }
   }
 }
@@ -94,22 +94,22 @@ export const actions: ActionTree<RootState, RootState> = {
       if (refresh) {
 
         commit('setRefresh', refresh)
-        const jwt = localStorage.getItem(tokenKey)
+        const jwt = sessionStorage.getItem(tokenKey)
         if (jwt) {
 
           commit('setToken', jwt)
-          const user = localStorage.getItem(userKey)
+          const user = sessionStorage.getItem(userKey)
           if (user) {
 
             commit('setUser', JSON.parse(user))
           } else {
 
-            await dispatch('getMe', localStorage.getItem('userName'))
+            await dispatch('getMe', sessionStorage.getItem('userName'))
           }
         } else {
 
           await dispatch('refreshToken')
-          await dispatch('getMe', localStorage.getItem('userName'))
+          await dispatch('getMe', sessionStorage.getItem('userName'))
         }
       } else {
         commit('logout')
