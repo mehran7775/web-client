@@ -29,6 +29,7 @@
               @input="
                 (val) => {
                   model = null;
+                  entries = []
                   if (item.children.indexOf(val) == -1) item.children.push(val);
                 }
               "
