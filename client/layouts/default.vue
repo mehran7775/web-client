@@ -59,12 +59,12 @@
     </v-navigation-drawer>
     <v-app-bar
       id="app-bar"
-      :clipped-left="!rtl"
+      :clipped-left="true"
       fixed
       dark
       app
       dense
-      :clipped-right="rtl"
+      :clipped-right="true"
       color="primary"
     >
       <v-app-bar-nav-icon
@@ -83,16 +83,26 @@
         <v-icon>mdi-account-arrow-right</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-card v-if="isLogin" class="mt-10">
-      <v-toolbar dense>
-        <v-spacer></v-spacer>
-        <v-btn> واریز وجه </v-btn>
-        <v-btn>دریافت وجه </v-btn>
-        <v-spacer></v-spacer>
-      </v-toolbar>
-    </v-card>
+    <v-navigation-drawer
+      v-if="isLogin"
+      id="core-navigation-drawer"
+      v-model="drawer"
+      dark
+      :expand-on-hover="true"
+      :mini-variant="mini"
+      :clipped="clipped"
+      fixed
+      app
+      :right="!rtl"
+      color="secondary"
+      mobile-breakpoint="960"
+      width="260"
+    >
+      <left-panel />
+    </v-navigation-drawer>
     <v-main>
       <nuxt />
+      <bot-panel />
     </v-main>
     <v-footer :absolute="true" app>
       <span>
@@ -127,12 +137,16 @@ import {
 } from "@nuxtjs/composition-api";
 import colors from "vuetify/es5/util/colors";
 import snackbar from "@/components/snacks";
+import botPanel from "@/components/bottom-panel.vue";
+import leftPanel from "@/components/left-panel.vue";
 import watchListEditor from "@/components/sso/watchList/watchListEditor";
 
 export default defineComponent({
   components: {
     snackbar,
     watchListEditor,
+    "bot-panel": botPanel,
+    "left-panel": leftPanel,
   },
   setup(props, context) {
     let dialog = ref(false);
