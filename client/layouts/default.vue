@@ -102,7 +102,9 @@
     </v-navigation-drawer>
     <v-main>
       <nuxt />
-      <bot-panel />
+      <v-footer :absolute="true">
+        <bot-panel />
+      </v-footer>
     </v-main>
     <v-footer :absolute="true" app>
       <span>
