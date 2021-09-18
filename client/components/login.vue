@@ -5,7 +5,7 @@
       <v-text-field
         v-model="userName"
         outlined
-        :label="$t('login.user_name')"
+        :label="$t('user.username')"
         prepend-icon="mdi-account-circle"
         dense
       >
@@ -14,7 +14,7 @@
         v-model="password"
         outlined
         dense
-        :label="$t('login.password')"
+        :label="$t('user.password')"
         :type="showPassword ? 'text' : 'Password'"
         prepend-icon="mdi-lock"
         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"

@@ -21,7 +21,7 @@
             <v-text-field v-model="item.name" />
             <v-autocomplete
               v-model="model"
-              :placeholder="$t('global.new')"
+              :placeholder="$t('general.new')"
               :loading="loading"
               :items="entries"
               item-text="name"

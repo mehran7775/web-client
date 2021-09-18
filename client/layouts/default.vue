@@ -41,7 +41,7 @@
                 v-for="subitem in item.children.value"
                 :key="subitem.title"
                 :to="subitem.to"
-                @click="subitem.click?subitem.click():null"
+                @click="subitem.click ? subitem.click() : null"
                 router
                 exact
               >
@@ -72,19 +72,7 @@
         color="accent"
         @click.stop="drawer = !drawer"
       />
-      <v-toolbar-title
-        v-if="isLogin"
-        v-text="currentUser.user_name"
-      />
-      <v-spacer />
-      <v-toolbar-title v-if="isLogin"
-        >بلوکه شده
-        <v-chip class="ma-2" label> {{ blockedMoney }} </v-chip>
-      </v-toolbar-title>
-      <v-toolbar-title v-if="isLogin"
-        >قدرت خرید
-        <v-chip class="ma-2" label> {{ freeMoney }} </v-chip>
-      </v-toolbar-title>
+      <v-toolbar-title v-if="isLogin" v-text="currentUser.user_name" />
       <v-spacer />
       <v-btn v-if="!isLogin" color="success" nuxt to="/login" depressed>
         {{ $t("login.login") }}
@@ -98,12 +86,8 @@
     <v-card v-if="isLogin" class="mt-10">
       <v-toolbar dense>
         <v-spacer></v-spacer>
-        <v-btn
-
-      > واریز وجه </v-btn>
-        <v-btn
-
-      >دریافت وجه </v-btn>
+        <v-btn> واریز وجه </v-btn>
+        <v-btn>دریافت وجه </v-btn>
         <v-spacer></v-spacer>
       </v-toolbar>
     </v-card>
@@ -112,9 +96,14 @@
     </v-main>
     <v-footer :absolute="true" app>
       <span>
-        &copy; {{ new Date().getFullYear() }} {{ $t("company") }}
+        &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
         <v-icon small>mdi-account-group</v-icon>
       </span>
+
+      <span>
+        {{ $t("accounting.account.blockedAmount") }}{{ blockedMoney }}
+      </span>
+      <span>{{ $t("accounting.account.amount") }}{{ freeMoney }} </span>
     </v-footer>
     <v-dialog
       v-if="isLogin"
@@ -123,39 +112,45 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
-      <watch-list-editor @close="dialog=false" />
+      <watch-list-editor @close="dialog = false" />
     </v-dialog>
     <snackbar />
   </v-app>
 </template>
 
 <script>
-import { defineComponent, computed, useStore, ref } from "@nuxtjs/composition-api"
-import colors from "vuetify/es5/util/colors"
-import snackbar from "@/components/snacks"
-import watchListEditor from "@/components/sso/watchList/watchListEditor"
+import {
+  defineComponent,
+  computed,
+  useStore,
+  ref,
+} from "@nuxtjs/composition-api";
+import colors from "vuetify/es5/util/colors";
+import snackbar from "@/components/snacks";
+import watchListEditor from "@/components/sso/watchList/watchListEditor";
 
 export default defineComponent({
   components: {
     snackbar,
-    watchListEditor
+    watchListEditor,
   },
   setup(props, context) {
-    let dialog = ref(false)
-    const store = useStore()
-    const isLogin = computed(() => store.getters["user/isLogin"])
-    const rtl = computed(() => store.getters["rtl"])
-    const currentUser = computed(() => store.getters["user/me"])
-    const blockedMoney = 0
-    const freeMoney = 0
-    const wlEditor = ref(null)
+    let dialog = ref(false);
+    const store = useStore();
+    const isLogin = computed(() => store.getters["user/isLogin"]);
+    const rtl = computed(() => store.getters["rtl"]);
+    const currentUser = computed(() => store.getters["user/me"]);
+    const blockedMoney = 0;
+    const freeMoney = 0;
+    const wlEditor = ref(null);
 
     const watchList = computed(() => {
-      const lists = store.getters["user/watchList"]
-      const res = [ {
+      const lists = store.getters["user/watchList"];
+      const res = [
+        {
           icon: "mdi-pen",
-          click: togDialog
-        }
+          click: togDialog,
+        },
       ];
       for (let k in lists) {
         res.push({
@@ -167,7 +162,7 @@ export default defineComponent({
     });
 
     function togDialog() {
-      dialog.value = !dialog.value
+      dialog.value = !dialog.value;
     }
 
     function doLogout() {

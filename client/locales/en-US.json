@@ -1,10 +1,11 @@
 {
-    "global":{
+    "general":{
       "actions": "Actions",
       "close": "Close",
       "ok": "Ok",
       "cancel": "Cancel",
-      "new": "New"
+      "new": "New",
+      "company": "Asre Danesh Afzar"
     },
     "user": {
       "title": "User Search",
@@ -33,8 +34,6 @@
     "login": {
       "login": "Login",
       "logout": "Logout",
-      "user_name": "User Name",
-      "password": "Password",
       "signup": "SignUp",
       "requestPass": "Sms OTP",
       "timeLeft": "Time Lefts",
@@ -49,10 +48,15 @@
       "users": "Users",
       "about": "About"
     },
-    "company": "Asre Danesh Afzar",
     "watchList": {
       "editor": {
         "title": "ٍEdit Watch-Lists"
+      }
+    },
+    "accounting": {
+      "account": {
+        "amount": "Remaining",
+        "blockedAmount": "Blocked"
       }
     }
   }

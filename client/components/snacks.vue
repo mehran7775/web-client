@@ -3,7 +3,7 @@
     {{ $t(message) }}
     <template v-slot:action="{ attrs }">
       <v-btn color="primary" v-bind="attrs" @click="show = false">
-        {{ $t('global.ok') }}
+        {{ $t('general.ok') }}
       </v-btn>
     </template>
   </v-snackbar>
