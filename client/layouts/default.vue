@@ -102,7 +102,7 @@
     </v-navigation-drawer>
     <v-main>
       <nuxt />
-      <v-footer :absolute="true">
+      <v-footer v-if="isLogin" :absolute="true">
         <bot-panel />
       </v-footer>
     </v-main>
