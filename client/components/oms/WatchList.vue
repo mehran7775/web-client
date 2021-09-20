@@ -21,7 +21,7 @@ export default defineComponent({
   props: ["watchlists"],
   setup(context) {
     const store = useStore();
-    const expanded = reactive([]);
+    const expanded: Array<any> = reactive([]);
 
     const instruments: Array<object> = reactive([]);
     const headers = computed(() => {
@@ -36,7 +36,7 @@ export default defineComponent({
         );
       });
 
-    function toggleRow(value) {
+    function toggleRow(value: any) {
       const index = expanded.indexOf(value);
       if (index > -1) {
         expanded.splice(index, 1);
