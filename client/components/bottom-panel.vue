@@ -1,12 +1,12 @@
 <template>
-  <v-container fluid v-click-outside="onClickOutside"> 
+  <v-container fluid> 
     <v-col class="ma-0 pa-0" >
-      <v-row class="ma-1" v-if="text == '4'">
+      <v-row class="ma-1" v-if="panel == '4'">
         <further-information/>
       </v-row>
         <v-row class="white">
           <v-btn-toggle 
-          v-model="text"
+          v-model="panel"
           borderless
           dense
           color="blue"
@@ -34,15 +34,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
-    let text = ref('')
-    const onClickOutside = () => {text.value = ''}
+    const store = useStore()
+    const panel = computed ({
+            get() {
+                return store.getters["bottom-panel/activeTab"]
+            },
+            set(value: string) {
+                store.commit("bottom-panel/setActiveTab",value)
+                store.dispatch("bottom-panel/getMessage", 1)
+            }
+        })
     return {
-      text,
-      onClickOutside
+      panel
     }
   },
 })
