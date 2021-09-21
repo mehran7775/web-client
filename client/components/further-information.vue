@@ -8,7 +8,7 @@
                     <v-icon size="1em"> {{ icon }}</v-icon>
                   </v-btn>
                   <v-btn icon @click="close()">
-                    <v-icon size="1em">mdi-close</v-icon>
+                    <v-icon size="1em">mdi-minus</v-icon>
                   </v-btn>
                 </div>
             </v-row>

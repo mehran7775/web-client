@@ -1,5 +1,5 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import { message_1 } from '~/types/message'
+import { message } from '~/types/message'
 import axios from "axios";
 
 
@@ -8,7 +8,7 @@ export const state = () => ({
     activeTab: "",
     expanded: false,
     further_information: {
-      message: <message_1> {}
+      message: <message> {}
     },
     market_depth: {},
     the_bests: {},
@@ -32,7 +32,7 @@ export const mutations: MutationTree<RootState> = {
     setPanelSize (state) {
       state.expanded = !state.expanded
     },
-    setMessage (state, payload: message_1) {
+    setMessage (state, payload: message) {
       state.further_information.message = payload
     }
 }

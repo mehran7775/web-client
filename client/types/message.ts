@@ -1,4 +1,4 @@
-export type message_1 = {
+export type message = {
     id: Number,
     dateTime: String,
     title: String,
@@ -6,8 +6,13 @@ export type message_1 = {
     origin: Number,
     type: Number,
     flags: Number,
-    message: {
-        body: String
-    }
-  }
- 
+    message: message_template_1 | message_template_2
+}
+
+export type message_template_1 = {
+    body: String
+}
+
+export type message_template_2 = {
+    body: String
+}
