@@ -58,5 +58,14 @@
         "amount": "Remaining",
         "blockedAmount": "Blocked"
       }
+    },
+    "oms": {
+      "message": {
+        "origin":{
+          "1": "RCL",
+          "2": "Support",
+          "3": "Admin"
+        }
+      }
     }
   }

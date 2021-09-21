@@ -2,7 +2,7 @@
         <v-card :height="height" width="100%" class="white" elevation="1">
           <div class="px-2 py-6">
             <v-row class="px-4" justify="space-between">
-                <h4 class="font-weight-bold pt-1"> {{ message.type }} </h4>
+                <h4 class="font-weight-bold pt-1"> {{ $t(`oms.message.origin.${message.origin}`) }} </h4>
                 <div>
                   <v-btn icon @click="expand()">
                     <v-icon size="1em"> {{ icon }}</v-icon>

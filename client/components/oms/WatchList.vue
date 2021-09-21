@@ -5,7 +5,8 @@
     :expanded="expanded"
     @click:row="toggleRow"
     show-expand
-    class="elevation-1"
+    class="elevation-1 light"
+    :height="height"
   ></v-data-table>
 </template>
 
@@ -22,7 +23,7 @@ export default defineComponent({
   setup(context) {
     const store = useStore();
     const expanded: Array<any> = reactive([]);
-
+    const height = computed(() => (store.getters["bottom-panel/activeTab"] == "" ? '100%' : '40vh'))
     const instruments: Array<object> = reactive([]);
     const headers = computed(() => {
       console.log(store.getters["user/me"].settings.columns);
@@ -49,8 +50,32 @@ export default defineComponent({
       headers: headers,
       inst: instruments,
       expanded,
+      height,
       toggleRow,
     };
   },
 });
 </script>
+
+<style scoped>
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e6e6e6;
+  border-left: 1px solid #dadada;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b0b0b0;
+  border: solid 3px #e6e6e6;
+  border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: black;
+}
+
+</style>
