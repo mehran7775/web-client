@@ -1,7 +1,7 @@
 <template>
   <v-container fluid> 
     <v-col class="ma-0 pa-0" >
-      <v-row class="ma-1" v-if="panel == '4'">
+      <v-row class="my-1" v-if="panel == '4'">
         <further-information/>
       </v-row>
         <v-row class="white">

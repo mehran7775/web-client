@@ -5,7 +5,7 @@ import { message } from '~/types/message'
 
 
 export const state = () => ({
-    activeTab: "",
+    activeTab: undefined,
     expanded: false,
     further_information: {
       message: <message> {}
@@ -26,7 +26,7 @@ export const getters: GetterTree<RootState, RootState> = {
 }
 
 export const mutations: MutationTree<RootState> = {
-    setActiveTab (state, payload: string) {
+    setActiveTab (state, payload) {
         state.activeTab = payload
     },
     setPanelSize (state) {
