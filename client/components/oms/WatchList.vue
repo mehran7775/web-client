@@ -23,7 +23,7 @@ export default defineComponent({
   setup(context) {
     const store = useStore();
     const expanded: Array<any> = reactive([]);
-    const height = computed(() => { console.log(store.getters["bottom-panel/activeTab"]); return (store.getters["bottom-panel/activeTab"] == undefined ? '100%' : '40vh')})
+    const height = computed(() => (store.getters["bottom-panel/activeTab"] == "" ? '100%' : '40vh'))
     const instruments: Array<object> = reactive([]);
     const headers = computed(() => {
       console.log(store.getters["user/me"].settings.columns);
@@ -57,7 +57,7 @@ export default defineComponent({
 });
 </script>
 
-<style >
+<style scoped>
 /* width */
 ::-webkit-scrollbar {
   width: 15px;

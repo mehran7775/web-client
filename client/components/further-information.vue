@@ -28,7 +28,7 @@ export default defineComponent({
     
     const store = useStore()
     const expand = () => { store.commit('bottom-panel/setPanelSize') }
-    const close = () => { store.commit('bottom-panel/setActiveTab', undefined) }
+    const close = () => { store.commit('bottom-panel/setActiveTab', "") }
     const icon = computed( () => store.getters["bottom-panel/icon"])
     const height = computed( () => store.getters["bottom-panel/panelSize"])
     const message = computed( () => store.getters["bottom-panel/further_information_message"])

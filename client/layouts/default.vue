@@ -3,26 +3,27 @@
     <v-navigation-drawer
       v-if="isLogin"
       id="core-navigation-drawer"
-      v-model="right_drawer"
+      v-model="drawer"
+      dark
+      :expand-on-hover="true"
       :mini-variant="mini"
+      :clipped="clipped"
       fixed
       app
       :right="rtl"
+      color="secondary"
       mobile-breakpoint="960"
-      width="220"
+      width="260"
     >
-
-      <v-list-item class="px-3">
-        <v-list-item-avatar class=" ma-0">
-          <v-img height = "20" width="20">logo</v-img>
-        </v-list-item-avatar>
-        <v-list-item-title class="mr-3">کارگزاری عصر دانش</v-list-item-title>
-      </v-list-item>
-
-      <v-divider></v-divider>
-      
+      <template #img="props">
+        <v-img :gradient="`to top, ${barColor}`" v-bind="props" />
+      </template>
       <v-list v-model="selected">
-        
+        <v-list-item>
+          <v-list-item-title>
+            <v-spacer />
+          </v-list-item-title>
+        </v-list-item>
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
@@ -59,15 +60,17 @@
     <v-app-bar
       id="app-bar"
       :clipped-left="true"
-      
+      fixed
+      dark
       app
       dense
+      :clipped-right="true"
       color="primary"
     >
       <v-app-bar-nav-icon
         v-show="isLogin"
         color="accent"
-        @click.stop="mini = !mini; if(!right_drawer) {right_drawer = true; mini = false}"
+        @click.stop="drawer = !drawer"
       />
       <v-toolbar-title v-if="isLogin" v-text="currentUser.user_name" />
       <v-spacer />
@@ -83,7 +86,8 @@
     <v-navigation-drawer
       v-if="isLogin"
       id="core-navigation-drawer"
-      v-model="left_drawer"
+      v-model="drawer"
+      dark
       :expand-on-hover="true"
       :mini-variant="mini"
       :clipped="clipped"
@@ -96,15 +100,10 @@
     >
       <left-panel />
     </v-navigation-drawer>
-    <v-main class="background: grey lighten-4 mt-3 mx-3">
-
+    <v-main>
       <nuxt />
       <v-footer v-if="isLogin" :absolute="true" class="ma-0 pa-0">
         <bot-panel />
-      <span>
-        {{ $t("accounting.account.blockedAmount") }}{{ blockedMoney }}
-      </span>
-      <span>{{ $t("accounting.account.amount") }}{{ freeMoney }} </span>
       </v-footer>
     </v-main>
     <v-footer :absolute="true" app>
@@ -112,6 +111,11 @@
         &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
         <v-icon small>mdi-account-group</v-icon>
       </span>
+
+      <span>
+        {{ $t("accounting.account.blockedAmount") }}{{ blockedMoney }}
+      </span>
+      <span>{{ $t("accounting.account.amount") }}{{ freeMoney }} </span>
     </v-footer>
     <v-dialog
       v-if="isLogin"
@@ -191,10 +195,9 @@ export default defineComponent({
       rtl,
       currentUser,
       colors,
-      barColor: "white, red",
-      clipped: false,
-      left_drawer: true,
-      right_drawer: true,
+      barColor: "rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)",
+      clipped: true,
+      drawer: true,
       mini: true,
       selected: {},
       items: [
