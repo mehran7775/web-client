@@ -102,8 +102,8 @@
     </v-navigation-drawer>
     <v-main>
       <nuxt />
-      <v-footer v-if="isLogin" :absolute="true" class="ma-0 pa-0">
-        <bot-panel />
+      <v-footer v-if="isLogin" :absolute="true" class="ma-0 pa-0" app>
+        <bottom-panel />
       </v-footer>
     </v-main>
     <v-footer :absolute="true" app>
@@ -139,7 +139,6 @@ import {
 } from "@nuxtjs/composition-api";
 import colors from "vuetify/es5/util/colors";
 import snackbar from "@/components/snacks";
-import botPanel from "@/components/bottom-panel.vue";
 import leftPanel from "@/components/left-panel.vue";
 import watchListEditor from "@/components/sso/watchList/watchListEditor";
 
@@ -147,7 +146,6 @@ export default defineComponent({
   components: {
     snackbar,
     watchListEditor,
-    "bot-panel": botPanel,
     "left-panel": leftPanel,
   },
   setup(props, context) {
