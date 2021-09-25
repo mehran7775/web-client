@@ -18,7 +18,7 @@
       <template #img="props">
         <v-img :gradient="`to top, ${barColor}`" v-bind="props" />
       </template>
-      <v-list v-model="selected">
+      <v-list v-model="selected" dense>
         <v-list-item>
           <v-list-item-title>
             <v-spacer />

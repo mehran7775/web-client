@@ -7,7 +7,18 @@
     show-expand
     class="elevation-1 light"
     :height="height"
-  ></v-data-table>
+    dense
+  >
+    <template #expanded-item="{ item, headers }">
+      <td :colspan="headers.length" class="ma-0 pa-0">
+        <v-card width="100%">
+          <v-card-text>
+            {{ item }}
+          </v-card-text>
+        </v-card>
+      </td>
+    </template>
+  </v-data-table>
 </template>
 
 <script lang="ts">
@@ -23,7 +34,9 @@ export default defineComponent({
   setup(context) {
     const store = useStore();
     const expanded: Array<any> = reactive([]);
-    const height = computed(() => (store.getters["bottom-panel/activeTab"] == "" ? '100%' : '40vh'))
+    const height = computed(() =>
+      store.getters["bottom-panel/activeTab"] == "" ? "100%" : "40vh"
+    );
     const instruments: Array<object> = reactive([]);
     const headers = computed(() => {
       console.log(store.getters["user/me"].settings.columns);
@@ -77,5 +90,4 @@ export default defineComponent({
 ::-webkit-scrollbar-thumb:hover {
   background: black;
 }
-
 </style>

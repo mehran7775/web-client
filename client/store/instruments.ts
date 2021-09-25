@@ -28,13 +28,14 @@ export const mutations: MutationTree<RootState> = {
 }
 
 export const actions: ActionTree<RootState, RootState> = {
-  async getInstrumentsDetail({ commit }, payload) {
+  async getInstrumentsDetail({ commit }, payload): Promise<Array<Instrument> | number> {
     try {
-      const { data, status } = await getInstrumentsDetail(payload, this.$axios)
+      const { data } = await getInstrumentsDetail(payload, this.$axios)
       commit('setInstruments', data)
+      return data
     } catch (err: any) {
       if (err.response) {
-        return err.response.status
+        return err.response.status as number
       }
       return 450
     }
