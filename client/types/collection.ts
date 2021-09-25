@@ -1,4 +1,4 @@
-export type KeyValuePaire<key,value> = {
+export type KeyValuePairs<key,value> = {
   key: key,
   value: value
 }

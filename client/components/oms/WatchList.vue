@@ -30,7 +30,7 @@ export default defineComponent({
       return store.getters["user/me"].settings.columns;
     });
     store
-      .dispatch("instruments/getInstrimentsDetail", context.watchlists)
+      .dispatch("instruments/getInstrumentsDetail", context.watchlists)
       .then(() => {
         instruments.push(
           ...(store.getters["instruments/getAll"] as Array<object>)
