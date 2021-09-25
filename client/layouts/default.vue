@@ -101,10 +101,8 @@
       <left-panel />
     </v-navigation-drawer>
     <v-main>
-      <nuxt />
-      <v-footer v-if="isLogin" :absolute="true" class="ma-0 pa-0" app>
-        <bottom-panel />
-      </v-footer>
+      <nuxt class="mb-10" />
+      <bottom-panel v-if="isLogin" />
     </v-main>
     <v-footer :absolute="true" app>
       <span>
@@ -139,14 +137,12 @@ import {
 } from "@nuxtjs/composition-api";
 import colors from "vuetify/es5/util/colors";
 import snackbar from "@/components/snacks";
-import leftPanel from "@/components/left-panel.vue";
 import watchListEditor from "@/components/sso/watchList/watchListEditor";
 
 export default defineComponent({
   components: {
     snackbar,
     watchListEditor,
-    "left-panel": leftPanel,
   },
   setup(props, context) {
     let dialog = ref(false);

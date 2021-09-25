@@ -1,13 +1,14 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import message_manager from '~/repositories/message_manager'
-import { message } from '~/types/message'
-import { Tabs } from '~/types/panels'
+import message_manager from '@/repositories/message_manager'
+import { Message } from '@/types/message'
+import { Tabs } from '@/types/panels'
 
 
 export const state = () => ({
   activeTab: <Tabs>Tabs.none,
   expanded: false,
-  further_information: <message>{},
+  title: "",
+  further_information: <Message>{},
   market_depth: {},
   the_bests: {},
   orders: {}
@@ -18,9 +19,9 @@ export type RootState = ReturnType<typeof state>
 
 export const getters: GetterTree<RootState, RootState> = {
   activeTab: (state): Tabs => state.activeTab,
-  icon: (state): string => (state.expanded ? 'mdi-arrow-collapse' : 'mdi-arrow-expand'),
   expanded: (state) => state.expanded,
-  further_information: (state): message => state.further_information,
+  further_information: (state): Message => state.further_information,
+  title: (state): string => state.title,
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -30,8 +31,11 @@ export const mutations: MutationTree<RootState> = {
   toggleExpand(state) {
     state.expanded = !state.expanded
   },
-  setMessage(state, payload: message) {
+  setMessage(state, payload: Message) {
     state.further_information = payload
+  },
+  setTitle(state, payload: string) {
+    state.title = payload
   }
 }
 
