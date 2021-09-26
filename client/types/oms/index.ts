@@ -1,26 +1,56 @@
-export type Instrument = {
-  id: BigInteger
+export class Instrument {
+  id: number
   code: string
   name: string
   fullName: string
-  sectorCode: BigInteger
+  sectorCode: number
   categoryName: string
-  baseVol: BigInteger
-  settlementDelay: BigInteger
-  maxAllowedPrice: BigInteger
-  minAllowedPrice: BigInteger
+  baseVol: number
+  settlementDelay: number
+  maxAllowedPrice: number
+  minAllowedPrice: number
   namedPrice: number
   shares: number
   companyName: string
-  maxQuantityPerOrder: BigInteger
+  maxQuantityPerOrder: number
   issuePrice: number
-  firstTradeDate: number
-  expirationDate: number
-  lastModification: number
-  status: BigInteger
+  firstTradeDate: string
+  lastTradeDate: string
+  expirationDate: string
+  lastModification: string
+  status: number
   dateTime: string
   opening: number
   closing: number
   highest: number
   lowest: number
+
+  constructor() {
+    this.id = 0
+    this.baseVol = 0,
+      this.categoryName = ""
+    this.closing = 0
+    this.code = ""
+    this.companyName = ""
+    this.dateTime = ""
+    this.expirationDate = ""
+    this.firstTradeDate = ""
+    this.fullName = ""
+    this.highest = 0
+    this.issuePrice = 0
+    this.lastModification = ""
+    this.lastTradeDate = ""
+    this.lowest = 0
+    this.maxAllowedPrice = 0
+    this.maxQuantityPerOrder = 0
+    this.minAllowedPrice = 0
+    this.name = ""
+    this.namedPrice = 0
+    this.opening = 0
+    this.sectorCode = 0
+    this.settlementDelay = 0
+    this.shares = 0
+    this.status = 0
+  }
+
 }

@@ -28,22 +28,24 @@
                 </v-row>
               </v-col>
             </v-row>
-            <v-row> </v-row>
-            <v-row> </v-row>
-            <v-row> </v-row>
-            <v-row> </v-row>
-            <v-row> </v-row>
-          </v-col>
-          <v-col>
             <v-row>
-              <v-col> </v-col>
               <v-col></v-col>
             </v-row>
-            <v-row> </v-row>
-            <v-row> </v-row>
-            <v-row> </v-row>
-            <v-row> </v-row>
-            <v-row> </v-row>
+            <v-row>
+              <v-col></v-col>
+            </v-row>
+            <v-row>
+              <v-col></v-col>
+            </v-row>
+            <v-row>
+              <v-col></v-col>
+            </v-row>
+            <v-row>
+              <v-col></v-col>
+            </v-row>
+          </v-col>
+          <v-col>
+            <instrument-card :instrument="item.id" />
           </v-col>
           <v-col>
             <v-row>
@@ -55,10 +57,10 @@
                 {{ item }}
               </v-col>
             </v-row>
-            <v-row> </v-row>
-            <v-row> </v-row>
-            <v-row> </v-row>
-            <v-row> </v-row>
+            <v-row> <v-col></v-col></v-row>
+            <v-row> <v-col></v-col></v-row>
+            <v-row> <v-col></v-col></v-row>
+            <v-row> <v-col></v-col></v-row>
           </v-col>
         </v-row>
       </td>
@@ -73,9 +75,11 @@ import {
   useStore,
   computed,
 } from "@nuxtjs/composition-api";
+import instrumentCard from "./instrument_card.vue";
 
 export default defineComponent({
   props: ["watchlists"],
+  components: { instrumentCard },
   setup(props, context) {
     const store = useStore();
     const expanded: Array<any> = reactive([]);

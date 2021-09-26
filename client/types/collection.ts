@@ -8,3 +8,9 @@ export type AutoCompleteItem = {
   name: String,
   fullname: String
 }
+
+export type PaginatedResult<type> = {
+  offset: bigint,
+  length: bigint,
+  data: type
+}

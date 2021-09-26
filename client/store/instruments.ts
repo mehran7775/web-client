@@ -1,5 +1,4 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import { KeyValuePairs as KeyValuePairs } from '@/types/collection'
 import { Instrument } from '@/types/oms'
 import { getInstrumentsDetail } from '~/repositories/instruments_manager'
 
@@ -28,9 +27,10 @@ export const mutations: MutationTree<RootState> = {
 }
 
 export const actions: ActionTree<RootState, RootState> = {
-  async getInstrumentsDetail({ commit }, payload): Promise<Array<Instrument> | number> {
+  async getInstrumentsDetail({ commit }, payload: Array<number>): Promise<Array<Instrument> | number> {
     try {
-      const { data } = await getInstrumentsDetail(payload, this.$axios)
+      console.log(payload)
+      const { data: { data } } = await getInstrumentsDetail(payload, this.$axios)
       commit('setInstruments', data)
       return data
     } catch (err: any) {

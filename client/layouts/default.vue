@@ -137,7 +137,7 @@ import {
 } from "@nuxtjs/composition-api";
 import colors from "vuetify/es5/util/colors";
 import snackbar from "@/components/snacks";
-import watchListEditor from "@/components/sso/watchList/watchListEditor";
+import watchListEditor from "@/components/oms/watchListEditor";
 
 export default defineComponent({
   components: {
