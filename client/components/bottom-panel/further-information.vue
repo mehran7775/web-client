@@ -20,7 +20,6 @@ export default defineComponent({
   setup(params) {
     const store = useStore();
     const instance = getCurrentInstance();
-    console.log(instance);
     const message = computed(() => {
       const message = store.getters["bottom-panel/further_information"];
       store.commit("bottom-panel/setTitle", message.origin);
