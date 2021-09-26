@@ -1,71 +1,106 @@
 {
-    "general":{
-      "actions": "Actions",
-      "close": "Close",
-      "ok": "Ok",
-      "cancel": "Cancel",
-      "new": "New",
-      "company": "Asre Danesh Afzar"
+  "general": {
+    "actions": "Actions",
+    "close": "Close",
+    "ok": "Ok",
+    "cancel": "Cancel",
+    "new": "New",
+    "company": "Asre Danesh Afzar"
+  },
+  "user": {
+    "personality": {
+      "real": "Real Person",
+      "legal": "Legal Person"
     },
-    "user": {
-      "title": "User Search",
-      "search": "Search",
-      "username": "Username",
-      "password": "Password",
-      "name": "Name",
-      "lastname": "Last Name",
-      "role": "Role",
-      "province": "Province",
-      "city": "City",
-      "branch": "Branch",
-      "newUser": "New User",
-      "createDialog": "Create New User",
-      "create": "Create",
-      "roles": {
-        "ADMIN": "Admin",
-        "OPERATOR": "Operator",
-        "REPORTER": "Reporter"
-      },
-      "validation": {
-        "required": "This field is required!",
-        "length": "Input length is not valid!"
-      }
+    "title": "User",
+    "search": "Search",
+    "username": "Username",
+    "password": "Password",
+    "name": "Name",
+    "lastname": "Last Name",
+    "role": "Role",
+    "province": "Province",
+    "city": "City",
+    "branch": "Branch",
+    "newUser": "New User",
+    "createDialog": "Create New User",
+    "create": "Create",
+    "roles": {
+      "ADMIN": "Admin",
+      "OPERATOR": "Operator",
+      "REPORTER": "Reporter"
     },
-    "login": {
-      "login": "Login",
-      "logout": "Logout",
-      "signup": "SignUp",
-      "requestPass": "Sms OTP",
-      "timeLeft": "Time Lefts",
-      "successful": "You successfully logged in to the system!",
-      "failed": "Username and/or password is not correct!",
-      "error": "An unexpected error happen's during login!"
-    },
-    "menu": {
-      "watchList": "Watch-Lists",
-      "dashboard": "Dashboard",
-      "reports": "Reports",
-      "users": "Users",
-      "about": "About"
-    },
-    "watchList": {
-      "editor": {
-        "title": "ٍEdit Watch-Lists"
-      }
-    },
-    "accounting": {
-      "account": {
-        "amount": "Remaining",
-        "blockedAmount": "Blocked"
-      }
-    },
-    "oms": {
-      "message": {
-        "origin":{
-          "1": "RCL",
-          "2": "Support",
-          "3": "Admin"
-        }
-      }
+    "validation": {
+      "required": "This field is required!",
+      "length": "Input length is not valid!"
     }
+  },
+  "message": {
+    "origin": {
+      "1": "RCL",
+      "2": "Support",
+      "3": "Admin"
+    }
+  },
+  "watchList": {
+    "editor": {
+      "title": "ٍEdit Watch-Lists"
+    }
+  },
+  "instrument": {
+    "id": "ID",
+    "code": "Code",
+    "name": "Name",
+    "fullName": "Full-Name",
+    "sectorCode": "Sector Code",
+    "categoryName": "Category Name",
+    "baseVol": "Base Volume",
+    "settlementDelay": "Settlement Delay",
+    "maxAllowedPrice": "Max Allowed Price",
+    "minAllowedPrice": "Min Allowed Price",
+    "namedPrice": "Named Price",
+    "shares": "Shares",
+    "companyName": "Company Name",
+    "maxQuantityPerOrder": "Max Quantity Per Order",
+    "issuePrice": "Issue Price",
+    "firstTradeDate": "First Trade Date",
+    "expirationDate": "Expiration Date",
+    "lastModification": "Last Modification",
+    "status": "Status",
+    "dateTime": "Creation Date",
+    "opening": "Opening",
+    "closing": "Closing",
+    "highest": "Highest",
+    "lowest": "Lowest"
+  },
+  "accounting": {
+    "account": {
+      "amount": "Remaining",
+      "blockedAmount": "Blocked"
+    }
+  },
+  "oms": {
+    "price": "Price",
+    "amount": "Amount",
+    "count": "Count",
+    "sell": "Sell",
+    "buy": "Buy"
+  },
+  "login": {
+    "login": "Login",
+    "logout": "Logout",
+    "signup": "SignUp",
+    "requestPass": "Sms OTP",
+    "timeLeft": "Time Lefts",
+    "successful": "You successfully logged in to the system!",
+    "failed": "Username and/or password is not correct!",
+    "error": "An unexpected error happen's during login!"
+  },
+  "menu": {
+    "watchList": "Watch-Lists",
+    "dashboard": "Dashboard",
+    "reports": "Reports",
+    "users": "Users",
+    "about": "About"
   }
+}

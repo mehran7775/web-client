@@ -1,19 +1,25 @@
+import { AxiosResponse } from "axios"
 import { NuxtAxiosInstance } from "@nuxtjs/axios"
+import { User } from "~/types/sso"
+
+
 
 
 async function getUser(userName: string | null, axios: NuxtAxiosInstance) {
   if (userName) {
-    let user = await axios.get('/sso/user/' + userName)
-    try {
+    const res: AxiosResponse<User> = await axios.get('/sso/user/' + userName)
 
-      if (typeof user.data.settings === 'string' || user.data.settings instanceof String)
-        user.data.settings = JSON.parse(user.data.settings)
-      if (typeof user.data.profile === 'string' || user.data.profile instanceof String)
-        user.data.profile = JSON.parse(user.data.profile)
+    try {
+      if (res.data) {
+        if (typeof res.data.settings === 'string' || res.data.settings instanceof String)
+          res.data.settings = JSON.parse(res.data.settings)
+        if (typeof res.data.profile === 'string' || res.data.profile instanceof String)
+          res.data.profile = JSON.parse(res.data.profile)
+      }
     } catch (err: any) {
       console.log(err)
     }
-    return user
+    return res
   } else {
     return await axios.get('/sso/user/')
   }

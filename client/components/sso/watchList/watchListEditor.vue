@@ -105,7 +105,6 @@ export default defineComponent({
     const model: Ref<any> = ref(null);
 
     async function save() {
-      console.log(editableToMap(watchlist));
       await store.dispatch("user/update_watchlist", editableToMap(watchlist));
       emit("close");
     }
@@ -142,8 +141,6 @@ export default defineComponent({
         try {
           const res = await autoComplete(value, context.$axios);
           entries.push(...res.data);
-          console.log("res", res);
-          console.log("entries", entries);
         } finally {
           loading.value = false;
         }

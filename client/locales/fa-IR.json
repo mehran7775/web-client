@@ -4,16 +4,16 @@
     "401": "نیاز به ورود مجدد",
     "403": "شما دسترسی برای انجام این عملیات را ندارید",
     "423": "خطا در اطلاعات ارسالی",
-    "500":"خطای پیش بینی نشده‌ای رخ داد"
+    "500": "خطای پیش بینی نشده‌ای رخ داد"
   },
-  "general":{
+  "general": {
     "clear": "پاک کردن",
     "actions": "",
     "close": "بستن",
     "ok": "خب",
     "new": "جدید",
     "cancel": "انصراف",
-    "warning" : "آیا مطمئن هستید؟",
+    "warning": "آیا مطمئن هستید؟",
     "guide": "راهنما",
     "submit": "ثبت",
     "successful": "عملیات مورد نظر شما با موفقیت انجام شد",
@@ -21,6 +21,10 @@
     "company": "عصر دانش‌افزار"
   },
   "user": {
+    "personality": {
+      "real": "Real Person",
+      "legal": "Legal Person"
+    },
     "title": "جست و جوی کاربران",
     "search": "جست و جو",
     "username": "نام کاربری",
@@ -49,23 +53,38 @@
     "deleteGuide": "با کلیک روی این کلید در هر سر می‌توانید کاربر مورد نظر را غیر فعال کنید",
     "editGuide": "با کلیک روی این کلید در هر سطر، می‌توانید اطلاعات کاربر مورد نظر را ویرایش کنید."
   },
-  "login": {
-    "login": "ورود",
-    "logout": "خروج",
-    "signup": "عضویت",
-    "requestPass": "ارسال رمز پیامکی",
-    "timeLeft": "زمان مانده",
-    "successful": "شما با موفقیت به سامانه وارد شدید.",
-    "failed": "نام کاربری و یا رمز عبور اشتباه است.",
-    "error": "متاسفانه در عملیات ورود خطایی رخ داده است."
+  "message": {
+    "origin": {
+      "1": "ناظر بازار",
+      "2": "پشتیبانی",
+      "3": "ادمین"
+    }
   },
-  "menu": {
-    "watchList": "دیدبان",
-    "reports" : "گزارشات",
-    "dashboard": "میز کار",
-    "getExcelFile": "دریافت خروجی اکسل",
-    "users": "کاربران",
-    "about": "درباره"
+  "instrument": {
+    "id": "ID",
+    "code": "Code",
+    "name": "Name",
+    "fullName": "Full-Name",
+    "sectorCode": "Sector Code",
+    "categoryName": "Category Name",
+    "baseVol": "Base Volume",
+    "settlementDelay": "Settlement Delay",
+    "maxAllowedPrice": "Max Allowed Price",
+    "minAllowedPrice": "Min Allowed Price",
+    "namedPrice": "Named Price",
+    "shares": "Shares",
+    "companyName": "Company Name",
+    "maxQuantityPerOrder": "Max Quantity Per Order",
+    "issuePrice": "Issue Price",
+    "firstTradeDate": "First Trade Date",
+    "expirationDate": "Expiration Date",
+    "lastModification": "Last Modification",
+    "status": "Status",
+    "dateTime": "Creation Date",
+    "opening": "Opening",
+    "closing": "Closing",
+    "highest": "Highest",
+    "lowest": "Lowest"
   },
   "watchList": {
     "editor": {
@@ -79,12 +98,28 @@
     }
   },
   "oms": {
-    "message": {
-      "origin":{
-        "1": "ناظر بازار",
-        "2": "پشتیبانی",
-        "3": "ادمین"
-      }
-    }
+    "price": "Price",
+    "amount": "Amount",
+    "count": "Count",
+    "sell": "Sell",
+    "buy": "Buy"
+  },
+  "login": {
+    "login": "ورود",
+    "logout": "خروج",
+    "signup": "عضویت",
+    "requestPass": "ارسال رمز پیامکی",
+    "timeLeft": "زمان مانده",
+    "successful": "شما با موفقیت به سامانه وارد شدید.",
+    "failed": "نام کاربری و یا رمز عبور اشتباه است.",
+    "error": "متاسفانه در عملیات ورود خطایی رخ داده است."
+  },
+  "menu": {
+    "watchList": "دیدبان",
+    "reports": "گزارشات",
+    "dashboard": "میز کار",
+    "getExcelFile": "دریافت خروجی اکسل",
+    "users": "کاربران",
+    "about": "درباره"
   }
 }

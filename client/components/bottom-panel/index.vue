@@ -1,6 +1,6 @@
 <template>
   <v-footer
-    :absolute="expand"
+    :absolute="true"
     :class="{ expanded: expanded, 'ma-0': true, 'pa-0': true }"
   >
     <v-card :class="{ expanded: expanded }" width="100%" elevation="1">

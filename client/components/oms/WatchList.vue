@@ -4,18 +4,63 @@
     :items="inst"
     :expanded="expanded"
     @click:row="toggleRow"
-    show-expand
     class="elevation-1 light"
     :height="height"
     dense
   >
     <template #expanded-item="{ item, headers }">
-      <td :colspan="headers.length" class="ma-0 pa-0">
-        <v-card width="100%">
-          <v-card-text>
-            {{ item }}
-          </v-card-text>
-        </v-card>
+      <td :colspan="headers.length">
+        <v-row justify="center" align="center" align-content="center">
+          <v-col>
+            <v-row>
+              <v-col>
+                <v-row>
+                  <v-col>{{ $t("oms.buy") + " " + $t("oms.count") }}</v-col>
+                  <v-col>{{ $t("oms.buy") + " " + $t("oms.amount") }}</v-col>
+                  <v-col>{{ $t("oms.buy") + " " + $t("oms.price") }}</v-col>
+                </v-row>
+              </v-col>
+              <v-col>
+                <v-row>
+                  <v-col>{{ $t("oms.sell") + " " + $t("oms.count") }}</v-col>
+                  <v-col>{{ $t("oms.sell") + " " + $t("oms.amount") }}</v-col>
+                  <v-col>{{ $t("oms.sell") + " " + $t("oms.price") }}</v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+            <v-row> </v-row>
+            <v-row> </v-row>
+            <v-row> </v-row>
+            <v-row> </v-row>
+            <v-row> </v-row>
+          </v-col>
+          <v-col>
+            <v-row>
+              <v-col> </v-col>
+              <v-col></v-col>
+            </v-row>
+            <v-row> </v-row>
+            <v-row> </v-row>
+            <v-row> </v-row>
+            <v-row> </v-row>
+            <v-row> </v-row>
+          </v-col>
+          <v-col>
+            <v-row>
+              <v-col> {{ $t("user.personality.real") }} </v-col>
+              <v-col> {{ $t("user.personality.legal") }} </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                {{ item }}
+              </v-col>
+            </v-row>
+            <v-row> </v-row>
+            <v-row> </v-row>
+            <v-row> </v-row>
+            <v-row> </v-row>
+          </v-col>
+        </v-row>
       </td>
     </template>
   </v-data-table>
@@ -31,7 +76,7 @@ import {
 
 export default defineComponent({
   props: ["watchlists"],
-  setup(context) {
+  setup(props, context) {
     const store = useStore();
     const expanded: Array<any> = reactive([]);
     const height = computed(() =>
@@ -39,11 +84,14 @@ export default defineComponent({
     );
     const instruments: Array<object> = reactive([]);
     const headers = computed(() => {
-      console.log(store.getters["user/me"].settings.columns);
-      return store.getters["user/me"].settings.columns;
+      return store.getters["user/me"].settings.columns.map((col) =>
+        Object.assign({}, col, {
+          text: context.root.$t("instrument." + col.value),
+        })
+      );
     });
     store
-      .dispatch("instruments/getInstrumentsDetail", context.watchlists)
+      .dispatch("instruments/getInstrumentsDetail", props.watchlists)
       .then(() => {
         instruments.push(
           ...(store.getters["instruments/getAll"] as Array<object>)
