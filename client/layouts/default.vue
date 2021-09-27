@@ -86,19 +86,21 @@
     <v-navigation-drawer
       v-if="isLogin"
       id="core-navigation-drawer"
-      v-model="drawer"
-      dark
-      :expand-on-hover="true"
-      :mini-variant="mini"
+      v-model="left_drawer"
+      :mini-variant="left_mini"
       :clipped="clipped"
       fixed
       app
       :right="!rtl"
-      color="secondary"
+      color="white"
       mobile-breakpoint="960"
       width="260"
     >
-      <left-panel />
+      <left-panel
+        @open="left_mini = false"
+        @close="left_mini = true"
+        :isExpanded="left_mini"
+      />
     </v-navigation-drawer>
     <v-main>
       <nuxt class="pb-10" />
@@ -193,6 +195,8 @@ export default defineComponent({
       clipped: true,
       drawer: true,
       mini: true,
+      left_drawer: true,
+      left_mini: true,
       selected: {},
       items: [
         {
