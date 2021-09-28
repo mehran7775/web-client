@@ -29,7 +29,6 @@ export const mutations: MutationTree<RootState> = {
 export const actions: ActionTree<RootState, RootState> = {
   async getInstrumentsDetail({ commit }, payload: Array<number>): Promise<Array<Instrument> | number> {
     try {
-      console.log(payload)
       const { data: { data } } = await getInstrumentsDetail(payload, this.$axios)
       commit('setInstruments', data)
       return data

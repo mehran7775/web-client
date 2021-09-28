@@ -6,6 +6,7 @@
     @click:row="toggleRow"
     class="elevation-1 light"
     :height="height"
+    show-expand
     dense
   >
     <template #expanded-item="{ item, headers }">
@@ -44,23 +45,11 @@
               <v-col></v-col>
             </v-row>
           </v-col>
-          <v-col>
-            <instrument-card :instrument="item.id" />
+          <v-col md="5">
+            <instrument-card :insId="item.id" />
           </v-col>
-          <v-col>
-            <v-row>
-              <v-col> {{ $t("user.personality.real") }} </v-col>
-              <v-col> {{ $t("user.personality.legal") }} </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                {{ item }}
-              </v-col>
-            </v-row>
-            <v-row> <v-col></v-col></v-row>
-            <v-row> <v-col></v-col></v-row>
-            <v-row> <v-col></v-col></v-row>
-            <v-row> <v-col></v-col></v-row>
+          <v-col md="3">
+            <legal-real-card  :insId="item.id" />
           </v-col>
         </v-row>
       </td>
@@ -76,10 +65,11 @@ import {
   computed,
 } from "@nuxtjs/composition-api";
 import instrumentCard from "./instrument_card.vue";
+import LegalRealCard from "./legal_real_card.vue";
 
 export default defineComponent({
   props: ["watchlists"],
-  components: { instrumentCard },
+  components: { instrumentCard, LegalRealCard },
   setup(props, context) {
     const store = useStore();
     const expanded: Array<any> = reactive([]);

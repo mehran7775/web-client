@@ -69,12 +69,19 @@
     "lastTradeDate": "Last Trade Date",
     "expirationDate": "Expiration Date",
     "lastModification": "Last Modification",
+    "buyPrice": "Buy Price",
+    "sellPrice": "Sell Price",
+    "tradeVal": "Trade Value",
+    "tradeVol": "Trade Volume",
+    "marketVal": "Market Value",
+    "tradingShares": "Trading Shares",
     "status": "Status",
     "dateTime": "Creation Date",
     "opening": "Opening",
     "closing": "Closing",
     "highest": "Highest",
-    "lowest": "Lowest"
+    "lowest": "Lowest",
+    "last": "Last"
   },
   "accounting": {
     "account": {
