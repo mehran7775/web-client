@@ -57,6 +57,7 @@ export default defineComponent({
       store.commit("bottom-panel/toggleExpand");
     };
     const close = () => {
+      if (expanded.value) store.commit("bottom-panel/toggleExpand");
       store.commit("bottom-panel/setActiveTab", Tabs.none);
     };
     const icon = computed(() =>
