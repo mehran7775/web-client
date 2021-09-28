@@ -18,6 +18,7 @@
     "submit": "ثبت",
     "successful": "عملیات مورد نظر شما با موفقیت انجام شد",
     "failed": "عملیات مورد نظر شما انجام نشد",
+    "proxyCompany": "کارگزاری عصر دانش افزار",
     "company": "عصر دانش‌افزار"
   },
   "user": {
@@ -103,16 +104,21 @@
   },
   "accounting": {
     "account": {
-      "amount": "قدرت خرید: ",
-      "blockedAmount": "بلوکه شده: "
+      "amount": "قدرت خرید",
+      "blockedAmount": "بلوکه شده",
+      "onlineBlockedAmount": "بلوکه شده آنلاین",
+      "remaining": "مانده",
+      "credit": "اعتبار"
     }
   },
   "oms": {
-    "price": "Price",
-    "amount": "Amount",
-    "count": "Count",
-    "sell": "Sell",
-    "buy": "Buy"
+    "price": "قیمت",
+    "amount": "مقدار",
+    "count": "تعداد",
+    "sell": "فروش",
+    "buy": "خرید",
+    "bourseIndex": "شاخص بورس",
+    "superBourseIndex": "شاخص فرابورس"
   },
   "login": {
     "login": "ورود",

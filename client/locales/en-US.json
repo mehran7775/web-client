@@ -5,6 +5,7 @@
     "ok": "Ok",
     "cancel": "Cancel",
     "new": "New",
+    "proxyCompany": "Asre Danesh Afzar",
     "company": "Asre Danesh Afzar"
   },
   "user": {
@@ -85,8 +86,11 @@
   },
   "accounting": {
     "account": {
-      "amount": "Remaining",
-      "blockedAmount": "Blocked"
+      "amount": "Total",
+      "blockedAmount": "Blocked",
+      "onlineBlockedAmount": "Online Blocked",
+      "remaining": "Remaining",
+      "credit": "Credit"
     }
   },
   "oms": {
@@ -94,7 +98,9 @@
     "amount": "Amount",
     "count": "Count",
     "sell": "Sell",
-    "buy": "Buy"
+    "buy": "Buy",
+    "bourseIndex": "Bourse Index",
+    "superBourseIndex": "Super Bourse Index"
   },
   "login": {
     "login": "Login",

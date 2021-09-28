@@ -40,6 +40,8 @@ import { defineComponent, useStore, computed } from "@nuxtjs/composition-api";
 import furtherInformation from "./further-information.vue";
 import { Tabs } from "@/types/panels";
 
+//TODO not working on small displays
+
 export default defineComponent({
   components: { furtherInformation },
   setup() {

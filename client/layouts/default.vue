@@ -4,26 +4,16 @@
       v-if="isLogin"
       id="core-navigation-drawer"
       v-model="drawer"
-      dark
       :expand-on-hover="true"
       :mini-variant="mini"
       :clipped="clipped"
       fixed
       app
       :right="rtl"
-      color="secondary"
       mobile-breakpoint="960"
       width="260"
     >
-      <template #img="props">
-        <v-img :gradient="`to top, ${barColor}`" v-bind="props" />
-      </template>
       <v-list v-model="selected" dense>
-        <v-list-item>
-          <v-list-item-title>
-            <v-spacer />
-          </v-list-item-title>
-        </v-list-item>
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
@@ -61,27 +51,52 @@
       id="app-bar"
       :clipped-left="true"
       fixed
-      dark
       app
       dense
       :clipped-right="true"
-      color="primary"
     >
-      <v-app-bar-nav-icon
-        v-show="isLogin"
-        color="accent"
-        @click.stop="drawer = !drawer"
-      />
-      <v-toolbar-title v-if="isLogin" v-text="currentUser.user_name" />
+      <v-img src="/logo.png" max-width="24" />
+      {{ $t("general.proxyCompany") }}
+      <v-app-bar-nav-icon v-show="isLogin" @click.stop="drawer = !drawer" />
+      {{ Date() }}
+      <v-spacer />
+      <v-col>
+        <v-badge dot left color="green">
+          {{ $t("oms.bourseIndex") }}: 0
+        </v-badge>
+      </v-col>
+      <v-col>
+        <v-badge dot left color="orange"
+          >{{ $t("oms.superBourseIndex") }}:‌ 0</v-badge
+        >
+      </v-col>
       <v-spacer />
       <v-btn v-if="!isLogin" color="success" nuxt to="/login" depressed>
         {{ $t("login.login") }}
         <v-icon>mdi-account-arrow-left</v-icon>
       </v-btn>
-      <v-btn v-if="isLogin" color="error" depressed @click="doLogout">
-        {{ $t("login.logout") }}
-        <v-icon>mdi-account-arrow-right</v-icon>
-      </v-btn>
+      <v-menu v-model="userMenu" v-if="isLogin" rounded="b-xl" offset-y>
+        <template #activator="{ on, attrs }">
+          <v-btn v-bind="attrs" v-on="on" elevation="0">
+            <profile-picture
+              v-if="currentUser.profile && currentUser.profile.picture"
+            />
+            <v-icon v-else> mdi-account </v-icon>
+            {{ currentUser.user_name }}
+            <v-icon
+              >{{ userMenu ? "mdi-chevron-up" : "mdi-chevron-down" }}
+            </v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-btn v-if="isLogin" color="error" depressed @click="doLogout">
+              {{ $t("login.logout") }}
+              <v-icon>mdi-account-arrow-right</v-icon>
+            </v-btn>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
     <v-navigation-drawer
       v-if="isLogin"
@@ -103,19 +118,39 @@
       />
     </v-navigation-drawer>
     <v-main>
-      <nuxt class="pb-10" />
+      <nuxt class="mb-10" />
       <bottom-panel v-if="isLogin" />
     </v-main>
     <v-footer :absolute="true" app>
-      <span>
-        &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
-        <v-icon small>mdi-account-group</v-icon>
-      </span>
+      <v-row>
+        <v-col md="2" xs="5">
+          <span>
+            <v-icon small>mdi-account-group</v-icon>
+            &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
+          </span>
+        </v-col>
+        <v-col md="10" xs="7">
+          <v-badge dot left
+            >{{ $t("accounting.account.amount") }}{{ freeMoney }}
+          </v-badge>
 
-      <span>
-        {{ $t("accounting.account.blockedAmount") }}{{ blockedMoney }}
-      </span>
-      <span>{{ $t("accounting.account.amount") }}{{ freeMoney }} </span>
+          <v-badge dot left>
+            {{ $t("accounting.account.blockedAmount") }}{{ blockedMoney }}
+          </v-badge>
+
+          <v-badge dot left
+            >{{ $t("accounting.account.onlineBlockedAmount") }}{{ freeMoney }}
+          </v-badge>
+
+          <v-badge dot left
+            >{{ $t("accounting.account.remaining") }}{{ freeMoney }}
+          </v-badge>
+
+          <v-badge dot left
+            >{{ $t("accounting.account.credit") }}{{ freeMoney }}
+          </v-badge>
+        </v-col>
+      </v-row>
     </v-footer>
     <v-dialog
       v-if="isLogin"
@@ -140,11 +175,13 @@ import {
 import colors from "vuetify/es5/util/colors";
 import snackbar from "@/components/snacks";
 import watchListEditor from "@/components/oms/watchListEditor";
+import ProfilePicture from "~/components/sso/profilePicture.vue";
 
 export default defineComponent({
   components: {
     snackbar,
     watchListEditor,
+    ProfilePicture,
   },
   setup(props, context) {
     let dialog = ref(false);
@@ -152,6 +189,7 @@ export default defineComponent({
     const isLogin = computed(() => store.getters["user/isLogin"]);
     const rtl = computed(() => store.getters["rtl"]);
     const currentUser = computed(() => store.getters["user/me"]);
+    const userMenu = ref(false);
     const blockedMoney = 0;
     const freeMoney = 0;
     const wlEditor = ref(null);
@@ -190,6 +228,7 @@ export default defineComponent({
       isLogin,
       rtl,
       currentUser,
+      userMenu,
       colors,
       barColor: "rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)",
       clipped: true,
