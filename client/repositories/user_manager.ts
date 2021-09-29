@@ -5,21 +5,9 @@ import { User } from "~/types/sso"
 
 
 
-async function getUser(userName: string | null, axios: NuxtAxiosInstance) {
+async function getUser(userName: string | null, axios: NuxtAxiosInstance): Promise<AxiosResponse<User>> {
   if (userName) {
-    const res: AxiosResponse<User> = await axios.get('/sso/user/' + userName)
-
-    try {
-      if (res.data) {
-        if (typeof res.data.settings === 'string' || res.data.settings instanceof String)
-          res.data.settings = JSON.parse(res.data.settings)
-        if (typeof res.data.profile === 'string' || res.data.profile instanceof String)
-          res.data.profile = JSON.parse(res.data.profile)
-      }
-    } catch (err: any) {
-      console.log(err)
-    }
-    return res
+    return await axios.get('/sso/user/' + userName)
   } else {
     return await axios.get('/sso/user/')
   }

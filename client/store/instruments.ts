@@ -6,14 +6,14 @@ import { getInstrumentsDetail } from '~/repositories/instruments_manager'
 export const state = () => (new RootState())
 
 export class RootState {
-  cache: Map<BigInteger, Instrument> = new Map<BigInteger, Instrument>()
+  cache: Map<number, Instrument> = new Map<number, Instrument>()
 }
 
 export const getters: GetterTree<RootState, RootState> = {
   getAll: (state): Array<Instrument> => {
     return [...state.cache.values()]
   },
-  getByKey: (state) => (key: BigInteger) => {
+  getByKey: (state) => (key: number) => {
     return state.cache.get(key)
   }
 }

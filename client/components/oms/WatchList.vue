@@ -37,6 +37,7 @@ import {
 import instrumentCard from "./instrument_card.vue";
 import LegalRealCard from "./legalRealCard.vue";
 import orderQueueCard from "./orderQueueCard.vue";
+import { WatchlistColumns } from "@/types/sso";
 
 export default defineComponent({
   props: ["watchlists"],
@@ -45,14 +46,16 @@ export default defineComponent({
     const store = useStore();
     const expanded: Array<any> = reactive([]);
     const height = computed(() =>
-      store.getters["bottom-panel/activeTab"] == "" ? "100%" : "40vh"
+      store.getters["bottom-panel/activeTab"] == "" ? "100%" : "auto"
     );
     const instruments: Array<object> = reactive([]);
     const headers = computed(() => {
-      return store.getters["user/me"].settings.columns.map((col) =>
-        Object.assign({}, col, {
-          text: context.root.$t("instrument." + col.value),
-        })
+      return store.getters["user/me"].settings.columns.map(
+        (col: WatchlistColumns) =>
+          Object.assign({}, col, {
+            //TODO replace with something vue3 compatible!
+            text: context.root.$t("instrument." + col.value),
+          })
       );
     });
     store
