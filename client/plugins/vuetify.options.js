@@ -3,6 +3,7 @@ import en from 'vuetify/es5/locale/en'
 import ar from 'vuetify/es5/locale/ar'
 import ckb from 'vuetify/es5/locale/ckb'
 import az from 'vuetify/es5/locale/az'
+import '@mdi/font/css/materialdesignicons.css'
 
 export default function ({ store, app }) {
   const theme = {
@@ -33,6 +34,9 @@ export default function ({ store, app }) {
       font: {
         family: 'B Nazanin'
       }
+    },
+    icons: {
+      iconfont: 'mdi', // default - only for display purposes
     },
     theme: {
       dark: false,
