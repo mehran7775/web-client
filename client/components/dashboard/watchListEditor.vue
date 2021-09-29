@@ -85,7 +85,7 @@ import {
   useContext,
 } from "@nuxtjs/composition-api";
 import draggable from "vuedraggable";
-import instrumentView from "./instrument_card.vue";
+import instrumentView from "../oms/instrument_card.vue";
 import { autoComplete } from "@/repositories/instruments_manager";
 import { AutoCompleteItem } from "@/types/collection";
 

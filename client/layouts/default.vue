@@ -174,7 +174,7 @@ import {
 } from "@nuxtjs/composition-api";
 import colors from "vuetify/es5/util/colors";
 import snackbar from "@/components/snacks";
-import watchListEditor from "@/components/oms/watchListEditor";
+import watchListEditor from "@/components/dashboard/watchListEditor";
 import ProfilePicture from "~/components/sso/profilePicture.vue";
 
 export default defineComponent({

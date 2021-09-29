@@ -10,7 +10,7 @@ import {
   useRoute,
   useStore,
 } from "@nuxtjs/composition-api";
-import WatchList from "~/components/oms/WatchList.vue";
+import WatchList from "~/components/dashboard/WatchList.vue";
 
 export default defineComponent({
   components: {

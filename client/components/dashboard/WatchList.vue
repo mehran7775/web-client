@@ -34,9 +34,9 @@ import {
   useStore,
   computed,
 } from "@nuxtjs/composition-api";
-import instrumentCard from "./instrument_card.vue";
-import LegalRealCard from "./legalRealCard.vue";
-import orderQueueCard from "./orderQueueCard.vue";
+import instrumentCard from "../oms/instrument_card.vue";
+import LegalRealCard from "../oms/legalRealCard.vue";
+import orderQueueCard from "../oms/orderQueueCard.vue";
 import { WatchlistColumns } from "@/types/sso";
 
 export default defineComponent({
