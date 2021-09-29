@@ -118,7 +118,7 @@
       />
     </v-navigation-drawer>
     <v-main>
-      <nuxt class="mb-10" />
+      <nuxt class="my-10" />
       <bottom-panel v-if="isLogin" />
     </v-main>
     <v-footer :absolute="true" app>
@@ -129,7 +129,7 @@
             &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
           </span>
         </v-col>
-        <v-col md="10" xs="7">
+        <v-col md="10" xs="7" v-if="isLogin">
           <v-badge dot left
             >{{ $t("accounting.account.amount") }}{{ freeMoney }}
           </v-badge>
