@@ -7,6 +7,11 @@
     show-expand
     dense
   >
+    <template #item.data-table-expand="{ isExpanded, expand }">
+      <v-icon @click="() => expand(!isExpanded)">
+        {{ isExpanded ? "mdi-minus" : "mdi-plus" }}
+      </v-icon>
+    </template>
     <!-- <template #expanded-item="{ item, headers }">
       <td :colspan="headers.length">
         <v-row justify="center" align="center" align-content="center">

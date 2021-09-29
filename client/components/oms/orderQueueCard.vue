@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row dense>
       <v-col>
         <v-row>
           <v-col>{{ $t("oms.buyCount") }}</v-col>
@@ -16,19 +16,19 @@
         </v-row>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row dense>
       <v-col></v-col>
     </v-row>
-    <v-row>
+    <v-row dense>
       <v-col></v-col>
     </v-row>
-    <v-row>
+    <v-row dense>
       <v-col></v-col>
     </v-row>
-    <v-row>
+    <v-row dense>
       <v-col></v-col>
     </v-row>
-    <v-row>
+    <v-row dense>
       <v-col></v-col>
     </v-row>
   </v-container>
@@ -40,8 +40,6 @@ import { defineComponent } from "@nuxtjs/composition-api";
 export default defineComponent({
   name: "order-queue-card",
   props: ["instId"],
-  setup(props) {
-    
-  },
+  setup(props) {},
 });
 </script>

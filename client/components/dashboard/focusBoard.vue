@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <v-row>
-      <v-col class="d-flex flex-row" style="overflow-x: auto">
-        <v-card min-width="47%" v-for="item in instruments" :key="item.id">
+      <v-col v-if="instruments.length > 0" class="d-flex flex-row" style="overflow-x: scroll">
+        <v-card min-width="39%" v-for="item in instruments" :key="item.id">
           <instrument-card :insId="item.id" />
         </v-card>
       </v-col>

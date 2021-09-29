@@ -1,12 +1,12 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row dense>
       <v-col>{{ $t("instrument.status") }}</v-col>
       <v-col> {{ instrument.status }} </v-col>
       <v-col>{{ $t("instrument.lastTradeDate") }}</v-col>
       <v-col> {{ instrument.lastTradeDate }} </v-col>
     </v-row>
-    <v-row>
+    <v-row dense>
       <v-col>{{ $t("instrument.allowedPrice") }}</v-col>
       <v-col>
         {{ instrument.minAllowedPrice + "-" + instrument.maxAllowedPrice }}
@@ -18,7 +18,7 @@
         }}
       </v-col>
     </v-row>
-    <v-row>
+    <v-row dense>
       <v-col>{{ $t("instrument.tradeVol") }}</v-col>
       <v-col> {{ instrument.tradeVol }} </v-col>
       <v-col>{{ $t("instrument.tradeVal") }}</v-col>
@@ -26,7 +26,7 @@
       <v-col>{{ $t("instrument.marketVal") }}</v-col>
       <v-col> {{ instrument.marketVal }} </v-col>
     </v-row>
-    <v-row>
+    <v-row dense>
       <v-col>{{ $t("instrument.lowest") }}</v-col>
       <v-col> {{ instrument.lowest }} </v-col>
       <v-col>{{ $t("instrument.highest") }}</v-col>
@@ -34,7 +34,7 @@
       <v-col>{{ $t("instrument.last") }}</v-col>
       <v-col> {{ instrument.last }} </v-col>
     </v-row>
-    <v-row>
+    <v-row dense>
       <v-col>{{ $t("instrument.buyPrice") }}</v-col>
       <v-col> {{ instrument.buyPrice }} </v-col>
       <v-col>{{ $t("instrument.sellPrice") }}</v-col>
@@ -42,7 +42,7 @@
       <v-col>{{ $t("instrument.closing") }}</v-col>
       <v-col> {{ instrument.closing }} </v-col>
     </v-row>
-    <v-row>
+    <v-row dense>
       <v-col>{{ $t("instrument.shares") }}</v-col>
       <v-col>{{ instrument.shares }}</v-col>
       <v-col>{{ $t("instrument.baseVol") }}</v-col>
