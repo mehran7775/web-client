@@ -7,6 +7,7 @@ export const state = () => (new RootState())
 
 export class RootState {
   cache: Map<number, Instrument> = new Map<number, Instrument>()
+  focus: Array<Instrument> = []
 }
 
 export const getters: GetterTree<RootState, RootState> = {
@@ -15,6 +16,9 @@ export const getters: GetterTree<RootState, RootState> = {
   },
   getByKey: (state) => (key: number) => {
     return state.cache.get(key)
+  },
+  getFocus: (state) => {
+    return state.focus
   }
 }
 
@@ -23,6 +27,9 @@ export const mutations: MutationTree<RootState> = {
     for (let i in data) {
       state.cache.set(data[i].id, data[i])
     }
+  },
+  setFocus(state, data: Array<Instrument>) {
+    state.focus = data
   }
 }
 

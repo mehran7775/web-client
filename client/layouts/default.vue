@@ -118,7 +118,7 @@
       />
     </v-navigation-drawer>
     <v-main>
-      <nuxt class="mb-10" />
+      <nuxt class="mb-12" />
       <bottom-panel v-if="isLogin" />
     </v-main>
     <v-footer :absolute="true" app>

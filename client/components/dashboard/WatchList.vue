@@ -2,14 +2,12 @@
   <v-data-table
     :headers="headers"
     :items="inst"
-    :expanded="expanded"
-    @click:row="toggleRow"
+    :expanded.sync="expanded"
     class="elevation-1 light"
-    :height="height"
     show-expand
     dense
   >
-    <template #expanded-item="{ item, headers }">
+    <!-- <template #expanded-item="{ item, headers }">
       <td :colspan="headers.length">
         <v-row justify="center" align="center" align-content="center">
           <v-col md="4">
@@ -23,7 +21,7 @@
           </v-col>
         </v-row>
       </td>
-    </template>
+    </template> -->
   </v-data-table>
 </template>
 
@@ -34,20 +32,25 @@ import {
   useStore,
   computed,
 } from "@nuxtjs/composition-api";
-import instrumentCard from "../oms/instrument_card.vue";
+import instrumentCard from "../oms/instrumentCard.vue";
 import LegalRealCard from "../oms/legalRealCard.vue";
 import orderQueueCard from "../oms/orderQueueCard.vue";
 import { WatchlistColumns } from "@/types/sso";
+import { Instrument } from "~/types/oms";
 
 export default defineComponent({
-  props: ["watchlists"],
+  props: ["watchlists", "selected"],
   components: { instrumentCard, LegalRealCard, orderQueueCard },
   setup(props, context) {
     const store = useStore();
-    const expanded: Array<any> = reactive([]);
-    const height = computed(() =>
-      store.getters["bottom-panel/activeTab"] == "" ? "100%" : "auto"
-    );
+    const expanded = computed({
+      set(value: Array<Instrument>) {
+        store.commit("instruments/setFocus", value);
+      },
+      get(): Array<Instrument> {
+        return store.getters["instruments/getFocus"] as Array<Instrument>;
+      },
+    });
     const instruments: Array<object> = reactive([]);
     const headers = computed(() => {
       return store.getters["user/me"].settings.columns.map(
@@ -66,21 +69,10 @@ export default defineComponent({
         );
       });
 
-    function toggleRow(value: any) {
-      const index = expanded.indexOf(value);
-      if (index > -1) {
-        expanded.splice(index, 1);
-      } else {
-        expanded.push(value);
-      }
-    }
-
     return {
       headers: headers,
       inst: instruments,
       expanded,
-      height,
-      toggleRow,
     };
   },
 });
