@@ -40,7 +40,7 @@ export const getters: GetterTree<RootState, RootState> = {
     }
   },
   isLogin: (state) => {
-    return state && state.token
+    return !!(state && state.token)
   },
   watchList(state) {
     if (state && state.user && state.user.settings) {
@@ -81,12 +81,20 @@ export const mutations: MutationTree<RootState> = {
       sessionStorage.setItem(userKey, JSON.stringify(data))
       sessionStorage.setItem('userName', data.username)
     }
+  },
+  setWatchlist(state, data) {
+    state.user.settings.watch_lists = data
+    if (sessionStorage) {
+      sessionStorage.setItem(userKey, JSON.stringify(state.user))
+      sessionStorage.setItem('userName', state.user.user_name)
+    }
   }
 }
 
 export const actions: ActionTree<RootState, RootState> = {
 
   async init({ commit, dispatch }) {
+    console.log("init called!")
 
     if (typeof localStorage !== typeof undefined) {
 
@@ -171,12 +179,10 @@ export const actions: ActionTree<RootState, RootState> = {
       return 401
     }
   },
-  async update_watchlist({ commit, getters }, watchlist) {
+  async update_watchlist({ commit }, watchlist) {
     try {
       await user_manager.updateUserWatchlist(watchlist, this.$axios)
-      const user: User = getters["me"]
-      user.settings.watch_lists = watchlist
-      commit("setUser", user)
+      commit("setWatchlist", watchlist)
     } catch (err: any) {
       return 500
     }
