@@ -16,12 +16,14 @@
   </v-container>
 </template>
 
-<script>
-import { defineComponent } from "@vue/composition-api";
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: "legal-real-card",
   props: ["insId"],
-  setup() {},
-});
+  setup() {
+    
+  },
+})
 </script>

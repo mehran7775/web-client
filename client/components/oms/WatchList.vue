@@ -12,44 +12,14 @@
     <template #expanded-item="{ item, headers }">
       <td :colspan="headers.length">
         <v-row justify="center" align="center" align-content="center">
-          <v-col>
-            <v-row>
-              <v-col>
-                <v-row>
-                  <v-col>{{ $t("oms.buy") + " " + $t("oms.count") }}</v-col>
-                  <v-col>{{ $t("oms.buy") + " " + $t("oms.amount") }}</v-col>
-                  <v-col>{{ $t("oms.buy") + " " + $t("oms.price") }}</v-col>
-                </v-row>
-              </v-col>
-              <v-col>
-                <v-row>
-                  <v-col>{{ $t("oms.sell") + " " + $t("oms.count") }}</v-col>
-                  <v-col>{{ $t("oms.sell") + " " + $t("oms.amount") }}</v-col>
-                  <v-col>{{ $t("oms.sell") + " " + $t("oms.price") }}</v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col></v-col>
-            </v-row>
-            <v-row>
-              <v-col></v-col>
-            </v-row>
-            <v-row>
-              <v-col></v-col>
-            </v-row>
-            <v-row>
-              <v-col></v-col>
-            </v-row>
-            <v-row>
-              <v-col></v-col>
-            </v-row>
+          <v-col md="4">
+            <order-queue-card :instId="item.id" />
           </v-col>
           <v-col md="5">
             <instrument-card :insId="item.id" />
           </v-col>
           <v-col md="3">
-            <legal-real-card  :insId="item.id" />
+            <legal-real-card :insId="item.id" />
           </v-col>
         </v-row>
       </td>
@@ -65,11 +35,12 @@ import {
   computed,
 } from "@nuxtjs/composition-api";
 import instrumentCard from "./instrument_card.vue";
-import LegalRealCard from "./legal_real_card.vue";
+import LegalRealCard from "./legalRealCard.vue";
+import orderQueueCard from "./orderQueueCard.vue";
 
 export default defineComponent({
   props: ["watchlists"],
-  components: { instrumentCard, LegalRealCard },
+  components: { instrumentCard, LegalRealCard, orderQueueCard },
   setup(props, context) {
     const store = useStore();
     const expanded: Array<any> = reactive([]);

@@ -54,3 +54,14 @@ export class Instrument {
   }
 
 }
+
+export class OrderItem {
+  amount: number = 0
+  count: number = 0
+  price: number = 0.0
+}
+
+export class OrderQueue {
+  buy: OrderItem = new OrderItem()
+  sell: OrderItem = new OrderItem()
+}

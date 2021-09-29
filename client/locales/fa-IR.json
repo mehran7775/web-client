@@ -118,7 +118,13 @@
     "sell": "فروش",
     "buy": "خرید",
     "bourseIndex": "شاخص بورس",
-    "superBourseIndex": "شاخص فرابورس"
+    "superBourseIndex": "شاخص فرابورس",
+    "sellPrice": "@:oms.price @:oms.sell",
+    "sellAmount": "@:oms.amount @:oms.sell",
+    "sellCount": "@:oms.count @:oms.sell",
+    "buyPrice": "@:oms.price @:oms.buy",
+    "buyAmount": "@:oms.amount @:oms.buy",
+    "buyCount": "@:oms.count @:oms.buy"
   },
   "login": {
     "login": "ورود",

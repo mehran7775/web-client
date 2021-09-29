@@ -100,7 +100,13 @@
     "sell": "Sell",
     "buy": "Buy",
     "bourseIndex": "Bourse Index",
-    "superBourseIndex": "Super Bourse Index"
+    "superBourseIndex": "Super Bourse Index",
+    "sellPrice": "@:oms.sell @:oms.price",
+    "sellAmount": "@:oms.sell @:oms.amount",
+    "sellCount": "@:oms.sell @:oms.count",
+    "buyPrice": "@:oms.buy @:oms.price",
+    "buyAmount": "@:oms.buy @:oms.amount",
+    "buyCount": "@:oms.buy @:oms.count"
   },
   "login": {
     "login": "Login",
