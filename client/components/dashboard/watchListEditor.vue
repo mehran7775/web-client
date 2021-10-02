@@ -90,6 +90,7 @@ import { autoComplete } from "@/repositories/instruments_manager";
 import { AutoCompleteItem } from "@/types/collection";
 
 export default defineComponent({
+  name: "watchListEditor",
   emits: ["close"],
   props: ["value"],
   components: {

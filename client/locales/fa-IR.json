@@ -19,7 +19,13 @@
     "successful": "عملیات مورد نظر شما با موفقیت انجام شد",
     "failed": "عملیات مورد نظر شما انجام نشد",
     "proxyCompany": "کارگزاری عصر دانش افزار",
-    "company": "عصر دانش‌افزار"
+    "company": "عصر دانش‌افزار",
+    "date": {
+      "dt": "jYYYY/jMM/jDD HH:mm:ss",
+      "d": "jYYYY/jMM/jDD",
+      "t": "HH:mm:ss",
+      "longdt": "ddd jDD jMMMM jYYYY / HH:mm:ss"
+    }
   },
   "user": {
     "personality": {

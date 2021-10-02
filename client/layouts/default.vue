@@ -58,7 +58,9 @@
       <v-img src="/logo.png" max-width="24" />
       {{ $t("general.proxyCompany") }}
       <v-app-bar-nav-icon v-show="isLogin" @click.stop="drawer = !drawer" />
-      {{ Date() }}
+      {{ moment(date)
+          .locale(locale)
+          .format($t('general.date.longdt')) }}
       <v-spacer />
       <v-col>
         <v-badge dot left color="green">
@@ -171,11 +173,13 @@ import {
   computed,
   useStore,
   ref,
+  useRouter,
 } from "@nuxtjs/composition-api";
-import colors from "vuetify/es5/util/colors";
-import snackbar from "@/components/snacks";
-import watchListEditor from "@/components/dashboard/watchListEditor";
-import ProfilePicture from "~/components/sso/profilePicture.vue";
+import colors from "vuetify/es5/util/colors.js";
+import snackbar from "@/components/snacks.vue";
+import watchListEditor from "@/components/dashboard/WatchList.vue";
+import ProfilePicture from "@/components/sso/profilePicture.vue";
+import moment from "moment-jalaali"
 
 export default defineComponent({
   components: {
@@ -184,7 +188,9 @@ export default defineComponent({
     ProfilePicture,
   },
   setup(props, context) {
+    moment.loadPersian()
     let dialog = ref(false);
+    const router = useRouter();
     const store = useStore();
     const isLogin = computed(() => store.getters["user/isLogin"]);
     const rtl = computed(() => store.getters["rtl"]);
@@ -193,6 +199,14 @@ export default defineComponent({
     const blockedMoney = 0;
     const freeMoney = 0;
     const wlEditor = ref(null);
+    const date = ref(Date());
+    setInterval(() => {
+      date.value = Date();
+    }, 1000);
+
+    const locale = computed(() => {
+      return store.getters["locale"];
+    });
 
     const watchList = computed(() => {
       const lists = store.getters["user/watchList"];
@@ -217,10 +231,13 @@ export default defineComponent({
 
     function doLogout() {
       store.dispatch("user/logout");
-      this.$router.push("/login");
+      router.push("/login");
     }
 
     return {
+      date,
+      moment,
+      locale,
       wlEditor,
       togDialog,
       dialog,

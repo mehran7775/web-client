@@ -4,7 +4,13 @@
       <v-col>{{ $t("instrument.status") }}</v-col>
       <v-col> {{ instrument.status }} </v-col>
       <v-col>{{ $t("instrument.lastTradeDate") }}</v-col>
-      <v-col> {{ instrument.lastTradeDate }} </v-col>
+      <v-col>
+        {{
+          moment(instrument.lastTradeDate)
+            .locale(locale)
+            .format($t('general.date.dt'))
+        }}
+      </v-col>
     </v-row>
     <v-row dense>
       <v-col>{{ $t("instrument.allowedPrice") }}</v-col>
@@ -54,22 +60,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, ref, Ref } from "@nuxtjs/composition-api";
+import {
+  defineComponent,
+  useStore,
+  ref,
+  Ref,
+  computed,
+} from "@nuxtjs/composition-api";
 import { Instrument } from "@/types/oms";
+import moment from "moment-jalaali"
 
 export default defineComponent({
   name: "instrumnet-card",
   props: ["insId"],
   setup(props, context) {
     const store = useStore();
+    const locale = computed(() => store.getters["locale"]);
     let instrument: Ref<Instrument> = ref(new Instrument());
     store
       .dispatch("instruments/getInstrumentsDetail", [props.insId])
       .then((data: Array<Instrument>) => {
         instrument.value = data[0];
       });
-
     return {
+      moment,
+      locale,
       instrument,
     };
   },

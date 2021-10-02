@@ -6,7 +6,13 @@
     "cancel": "Cancel",
     "new": "New",
     "proxyCompany": "Asre Danesh Afzar",
-    "company": "Asre Danesh Afzar"
+    "company": "Asre Danesh Afzar",
+    "date": {
+      "dt": "YYYY-MM-DD HH:mm:ss",
+      "d": "YYYY-MM-DD",
+      "t": "HH:mm:ss",
+      "longdt": "ddd DD MMM YYYY / HH:mm:ss"
+    }
   },
   "user": {
     "personality": {
