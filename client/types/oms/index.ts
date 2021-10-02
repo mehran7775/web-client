@@ -13,6 +13,7 @@ export class Instrument {
   shares: number
   companyName: string
   maxQuantityPerOrder: number
+  minQuantityPerOrder: number
   issuePrice: number
   firstTradeDate: string
   lastTradeDate: string
@@ -43,6 +44,7 @@ export class Instrument {
     this.lowest = 0
     this.maxAllowedPrice = 0
     this.maxQuantityPerOrder = 0
+    this.minQuantityPerOrder = 0
     this.minAllowedPrice = 0
     this.name = ""
     this.namedPrice = 0

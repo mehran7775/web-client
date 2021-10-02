@@ -53,10 +53,13 @@ export const getters: GetterTree<RootState, RootState> = {
 
 export const mutations: MutationTree<RootState> = {
   setToken(state, token) {
-    if (localStorage && token) {
-      sessionStorage.setItem(tokenKey, token)
+    if (!!token) {
+      state.token = token
+      state.userName = JSON.parse(atob(decodeURIComponent(token.split('.')[1]))).sub
+      if (localStorage) {
+        sessionStorage.setItem(tokenKey, token)
+      }
     }
-    state.token = token
   },
   setRefresh(state, refresh) {
     if (localStorage && refresh) {
@@ -74,57 +77,45 @@ export const mutations: MutationTree<RootState> = {
     state.refresh = null
   },
   setUser(state, data) {
-
-    state.userName = data.user_name
     state.user = data
     if (sessionStorage) {
       sessionStorage.setItem(userKey, JSON.stringify(data))
-      sessionStorage.setItem('userName', data.username)
     }
   },
   setWatchlist(state, data) {
     state.user.settings.watch_lists = data
     if (sessionStorage) {
       sessionStorage.setItem(userKey, JSON.stringify(state.user))
-      sessionStorage.setItem('userName', state.user.user_name)
     }
   }
 }
 
 export const actions: ActionTree<RootState, RootState> = {
 
-  async init({ commit, dispatch }) {
+  async init({ commit, dispatch, state }) {
     console.log("init called!")
 
-    if (typeof localStorage !== typeof undefined) {
-
-      const refresh = localStorage.getItem(RefreshKey)
-      if (refresh) {
-
-        commit('setRefresh', refresh)
-        const jwt = sessionStorage.getItem(tokenKey)
-        if (jwt) {
-
-          commit('setToken', jwt)
-          const user = sessionStorage.getItem(userKey)
-          if (user) {
-
-            commit('setUser', JSON.parse(user))
-          } else {
-
-            await dispatch('getMe', sessionStorage.getItem('userName'))
-          }
+    const refresh = (localStorage && localStorage.getItem(RefreshKey)) || state.refresh
+    if (refresh) {
+      commit('setRefresh', refresh)
+      const jwt = (sessionStorage && sessionStorage.getItem(tokenKey)) || state.token
+      if (jwt) {
+        commit('setToken', jwt)
+        const user = JSON.parse(sessionStorage && (sessionStorage.getItem(userKey) || "null")) || state.user
+        if (user) {
+          commit('setUser', user)
         } else {
-
-          await dispatch('refreshToken')
-          await dispatch('getMe', sessionStorage.getItem('userName'))
+          await dispatch('getUser', state.userName)
         }
       } else {
-        commit('logout')
+        await dispatch('refreshToken')
+        await dispatch('getUser', state.userName)
       }
+    } else {
+      commit('logout')
     }
   },
-  async getMe({ commit }, userName) {
+  async getUser({ commit }, userName) {
     if (!userName)
       return
     try {
@@ -147,7 +138,7 @@ export const actions: ActionTree<RootState, RootState> = {
       )
       commit('setToken', 'Bearer ' + data.token)
       commit('setRefresh', data.refresh)
-      await dispatch('getMe', payload.userName)
+      await dispatch('getUser', payload.userName)
       return status
     } catch (err: any) {
       if (err.response) {

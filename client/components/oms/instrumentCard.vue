@@ -14,7 +14,7 @@
       <v-col>{{ $t("instrument.quantityPerOrder") }}</v-col>
       <v-col>
         {{
-          instrument.maxQuantityPerOrder + "-" + instrument.maxQuantityPerOrder
+          instrument.minQuantityPerOrder + "-" + instrument.maxQuantityPerOrder
         }}
       </v-col>
     </v-row>
