@@ -9,7 +9,9 @@
   >
     <template #item.data-table-expand="{ isExpanded, expand }">
       <v-icon @click="() => expand(!isExpanded)">
-        {{ isExpanded ? "mdi-minus-circle-outline" : "mdi-plus-circle-outline" }}
+        {{
+          isExpanded ? "mdi-minus-circle-outline" : "mdi-plus-circle-outline"
+        }}
       </v-icon>
     </template>
     <!-- <template #expanded-item="{ item, headers }">
@@ -48,6 +50,7 @@ export default defineComponent({
   components: { instrumentCard, LegalRealCard, orderQueueCard },
   setup(props, context) {
     const store = useStore();
+    const i18n = useI18n();
     const expanded = computed({
       set(value: Array<Instrument>) {
         store.commit("instruments/setFocus", value);
@@ -61,8 +64,7 @@ export default defineComponent({
       return store.getters["user/me"].settings.columns.map(
         (col: WatchlistColumns) =>
           Object.assign({}, col, {
-            //TODO replace with something vue3 compatible!
-            text: context.root.$t("instrument." + col.value),
+            text: i18n.t("instrument." + col.value),
           })
       );
     });
@@ -79,6 +81,10 @@ export default defineComponent({
       inst: instruments,
       expanded,
     };
+    //TODO remove in vue3
+    function useI18n() {
+      return context.root.$i18n;
+    }
   },
 });
 </script>

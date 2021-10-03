@@ -15,17 +15,27 @@
       </v-card-title>
       <v-divider v-if="tab != 0" class="mt-4 px-0 mx-1"></v-divider>
       <v-card-text v-if="tab != 0" :class="{ expanded: expanded }">
+        <default-order-list v-if="tab == 1" />
+        <bests v-if="tab == 2" />
+        <deep-information v-if="tab == 3" />
         <further-information v-if="tab == 4" />
       </v-card-text>
       <v-card-actions>
         <v-btn-toggle v-model="tab" borderless dense color="blue">
-          <v-btn :value="1" width="7rem" class="white"> سفارشات </v-btn>
+          <v-btn :value="1" class="white">
+            {{ $t("bottom-panel.orders") }}
+          </v-btn>
+          <v-btn :value="2" class="white">
+            {{ $t("bottom-panel.bests") }}
+          </v-btn>
 
-          <v-btn :value="2" width="7rem" class="white"> برترین ها </v-btn>
+          <v-btn :value="3" class="white">
+            {{ $t("bottom-panel.depth") }}
+          </v-btn>
 
-          <v-btn :value="3" width="7rem" class="white"> عمق بازار </v-btn>
-
-          <v-btn :value="4" width="7rem" class="white"> اطلاعات تکمیلی </v-btn>
+          <v-btn :value="4" class="white">
+            {{ $t("bottom-panel.more") }}
+          </v-btn>
         </v-btn-toggle>
       </v-card-actions>
     </v-card>
@@ -36,11 +46,14 @@
 import { defineComponent, useStore, computed } from "@nuxtjs/composition-api";
 import furtherInformation from "./further-information.vue";
 import { Tabs } from "@/types/panels";
+import DefaultOrderList from "./defaultOrderList.vue";
+import DeepInformation from "./deepInformation.vue";
+import Bests from "./bests.vue";
 
 //TODO not working on small displays
 
 export default defineComponent({
-  components: { furtherInformation },
+  components: { furtherInformation, DeepInformation, DefaultOrderList, Bests },
   setup() {
     const store = useStore();
     const tab = computed({

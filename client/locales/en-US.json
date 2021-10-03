@@ -130,5 +130,11 @@
     "reports": "Reports",
     "users": "Users",
     "about": "About"
+  },
+  "bottom-panel": {
+    "bests": "Bests",
+    "orders": "Active Orders",
+    "depth": "Deep Market Information",
+    "more": "Details"
   }
 }
