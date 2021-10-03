@@ -1,4 +1,63 @@
-// Ref: https://github.com/nuxt-community/vuetify-module#customvariables
-//
-// The variables you want to modify
-// $font-size-root: 20px;
+@font-face {
+  font-family: "A Iranian Sans";
+  src: url("static/fonts/Iranian-Sans.woff") format("woff"), url("static/fonts/Iranian Sans.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: "Vazir";
+  src: url("static/fonts/Vazir-FD-WOL.woff") format("woff"), url("static/fonts/Vazir-Bold-FD-WOL.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: "B Yekan";
+  src: url("static/fonts/IRANYekanWebRegular.woff") format("woff"), url("static/fonts/IRANYekanWebRegular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: "B Nazanin";
+  src: url("static/fonts/BNAZANIN.woff") format("woff"), url("static/fonts/BNAZANIN.TTF") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: "Times New Roman";
+  src: url("static/fonts/times.woff") format("woff"), url("static/fonts/times.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+$font-size-root: 14px;
+$card-text-font-size: 0.8rem;
+
+$body-font-family: "B Yekan", "Vazir", "B Nazanin", "Times New Roman";
+
+.v-application {
+  .display-1,
+  .display-2,
+  .display-3,
+  .display-4,
+  .headline,
+  .title,
+  .subtitle-1,
+  .subtitle-2,
+  .body-1,
+  .body-2,
+  .caption,
+  .overline {
+    font-family: $body-font-family !important;
+  }
+}
+
+@import "~vuetify/src/styles/styles.sass";

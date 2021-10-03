@@ -8,27 +8,33 @@
     dense
   >
     <template #item.data-table-expand="{ isExpanded, expand }">
-      <v-icon @click="() => expand(!isExpanded)">
+      <v-icon
+        @click="() => expand(!isExpanded)"
+        :color="isExpanded ? 'warning' : 'blue'"
+      >
         {{
           isExpanded ? "mdi-minus-circle-outline" : "mdi-plus-circle-outline"
         }}
       </v-icon>
     </template>
-    <!-- <template #expanded-item="{ item, headers }">
-      <td :colspan="headers.length">
-        <v-row justify="center" align="center" align-content="center">
-          <v-col md="4">
-            <order-queue-card :instId="item.id" />
-          </v-col>
-          <v-col md="5">
-            <instrument-card :insId="item.id" />
-          </v-col>
-          <v-col md="3">
-            <legal-real-card :insId="item.id" />
-          </v-col>
-        </v-row>
-      </td>
-    </template> -->
+    <template #item.name="{ item }">
+      <!-- <v-icon color="green"> mdi-basket-plus-outline </v-icon>
+      <v-icon color="red"> mdi-basket-remove-outline </v-icon> -->
+
+      <v-img
+        max-width="32"
+        src="/fonts/svg/bag-tick.svg"
+        style="display: inline-block"
+      />
+      <v-img
+        max-width="32"
+        src="/fonts/svg/bag-cross.svg"
+        style="display: inline-block"
+      />
+      <v-badge left dot class="ms-5" offset-x="-5" offset-y="75%">
+        {{ item.name }}
+      </v-badge>
+    </template>
   </v-data-table>
 </template>
 

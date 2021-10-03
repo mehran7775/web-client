@@ -57,19 +57,35 @@
     >
       <v-img src="/logo.png" max-width="24" />
       {{ $t("general.proxyCompany") }}
-      <v-app-bar-nav-icon v-show="isLogin" @click.stop="drawer = !drawer" />
-      {{ moment(date)
-          .locale(locale)
-          .format($t('general.date.longdt')) }}
+      <v-app-bar-nav-icon v-show="isLogin" @click.stop="drawer = !drawer">
+        <v-icon>
+          mdi-menu-open
+        </v-icon>
+      </v-app-bar-nav-icon>
+      {{ moment(date).locale(locale).format($t("general.date.longdt")) }}
       <v-spacer />
       <v-col>
-        <v-badge dot left color="green">
+        <v-badge
+          dot
+          left
+          color="green"
+          class="ms-5"
+          offset-y="75%"
+          offset-x="-5"
+        >
           {{ $t("oms.bourseIndex") }}: 0
         </v-badge>
       </v-col>
       <v-col>
-        <v-badge dot left color="orange"
-          >{{ $t("oms.superBourseIndex") }}:‌ 0</v-badge
+        <v-badge
+          dot
+          left
+          color="orange"
+          class="my-5"
+          offset-y="75%"
+          offset-x="-5"
+        >
+          {{ $t("oms.superBourseIndex") }}:‌ 0</v-badge
         >
       </v-col>
       <v-spacer />
@@ -79,12 +95,13 @@
       </v-btn>
       <v-menu v-model="userMenu" v-if="isLogin" rounded="b-xl" offset-y>
         <template #activator="{ on, attrs }">
-          <v-btn v-bind="attrs" v-on="on" elevation="0">
+          <v-btn v-bind="attrs" v-on="on" depressed>
             <profile-picture
-              v-if="currentUser.profile && currentUser.profile.picture"
+              :address="currentUser.profile && currentUser.profile.profilePic"
             />
-            <v-icon v-else> mdi-account </v-icon>
-            {{ currentUser.user_name }}
+            <span class="ms-4">
+              {{ currentUser.user_name }}
+            </span>
             <v-icon
               >{{ userMenu ? "mdi-chevron-up" : "mdi-chevron-down" }}
             </v-icon>
@@ -119,7 +136,7 @@
         :isExpanded="left_mini"
       />
     </v-navigation-drawer>
-    <v-main>
+    <v-main class="dashboardmain-page">
       <nuxt class="mb-12" />
       <bottom-panel v-if="isLogin" />
     </v-main>
@@ -132,24 +149,24 @@
           </span>
         </v-col>
         <v-col md="10" xs="7" v-if="isLogin">
-          <v-badge dot left
-            >{{ $t("accounting.account.amount") }}{{ freeMoney }}
+          <v-badge dot left class="ms-5" offset-y="75%" offset-x="-5">
+            {{ $t("accounting.account.amount") }}{{ freeMoney }}
           </v-badge>
 
-          <v-badge dot left>
+          <v-badge dot left class="ms-5" offset-y="75%" offset-x="-5">
             {{ $t("accounting.account.blockedAmount") }}{{ blockedMoney }}
           </v-badge>
 
-          <v-badge dot left
-            >{{ $t("accounting.account.onlineBlockedAmount") }}{{ freeMoney }}
+          <v-badge dot left class="ms-5" offset-y="75%" offset-x="-5">
+            {{ $t("accounting.account.onlineBlockedAmount") }}{{ freeMoney }}
           </v-badge>
 
-          <v-badge dot left
-            >{{ $t("accounting.account.remaining") }}{{ freeMoney }}
+          <v-badge dot left class="ms-5" offset-y="75%" offset-x="-5">
+            {{ $t("accounting.account.remaining") }}{{ freeMoney }}
           </v-badge>
 
-          <v-badge dot left
-            >{{ $t("accounting.account.credit") }}{{ freeMoney }}
+          <v-badge dot left class="ms-5" offset-y="75%" offset-x="-5">
+            {{ $t("accounting.account.credit") }}{{ freeMoney }}
           </v-badge>
         </v-col>
       </v-row>
@@ -179,7 +196,7 @@ import colors from "vuetify/es5/util/colors.js";
 import snackbar from "@/components/snacks.vue";
 import watchListEditor from "@/components/dashboard/WatchList.vue";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
-import moment from "moment-jalaali"
+import moment from "moment-jalaali";
 
 export default defineComponent({
   components: {
@@ -188,7 +205,7 @@ export default defineComponent({
     ProfilePicture,
   },
   setup(props, context) {
-    moment.loadPersian()
+    moment.loadPersian();
     let dialog = ref(false);
     const router = useRouter();
     const store = useStore();
@@ -272,3 +289,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.dashboardmain-page {
+  background-color: #f9f9fb;
+}
+</style>

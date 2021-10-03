@@ -2,16 +2,26 @@
   <div>
     <v-list>
       <v-list-item>
-        <v-list-item-icon v-if="isExpanded" @click.stop="onClick('open')">
-          <v-icon>mdi-bell</v-icon>
-        </v-list-item-icon>
-        <v-list-item-icon v-if="!isExpanded" @click.stop="onClick('close')">
-          <v-icon>mdi-close</v-icon>
+        <v-list-item-icon>
+          <v-badge :value="false" left dot color="red">
+            <v-icon v-if="isExpanded" @click.stop="onClick('open')">
+              mdi-bell
+            </v-icon>
+            <v-icon v-if="!isExpanded" @click.stop="onClick('close')">
+              mdi-close
+            </v-icon>
+          </v-badge>
         </v-list-item-icon>
       </v-list-item>
       <v-list-item v-if="!isExpanded">
         <v-list-item-content class="d-block">
-          <v-tabs fluid v-model="tab" background-color="white" color="black" grow>
+          <v-tabs
+            fluid
+            v-model="tab"
+            background-color="white"
+            color="black"
+            grow
+          >
             <v-tab v-for="(tabItem, tabIndex) in tabList" :key="tabIndex">
               {{ tabItem.title }}
             </v-tab>
@@ -60,13 +70,13 @@ export default defineComponent({
   props: {
     isExpanded: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(_, { emit }) {
     const tabList = ref([
       { title: "من", list: ["پیام اول"] },
-      { title: "همه", list: ["پیام اول", " پیام دوم"] }
+      { title: "همه", list: ["پیام اول", " پیام دوم"] },
     ]);
     const tab = ref(null);
     const searchInput = ref("");
@@ -97,8 +107,8 @@ export default defineComponent({
       chipList,
       onClick,
       onChipClose,
-      searchTag
+      searchTag,
     };
-  }
+  },
 });
 </script>

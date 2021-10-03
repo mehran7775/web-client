@@ -1,10 +1,10 @@
 <template>
   <v-container fluid>
     <v-row dense>
-      <v-col>{{ $t("instrument.status") }}</v-col>
-      <v-col> {{ instrument.status }} </v-col>
-      <v-col>{{ $t("instrument.lastTradeDate") }}</v-col>
-      <v-col>
+      <v-col md="2" >{{ $t("instrument.status") }}</v-col>
+      <v-col md="2"> {{ instrument.status }} </v-col>
+      <v-col md="4">{{ $t("instrument.lastTradeDate") }}</v-col>
+      <v-col md="4">
         {{
           moment(instrument.lastTradeDate)
             .locale(locale)
@@ -13,12 +13,12 @@
       </v-col>
     </v-row>
     <v-row dense>
-      <v-col>{{ $t("instrument.allowedPrice") }}</v-col>
-      <v-col>
+      <v-col md="2">{{ $t("instrument.allowedPrice") }}</v-col>
+      <v-col md="2">
         {{ instrument.minAllowedPrice + "-" + instrument.maxAllowedPrice }}
       </v-col>
-      <v-col>{{ $t("instrument.quantityPerOrder") }}</v-col>
-      <v-col>
+      <v-col md="4">{{ $t("instrument.quantityPerOrder") }}</v-col>
+      <v-col md="4">
         {{
           instrument.minQuantityPerOrder + "-" + instrument.maxQuantityPerOrder
         }}

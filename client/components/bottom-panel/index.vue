@@ -1,5 +1,5 @@
 <template>
-  <v-footer :absolute="true" :class="{ expanded: expanded }">
+  <v-footer :absolute="true" :class="{ expanded: expanded }" class="ma-0 pa-0" >
     <v-card :class="{ expanded: expanded }" width="100%" elevation="1">
       <v-card-title v-if="tab != 0">
         <h4 class="font-weight-bold pt-1">

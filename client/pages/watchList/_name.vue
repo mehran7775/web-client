@@ -6,7 +6,9 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col><WatchList :watchlists="instruments" :selected.sync="selected" /></v-col>
+      <v-col
+        ><WatchList :watchlists="instruments" :selected.sync="selected"
+      /></v-col>
     </v-row>
   </v-container>
 </template>
@@ -20,7 +22,7 @@ import {
   useRoute,
   useStore,
 } from "@nuxtjs/composition-api";
-import FocusBoard from "~/components/dashboard/focusBoard.vue";
+import FocusBoard from "~/components/dashboard/focusBoard/";
 import WatchList from "~/components/dashboard/WatchList.vue";
 
 export default defineComponent({

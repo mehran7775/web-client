@@ -2,14 +2,14 @@
   <v-card>
     <v-row>
       <v-col>
-        <v-toolbar dark color="primary">
+        <v-toolbar color="primary">
           <v-btn icon @click="$emit('close', $event.target.value)">
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-toolbar-title>{{ $t("watchList.editor.title") }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn dark text @click="save"> Save </v-btn>
+            <v-btn text @click="save"> Save </v-btn>
           </v-toolbar-items>
         </v-toolbar>
       </v-col>
