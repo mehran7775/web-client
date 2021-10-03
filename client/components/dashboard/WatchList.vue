@@ -9,7 +9,7 @@
   >
     <template #item.data-table-expand="{ isExpanded, expand }">
       <v-icon @click="() => expand(!isExpanded)">
-        {{ isExpanded ? "mdi-minus" : "mdi-plus" }}
+        {{ isExpanded ? "mdi-minus-circle-outline" : "mdi-plus-circle-outline" }}
       </v-icon>
     </template>
     <!-- <template #expanded-item="{ item, headers }">
