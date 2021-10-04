@@ -94,6 +94,7 @@
     "sellPrice": "قیمت فروش",
     "tradeVal": "ارزش معاملات",
     "tradeVol": "حجم معاملات",
+    "tradeCount": "تعداد معاملات",
     "marketVal": "ارزش بازار",
     "tradingShares": "سهام شناور",
     "status": "وضعیت",

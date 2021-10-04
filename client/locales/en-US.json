@@ -80,6 +80,7 @@
     "sellPrice": "Sell Price",
     "tradeVal": "Trade Value",
     "tradeVol": "Trade Volume",
+    "tradeCount": "Trade Count",
     "marketVal": "Market Value",
     "tradingShares": "Trading Shares",
     "status": "Status",
