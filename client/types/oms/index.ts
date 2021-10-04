@@ -63,7 +63,7 @@ export class OrderItem {
   price: number = 0.0
 }
 
-export class OrderQueue {
+export class OrderQueueItem {
   buy: OrderItem = new OrderItem()
   sell: OrderItem = new OrderItem()
 }

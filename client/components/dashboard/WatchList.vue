@@ -3,6 +3,7 @@
     :headers="headers"
     :items="inst"
     :expanded.sync="expanded"
+    @item-expanded="onExpand"
     class="elevation-1 light"
     show-expand
     dense
@@ -65,6 +66,14 @@ export default defineComponent({
         return store.getters["instruments/getFocus"] as Array<Instrument>;
       },
     });
+    function onExpand(data: { item: Instrument; value: boolean }) {
+      console.log("data: ", data);
+      if (data.value) {
+        store.dispatch("instruments/getOrderQueue", data.item.id);
+      } else {
+        store.commit("instruments/stopWatchQueue", data.item.id);
+      }
+    }
     const instruments: Array<object> = reactive([]);
     const headers = computed(() => {
       return store.getters["user/me"].settings.columns.map(
@@ -83,6 +92,7 @@ export default defineComponent({
       });
 
     return {
+      onExpand,
       headers: headers,
       inst: instruments,
       expanded,

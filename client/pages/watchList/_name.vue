@@ -1,11 +1,11 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row dense>
       <v-col>
         <focus-board :instIds="selected" />
       </v-col>
     </v-row>
-    <v-row>
+    <v-row dense>
       <v-col
         ><WatchList :watchlists="instruments" :selected.sync="selected"
       /></v-col>

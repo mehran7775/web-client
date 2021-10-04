@@ -1,18 +1,26 @@
 <template>
-  <v-container>
+  <v-container class="text-center">
+    <v-row dense>
+      <v-col>
+        {{ $t("oms.buy") }}
+      </v-col>
+      <v-col>
+        {{ $t("oms.sell") }}
+      </v-col>
+    </v-row>
     <v-row dense>
       <v-col>
         <v-row>
-          <v-col>{{ $t("oms.buyCount") }}</v-col>
-          <v-col>{{ $t("oms.buyAmount") }}</v-col>
-          <v-col>{{ $t("oms.buyPrice") }}</v-col>
+          <v-col>{{ $t("oms.count") }}</v-col>
+          <v-col>{{ $t("oms.amount") }}</v-col>
+          <v-col>{{ $t("oms.price") }}</v-col>
         </v-row>
       </v-col>
       <v-col>
         <v-row>
-          <v-col>{{ $t("oms.sellCount") }}</v-col>
-          <v-col>{{ $t("oms.sellAmount") }}</v-col>
-          <v-col>{{ $t("oms.sellPrice") }}</v-col>
+          <v-col>{{ $t("oms.count") }}</v-col>
+          <v-col>{{ $t("oms.amount") }}</v-col>
+          <v-col>{{ $t("oms.price") }}</v-col>
         </v-row>
       </v-col>
     </v-row>
