@@ -4,7 +4,6 @@
       v-if="isLogin"
       id="core-navigation-drawer"
       v-model="drawer"
-      :expand-on-hover="true"
       :mini-variant="mini"
       :clipped="clipped"
       fixed
@@ -57,10 +56,20 @@
     >
       <v-img src="/logo.png" max-width="24" />
       {{ $t("general.proxyCompany") }}
-      <v-app-bar-nav-icon v-show="isLogin" @click.stop="drawer = !drawer">
-        <v-icon>
-          mdi-menu-open
-        </v-icon>
+      <v-app-bar-nav-icon
+        v-show="isLogin"
+        @click.stop="
+          () => {
+            if (drawer) {
+              mini = !mini;
+            } else {
+              drawer = true;
+              mini = false
+            }
+          }
+        "
+      >
+        <v-icon> mdi-menu-open </v-icon>
       </v-app-bar-nav-icon>
       {{ moment(date).locale(locale).format($t("general.date.longdt")) }}
       <v-spacer />
