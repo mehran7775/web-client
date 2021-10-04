@@ -20,10 +20,6 @@ export const getters: GetterTree<RootState, RootState> = {
   },
   getFocus: (state) => {
     return state.focus
-  },
-  getOrderQueue: (state) => (key: number): Array<OrderQueueItem> => {
-    console.log(state.orderQueueCache.get(key))
-    return state.orderQueueCache.get(key) || []
   }
 }
 
@@ -40,7 +36,7 @@ export const mutations: MutationTree<RootState> = {
     state.focus.splice(state.focus.findIndex((element: Instrument) => element.id == data), 1)
   },
   watchQueue(state, payload: { key: number, data: Array<OrderQueueItem> }) {
-    state.orderQueueCache.set(payload.key, payload.data)
+    state.orderQueueCache.get(payload.key)?.push(...payload.data)
   },
   stopWatchQueue(state, key: number) {
     state.orderQueueCache.delete(key)
@@ -60,10 +56,11 @@ export const actions: ActionTree<RootState, RootState> = {
       return 450
     }
   },
-  async getOrderQueue({ commit }, payload: number): Promise<Array<OrderQueueItem> | number> {
+  async getOrderQueue({ state, commit }, payload: number): Promise<Array<OrderQueueItem> | number> {
     try {
-      console.log(payload)
-      commit('watchQueue', { key: payload, data: [] })
+      let queue = state.orderQueueCache.get(payload)
+      if (queue)
+        return queue
       const { data } = await getOrderQueue(payload, this.$axios)
       commit('watchQueue', { key: payload, data: data })
       return data

@@ -36,20 +36,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, computed } from "@nuxtjs/composition-api";
+import {
+  defineComponent,
+  useStore,
+  computed,
+  reactive,
+} from "@nuxtjs/composition-api";
 import { OrderQueueItem } from "~/types/oms";
 
 export default defineComponent({
   name: "order-queue-card",
-  props: ["instId"],
+  props: ["insId"],
   setup(props) {
     const store = useStore();
-    const queue = computed(
-      () =>
-        store.getters["instruments/getOrderQueue"](
-          props.instId
-        ) as Array<OrderQueueItem>
-    );
+    const queue: Array<OrderQueueItem> = reactive([]);
+    store
+      .dispatch("instruments/getOrderQueue", props.insId)
+      .then((result: Array<OrderQueueItem>) => {
+        queue.push(...result);
+      });
     return {
       queue,
     };

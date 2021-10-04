@@ -67,9 +67,7 @@ export default defineComponent({
       },
     });
     function onExpand(data: { item: Instrument; value: boolean }) {
-      if (data.value) {
-        store.dispatch("instruments/getOrderQueue", data.item.id);
-      } else {
+      if (!data.value) {
         store.commit("instruments/stopWatchQueue", data.item.id);
       }
     }
