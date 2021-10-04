@@ -55,7 +55,9 @@
       :clipped-right="true"
     >
       <v-img src="/logo.png" max-width="24" />
-      {{ $t("general.proxyCompany") }}
+      <span v-if="!mini && drawer">
+        {{ $t("general.proxyCompany") }}
+      </span>
       <v-app-bar-nav-icon
         v-show="isLogin"
         @click.stop="
@@ -64,7 +66,7 @@
               mini = !mini;
             } else {
               drawer = true;
-              mini = false
+              mini = false;
             }
           }
         "
@@ -108,11 +110,11 @@
             <profile-picture
               :address="currentUser.profile && currentUser.profile.profilePic"
             />
-            <span class="ms-4">
+            <span class="ms-4 .d-none .d-sm-flex">
               {{ currentUser.user_name }}
             </span>
-            <v-icon
-              >{{ userMenu ? "mdi-chevron-up" : "mdi-chevron-down" }}
+            <v-icon class=".d-none .d-sm-flex">
+              {{ userMenu ? "mdi-chevron-up" : "mdi-chevron-down" }}
             </v-icon>
           </v-btn>
         </template>
@@ -158,23 +160,23 @@
           </span>
         </v-col>
         <v-col md="10" xs="7" v-if="isLogin">
-          <v-badge dot left class="ms-5" offset-y="75%" offset-x="-5">
+          <v-badge dot left class="ms-5" color="green" offset-y="75%" offset-x="-5">
             {{ $t("accounting.account.amount") }}{{ freeMoney }}
           </v-badge>
 
-          <v-badge dot left class="ms-5" offset-y="75%" offset-x="-5">
+          <v-badge dot left class="ms-5" color="red" offset-y="75%" offset-x="-5">
             {{ $t("accounting.account.blockedAmount") }}{{ blockedMoney }}
           </v-badge>
 
-          <v-badge dot left class="ms-5" offset-y="75%" offset-x="-5">
+          <v-badge dot left class="ms-5" color="orange" offset-y="75%" offset-x="-5">
             {{ $t("accounting.account.onlineBlockedAmount") }}{{ freeMoney }}
           </v-badge>
 
-          <v-badge dot left class="ms-5" offset-y="75%" offset-x="-5">
+          <v-badge dot left class="ms-5" color="blue" offset-y="75%" offset-x="-5">
             {{ $t("accounting.account.remaining") }}{{ freeMoney }}
           </v-badge>
 
-          <v-badge dot left class="ms-5" offset-y="75%" offset-x="-5">
+          <v-badge dot left class="ms-5" color="#89abcd" offset-y="75%" offset-x="-5">
             {{ $t("accounting.account.credit") }}{{ freeMoney }}
           </v-badge>
         </v-col>
