@@ -1,60 +1,77 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="text-no-wrap">
     <v-row dense>
-      <v-col md="2" >{{ $t("instrument.status") }}</v-col>
-      <v-col md="2"> {{ instrument.status }} </v-col>
-      <v-col md="4">{{ $t("instrument.lastTradeDate") }}</v-col>
-      <v-col md="4">
-        {{
-          moment(instrument.lastTradeDate)
-            .locale(locale)
-            .format($t('general.date.dt'))
-        }}
+      <v-col class="text-center">
+        {{ $t("instrument.detail") }}
       </v-col>
     </v-row>
     <v-row dense>
-      <v-col md="2">{{ $t("instrument.allowedPrice") }}</v-col>
-      <v-col md="2">
-        {{ instrument.minAllowedPrice + "-" + instrument.maxAllowedPrice }}
+      <v-col cols="6" class="d-flex justify-space-between">
+        <span>
+          {{ $t("instrument.lastTradeDate") }}
+        </span>
+        <span>
+          {{
+            moment(instrument.lastTradeDate)
+              .locale(locale)
+              .format($t("general.date.dt"))
+          }}
+        </span>
       </v-col>
-      <v-col md="4">{{ $t("instrument.quantityPerOrder") }}</v-col>
-      <v-col md="4">
-        {{
-          instrument.minQuantityPerOrder + "-" + instrument.maxQuantityPerOrder
-        }}
+      <v-col cols="6" class="d-flex justify-space-between">
+        <span>{{ $t("instrument.lowest") }}</span>
+        <span>{{ instrument.lowest }}</span>
       </v-col>
     </v-row>
     <v-row dense>
-      <v-col>{{ $t("instrument.tradeVol") }}</v-col>
-      <v-col> {{ instrument.tradeVol }} </v-col>
-      <v-col>{{ $t("instrument.tradeVal") }}</v-col>
-      <v-col> {{ instrument.tradeVal }} </v-col>
-      <v-col>{{ $t("instrument.marketVal") }}</v-col>
-      <v-col> {{ instrument.marketVal }} </v-col>
+      <v-col cols="6" class="d-flex justify-space-between">
+        <span>{{ $t("instrument.marketVal") }}</span>
+        <span>{{ instrument.marketVal }}</span>
+      </v-col>
+      <v-col cols="6" class="d-flex justify-space-between">
+        <span>{{ $t("instrument.highest") }}</span>
+        <span>{{ instrument.highest }}</span>
+      </v-col>
     </v-row>
     <v-row dense>
-      <v-col>{{ $t("instrument.lowest") }}</v-col>
-      <v-col> {{ instrument.lowest }} </v-col>
-      <v-col>{{ $t("instrument.highest") }}</v-col>
-      <v-col> {{ instrument.highest }} </v-col>
-      <v-col>{{ $t("instrument.last") }}</v-col>
-      <v-col> {{ instrument.last }} </v-col>
+      <v-col cols="6" class="d-flex justify-space-between">
+        <span>{{ $t("instrument.tradeCount") }}</span>
+        <span>{{ instrument.tradeCount }}</span>
+      </v-col>
+      <v-col cols="6" class="d-flex justify-space-between">
+        <span>{{ $t("instrument.last") }}</span>
+        <span>{{ instrument.last }}</span>
+      </v-col>
     </v-row>
     <v-row dense>
-      <v-col>{{ $t("instrument.buyPrice") }}</v-col>
-      <v-col> {{ instrument.buyPrice }} </v-col>
-      <v-col>{{ $t("instrument.sellPrice") }}</v-col>
-      <v-col> {{ instrument.sellPrice }} </v-col>
-      <v-col>{{ $t("instrument.closing") }}</v-col>
-      <v-col> {{ instrument.closing }} </v-col>
+      <v-col cols="6" class="d-flex justify-space-between">
+        <span>{{ $t("instrument.tradeVol") }}</span>
+        <span>{{ instrument.tradeVol }}</span>
+      </v-col>
+      <v-col cols="6" class="d-flex justify-space-between">
+        <span>{{ $t("instrument.closing") }}</span>
+        <span>{{ instrument.closing }}</span>
+      </v-col>
     </v-row>
     <v-row dense>
-      <v-col>{{ $t("instrument.shares") }}</v-col>
-      <v-col>{{ instrument.shares }}</v-col>
-      <v-col>{{ $t("instrument.baseVol") }}</v-col>
-      <v-col>{{ instrument.baseVol }}</v-col>
-      <v-col>{{ $t("instrument.tradingShares") }}</v-col>
-      <v-col>{{ instrument.floating }}</v-col>
+      <v-col cols="6" class="d-flex justify-space-between">
+        <span>{{ $t("instrument.tradeVal") }}</span>
+        <span>{{ instrument.tradeVal }}</span>
+      </v-col>
+      <v-col cols="6" class="d-flex justify-space-between">
+        <span>{{ $t("instrument.buyPrice") }}</span>
+        <span>{{ instrument.buyPrice }}</span>
+      </v-col>
+    </v-row>
+    <v-row dense>
+      <v-col cols="6" class="d-flex justify-space-between">
+        <span>{{ $t("instrument.opening") }}</span>
+        <span>{{ instrument.opening }}</span>
+      </v-col>
+      <v-col cols="6" class="d-flex justify-space-between">
+        <span>{{ $t("instrument.baseVol") }}</span>
+        <span>{{ instrument.baseVol }}</span>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -68,7 +85,7 @@ import {
   computed,
 } from "@nuxtjs/composition-api";
 import { Instrument } from "@/types/oms";
-import moment from "moment-jalaali"
+import moment from "moment-jalaali";
 
 export default defineComponent({
   name: "instrumnet-card",

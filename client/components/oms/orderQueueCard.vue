@@ -1,10 +1,10 @@
 <template>
-  <v-container class="text-center">
+  <v-container class="text-center" fluid>
     <v-row dense>
-      <v-col>
+      <v-col class="green--text">
         {{ $t("oms.buy") }}
       </v-col>
-      <v-col>
+      <v-col class="red--text">
         {{ $t("oms.sell") }}
       </v-col>
     </v-row>

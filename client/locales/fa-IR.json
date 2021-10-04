@@ -21,7 +21,7 @@
     "proxyCompany": "کارگزاری عصر دانش افزار",
     "company": "عصر دانش‌افزار",
     "date": {
-      "dt": "jYYYY/jMM/jDD HH:mm:ss",
+      "dt": "jYYYY/jMM/jDD-HH:mm:ss",
       "d": "jYYYY/jMM/jDD",
       "t": "HH:mm:ss",
       "longdt": "ddd jDD jMMMM jYYYY / HH:mm:ss"
@@ -68,6 +68,7 @@
     }
   },
   "instrument": {
+    "detail":"جزئیات نماد",
     "id": "شناسه",
     "code": "کد",
     "name": "نام",
@@ -85,8 +86,8 @@
     "quantityPerOrder": "تعداد در سفارش",
     "maxQuantityPerOrder": "حداکثر تعداد در سفارش",
     "issuePrice": "قیمت ثبتی",
-    "firstTradeDate": "تاریخ اولین معامله",
-    "lastTradeDate": "تاریخ آخرین معامله",
+    "firstTradeDate": "اولین معامله",
+    "lastTradeDate": "آخرین معامله",
     "expirationDate": "تاریخ انقضا",
     "lastModification": "آخرین ویرایش",
     "buyPrice": "قیمت خرید",

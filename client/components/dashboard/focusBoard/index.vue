@@ -8,7 +8,7 @@
     </v-row>
     <v-row v-if="instruments.length > 0">
       <v-col class="d-flex flex-row ma-0 pa-0" style="overflow-x: scroll">
-        <v-card class="me-1 mb-1" min-width="428" v-for="item in instruments" :key="item.id">
+        <v-card class="me-1 mb-1" min-width="430" v-for="item in instruments" :key="item.id">
           <v-toolbar dense flat color="secondary" dark>
             {{ item.name }}
             <v-spacer />
@@ -34,7 +34,7 @@
               mdi-close-circle-outline
             </v-icon>
           </v-toolbar>
-          <v-card-text>
+          <v-card-text class="text-caption ma-0 pa-0">
             <order-queue-card :insId="item.id" />
             <legal-real-card />
             <instrument-card :insId="item.id" />
