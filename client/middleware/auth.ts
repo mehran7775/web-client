@@ -2,7 +2,6 @@ import { Middleware } from '@nuxt/types'
 
 const auth: Middleware = async ({ store, route, redirect }) => {
   let isLogin = store.getters['user/isLogin']
-  console.log("check login",isLogin)
   if (!isLogin) {
     await store.dispatch('user/init')
     isLogin = store.getters['user/isLogin']

@@ -7,9 +7,9 @@
       <v-col> </v-col>
     </v-row>
     <v-row v-if="instruments.length > 0">
-      <v-col class="d-flex flex-row" style="overflow-x: scroll">
-        <v-card min-width="428" v-for="item in instruments" :key="item.id">
-          <v-card-title class="ma-0 pb-0">
+      <v-col class="d-flex flex-row ma-0 pa-0" style="overflow-x: scroll">
+        <v-card class="me-1 mb-1" min-width="428" v-for="item in instruments" :key="item.id">
+          <v-toolbar dense flat color="secondary" dark>
             {{ item.name }}
             <v-spacer />
             <v-btn depressed height="24px" color="green" dark x-large>
@@ -25,10 +25,15 @@
             >
               {{ $t("oms.sell") }}
             </v-btn>
-            <v-icon color="error" @click="() => close(item.id)" small>
+            <v-icon
+              class="ms-1"
+              color="error"
+              @click="() => close(item.id)"
+              small
+            >
               mdi-close-circle-outline
             </v-icon>
-          </v-card-title>
+          </v-toolbar>
           <v-card-text>
             <order-queue-card :insId="item.id" />
             <instrument-card :insId="item.id" />

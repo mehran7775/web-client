@@ -67,7 +67,6 @@ export default defineComponent({
       },
     });
     function onExpand(data: { item: Instrument; value: boolean }) {
-      console.log("data: ", data);
       if (data.value) {
         store.dispatch("instruments/getOrderQueue", data.item.id);
       } else {

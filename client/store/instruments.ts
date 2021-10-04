@@ -22,6 +22,7 @@ export const getters: GetterTree<RootState, RootState> = {
     return state.focus
   },
   getOrderQueue: (state) => (key: number): Array<OrderQueueItem> => {
+    console.log(state.orderQueueCache.get(key))
     return state.orderQueueCache.get(key) || []
   }
 }
@@ -61,6 +62,8 @@ export const actions: ActionTree<RootState, RootState> = {
   },
   async getOrderQueue({ commit }, payload: number): Promise<Array<OrderQueueItem> | number> {
     try {
+      console.log(payload)
+      commit('watchQueue', { key: payload, data: [] })
       const { data } = await getOrderQueue(payload, this.$axios)
       commit('watchQueue', { key: payload, data: data })
       return data

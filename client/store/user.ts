@@ -93,8 +93,6 @@ export const mutations: MutationTree<RootState> = {
 export const actions: ActionTree<RootState, RootState> = {
 
   async init({ commit, dispatch, state }) {
-    console.log("init called!")
-
     const refresh = (localStorage && localStorage.getItem(RefreshKey)) || state.refresh
     if (refresh) {
       commit('setRefresh', refresh)
