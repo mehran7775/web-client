@@ -29,8 +29,8 @@
   },
   "user": {
     "personality": {
-      "real": "Real Person",
-      "legal": "Legal Person"
+      "real": "حقیقی",
+      "legal": "حقوقی"
     },
     "title": "جست و جوی کاربران",
     "search": "جست و جو",
@@ -124,6 +124,7 @@
     "count": "تعداد",
     "sell": "فروش",
     "buy": "خرید",
+    "percent": "درصد",
     "bourseIndex": "شاخص بورس",
     "superBourseIndex": "شاخص فرابورس",
     "sellPrice": "@:oms.price @:oms.sell",

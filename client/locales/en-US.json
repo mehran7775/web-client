@@ -106,6 +106,7 @@
     "count": "Count",
     "sell": "Sell",
     "buy": "Buy",
+    "percent": "Percent",
     "bourseIndex": "Bourse Index",
     "superBourseIndex": "Super Bourse Index",
     "sellPrice": "@:oms.sell @:oms.price",

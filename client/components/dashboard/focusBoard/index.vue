@@ -36,6 +36,7 @@
           </v-toolbar>
           <v-card-text>
             <order-queue-card :insId="item.id" />
+            <legal-real-card />
             <instrument-card :insId="item.id" />
           </v-card-text>
         </v-card>
@@ -49,12 +50,14 @@ import { defineComponent, computed, useStore } from "@nuxtjs/composition-api";
 import InstrumentSearch from "@/components/oms/instrumentSearch.vue";
 import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "~/components/oms/orderQueueCard.vue";
+import LegalRealCard from "~/components/oms/legalRealCard.vue";
 
 export default defineComponent({
   components: {
     instrumentCard,
     InstrumentSearch,
     OrderQueueCard,
+    LegalRealCard,
   },
   name: "focus-board",
   setup(props) {
