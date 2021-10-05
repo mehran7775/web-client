@@ -1,11 +1,9 @@
 <template>
   <v-container fluid class="text-no-wrap">
     <v-row dense>
-      <v-col class="text-center">
+      <v-col cols="12" class="text-center">
         {{ $t("instrument.detail") }}
       </v-col>
-    </v-row>
-    <v-row dense>
       <v-col cols="6" class="d-flex justify-space-between">
         <span>
           {{ $t("instrument.lastTradeDate") }}
@@ -22,8 +20,6 @@
         <span>{{ $t("instrument.lowest") }}</span>
         <span>{{ instrument.lowest }}</span>
       </v-col>
-    </v-row>
-    <v-row dense>
       <v-col cols="6" class="d-flex justify-space-between">
         <span>{{ $t("instrument.marketVal") }}</span>
         <span>{{ instrument.marketVal }}</span>
@@ -32,8 +28,6 @@
         <span>{{ $t("instrument.highest") }}</span>
         <span>{{ instrument.highest }}</span>
       </v-col>
-    </v-row>
-    <v-row dense>
       <v-col cols="6" class="d-flex justify-space-between">
         <span>{{ $t("instrument.tradeCount") }}</span>
         <span>{{ instrument.tradeCount }}</span>
@@ -42,8 +36,6 @@
         <span>{{ $t("instrument.last") }}</span>
         <span>{{ instrument.last }}</span>
       </v-col>
-    </v-row>
-    <v-row dense>
       <v-col cols="6" class="d-flex justify-space-between">
         <span>{{ $t("instrument.tradeVol") }}</span>
         <span>{{ instrument.tradeVol }}</span>
@@ -52,8 +44,6 @@
         <span>{{ $t("instrument.closing") }}</span>
         <span>{{ instrument.closing }}</span>
       </v-col>
-    </v-row>
-    <v-row dense>
       <v-col cols="6" class="d-flex justify-space-between">
         <span>{{ $t("instrument.tradeVal") }}</span>
         <span>{{ instrument.tradeVal }}</span>
@@ -62,8 +52,6 @@
         <span>{{ $t("instrument.buyPrice") }}</span>
         <span>{{ instrument.buyPrice }}</span>
       </v-col>
-    </v-row>
-    <v-row dense>
       <v-col cols="6" class="d-flex justify-space-between">
         <span>{{ $t("instrument.opening") }}</span>
         <span>{{ instrument.opening }}</span>

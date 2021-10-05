@@ -1,74 +1,43 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col md="3">
-        <instrument-search />
-      </v-col>
-      <v-col> </v-col>
-    </v-row>
-    <v-row v-if="instruments.length > 0">
-      <v-col class="d-flex flex-row ma-0 pa-0" style="overflow-x: scroll">
-        <v-card class="me-1 mb-1" min-width="430" v-for="item in instruments" :key="item.id">
-          <v-toolbar dense flat color="secondary" dark>
-            {{ item.name }}
-            <v-spacer />
-            <v-btn depressed height="24px" color="green" dark x-large>
-              {{ $t("oms.buy") }}
-            </v-btn>
-            <v-btn
-              depressed
-              height="24px"
-              color="red"
-              dark
-              x-large
-              class="ms-1 pa-0"
-            >
-              {{ $t("oms.sell") }}
-            </v-btn>
-            <v-icon
-              class="ms-1"
-              color="error"
-              @click="() => close(item.id)"
-              small
-            >
-              mdi-close-circle-outline
-            </v-icon>
-          </v-toolbar>
-          <v-card-text class="text-caption ma-0 pa-0">
-            <order-queue-card :insId="item.id" />
-            <legal-real-card />
-            <instrument-card :insId="item.id" />
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-card class="ma-0 pa-0">
+    <v-toolbar class="pt-1" dense>
+      <instrument-search style="max-width: 200pt" />
+      <v-spacer />
+      <v-btn-toggle v-model="viewMode" mandatory>
+        <v-btn small>
+          <v-icon small> mdi-view-headline </v-icon>
+        </v-btn>
+        <v-btn small>
+          <v-icon small> mdi-view-grid-outline </v-icon>
+        </v-btn>
+      </v-btn-toggle>
+    </v-toolbar>
+    <v-card-text v-if="instruments.length > 0">
+      <card-view v-if="viewMode == 1" />
+      <tab-view v-if="viewMode == 0" />
+    </v-card-text>
+  </v-card>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed, useStore } from "@nuxtjs/composition-api";
 import InstrumentSearch from "@/components/oms/instrumentSearch.vue";
-import instrumentCard from "@/components/oms/instrumentCard.vue";
-import OrderQueueCard from "~/components/oms/orderQueueCard.vue";
-import LegalRealCard from "~/components/oms/legalRealCard.vue";
+import CardView from "./cardView.vue";
+import TabView from "./tabView.vue";
 
 export default defineComponent({
   components: {
-    instrumentCard,
     InstrumentSearch,
-    OrderQueueCard,
-    LegalRealCard,
+    CardView,
+    TabView,
   },
   name: "focus-board",
   setup(props) {
     const store = useStore();
     const instruments = computed(() => store.getters["instruments/getFocus"]);
-    function close(id: number) {
-      store.commit("instruments/removeFocus", id);
-      store.commit("instruments/stopWatchQueue", id);
-    }
+    const viewMode = 2;
     return {
-      close,
+      viewMode,
       instruments,
     };
   },
