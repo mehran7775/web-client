@@ -36,7 +36,7 @@ export const mutations: MutationTree<RootState> = {
     state.focus.splice(state.focus.findIndex((element: Instrument) => element.id == data), 1)
   },
   watchQueue(state, payload: { key: number, data: Array<OrderQueueItem> }) {
-    state.orderQueueCache.get(payload.key)?.push(...payload.data)
+    state.orderQueueCache.set(payload.key, payload.data)
   },
   stopWatchQueue(state, key: number) {
     state.orderQueueCache.delete(key)
@@ -44,11 +44,22 @@ export const mutations: MutationTree<RootState> = {
 }
 
 export const actions: ActionTree<RootState, RootState> = {
-  async getInstrumentsDetail({ commit }, payload: Array<number>): Promise<Array<Instrument> | number> {
+  async getInstrumentsDetail({ state, commit }, payload: Array<number>): Promise<Array<Instrument> | number> {
     try {
-      const { data: { data } } = await getInstrumentsDetail(payload, this.$axios)
-      commit('setInstruments', data)
-      return data
+      let res: Array<Instrument> = []
+      let missing: Array<number> = []
+      let tmp = null
+      for (let i in payload) {
+        tmp = state.cache.get(payload[i])
+        if (tmp) res.push(tmp)
+        else missing.push(payload[i])
+      }
+      if (missing.length > 0) {
+        const { data: { data } } = await getInstrumentsDetail(missing, this.$axios)
+        commit('setInstruments', data)
+        res.push(...data)
+      }
+      return res
     } catch (err: any) {
       if (err.response) {
         return err.response.status as number
