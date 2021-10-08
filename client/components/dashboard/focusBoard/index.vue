@@ -35,7 +35,7 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const instruments = computed(() => store.getters["instruments/getFocus"]);
-    const viewMode = 2;
+    const viewMode = 0;
     return {
       viewMode,
       instruments,

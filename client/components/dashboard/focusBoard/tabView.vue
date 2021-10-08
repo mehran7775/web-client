@@ -3,15 +3,10 @@
     <v-row>
       <v-col>
         <v-tabs color="blue" v-model="tab" align-with-title>
-          <v-tab v-for="item in instruments" :key="item.id" class="pe-1 ps-2" >
+          <v-tab v-for="item in instruments" :key="item.id" class="pe-1 ps-2">
             {{ item.name }}
             <v-spacer />
-            <v-icon
-              @click="() => close(item.id)"
-              small
-            >
-              mdi-close
-            </v-icon>
+            <v-icon @click="() => close(item.id)" small> mdi-close </v-icon>
           </v-tab>
         </v-tabs>
         <v-tabs-items v-model="tab">
@@ -24,7 +19,9 @@
               <v-col cols="4">
                 <instrument-card :insId="item.id" />
               </v-col>
-              <v-col cols="4"> {{ item }} </v-col>
+              <v-col cols="4">
+                <buy-sell-card />
+              </v-col>
             </v-row>
           </v-tab-item>
         </v-tabs-items>
@@ -43,12 +40,14 @@ import {
 import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
+import BuySellCard from "~/components/oms/BuySellCard.vue";
 
 export default defineComponent({
   components: {
     instrumentCard,
     OrderQueueCard,
     LegalRealCard,
+    BuySellCard,
   },
   setup() {
     const store = useStore();
