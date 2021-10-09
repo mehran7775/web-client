@@ -37,6 +37,7 @@ import {
   computed,
   ref,
 } from "@nuxtjs/composition-api";
+import { ActiveInstrument, OrderSide } from "@/types/oms";
 import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
@@ -52,7 +53,24 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const instruments = computed(() => store.getters["instruments/getFocus"]);
-    const tab = ref(0);
+    const tab = computed({
+      get() {
+        return (
+          (store.getters["instruments/getSelected"] as ActiveInstrument)
+            ?.focusIndex | 0
+        );
+      },
+      set(value: number) {
+        store.commit(
+          "instruments/select",
+          new ActiveInstrument(
+            value,
+            (store.getters["instruments/getSelected"] as ActiveInstrument)
+              ?.side | OrderSide.Buy
+          )
+        );
+      },
+    });
     function close(id: number) {
       store.commit("instruments/removeFocus", id);
       store.commit("instruments/stopWatchQueue", id);

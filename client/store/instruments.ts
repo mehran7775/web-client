@@ -1,5 +1,5 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import { Instrument, OrderQueueItem } from '@/types/oms'
+import { Instrument, OrderQueueItem, OrderSide, ActiveInstrument } from '@/types/oms'
 import { getInstrumentsDetail, getOrderQueue } from '~/repositories/instruments_manager'
 
 
@@ -8,6 +8,7 @@ export const state = () => (new RootState())
 export class RootState {
   cache: Map<number, Instrument> = new Map<number, Instrument>()
   focus: Array<Instrument> = []
+  selected: ActiveInstrument = new ActiveInstrument(0, OrderSide.Buy)
   orderQueueCache: Map<number, Array<OrderQueueItem>> = new Map<number, Array<OrderQueueItem>>()
 }
 
@@ -18,8 +19,11 @@ export const getters: GetterTree<RootState, RootState> = {
   getByKey: (state) => (key: number): Instrument | null => {
     return state.cache.get(key) || null
   },
-  getFocus: (state) => {
+  getFocus: (state): Array<Instrument> => {
     return state.focus
+  },
+  getSelected: (state): ActiveInstrument => {
+    return state.selected
   }
 }
 
@@ -40,6 +44,13 @@ export const mutations: MutationTree<RootState> = {
   },
   stopWatchQueue(state, key: number) {
     state.orderQueueCache.delete(key)
+  },
+  select(state, active: ActiveInstrument) {
+    active.instrument = state.focus[active.focusIndex]
+    state.selected = active
+  },
+  selectSide(state, side: OrderSide) {
+    state.selected.side = side
   }
 }
 

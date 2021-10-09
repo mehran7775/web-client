@@ -140,14 +140,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, ref } from "@nuxtjs/composition-api";
+import { defineComponent, useStore, computed } from "@nuxtjs/composition-api";
+import { OrderSide, ActiveInstrument } from "@/types/oms";
 
 export default defineComponent({
-  setup() {
-    const tab: Ref<number> = ref(0);
-
+  props: {},
+  setup(props) {
+    const store = useStore();
+    const active = computed(
+      () => store.getters["instruments/getSelected"] as ActiveInstrument
+    );
+    const tab = computed({
+      get(): number {
+        return active.value.side == OrderSide.Buy ? 0 : 1;
+      },
+      set(value: number) {
+        store.commit(
+          "instruments/selectSide",
+          value ? OrderSide.Sell : OrderSide.Buy
+        );
+      },
+    });
     return {
       tab,
+      active,
     };
   },
 });

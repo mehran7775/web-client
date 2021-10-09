@@ -13,14 +13,21 @@
       </v-btn-toggle>
     </v-toolbar>
     <v-card-text v-if="instruments.length > 0">
-      <card-view v-if="viewMode == 1" />
+      <card-view @order="order" v-if="viewMode == 1" />
       <tab-view v-if="viewMode == 0" />
     </v-card-text>
   </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, useStore } from "@nuxtjs/composition-api";
+import {
+  defineComponent,
+  computed,
+  useStore,
+  Ref,
+  ref,
+} from "@nuxtjs/composition-api";
+import { ActiveInstrument } from "@/types/oms";
 import InstrumentSearch from "@/components/oms/instrumentSearch.vue";
 import CardView from "./cardView.vue";
 import TabView from "./tabView.vue";
@@ -35,8 +42,12 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const instruments = computed(() => store.getters["instruments/getFocus"]);
-    const viewMode = 0;
+    const viewMode: Ref<number> = ref(0);
+    function order(activeItem: ActiveInstrument) {
+      viewMode.value = 0;
+    }
     return {
+      order,
       viewMode,
       instruments,
     };

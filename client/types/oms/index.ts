@@ -57,6 +57,23 @@ export class Instrument {
 
 }
 
+export enum OrderSide {
+  Buy = 0,
+  Sell = 1,
+  Cross = 2
+}
+
+export class ActiveInstrument {
+  focusIndex: number = 0
+  side: OrderSide = OrderSide.Buy
+  instrument: Instrument | null = null
+  constructor(index: number, side: OrderSide, instrument: Instrument| null = null) {
+    this.focusIndex = index
+    this.side = side
+    this.instrument = instrument
+  }
+}
+
 export class OrderItem {
   amount: number = 0
   count: number = 0

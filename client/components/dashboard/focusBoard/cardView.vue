@@ -6,13 +6,21 @@
           class="me-1 mb-1"
           min-width="430"
           max-width="430"
-          v-for="item in instruments"
+          v-for="(item, i) in instruments"
           :key="item.id"
         >
           <v-toolbar dense flat color="secondary" dark>
             {{ item.name }}
             <v-spacer />
-            <v-btn depressed height="24px" color="success" dark x-large>
+            <v-btn
+              depressed
+              height="24px"
+              color="success"
+              dark
+              x-large
+              class="ma-0 pa-0"
+              @click="() => order(i, OrderSide.Buy)"
+            >
               {{ $t("oms.buy") }}
             </v-btn>
             <v-btn
@@ -22,6 +30,7 @@
               dark
               x-large
               class="ms-1 pa-0"
+              @click="() => order(i, OrderSide.Sell)"
             >
               {{ $t("oms.sell") }}
             </v-btn>
@@ -47,6 +56,7 @@
 
 <script lang="ts">
 import { defineComponent, useStore, computed } from "@nuxtjs/composition-api";
+import { ActiveInstrument, OrderSide } from "@/types/oms";
 import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
@@ -57,15 +67,23 @@ export default defineComponent({
     OrderQueueCard,
     LegalRealCard,
   },
-  setup() {
+  emits: ["order"],
+  setup(props, context) {
     const store = useStore();
     const instruments = computed(() => store.getters["instruments/getFocus"]);
     function close(id: number) {
       store.commit("instruments/removeFocus", id);
       store.commit("instruments/stopWatchQueue", id);
     }
+    function order(index: number, side: OrderSide) {
+      const active = new ActiveInstrument(index, side);
+      store.commit("instruments/select", active);
+      context.emit("order", active);
+    }
     return {
       close,
+      order,
+      OrderSide,
       instruments,
     };
   },
