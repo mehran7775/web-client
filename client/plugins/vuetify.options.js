@@ -7,11 +7,11 @@ import '@mdi/font/css/materialdesignicons.css'
 
 export default function ({ store, app }) {
   const theme = {
-    primary: '#3c8dbc',
+    primary: '#005cb5',
     secondary: '#41535b',
     accent: '#ffffff',
-    error: '#f56954',
-    success: '#06a25c',
+    error: '#e5466c',
+    success: '#369c66',
     darkSuccess: '#057341',
     warning: '#f39c12'
   }
