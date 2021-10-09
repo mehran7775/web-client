@@ -1,7 +1,7 @@
 <template>
-  <v-footer :absolute="true" :class="{ expanded: expanded }" class="ma-0 pa-0" >
+  <v-footer :absolute="true" :class="{ expanded: expanded }" class="ma-0 pa-0">
     <v-card :class="{ expanded: expanded }" width="100%" elevation="1">
-      <v-card-title v-if="tab != 0">
+      <v-card-title v-if="tab != -1">
         <h4 class="font-weight-bold pt-1">
           {{ title }}
         </h4>
@@ -13,30 +13,36 @@
           <v-icon size="1em">mdi-minus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-divider v-if="tab != 0" class="mt-4 px-0 mx-1"></v-divider>
-      <v-card-text v-if="tab != 0" :class="{ expanded: expanded }">
-        <default-order-list v-if="tab == 1" />
-        <bests v-if="tab == 2" />
-        <deep-information v-if="tab == 3" />
-        <further-information v-if="tab == 4" />
-      </v-card-text>
+      <v-divider class="mt-4 px-0 mx-1"></v-divider>
+      <v-tabs-items v-model="tab" :class="{ expanded: expanded }">
+        <v-tab-item>
+          <default-order-list />
+        </v-tab-item>
+        <v-tab-item>
+          <bests />
+        </v-tab-item>
+        <v-tab-item>
+          <deep-information />
+        </v-tab-item>
+        <v-tab-item>
+          <further-information />
+        </v-tab-item>
+      </v-tabs-items>
       <v-card-actions>
-        <v-btn-toggle v-model="tab" borderless dense color="blue">
-          <v-btn :value="1" class="white">
+        <v-tabs v-model="tab" optional >
+          <v-tab>
             {{ $t("bottom-panel.orders") }}
-          </v-btn>
-          <v-btn :value="2" class="white">
+          </v-tab>
+          <v-tab>
             {{ $t("bottom-panel.bests") }}
-          </v-btn>
-
-          <v-btn :value="3" class="white">
+          </v-tab>
+          <v-tab>
             {{ $t("bottom-panel.depth") }}
-          </v-btn>
-
-          <v-btn :value="4" class="white">
+          </v-tab>
+          <v-tab>
             {{ $t("bottom-panel.more") }}
-          </v-btn>
-        </v-btn-toggle>
+          </v-tab>
+        </v-tabs>
       </v-card-actions>
     </v-card>
   </v-footer>

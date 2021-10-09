@@ -19,26 +19,16 @@
         <v-card>
           <v-card-title>
             <v-text-field v-model="item.name" />
-            <v-autocomplete
-              v-model="model"
-              :placeholder="$t('general.new')"
-              :loading="loading"
-              :items="entries"
-              item-text="name"
-              item-value="id"
+            <instrument-search
               @input="
                 (val) => {
-                  model = null;
-                  entries.splice(0, entries.length);
-                  if (item.children.indexOf(val) == -1) item.children.push(val);
+                  if (val) {
+                    model = null;
+                    if (item.children.indexOf(val) == -1)
+                      item.children.push(val);
+                  }
                 }
               "
-              @update:search-input="
-                (val) => {
-                  search(item.name, val);
-                }
-              "
-              return-object
             />
           </v-card-title>
           <v-divider />
@@ -86,8 +76,7 @@ import {
 } from "@nuxtjs/composition-api";
 import draggable from "vuedraggable";
 import instrumentView from "../oms/instrumentCard.vue";
-import { autoComplete } from "@/repositories/instruments_manager";
-import { AutoCompleteItem } from "@/types/collection";
+import InstrumentSearch from "../oms/instrumentSearch.vue";
 
 export default defineComponent({
   name: "watchListEditor",
@@ -96,13 +85,12 @@ export default defineComponent({
   components: {
     draggable,
     "instrument-view": instrumentView,
+    InstrumentSearch,
   },
   setup(props, { emit }) {
     const store = useStore();
     const context = useContext();
     const watchlist = mapToEditable(store.getters["user/watchList"]);
-    const loading = ref(false);
-    const entries: Array<AutoCompleteItem> = reactive([]);
     const model: Ref<any> = ref(null);
 
     async function save() {
@@ -136,25 +124,9 @@ export default defineComponent({
       return res;
     }
 
-    async function search(name: string, value: string) {
-      if (value && value.length > 2) {
-        loading.value = true;
-        try {
-          const res = await autoComplete(value, context.$axios);
-          entries.push(...res.data);
-        } finally {
-          loading.value = false;
-        }
-      }
-    }
-
     return {
       save,
       watchlist,
-      // auto-complete
-      loading,
-      entries,
-      search,
       model,
     };
   },

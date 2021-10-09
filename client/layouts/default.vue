@@ -206,7 +206,7 @@ import {
 } from "@nuxtjs/composition-api";
 import colors from "vuetify/es5/util/colors.js";
 import snackbar from "@/components/snacks.vue";
-import watchListEditor from "@/components/dashboard/WatchList.vue";
+import watchListEditor from "@/components/dashboard/watchListEditor.vue";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
 import moment from "moment-jalaali";
 
