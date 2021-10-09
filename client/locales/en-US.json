@@ -7,6 +7,8 @@
     "new": "New",
     "proxyCompany": "Asre Danesh Afzar",
     "company": "Asre Danesh Afzar",
+    "acceptPolicy": "I accept rules and policy.",
+    "drft": "Draft",
     "date": {
       "dt": "YYYY-MM-DD HH:mm:ss",
       "d": "YYYY-MM-DD",
@@ -98,7 +100,8 @@
       "blockedAmount": "Blocked",
       "onlineBlockedAmount": "Online Blocked",
       "remaining": "Remaining",
-      "credit": "Credit"
+      "credit": "Credit",
+      "type": "Account Type"
     }
   },
   "oms": {
@@ -108,6 +111,10 @@
     "sell": "Sell",
     "buy": "Buy",
     "percent": "Percent",
+    "trade": "Trade",
+    "wage": "Wage",
+    "value": "Value",
+    "threshold": "Threshold",
     "bourseIndex": "Bourse Index",
     "superBourseIndex": "Super Bourse Index",
     "sellPrice": "@:oms.sell @:oms.price",
@@ -115,7 +122,17 @@
     "sellCount": "@:oms.sell @:oms.count",
     "buyPrice": "@:oms.buy @:oms.price",
     "buyAmount": "@:oms.buy @:oms.amount",
-    "buyCount": "@:oms.buy @:oms.count"
+    "buyCount": "@:oms.buy @:oms.count",
+    "splitOrders": "Split Orders",
+    "countThreshold": "@:oms.count @:oms.threshold",
+    "priceThreshold": "@:oms.price @:oms.threshold",
+    "tradeValue": "@:oms.trade @:oms.value",
+    "tradeWage": "@:oms.trade @:oms.wage",
+    "headToHeadPrice": "Head-To-Head @:oms.price"
+  },
+  "wealth": {
+    "shares": "Shares",
+    "sharesCount": "@:wealth.shares @:oms.count"
   },
   "login": {
     "login": "Login",

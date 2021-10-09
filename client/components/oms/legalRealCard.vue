@@ -1,14 +1,14 @@
 <template>
   <v-container fluid class="text-center">
     <v-row dense>
-      <v-col class="green lighten-5 text-no-wrap">
+      <v-col class="success lighten-5 text-no-wrap">
         <v-row>
           <v-col cols="4">{{ $t("oms.buyCount") }}</v-col>
           <v-col cols="4">{{ $t("oms.buyAmount") }}</v-col>
           <v-col cols="4">{{ $t("oms.percent") }}</v-col>
         </v-row>
       </v-col>
-      <v-col class="red lighten-5 text-no-wrap">
+      <v-col class="error lighten-5 text-no-wrap">
         <v-row>
           <v-col cols="4">{{ $t("oms.sellCount") }}</v-col>
           <v-col cols="4">{{ $t("oms.sellAmount") }}</v-col>

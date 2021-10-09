@@ -4,6 +4,7 @@
       v-if="isLogin"
       id="core-navigation-drawer"
       v-model="drawer"
+      :expand-on-hover="mini"
       :mini-variant="mini"
       :clipped="clipped"
       fixed

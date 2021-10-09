@@ -19,9 +19,6 @@
       </v-icon>
     </template>
     <template #item.name="{ item }">
-      <!-- <v-icon color="green"> mdi-basket-plus-outline </v-icon>
-      <v-icon color="red"> mdi-basket-remove-outline </v-icon> -->
-
       <v-img
         max-width="32"
         src="/fonts/svg/bag-tick.svg"

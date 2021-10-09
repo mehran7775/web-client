@@ -3,7 +3,7 @@
     <v-list>
       <v-list-item>
         <v-list-item-icon>
-          <v-badge :value="false" left dot color="red">
+          <v-badge :value="false" left dot color="error">
             <v-icon v-if="isExpanded" @click.stop="onClick('open')">
               mdi-bell
             </v-icon>

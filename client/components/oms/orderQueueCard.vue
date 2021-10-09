@@ -1,10 +1,10 @@
 <template>
   <v-container class="text-center" fluid>
     <v-row dense>
-      <v-col class="green--text">
+      <v-col class="success--text">
         {{ $t("oms.buy") }}
       </v-col>
-      <v-col class="red--text">
+      <v-col class="error--text">
         {{ $t("oms.sell") }}
       </v-col>
     </v-row>

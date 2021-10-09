@@ -12,13 +12,13 @@
           <v-toolbar dense flat color="secondary" dark>
             {{ item.name }}
             <v-spacer />
-            <v-btn depressed height="24px" color="green" dark x-large>
+            <v-btn depressed height="24px" color="success" dark x-large>
               {{ $t("oms.buy") }}
             </v-btn>
             <v-btn
               depressed
               height="24px"
-              color="red"
+              color="error"
               dark
               x-large
               class="ms-1 pa-0"

@@ -20,6 +20,8 @@
     "failed": "عملیات مورد نظر شما انجام نشد",
     "proxyCompany": "کارگزاری عصر دانش افزار",
     "company": "عصر دانش‌افزار",
+    "acceptPolicy": "قوانین و مقررات را می‌پذیرم.",
+    "draft": "پیش‌نویس",
     "date": {
       "dt": "jYYYY/jMM/jDD-HH:mm:ss",
       "d": "jYYYY/jMM/jDD",
@@ -68,7 +70,7 @@
     }
   },
   "instrument": {
-    "detail":"جزئیات نماد",
+    "detail": "جزئیات نماد",
     "id": "شناسه",
     "code": "کد",
     "name": "نام",
@@ -117,7 +119,8 @@
       "blockedAmount": "بلوکه شده",
       "onlineBlockedAmount": "بلوکه شده آنلاین",
       "remaining": "مانده",
-      "credit": "اعتبار"
+      "credit": "اعتبار",
+      "type": "نوع حساب"
     }
   },
   "oms": {
@@ -127,6 +130,10 @@
     "sell": "فروش",
     "buy": "خرید",
     "percent": "درصد",
+    "trade": "معامله",
+    "wage": "کارمزد",
+    "value": "ارزش",
+    "threshold": "آستانه",
     "bourseIndex": "شاخص بورس",
     "superBourseIndex": "شاخص فرابورس",
     "sellPrice": "@:oms.price @:oms.sell",
@@ -134,7 +141,17 @@
     "sellCount": "@:oms.count @:oms.sell",
     "buyPrice": "@:oms.price @:oms.buy",
     "buyAmount": "@:oms.amount @:oms.buy",
-    "buyCount": "@:oms.count @:oms.buy"
+    "buyCount": "@:oms.count @:oms.buy",
+    "splitOrders": "تقسیم سفارشات",
+    "countThreshold": "@:oms.threshold @:oms.count",
+    "priceThreshold": "@:oms.threshold @:oms.price",
+    "tradeValue": "@:oms.value @:oms.trade",
+    "tradeWage": "@:oms.wage @:oms.trade",
+    "headToHeadPrice": "@:oms.price سر‌به‌سر"
+  },
+  "wealth": {
+    "shares": "دارایی",
+    "sharesCount": "@:oms.count @:wealth.shares"
   },
   "login": {
     "login": "ورود",
