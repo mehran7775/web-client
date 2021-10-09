@@ -13,14 +13,27 @@
           <v-tab-item v-for="item in instruments" :key="item.id">
             <v-row>
               <v-col cols="4">
-                <order-queue-card :insId="item.id" />
+                <order-queue-card
+                  :insId="item.id"
+                  @count="
+                    (val) => {
+                      count = val;
+                    }
+                  "
+                  @price="
+                    (val) => {
+                      price = val;
+                    }
+                  "
+                  copy
+                />
                 <legal-real-card />
               </v-col>
               <v-col cols="4">
                 <instrument-card :insId="item.id" />
               </v-col>
               <v-col cols="4">
-                <buy-sell-card />
+                <buy-sell-card :price.sync="price" :count.sync="count" />
               </v-col>
             </v-row>
           </v-tab-item>
@@ -36,6 +49,7 @@ import {
   useStore,
   computed,
   ref,
+  Ref,
 } from "@nuxtjs/composition-api";
 import { ActiveInstrument, OrderSide } from "@/types/oms";
 import instrumentCard from "@/components/oms/instrumentCard.vue";
@@ -53,6 +67,8 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const instruments = computed(() => store.getters["instruments/getFocus"]);
+    const count: Ref<number> = ref(0);
+    const price: Ref<number> = ref(0);
     const tab = computed({
       get() {
         return (
@@ -77,6 +93,8 @@ export default defineComponent({
     }
     return {
       close,
+      price,
+      count,
       tab,
       instruments,
     };
