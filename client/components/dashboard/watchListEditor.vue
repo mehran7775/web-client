@@ -75,7 +75,7 @@ import {
   useContext,
 } from "@nuxtjs/composition-api";
 import draggable from "vuedraggable";
-import instrumentView from "../oms/instrumentCard.vue";
+import instrumentView from "../oms/instrumentCardCompact.vue";
 import InstrumentSearch from "../oms/instrumentSearch.vue";
 
 export default defineComponent({

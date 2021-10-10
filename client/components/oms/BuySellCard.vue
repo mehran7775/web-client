@@ -34,8 +34,8 @@
                       dense
                     >
                     <template #append>
-                        <v-icon>mdi-lock-open</v-icon>
-                        <v-icon>mdi-calculator</v-icon>
+                        <v-icon small>mdi-lock-open</v-icon>
+                        <v-icon small>mdi-calculator</v-icon>
                     </template>
                     </v-text-field>
                   </v-col>
@@ -48,11 +48,11 @@
                       dense
                     >
                       <template #append>
-                        <v-icon>mdi-lock-open</v-icon>
-                        <v-icon>mdi-plus-circle-outline</v-icon>
-                        <v-icon>mdi-minus-circle-outline</v-icon>
-                        <v-icon>mdi-arrow-up-circle-outline</v-icon>
-                        <v-icon>mdi-arrow-down-circle-outline</v-icon>
+                        <v-icon small>mdi-lock-open</v-icon>
+                        <v-icon small>mdi-plus-circle-outline</v-icon>
+                        <v-icon small>mdi-minus-circle-outline</v-icon>
+                        <v-icon small>mdi-arrow-up-circle-outline</v-icon>
+                        <v-icon small>mdi-arrow-down-circle-outline</v-icon>
                       </template>
                     </v-text-field>
                   </v-col>
@@ -111,60 +111,85 @@
             </v-form>
           </v-tab-item>
           <v-tab-item>
-            <v-row dense>
-              <v-col md="6" sm="12" class="d-flex justify-space-between">
-                <span>{{ $t("oms.count") }}</span>
-                <v-icon small>mdi-calculator</v-icon>
-              </v-col>
-              <v-col md="6" sm="12" class="d-flex justify-space-between">
-                <span>{{ $t("oms.price") }}</span>
-                <span>0 </span>
-                <span>
-                  <v-icon small>mdi-lock-open</v-icon>
-                  <v-icon small>mdi-plus-circle-outline</v-icon>
-                  <v-icon small>mdi-minus-circle-outline</v-icon>
-                  <v-icon small>mdi-arrow-up-circle-outline</v-icon>
-                  <v-icon small>mdi-arrow-down-circle-outline</v-icon>
-                </span>
-              </v-col>
-              <v-col md="6" sm="12">
-                <v-select dense :placeholder="$t('accounting.account.type')">
-                </v-select>
-              </v-col>
-              <v-col md="6" sm="12">
-                <v-select dense :placeholder="$t('accounting.account.credit')">
-                </v-select>
-              </v-col>
-              <v-col md="6" sm="12">
-                <v-checkbox :label="$t('oms.splitOrders')" dense />
-              </v-col>
-              <v-col md="6" sm="12">
-                <span>{{ $t("oms.countThreshold") }}: </span>
-                <span>1000 </span>
-                <span>{{ $t("oms.priceThreshold") }}: </span>
-                <span>1000 </span>
-              </v-col>
-              <v-col md="6" sm="12">
-                <span>{{ $t("wealth.sharesCount") }}: </span>
-                <span>1000 </span>
-                <span>قیمت سر‌به‌سر: </span>
-                <span>1000 </span>
-              </v-col>
-              <v-col md="6" sm="12">
-                <span>{{ $t("oms.tradeWage") }}: </span>
-                <span>1000 </span>
-                <span>{{ $t("oms.tradeValue") }}: </span>
-                <span>1000 </span>
-              </v-col>
-              <v-col md="12"> </v-col>
-              <v-col md="6" sm="12">
-                <v-checkbox :label="$t('general.acceptPolicy')" dense />
-              </v-col>
-              <v-col md="6" sm="12">
-                <v-btn depressed> {{ $t("general.draft") }} </v-btn>
-                <v-btn color="error" depressed>{{ $t("oms.sell") }}</v-btn>
-              </v-col>
-            </v-row>
+            <v-form>
+              <v-container fluid>
+                <v-row align="center" dense>
+                  <v-col md="6" sm="12">
+                    <v-text-field
+                      :label="$t('oms.count')"
+                      type="number"
+                      v-model="countVal"
+                      hide-details
+                      dense
+                    >
+                    <template #append>
+                        <v-icon small>mdi-lock-open</v-icon>
+                        <v-icon small>mdi-calculator</v-icon>
+                    </template>
+                    </v-text-field>
+                  </v-col>
+                  <v-col md="6" sm="12">
+                    <v-text-field
+                      :label="$t('oms.price')"
+                      type="number"
+                      v-model="priceVal"
+                      hide-details
+                      dense
+                    >
+                      <template #append>
+                        <v-icon small>mdi-lock-open</v-icon>
+                        <v-icon small>mdi-plus-circle-outline</v-icon>
+                        <v-icon small>mdi-minus-circle-outline</v-icon>
+                        <v-icon small>mdi-arrow-up-circle-outline</v-icon>
+                        <v-icon small>mdi-arrow-down-circle-outline</v-icon>
+                      </template>
+                    </v-text-field>
+                  </v-col>
+                  <v-col md="12" sm="12">
+                    <v-select
+                      dense
+                      :placeholder="$t('accounting.account.credit')"
+                      hide-details
+                    >
+                    </v-select>
+                  </v-col>
+                  <v-col md="6" sm="12">
+                    <v-checkbox
+                      :label="$t('oms.splitOrders')"
+                      dense
+                      hide-details
+                      class="ma-0 pa-0"
+                    />
+                  </v-col>
+                  <v-col md="6" sm="12">
+                    <span>{{ $t("oms.countThreshold") }}: </span>
+                    <span>1000 </span>
+                    <span>{{ $t("oms.priceThreshold") }}: </span>
+                    <span>1000 </span>
+                  </v-col>
+                  <v-col md="6" sm="12">
+                    <span>{{ $t("wealth.sharesCount") }}: </span>
+                    <span>1000 </span>
+                    <span>قیمت سر‌به‌سر: </span>
+                    <span>1000 </span>
+                  </v-col>
+                  <v-col md="6" sm="12">
+                    <span>{{ $t("oms.tradeWage") }}: </span>
+                    <span>1000 </span>
+                    <span>{{ $t("oms.tradeValue") }}: </span>
+                    <span>1000 </span>
+                  </v-col>
+                  <v-col md="12"> </v-col>
+                  <v-col md="6" sm="12">
+                    <v-checkbox :label="$t('general.acceptPolicy')" dense />
+                  </v-col>
+                  <v-col md="6" sm="12">
+                    <v-btn depressed> {{ $t("general.draft") }} </v-btn>
+                    <v-btn color="error" depressed>{{ $t("oms.sell") }}</v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-form>
           </v-tab-item>
         </v-tabs-items>
       </v-col>

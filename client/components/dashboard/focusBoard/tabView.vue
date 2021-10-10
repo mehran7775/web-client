@@ -11,7 +11,7 @@
         </v-tabs>
         <v-tabs-items v-model="tab">
           <v-tab-item v-for="item in instruments" :key="item.id">
-            <v-row dense >
+            <v-row dense>
               <v-col cols="4" class="ma-0 px-0">
                 <order-queue-card
                   :insId="item.id"
@@ -29,10 +29,23 @@
                   extra-col
                   responsive
                 />
-                <legal-real-card extra-col hide-headers responsive/>
+                <legal-real-card extra-col hide-headers responsive />
               </v-col>
               <v-col cols="4" class="ma-0 px-0">
-                <instrument-card :insId="item.id"/>
+                <instrument-card
+                  :insId="item.id"
+                  @count="
+                    (val) => {
+                      count = val;
+                    }
+                  "
+                  @price="
+                    (val) => {
+                      price = val;
+                    }
+                  "
+                  responsive
+                />
               </v-col>
               <v-col cols="4" class="ma-0 px-0">
                 <buy-sell-card :price.sync="price" :count.sync="count" />
@@ -54,7 +67,7 @@ import {
   Ref,
 } from "@nuxtjs/composition-api";
 import { ActiveInstrument, OrderSide } from "@/types/oms";
-import instrumentCard from "@/components/oms/instrumentCard.vue";
+import instrumentCard from "~/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
 import BuySellCard from "~/components/oms/BuySellCard.vue";

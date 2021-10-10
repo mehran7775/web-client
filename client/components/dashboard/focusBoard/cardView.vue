@@ -43,10 +43,10 @@
               mdi-close-circle-outline
             </v-icon>
           </v-toolbar>
-          <v-card-text class="text-caption ma-0 pa-0">
+          <v-card-text class="text-caption ma-0 px-0">
             <order-queue-card :insId="item.id" extra-col />
             <legal-real-card hide-headers/>
-            <instrument-card :insId="item.id" />
+            <instrument-card :insId="item.id" hide-headers/>
           </v-card-text>
         </v-card>
       </v-col>
@@ -57,7 +57,7 @@
 <script lang="ts">
 import { defineComponent, useStore, computed } from "@nuxtjs/composition-api";
 import { ActiveInstrument, OrderSide } from "@/types/oms";
-import instrumentCard from "@/components/oms/instrumentCard.vue";
+import instrumentCard from "~/components/oms/instrumentCardCompact.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
 

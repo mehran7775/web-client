@@ -16,7 +16,8 @@
 
 @font-face {
   font-family: "B Yekan";
-  src: url("static/fonts/IRANYekanWebRegular.woff") format("woff"), url("static/fonts/IRANYekanWebRegular.ttf") format("truetype");
+  src: url("static/fonts/IRANYekanWebRegular.woff") format("woff"),
+    url("static/fonts/IRANYekanWebRegular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -39,7 +40,7 @@
 }
 
 $font-size-root: 14px;
-$card-text-font-size: 0.8rem;
+$card-text-font-size: 0.715rem;
 $input-font-size: inherit;
 $label-font-size: inherit;
 
@@ -69,14 +70,31 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
-.striped:nth-child(even){
+@media (min-width: 961px) {
+  .oddodd:nth-child(4n + 4) {
+    background-color: #f2f2f2;
+  }
+  .oddodd:nth-child(4n + 3) {
+    background-color: #f2f2f2;
+  }
+}
+@media (max-width: 960px) {
+  .oddodd:nth-child(even) {
+    background-color: #ffffff;
+  }
+  .oddodd:nth-child(odd) {
+    background-color: #f2f2f2;
+  }
+}
+
+.striped:nth-child(even) {
   background-color: #ffffff;
 }
-.striped:nth-child(odd){
+.striped:nth-child(odd) {
   background-color: #f2f2f2;
 }
 

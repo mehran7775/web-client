@@ -43,7 +43,7 @@ import {
   useStore,
   computed,
 } from "@nuxtjs/composition-api";
-import instrumentCard from "../oms/instrumentCard.vue";
+import instrumentCard from "../oms/instrumentCardCompact.vue";
 import LegalRealCard from "../oms/legalRealCard.vue";
 import orderQueueCard from "../oms/orderQueueCard.vue";
 import { WatchlistColumns } from "@/types/sso";
