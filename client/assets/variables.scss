@@ -73,4 +73,11 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.striped:nth-child(even){
+  background-color: #ffffff;
+}
+.striped:nth-child(odd){
+  background-color: #f2f2f2;
+}
+
 @import "~vuetify/src/styles/styles.sass";

@@ -44,8 +44,8 @@
             </v-icon>
           </v-toolbar>
           <v-card-text class="text-caption ma-0 pa-0">
-            <order-queue-card :insId="item.id" />
-            <legal-real-card />
+            <order-queue-card :insId="item.id" extra-col />
+            <legal-real-card hide-headers/>
             <instrument-card :insId="item.id" />
           </v-card-text>
         </v-card>

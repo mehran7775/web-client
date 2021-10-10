@@ -26,11 +26,13 @@
                     }
                   "
                   copy
+                  extra-col
+                  responsive
                 />
-                <legal-real-card />
+                <legal-real-card extra-col hide-headers responsive/>
               </v-col>
               <v-col cols="4">
-                <instrument-card :insId="item.id" />
+                <instrument-card :insId="item.id"/>
               </v-col>
               <v-col cols="4">
                 <buy-sell-card :price.sync="price" :count.sync="count" />

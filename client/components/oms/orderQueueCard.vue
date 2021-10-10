@@ -1,5 +1,5 @@
 <template>
-  <v-container class="text-center" fluid>
+  <v-container class="text-center ma-0 py-0" fluid>
     <v-row dense>
       <v-col class="success--text">
         {{ $t("oms.buy") }}
@@ -8,26 +8,68 @@
         {{ $t("oms.sell") }}
       </v-col>
     </v-row>
-    <v-row dense>
-      <v-col>
-        <v-row>
-          <v-col>{{ $t("oms.count") }}</v-col>
-          <v-col>{{ $t("oms.amount") }}</v-col>
-          <v-col>{{ $t("oms.price") }}</v-col>
-        </v-row>
-      </v-col>
-      <v-col>
-        <v-row>
-          <v-col>{{ $t("oms.count") }}</v-col>
-          <v-col>{{ $t("oms.amount") }}</v-col>
-          <v-col>{{ $t("oms.price") }}</v-col>
-        </v-row>
-      </v-col>
-    </v-row>
-    <v-row v-for="(item, index) in queue" :key="index" dense>
+    <v-row class="text-no-wrap" dense>
       <v-col
-        cols="2"
-        :class="{copy: copy}"
+        :class="{
+          'd-none d-md-block': responsive,
+        }"
+        >{{ $t("oms.count") }}</v-col
+      >
+      <v-col
+        :class="{
+          'd-none d-md-block': responsive,
+        }"
+        >{{ $t("oms.amount") }}</v-col
+      >
+      <v-col
+        :class="{
+          'd-none d-md-block': responsive,
+        }"
+        >{{ $t("oms.price") }}</v-col
+      >
+      <v-col v-if="responsive" class="d-md-none">{{
+        $t("oms.count-short")
+      }}</v-col>
+      <v-col v-if="responsive" class="d-md-none">{{
+        $t("oms.amount-short")
+      }}</v-col>
+      <v-col v-if="responsive" class="d-md-none">{{
+        $t("oms.price-short")
+      }}</v-col>
+
+      <v-col v-if="extraCol"></v-col>
+
+      <v-col
+        :class="{
+          'd-none d-md-block': responsive,
+        }"
+        >{{ $t("oms.count") }}</v-col
+      >
+      <v-col
+        :class="{
+          'd-none d-md-block': responsive,
+        }"
+        >{{ $t("oms.amount") }}</v-col
+      >
+      <v-col
+        :class="{
+          'd-none d-md-block': responsive,
+        }"
+        >{{ $t("oms.price") }}</v-col
+      >
+      <v-col v-if="responsive" class="d-md-none">{{
+        $t("oms.count-short")
+      }}</v-col>
+      <v-col v-if="responsive" class="d-md-none">{{
+        $t("oms.amount-short")
+      }}</v-col>
+      <v-col v-if="responsive" class="d-md-none">{{
+        $t("oms.price-short")
+      }}</v-col>
+    </v-row>
+    <v-row class="striped" v-for="(item, index) in queue" :key="index" dense>
+      <v-col
+        :class="{ copy: copy }"
         @click="
           () => {
             $emit('count', item.buy.count);
@@ -37,8 +79,7 @@
       >
       <v-col>{{ item.buy.amount }}</v-col>
       <v-col
-        cols="2"
-        :class="{copy: copy}"
+        :class="{ copy: copy }"
         @click="
           () => {
             $emit('price', item.buy.price);
@@ -46,9 +87,11 @@
         "
         >{{ item.buy.price }}</v-col
       >
+
+      <v-col v-if="extraCol"></v-col>
+
       <v-col
-        cols="2"
-        :class="{copy: copy}"
+        :class="{ copy: copy }"
         @click="
           () => {
             $emit('count', item.sell.count);
@@ -58,8 +101,7 @@
       >
       <v-col>{{ item.sell.amount }}</v-col>
       <v-col
-        cols="2"
-        :class="{copy: copy}"
+        :class="{ copy: copy }"
         @click="
           () => {
             $emit('price', item.sell.price);
@@ -84,13 +126,13 @@ export default defineComponent({
   name: "order-queue-card",
   emits: ["count", "price"],
   props: {
-    insId: {
-      require: true,
-      type: Number,
-    },
-    copy: Boolean
+    insId: Number,
+    copy: Boolean,
+    responsive: Boolean,
+    "extra-col": Boolean,
   },
   setup(props) {
+    console.log("col: ", props["extra-col"]);
     const store = useStore();
     const queue: Array<OrderQueueItem> = reactive([]);
     store

@@ -10,7 +10,6 @@
       fixed
       app
       :right="rtl"
-      mobile-breakpoint="960"
       width="260"
     >
       <v-list v-model="selected" dense>
@@ -139,7 +138,6 @@
       app
       :right="!rtl"
       color="white"
-      mobile-breakpoint="960"
       width="260"
     >
       <left-panel
