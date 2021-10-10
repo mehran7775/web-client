@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row dense>
       <v-col>
         <v-tabs color="blue" v-model="tab" align-with-title>
           <v-tab v-for="item in instruments" :key="item.id" class="pe-1 ps-2">
@@ -11,8 +11,8 @@
         </v-tabs>
         <v-tabs-items v-model="tab">
           <v-tab-item v-for="item in instruments" :key="item.id">
-            <v-row>
-              <v-col cols="4">
+            <v-row dense >
+              <v-col cols="4" class="ma-0 px-0">
                 <order-queue-card
                   :insId="item.id"
                   @count="
@@ -31,10 +31,10 @@
                 />
                 <legal-real-card extra-col hide-headers responsive/>
               </v-col>
-              <v-col cols="4">
+              <v-col cols="4" class="ma-0 px-0">
                 <instrument-card :insId="item.id"/>
               </v-col>
-              <v-col cols="4">
+              <v-col cols="4" class="ma-0 px-0">
                 <buy-sell-card :price.sync="price" :count.sync="count" />
               </v-col>
             </v-row>

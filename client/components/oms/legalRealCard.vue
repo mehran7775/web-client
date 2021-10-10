@@ -8,7 +8,7 @@
         {{ $t("oms.sell") }}
       </v-col>
     </v-row>
-    <v-row v-show="hideHeaders" class="text-no-wrap" dense>
+    <v-row v-show="!hideHeaders" class="text-no-wrap" dense>
       <v-col
         :class="{
           'd-none d-md-block': responsive,
