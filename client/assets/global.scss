@@ -35,10 +35,10 @@ input[type="number"] {
   }
 }
 @media (max-width: 960px) {
-  .oddodd:nth-child(even) {
+  .oddodd:nth-child(odd) {
     background-color: #ffffff;
   }
-  .oddodd:nth-child(odd) {
+  .oddodd:nth-child(even) {
     background-color: #f2f2f2;
   }
 }

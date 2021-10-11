@@ -118,11 +118,9 @@ export default defineComponent({
       }
     }
     function getClickEvent(type: fieldType) {
-      console.log("get for: ", type);
       switch (type) {
         case fieldType.price:
           return (value: any) => {
-            console.log(value);
             context.emit("count", value);
           };
         default:

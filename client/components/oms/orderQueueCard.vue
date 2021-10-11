@@ -132,7 +132,6 @@ export default defineComponent({
     "extra-col": Boolean,
   },
   setup(props) {
-    console.log("col: ", props["extra-col"]);
     const store = useStore();
     const queue: Array<OrderQueueItem> = reactive([]);
     store

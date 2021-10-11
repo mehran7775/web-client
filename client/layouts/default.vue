@@ -12,39 +12,7 @@
       :right="rtl"
       width="260"
     >
-      <v-list v-model="selected" dense>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="$t(item.title)" />
-            <v-list-item-group v-if="item.children">
-              <v-list-item
-                v-for="subitem in item.children.value"
-                :key="subitem.title"
-                :to="subitem.to"
-                @click="subitem.click ? subitem.click() : null"
-                router
-                exact
-              >
-                <v-list-item-action>
-                  <v-icon>{{ subitem.icon }}</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title v-text="subitem.title" />
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <right-panel />
     </v-navigation-drawer>
     <v-app-bar
       id="app-bar"
@@ -159,24 +127,60 @@
           </span>
         </v-col>
         <v-col md="10" xs="7" v-if="isLogin">
-          <v-badge dot left class="ms-5" color="green" offset-y="75%" offset-x="-5">
-            {{ $t("accounting.account.amount") }}{{ freeMoney }}
+          <v-badge
+            dot
+            left
+            class="ms-5"
+            color="green"
+            offset-y="75%"
+            offset-x="-5"
+          >
+            {{ $t("accounting.account.amount") }}{{ brif.freeMoney }}
           </v-badge>
 
-          <v-badge dot left class="ms-5" color="red" offset-y="75%" offset-x="-5">
-            {{ $t("accounting.account.blockedAmount") }}{{ blockedMoney }}
+          <v-badge
+            dot
+            left
+            class="ms-5"
+            color="red"
+            offset-y="75%"
+            offset-x="-5"
+          >
+            {{ $t("accounting.account.blockedAmount") }}{{ brif.blockedMoney }}
           </v-badge>
 
-          <v-badge dot left class="ms-5" color="orange" offset-y="75%" offset-x="-5">
-            {{ $t("accounting.account.onlineBlockedAmount") }}{{ freeMoney }}
+          <v-badge
+            dot
+            left
+            class="ms-5"
+            color="orange"
+            offset-y="75%"
+            offset-x="-5"
+          >
+            {{ $t("accounting.account.onlineBlockedAmount")
+            }}{{ brif.freeMoney }}
           </v-badge>
 
-          <v-badge dot left class="ms-5" color="blue" offset-y="75%" offset-x="-5">
-            {{ $t("accounting.account.remaining") }}{{ freeMoney }}
+          <v-badge
+            dot
+            left
+            class="ms-5"
+            color="blue"
+            offset-y="75%"
+            offset-x="-5"
+          >
+            {{ $t("accounting.account.remaining") }}{{ brif.freeMoney }}
           </v-badge>
 
-          <v-badge dot left class="ms-5" color="#89abcd" offset-y="75%" offset-x="-5">
-            {{ $t("accounting.account.credit") }}{{ freeMoney }}
+          <v-badge
+            dot
+            left
+            class="ms-5"
+            color="#89abcd"
+            offset-y="75%"
+            offset-x="-5"
+          >
+            {{ $t("accounting.account.credit") }}{{ brif.freeMoney }}
           </v-badge>
         </v-col>
       </v-row>
@@ -202,17 +206,18 @@ import {
   ref,
   useRouter,
 } from "@nuxtjs/composition-api";
-import colors from "vuetify/es5/util/colors.js";
 import snackbar from "@/components/snacks.vue";
 import watchListEditor from "@/components/dashboard/watchListEditor.vue";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
 import moment from "moment-jalaali";
+import RightPanel from "~/components/rightPanel.vue";
 
 export default defineComponent({
   components: {
     snackbar,
     watchListEditor,
     ProfilePicture,
+    RightPanel,
   },
   setup(props, context) {
     moment.loadPersian();
@@ -233,23 +238,6 @@ export default defineComponent({
 
     const locale = computed(() => {
       return store.getters["locale"];
-    });
-
-    const watchList = computed(() => {
-      const lists = store.getters["user/watchList"];
-      const res = [
-        {
-          icon: "mdi-pen",
-          click: togDialog,
-        },
-      ];
-      for (let k in lists) {
-        res.push({
-          title: k,
-          to: "/watchList/" + k,
-        });
-      }
-      return res;
     });
 
     function togDialog() {
@@ -273,28 +261,15 @@ export default defineComponent({
       rtl,
       currentUser,
       userMenu,
-      colors,
-      barColor: "rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)",
       clipped: true,
       drawer: true,
       mini: true,
       left_drawer: true,
       left_mini: true,
-      selected: {},
-      items: [
-        {
-          icon: "mdi-eye",
-          title: "menu.watchList",
-          children: watchList,
-        },
-        {
-          icon: "mdi-chart-bar",
-          title: "menu.reports",
-          to: "/inspire",
-        },
-      ],
-      blockedMoney,
-      freeMoney,
+      brif: {
+        blockedMoney,
+        freeMoney,
+      },
     };
   },
 });
