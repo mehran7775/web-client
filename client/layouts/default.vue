@@ -3,45 +3,45 @@
     <v-navigation-drawer
       v-if="isLogin"
       id="core-navigation-drawer"
-      v-model="drawer"
-      :expand-on-hover="mini"
-      :mini-variant="mini"
+      v-model="rightMenu.drawer"
+      :expand-on-hover="rightMenu.mini"
+      :mini-variant="rightMenu.mini"
       :clipped="clipped"
       fixed
       app
       :right="rtl"
       width="260"
     >
-      <right-panel @openWatchList="togDialog" />
+      <right-panel @openWatchList="togDialog" :open="rightMenu.drawer" />
     </v-navigation-drawer>
     <v-app-bar
       id="app-bar"
-      :clipped-left="true"
+      :clipped-left="clipped"
+      :clipped-right="clipped"
       fixed
       app
       dense
-      :clipped-right="true"
     >
       <v-img src="/logo.png" max-width="24" />
-      <span v-if="!mini && drawer">
+      <span v-if="!rightMenu.mini && rightMenu.drawer">
         {{ $t("general.proxyCompany") }}
       </span>
       <v-app-bar-nav-icon
         v-show="isLogin"
         @click.stop="
           () => {
-            if (drawer) {
-              mini = !mini;
+            if (rightMenu.drawer) {
+              rightMenu.mini = !rightMenu.mini;
             } else {
-              drawer = true;
-              mini = false;
+              rightMenu.drawer = true;
+              rightMenu.mini = false;
             }
           }
         "
       >
         <v-icon> mdi-menu-open </v-icon>
       </v-app-bar-nav-icon>
-      {{ moment(date).locale(locale).format($t("general.date.longdt")) }}
+      <clock />
       <v-spacer />
       <v-col>
         <v-badge
@@ -96,24 +96,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-navigation-drawer
-      v-if="isLogin"
-      id="core-navigation-drawer"
-      v-model="left_drawer"
-      :mini-variant="left_mini"
-      :clipped="clipped"
-      fixed
-      app
-      :right="!rtl"
-      color="white"
-      width="260"
-    >
-      <left-panel
-        @open="left_mini = false"
-        @close="left_mini = true"
-        :isExpanded="left_mini"
-      />
-    </v-navigation-drawer>
+
     <v-main class="dashboardmain-page">
       <nuxt class="mb-12" />
       <bottom-panel v-if="isLogin" />
@@ -209,7 +192,6 @@ import {
 import snackbar from "@/components/snacks.vue";
 import watchListEditor from "@/components/dashboard/watchListEditor.vue";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
-import moment from "moment-jalaali";
 import RightPanel from "~/components/rightPanel.vue";
 
 export default defineComponent({
@@ -220,10 +202,20 @@ export default defineComponent({
     RightPanel,
   },
   setup(props, context) {
-    moment.loadPersian();
     let dialog = ref(false);
     const router = useRouter();
     const store = useStore();
+    const rightMenu = ref({
+      drawer: true,
+      mini: true,
+      miniState: true,
+    });
+    const leftMenu = ref({
+      drawer: true,
+      mini: true,
+      miniState: true,
+    });
+
     const isLogin = computed(() => store.getters["user/isLogin"]);
     const rtl = computed(() => store.getters["rtl"]);
     const currentUser = computed(() => store.getters["user/me"]);
@@ -231,17 +223,13 @@ export default defineComponent({
     const blockedMoney = 0;
     const freeMoney = 0;
     const wlEditor = ref(null);
-    const date = ref(Date());
-    setInterval(() => {
-      date.value = Date();
-    }, 1000);
 
     const locale = computed(() => {
       return store.getters["locale"];
     });
 
     function togDialog() {
-      console.log("tog")
+      console.log("tog");
       dialog.value = !dialog.value;
     }
 
@@ -251,8 +239,6 @@ export default defineComponent({
     }
 
     return {
-      date,
-      moment,
       locale,
       wlEditor,
       togDialog,
@@ -262,11 +248,8 @@ export default defineComponent({
       rtl,
       currentUser,
       userMenu,
+      rightMenu,
       clipped: true,
-      drawer: true,
-      mini: true,
-      left_drawer: true,
-      left_mini: true,
       brif: {
         blockedMoney,
         freeMoney,

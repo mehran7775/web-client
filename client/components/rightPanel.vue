@@ -1,31 +1,30 @@
 <template>
-  <v-list v-model="selected" dense>
-    <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
-      <v-list-item-action>
-        <v-icon>{{ item.icon }}</v-icon>
-      </v-list-item-action>
-      <v-list-item-content>
-        <v-list-item-title v-text="$t(item.title)" />
-        <v-list-item-group v-if="item.children">
+  <v-container class="ma-0 px-0" fluid>
+    <v-row dense>
+      <v-col>
+        <v-list v-model="selected" dense>
           <v-list-item
-            v-for="subitem in item.children.value"
-            :key="subitem.title"
-            :to="subitem.to"
-            @click="subitem.click ? subitem.click() : null"
+            v-for="item in items"
+            :key="item.title"
+            :to="item.to"
             router
             exact
           >
             <v-list-item-action>
-              <v-icon>{{ subitem.icon }}</v-icon>
+              <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title v-text="subitem.title" />
+            <v-list-item-content v-if="!selected">
+              <v-list-item-title v-text="$t(item.title)" />
             </v-list-item-content>
           </v-list-item>
-        </v-list-item-group>
-      </v-list-item-content>
-    </v-list-item>
-  </v-list>
+        </v-list>
+      </v-col>
+      <v-col v-if="open">
+        123
+        {{ selected && selected.title }}
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -40,20 +39,15 @@ import {
 export default defineComponent({
   name: "right-panel",
   emits: ["openWatchList"],
+  props: {
+    open: Boolean
+  },
   setup(props, context) {
     const store = useStore();
     const selected: Ref = ref(null);
     const watchList = computed(() => {
       const lists = store.getters["user/watchList"];
-      const res = [
-        {
-          icon: "mdi-pen",
-          click: () => {
-            context.emit("openWatchList", null);
-            console.log("done")
-          },
-        },
-      ];
+      const res = [];
       for (let k in lists) {
         res.push({
           title: k,
@@ -66,6 +60,7 @@ export default defineComponent({
       {
         icon: "mdi-eye",
         title: "menu.watchList",
+        to: "/watchList",
         children: watchList,
       },
       {
