@@ -9,13 +9,46 @@
             :to="item.to"
             router
             exact
+            dense
           >
-            <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-action>
-            <v-list-item-content v-if="!selected">
-              <v-list-item-title v-text="$t(item.title)" />
-            </v-list-item-content>
+            <v-tooltip left>
+              <template #activator="{ on, attrs }">
+                <v-icon v-bind="attrs" v-on="on" class="pe-2">{{
+                  item.icon
+                }}</v-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t(item.title)" />
+                </v-list-item-content>
+              </template>
+              <span>{{ $t(item.title) }}</span>
+            </v-tooltip>
+          </v-list-item>
+          <v-divider />
+          <v-list-item>
+            <v-tooltip left>
+              <template #activator="{ on, attrs }">
+                <v-icon v-bind="attrs" v-on="on" class="pe-2">
+                  mdi-cash-plus
+                </v-icon>
+                <v-list-item-content>
+                  <v-list-item-title> in </v-list-item-title>
+                </v-list-item-content>
+              </template>
+              <span>{{ $t("in") }}</span>
+            </v-tooltip>
+          </v-list-item>
+          <v-list-item>
+            <v-tooltip left>
+              <template #activator="{ on, attrs }">
+                <v-icon v-bind="attrs" v-on="on" class="pe-2">
+                  mdi-cash-refund
+                </v-icon>
+                <v-list-item-content>
+                  <v-list-item-title> out </v-list-item-title>
+                </v-list-item-content>
+              </template>
+              <span>{{ $t("out") }}</span>
+            </v-tooltip>
           </v-list-item>
         </v-list>
       </v-col>
@@ -40,7 +73,7 @@ export default defineComponent({
   name: "right-panel",
   emits: ["openWatchList"],
   props: {
-    open: Boolean
+    open: Boolean,
   },
   setup(props, context) {
     const store = useStore();
@@ -62,6 +95,50 @@ export default defineComponent({
         title: "menu.watchList",
         to: "/watchList",
         children: watchList,
+      },
+      {
+        icon: "mdi-chart-pie",
+        title: "menu.portfolio",
+      },
+      {
+        icon: "mdi-calculator",
+        title: "menu.accounting",
+      },
+      {
+        icon: "mdi-cash",
+        title: "menu.trades",
+      },
+      {
+        icon: "mdi-presentation",
+        title: "menu.alerts",
+      },
+      {
+        icon: "mdi-book-sync-outline",
+        title: "menu.drafts",
+      },
+      {
+        icon: "mdi-currency-usd",
+        title: "menu.conditionalTrades",
+      },
+      {
+        icon: "mdi-filter-plus-outline",
+        title: "menu.filter",
+      },
+      {
+        icon: "mdi-chart-line",
+        title: "menu.technical",
+      },
+      {
+        icon: "mdi-file-document-multiple-outline",
+        title: "menu.profit",
+      },
+      {
+        icon: "mdi-map-outline",
+        title: "menu.marketMap",
+      },
+      {
+        icon: "mdi-cog",
+        title: "menu.settings",
       },
       {
         icon: "mdi-chart-bar",
