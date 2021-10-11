@@ -11,7 +11,7 @@
         :key="field.name"
         md="6"
         :class="{
-          'copy': !!field.click,
+          'copy-cursor': !!field.click,
           'col-sm-12': responsive,
           'oddodd d-flex justify-space-between': true,
         }"

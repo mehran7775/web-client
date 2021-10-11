@@ -1,0 +1,55 @@
+.v-application {
+  .display-1,
+  .display-2,
+  .display-3,
+  .display-4,
+  .headline,
+  .title,
+  .subtitle-1,
+  .subtitle-2,
+  .body-1,
+  .body-2,
+  .caption,
+  .overline {
+    font-family: $body-font-family !important;
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+@media (min-width: 961px) {
+  .oddodd:nth-child(4n + 4) {
+    background-color: #f2f2f2;
+  }
+  .oddodd:nth-child(4n + 3) {
+    background-color: #f2f2f2;
+  }
+}
+@media (max-width: 960px) {
+  .oddodd:nth-child(even) {
+    background-color: #ffffff;
+  }
+  .oddodd:nth-child(odd) {
+    background-color: #f2f2f2;
+  }
+}
+
+.striped:nth-child(even) {
+  background-color: #ffffff;
+}
+.striped:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+.copy-cursor {
+  cursor: copy;
+}

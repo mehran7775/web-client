@@ -69,7 +69,7 @@
     </v-row>
     <v-row class="striped" v-for="(item, index) in queue" :key="index" dense>
       <v-col
-        :class="{ copy: copy }"
+        :class="{ 'copy-cursor': copy }"
         @click="
           () => {
             $emit('count', item.buy.count);
@@ -79,7 +79,7 @@
       >
       <v-col>{{ item.buy.amount }}</v-col>
       <v-col
-        :class="{ copy: copy }"
+        :class="{ 'copy-cursor': copy }"
         @click="
           () => {
             $emit('price', item.buy.price);
@@ -91,7 +91,7 @@
       <v-col v-if="extraCol"></v-col>
 
       <v-col
-        :class="{ copy: copy }"
+        :class="{ 'copy-cursor': copy }"
         @click="
           () => {
             $emit('count', item.sell.count);
@@ -101,7 +101,7 @@
       >
       <v-col>{{ item.sell.amount }}</v-col>
       <v-col
-        :class="{ copy: copy }"
+        :class="{ 'copy-cursor': copy }"
         @click="
           () => {
             $emit('price', item.sell.price);
@@ -146,9 +146,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.copy {
-  cursor: copy;
-}
-</style>
