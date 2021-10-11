@@ -12,7 +12,7 @@
       :right="rtl"
       width="260"
     >
-      <right-panel />
+      <right-panel @openWatchList="togDialog" />
     </v-navigation-drawer>
     <v-app-bar
       id="app-bar"
@@ -241,6 +241,7 @@ export default defineComponent({
     });
 
     function togDialog() {
+      console.log("tog")
       dialog.value = !dialog.value;
     }
 

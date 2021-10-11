@@ -39,8 +39,8 @@ import {
 
 export default defineComponent({
   name: "right-panel",
-  emits: ["watchList.edit"],
-  setup(props, { emit }) {
+  emits: ["openWatchList"],
+  setup(props, context) {
     const store = useStore();
     const selected: Ref = ref(null);
     const watchList = computed(() => {
@@ -48,7 +48,10 @@ export default defineComponent({
       const res = [
         {
           icon: "mdi-pen",
-          click: emit("watchList.edit"),
+          click: () => {
+            context.emit("openWatchList", null);
+            console.log("done")
+          },
         },
       ];
       for (let k in lists) {
