@@ -1,12 +1,13 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import message_manager from '@/repositories/message_manager'
 import { Message } from '@/types/message'
-import { Tabs } from '@/types/panels'
+import { Tabs, TabNames, TabTitle } from '@/types/panels'
 
 
 export const state = () => ({
   activeTab: <Tabs>Tabs.none,
   expanded: false,
+  titles: TabNames(),
   title: "",
   further_information: <Message>{},
   market_depth: {},
@@ -26,6 +27,7 @@ export const getters: GetterTree<RootState, RootState> = {
 
 export const mutations: MutationTree<RootState> = {
   setActiveTab(state, payload: Tabs) {
+    state.title = state.titles[payload]
     state.activeTab = payload
   },
   toggleExpand(state) {
@@ -34,8 +36,8 @@ export const mutations: MutationTree<RootState> = {
   setMessage(state, payload: Message) {
     state.further_information = payload
   },
-  setTitle(state, payload: string) {
-    state.title = payload
+  setTitle(state, payload: TabTitle) {
+    state.titles[payload.tab] = payload.title
   }
 }
 

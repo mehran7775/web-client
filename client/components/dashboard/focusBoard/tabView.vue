@@ -56,11 +56,13 @@
             <v-row dense>
               <v-col>
                 <v-btn-toggle>
-                  <v-btn small>{{ $t("oms.teammates") }}</v-btn>
-                  <v-btn small>{{ $t("oms.tradeTypes") }}</v-btn>
-                  <v-btn small>{{ $t("oms.shareTypes") }}</v-btn>
-                  <v-btn small>{{ $t("oms.holders") }}</v-btn>
-                  <v-btn small>{{ $t("oms.tradeHistory") }}</v-btn>
+                  <v-btn
+                    v-for="op in deepOptions"
+                    :key="op"
+                    @click="deep(op)"
+                    small
+                    >{{ $t("oms." + op) }}</v-btn
+                  >
                 </v-btn-toggle>
               </v-col>
             </v-row>
@@ -80,10 +82,11 @@ import {
   Ref,
 } from "@nuxtjs/composition-api";
 import { ActiveInstrument, OrderSide } from "@/types/oms";
-import instrumentCard from "~/components/oms/instrumentCard.vue";
+import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
-import BuySellCard from "~/components/oms/BuySellCard.vue";
+import BuySellCard from "@/components/oms/BuySellCard.vue";
+import { Tabs, DeepOptions, TabTitle } from "@/types/panels";
 
 export default defineComponent({
   components: {
@@ -92,8 +95,9 @@ export default defineComponent({
     LegalRealCard,
     BuySellCard,
   },
-  setup() {
+  setup(props, context) {
     const store = useStore();
+    const i18n = useI18n();
     const instruments = computed(() => store.getters["instruments/getFocus"]);
     const count: Ref<number> = ref(0);
     const price: Ref<number> = ref(0);
@@ -119,14 +123,26 @@ export default defineComponent({
       store.commit("instruments/removeFocus", id);
       store.commit("instruments/stopWatchQueue", id);
     }
-    function deep(type: number) {}
+    function deep(option: string) {
+      store.commit(
+        "bottom-panel/setTitle",
+        new TabTitle(Tabs.depth, "oms." + option)
+      );
+      store.commit("bottom-panel/setActiveTab", Tabs.depth);
+    }
     return {
       close,
+      deep,
       price,
       count,
       tab,
       instruments,
+      deepOptions: DeepOptions,
     };
+    //TODO remove in vue 3
+    function useI18n() {
+      return context.root.$i18n;
+    }
   },
 });
 </script>

@@ -10,7 +10,7 @@
     <v-card :class="{ expanded: true }" width="100%">
       <v-toolbar v-if="tab != -1" elevation="1" dense>
         <v-card-title>
-          {{ title }}
+          {{ $t(title) }}
         </v-card-title>
         <v-spacer />
         <v-btn icon @click="expand()">
@@ -73,8 +73,6 @@ export default defineComponent({
         return store.getters["bottom-panel/activeTab"] as Tabs;
       },
       set(value: Tabs) {
-        console.log(value);
-        store.commit("bottom-panel/setTitle", i18n.t(tabs[value]));
         store.commit("bottom-panel/setActiveTab", value);
       },
     });
@@ -93,13 +91,8 @@ export default defineComponent({
       if (expanded.value) store.commit("bottom-panel/toggleExpand");
       store.commit("bottom-panel/setActiveTab", Tabs.none);
     }
-    function changeTab(value: number) {
-      console.log(value);
-      store.commit("bottom-panel/setTitle", i18n.t(tabs[value]));
-    }
 
     return {
-      changeTab,
       expand,
       close,
       icon,
