@@ -5,37 +5,51 @@
     :clipped="clipped"
     :right="rtl"
     width="260"
-    expand-on-hover
+    absolute
     fixed
     app
   >
     <v-list dense>
       <v-list-item-group v-model="selected">
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          @click="() => item.click && item.click()"
-          :value="i"
-          router
-          exact
-          dense
-        >
-          <v-tooltip left>
-            <template #activator="{ on, attrs }">
-              <v-icon v-bind="attrs" v-on="on" class="pe-2">
-                {{ item.icon }}
-              </v-icon>
-              <v-list-item-content>
-                <v-list-item-title
-                  v-if="!selectedItem || !selectedItem.children"
-                  v-text="$t(item.title)"
-                />
-              </v-list-item-content>
-            </template>
-            <span>{{ $t(item.title) }}</span>
-          </v-tooltip>
-        </v-list-item>
+        <div v-for="(item, i) in items" :key="i" class="ma-0 pa-0">
+          <v-list-group v-if="item.children" class="ma-0 px-0">
+            <v-tooltip slot="activator" left>
+              <template #activator="{ on, attrs }">
+                <v-icon v-bind="attrs" v-on="on" class="pe-2">
+                  {{ item.icon }}
+                </v-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t(item.title)" />
+                </v-list-item-content>
+              </template>
+              <span>{{ $t(item.title) }}</span>
+            </v-tooltip>
+            <v-list-item-group>
+              <v-list-item
+                v-for="subItem in item.children.value"
+                :key="subItem.title"
+                :to="subItem.to"
+              >
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t(subItem.title)" />
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list-group>
+          <v-list-item v-else :to="item.to" :value="i" router exact dense>
+            <v-tooltip left>
+              <template #activator="{ on, attrs }">
+                <v-icon v-bind="attrs" v-on="on" class="pe-2">
+                  {{ item.icon }}
+                </v-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t(item.title)" />
+                </v-list-item-content>
+              </template>
+              <span>{{ $t(item.title) }}</span>
+            </v-tooltip>
+          </v-list-item>
+        </div>
         <v-divider />
         <v-list-item to="/deposit">
           <v-tooltip left>
@@ -178,6 +192,7 @@ export default defineComponent({
     const expand = ref(true);
     return {
       rtl,
+      expand,
       selected,
       selectedItem,
       items,
