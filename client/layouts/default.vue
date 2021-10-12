@@ -1,19 +1,11 @@
 <template>
   <v-app>
-    <v-navigation-drawer
+    <right-panel
       v-if="isLogin"
-      id="core-navigation-drawer"
-      v-model="rightMenu.drawer"
-      :expand-on-hover="rightMenu.mini"
-      :mini-variant="rightMenu.mini"
+      :mini.sync="rightMenu.mini"
       :clipped="clipped"
-      fixed
-      app
-      :right="rtl"
-      width="260"
-    >
-      <right-panel @openWatchList="togDialog" :open="rightMenu.drawer" />
-    </v-navigation-drawer>
+      :drawer.sync="rightMenu.drawer"
+    />
     <v-app-bar
       id="app-bar"
       :clipped-left="clipped"
@@ -205,24 +197,17 @@ export default defineComponent({
     let dialog = ref(false);
     const router = useRouter();
     const store = useStore();
-    const rightMenu = ref({
-      drawer: true,
-      mini: true,
-      miniState: true,
-    });
-    const leftMenu = ref({
-      drawer: true,
-      mini: true,
-      miniState: true,
-    });
 
     const isLogin = computed(() => store.getters["user/isLogin"]);
-    const rtl = computed(() => store.getters["rtl"]);
     const currentUser = computed(() => store.getters["user/me"]);
     const userMenu = ref(false);
     const blockedMoney = 0;
     const freeMoney = 0;
     const wlEditor = ref(null);
+    const rightMenu = ref({
+      mini: true,
+      drawer: true,
+    });
 
     const locale = computed(() => {
       return store.getters["locale"];
@@ -245,7 +230,6 @@ export default defineComponent({
       dialog,
       doLogout,
       isLogin,
-      rtl,
       currentUser,
       userMenu,
       rightMenu,
