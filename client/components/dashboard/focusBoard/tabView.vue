@@ -3,7 +3,7 @@
     <v-row dense>
       <v-col>
         <v-tabs color="blue" v-model="tab" align-with-title>
-          <v-tab v-for="item in instruments" :key="item.id" class="pe-1 ps-2">
+          <v-tab v-for="item in instruments" :key="item.id" class="pe-1 ps-5">
             <v-badge color="success" dot left offset-y="75%" offset-x="-5">
               {{ item.name }}
             </v-badge>

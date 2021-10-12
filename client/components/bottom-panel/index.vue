@@ -1,7 +1,14 @@
 <template>
-  <v-footer :absolute="true" :class="{ expanded: expanded }" class="ma-0 pa-0">
-    <v-card :class="{ expanded: expanded }" width="100%">
-      <v-toolbar v-if="tab != -1" elevation="1">
+  <v-footer
+    :absolute="true"
+    :class="{
+      expanded: expanded,
+      half: tab != -1 && !expanded,
+    }"
+    class="ma-0 pa-0"
+  >
+    <v-card :class="{ expanded: true }" width="100%">
+      <v-toolbar v-if="tab != -1" elevation="1" dense>
         <v-card-title>
           {{ title }}
         </v-card-title>
@@ -13,7 +20,7 @@
           <v-icon size="1em">mdi-minus</v-icon>
         </v-btn>
       </v-toolbar>
-      <v-card-text v-if="tab != -1" style="font-size: 1rem; line-height: 1.5">
+      <v-card-text v-if="tab != -1" class="detail">
         <v-tabs-items v-model="tab" :class="{ expanded: expanded }">
           <v-tab-item>
             <default-order-list />
@@ -111,5 +118,13 @@ export default defineComponent({
 <style scoped>
 .expanded {
   height: 100%;
+}
+.half {
+  height: calc(40vh - 96px);
+}
+.detail{
+  font-size: 1rem; 
+  line-height: 1.5;
+  height: calc(100% - 96px);
 }
 </style>
