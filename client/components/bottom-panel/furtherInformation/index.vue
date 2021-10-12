@@ -9,7 +9,7 @@ import {
   computed,
   getCurrentInstance,
 } from "@nuxtjs/composition-api";
-import template1 from "./further-info-type1.vue";
+import template1 from "./type1.vue";
 import { Tabs } from "@/types/panels";
 import { Message } from "@/types/message";
 

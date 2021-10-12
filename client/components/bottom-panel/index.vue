@@ -50,10 +50,10 @@
 
 <script lang="ts">
 import { defineComponent, useStore, computed } from "@nuxtjs/composition-api";
-import furtherInformation from "./further-information.vue";
+import furtherInformation from "./furtherInformation/index.vue";
 import { Tabs } from "@/types/panels";
 import DefaultOrderList from "./defaultOrderList.vue";
-import DeepInformation from "./deepInformation.vue";
+import DeepInformation from "./deepInformation/index.vue";
 import Bests from "./bests.vue";
 
 //TODO not working on small displays
