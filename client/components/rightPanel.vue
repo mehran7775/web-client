@@ -5,7 +5,7 @@
     :clipped="clipped"
     :right="rtl"
     width="260"
-    expand-on-hover
+    :expand-on-hover="mini"
     absolute
     fixed
     app
@@ -94,13 +94,14 @@ import {
   Ref,
   computed,
   useStore,
+  useContext,
 } from "@nuxtjs/composition-api";
 
 export default defineComponent({
   name: "right-panel",
   emits: ["openWatchList"],
   props: {
-    drawer: Boolean,
+    value: Boolean,
     mini: Boolean,
     clipped: Boolean,
   },
@@ -191,8 +192,18 @@ export default defineComponent({
       },
     ];
     const expand = ref(true);
+    const drawer = computed({
+      get() {
+        return props.value;
+      },
+      set(value: boolean) {
+        console.log(value);
+        context.emit("input", value);
+      },
+    });
     return {
       rtl,
+      drawer,
       expand,
       selected,
       selectedItem,

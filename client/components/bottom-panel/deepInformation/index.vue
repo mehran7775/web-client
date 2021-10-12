@@ -9,7 +9,7 @@ export default defineComponent({
   setup(params, context) {
     const store = useStore();
     const i18n = useI18n();
-
+    // Set Title
     store.commit("bottom-panel/setTitle", i18n.t("bottom-panel.depth"));
 
     return {};

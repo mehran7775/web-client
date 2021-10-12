@@ -2,9 +2,9 @@
   <v-app>
     <right-panel
       v-if="isLogin"
-      :mini.sync="rightMenu.mini"
+      :mini="rightMenu.mini"
       :clipped="clipped"
-      :drawer.sync="rightMenu.drawer"
+      v-model="rightMenu.drawer"
     />
     <v-app-bar
       id="app-bar"
@@ -88,12 +88,11 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-
     <v-main class="dashboardmain-page">
-      <nuxt class="mb-12" />
+      <nuxt class="dashboardmain-nuxt" />
       <bottom-panel v-if="isLogin" />
     </v-main>
-    <v-footer :absolute="true" app>
+    <v-footer height="48px" :absolute="true" app>
       <v-row>
         <v-col md="2" xs="5">
           <span>
@@ -246,5 +245,8 @@ export default defineComponent({
 <style scoped>
 .dashboardmain-page {
   background-color: #f9f9fb;
+}
+.dashboardmain-nuxt {
+  height: calc(100% - 48px);
 }
 </style>
