@@ -5,6 +5,7 @@
     :clipped="clipped"
     :right="rtl"
     width="260"
+    expand-on-hover
     absolute
     fixed
     app

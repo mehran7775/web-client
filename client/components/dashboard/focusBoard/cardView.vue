@@ -10,7 +10,11 @@
           :key="item.id"
         >
           <v-toolbar dense flat color="secondary" dark>
-            {{ item.name }}
+            <v-card-title>
+              <v-badge color="success" dot left offset-y="75%" offset-x="-5">
+                {{ item.name }}
+              </v-badge>
+            </v-card-title>
             <v-spacer />
             <v-btn
               depressed
@@ -45,8 +49,8 @@
           </v-toolbar>
           <v-card-text class="text-caption ma-0 px-0">
             <order-queue-card :insId="item.id" extra-col />
-            <legal-real-card hide-headers/>
-            <instrument-card :insId="item.id" hide-headers/>
+            <legal-real-card hide-headers />
+            <instrument-card :insId="item.id" hide-headers />
           </v-card-text>
         </v-card>
       </v-col>
