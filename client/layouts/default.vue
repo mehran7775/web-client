@@ -89,7 +89,9 @@
       </v-menu>
     </v-app-bar>
     <v-main class="dashboardmain-page">
-      <nuxt class="dashboardmain-nuxt" />
+      <div class="dashboardmain-nuxt">
+        <nuxt />
+      </div>
       <bottom-panel v-if="isLogin" />
     </v-main>
     <v-footer height="48px" :absolute="true" app>
@@ -247,6 +249,8 @@ export default defineComponent({
   background-color: #f9f9fb;
 }
 .dashboardmain-nuxt {
-  height: calc(100% - 48px);
+  overflow-y: auto;
+  height: calc(100vh - 96px);
+  padding-bottom: 48px;
 }
 </style>
