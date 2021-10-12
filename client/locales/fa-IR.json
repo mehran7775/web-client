@@ -26,6 +26,9 @@
     "today": "امروز",
     "yesterday": "دیروز",
     "range": "محدوده",
+    "history":"سابقه",
+    "type": "نوع",
+    "types": "انواع",
     "date": {
       "dt": "jYYYY/jMM/jDD-HH:mm:ss",
       "d": "jYYYY/jMM/jDD",
@@ -127,6 +130,11 @@
     }
   },
   "oms": {
+    "teammates": "همگروه‌ها",
+    "holder": "سهامدار",
+    "holders": "سهامداران",
+    "share": "سهم",
+    "shares": "سهام",
     "price": "قیمت",
     "amount": "حجم",
     "count": "تعداد",
@@ -138,6 +146,7 @@
     "percent": "درصد",
     "percent-short": "%",
     "trade": "معامله",
+    "trades": "معاملات",
     "wage": "کارمزد",
     "value": "ارزش",
     "threshold": "آستانه",
@@ -160,7 +169,10 @@
     "tradeWage": "@:oms.wage @:oms.trade",
     "tomorrowThreshold": "@:oms.threshold @:general.tomorrow",
     "todayRange": "@:general.range @:general.today",
-    "headToHeadPrice": "@:oms.price سر‌به‌سر"
+    "headToHeadPrice": "@:oms.price سر‌به‌سر",
+    "tradeHistory": "@:general.history @:oms.trades",
+    "tradeTypes": "@:general.types @:oms.trade",
+    "shareTypes": "@:general.types @:oms.share"
   },
   "wealth": {
     "shares": "دارایی",

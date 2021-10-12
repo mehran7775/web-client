@@ -13,6 +13,9 @@
     "today": "Today",
     "yesterday": "Yesterday",
     "range": "Range",
+    "history":"History",
+    "type": "Type",
+    "types": "Types",
     "date": {
       "dt": "YYYY-MM-DD HH:mm:ss",
       "d": "YYYY-MM-DD",
@@ -108,6 +111,11 @@
     }
   },
   "oms": {
+    "teammates": "Teammates",
+    "holder": "Holder",
+    "holders": "Holders",
+    "share": "Share",
+    "shares": "Shares",
     "price": "Price",
     "amount": "Amount",
     "count": "Count",
@@ -119,6 +127,7 @@
     "percent": "Percent",
     "percent-short": "%",
     "trade": "Trade",
+    "trades": "Trades",
     "market": "Market",
     "wage": "Wage",
     "value": "Value",
@@ -139,7 +148,10 @@
     "tradeAmount": "@:oms.trade @:oms.amount",
     "tradeValue": "@:oms.trade @:oms.value",
     "tradeWage": "@:oms.trade @:oms.wage",
-    "headToHeadPrice": "Head-To-Head @:oms.price"
+    "headToHeadPrice": "Head-To-Head @:oms.price",
+    "tradeHistory": "@:oms.trades @:general.history",
+    "tradeTypes": "@:oms.trade @:general.types",
+    "shareTypes": "@:oms.share @:general.types"
   },
   "wealth": {
     "shares": "Shares",

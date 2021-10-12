@@ -53,6 +53,17 @@
                 <buy-sell-card :price.sync="price" :count.sync="count" />
               </v-col>
             </v-row>
+            <v-row dense>
+              <v-col>
+                <v-btn-toggle>
+                  <v-btn small>{{ $t("oms.teammates") }}</v-btn>
+                  <v-btn small>{{ $t("oms.tradeTypes") }}</v-btn>
+                  <v-btn small>{{ $t("oms.shareTypes") }}</v-btn>
+                  <v-btn small>{{ $t("oms.holders") }}</v-btn>
+                  <v-btn small>{{ $t("oms.tradeHistory") }}</v-btn>
+                </v-btn-toggle>
+              </v-col>
+            </v-row>
           </v-tab-item>
         </v-tabs-items>
       </v-col>
@@ -108,6 +119,7 @@ export default defineComponent({
       store.commit("instruments/removeFocus", id);
       store.commit("instruments/stopWatchQueue", id);
     }
+    function deep(type: number) {}
     return {
       close,
       price,
