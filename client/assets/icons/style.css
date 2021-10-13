@@ -1,0 +1,97 @@
+@font-face {
+  font-family: 'Ada Bourse Icons';
+  src:  url('fonts/ada-bourse.eot?67q79x');
+  src:  url('fonts/ada-bourse.eot?67q79x#iefix') format('embedded-opentype'),
+    url('fonts/ada-bourse.ttf?67q79x') format('truetype'),
+    url('fonts/ada-bourse.woff?67q79x') format('woff'),
+    url('fonts/ada-bourse.svg?67q79x#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.adaico:before,
+.adaico-set {
+  display: inline-block;
+  font: normal normal normal 24px/1 "Ada Bourse Icons";
+  font-size: inherit;
+  text-rendering: auto;
+  line-height: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.adaico-add-circle:before {
+  content: "\e900";
+}
+.adaico-arrow-down:before {
+  content: "\e901";
+}
+.adaico-arrow-left:before {
+  content: "\e902";
+}
+.adaico-arrow-right:before {
+  content: "\e903";
+}
+.adaico-arrow-up:before {
+  content: "\e904";
+}
+.adaico-bag-cross:before {
+  content: "\e905";
+}
+.adaico-bag-tick:before {
+  content: "\e906";
+}
+.adaico-briefcase:before {
+  content: "\e907";
+}
+.adaico-calculator:before {
+  content: "\e908";
+}
+.adaico-card-receive:before {
+  content: "\e909";
+}
+.adaico-card-send:before {
+  content: "\e90a";
+}
+.adaico-chart-2:before {
+  content: "\e90b";
+}
+.adaico-eye:before {
+  content: "\e90c";
+}
+.adaico-filter-edit:before {
+  content: "\e90d";
+}
+.adaico-graph:before {
+  content: "\e90e";
+}
+.adaico-map:before {
+  content: "\e90f";
+}
+.adaico-messages:before {
+  content: "\e910";
+}
+.adaico-money-change:before {
+  content: "\e911";
+}
+.adaico-money-recive:before {
+  content: "\e912";
+}
+.adaico-note-2:before {
+  content: "\e913";
+}
+.adaico-notification:before {
+  content: "\e914";
+}
+.adaico-presention-chart:before {
+  content: "\e915";
+}
+.adaico-search-normal:before {
+  content: "\e916";
+}
+.adaico-setting-2:before {
+  content: "\e917";
+}
+.adaico-status-up:before {
+  content: "\e918";
+}

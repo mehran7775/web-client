@@ -126,22 +126,22 @@ export default defineComponent({
     });
     const items = [
       {
-        icon: "mdi-eye",
+        icon: "adaico-eye",
         title: "menu.watchList",
         children: watchList,
       },
       {
-        icon: "mdi-chart-pie",
+        icon: "adaico-graph",
         title: "menu.portfolio",
         to: "/portfolio",
       },
       {
-        icon: "mdi-calculator",
+        icon: "adaico-calculator",
         title: "menu.accounting",
         to: "/accounting",
       },
       {
-        icon: "mdi-cash",
+        icon: "adaico-money-change",
         title: "menu.trades",
         to: "/trades",
       },

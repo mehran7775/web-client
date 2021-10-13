@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  card-reissue-panel:
+    image: $repository/docker/mehr/card-reissue/$CONTAINER_NAME:TestStage
+    container_name: $CONTAINER_NAME
+    hostname: $CONTAINER_NAME
+    labels:
+      - "collect_logs_with_filebeat=true"
+      - "decode_log_event_to_json_object=true"
+    networks:
+      - loan-net
+    ports:
+      - 3000:3000
+    environment:
+      - TZ=Asia/Tehran
+    env_file:
+      - .env
+
+networks:
+  gateway:
+    name: gateway-net
+    external: false
