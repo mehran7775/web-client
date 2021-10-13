@@ -1,7 +1,7 @@
 version: "3.8"
 services:
-  card-reissue-panel:
-    image: $repository/docker/mehr/card-reissue/$CONTAINER_NAME:TestStage
+  bourse-ui:
+    image: $repository/docker/bourse/$CONTAINER_NAME:TestStage
     container_name: $CONTAINER_NAME
     hostname: $CONTAINER_NAME
     labels:
