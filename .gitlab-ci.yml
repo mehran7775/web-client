@@ -86,7 +86,7 @@ build-image-Product:
 artifactory-PreProduct:
   stage: artifact
   tags:
-    - qmb-artifact
+    - SftWre
   script:
     - docker login -u $user_repository -p $pass_repository betamb.qmb.ir
     - docker pull $repository/docker/bourse/$CONTAINER_NAME:PreProduct
@@ -103,7 +103,7 @@ artifactory-PreProduct:
 artifactory-Product:
   stage: artifact
   tags:
-    - qmb-artifact
+    - SftWre
   script:
     - docker login -u $user_repository -p $pass_repository betamb.qmb.ir
     - docker pull $repository/docker/bourse/$CONTAINER_NAME:Product
@@ -121,7 +121,7 @@ artifactory-Product:
 Development:
   stage: deploy
   tags:
-    - prep
+    - SftWre
   script:
       - docker pull $repository/docker/bourse/$CONTAINER_NAME:TestStage
       - docker-compose --compatibility  up -d
@@ -132,7 +132,7 @@ Development:
 PreProduct:
   stage: deploy
   tags: 
-    - bank-preproduct
+    - SftWre
   script:
     - docker stack deploy -c PreProduct.yml $PRE_STACK_NAME
   when : manual
@@ -142,7 +142,7 @@ PreProduct:
 Product:
   stage: deploy
   tags: 
-    - bank-preproduct
+    - SftWre
   script:
     - ls
     - docker stack deploy -c Product.yml $STACK_NAME
@@ -154,7 +154,7 @@ Product:
 Development-restart:
   stage: restart
   tags: 
-    - prep
+    - SftWre
   script:
     - docker-compose down
     - docker-compose --compatibility up -d
@@ -165,7 +165,7 @@ Development-restart:
 PreProduct-restart:
   stage: restart
   tags:
-    -  bank-preproduct
+    - SftWre
   script:
     - docker stack rm $PRE_STACK_NAME
     - docker stack deploy -c PreProduct.yml $PRE_STACK_NAME 
@@ -176,7 +176,7 @@ PreProduct-restart:
 Product-restart:
   stage: restart
   tags:
-    -  bank-preproduct
+    - SftWre
   script:
     - docker stack rm $STACK_NAME
     - docker stack deploy -c Product.yml $STACK_NAME
