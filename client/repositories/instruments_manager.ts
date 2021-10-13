@@ -15,7 +15,12 @@ async function getOrderQueue(value: number, axios: NuxtAxiosInstance): Promise<A
   return axios.get('oms/instruments/order-queue/' + value)
 }
 
+async function getTeammates(instrumentId: number, axios: NuxtAxiosInstance) {
+  return axios.get('oms/instruments/teammates/' + instrumentId)
+}
+
 export {
+  getTeammates,
   getInstrumentsDetail,
   autoComplete,
   getOrderQueue

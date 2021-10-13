@@ -20,7 +20,7 @@
           <v-icon size="1em">mdi-minus</v-icon>
         </v-btn>
       </v-toolbar>
-      <v-card-text v-if="tab != -1" class="detail">
+      <v-card-text v-if="tab != -1" class="detail mt-1 pa-2">
         <v-tabs-items v-model="tab" :class="{ expanded: expanded }">
           <v-tab-item>
             <default-order-list />
@@ -111,13 +111,15 @@ export default defineComponent({
 <style scoped>
 .expanded {
   height: 100%;
+  
 }
 .half {
-  height: calc(40vh - 96px);
+  height: calc(48vh - 96px);
 }
-.detail{
-  font-size: 1rem; 
+.detail {
+  font-size: 1rem;
   line-height: 1.5;
-  height: calc(100% - 96px);
+  height: calc(100% - 100px);
+  overflow-y: auto;
 }
 </style>

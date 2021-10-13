@@ -1,6 +1,6 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { Instrument, OrderQueueItem, OrderSide, ActiveInstrument } from '@/types/oms'
-import { getInstrumentsDetail, getOrderQueue } from '~/repositories/instruments_manager'
+import { getInstrumentsDetail, getOrderQueue, getTeammates } from '~/repositories/instruments_manager'
 
 
 export const state = () => (new RootState())
@@ -85,6 +85,17 @@ export const actions: ActionTree<RootState, RootState> = {
         return queue
       const { data } = await getOrderQueue(payload, this.$axios)
       commit('watchQueue', { key: payload, data: data })
+      return data
+    } catch (err: any) {
+      if (err.response) {
+        return err.response.status as number
+      }
+      return 450
+    }
+  },
+  async getTeammates({ state, commit }, payload: number): Promise<Array<OrderQueueItem> | number> {
+    try {
+      const { data } = await getTeammates(payload, this.$axios)
       return data
     } catch (err: any) {
       if (err.response) {

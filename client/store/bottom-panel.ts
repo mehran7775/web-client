@@ -1,7 +1,7 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import message_manager from '@/repositories/message_manager'
 import { Message } from '@/types/message'
-import { Tabs, TabNames, TabTitle } from '@/types/panels'
+import { Tabs, TabNames, DeepOptions, TabTitle } from '@/types/panels'
 
 
 export const state = () => ({
@@ -23,6 +23,7 @@ export const getters: GetterTree<RootState, RootState> = {
   expanded: (state) => state.expanded,
   further_information: (state): Message => state.further_information,
   title: (state): string => state.title,
+  market_depth: (state) => state.market_depth,
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -38,6 +39,9 @@ export const mutations: MutationTree<RootState> = {
   },
   setTitle(state, payload: TabTitle) {
     state.titles[payload.tab] = payload.title
+  },
+  setDepthData(state, payload: { tab: Tabs, data: any }) {
+    state.market_depth = payload
   }
 }
 
@@ -47,6 +51,20 @@ export const actions: ActionTree<RootState, RootState> = {
       const { data, status } = await message_manager.getMessage(payload, this.$axios)
       commit('setMessage', data);
       return status
+    } catch (err: any) {
+      if (err.response) {
+        return err.response.status
+      }
+      return 450
+    }
+  },
+  async getTeammates({ commit, dispatch }, payload: number) {
+    try {
+      commit("setDepthData", {
+        type: DeepOptions.teammates,
+        data: await dispatch("instruments/getTeammates", payload, { root: true })
+      })
+      commit("setTitle", new TabTitle(Tabs.depth, "123??"))
     } catch (err: any) {
       if (err.response) {
         return err.response.status

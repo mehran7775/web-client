@@ -123,11 +123,18 @@ export default defineComponent({
       store.commit("instruments/removeFocus", id);
       store.commit("instruments/stopWatchQueue", id);
     }
-    function deep(option: string) {
-      store.commit(
-        "bottom-panel/setTitle",
-        new TabTitle(Tabs.depth, "oms." + option)
-      );
+    function deep(option: DeepOptions) {
+      switch (option) {
+        case DeepOptions.teammates:
+          store.dispatch("bottom-panel/getTeammates", 1);
+          break;
+        default:
+          store.commit(
+            "bottom-panel/setTitle",
+            new TabTitle(Tabs.depth, "oms." + option)
+          );
+          break;
+      }
       store.commit("bottom-panel/setActiveTab", Tabs.depth);
     }
     return {
