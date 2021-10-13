@@ -30,8 +30,6 @@ build-image-Development:
   except:
     changes:
       - docker-compose.yml
-      - PreProduct.yml
-      - Product.yml 
       - .gitlab-ci.yml
   only:
     refs:
@@ -57,8 +55,8 @@ build-image-PreProduct:
   except:
     changes:
       - docker-compose.yml
-      - PreProduct.yml
-      - Product.yml 
+      
+      
       - .gitlab-ci.yml
 
 build-image-Product: 
@@ -82,8 +80,6 @@ build-image-Product:
   except:
     changes:
       - docker-compose.yml
-      - PreProduct.yml
-      - Product.yml 
       - .gitlab-ci.yml
 #### Artifact section ####
 
@@ -102,8 +98,6 @@ artifactory-PreProduct:
   except:
     changes:
       - docker-compose.yml
-      - PreProduct.yml
-      - Product.yml 
       - .gitlab-ci.yml
 
 artifactory-Product:
@@ -121,8 +115,6 @@ artifactory-Product:
   except:
     changes:
       - docker-compose.yml
-      - PreProduct.yml
-      - Product.yml 
       - .gitlab-ci.yml
 #### Deploy section ####
 
