@@ -56,7 +56,7 @@
           <v-tooltip left>
             <template #activator="{ on, attrs }">
               <v-icon v-bind="attrs" v-on="on" class="pe-2" color="success">
-                mdi-cash-plus
+                adaico-card-receive
               </v-icon>
               <v-list-item-content>
                 <v-list-item-title v-if="selectedItem || !selectedItem.click">
@@ -71,7 +71,7 @@
           <v-tooltip left>
             <template #activator="{ on, attrs }">
               <v-icon v-bind="attrs" v-on="on" class="pe-2" color="error">
-                mdi-cash-refund
+                adaico-card-send
               </v-icon>
               <v-list-item-content>
                 <v-list-item-title v-if="selectedItem || !selectedItem.click">
@@ -146,7 +146,7 @@ export default defineComponent({
         to: "/trades",
       },
       {
-        icon: "mdi-presentation",
+        icon: "adaico-presention-chart",
         title: "menu.alerts",
         to: "/alerts",
       },
@@ -156,37 +156,37 @@ export default defineComponent({
         to: "/drafts",
       },
       {
-        icon: "mdi-currency-usd",
+        icon: "adaico-money-recive",
         title: "menu.conditionalTrades",
         to: "/conditional-trades",
       },
       {
-        icon: "mdi-filter-plus-outline",
+        icon: "adaico-filter-edit",
         title: "menu.filter",
         to: "/filters",
       },
       {
-        icon: "mdi-chart-line",
+        icon: "adaico-status-up",
         title: "menu.technical",
         to: "/technical",
       },
       {
-        icon: "mdi-file-document-multiple-outline",
+        icon: "adaico-note-2",
         title: "menu.profit",
         to: "/profit",
       },
       {
-        icon: "mdi-map-outline",
+        icon: "adaico-map",
         title: "menu.marketMap",
         to: "/market-map",
       },
       {
-        icon: "mdi-cog",
+        icon: "adaico-setting-2",
         title: "menu.settings",
         to: "/settings",
       },
       {
-        icon: "mdi-chart-bar",
+        icon: "adaico-chart-2",
         title: "menu.reports",
         to: "/inspire",
       },

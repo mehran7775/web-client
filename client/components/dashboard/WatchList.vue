@@ -19,16 +19,12 @@
       </v-icon>
     </template>
     <template #item.name="{ item }">
-      <v-img
-        max-width="32"
-        src="/fonts/svg/bag-tick.svg"
-        style="display: inline-block"
-      />
-      <v-img
-        max-width="32"
-        src="/fonts/svg/bag-cross.svg"
-        style="display: inline-block"
-      />
+      <v-icon color="success">
+        adaico-bag-tick
+      </v-icon>
+      <v-icon color="error">
+        adaico-bag-cross
+      </v-icon>
       <v-badge left dot class="ms-5" offset-x="-5" offset-y="75%">
         {{ item.name }}
       </v-badge>
