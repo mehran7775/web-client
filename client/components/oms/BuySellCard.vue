@@ -33,10 +33,10 @@
                       hide-details
                       dense
                     >
-                    <template #append>
+                      <template #append>
                         <v-icon small>mdi-lock-open</v-icon>
                         <v-icon small>mdi-calculator</v-icon>
-                    </template>
+                      </template>
                     </v-text-field>
                   </v-col>
                   <v-col md="6" sm="12">
@@ -122,10 +122,10 @@
                       hide-details
                       dense
                     >
-                    <template #append>
+                      <template #append>
                         <v-icon small>mdi-lock-open</v-icon>
                         <v-icon small>mdi-calculator</v-icon>
-                    </template>
+                      </template>
                     </v-text-field>
                   </v-col>
                   <v-col md="6" sm="12">
@@ -221,20 +221,20 @@ export default defineComponent({
       () => store.getters["instruments/getSelected"] as ActiveInstrument
     );
     const countVal = computed({
-      get(): number {
+      get() {
         return _count.value;
       },
-      set(val: string) {
-        _count.value = val ? parseInt(val) : 0;
+      set(val) {
+        if (typeof val == "string") _count.value = val ? parseInt(val) : 0;
         emit("update:count", _count.value);
       },
     });
     const priceVal = computed({
-      get(): number {
+      get() {
         return _price.value;
       },
-      set(val: string) {
-        _price.value = val ? parseInt(val) : 0;
+      set(val) {
+        if (typeof val == "string")  _price.value = val ? parseInt(val) : 0;
         emit("update:price", _price.value);
       },
     });

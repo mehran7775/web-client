@@ -22,8 +22,8 @@ import {
   useRoute,
   useStore,
 } from "@nuxtjs/composition-api";
-import FocusBoard from "~/components/dashboard/focusBoard/";
-import WatchList from "~/components/dashboard/WatchList.vue";
+import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
+import WatchList from "@/components/dashboard/WatchList.vue";
 
 export default defineComponent({
   components: {

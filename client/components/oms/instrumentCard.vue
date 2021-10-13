@@ -112,7 +112,7 @@ export default defineComponent({
         case fieldType.dateTime:
           return moment(data)
             .locale(locale.value)
-            .format(i18n.t("general.date.dt"));
+            .format(i18n.t("general.date.dt").toString());
         default:
           return data;
       }
