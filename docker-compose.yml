@@ -19,4 +19,4 @@ services:
 networks:
   gateway:
     name: gateway-net
-    external: false
+    external: yes
