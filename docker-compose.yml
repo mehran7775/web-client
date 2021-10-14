@@ -9,8 +9,6 @@ services:
       - "decode_log_event_to_json_object=true"
     networks:
       - gateway
-    ports:
-      - 3000:3000
     environment:
       - TZ=Asia/Tehran
     env_file:
