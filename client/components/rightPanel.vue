@@ -197,7 +197,6 @@ export default defineComponent({
         return props.value;
       },
       set(value: boolean) {
-        console.log(value);
         context.emit("input", value);
       },
     });

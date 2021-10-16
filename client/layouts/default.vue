@@ -215,7 +215,6 @@ export default defineComponent({
     });
 
     function togDialog() {
-      console.log("tog");
       dialog.value = !dialog.value;
     }
 

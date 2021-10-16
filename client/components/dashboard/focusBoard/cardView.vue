@@ -6,7 +6,7 @@
           class="me-1 mb-1"
           min-width="430"
           max-width="430"
-          v-for="(item, i) in instruments"
+          v-for="item in instruments"
           :key="item.id"
         >
           <v-toolbar dense flat color="secondary" dark>
@@ -23,7 +23,7 @@
               dark
               x-large
               class="ma-0 pa-0"
-              @click="() => order(i, OrderSide.Buy)"
+              @click="() => order(item.id, OrderSide.Buy)"
             >
               {{ $t("oms.buy") }}
             </v-btn>
@@ -34,7 +34,7 @@
               dark
               x-large
               class="ms-1 pa-0"
-              @click="() => order(i, OrderSide.Sell)"
+              @click="() => order(item.id, OrderSide.Sell)"
             >
               {{ $t("oms.sell") }}
             </v-btn>

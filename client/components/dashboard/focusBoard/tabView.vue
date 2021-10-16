@@ -5,7 +5,7 @@
         <v-tabs color="blue" v-model="tab" align-with-title>
           <v-tab v-for="item in instruments" :key="item.id" class="pe-1 ps-5">
             <v-badge color="success" dot left offset-y="75%" offset-x="-5">
-              {{ item.name }}
+              {{ item.name }}{{ item.id }}
             </v-badge>
             <v-spacer />
             <v-icon @click="() => close(item.id)" small> mdi-close </v-icon>
@@ -103,20 +103,10 @@ export default defineComponent({
     const price: Ref<number> = ref(0);
     const tab = computed({
       get() {
-        return (
-          (store.getters["instruments/getSelected"] as ActiveInstrument)
-            ?.focusIndex | 0
-        );
+        return store.getters["instruments/getSelectedIndex"] as number;
       },
-      set(value: number) {
-        store.commit(
-          "instruments/select",
-          new ActiveInstrument(
-            value,
-            (store.getters["instruments/getSelected"] as ActiveInstrument)
-              ?.side | OrderSide.Buy
-          )
-        );
+      set(value: number | undefined) {
+        store.commit("instruments/selectByIndex", value ?? 0);
       },
     });
     function close(id: number) {

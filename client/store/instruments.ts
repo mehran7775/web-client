@@ -24,6 +24,9 @@ export const getters: GetterTree<RootState, RootState> = {
   },
   getSelected: (state): ActiveInstrument => {
     return state.selected
+  },
+  getSelectedIndex: (state): number => {
+    return state.focus.findIndex((item) => item.id == state.selected.instrumentId)
   }
 }
 
@@ -46,8 +49,12 @@ export const mutations: MutationTree<RootState> = {
     state.orderQueueCache.delete(key)
   },
   select(state, active: ActiveInstrument) {
-    active.instrument = state.focus[active.focusIndex]
+    active.side = active.side ?? state.selected.side
     state.selected = active
+  },
+  selectByIndex(state, index: number) {
+    state.selected.instrumentId = state.focus[index]?.id
+    console.log(index, state.selected.instrumentId)
   },
   selectSide(state, side: OrderSide) {
     state.selected.side = side

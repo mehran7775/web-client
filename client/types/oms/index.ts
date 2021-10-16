@@ -64,13 +64,11 @@ export enum OrderSide {
 }
 
 export class ActiveInstrument {
-  focusIndex: number = 0
-  side: OrderSide = OrderSide.Buy
-  instrument: Instrument | null = null
-  constructor(index: number, side: OrderSide, instrument: Instrument| null = null) {
-    this.focusIndex = index
+  instrumentId: number = 0
+  side: OrderSide | null = OrderSide.Buy
+  constructor(id: number, side: OrderSide | null = null) {
+    this.instrumentId = id
     this.side = side
-    this.instrument = instrument
   }
 }
 

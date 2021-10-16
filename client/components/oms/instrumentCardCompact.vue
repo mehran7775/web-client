@@ -59,7 +59,7 @@
         <span>{{ instrument.tradeVal }}</span>
       </v-col>
       <v-col md="6" class="d-flex justify-space-between">
-        <span>{{ $t("instrument.buyPrice") }}</span>
+        <span>{{ $t("oms.buyPrice") }}</span>
         <span>{{ instrument.buyPrice }}</span>
       </v-col>
     </v-row>
