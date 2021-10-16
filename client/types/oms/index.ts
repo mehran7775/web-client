@@ -6,10 +6,13 @@ export class Instrument {
   sectorCode: number
   categoryName: string
   baseVol: number
+  tradeVal: number
   settlementDelay: number
   maxAllowedPrice: number
   minAllowedPrice: number
   namedPrice: number
+  buyPrice: number
+  sellPrice: number
   shares: number
   companyName: string
   maxQuantityPerOrder: number
@@ -28,8 +31,8 @@ export class Instrument {
 
   constructor() {
     this.id = 0
-    this.baseVol = 0,
-      this.categoryName = ""
+    this.baseVol = 0
+    this.categoryName = ""
     this.closing = 0
     this.code = ""
     this.companyName = ""
@@ -48,9 +51,12 @@ export class Instrument {
     this.minAllowedPrice = 0
     this.name = ""
     this.namedPrice = 0
+    this.buyPrice = 0
+    this.sellPrice = 0
     this.opening = 0
     this.sectorCode = 0
     this.settlementDelay = 0
+    this.tradeVal = 0
     this.shares = 0
     this.status = 0
   }
