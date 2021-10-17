@@ -6,18 +6,9 @@
       :clipped="clipped"
       v-model="rightMenu.drawer"
     />
-    <v-app-bar
-      id="app-bar"
-      :clipped-left="clipped"
-      :clipped-right="clipped"
-      fixed
-      app
-      dense
-    >
+    <v-app-bar id="app-bar" :clipped-left="clipped" :clipped-right="clipped" fixed app dense>
       <v-img src="/logo.png" max-width="24" />
-      <span v-if="!rightMenu.mini && rightMenu.drawer">
-        {{ $t("general.proxyCompany") }}
-      </span>
+      <span v-if="!rightMenu.mini && rightMenu.drawer">{{ $t("general.proxyCompany") }}</span>
       <v-app-bar-nav-icon
         v-show="isLogin"
         @click.stop="
@@ -31,7 +22,7 @@
           }
         "
       >
-        <v-icon> mdi-menu-open </v-icon>
+        <v-icon>mdi-menu-open</v-icon>
       </v-app-bar-nav-icon>
       <clock />
       <v-spacer />
@@ -43,9 +34,7 @@
           class="ms-5"
           offset-y="75%"
           offset-x="-5"
-        >
-          {{ $t("oms.bourseIndex") }}: 0
-        </v-badge>
+        >{{ $t("oms.bourseIndex") }}: 0</v-badge>
       </v-col>
       <v-col>
         <v-badge
@@ -55,9 +44,7 @@
           class="my-5"
           offset-y="75%"
           offset-x="-5"
-        >
-          {{ $t("oms.superBourseIndex") }}:‌ 0</v-badge
-        >
+        >{{ $t("oms.superBourseIndex") }}:‌ 0</v-badge>
       </v-col>
       <v-spacer />
       <v-btn v-if="!isLogin" color="success" nuxt to="/login" depressed>
@@ -67,15 +54,11 @@
       <v-menu v-model="userMenu" v-if="isLogin" rounded="b-xl" offset-y>
         <template #activator="{ on, attrs }">
           <v-btn v-bind="attrs" v-on="on" depressed>
-            <profile-picture
-              :address="currentUser.profile && currentUser.profile.profilePic"
-            />
-            <span class="ms-4 .d-none .d-sm-flex">
-              {{ currentUser.user_name }}
-            </span>
-            <v-icon class=".d-none .d-sm-flex">
-              {{ userMenu ? "mdi-chevron-up" : "mdi-chevron-down" }}
-            </v-icon>
+            <profile-picture :address="host + 'sso/download-profile-photo?id=' + (currentUser.profile && currentUser.profile.profilePic)" />
+            <span class="ms-4 .d-none .d-sm-flex">{{ currentUser.userName }}</span>
+            <v-icon
+              class=".d-none .d-sm-flex"
+            >{{ userMenu ? "mdi-chevron-up" : "mdi-chevron-down" }}</v-icon>
           </v-btn>
         </template>
         <v-list>
@@ -110,9 +93,7 @@
             color="green"
             offset-y="75%"
             offset-x="-5"
-          >
-            {{ $t("accounting.account.amount") }}{{ brif.freeMoney }}
-          </v-badge>
+          >{{ $t("accounting.account.amount") }}{{ brif.freeMoney }}</v-badge>
 
           <v-badge
             dot
@@ -121,19 +102,11 @@
             color="red"
             offset-y="75%"
             offset-x="-5"
-          >
-            {{ $t("accounting.account.blockedAmount") }}{{ brif.blockedMoney }}
-          </v-badge>
+          >{{ $t("accounting.account.blockedAmount") }}{{ brif.blockedMoney }}</v-badge>
 
-          <v-badge
-            dot
-            left
-            class="ms-5"
-            color="orange"
-            offset-y="75%"
-            offset-x="-5"
-          >
-            {{ $t("accounting.account.onlineBlockedAmount")
+          <v-badge dot left class="ms-5" color="orange" offset-y="75%" offset-x="-5">
+            {{
+              $t("accounting.account.onlineBlockedAmount")
             }}{{ brif.freeMoney }}
           </v-badge>
 
@@ -144,9 +117,7 @@
             color="blue"
             offset-y="75%"
             offset-x="-5"
-          >
-            {{ $t("accounting.account.remaining") }}{{ brif.freeMoney }}
-          </v-badge>
+          >{{ $t("accounting.account.remaining") }}{{ brif.freeMoney }}</v-badge>
 
           <v-badge
             dot
@@ -155,9 +126,7 @@
             color="#89abcd"
             offset-y="75%"
             offset-x="-5"
-          >
-            {{ $t("accounting.account.credit") }}{{ brif.freeMoney }}
-          </v-badge>
+          >{{ $t("accounting.account.credit") }}{{ brif.freeMoney }}</v-badge>
         </v-col>
       </v-row>
     </v-footer>
@@ -174,10 +143,11 @@
   </v-app>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   computed,
+  ComputedRef,
   useStore,
   ref,
   useRouter,
@@ -185,7 +155,8 @@ import {
 import snackbar from "@/components/snacks.vue";
 import watchListEditor from "@/components/dashboard/watchListEditor.vue";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
-import RightPanel from "~/components/rightPanel.vue";
+import RightPanel from "@/components/rightPanel.vue";
+import { User } from "@/types/sso";
 
 export default defineComponent({
   components: {
@@ -198,9 +169,10 @@ export default defineComponent({
     let dialog = ref(false);
     const router = useRouter();
     const store = useStore();
+    const host = process.env.VUE_APP_Host
 
     const isLogin = computed(() => store.getters["user/isLogin"]);
-    const currentUser = computed(() => store.getters["user/me"]);
+    const currentUser: ComputedRef<User> = computed(() => store.getters["user/me"] as User);
     const userMenu = ref(false);
     const blockedMoney = 0;
     const freeMoney = 0;
@@ -224,6 +196,7 @@ export default defineComponent({
     }
 
     return {
+      host,
       locale,
       wlEditor,
       togDialog,

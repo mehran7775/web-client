@@ -9,9 +9,11 @@ const RefreshKey: string = 'jwtRefreshKey';
 const tokenKey: string = 'jwtKey';
 const userKey: string = 'userCache';
 const anonymousUser: User = {
-  user_name: 'anonymous',
-  nikname: 'Anonymous',
-  profile: {},
+  userName: 'anonymous',
+  profile: {
+    nickname: 'Anonymous',
+    profilePic: null
+  },
   settings: {
     lang: 'fa-IR',
     columns: [],

@@ -38,11 +38,12 @@ import {
   reactive,
   useStore,
   computed,
+  ComputedRef
 } from "@nuxtjs/composition-api";
 import instrumentCard from "../oms/instrumentCardCompact.vue";
 import LegalRealCard from "../oms/legalRealCard.vue";
 import orderQueueCard from "../oms/orderQueueCard.vue";
-import { WatchlistColumns } from "@/types/sso";
+import { WatchlistColumns, DefaultCols } from "@/types/sso";
 import { Instrument } from "~/types/oms";
 
 export default defineComponent({
@@ -65,13 +66,13 @@ export default defineComponent({
       }
     }
     const instruments: Array<object> = reactive([]);
-    const headers = computed(() => {
-      return store.getters["user/me"].settings.columns.map(
+    const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
+      return (store.getters["user/me"].settings.columns ?? DefaultCols()).map(
         (col: WatchlistColumns) =>
           Object.assign({}, col, {
             text: i18n.t("instrument." + col.value),
           })
-      );
+      ) as WatchlistColumns[];
     });
     store
       .dispatch("instruments/getInstrumentsDetail", props.watchlists)
