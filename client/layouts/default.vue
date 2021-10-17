@@ -54,7 +54,7 @@
       <v-menu v-model="userMenu" v-if="isLogin" rounded="b-xl" offset-y>
         <template #activator="{ on, attrs }">
           <v-btn v-bind="attrs" v-on="on" depressed>
-            <profile-picture :address="host + 'sso/download-profile-photo?id=' + (currentUser.profile && currentUser.profile.profilePic)" />
+            <profile-picture :address="host + 'sso/user/download-profile-photo?id=' + (currentUser.profile && currentUser.profile.profilePic)" />
             <span class="ms-4 .d-none .d-sm-flex">{{ currentUser.userName }}</span>
             <v-icon
               class=".d-none .d-sm-flex"
