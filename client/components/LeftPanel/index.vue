@@ -15,7 +15,11 @@
         <v-tab> {{ $t("general.all") }} </v-tab>
       </v-tabs>
       <filter-auto-complete class="px-1" />
-      <v-list-item-group v-model="selected"> </v-list-item-group>
+      <v-list-item-group v-model="selected">
+        <v-list-item v-for="msg in messages" :key="msg.id">
+          {{ msg }}
+        </v-list-item>
+      </v-list-item-group>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -28,8 +32,10 @@ import {
   computed,
   useStore,
   useContext,
+  reactive,
 } from "@nuxtjs/composition-api";
 import filterAutoComplete from "./filterAutoComplete.vue";
+import { MessageFilter, MessageQuery } from "@/types/message";
 
 export default defineComponent({
   components: { filterAutoComplete },
@@ -54,11 +60,19 @@ export default defineComponent({
         context.emit("input", value);
       },
     });
+
+    const messages = reactive([]);
+    store.dispatch(
+      "messages/getMessages",
+      new MessageQuery(0, 10, new MessageFilter([], "2021-09-22T00:00:00.000Z"))
+    );
+
     return {
       rtl,
       drawer,
       expand,
       selected,
+      messages,
     };
   },
 });
