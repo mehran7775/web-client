@@ -24,11 +24,10 @@ import {
   reactive,
   ref,
   useContext,
+  useStore,
   watch,
 } from "@nuxtjs/composition-api";
-import { getMessageFilters } from "@/repositories/message_manager";
 import { AutoCompleteItem } from "@/types/collection";
-import { autoComplete } from "~/repositories/instruments_manager";
 
 export default defineComponent({
   name: "filter-auto-complete",
@@ -40,6 +39,7 @@ export default defineComponent({
       new AutoCompleteItem("-4", "oms.presentation"),
     ];
     const context = useContext();
+    const store = useStore();
     const loading = ref(false);
     const search = ref("");
     const items: AutoCompleteItem[] = reactive([]);
@@ -52,11 +52,12 @@ export default defineComponent({
     function querySelections(value: string) {
       loading.value = true;
       setTimeout(() => {
-        getMessageFilters(value, context.$axios)
+        store
+          .dispatch("messages/getMessageFilters", value)
           .then((result) => {
             items.splice(0, items.length);
             items.push(...defaultItems);
-            items.push(...result.data.data);
+            if (result?.data) items.push(...result.data.data);
           })
           .finally(() => {
             loading.value = false;
