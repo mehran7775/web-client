@@ -1,5 +1,7 @@
 {
   "general": {
+    "me": "Me",
+    "all": "All",
     "actions": "Actions",
     "close": "Close",
     "ok": "Ok",
@@ -111,6 +113,10 @@
     }
   },
   "oms": {
+    "marketModerator": "Moderator",
+    "news": "News",
+    "notifications": "Notifications",
+    "presentation": "Presentation",
     "teammates": "Teammates",
     "holder": "Holder",
     "holders": "Holders",

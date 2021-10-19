@@ -3,10 +3,15 @@ export type KeyValuePairs<key,value> = {
   value: value
 }
 
-export type AutoCompleteItem = {
-  id: string,
-  name: String,
+export class AutoCompleteItem {
+  id: string
+  name: String
   fullname: String
+  constructor(id: string, name: string, fullname: string = "") {
+    this.id = id
+    this.name = name
+    this.fullname = fullname
+  }
 }
 
 export type PaginatedResult<type> = {

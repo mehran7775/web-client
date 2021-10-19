@@ -7,6 +7,8 @@
     "500": "خطای پیش بینی نشده‌ای رخ داد"
   },
   "general": {
+    "me": "من",
+    "all": "همه",
     "clear": "پاک کردن",
     "actions": "",
     "close": "بستن",
@@ -130,6 +132,10 @@
     }
   },
   "oms": {
+    "marketModerator": "ناظر",
+    "news": "اخبار",
+    "notifications": "اطلاعیه",
+    "presentation": "معرفی",
     "teammates": "همگروه‌ها",
     "holder": "سهامدار",
     "holders": "سهامداران",

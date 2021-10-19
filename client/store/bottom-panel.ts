@@ -1,5 +1,5 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import message_manager from '@/repositories/message_manager'
+import { getMessage } from '@/repositories/message_manager'
 import { Message } from '@/types/message'
 import { Tabs, TabNames, DeepOptions, TabTitle } from '@/types/panels'
 
@@ -48,7 +48,7 @@ export const mutations: MutationTree<RootState> = {
 export const actions: ActionTree<RootState, RootState> = {
   async getMessage({ commit }, payload: number) {
     try {
-      const { data, status } = await message_manager.getMessage(payload, this.$axios)
+      const { data, status } = await getMessage(payload, this.$axios)
       commit('setMessage', data);
       return status
     } catch (err: any) {
