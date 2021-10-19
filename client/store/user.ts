@@ -177,6 +177,17 @@ export const actions: ActionTree<RootState, RootState> = {
     } catch (err: any) {
       return 500
     }
+  },
+  async getProfilePic(_, name) {
+    try {
+      const img: Uint8Array = (await user_manager.getProfileImage(name, this.$axios)).data
+      return 'data:image/jpeg;base64,' + btoa(
+        new Uint8Array(img)
+          .reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+    } catch (err: any) {
+      return 500
+    }
   }
 
 }

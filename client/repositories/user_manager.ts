@@ -33,6 +33,10 @@ async function deleteUser(form: object, axios: NuxtAxiosInstance) {
   return await axios.delete('/sso/user/delete/' + form)
 }
 
+async function getProfileImage(name: string, axios: NuxtAxiosInstance) {
+  return await axios.get('/sso/user/download-profile-photo?id=' + name)
+}
+
 const userRoles: object[] = [
   {
     value: 'ADMIN',
@@ -55,5 +59,6 @@ export default {
   deleteUser,
   updateUser,
   updateUserWatchlist,
+  getProfileImage,
   userRoles
 }
