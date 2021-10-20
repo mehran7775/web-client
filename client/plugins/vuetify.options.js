@@ -16,28 +16,16 @@ export default function ({ store, app }) {
     darkSuccess: '#057341',
     warning: '#f39c12'
   }
-  
+
   return {
-    breakpoint: {
-      thresholds: {
-        xs: 0,
-        sm: 425,
-        md: 768 + 16, // 16px for the scrollbar
-        lg: 1024 + 16 // 16px for the scrollbar
-      }
-    },
     rtl: store.getters.rtl,
     lang: {
       current: store.getters.locale,
       locales: { en, fa, az, ar, ckb },
     },
-    defaultAssets: {
-      font: {
-        family: 'B Nazanin'
-      }
-    },
     icons: {
-      iconfont: ['mdi', 'adaico']// default - only for display purposes
+      iconfont: 'mdi',// default - only for display purposes
+      values: {}
     },
     theme: {
       dark: false,
