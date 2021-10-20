@@ -15,7 +15,7 @@
     "@nuxt/content": "^1.14.0",
     "@nuxtjs/axios": "^5.13.6",
     "core-js": "^3.17.2",
-    "luxon": "^0.9.2",
+    "luxon": "2.0.2",
     "nuxt": "^2.15.8",
     "nuxt-i18n": "latest",
     "vuedraggable": "^2.24.3",
