@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, useStore } from "@nuxtjs/composition-api";
-import { DeepOptions } from "@/types/panels";
+import { DeepOptions } from "@/types";
 import Teammates from "./teammates.vue";
 
 export default defineComponent({

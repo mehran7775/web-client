@@ -27,7 +27,7 @@ import {
   Ref,
   ref,
 } from "@nuxtjs/composition-api";
-import { ActiveInstrument } from "@/types/oms";
+import { ActiveInstrument } from "@/types";
 import InstrumentSearch from "@/components/oms/instrumentSearch.vue";
 import CardView from "./cardView.vue";
 import TabView from "./tabView.vue";

@@ -38,8 +38,8 @@ import {
   Ref,
   computed,
 } from "@nuxtjs/composition-api";
-import { Instrument } from "@/types/oms";
-import moment from "moment-jalaali";
+import { Instrument } from "@/types";
+import { DateTime } from "luxon";
 
 export default defineComponent({
   name: "instrumnet-card-compact",
@@ -110,9 +110,9 @@ export default defineComponent({
     function printField(data: any, type: fieldType) {
       switch (type) {
         case fieldType.dateTime:
-          return moment(data)
-            .locale(locale.value)
-            .format(i18n.t("general.date.dt").toString());
+          return DateTime.fromISO(data)
+            .setLocale(locale.value)
+            .toFormat(i18n.t("general.date.dt").toString());
         default:
           return data;
       }
@@ -136,7 +136,7 @@ export default defineComponent({
       getClickEvent,
       printField,
       fields,
-      moment,
+      DateTime,
       locale,
       instrument,
     };

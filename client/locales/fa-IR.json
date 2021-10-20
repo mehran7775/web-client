@@ -32,10 +32,10 @@
     "type": "نوع",
     "types": "انواع",
     "date": {
-      "dt": "jYYYY/jMM/jDD-HH:mm:ss",
-      "d": "jYYYY/jMM/jDD",
-      "t": "HH:mm:ss",
-      "longdt": "ddd jDD jMMMM jYYYY / HH:mm:ss"
+      "dt": "D-TT",
+      "d": "D",
+      "t": "TT",
+      "longdt": "cccc DDD / TT"
     }
   },
   "user": {

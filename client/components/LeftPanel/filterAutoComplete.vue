@@ -27,7 +27,7 @@ import {
   useStore,
   watch,
 } from "@nuxtjs/composition-api";
-import { AutoCompleteItem } from "@/types/collection";
+import { AutoCompleteItem } from "@/types";
 
 export default defineComponent({
   name: "filter-auto-complete",

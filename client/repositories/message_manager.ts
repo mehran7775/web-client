@@ -10,12 +10,12 @@ export async function getMessage(id: number, axios: NuxtAxiosInstance)
 
 //TODO List Filter Type
 export async function getMessageList(filters: object, axios: NuxtAxiosInstance)
-  : Promise<AxiosResponse<PaginatedResult<Message[]>>> {
+  : Promise<AxiosResponse<PaginatedResult<Message>>> {
   return await axios.post("oms/messages/list", filters)
 }
 
 export async function getMessageFilters(search: string, axios: NuxtAxiosInstance)
-  : Promise<AxiosResponse<PaginatedResult<AutoCompleteItem[]>>> {
+  : Promise<AxiosResponse<PaginatedResult<AutoCompleteItem>>> {
   return await axios.get("oms/messages/filters?name=" + search)
 }
 

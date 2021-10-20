@@ -1,6 +1,6 @@
 <template>
   <span>
-    {{ moment(date).locale(locale).format($t("general.date.longdt")) }}
+    {{ date.toFormat(format) }}
   </span>
 </template>
 
@@ -11,24 +11,25 @@ import {
   computed,
   ref,
 } from "@nuxtjs/composition-api";
-import moment from "moment-jalaali";
+import { DateTime } from "luxon";
 
 export default defineComponent({
   name: "clock",
+  props:{
+    format: String
+  },
   setup() {
-    moment.loadPersian();
     const store = useStore();
-    const date = ref(Date());
-    setInterval(() => {
-      date.value = Date();
-    }, 1000);
     const locale = computed(() => {
       return store.getters["locale"];
     });
+    const date = ref(DateTime.now().setLocale(locale.value));
+    setInterval(() => {
+      date.value = DateTime.now().setLocale(locale.value);
+    }, 1000);
     return {
       date,
-      moment,
-      locale,
+      DateTime,
     };
   },
 });

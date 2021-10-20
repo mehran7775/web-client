@@ -28,7 +28,7 @@ import {
   useContext,
 } from "@nuxtjs/composition-api";
 import { autoComplete } from "@/repositories/instruments_manager";
-import { AutoCompleteItem } from "@/types/collection";
+import { AutoCompleteItem } from "@/types";
 
 export default defineComponent({
   emits: ["input"],

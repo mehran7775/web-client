@@ -24,8 +24,8 @@ export class Paginated {
 }
 
 export class PaginatedResult<type> extends Paginated {
-  data: type
-  constructor(data: type, offset: number = 0, length: number = 10) {
+  data: type[]
+  constructor(data: type[], offset: number = 0, length: number = 10) {
     super(offset, length)
     this.data = data
   }

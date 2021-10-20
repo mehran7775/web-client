@@ -81,12 +81,17 @@ import {
   ref,
   Ref,
 } from "@nuxtjs/composition-api";
-import { ActiveInstrument, OrderSide } from "@/types/oms";
+import {
+  ActiveInstrument,
+  OrderSide,
+  Tabs,
+  DeepOptions,
+  TabTitle,
+} from "@/types";
 import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
 import BuySellCard from "@/components/oms/BuySellCard.vue";
-import { Tabs, DeepOptions, TabTitle } from "@/types/panels";
 
 export default defineComponent({
   components: {

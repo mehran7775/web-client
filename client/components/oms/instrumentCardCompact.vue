@@ -12,9 +12,9 @@
         </span>
         <span>
           {{
-            moment(instrument.lastTradeDate)
-              .locale(locale)
-              .format($t("general.date.dt"))
+            DateTime.fromISO(instrument.lastTradeDate)
+              .setLocale(locale)
+              .toFormat($t("general.date.dt"))
           }}
         </span>
       </v-col>
@@ -84,8 +84,8 @@ import {
   Ref,
   computed,
 } from "@nuxtjs/composition-api";
-import { Instrument } from "@/types/oms";
-import moment from "moment-jalaali";
+import { Instrument } from "@/types";
+import {DateTime} from "luxon"
 
 export default defineComponent({
   name: "instrumnet-card-compact",
@@ -104,7 +104,7 @@ export default defineComponent({
         instrument.value = data[0];
       });
     return {
-      moment,
+      DateTime,
       locale,
       instrument,
     };

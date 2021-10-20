@@ -10,8 +10,7 @@ import {
   computed,
   useStore,
 } from "@nuxtjs/composition-api";
-import { PaginatedResult } from "@/types/collection";
-import { Instrument } from "@/types/oms";
+import { PaginatedResult, Instrument } from "@/types";
 
 export default defineComponent({
   name: "teammates",

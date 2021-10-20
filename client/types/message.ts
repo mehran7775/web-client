@@ -1,5 +1,5 @@
 import { Paginated } from "./collection"
-import moment from "moment"
+import { DateTime } from "luxon"
 
 export class MessageQuery extends Paginated {
     filters: MessageFilter
@@ -18,7 +18,7 @@ export class MessageFilter {
         if (dateTime)
             this.dateTime = dateTime
         else
-            this.dateTime = moment(Date()).toISOString()
+            this.dateTime = new DateTime().toISOTime()
     }
 }
 

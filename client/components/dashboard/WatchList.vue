@@ -43,8 +43,8 @@ import {
 import instrumentCard from "../oms/instrumentCardCompact.vue";
 import LegalRealCard from "../oms/legalRealCard.vue";
 import orderQueueCard from "../oms/orderQueueCard.vue";
-import { WatchlistColumns, DefaultCols } from "@/types/sso";
-import { Instrument } from "~/types/oms";
+import { WatchlistColumns, DefaultCols, Instrument } from "@/types";
+
 
 export default defineComponent({
   props: ["watchlists", "selected"],

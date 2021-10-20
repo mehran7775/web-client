@@ -49,8 +49,8 @@
 
 <script lang="ts">
 import { defineComponent, useStore, computed } from "@nuxtjs/composition-api";
+import { Tabs } from "@/types";
 import furtherInformation from "./furtherInformation/index.vue";
-import { Tabs } from "@/types/panels";
 import DefaultOrderList from "./defaultOrderList.vue";
 import DeepInformation from "./deepInformation/index.vue";
 import Bests from "./bests.vue";

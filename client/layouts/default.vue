@@ -39,7 +39,7 @@
       >
         <v-icon>mdi-menu-open</v-icon>
       </v-app-bar-nav-icon>
-      <clock />
+      <clock :format="$t('general.date.longdt')" />
       <v-spacer />
       <v-col>
         <v-badge
@@ -195,7 +195,7 @@ import watchListEditor from "@/components/dashboard/watchListEditor.vue";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
 import RightPanel from "@/components/rightPanel.vue";
 import LeftPanel from "@/components/LeftPanel/index.vue";
-import { User } from "@/types/sso";
+import { User } from "@/types";
 
 export default defineComponent({
   components: {

@@ -60,8 +60,8 @@
 
 <script lang="ts">
 import { defineComponent, useStore, computed } from "@nuxtjs/composition-api";
-import { ActiveInstrument, OrderSide } from "@/types/oms";
-import instrumentCard from "~/components/oms/instrumentCardCompact.vue";
+import { ActiveInstrument, OrderSide } from "@/types";
+import instrumentCard from "@/components/oms/instrumentCardCompact.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
 

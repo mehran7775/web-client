@@ -10,8 +10,7 @@ import {
   getCurrentInstance,
 } from "@nuxtjs/composition-api";
 import template1 from "./type1.vue";
-import { Tabs } from "@/types/panels";
-import { Message } from "@/types/message";
+import { Tabs, Message } from "@/types";
 
 export default defineComponent({
   components: {

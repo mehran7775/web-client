@@ -28,7 +28,7 @@
       "@nuxtjs/axios",
       "@nuxt/content",
       "@types/node",
-      "@types/moment-jalaali"
+      "@types/luxon",
     ]
   },
   "exclude": [

@@ -35,7 +35,7 @@ import {
   reactive,
 } from "@nuxtjs/composition-api";
 import filterAutoComplete from "./filterAutoComplete.vue";
-import { MessageFilter, MessageQuery } from "@/types/message";
+import { MessageFilter, MessageQuery } from "@/types";
 
 export default defineComponent({
   components: { filterAutoComplete },

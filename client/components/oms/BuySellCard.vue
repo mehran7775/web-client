@@ -206,7 +206,7 @@ import {
   ref,
   watch,
 } from "@nuxtjs/composition-api";
-import { OrderSide, ActiveInstrument } from "@/types/oms";
+import { OrderSide, ActiveInstrument } from "@/types";
 
 export default defineComponent({
   props: {
