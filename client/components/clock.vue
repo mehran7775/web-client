@@ -1,7 +1,7 @@
 <template>
-  <span>
+  <div :style="{ width: width + 'px' }">
     {{ date.toFormat(format) }}
-  </span>
+  </div>
 </template>
 
 <script lang="ts">
@@ -15,8 +15,9 @@ import { DateTime } from "luxon";
 
 export default defineComponent({
   name: "clock",
-  props:{
-    format: String
+  props: {
+    format: String,
+    width: Number,
   },
   setup() {
     const store = useStore();
@@ -34,4 +35,3 @@ export default defineComponent({
   },
 });
 </script>
-

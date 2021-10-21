@@ -39,30 +39,30 @@
       >
         <v-icon>mdi-menu-open</v-icon>
       </v-app-bar-nav-icon>
-      <clock :format="$t('general.date.longdt')" />
+      <clock :format="$t('general.date.longdt')" width="200" />
       <v-spacer />
-      <v-col>
-        <v-badge
-          dot
-          left
-          color="green"
-          class="ms-5"
-          offset-y="75%"
-          offset-x="-5"
-          >{{ $t("oms.bourseIndex") }}: 0</v-badge
-        >
-      </v-col>
-      <v-col>
-        <v-badge
-          dot
-          left
-          color="orange"
-          class="my-5"
-          offset-y="75%"
-          offset-x="-5"
-          >{{ $t("oms.superBourseIndex") }}:‌ 0</v-badge
-        >
-      </v-col>
+      <v-badge
+        v-if="isLogin"
+        dot
+        left
+        color="green"
+        class="mx-5"
+        offset-y="75%"
+        offset-x="-5"
+      >
+        {{ $t("oms.bourseIndex") }}: 0
+      </v-badge>
+      <v-badge
+        v-if="isLogin"
+        dot
+        left
+        color="orange"
+        class="my-5"
+        offset-y="75%"
+        offset-x="-5"
+      >
+        {{ $t("oms.superBourseIndex") }}:‌ 0
+      </v-badge>
       <v-spacer />
       <v-btn v-if="!isLogin" color="success" nuxt to="/login" depressed>
         {{ $t("login.login") }}
@@ -70,7 +70,7 @@
       </v-btn>
       <v-menu v-model="userMenu" v-if="isLogin" rounded="b-xl" offset-y>
         <template #activator="{ on, attrs }">
-          <v-btn v-bind="attrs" v-on="on" depressed>
+          <v-btn v-bind="attrs" v-on="on" class="ma-0 me-3 pa-0" depressed>
             <profile-picture
               :address="currentUser.profile && currentUser.profile.profilePic"
             />
@@ -84,7 +84,7 @@
         </template>
         <v-list>
           <v-list-item>
-            <v-btn v-if="isLogin" color="error" depressed @click="doLogout">
+            <v-btn color="error" depressed @click="doLogout" small outlined>
               {{ $t("login.logout") }}
               <v-icon>mdi-account-arrow-right</v-icon>
             </v-btn>
