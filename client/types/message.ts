@@ -18,7 +18,7 @@ export class MessageFilter {
         if (dateTime)
             this.dateTime = dateTime
         else
-            this.dateTime = new DateTime().toISOTime()
+            this.dateTime = DateTime.now().toISO()
     }
 }
 
@@ -31,21 +31,39 @@ export class MessageTag {
     }
 }
 
-export type Message = {
-    id: Number,
-    dateTime: String,
-    title: String,
-    preview: String,
-    origin: Number,
-    type: Number,
-    flags: Number,
-    message: Message_template_1 | Message_template_2
+export class Message {
+    id: number
+    dateTime: string
+    title: string
+    preview: string
+    origin: number
+    type: number
+    flags: number
+    message: MessageTemplate
+    constructor(
+        id: number, title: string, message: MessageTemplate,
+        dateTime: string | null = null, flags: number = 0,
+        origin: number = 1, type: number = 1,
+        preview: string = "") {
+        this.id = id
+        this.title = title
+        this.dateTime = dateTime || DateTime.now().toISO()
+        this.preview = preview
+        this.origin = origin
+        this.type = type
+        this.flags = flags
+        this.message = message
+    }
 }
 
-export type Message_template_1 = {
-    body: String
+export class MessageTemplate {
+    constructor() { }
 }
 
-export type Message_template_2 = {
+export class MessageTemplate_1 extends MessageTemplate {
     body: String
+    constructor(body: string) {
+        super()
+        this.body = body
+    }
 }

@@ -39,7 +39,7 @@
       >
         <v-icon>mdi-menu-open</v-icon>
       </v-app-bar-nav-icon>
-      <clock :format="$t('general.date.longdt')" width="200" />
+      <clock :format="$t('general.date.longdt')" width="220" />
       <v-spacer />
       <v-badge
         v-if="isLogin"

@@ -32,7 +32,7 @@
     "type": "نوع",
     "types": "انواع",
     "date": {
-      "dt": "D-TT",
+      "dt": "D-T",
       "d": "D",
       "t": "TT",
       "longdt": "cccc DDD / TT"

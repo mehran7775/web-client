@@ -19,10 +19,10 @@
     "type": "Type",
     "types": "Types",
     "date": {
-      "dt": "YYYY-MM-DD HH:mm:ss",
-      "d": "YYYY-MM-DD",
-      "t": "HH:mm:ss",
-      "longdt": "ddd DD MMM YYYY / HH:mm:ss"
+      "dt": "D T",
+      "d": "D",
+      "t": "TT",
+      "longdt": "cccc DDD / TT"
     }
   },
   "user": {

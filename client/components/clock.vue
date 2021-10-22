@@ -17,7 +17,7 @@ export default defineComponent({
   name: "clock",
   props: {
     format: String,
-    width: Number,
+    width: [String , Number],
   },
   setup() {
     const store = useStore();
