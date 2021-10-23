@@ -10,7 +10,7 @@ export default defineComponent({
     const store = useStore();
     const i18n = useI18n();
 
-    store.commit("bottom-panel/setTitle", i18n.t("bottom-panel.bests"));
+    
 
     return {};
     //TODO remove in vue3

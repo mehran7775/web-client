@@ -9,9 +9,9 @@ export enum Tabs {
 export function TabNames() {
   return [
     new TabTitle(Tabs.activeOrders, "bottom-panel.orders", []),
-    new TabTitle(Tabs.activeOrders, "bottom-panel.bests", []),
-    new TabTitle(Tabs.activeOrders, "bottom-panel.depth", []),
-    new TabTitle(Tabs.activeOrders, "bottom-panel.more", []),
+    new TabTitle(Tabs.bests, "bottom-panel.bests", []),
+    new TabTitle(Tabs.depth, "bottom-panel.depth", []),
+    new TabTitle(Tabs.furtherInfo, "bottom-panel.more", []),
   ]
 }
 

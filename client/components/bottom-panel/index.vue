@@ -66,7 +66,6 @@ export default defineComponent({
       "bottom-panel.orders",
       "bottom-panel.bests",
       "bottom-panel.depth",
-      "bottom-panel.more",
     ];
     const tab = computed({
       get(): Tabs {

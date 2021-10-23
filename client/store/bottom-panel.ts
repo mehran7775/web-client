@@ -1,13 +1,13 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { Message } from '@/types/message'
-import { Tabs, TabNames, DeepOptions, TabTitle, SameSectorQuery, Sector } from '@/types'
+import { Tabs, TabNames, DeepOptions, TabTitle, SameSectorQuery, Sector, MessageTemplate } from '@/types'
 
 
 export const state = () => ({
   activeTab: <Tabs>Tabs.none,
   expanded: false,
   titles: <TabTitle[]>TabNames(),
-  further_information: <Message>{},
+  further_information: <Message>new Message(0, "", new MessageTemplate()),
   market_depth: {},
   the_bests: {},
   orders: {}
