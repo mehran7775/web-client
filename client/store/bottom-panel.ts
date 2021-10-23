@@ -45,18 +45,6 @@ export const mutations: MutationTree<RootState> = {
 }
 
 export const actions: ActionTree<RootState, RootState> = {
-  async getMessage({ commit, dispatch }, payload: number) {
-    try {
-      const { data, status } = await dispatch("messages/getMessage", payload, { root: true })
-      commit('setMessage', data);
-      return status
-    } catch (err: any) {
-      if (err.response) {
-        return err.response.status
-      }
-      return 450
-    }
-  },
   async getTeammates({ commit, dispatch }, payload: number) {
     try {
       commit("setDepthData", {

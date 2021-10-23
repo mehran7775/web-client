@@ -21,6 +21,7 @@
           :timeFormat="$t('general.date.d')"
           :loading="loading"
           @load="loadMessages(messageQuery)"
+          @select="selectMessage"
           class="message-list"
         />
       </v-tab-item>
@@ -31,6 +32,7 @@
           :timeFormat="$t('general.date.t')"
           :loading="loading"
           @load="loadMessages(messageQuery)"
+          @select="selectMessage"
           class="notification-list"
         />
       </v-tab-item>
@@ -49,7 +51,14 @@ import {
 } from "@nuxtjs/composition-api";
 import filterAutoComplete from "./filterAutoComplete.vue";
 import { AxiosResponse } from "axios";
-import { PaginatedResult, Message, MessageFilter, MessageQuery } from "@/types";
+import {
+  PaginatedResult,
+  Message,
+  MessageFilter,
+  MessageQuery,
+  Tabs,
+  TabTitle,
+} from "@/types";
 import MessageList from "./messageList.vue";
 
 export default defineComponent({
@@ -78,11 +87,9 @@ export default defineComponent({
     const loading = ref(false);
     const messages: Message[] = reactive([]);
 
-    const messageQuery: Ref<MessageQuery> = ref(new MessageQuery(
-      0,
-      10,
-      new MessageFilter([], "2021-09-22T00:00:00.000Z")
-    ));
+    const messageQuery: Ref<MessageQuery> = ref(
+      new MessageQuery(0, 10, new MessageFilter([], "2021-09-22T00:00:00.000Z"))
+    );
 
     function loadMessages(query: MessageQuery) {
       loading.value = true;
@@ -90,7 +97,7 @@ export default defineComponent({
         .dispatch("messages/getMessages", query)
         .then((res: AxiosResponse<PaginatedResult<Message>>) => {
           messages.push(...res.data.data);
-          messageQuery.value.offset = messages.length
+          messageQuery.value.offset = messages.length;
         })
         .catch()
         .finally(() => {
@@ -98,9 +105,25 @@ export default defineComponent({
         });
     }
 
+    async function selectMessage(id: number) {
+      try {
+        const message: Message = (
+          await store.dispatch("messages/getMessage", id)
+        ).data;
+        store.commit("bottom-panel/setMessage", message);
+        store.commit(
+          "bottom-panel/setTitle",
+          new TabTitle(Tabs.furtherInfo, message.title)
+        );
+        // Should be the last to commit
+        store.commit("bottom-panel/setActiveTab", Tabs.furtherInfo);
+      } catch {}
+    }
+
     loadMessages(messageQuery.value);
 
     return {
+      selectMessage,
       messageQuery,
       loading,
       rtl,
