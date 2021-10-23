@@ -21,12 +21,12 @@ export default defineComponent({
     const store = useStore();
     const headers = [
       { text:"id", value: "id"},
-      { text:"name", value: "name"},
-      { text:"last", value: "last"},
-      { text:"closeing", value: "closeing"},
-      { text:"count", value: "count"},
-      { text:"volume", value: "volume"},
-      { text:"value", value: "value"},
+      { text:"name", value: "code"},
+      { text:"last", value: "lastPrice"},
+      { text:"closing", value: "closing"},
+      { text:"count", value: "totalShares"},
+      { text:"volume", value: "totalTrades"},
+      { text:"value", value: "totalTradeValue"},
     ];
     return {
       headers,

@@ -122,6 +122,10 @@ export default defineComponent({
     function deep(option: DeepOptions, instrument: Instrument) {
       switch (option) {
         case DeepOptions.teammates:
+          store.commit(
+            "bottom-panel/setTitle",
+            new TabTitle(Tabs.depth, "oms." + option)
+          );
           store.dispatch("bottom-panel/getTeammates", {
             instrument: instrument.id,
             sector: instrument.sectorCode,

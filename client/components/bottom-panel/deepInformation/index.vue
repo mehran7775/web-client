@@ -15,7 +15,7 @@
 <script lang="ts">
 import { computed, defineComponent, useStore } from "@nuxtjs/composition-api";
 import { DeepOptions } from "@/types";
-import Teammates from "./teammates.vue";
+import Teammates from "./sameSector.vue";
 
 export default defineComponent({
   name: "deep-information",

@@ -8,7 +8,7 @@
     class="ma-0 pa-0"
   >
     <v-card :class="{ expanded: true }" width="100%">
-      <v-toolbar v-if="tab != -1" elevation="1" dense>
+      <v-toolbar color="secondary" v-if="tab != -1" elevation="1" dark dense>
         <v-card-title>
           {{ $t(title) }}
         </v-card-title>
