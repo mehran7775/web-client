@@ -59,7 +59,7 @@
                   <v-btn
                     v-for="op in deepOptions"
                     :key="op"
-                    @click="deep(op)"
+                    @click="deep(op, item)"
                     small
                     >{{ $t("oms." + op) }}</v-btn
                   >
@@ -87,6 +87,7 @@ import {
   Tabs,
   DeepOptions,
   TabTitle,
+  Instrument,
 } from "@/types";
 import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
@@ -118,10 +119,13 @@ export default defineComponent({
       store.commit("instruments/removeFocus", id);
       store.commit("instruments/stopWatchQueue", id);
     }
-    function deep(option: DeepOptions) {
+    function deep(option: DeepOptions, instrument: Instrument) {
       switch (option) {
         case DeepOptions.teammates:
-          store.dispatch("bottom-panel/getTeammates", 1);
+          store.dispatch("bottom-panel/getTeammates", {
+            instrument: instrument.id,
+            sector: instrument.sectorCode,
+          });
           break;
         default:
           store.commit(

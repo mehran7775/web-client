@@ -14,8 +14,8 @@ async function getOrderQueue(value: number, axios: NuxtAxiosInstance): Promise<A
   return axios.get('oms/instruments/order-queue/' + value)
 }
 
-async function getTeammates(instrumentId: number, axios: NuxtAxiosInstance) {
-  return axios.get('oms/instruments/teammates/' + instrumentId)
+async function getTeammates(instrumentId: number, sectorId: number, axios: NuxtAxiosInstance) {
+  return axios.get('oms/instruments/same-sub-sectors/' + instrumentId + "/" + sectorId)
 }
 
 export {

@@ -136,8 +136,8 @@ export default defineComponent({
     const queue: Array<OrderQueueItem> = reactive([]);
     store
       .dispatch("instruments/getOrderQueue", props.insId)
-      .then((result: Array<OrderQueueItem>) => {
-        queue.push(...result);
+      .then((result) => {
+        if (result.queue) queue.push(...result.queue);
       });
     return {
       queue,

@@ -100,9 +100,9 @@ export const actions: ActionTree<RootState, RootState> = {
       return 450
     }
   },
-  async getTeammates({ state, commit }, payload: number): Promise<Array<OrderQueueItem> | number> {
+  async getTeammates({ state, commit }, payload: { instrument: number, sector: number }): Promise<Array<OrderQueueItem> | number> {
     try {
-      const { data } = await getTeammates(payload, this.$axios)
+      const { data } = await getTeammates(payload.instrument, payload.sector, this.$axios)
       return data
     } catch (err: any) {
       if (err.response) {
