@@ -1,23 +1,37 @@
 <template>
-  <v-virtual-scroll item-height="40" :items="value">
-    <template #default="{ item }">
-      <v-list-item :key="item.id" @click="() => {}" dense>
-        <v-list-item-icon>
-          <v-icon> {{ icon(item) }} </v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>
-          {{ item.title }}
-        </v-list-item-title>
-        <v-list-item-subtitle>
-          {{
-            DateTime.fromISO(item.dateTime)
-              .setLocale(locale)
-              .toFormat(timeFormat)
-          }}
-        </v-list-item-subtitle>
-      </v-list-item>
-    </template>
-  </v-virtual-scroll>
+  <div class="body">
+    <v-virtual-scroll class="scroll" item-height="40" :items="value">
+      <template #default="{ item }">
+        <v-list-item
+          :key="item.id"
+          @click="() => $emit('select', item.id)"
+          dense
+        >
+          <v-icon> {{ icons[item.origin] }} </v-icon>
+          <v-list-item-title class="ma-0 pa-0 ps-5">
+            <v-icon v-if="!item.seenAt" color="warning" x-small> mdi-alert-circle </v-icon>
+            {{ item.title }}
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            {{
+              DateTime.fromISO(item.dateTime)
+                .setLocale(locale)
+                .toFormat(timeFormat)
+            }}
+          </v-list-item-subtitle>
+        </v-list-item>
+      </template>
+    </v-virtual-scroll>
+    <v-btn
+      @click="$emit('load', $event)"
+      class="more"
+      color="secondary"
+      depressed
+    >
+      <v-progress-circular indeterminate v-show="loading" />
+      <v-icon v-show="!loading"> mdi-plus </v-icon>
+    </v-btn>
+  </div>
 </template>
 <script lang="ts">
 import {
@@ -37,21 +51,43 @@ function defaultIconParser(message: Message): string {
 
 export default defineComponent({
   name: "message-list",
-  emits: ["select"],
+  emits: ["select", "load"],
   props: {
     value: Array,
     timeFormat: String,
     iconParser: Function,
+    loading: Boolean,
   },
   setup(props, context) {
     const store = useStore();
     const locale = computed(() => store.getters["locale"]);
-    const icon = props.iconParser ?? defaultIconParser;
+    const icons = [
+      "mdi-message-cog-outline",
+      "mdi-message-flash-outline",
+      "mdi-message-processing-outline",
+      "mdi-message-alert-outline",
+      "mdi-message-outline",
+    ];
     return {
       locale,
       DateTime,
-      icon,
+      icons,
     };
   },
 });
 </script>
+
+<style scoped>
+.body {
+  display: block;
+}
+.scroll {
+  height: calc(100% - 40px);
+}
+.more {
+  height: 40px;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0;
+}
+</style>

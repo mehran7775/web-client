@@ -40,11 +40,12 @@ export class Message {
     type: number
     flags: number
     message: MessageTemplate
+    seenAt: string
     constructor(
         id: number, title: string, message: MessageTemplate,
         dateTime: string | null = null, flags: number = 0,
         origin: number = 1, type: number = 1,
-        preview: string = "") {
+        preview: string = "", seenAt: string = "") {
         this.id = id
         this.title = title
         this.dateTime = dateTime || DateTime.now().toISO()
@@ -53,6 +54,7 @@ export class Message {
         this.type = type
         this.flags = flags
         this.message = message
+        this.seenAt = seenAt
     }
 }
 

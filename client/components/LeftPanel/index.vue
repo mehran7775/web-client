@@ -19,6 +19,8 @@
         <message-list
           v-model="messages"
           :timeFormat="$t('general.date.d')"
+          :loading="loading"
+          @load="loadMessages"
           class="message-list"
         />
       </v-tab-item>
@@ -27,7 +29,8 @@
         <message-list
           v-model="messages"
           :timeFormat="$t('general.date.t')"
-          :iconParser="notificationIconParser"
+          :loading="loading"
+          @load="loadMessages"
           class="notification-list"
         />
       </v-tab-item>
@@ -39,10 +42,8 @@
 import {
   defineComponent,
   ref,
-  Ref,
   computed,
   useStore,
-  useContext,
   reactive,
 } from "@nuxtjs/composition-api";
 import filterAutoComplete from "./filterAutoComplete.vue";
@@ -73,21 +74,14 @@ export default defineComponent({
       },
     });
 
+    const loading = ref(false);
     const messages: Message[] = reactive([]);
 
-    function notificationIconParser(message: Message): string {
-      switch (message.origin) {
-        case 1:
-          return "mdi-message-cog-outline";
-        case 2:
-          return "mdi-message-flash-outline";
-        case 3:
-          return "mdi-message-processing-outline";
-        case 4:
-          return "mdi-message-alert-outline";
-        default:
-          return "mdi-message-outline";
-      }
+    function loadMessages() {
+      loading.value = true;
+      setTimeout(() => {
+        loading.value = false;
+      }, 2000);
     }
 
     store
@@ -105,11 +99,12 @@ export default defineComponent({
       .catch();
 
     return {
-      notificationIconParser,
+      loading,
       rtl,
       drawer,
       expand,
       messages,
+      loadMessages,
       activeTab: 0,
     };
   },
