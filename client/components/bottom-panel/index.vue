@@ -111,7 +111,6 @@ export default defineComponent({
 <style scoped>
 .expanded {
   height: 100%;
-  
 }
 .half {
   height: calc(48vh - 96px);

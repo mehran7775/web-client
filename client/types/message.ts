@@ -37,7 +37,7 @@ export class Message {
     title: string
     preview: string
     origin: number
-    type: number
+    messageType: number
     flags: number
     message: MessageTemplate
     seenAt: string
@@ -51,7 +51,7 @@ export class Message {
         this.dateTime = dateTime || DateTime.now().toISO()
         this.preview = preview
         this.origin = origin
-        this.type = type
+        this.messageType = type
         this.flags = flags
         this.message = message
         this.seenAt = seenAt

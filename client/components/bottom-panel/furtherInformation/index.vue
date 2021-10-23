@@ -1,13 +1,13 @@
 <template>
-  <template-1 :message="message" v-if="message.type == 1" />
+  <template-1 :message="message" v-if="message.messageType == 1" />
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   useStore,
   computed,
-  getCurrentInstance,
+  ComputedRef,
 } from "@nuxtjs/composition-api";
 import template1 from "./type1.vue";
 import { Tabs, Message } from "@/types";
@@ -18,8 +18,8 @@ export default defineComponent({
   },
   setup(params) {
     const store = useStore();
-    const message = computed(
-      () => store.getters["bottom-panel/further_information"]
+    const message: ComputedRef<Message> = computed(
+      () => (store.getters["bottom-panel/further_information"] as Message)
     );
 
     return {
