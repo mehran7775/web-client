@@ -82,12 +82,11 @@ import {
   Ref,
 } from "@nuxtjs/composition-api";
 import {
-  ActiveInstrument,
-  OrderSide,
   Tabs,
   DeepOptions,
   TabTitle,
   Instrument,
+  SameSectorQuery,
 } from "@/types";
 import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
@@ -119,17 +118,13 @@ export default defineComponent({
       store.commit("instruments/removeFocus", id);
       store.commit("instruments/stopWatchQueue", id);
     }
-    function deep(option: DeepOptions, instrument: Instrument) {
+    async function deep(option: DeepOptions, instrument: Instrument) {
       switch (option) {
         case DeepOptions.teammates:
-          store.commit(
-            "bottom-panel/setTitle",
-            new TabTitle(Tabs.depth, "oms." + option)
+          store.dispatch(
+            "bottom-panel/getTeammates",
+            new SameSectorQuery(instrument.id, instrument.sectorCode)
           );
-          store.dispatch("bottom-panel/getTeammates", {
-            instrument: instrument.id,
-            sector: instrument.sectorCode,
-          });
           break;
         default:
           store.commit(

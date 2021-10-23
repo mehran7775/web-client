@@ -10,7 +10,7 @@
     <v-card :class="{ expanded: true }" width="100%">
       <v-toolbar color="secondary" v-if="tab != -1" elevation="1" dark dense>
         <v-card-title>
-          {{ $t(title) }}
+          {{ title }}
         </v-card-title>
         <v-spacer />
         <v-btn icon @click="expand()">
@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { defineComponent, useStore, computed } from "@nuxtjs/composition-api";
-import { Tabs } from "@/types";
+import { Tabs, TabTitle } from "@/types";
 import furtherInformation from "./furtherInformation/index.vue";
 import DefaultOrderList from "./defaultOrderList.vue";
 import DeepInformation from "./deepInformation/index.vue";
@@ -82,7 +82,10 @@ export default defineComponent({
         : "mdi-arrow-expand"
     );
     const expanded = computed(() => store.getters["bottom-panel/expanded"]);
-    const title = computed(() => store.getters["bottom-panel/title"]);
+    const title = computed(() => {
+      const tab = store.getters["bottom-panel/title"] as TabTitle;
+      return i18n.t(tab.title, tab.params);
+    });
 
     function expand() {
       store.commit("bottom-panel/toggleExpand");

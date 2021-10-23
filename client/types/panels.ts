@@ -8,10 +8,10 @@ export enum Tabs {
 
 export function TabNames() {
   return [
-    "bottom-panel.orders",
-    "bottom-panel.bests",
-    "bottom-panel.depth",
-    "bottom-panel.more",
+    new TabTitle(Tabs.activeOrders, "bottom-panel.orders", []),
+    new TabTitle(Tabs.activeOrders, "bottom-panel.bests", []),
+    new TabTitle(Tabs.activeOrders, "bottom-panel.depth", []),
+    new TabTitle(Tabs.activeOrders, "bottom-panel.more", []),
   ]
 }
 
@@ -26,8 +26,10 @@ export enum DeepOptions {
 export class TabTitle {
   tab: Tabs
   title: string
-  constructor(tab: Tabs, title: string) {
+  params: string[]
+  constructor(tab: Tabs, title: string, params: string[] = []) {
     this.tab = tab
     this.title = title
+    this.params = params
   }
 }

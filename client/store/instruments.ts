@@ -1,5 +1,5 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import { Instrument, OrderQueueItem, OrderSide, ActiveInstrument } from '@/types/oms'
+import { Instrument, OrderQueueItem, OrderSide, ActiveInstrument, SameSectorQuery } from '@/types/oms'
 import { getInstrumentsDetail, getOrderQueue, getTeammates } from '~/repositories/instruments_manager'
 
 
@@ -54,7 +54,6 @@ export const mutations: MutationTree<RootState> = {
   },
   selectByIndex(state, index: number) {
     state.selected.instrumentId = state.focus[index]?.id
-    console.log(index, state.selected.instrumentId)
   },
   selectSide(state, side: OrderSide) {
     state.selected.side = side
@@ -100,7 +99,7 @@ export const actions: ActionTree<RootState, RootState> = {
       return 450
     }
   },
-  async getTeammates({ state, commit }, payload: { instrument: number, sector: number }): Promise<Array<OrderQueueItem> | number> {
+  async getTeammates({ state, commit }, payload: SameSectorQuery): Promise<Array<OrderQueueItem> | number> {
     try {
       const { data } = await getTeammates(payload.instrument, payload.sector, this.$axios)
       return data
