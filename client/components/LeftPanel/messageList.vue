@@ -29,7 +29,7 @@
       depressed
     >
       <v-progress-circular indeterminate v-show="loading" />
-      <v-icon v-show="!loading"> mdi-plus </v-icon>
+      <v-icon v-show="!loading"> mdi-more </v-icon>
     </v-btn>
   </div>
 </template>

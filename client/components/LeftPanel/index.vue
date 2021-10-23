@@ -20,7 +20,7 @@
           v-model="messages"
           :timeFormat="$t('general.date.d')"
           :loading="loading"
-          @load="loadMessages"
+          @load="loadMessages(messageQuery)"
           class="message-list"
         />
       </v-tab-item>
@@ -30,7 +30,7 @@
           v-model="messages"
           :timeFormat="$t('general.date.t')"
           :loading="loading"
-          @load="loadMessages"
+          @load="loadMessages(messageQuery)"
           class="notification-list"
         />
       </v-tab-item>
@@ -41,6 +41,7 @@
 <script lang="ts">
 import {
   defineComponent,
+  Ref,
   ref,
   computed,
   useStore,
@@ -77,28 +78,30 @@ export default defineComponent({
     const loading = ref(false);
     const messages: Message[] = reactive([]);
 
-    function loadMessages() {
+    const messageQuery: Ref<MessageQuery> = ref(new MessageQuery(
+      0,
+      10,
+      new MessageFilter([], "2021-09-22T00:00:00.000Z")
+    ));
+
+    function loadMessages(query: MessageQuery) {
       loading.value = true;
-      setTimeout(() => {
-        loading.value = false;
-      }, 2000);
+      store
+        .dispatch("messages/getMessages", query)
+        .then((res: AxiosResponse<PaginatedResult<Message>>) => {
+          messages.push(...res.data.data);
+          messageQuery.value.offset = messages.length
+        })
+        .catch()
+        .finally(() => {
+          loading.value = false;
+        });
     }
 
-    store
-      .dispatch(
-        "messages/getMessages",
-        new MessageQuery(
-          0,
-          10,
-          new MessageFilter([], "2021-09-22T00:00:00.000Z")
-        )
-      )
-      .then((res: AxiosResponse<PaginatedResult<Message>>) => {
-        messages.push(...res.data.data);
-      })
-      .catch();
+    loadMessages(messageQuery.value);
 
     return {
+      messageQuery,
       loading,
       rtl,
       drawer,
