@@ -119,6 +119,7 @@ export default defineComponent({
       store.commit("instruments/stopWatchQueue", id);
     }
     async function deep(option: DeepOptions, instrument: Instrument) {
+      store.commit("bottom-panel/setDepthData", null);
       switch (option) {
         case DeepOptions.teammates:
           try {

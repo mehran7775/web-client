@@ -1,12 +1,14 @@
 <template>
   <v-container class="ma-0 pa-0" fluid>
     <v-row dense>
-      <v-col>
+      <v-col v-if="initData">
         <teammates
           v-if="initData.type == DeepOptions.teammates"
           v-model="initData.data"
         />
-        <h3 v-else>else</h3>
+      </v-col>
+      <v-col v-else>
+        <h3>else</h3>
       </v-col>
     </v-row>
   </v-container>
