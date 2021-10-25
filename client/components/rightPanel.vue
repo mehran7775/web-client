@@ -4,6 +4,7 @@
     :mini-variant="mini"
     :clipped="clipped"
     :right="rtl"
+    class="panel"
     width="260"
     :expand-on-hover="mini"
     absolute
@@ -11,8 +12,8 @@
     app
   >
     <v-list dense>
-      <v-list-item-group v-model="selected">
-        <div v-for="(item, i) in items" :key="i" class="ma-0 pa-0">
+      <v-list-item-group :class="{ 'my-40': true }" v-model="selected">
+        <div v-for="(item, i) in items" :key="i">
           <v-list-group v-if="item.children" class="ma-0 px-0">
             <v-tooltip slot="activator" left>
               <template #activator="{ on, attrs }">
@@ -84,6 +85,12 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
+    <div class="scroll up">
+      <v-icon dark>mdi-chevron-up</v-icon>
+    </div>
+    <div class="scroll down">
+      <v-icon dark>mdi-chevron-down</v-icon>
+    </div>
   </v-navigation-drawer>
 </template>
 
@@ -200,6 +207,7 @@ export default defineComponent({
         context.emit("input", value);
       },
     });
+
     return {
       rtl,
       drawer,
@@ -211,3 +219,35 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+@media only screen and (min-height: 771px) {
+  .scroll {
+    display: none;
+  }
+}
+@media only screen and (max-height: 770px) {
+  .scroll {
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 15px;
+    width: 100%;
+    color: white;
+    position: fixed;
+  }
+  .scroll.up {
+    top: 0;
+  }
+  .scroll.down {
+    bottom: 0;
+    margin-top: -20px;
+  }
+}
+/* width */
+.panel ::-webkit-scrollbar {
+  display: none;
+}
+</style>

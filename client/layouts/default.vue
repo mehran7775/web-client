@@ -286,7 +286,7 @@ export default defineComponent({
  
 /* Handle */
 .dashboardmain-nuxt::-webkit-scrollbar-thumb {
-  background: #78cdff; 
+  background-image: linear-gradient(180deg, #D0368A 0%, #708AD4 99%);
   border-radius: 2.5px;
 }
 
