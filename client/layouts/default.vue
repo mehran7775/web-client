@@ -16,6 +16,7 @@
       id="app-bar"
       :clipped-left="clipped"
       :clipped-right="clipped"
+      class="text-no-wrap"
       fixed
       app
       dense
@@ -103,15 +104,15 @@
       </div>
       <bottom-panel v-if="isLogin" />
     </v-main>
-    <v-footer height="48px" :absolute="true" app>
+    <v-footer class="text-no-wrap" height="48px" :absolute="true" app>
       <v-row>
-        <v-col md="2" xs="5">
+        <v-col cols="2" sm="3" xs="5">
           <span>
             <v-icon small>mdi-account-group</v-icon>
             &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
           </span>
         </v-col>
-        <v-col md="10" xs="7" v-if="isLogin">
+        <v-col cols="10" sm="9" xs="7" v-if="isLogin">
           <v-badge
             dot
             left
