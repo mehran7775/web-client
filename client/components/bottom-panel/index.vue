@@ -125,7 +125,7 @@ export default defineComponent({
   height: 100%;
 }
 .half {
-  height: calc(48vh - 80px);
+  height: calc(50vh - 80px);
 }
 .detail {
   position: relative;

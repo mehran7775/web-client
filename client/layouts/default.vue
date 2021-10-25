@@ -100,7 +100,7 @@
       </v-badge>
     </v-app-bar>
     <v-main class="dashboardmain-page">
-      <div class="dashboardmain-nuxt">
+      <div :class="{ 'dashboardmain-nuxt': true, collaps: collaps }">
         <nuxt />
       </div>
       <bottom-panel v-if="isLogin" />
@@ -214,6 +214,10 @@ export default defineComponent({
     const host = process.env.VUE_APP_Host;
 
     const isLogin = computed(() => store.getters["user/isLogin"]);
+    const collaps = computed(() => {
+      const tab = store.getters["bottom-panel/activeTab"];
+      return tab && tab != -1;
+    });
     const currentUser: ComputedRef<User> = computed(
       () => store.getters["user/me"] as User
     );
@@ -244,6 +248,7 @@ export default defineComponent({
     }
 
     return {
+      collaps,
       host,
       locale,
       wlEditor,
@@ -275,6 +280,9 @@ export default defineComponent({
   height: calc(100vh - 80px);
   padding-bottom: 40px;
 }
+.dashboardmain-nuxt.collaps {
+  height: calc(52vh);
+}
 /* width */
 .dashboardmain-nuxt::-webkit-scrollbar {
   width: 5px;
@@ -282,18 +290,18 @@ export default defineComponent({
 
 /* Track */
 .dashboardmain-nuxt::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 1.25px grey; 
+  box-shadow: inset 0 0 1.25px grey;
   border-radius: 2.5px;
 }
- 
+
 /* Handle */
 .dashboardmain-nuxt::-webkit-scrollbar-thumb {
-  background-image: linear-gradient(180deg, #D0368A 0%, #708AD4 99%);
+  background-image: linear-gradient(180deg, #d0368a 0%, #708ad4 99%);
   border-radius: 2.5px;
 }
 
 /* Handle on hover */
 .dashboardmain-nuxt::-webkit-scrollbar-thumb:hover {
-  background: #78abff; 
+  background: #78abff;
 }
 </style>
