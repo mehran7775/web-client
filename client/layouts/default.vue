@@ -273,4 +273,25 @@ export default defineComponent({
   height: calc(100vh - 96px);
   padding-bottom: 48px;
 }
+/* width */
+.dashboardmain-nuxt::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.dashboardmain-nuxt::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 1.25px grey; 
+  border-radius: 2.5px;
+}
+ 
+/* Handle */
+.dashboardmain-nuxt::-webkit-scrollbar-thumb {
+  background: #78cdff; 
+  border-radius: 2.5px;
+}
+
+/* Handle on hover */
+.dashboardmain-nuxt::-webkit-scrollbar-thumb:hover {
+  background: #78abff; 
+}
 </style>
