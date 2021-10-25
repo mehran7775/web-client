@@ -72,7 +72,7 @@
       </v-btn>
       <v-menu v-model="userMenu" v-if="isLogin" rounded="b-xl" offset-y>
         <template #activator="{ on, attrs }">
-          <v-btn v-bind="attrs" v-on="on" class="ma-0 me-3 pa-0" depressed>
+          <v-btn v-bind="attrs" v-on="on" class="ma-0 pa-0" depressed>
             <profile-picture
               :address="currentUser.profile && currentUser.profile.profilePic"
             />
@@ -93,7 +93,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-badge dot left color="error">
+      <v-badge class="ms-3" dot left color="error">
         <v-icon @click="leftMenu.drawer = !leftMenu.drawer">
           mdi-bell-outline
         </v-icon>
