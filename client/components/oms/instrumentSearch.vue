@@ -4,6 +4,8 @@
     :placeholder="$t('instrument.search')"
     :loading="loading"
     :items="entries"
+    append-icon=""
+    append-outer-icon="mdi-magnify"
     item-text="name"
     item-value="id"
     @input="
@@ -16,7 +18,10 @@
         search(val);
       }
     "
+    hide-details
+    outlined
     return-object
+    dense
   />
 </template>
 

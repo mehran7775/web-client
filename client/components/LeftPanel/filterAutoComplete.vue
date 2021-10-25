@@ -14,6 +14,8 @@
     multiple
     deletable-chips
     small-chips
+    append-icon=""
+    append-outer-icon="mdi-comment-search-outline"
   >
   </v-autocomplete>
 </template>

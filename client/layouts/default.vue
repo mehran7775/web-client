@@ -16,6 +16,7 @@
       id="app-bar"
       :clipped-left="clipped"
       :clipped-right="clipped"
+      :height="40"
       class="text-no-wrap"
       fixed
       app
@@ -58,7 +59,7 @@
         dot
         left
         color="orange"
-        class="my-5"
+        class="mx-5"
         offset-y="75%"
         offset-x="-5"
       >
@@ -104,8 +105,8 @@
       </div>
       <bottom-panel v-if="isLogin" />
     </v-main>
-    <v-footer class="text-no-wrap" height="48px" :absolute="true" app>
-      <v-row>
+    <v-footer class="text-no-wrap ma-0 pa-0" :height="40" :absolute="true" app>
+      <v-row dense>
         <v-col cols="2" sm="3" xs="5">
           <span>
             <v-icon small>mdi-account-group</v-icon>
@@ -267,11 +268,12 @@ export default defineComponent({
 <style scoped>
 .dashboardmain-page {
   background-color: #f9f9fb;
+  overflow: auto;
 }
 .dashboardmain-nuxt {
   overflow-y: auto;
-  height: calc(100vh - 96px);
-  padding-bottom: 48px;
+  height: calc(100vh - 80px);
+  padding-bottom: 40px;
 }
 /* width */
 .dashboardmain-nuxt::-webkit-scrollbar {

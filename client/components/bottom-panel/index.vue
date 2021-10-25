@@ -2,13 +2,20 @@
   <v-footer
     :absolute="true"
     :class="{
+      'ma-0 pa-0': true,
       expanded: expanded,
       half: tab != -1 && !expanded,
     }"
-    class="ma-0 pa-0"
   >
     <v-card :class="{ expanded: true }" width="100%">
-      <v-toolbar color="secondary" v-if="tab != -1" elevation="1" dark dense>
+      <v-toolbar
+        :height="40"
+        color="secondary"
+        v-if="tab != -1"
+        elevation="1"
+        dark
+        dense
+      >
         <v-card-title>
           {{ title }}
         </v-card-title>
@@ -37,8 +44,8 @@
           </v-tab-item>
         </v-tabs-items>
       </v-card-text>
-      <v-card-actions height="48" class="ma-0 pa-0">
-        <v-tabs v-model="tab" optional>
+      <v-card-actions :height="40" class="ma-0 pa-0">
+        <v-tabs v-model="tab" :height="40" optional>
           <v-tab v-for="t in tabs" :key="t">
             {{ $t(t) }}
           </v-tab>
@@ -118,14 +125,14 @@ export default defineComponent({
   height: 100%;
 }
 .half {
-  height: calc(48vh - 96px);
+  height: calc(48vh - 80px);
 }
 .detail {
   position: relative;
   width: 100%;
   font-size: 1rem;
   line-height: 1.5;
-  height: calc(100% - 100px);
+  height: calc(100% - 80px);
   overflow-y: auto;
 }
 </style>
