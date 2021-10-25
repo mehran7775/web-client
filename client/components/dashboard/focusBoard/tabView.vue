@@ -121,10 +121,15 @@ export default defineComponent({
     async function deep(option: DeepOptions, instrument: Instrument) {
       switch (option) {
         case DeepOptions.teammates:
-          store.dispatch(
-            "bottom-panel/getTeammates",
-            new SameSectorQuery(instrument.id, instrument.sectorCode)
-          );
+          try {
+            store.commit("bottom-panel/setLoading", true);
+            store.dispatch(
+              "bottom-panel/getTeammates",
+              new SameSectorQuery(instrument.id, instrument.sectorCode)
+            );
+          } finally {
+            store.commit("bottom-panel/setLoading", false);
+          }
           break;
         default:
           store.commit(

@@ -20,7 +20,8 @@
           <v-icon size="1em">mdi-minus</v-icon>
         </v-btn>
       </v-toolbar>
-      <v-card-text v-if="tab != -1" class="detail mt-1 pa-2">
+      <v-card-text v-if="tab != -1" class="detail ma-0 pa-0">
+        <loading :loading="loading" />
         <v-tabs-items v-model="tab" :class="{ expanded: expanded }">
           <v-tab-item>
             <default-order-list />
@@ -81,6 +82,7 @@ export default defineComponent({
         : "mdi-arrow-expand"
     );
     const expanded = computed(() => store.getters["bottom-panel/expanded"]);
+    const loading = computed(() => store.getters["bottom-panel/loading"]);
     const title = computed(() => {
       const tab = store.getters["bottom-panel/title"] as TabTitle;
       return i18n.t(tab.title, tab.params);
@@ -102,6 +104,7 @@ export default defineComponent({
       tabs,
       title,
       expanded,
+      loading,
     };
     function useI18n() {
       return context.root.$i18n;
@@ -118,6 +121,8 @@ export default defineComponent({
   height: calc(48vh - 96px);
 }
 .detail {
+  position: relative;
+  width: 100%;
   font-size: 1rem;
   line-height: 1.5;
   height: calc(100% - 100px);

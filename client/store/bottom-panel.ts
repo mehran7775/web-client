@@ -10,7 +10,8 @@ export const state = () => ({
   further_information: <Message>new Message(0, "", new MessageTemplate()),
   market_depth: {},
   the_bests: {},
-  orders: {}
+  orders: {},
+  loading: false,
 })
 
 export type RootState = ReturnType<typeof state>
@@ -19,6 +20,7 @@ export type RootState = ReturnType<typeof state>
 export const getters: GetterTree<RootState, RootState> = {
   activeTab: (state): Tabs => state.activeTab,
   expanded: (state) => state.expanded,
+  loading: (state) => state.loading,
   further_information: (state): Message => state.further_information,
   title: (state): TabTitle => state.titles[state.activeTab],
   market_depth: (state) => state.market_depth,
@@ -39,6 +41,9 @@ export const mutations: MutationTree<RootState> = {
   },
   setDepthData(state, payload: { tab: Tabs, data: any }) {
     state.market_depth = payload
+  },
+  setLoading(state, payload: boolean) {
+    state.loading = payload
   }
 }
 
