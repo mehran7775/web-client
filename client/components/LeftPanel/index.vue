@@ -107,6 +107,7 @@ export default defineComponent({
 
     async function selectMessage(id: number) {
       try {
+        store.commit("bottom-panel/setLoading", true);
         const message: Message = (
           await store.dispatch("messages/getMessage", id)
         ).data;
@@ -117,7 +118,11 @@ export default defineComponent({
         );
         // Should be the last to commit
         store.commit("bottom-panel/setActiveTab", Tabs.furtherInfo);
-      } catch {}
+      } catch{
+        //TODO Snack for error
+      } finally{
+        store.commit("bottom-panel/setLoading", false);
+      }
     }
 
     loadMessages(messageQuery.value);
