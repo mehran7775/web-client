@@ -12,7 +12,7 @@
         </v-btn>
       </v-btn-toggle>
     </v-toolbar>
-    <v-card-text v-if="instruments.length > 0">
+    <v-card-text v-if="instruments.length > 0" class="ma-0 pa-0">
       <card-view @order="order" v-if="viewMode == 1" />
       <tab-view v-if="viewMode == 0" />
     </v-card-text>

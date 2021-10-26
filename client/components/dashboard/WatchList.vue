@@ -5,6 +5,7 @@
     :expanded.sync="expanded"
     @item-expanded="onExpand"
     class="elevation-1 light"
+    hide-default-footer
     show-expand
     dense
   >
@@ -65,7 +66,7 @@ export default defineComponent({
         store.commit("instruments/stopWatchQueue", data.item.id);
       }
     }
-    const instruments: Array<object> = reactive([]);
+    const instruments: Array<Instrument> = reactive([]);
     const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
       return (store.getters["user/me"].settings.columns ?? DefaultCols()).map(
         (col: WatchlistColumns) =>
@@ -78,7 +79,7 @@ export default defineComponent({
       .dispatch("instruments/getInstrumentsDetail", props.watchlists)
       .then(() => {
         instruments.push(
-          ...(store.getters["instruments/getAll"] as Array<object>)
+          ...(store.getters["instruments/getAll"] as Array<Instrument>)
         );
       });
 
