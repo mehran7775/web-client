@@ -6,8 +6,6 @@
     :right="rtl"
     class="panel"
     width="260"
-    :expand-on-hover="mini"
-    absolute
     fixed
     app
   >
@@ -249,5 +247,8 @@ export default defineComponent({
 /* width */
 .panel ::-webkit-scrollbar {
   display: none;
+}
+.panel {
+  overflow: hidden;
 }
 </style>
