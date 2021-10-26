@@ -20,6 +20,8 @@
     </v-tabs>
     <v-tabs-items class="messages" v-model="activeTab">
       <v-tab-item>
+      </v-tab-item>
+      <v-tab-item>
         <filter-auto-complete class="flex-grow-0" />
         <message-list
           v-model="messages"
