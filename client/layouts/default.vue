@@ -283,25 +283,4 @@ export default defineComponent({
 .dashboardmain-nuxt.collaps {
   height: calc(52vh);
 }
-/* width */
-.dashboardmain-nuxt::-webkit-scrollbar {
-  width: 5px;
-}
-
-/* Track */
-.dashboardmain-nuxt::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 1.25px grey;
-  border-radius: 2.5px;
-}
-
-/* Handle */
-.dashboardmain-nuxt::-webkit-scrollbar-thumb {
-  background-image: linear-gradient(180deg, #d0368a 0%, #708ad4 99%);
-  border-radius: 2.5px;
-}
-
-/* Handle on hover */
-.dashboardmain-nuxt::-webkit-scrollbar-thumb:hover {
-  background: #78abff;
-}
 </style>
