@@ -124,7 +124,7 @@ export default defineComponent({
         case DeepOptions.teammates:
           try {
             store.commit("bottom-panel/setLoading", true);
-            store.dispatch(
+            await store.dispatch(
               "bottom-panel/getTeammates",
               new SameSectorQuery(instrument.id, instrument.sectorCode)
             );
