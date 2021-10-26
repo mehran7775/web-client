@@ -1,6 +1,6 @@
 <template>
-  <div class="flex-grow-1">
-    <v-virtual-scroll item-height="40" :items="value">
+  <div style="position: relative" class="flex-grow-1">
+    <v-virtual-scroll class="scroll" item-height="40" :items="value">
       <template #default="{ item }">
         <v-list-item
           :key="item.id"
@@ -9,7 +9,9 @@
         >
           <v-icon> {{ icons[item.origin] }} </v-icon>
           <v-list-item-title class="ma-0 pa-0 ps-5">
-            <v-icon v-if="!item.seenAt" color="warning" x-small> mdi-alert-circle </v-icon>
+            <v-icon v-if="!item.seenAt" color="warning" x-small>
+              mdi-alert-circle
+            </v-icon>
             {{ item.title }}
           </v-list-item-title>
           <v-list-item-subtitle>
@@ -23,10 +25,11 @@
       </template>
     </v-virtual-scroll>
     <v-btn
-      style="width:100%;"
       @click="$emit('load', $event)"
       color="secondary"
+      :height="40"
       depressed
+      class="more"
     >
       <v-progress-circular indeterminate v-show="loading" />
       <v-icon v-show="!loading"> mdi-more </v-icon>
@@ -76,3 +79,13 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.scroll {
+  height: calc(100% - 40px);
+}
+.more {
+  overflow: hidden;
+  width: 100%;
+}
+</style>
