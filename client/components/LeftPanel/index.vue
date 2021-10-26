@@ -9,33 +9,25 @@
     fixed
     app
   >
-    <v-tabs v-model="activeTab" height="40" class="ma-0 pa-0 px-1" grow>
-      <v-tab> {{ $t("general.me") }} </v-tab>
-      <v-tab> {{ $t("general.all") }} </v-tab>
-    </v-tabs>
-    <v-tabs-items v-model="activeTab">
-      <v-tab-item>
-        <message-list
-          v-model="messages"
-          :timeFormat="$t('general.date.d')"
-          :loading="loading"
-          @load="loadMessages(messageQuery)"
-          @select="selectMessage"
-          class="message-list"
-        />
-      </v-tab-item>
-      <v-tab-item>
-        <filter-auto-complete/>
-        <message-list
-          v-model="messages"
-          :timeFormat="$t('general.date.t')"
-          :loading="loading"
-          @load="loadMessages(messageQuery)"
-          @select="selectMessage"
-          class="notification-list"
-        />
-      </v-tab-item>
-    </v-tabs-items>
+    <div class="full-height d-flex flex-column">
+      <v-tabs
+        v-model="activeTab"
+        height="40"
+        class="ma-0 pa-0 px-1 flex-grow-0"
+        grow
+      >
+        <v-tab> {{ $t("general.me") }} </v-tab>
+        <v-tab> {{ $t("general.all") }} </v-tab>
+      </v-tabs>
+      <filter-auto-complete class="flex-grow-0" />
+      <message-list
+        v-model="messages"
+        :timeFormat="$t('general.date.t')"
+        :loading="loading"
+        @load="loadMessages(messageQuery)"
+        @select="selectMessage"
+      />
+    </div>
   </v-navigation-drawer>
 </template>
 
@@ -116,10 +108,9 @@ export default defineComponent({
           "bottom-panel/setTitle",
           new TabTitle(Tabs.furtherInfo, message.title)
         );
-        
-      } catch{
+      } catch {
         //TODO Snack for error
-      } finally{
+      } finally {
         store.commit("bottom-panel/setLoading", false);
       }
     }
@@ -142,16 +133,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.message-list {
-  display: block;
-  height: calc(100vh - 124px);
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-.notification-list {
-  display: block;
-  height: calc(100vh - 152px);
-  overflow-x: hidden;
-  overflow-y: auto;
+.full-height {
+  height: 100%;
 }
 </style>

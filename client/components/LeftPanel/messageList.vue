@@ -1,6 +1,6 @@
 <template>
-  <div class="body">
-    <v-virtual-scroll class="scroll" item-height="40" :items="value">
+  <div class="flex-grow-1">
+    <v-virtual-scroll item-height="40" :items="value">
       <template #default="{ item }">
         <v-list-item
           :key="item.id"
@@ -23,8 +23,8 @@
       </template>
     </v-virtual-scroll>
     <v-btn
+      style="width:100%;"
       @click="$emit('load', $event)"
-      class="more"
       color="secondary"
       depressed
     >
@@ -76,18 +76,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.body {
-  display: block;
-}
-.scroll {
-  height: calc(100% - 40px);
-}
-.more {
-  height: 40px;
-  width: 100%;
-  overflow: hidden;
-  border-radius: 0;
-}
-</style>
