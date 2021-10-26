@@ -9,7 +9,7 @@
     fixed
     app
   >
-    <v-tabs v-model="activeTab" height="28" class="ma-0 pa-0 px-1" grow>
+    <v-tabs v-model="activeTab" height="40" class="ma-0 pa-0 px-1" grow>
       <v-tab> {{ $t("general.me") }} </v-tab>
       <v-tab> {{ $t("general.all") }} </v-tab>
     </v-tabs>
@@ -25,7 +25,7 @@
         />
       </v-tab-item>
       <v-tab-item>
-        <filter-auto-complete class="ma-0 pa-0 px-1" />
+        <filter-auto-complete/>
         <message-list
           v-model="messages"
           :timeFormat="$t('general.date.t')"

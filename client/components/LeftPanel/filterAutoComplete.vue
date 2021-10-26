@@ -1,21 +1,20 @@
 <template>
   <v-autocomplete
+    class="ma-0 mt-2"
     v-model="values"
     :loading="loading"
     :items="items"
     :item-text="(item) => $t(item.name)"
     item-value="id"
     :search-input.sync="search"
-    cache-items
-    flat
-    hide-no-data
-    hide-details
-    placeholder="filters"
-    multiple
-    deletable-chips
-    small-chips
+    label="filters"
     append-icon=""
     append-outer-icon="mdi-comment-search-outline"
+    hide-details
+    multiple
+    small-chips
+    deletable-chips
+    dense
   >
   </v-autocomplete>
 </template>
