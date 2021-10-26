@@ -9,25 +9,28 @@
     fixed
     app
   >
-    <div class="full-height d-flex flex-column">
-      <v-tabs
-        v-model="activeTab"
-        height="40"
-        class="ma-0 pa-0 px-1 flex-grow-0"
-        grow
-      >
-        <v-tab> {{ $t("general.me") }} </v-tab>
-        <v-tab> {{ $t("general.all") }} </v-tab>
-      </v-tabs>
-      <filter-auto-complete class="flex-grow-0" />
-      <message-list
-        v-model="messages"
-        :timeFormat="$t('general.date.t')"
-        :loading="loading"
-        @load="loadMessages(messageQuery)"
-        @select="selectMessage"
-      />
-    </div>
+    <v-tabs
+      v-model="activeTab"
+      height="40"
+      class="ma-0 pa-0 px-1 flex-grow-0"
+      grow
+    >
+      <v-tab> {{ $t("general.me") }} </v-tab>
+      <v-tab> {{ $t("general.all") }} </v-tab>
+    </v-tabs>
+    <v-tabs-items class="messages" v-model="activeTab">
+      <v-tab-item>
+        <filter-auto-complete class="flex-grow-0" />
+        <message-list
+          v-model="messages"
+          :timeFormat="$t('general.date.t')"
+          :loading="loading"
+          @load="loadMessages(messageQuery)"
+          @select="selectMessage"
+          class="flex-grow-1"
+        />
+      </v-tab-item>
+    </v-tabs-items>
   </v-navigation-drawer>
 </template>
 
@@ -133,7 +136,15 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.full-height {
-  height: 100%;
+.messages {
+  height: calc(100% - 40px);
+  overflow-y: auto;
+}
+</style>
+<style>
+.messages .v-window-item {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
 }
 </style>
