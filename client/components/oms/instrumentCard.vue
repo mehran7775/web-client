@@ -128,7 +128,7 @@ export default defineComponent({
       }
     }
     store
-      .dispatch("instruments/getInstrumentsDetail", [props.insId])
+      .dispatch("oms/instruments/getInstrumentsDetail", [props.insId])
       .then((data: Array<Instrument>) => {
         instrument.value = data[0];
       });

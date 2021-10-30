@@ -1,6 +1,6 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import { Instrument, OrderQueueItem, OrderSide, ActiveInstrument, SameSectorQuery } from '@/types/oms'
-import { getInstrumentsDetail, getOrderQueue, getTeammates } from '~/repositories/instruments_manager'
+import { Instrument, OrderQueueItem, Side, ActiveInstrument, SameSectorQuery } from '@/types'
+import { getInstrumentsDetail, getOrderQueue, getTeammates } from '~/repositories/oms/instruments_manager'
 
 
 export const state = () => (new RootState())
@@ -8,7 +8,7 @@ export const state = () => (new RootState())
 export class RootState {
   cache: Map<number, Instrument> = new Map<number, Instrument>()
   focus: Array<Instrument> = []
-  selected: ActiveInstrument = new ActiveInstrument(0, OrderSide.Buy)
+  selected: ActiveInstrument = new ActiveInstrument(0, Side.Buy)
   orderQueueCache: Map<number, Array<OrderQueueItem>> = new Map<number, Array<OrderQueueItem>>()
 }
 
@@ -55,7 +55,7 @@ export const mutations: MutationTree<RootState> = {
   selectByIndex(state, index: number) {
     state.selected.instrumentId = state.focus[index]?.id
   },
-  selectSide(state, side: OrderSide) {
+  selectSide(state, side: Side) {
     state.selected.side = side
   }
 }

@@ -120,7 +120,7 @@ import {
   computed,
   reactive,
 } from "@nuxtjs/composition-api";
-import { OrderQueueItem } from "~/types/oms";
+import { OrderQueueItem } from "@/types";
 
 export default defineComponent({
   name: "order-queue-card",
@@ -135,7 +135,7 @@ export default defineComponent({
     const store = useStore();
     const queue: Array<OrderQueueItem> = reactive([]);
     store
-      .dispatch("instruments/getOrderQueue", props.insId)
+      .dispatch("oms/instruments/getOrderQueue", props.insId)
       .then((result) => {
         if (result.queue) queue.push(...result.queue);
       });

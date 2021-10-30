@@ -9,10 +9,15 @@ export type UserCredentials = {
   password: string,
 }
 
-export type User = {
-  userName: string,
-  profile: UserProfile,
-  settings: Setting,
+export class User {
+  userName: string
+  profile: UserProfile
+  settings: Setting
+  constructor(username: string, profile: UserProfile, settings: Setting) {
+    this.profile = profile
+    this.settings = settings
+    this.userName = username
+  }
 }
 
 export type UserProfile = {
@@ -49,6 +54,13 @@ export class WatchlistColumns {
   }
 }
 
+export function AnonymousUser(): User {
+  return new User(
+    'anonymous',
+    { nickname: 'Anonymous', profilePic: null },
+    { lang: 'fa-IR', columns: [], watch_lists: {} }
+  )
+}
 export function DefaultCols(): WatchlistColumns[] {
   return [
     new WatchlistColumns("id", "id")

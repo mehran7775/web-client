@@ -1,7 +1,7 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { AxiosResponse } from "axios"
 import { Sector } from '@/types'
-import { getSector } from "@/repositories/sector_manager"
+import { getSector } from "~/repositories/oms/sector_manager"
 
 export const state = () => (new RootState())
 

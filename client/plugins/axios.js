@@ -7,7 +7,7 @@ export default function ({ $axios, redirect, store }) {
       headers: {
         ...config.headers,
         ...{
-          authorization: store.getters['user/getToken']
+          authorization: store.getters['sso/user/getToken']
         }
       }
     })
@@ -16,7 +16,7 @@ export default function ({ $axios, redirect, store }) {
   $axios.onError(async (error) => {
     let code = parseInt(error.response && error.response.status)
     if (code === 401) {
-      code = await store.dispatch('user/refreshToken')
+      code = await store.dispatch('sso/user/refreshToken')
       if (code >= 400) {
         redirect('/login')
       }

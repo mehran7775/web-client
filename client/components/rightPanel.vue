@@ -115,7 +115,7 @@ export default defineComponent({
     const selected: Ref = ref(null);
     const rtl = computed(() => store.getters["rtl"]);
     const watchList = computed(() => {
-      const lists = store.getters["user/watchList"];
+      const lists = store.getters["sso/user/watchList"];
       const res = [];
       for (let k in lists) {
         res.push({

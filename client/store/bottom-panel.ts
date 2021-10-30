@@ -52,7 +52,7 @@ export const actions: ActionTree<RootState, RootState> = {
     try {
       const sector = (await dispatch("sector/getSector", payload.sector, { root: true })) as Sector
       commit("setTitle", new TabTitle(Tabs.depth, "bottom-panel." + DeepOptions.teammates, [sector.name]))
-      const data = (await dispatch("instruments/getTeammates", payload, { root: true }))
+      const data = (await dispatch("oms/instruments/getTeammates", payload, { root: true }))
       commit("setDepthData", {
         type: DeepOptions.teammates,
         data: data

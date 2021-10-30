@@ -1,27 +1,21 @@
 import { GetterTree, MutationTree, ActionTree } from 'vuex'
+import { stores } from '@/types'
 
 
-class RootState {
-  locale: string
 
-  constructor() {
-    this.locale = process.env.VUE_APP_I18N_LOCALE ?? ''
-  }
-}
+export const state = () => new stores.RootState()
 
-export const state = () => new RootState()
-
-export const getters: GetterTree<RootState, RootState> = {
-  rtl(state: RootState): boolean {
+export const getters: GetterTree<stores.RootState, stores.RootState> = {
+  rtl(state: stores.RootState): boolean {
     return ['fa', 'ar', 'azIr', 'ckb'].includes(state.locale)
   },
-  locale(state: RootState): string {
+  locale(state: stores.RootState): string {
     return state.locale
   }
 }
 
-export const mutations: MutationTree<RootState> = {
-  setLocale(state: RootState, payload: string) {
+export const mutations: MutationTree<stores.RootState> = {
+  setLocale(state: stores.RootState, payload: string) {
     state.locale = payload
   }
 }

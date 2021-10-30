@@ -34,7 +34,7 @@ import {
   reactive,
   useContext,
 } from "@nuxtjs/composition-api";
-import { autoComplete } from "@/repositories/instruments_manager";
+import { autoComplete } from "@/repositories/oms/instruments_manager";
 import { AutoCompleteItem } from "@/types";
 
 export default defineComponent({

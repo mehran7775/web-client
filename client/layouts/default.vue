@@ -170,15 +170,6 @@
         </v-col>
       </v-row>
     </v-footer>
-    <v-dialog
-      v-if="isLogin"
-      v-model="dialog"
-      fullscreen
-      hide-overlay
-      transition="dialog-bottom-transition"
-    >
-      <watch-list-editor @close="dialog = false" />
-    </v-dialog>
     <snackbar />
   </v-app>
 </template>
@@ -202,24 +193,22 @@ import { User } from "@/types";
 export default defineComponent({
   components: {
     snackbar,
-    watchListEditor,
     ProfilePicture,
     RightPanel,
     LeftPanel,
   },
   setup(props, context) {
-    let dialog = ref(false);
     const router = useRouter();
     const store = useStore();
     const host = process.env.VUE_APP_Host;
 
-    const isLogin = computed(() => store.getters["user/isLogin"]);
+    const isLogin = computed(() => store.getters["sso/user/isLogin"]);
     const collaps = computed(() => {
       const tab = store.getters["bottom-panel/activeTab"];
       return tab && tab != -1;
     });
     const currentUser: ComputedRef<User> = computed(
-      () => store.getters["user/me"] as User
+      () => store.getters["sso/user/me"] as User
     );
     const userMenu = ref(false);
     const blockedMoney = 0;
@@ -238,12 +227,8 @@ export default defineComponent({
       return store.getters["locale"];
     });
 
-    function togDialog() {
-      dialog.value = !dialog.value;
-    }
-
     function doLogout() {
-      store.dispatch("user/logout");
+      store.dispatch("sso/user/logout");
       router.push("/login");
     }
 
@@ -252,8 +237,6 @@ export default defineComponent({
       host,
       locale,
       wlEditor,
-      togDialog,
-      dialog,
       doLogout,
       isLogin,
       currentUser,

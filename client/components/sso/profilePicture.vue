@@ -7,7 +7,6 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, useStore } from "@nuxtjs/composition-api";
-//TODO Handle profile image and it's place holder here
 export default defineComponent({
   name: "profile-picture",
   props: ["address"],
@@ -16,7 +15,7 @@ export default defineComponent({
     const img = ref("");
     if (props.address) {
       store
-        .dispatch("user/getProfilePic", props.address)
+        .dispatch("sso/user/getProfilePic", props.address)
         .then((res) => {
           img.value = res;
         })

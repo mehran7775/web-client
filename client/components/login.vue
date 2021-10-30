@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      dologin: 'user/login',
+      dologin: 'sso/user/login',
     }),
     ...mapMutations({
       alert: 'snacks/showMessage'

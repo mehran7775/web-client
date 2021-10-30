@@ -55,20 +55,20 @@ export default defineComponent({
     const i18n = useI18n();
     const expanded = computed({
       set(value: Array<Instrument>) {
-        store.commit("instruments/setFocus", value);
+        store.commit("oms/instruments/setFocus", value);
       },
       get(): Array<Instrument> {
-        return store.getters["instruments/getFocus"] as Array<Instrument>;
+        return store.getters["oms/instruments/getFocus"] as Array<Instrument>;
       },
     });
     function onExpand(data: { item: Instrument; value: boolean }) {
       if (!data.value) {
-        store.commit("instruments/stopWatchQueue", data.item.id);
+        store.commit("oms/instruments/stopWatchQueue", data.item.id);
       }
     }
     const instruments: Array<Instrument> = reactive([]);
     const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
-      return (store.getters["user/me"].settings.columns ?? DefaultCols()).map(
+      return (store.getters["sso/user/me"].settings.columns ?? DefaultCols()).map(
         (col: WatchlistColumns) =>
           Object.assign({}, col, {
             text: i18n.t("instrument." + col.value),
@@ -76,10 +76,10 @@ export default defineComponent({
       ) as WatchlistColumns[];
     });
     store
-      .dispatch("instruments/getInstrumentsDetail", props.watchlists)
+      .dispatch("oms/instruments/getInstrumentsDetail", props.watchlists)
       .then(() => {
         instruments.push(
-          ...(store.getters["instruments/getAll"] as Array<Instrument>)
+          ...(store.getters["oms/instruments/getAll"] as Array<Instrument>)
         );
       });
 

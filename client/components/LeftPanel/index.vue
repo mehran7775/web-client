@@ -89,7 +89,7 @@ export default defineComponent({
     function loadMessages(query: MessageQuery) {
       loading.value = true;
       store
-        .dispatch("messages/getMessages", query)
+        .dispatch("oms/messages/getMessages", query)
         .then((res: AxiosResponse<PaginatedResult<Message>>) => {
           messages.push(...res.data.data);
           messageQuery.value.offset = messages.length;
@@ -105,7 +105,7 @@ export default defineComponent({
         store.commit("bottom-panel/setLoading", true);
         store.commit("bottom-panel/setActiveTab", Tabs.furtherInfo);
         const message: Message = (
-          await store.dispatch("messages/getMessage", id)
+          await store.dispatch("oms/messages/getMessage", id)
         ).data;
         store.commit("bottom-panel/setMessage", message);
         store.commit(

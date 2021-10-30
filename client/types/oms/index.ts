@@ -1,8 +1,7 @@
 export * from "./sector"
-export * from "./order"
 export * from "./instrument"
 
-import { OrderSide } from "./order"
+import { Side } from "../wealth"
 
 export class SameSectorQuery {
   instrument: number
@@ -15,8 +14,8 @@ export class SameSectorQuery {
 
 export class ActiveInstrument {
   instrumentId: number = 0
-  side: OrderSide | null = OrderSide.Buy
-  constructor(id: number, side: OrderSide | null = null) {
+  side: Side | null = Side.Buy
+  constructor(id: number, side: Side | null = null) {
     this.instrumentId = id
     this.side = side
   }

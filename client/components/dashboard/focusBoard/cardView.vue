@@ -23,7 +23,7 @@
               dark
               x-large
               class="ma-0 pa-0"
-              @click="() => order(item.id, OrderSide.Buy)"
+              @click="() => order(item.id, Side.Buy)"
             >
               {{ $t("oms.buy") }}
             </v-btn>
@@ -34,7 +34,7 @@
               dark
               x-large
               class="ms-1 pa-0"
-              @click="() => order(item.id, OrderSide.Sell)"
+              @click="() => order(item.id, Side.Sell)"
             >
               {{ $t("oms.sell") }}
             </v-btn>
@@ -60,7 +60,7 @@
 
 <script lang="ts">
 import { defineComponent, useStore, computed } from "@nuxtjs/composition-api";
-import { ActiveInstrument, OrderSide } from "@/types";
+import { ActiveInstrument, Side } from "@/types";
 import instrumentCard from "@/components/oms/instrumentCardCompact.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
@@ -74,20 +74,20 @@ export default defineComponent({
   emits: ["order"],
   setup(props, context) {
     const store = useStore();
-    const instruments = computed(() => store.getters["instruments/getFocus"]);
+    const instruments = computed(() => store.getters["oms/instruments/getFocus"]);
     function close(id: number) {
-      store.commit("instruments/removeFocus", id);
-      store.commit("instruments/stopWatchQueue", id);
+      store.commit("oms/instruments/removeFocus", id);
+      store.commit("oms/instruments/stopWatchQueue", id);
     }
-    function order(index: number, side: OrderSide) {
+    function order(index: number, side: Side) {
       const active = new ActiveInstrument(index, side);
-      store.commit("instruments/select", active);
+      store.commit("oms/instruments/select", active);
       context.emit("order", active);
     }
     return {
       close,
       order,
-      OrderSide,
+      Side,
       instruments,
     };
   },

@@ -99,7 +99,7 @@ export default defineComponent({
     const locale = computed(() => store.getters["locale"]);
     let instrument: Ref<Instrument> = ref(new Instrument());
     store
-      .dispatch("instruments/getInstrumentsDetail", [props.insId])
+      .dispatch("oms/instruments/getInstrumentsDetail", [props.insId])
       .then((data: Array<Instrument>) => {
         instrument.value = data[0];
       });

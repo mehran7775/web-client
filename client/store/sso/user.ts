@@ -1,36 +1,16 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import umanager from '@/repositories/user_manager'
-import jwttoken from '@/repositories/jwt_token'
-import { User, Setting, UserCredentials } from '@/types/sso'
-import user_manager from '@/repositories/user_manager';
+import { login, refreshToken } from '~/repositories/sso/jwt_token'
+import { User, Setting, UserCredentials, stores, AnonymousUser } from '@/types'
+import { getProfileImage, getUser, getUserList, updateUserWatchlist } from '@/repositories/sso/user_manager';
 
 
 const RefreshKey: string = 'jwtRefreshKey';
 const tokenKey: string = 'jwtKey';
 const userKey: string = 'userCache';
-const anonymousUser: User = {
-  userName: 'anonymous',
-  profile: {
-    nickname: 'Anonymous',
-    profilePic: null
-  },
-  settings: {
-    lang: 'fa-IR',
-    columns: [],
-    watch_lists: {}
-  }
-}
 
-export const state = () => ({
-  token: null,
-  user: anonymousUser,
-  refresh: null,
-  userName: null,
-})
+export const state = new stores.UserState()
 
-export type RootState = ReturnType<typeof state>
-
-export const getters: GetterTree<RootState, RootState> = {
+export const getters: GetterTree<stores.UserState, stores.RootState> = {
   getToken: (state, getters, store) => {
     return state.token
   },
@@ -38,7 +18,7 @@ export const getters: GetterTree<RootState, RootState> = {
     if (state && state.user) {
       return state.user
     } else {
-      return anonymousUser
+      return AnonymousUser()
     }
   },
   isLogin: (state) => {
@@ -53,7 +33,7 @@ export const getters: GetterTree<RootState, RootState> = {
   }
 }
 
-export const mutations: MutationTree<RootState> = {
+export const mutations: MutationTree<stores.UserState> = {
   setToken(state, token) {
     if (!!token) {
       state.token = token
@@ -75,7 +55,7 @@ export const mutations: MutationTree<RootState> = {
       localStorage.clear()
     }
     state.token = null
-    state.user = anonymousUser
+    state.user = AnonymousUser()
     state.refresh = null
   },
   setUser(state, data) {
@@ -92,7 +72,7 @@ export const mutations: MutationTree<RootState> = {
   }
 }
 
-export const actions: ActionTree<RootState, RootState> = {
+export const actions: ActionTree<stores.UserState, stores.RootState> = {
 
   async init({ commit, dispatch, state }) {
     const refresh = (localStorage && localStorage.getItem(RefreshKey)) || state.refresh
@@ -119,7 +99,7 @@ export const actions: ActionTree<RootState, RootState> = {
     if (!userName)
       return
     try {
-      const { data, status } = await umanager.getUser(userName, this.$axios)
+      const { data, status } = await getUser(userName, this.$axios)
       commit('setUser', data)
       return status
     } catch (err: any) {
@@ -131,7 +111,7 @@ export const actions: ActionTree<RootState, RootState> = {
   },
   async login({ commit, dispatch }, payload) {
     try {
-      const { data, status } = await jwttoken.login(
+      const { data, status } = await login(
         payload.userName,
         payload.password,
         this.$axios
@@ -155,7 +135,7 @@ export const actions: ActionTree<RootState, RootState> = {
       const token = localStorage.getItem(RefreshKey)
       if (token) {
         try {
-          const { data, status } = await jwttoken.refreshToken(token)
+          const { data, status } = await refreshToken(token)
           if (status >= 200 && status < 300 && !!data.token) {
             commit('setToken', 'Bearer ' + data.token)
             commit('setRefresh', data.refresh)
@@ -172,7 +152,7 @@ export const actions: ActionTree<RootState, RootState> = {
   },
   async update_watchlist({ commit }, watchlist) {
     try {
-      await user_manager.updateUserWatchlist(watchlist, this.$axios)
+      await updateUserWatchlist(watchlist, this.$axios)
       commit("setWatchlist", watchlist)
     } catch (err: any) {
       return 500
@@ -180,7 +160,7 @@ export const actions: ActionTree<RootState, RootState> = {
   },
   async getProfilePic(_, name) {
     try {
-      const img: Uint8Array = (await user_manager.getProfileImage(name, this.$axios)).data
+      const img: Uint8Array = (await getProfileImage(name, this.$axios)).data
       return 'data:image/jpeg;base64,' + btoa(
         new Uint8Array(img)
           .reduce((data, byte) => data + String.fromCharCode(byte), '')

@@ -54,7 +54,7 @@ export default defineComponent({
       loading.value = true;
       setTimeout(() => {
         store
-          .dispatch("messages/getMessageFilters", value)
+          .dispatch("oms/messages//getMessageFilters", value)
           .then((result) => {
             items.splice(0, items.length);
             items.push(...defaultItems);

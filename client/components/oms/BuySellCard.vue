@@ -206,7 +206,7 @@ import {
   ref,
   watch,
 } from "@nuxtjs/composition-api";
-import { OrderSide, ActiveInstrument } from "@/types";
+import { Side, ActiveInstrument } from "@/types";
 
 export default defineComponent({
   props: {
@@ -218,7 +218,7 @@ export default defineComponent({
     let _count: Ref<number> = ref(0);
     let _price: Ref<number> = ref(0);
     const active = computed(
-      () => store.getters["instruments/getSelected"] as ActiveInstrument
+      () => store.getters["oms/instruments/getSelected"] as ActiveInstrument
     );
     const countVal = computed({
       get() {
@@ -240,12 +240,12 @@ export default defineComponent({
     });
     const tab = computed({
       get(): number {
-        return active.value.side == OrderSide.Buy ? 0 : 1;
+        return active.value.side == Side.Buy ? 0 : 1;
       },
       set(value: number) {
         store.commit(
-          "instruments/selectSide",
-          value ? OrderSide.Sell : OrderSide.Buy
+          "oms/instruments/selectSide",
+          value ? Side.Sell : Side.Buy
         );
       },
     });

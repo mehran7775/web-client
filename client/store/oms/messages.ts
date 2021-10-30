@@ -1,6 +1,6 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { AxiosResponse } from "axios"
-import { getMessage, getMessageFilters, getMessageList } from "@/repositories/message_manager"
+import { getMessage, getMessageFilters, getMessageList } from "~/repositories/oms/message_manager"
 import { PaginatedResult, Message, AutoCompleteItem } from "@/types"
 
 export class MessageState {

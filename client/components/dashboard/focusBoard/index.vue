@@ -41,7 +41,7 @@ export default defineComponent({
   name: "focus-board",
   setup(props) {
     const store = useStore();
-    const instruments = computed(() => store.getters["instruments/getFocus"]);
+    const instruments = computed(() => store.getters["oms/instruments/getFocus"]);
     const viewMode: Ref<number> = ref(0);
     function order(activeItem: ActiveInstrument) {
       viewMode.value = 0;

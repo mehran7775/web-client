@@ -103,20 +103,20 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const i18n = useI18n();
-    const instruments = computed(() => store.getters["instruments/getFocus"]);
+    const instruments = computed(() => store.getters["oms/instruments/getFocus"]);
     const count: Ref<number> = ref(0);
     const price: Ref<number> = ref(0);
     const tab = computed({
       get() {
-        return store.getters["instruments/getSelectedIndex"] as number;
+        return store.getters["oms/instruments/getSelectedIndex"] as number;
       },
       set(value: number | undefined) {
-        store.commit("instruments/selectByIndex", value ?? 0);
+        store.commit("oms/instruments/selectByIndex", value ?? 0);
       },
     });
     function close(id: number) {
-      store.commit("instruments/removeFocus", id);
-      store.commit("instruments/stopWatchQueue", id);
+      store.commit("oms/instruments/removeFocus", id);
+      store.commit("oms/instruments/stopWatchQueue", id);
     }
     async function deep(option: DeepOptions, instrument: Instrument) {
       store.commit("bottom-panel/setDepthData", null);
