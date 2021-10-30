@@ -204,7 +204,7 @@ export default defineComponent({
     const isLogin = computed(() => store.getters["sso/user/isLogin"]);
     const collaps = computed(() => {
       const tab = store.getters["bottom-panel/activeTab"];
-      return tab && tab != -1;
+      return tab != null && tab != -1;
     });
     const currentUser: ComputedRef<User> = computed(
       () => store.getters["sso/user/me"] as User
