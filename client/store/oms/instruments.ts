@@ -1,6 +1,6 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { Instrument, OrderQueueItem, Side, ActiveInstrument, SameSectorQuery } from '@/types'
-import { getInstrumentsDetail, getOrderQueue, getTeammates } from '~/repositories/oms/instruments_manager'
+import { getInstrumentsDetail, getOrderQueue, getTeammates } from '@/repositories/oms/instruments_manager'
 
 
 export const state = () => (new RootState())

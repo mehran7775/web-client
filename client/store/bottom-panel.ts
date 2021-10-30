@@ -50,7 +50,7 @@ export const mutations: MutationTree<RootState> = {
 export const actions: ActionTree<RootState, RootState> = {
   async getTeammates({ commit, dispatch }, payload: SameSectorQuery) {
     try {
-      const sector = (await dispatch("sector/getSector", payload.sector, { root: true })) as Sector
+      const sector = (await dispatch("oms/sector/getSector", payload.sector, { root: true })) as Sector
       commit("setTitle", new TabTitle(Tabs.depth, "bottom-panel." + DeepOptions.teammates, [sector.name]))
       const data = (await dispatch("oms/instruments/getTeammates", payload, { root: true }))
       commit("setDepthData", {

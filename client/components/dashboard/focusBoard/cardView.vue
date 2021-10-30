@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container class="py-2" fluid>
     <v-row dense>
       <v-col class="d-flex flex-row ma-0 pa-0" style="overflow-x: scroll">
         <v-card
@@ -9,7 +9,7 @@
           v-for="item in instruments"
           :key="item.id"
         >
-          <v-toolbar dense flat color="secondary" dark>
+          <v-toolbar height="40" dense flat color="secondary" dark>
             <v-card-title>
               <v-badge color="success" dot left offset-y="75%" offset-x="-5">
                 {{ item.name }}
