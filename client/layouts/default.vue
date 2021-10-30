@@ -184,7 +184,6 @@ import {
   useRouter,
 } from "@nuxtjs/composition-api";
 import snackbar from "@/components/snacks.vue";
-import watchListEditor from "@/components/dashboard/watchListEditor.vue";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
 import RightPanel from "@/components/rightPanel.vue";
 import LeftPanel from "@/components/LeftPanel/index.vue";

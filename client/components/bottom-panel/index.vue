@@ -80,7 +80,8 @@ export default defineComponent({
         return store.getters["bottom-panel/activeTab"] as Tabs;
       },
       set(value: Tabs) {
-        store.commit("bottom-panel/setActiveTab", value);
+        if (value != null) store.commit("bottom-panel/setActiveTab", value);
+        else store.commit("bottom-panel/setActiveTab", Tabs.none);
       },
     });
     const icon = computed(() =>
@@ -92,7 +93,7 @@ export default defineComponent({
     const loading = computed(() => store.getters["bottom-panel/loading"]);
     const title = computed(() => {
       const tab = store.getters["bottom-panel/title"] as TabTitle;
-      return i18n.t(tab.title, tab.params);
+      return tab ? i18n.t(tab.title, tab.params) : "";
     });
 
     function expand() {

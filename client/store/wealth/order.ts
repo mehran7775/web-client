@@ -10,7 +10,7 @@ export class OrderState {
 }
 
 export const actions: ActionTree<OrderState, stores.RootState> = {
-  async getSector({ state, commit, rootGetters }, payload: OrderSearchModel): Promise<PaginatedResult<Order> | undefined> {
-    return (await getOrders(rootGetters["user/me"], payload, this.$axios)).data as PaginatedResult<Order>
+  async getOrders({ state, commit, rootGetters }, payload: OrderSearchModel): Promise<PaginatedResult<Order> | undefined> {
+    return (await getOrders(rootGetters["sso/user/me"].userName, payload, this.$axios)).data as PaginatedResult<Order>
   }
 }
