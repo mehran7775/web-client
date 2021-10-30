@@ -66,3 +66,12 @@ html {
 .header-box {
   height: 40px;
 }
+
+.notranslate {
+  transform: none!important;
+}
+
+.bordered {
+  border: 1px solid #555555 !important;
+  border-radius: 5px;
+}

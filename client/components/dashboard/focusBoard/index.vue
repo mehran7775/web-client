@@ -1,6 +1,6 @@
 <template>
   <v-card class="ma-0 pa-0">
-    <v-toolbar :height="44" dense>
+    <v-toolbar :height="40" dense>
       <instrument-search style="max-width: 200pt" />
       <v-spacer />
       <v-btn-toggle v-model="viewMode" mandatory>

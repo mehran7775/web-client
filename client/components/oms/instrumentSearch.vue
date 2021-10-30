@@ -4,8 +4,11 @@
     :placeholder="$t('instrument.search')"
     :loading="loading"
     :items="entries"
-    append-icon=""
-    append-outer-icon="mdi-magnify"
+    class="notranslate bordered"
+    flat
+    no-filter
+    rounded
+    append-icon="mdi-magnify"
     item-text="name"
     item-value="id"
     @input="
@@ -19,7 +22,6 @@
       }
     "
     hide-details
-    outlined
     return-object
     dense
   />
