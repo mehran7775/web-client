@@ -4,7 +4,7 @@
     :placeholder="$t('instrument.search')"
     :loading="loading"
     :items="entries"
-    class="notranslate bordered"
+    class="no-translate bordered"
     flat
     no-filter
     rounded
