@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container class="ma-0 pa-0 pt-1" fluid>
     <v-row dense>
       <v-col>
         <v-tabs :height="40" color="blue" v-model="tab" align-with-title>

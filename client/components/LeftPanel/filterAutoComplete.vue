@@ -1,6 +1,6 @@
 <template>
   <v-autocomplete
-    class="ma-0 mt-4 pa-0 px-2"
+    class="ma-0 mt-4 pa-0 px-2 bordred notranslate"
     v-model="values"
     :loading="loading"
     :items="items"
@@ -8,13 +8,13 @@
     item-value="id"
     :search-input.sync="search"
     label="filters"
-    append-icon=""
-    append-outer-icon="mdi-comment-search-outline"
+    append-icon="mdi-comment-search-outline"
     hide-details
     multiple
     small-chips
     deletable-chips
     dense
+    
   >
   </v-autocomplete>
 </template>
