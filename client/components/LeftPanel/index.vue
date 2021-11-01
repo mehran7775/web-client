@@ -83,7 +83,7 @@ export default defineComponent({
     const messages: Message[] = reactive([]);
 
     const messageQuery: Ref<MessageQuery> = ref(
-      new MessageQuery(0, 10, new MessageFilter([], "2021-09-22T00:00:00.000Z"))
+      new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00"))
     );
 
     function loadMessages(query: MessageQuery) {

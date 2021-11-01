@@ -1,5 +1,4 @@
 import { Paginated } from "./collection"
-import { DateTime } from "luxon"
 
 export class MessageQuery extends Paginated {
     filters: MessageFilter
@@ -11,14 +10,11 @@ export class MessageQuery extends Paginated {
 
 export class MessageFilter {
     //TODO Change name to from
-    dateTime: string
+    dateTime: string | null
     tags: MessageTag[]
     constructor(tags: MessageTag[], dateTime: string | null = null) {
         this.tags = tags
-        if (dateTime)
-            this.dateTime = dateTime
-        else
-            this.dateTime = DateTime.now().toISO()
+        this.dateTime = dateTime
     }
 }
 
@@ -33,7 +29,7 @@ export class MessageTag {
 
 export class Message {
     id: number
-    dateTime: string
+    dateTime: string | null
     title: string
     preview: string
     origin: number
@@ -48,7 +44,7 @@ export class Message {
         preview: string = "", seenAt: string = "") {
         this.id = id
         this.title = title
-        this.dateTime = dateTime || DateTime.now().toISO()
+        this.dateTime = dateTime
         this.preview = preview
         this.origin = origin
         this.messageType = type
