@@ -1,6 +1,6 @@
 <template>
   <v-autocomplete
-    class="ma-0 mt-4 pa-0 px-2 bordred no-translate"
+    class="ma-0 mt-3 pa-0 px-2 bordred no-translate"
     v-model="values"
     :loading="loading"
     :items="items"
@@ -54,7 +54,7 @@ export default defineComponent({
       loading.value = true;
       setTimeout(() => {
         store
-          .dispatch("oms/messages//getMessageFilters", value)
+          .dispatch("oms/messages/getMessageFilters", value)
           .then((result) => {
             items.splice(0, items.length);
             items.push(...defaultItems);
