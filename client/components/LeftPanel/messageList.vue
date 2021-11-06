@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative" class="flex-grow-1">
-    <v-virtual-scroll class="scroll" item-height="40" :items="value">
+    <v-virtual-scroll class="scroll" item-height="32" :items="value">
       <template #default="{ item }">
         <v-list-item
           :key="item.id"
@@ -27,11 +27,11 @@
     <v-btn
       @click="$emit('load', $event)"
       color="secondary"
-      :height="40"
+      :height="32"
       depressed
       class="more"
     >
-      <v-progress-circular indeterminate v-show="loading" />
+      <v-progress-circular size="26" indeterminate v-show="loading" />
       <v-icon v-show="!loading"> mdi-more </v-icon>
     </v-btn>
   </div>
