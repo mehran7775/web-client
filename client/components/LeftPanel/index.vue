@@ -11,7 +11,7 @@
   >
     <v-tabs
       v-model="activeTab"
-      height="40"
+      height="32"
       class="ma-0 pa-0 px-1 flex-grow-0"
       grow
     >
@@ -138,7 +138,7 @@ export default defineComponent({
 
 <style scoped>
 .messages {
-  height: calc(100% - 40px);
+  height: calc(100% - 32px);
   overflow-y: auto;
 }
 </style>

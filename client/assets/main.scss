@@ -68,13 +68,20 @@ html {
 }
 
 .no-translate * {
-  transform: none!important;
+  transform: none !important;
 }
 
 .bordered {
   border: 1px solid #555555 !important;
   border-radius: 5px !important;
 }
-.bordered.v-input--is-focused{
-  border: 1px solid rgb(192,192,255) !important;
+.bordered.v-input--is-focused {
+  border: 1px solid rgb(78, 78, 235) !important;
+}
+.bordered.theme--dark {
+  border: 1px solid #cccccc !important;
+  border-radius: 5px !important;
+}
+.bordered.v-input--is-focused.theme--dark {
+  border: 1px solid rgb(157, 157, 247) !important;
 }

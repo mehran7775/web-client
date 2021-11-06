@@ -9,7 +9,7 @@
   >
     <v-card :class="{ expanded: true }" width="100%">
       <v-toolbar
-        :height="40"
+        :height="height"
         color="secondary"
         v-if="tab != -1"
         elevation="1"
@@ -44,8 +44,8 @@
           </v-tab-item>
         </v-tabs-items>
       </v-card-text>
-      <v-card-actions :height="40" class="ma-0 pa-0">
-        <v-tabs v-model="tab" :height="40" optional>
+      <v-card-actions :height="height" class="ma-0 pa-0">
+        <v-tabs v-model="tab" :height="height" optional>
           <v-tab v-for="t in tabs" :key="t">
             {{ $t(t) }}
           </v-tab>
@@ -105,6 +105,7 @@ export default defineComponent({
     }
 
     return {
+      height: 32,
       expand,
       close,
       icon,
@@ -126,14 +127,14 @@ export default defineComponent({
   height: 100%;
 }
 .half {
-  height: calc(50vh - 80px);
+  height: calc(50vh - 64px);
 }
 .detail {
   position: relative;
   width: 100%;
   font-size: 1rem;
   line-height: 1.5;
-  height: calc(100% - 80px);
+  height: calc(100% - 64px);
   overflow-y: auto;
 }
 </style>

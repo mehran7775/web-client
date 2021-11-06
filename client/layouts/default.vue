@@ -16,7 +16,7 @@
       id="app-bar"
       :clipped-left="clipped"
       :clipped-right="clipped"
-      :height="40"
+      :height="32"
       class="text-no-wrap"
       fixed
       app
@@ -72,7 +72,7 @@
       </v-btn>
       <v-menu v-model="userMenu" v-if="isLogin" rounded="b-xl" offset-y>
         <template #activator="{ on, attrs }">
-          <v-btn v-bind="attrs" v-on="on" class="ma-0 pa-0" depressed>
+          <v-btn height="30" v-bind="attrs" v-on="on" class="ma-0 pa-0" depressed>
             <profile-picture
               :address="currentUser.profile && currentUser.profile.profilePic"
             />
@@ -93,7 +93,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-badge class="ms-3" dot left color="error">
+      <v-badge class="ms-3" offset-y="35%" dot left color="error">
         <v-icon @click="leftMenu.drawer = !leftMenu.drawer">
           mdi-bell-outline
         </v-icon>
@@ -105,7 +105,7 @@
       </div>
       <bottom-panel v-if="isLogin" />
     </v-main>
-    <v-footer class="text-no-wrap ma-0 pa-0" :height="40" :absolute="true" app>
+    <v-footer class="text-no-wrap ma-0 pa-0" :height="32" :absolute="true" app>
       <v-row dense>
         <v-col cols="2" sm="3" xs="5">
           <span>
@@ -259,8 +259,8 @@ export default defineComponent({
 }
 .dashboardmain-nuxt {
   overflow-y: auto;
-  height: calc(100vh - 80px);
-  padding-bottom: 40px;
+  height: calc(100vh - 64px);
+  padding-bottom: 32px;
 }
 .dashboardmain-nuxt.collaps {
   height: calc(52vh);

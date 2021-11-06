@@ -10,7 +10,7 @@
     app
   >
     <v-list dense>
-      <v-list-item-group :class="{ 'my-40': true }" v-model="selected">
+      <v-list-item-group :class="{ 'my-32': true }" v-model="selected">
         <div v-for="(item, i) in items" :key="i">
           <v-list-group v-if="item.children" class="ma-0 px-0">
             <v-tooltip slot="activator" left>
