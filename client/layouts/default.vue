@@ -5,6 +5,7 @@
       :mini="rightMenu.mini"
       :clipped="clipped"
       v-model="rightMenu.drawer"
+      class="min32"
     />
     <left-panel
       v-if="isLogin"

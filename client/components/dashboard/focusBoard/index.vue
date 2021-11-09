@@ -1,5 +1,5 @@
 <template>
-  <v-card class="ma-0 pa-0">
+  <v-card class="ma-0 pa-0 mx-1">
     <v-toolbar color="secondary" dark :height="32" dense>
       <instrument-search style="max-width: 200pt" />
       <v-spacer />

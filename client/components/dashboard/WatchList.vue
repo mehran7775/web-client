@@ -4,7 +4,7 @@
     :items="inst"
     :expanded.sync="expanded"
     @item-expanded="onExpand"
-    class="elevation-1 light"
+    class="mx-1 elevation-1 light"
     hide-default-footer
     show-expand
     dense
