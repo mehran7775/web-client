@@ -1,15 +1,18 @@
 import { Middleware } from '@nuxt/types'
 
 const auth: Middleware = async ({ store, route, redirect }) => {
-  let isLogin = store.getters['sso/user/isLogin']
-  if (!isLogin) {
-    await store.dispatch('sso/user/init')
-    isLogin = store.getters['sso/user/isLogin']
-  }
-  if (!isLogin && route.fullPath != '/login') {
-    return redirect('/login')
-  } else if (route.fullPath === '/login' && !!isLogin) {
-    return redirect('/')
+  const publicPages = [/\/login\/?/, /\/docs.*/, /\/?^/]
+  if (publicPages.findIndex(item => { return item.test(route.fullPath) }) == -1) {
+    let isLogin = store.getters['sso/user/isLogin']
+    if (!isLogin) {
+      await store.dispatch('sso/user/init')
+      isLogin = store.getters['sso/user/isLogin']
+    }
+    if (!isLogin) {
+      return redirect('/login')
+    } else if (route.fullPath === '/login' && !!isLogin) {
+      return redirect('/')
+    }
   }
 }
 
