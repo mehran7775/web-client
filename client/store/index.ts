@@ -1,5 +1,5 @@
 import { GetterTree, MutationTree, ActionTree } from 'vuex'
-import { stores } from '@/types'
+import * as stores from '@/types/stores'
 
 
 

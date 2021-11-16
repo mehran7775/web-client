@@ -8,7 +8,7 @@ WORKDIR /usr/src
 COPY ./client ./app
 WORKDIR /usr/src/app
 # Build App
-RUN yarn build
+RUN yarn generate
 # Deploy
 CMD [ "yarn", "start" ]
 #####

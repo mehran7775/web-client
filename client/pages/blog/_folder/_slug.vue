@@ -1,11 +1,11 @@
 <template>
-  <v-container>
-    <nuxt-content :document="doc" class="doc" tag="article" />
+  <v-container tag="article">
+    <nuxt-content :document="doc" class="doc" />
   </v-container>
 </template>
 
 <script lang="ts">
-import { IContentDocument } from "@nuxt/content/types/content";
+import { FetchReturn } from "@nuxt/content/types/query-builder";
 import {
   defineComponent,
   useContext,
@@ -18,15 +18,15 @@ export default defineComponent({
   head: {},
   setup(params) {
     const ctx = useContext();
-    const doc: Ref<IContentDocument | null> = ref(null);
+    const doc: Ref<FetchReturn | FetchReturn[] | null> = ref(null);
     const title = ref("");
     const description = ref("");
 
     async function getContent() {
       doc.value = (await ctx
-        .$content(ctx.params.value.slug || "hello")
-        .fetch()) as IContentDocument;
-      title.value = doc.value?.title;
+        .$content(ctx.params.value.folder || "index", ctx.params.value.slug)
+        .fetch());
+      title.value = doc.value ? Array.isArray(doc.value) ? doc.value[0].title : doc.value.title : "";
     }
 
     getContent();

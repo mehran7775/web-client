@@ -1,6 +1,7 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { login, refreshToken } from '~/repositories/sso/jwt_token'
-import { User, Setting, UserCredentials, stores, AnonymousUser } from '@/types'
+import * as stores from '@/types/stores'
+import { User, Setting, UserCredentials, AnonymousUser } from '@/types'
 import { getProfileImage, getUser, getUserList, updateUserWatchlist } from '@/repositories/sso/user_manager';
 
 
@@ -8,7 +9,7 @@ const RefreshKey: string = 'jwtRefreshKey';
 const tokenKey: string = 'jwtKey';
 const userKey: string = 'userCache';
 
-export const state = new stores.UserState()
+export const state = () => new stores.UserState()
 
 export const getters: GetterTree<stores.UserState, stores.RootState> = {
   getToken: (state, getters, store) => {

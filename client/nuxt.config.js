@@ -1,5 +1,5 @@
 export default {
-  ssr: false,
+  target: "static",
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: process.env.VUE_APP_NAME,
@@ -65,6 +65,13 @@ export default {
   // Content module configuration: https://go.nuxtjs.dev/config-content
   content: {
     liveEdit: false
+  },
+  generate: {
+    async routes () {
+      const { $content } = require('@nuxt/content')
+      const dynamicRoutes = await $content({ deep: true }).only(['path']).fetch()
+      return dynamicRoutes.map(myroute => myroute.path === '/index' ? '/blog' : '/blog' + myroute.path)
+    },
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

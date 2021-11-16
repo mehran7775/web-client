@@ -1,6 +1,7 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { AxiosResponse } from "axios"
-import { Order, OrderSearchModel, PaginatedResult, stores } from '@/types'
+import * as stores from '@/types/stores'
+import { Order, OrderSearchModel, PaginatedResult } from '@/types'
 import { getOrders } from "@/repositories/wealth/order_manager"
 
 export const state = () => (new OrderState())
