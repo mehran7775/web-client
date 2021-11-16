@@ -1,13 +1,20 @@
 <template>
   <splitpanes class="default-theme" :rtl="rtl">
     <pane min-size="10" max-size="30">
-      <v-list>
+      <v-list class="toc">
         <v-list-item-group>
           <v-list-item
             v-for="link of doc ? doc.toc : []"
             :key="link.id"
             :to="`#${link.id}`"
+            :class="['depth-' + link.depth]"
           >
+            <span
+              v-for="i in (link.depth - 2) * 4"
+              :key="i"
+            >
+              &nbsp;
+            </span>
             {{ link.text }}
           </v-list-item>
         </v-list-item-group>
@@ -95,5 +102,8 @@ export default defineComponent({
     unicode-bidi: -webkit-isolate
     unicode-bidi: -moz-isolate
     unicode-bidi: isolate
+.toc
+  height: calc(100vh - 96px)
+  overflow: auto
 </style>
 

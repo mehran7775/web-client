@@ -64,7 +64,10 @@ export default {
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
   content: {
-    liveEdit: false
+    liveEdit: false,
+    markdown:{
+      tocDepth: 4
+    }
   },
   generate: {
     async routes () {
