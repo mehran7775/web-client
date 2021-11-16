@@ -67,7 +67,7 @@
         {{ $t("oms.superBourseIndex") }}:‌ 0
       </v-badge>
       <v-spacer />
-      <v-btn v-if="!isLogin" color="success" nuxt to="/login" depressed>
+      <v-btn v-if="!isLogin" color="success" nuxt to="/login" height="32" depressed>
         {{ $t("login.login") }}
         <v-icon>mdi-account-arrow-left</v-icon>
       </v-btn>
@@ -101,7 +101,7 @@
       </v-badge>
     </v-app-bar>
     <v-main class="dashboardmain-page">
-      <div :class="{ 'dashboardmain-nuxt': true, collaps: collaps }">
+      <div :class="{ 'dashboardmain-nuxt': isLogin, collaps: collaps }">
         <nuxt />
       </div>
       <bottom-panel v-if="isLogin" />

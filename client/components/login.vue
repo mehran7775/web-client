@@ -3,10 +3,7 @@
     <v-card-title :style="{ color: color }" class="justify-center">{{
       $t("login.login")
     }}</v-card-title>
-    <v-card-text
-      :style="{ color: color }"
-      class="text-center"
-    >
+    <v-card-text :style="{ color: color }" class="text-center">
       <v-divider />
       <v-text-field
         :color="color"
@@ -51,30 +48,25 @@
     </v-card-actions>
     <v-divider />
     <v-card-actions class="justify-center" :style="{ color: color }">
-      <v-btn depressed color="transparent" @click="login" >
-        <v-icon x-large>
-          mdi-apple
-        </v-icon>
+      <v-btn depressed color="transparent" @click="login">
+        <v-icon x-large> mdi-apple </v-icon>
       </v-btn>
-      <v-btn depressed color="transparent" @click="login" >
-        <v-icon x-large>
-          adaico-bag-cross
-        </v-icon>
+      <v-btn depressed color="transparent" @click="login">
+        <v-icon x-large> adaico-bag-cross </v-icon>
       </v-btn>
-      <v-btn depressed color="transparent" @click="login" >
-        <v-icon x-large>
-          mdi-android
-        </v-icon>
+      <v-btn depressed color="transparent" @click="login">
+        <v-icon x-large> mdi-android </v-icon>
       </v-btn>
-      <v-btn depressed color="transparent" @click="login" >
-        <v-icon x-large>
-          mdi-microsoft
-        </v-icon>
+      <v-btn depressed color="transparent" @click="login">
+        <v-icon x-large> mdi-microsoft </v-icon>
       </v-btn>
     </v-card-actions>
     <v-divider />
-    <v-card-actions class="text-center justify-center" :style="{ color: 'white' }">
-        {{ $t("login.alerts") }}
+    <v-card-actions
+      class="text-center justify-center"
+      :style="{ color: 'white' }"
+    >
+      {{ $t("login.alerts") }}
     </v-card-actions>
     <v-divider />
     <v-card-actions :style="{ color: color }">
@@ -150,12 +142,16 @@ export default {
     &.v-icon,
     &.v-label,
     &.v-input,
-    &.v-btn,
+    &.v-btn
+      color: inherit
+    &.v-input
+      input
+        color: white
     &.v-select
       .v-select
         &__selections
-          color: inherit
-      color: inherit
+          color: white
+
   .theme--dark
     color: inherit
 </style>
