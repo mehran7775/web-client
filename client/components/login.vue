@@ -32,11 +32,13 @@
         ]"
       >
       </v-select>
-      <vue-hcaptcha
-        sitekey="41a134fc-7604-4ee1-a5df-40c97195491a"
-        language="fa"
-        @verify="captchaResult"
-      ></vue-hcaptcha>
+      <client-only>
+        <vue-hcaptcha
+          sitekey="41a134fc-7604-4ee1-a5df-40c97195491a"
+          language="fa"
+          @verify="captchaResult"
+        ></vue-hcaptcha>
+      </client-only>
       <!-- <v-text-field
         v-model="userName"
         :placeholder="$t('login.captcha')"
@@ -94,7 +96,7 @@ import VueHcaptcha from "@hcaptcha/vue-hcaptcha";
 export default {
   name: "Login",
   components: {
-    VueHcaptcha
+    VueHcaptcha,
   },
   props: {
     msg: String,
