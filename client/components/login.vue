@@ -5,39 +5,53 @@
       <v-divider />
       <v-text-field
         v-model="userName"
-        :label="$t('user.username')"
+        :placeholder="$t('user.username')"
         prepend-inner-icon="mdi-account"
+        dense
+        hide-details
       >
       </v-text-field>
       <v-text-field
         v-model="password"
-        :label="$t('user.password')"
+        :placeholder="$t('user.password')"
         :type="showPassword ? 'text' : 'Password'"
         prepend-inner-icon="mdi-lock"
         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append="showPassword = !showPassword"
         @keyup.enter="login"
         dense
+        hide-details
       >
       </v-text-field>
       <v-text-field
         v-model="userName"
-        :label="$t('user.captcha')"
+        :placeholder="$t('login.captcha')"
         prepend-inner-icon="mdi-qrcode"
+        dense
+        hide-details
       ></v-text-field>
-      <v-select dense value="ایستا" :items="['ایستا', 'پویا']"> </v-select>
+      <v-select
+        dense
+        hide-details
+        :value="1"
+        :items="[
+          { value: 1, text: $t('login.static') },
+          { value: 2, text: $t('login.otp') },
+        ]"
+      >
+      </v-select>
     </v-card-text>
     <v-card-actions>
       <v-btn depressed color="error" @click="login" width="50%" large dark>
         {{ $t("login.login") }}
       </v-btn>
       <v-btn depressed color="error" @click="register" width="50%" large dark>
-        {{ $t("login.register") }}
+        {{ $t("login.registration") }}
       </v-btn>
     </v-card-actions>
     <v-divider />
     <v-card-actions>
-      <v-btn depressed color="transparent" @click="login" width="100%" large>
+      <v-btn depressed color="transparent" @click="login" width="100%" small>
         {{ $t("login.forget-password") }}
       </v-btn>
     </v-card-actions>

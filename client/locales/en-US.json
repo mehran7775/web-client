@@ -15,7 +15,7 @@
     "today": "Today",
     "yesterday": "Yesterday",
     "range": "Range",
-    "history":"History",
+    "history": "History",
     "type": "Type",
     "types": "Types",
     "date": {
@@ -165,10 +165,16 @@
   },
   "login": {
     "login": "Login",
+    "registration": "Registration",
+    "forget-password": "Forget my password",
     "logout": "Logout",
-    "signup": "SignUp",
+    "otp": "OTP",
+    "static": "Static",
     "requestPass": "Sms OTP",
+    "captcha": "Captcha",
     "timeLeft": "Time Lefts",
+    "alerts": "alert",
+    "about-us":"about us",
     "successful": "You successfully logged in to the system!",
     "failed": "Username and/or password is not correct!",
     "error": "An unexpected error happen's during login!"

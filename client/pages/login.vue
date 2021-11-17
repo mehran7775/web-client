@@ -1,5 +1,5 @@
 <template>
-  <v-container class="login ma-0 pa-0 py-10" fluid>
+  <v-container class="login ma-0 pa-0 pt-5" fluid>
     <v-row>
       <v-col></v-col>
       <v-col>
