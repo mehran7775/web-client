@@ -1,19 +1,15 @@
 <template>
   <v-card elevation="0" color="transparent" class="login">
-    <v-card-title :style="{ color: color }" class="justify-center">{{
-      $t("login.login")
-    }}</v-card-title>
-    <v-card-text :style="{ color: color }" class="text-center">
+    <v-card-title class="justify-center">{{ $t("login.login") }}</v-card-title>
+    <v-card-text class="text-center">
       <v-divider />
       <v-text-field
-        :color="color"
         v-model="userName"
         :label="$t('user.username')"
         prepend-inner-icon="mdi-account"
       >
       </v-text-field>
       <v-text-field
-        :color="color"
         v-model="password"
         :label="$t('user.password')"
         :type="showPassword ? 'text' : 'Password'"
@@ -25,7 +21,6 @@
       >
       </v-text-field>
       <v-text-field
-        :color="color"
         v-model="userName"
         :label="$t('user.captcha')"
         prepend-inner-icon="mdi-qrcode"
@@ -41,13 +36,13 @@
       </v-btn>
     </v-card-actions>
     <v-divider />
-    <v-card-actions :style="{ color: color }">
+    <v-card-actions>
       <v-btn depressed color="transparent" @click="login" width="100%" large>
         {{ $t("login.forget-password") }}
       </v-btn>
     </v-card-actions>
     <v-divider />
-    <v-card-actions class="justify-center" :style="{ color: color }">
+    <v-card-actions class="justify-center">
       <v-btn depressed color="transparent" @click="login">
         <v-icon x-large> mdi-apple </v-icon>
       </v-btn>
@@ -62,14 +57,11 @@
       </v-btn>
     </v-card-actions>
     <v-divider />
-    <v-card-actions
-      class="text-center justify-center"
-      :style="{ color: 'white' }"
-    >
+    <v-card-actions class="text-center justify-center">
       {{ $t("login.alerts") }}
     </v-card-actions>
     <v-divider />
-    <v-card-actions :style="{ color: color }">
+    <v-card-actions>
       <v-btn depressed color="transparent" @click="login" width="100%" large>
         {{ $t("login.about-us") }}
       </v-btn>
@@ -84,10 +76,6 @@ export default {
   name: "Login",
   props: {
     msg: String,
-    color: {
-      type: String,
-      default: "inherit",
-    },
   },
   data: () => {
     return {
@@ -134,24 +122,3 @@ export default {
   },
 };
 </script>
-
-<style lang="sass">
-.login
-  .v-input,
-  .theme--light
-    &.v-icon,
-    &.v-label,
-    &.v-input,
-    &.v-btn
-      color: inherit
-    &.v-input
-      input
-        color: white
-    &.v-select
-      .v-select
-        &__selections
-          color: white
-
-  .theme--dark
-    color: inherit
-</style>
