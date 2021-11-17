@@ -13,10 +13,11 @@ export async function refreshToken(refresh: string) {
   return res
 }
 
-export async function login(username: string, password: string, axios:  NuxtAxiosInstance, session = null) {
+export async function login(username: string, password: string, captcha: string, axios: NuxtAxiosInstance, session = null) {
   return await instance.post('/sso/jwt', {
     username: username,
     password: password,
+    captcha: captcha,
     session: session
   })
 }

@@ -32,9 +32,11 @@
         ]"
       >
       </v-select>
-      <div class="h-captcha" data-sitekey="41a134fc-7604-4ee1-a5df-40c97195491a">
-      </div>
-      <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+      <vue-hcaptcha
+        sitekey="41a134fc-7604-4ee1-a5df-40c97195491a"
+        language="fa"
+        @verify="captchaResult"
+      ></vue-hcaptcha>
       <!-- <v-text-field
         v-model="userName"
         :placeholder="$t('login.captcha')"
@@ -87,9 +89,13 @@
 
 <script>
 import { mapActions, mapMutations } from "vuex";
+import VueHcaptcha from "@hcaptcha/vue-hcaptcha";
 
 export default {
   name: "Login",
+  components: {
+    VueHcaptcha
+  },
   props: {
     msg: String,
   },
@@ -98,6 +104,7 @@ export default {
       showPassword: false,
       userName: null,
       password: null,
+      captcha: null,
       snacs: [],
     };
   },
@@ -109,12 +116,16 @@ export default {
       alert: "snacks/showMessage",
     }),
     register() {},
+    captchaResult(code) {
+      this.captcha = code;
+    },
     login() {
       const self = this;
       self
         .dologin({
           userName: self.userName,
           password: self.password,
+          captcha: self.captcha,
           axios: self.$axios,
         })
         .then(

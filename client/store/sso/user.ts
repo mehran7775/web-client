@@ -115,6 +115,7 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
       const { data, status } = await login(
         payload.userName,
         payload.password,
+        payload.captcha,
         this.$axios
       )
       commit('setToken', 'Bearer ' + data.token)
