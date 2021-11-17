@@ -26,7 +26,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/store-initiator' },
+    //{ src: '~/plugins/store-initiator' },
+    { src: '~/plugins/hcaptcha', mode: 'client' },
     { src: '~/plugins/i18n.js' },
     { src: '~/plugins/axios', mode: 'client' }
   ],
@@ -66,12 +67,12 @@ export default {
   // Content module configuration: https://go.nuxtjs.dev/config-content
   content: {
     liveEdit: false,
-    markdown:{
+    markdown: {
       tocDepth: 4
     }
   },
   generate: {
-    async routes () {
+    async routes() {
       const { $content } = require('@nuxt/content')
       const dynamicRoutes = await $content({ deep: true }).only(['path']).fetch()
       return dynamicRoutes.map(myroute => myroute.path === '/index' ? '/blog' : '/blog' + myroute.path)

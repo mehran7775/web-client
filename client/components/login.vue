@@ -39,13 +39,6 @@
           @verify="captchaResult"
         ></vue-hcaptcha>
       </client-only>
-      <!-- <v-text-field
-        v-model="userName"
-        :placeholder="$t('login.captcha')"
-        prepend-inner-icon="mdi-qrcode"
-        dense
-        hide-details
-      ></v-text-field> -->
     </v-card-text>
     <v-card-actions>
       <v-btn depressed color="error" @click="login" width="50%" large dark>
@@ -91,13 +84,9 @@
 
 <script>
 import { mapActions, mapMutations } from "vuex";
-import VueHcaptcha from "@hcaptcha/vue-hcaptcha";
 
 export default {
   name: "Login",
-  components: {
-    VueHcaptcha,
-  },
   props: {
     msg: String,
   },

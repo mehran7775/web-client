@@ -3,7 +3,6 @@ import { RefreshKey, tokenKey, userKey } from "@/store/sso/user"
 export default async function ({ store }) {
   //TODO Replace storage by cookie
   if (process.client) {
-    console.log("client store", store.state)
     const refresh = (localStorage && localStorage.getItem(RefreshKey)) || store.state.sso.user.refresh
     if (refresh) {
       store.commit('sso/user/setRefresh', refresh)
