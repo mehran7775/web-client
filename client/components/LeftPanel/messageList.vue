@@ -26,7 +26,7 @@
     </v-virtual-scroll>
     <v-btn
       @click="$emit('load', $event)"
-      color="secondary"
+      color="primary"
       :height="32"
       depressed
       class="more"

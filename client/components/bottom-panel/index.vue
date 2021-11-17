@@ -10,7 +10,7 @@
     <v-card :class="{ expanded: true }" width="100%">
       <v-toolbar
         :height="height"
-        color="secondary"
+        color="primary"
         v-if="tab != -1"
         elevation="1"
         dark

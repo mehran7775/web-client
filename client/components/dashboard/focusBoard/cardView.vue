@@ -9,7 +9,7 @@
           v-for="item in instruments"
           :key="item.id"
         >
-          <v-toolbar height="40" dense flat color="secondary" dark>
+          <v-toolbar height="40" dense flat color="primary" dark>
             <v-card-title>
               <v-badge color="success" dot left offset-y="75%" offset-x="-5">
                 {{ item.name }}
