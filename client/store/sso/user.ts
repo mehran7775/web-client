@@ -5,9 +5,9 @@ import { User, Setting, UserCredentials, AnonymousUser } from '@/types'
 import { getProfileImage, getUser, getUserList, updateUserWatchlist } from '@/repositories/sso/user_manager';
 
 
-const RefreshKey: string = 'jwtRefreshKey';
-const tokenKey: string = 'jwtKey';
-const userKey: string = 'userCache';
+export const RefreshKey: string = 'jwtRefreshKey';
+export const tokenKey: string = 'jwtKey';
+export const userKey: string = 'userCache';
 
 export const state = () => new stores.UserState()
 
@@ -74,28 +74,6 @@ export const mutations: MutationTree<stores.UserState> = {
 }
 
 export const actions: ActionTree<stores.UserState, stores.RootState> = {
-
-  async init({ commit, dispatch, state }) {
-    const refresh = (localStorage && localStorage.getItem(RefreshKey)) || state.refresh
-    if (refresh) {
-      commit('setRefresh', refresh)
-      const jwt = (sessionStorage && sessionStorage.getItem(tokenKey)) || state.token
-      if (jwt) {
-        commit('setToken', jwt)
-        const user = JSON.parse(sessionStorage && (sessionStorage.getItem(userKey) || "null")) || state.user
-        if (user) {
-          commit('setUser', user)
-        } else {
-          await dispatch('getUser', state.userName)
-        }
-      } else {
-        await dispatch('refreshToken')
-        await dispatch('getUser', state.userName)
-      }
-    } else {
-      commit('logout')
-    }
-  },
   async getUser({ commit }, userName) {
     if (!userName)
       return
