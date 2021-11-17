@@ -1,5 +1,5 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import { get, set } from "js-cookie"
+import ck from "js-cookie"
 import { login, refreshToken } from '~/repositories/sso/jwt_token'
 import * as stores from '@/types/stores'
 import { User, Setting, UserCredentials, AnonymousUser } from '@/types'
@@ -39,20 +39,19 @@ export const mutations: MutationTree<stores.UserState> = {
   setToken(state, token) {
     if (!!token) {
       state.token = token
-      state.userName = JSON.parse(atob(decodeURIComponent(token.split('.')[1]))).sub
-      if (localStorage) {
-        sessionStorage.setItem(tokenKey, token)
-      }
+      state.userName = JSON.parse(Buffer.from(decodeURIComponent(token.split('.')[1]), 'base64').toString()).sub
+      ck.set(tokenKey, token)
     }
   },
   setRefresh(state, refresh) {
-    if (localStorage && refresh) {
-      localStorage.setItem(RefreshKey, refresh)
-    }
+    ck.set(RefreshKey, refresh)
     state.refresh = refresh
   },
   logout(state) {
-    if (localStorage) {
+    ck.remove(tokenKey)
+    ck.remove(RefreshKey)
+    ck.remove(userKey)
+    if (process.client) {
       sessionStorage.clear()
       localStorage.clear()
     }
@@ -62,15 +61,11 @@ export const mutations: MutationTree<stores.UserState> = {
   },
   setUser(state, data) {
     state.user = data
-    if (sessionStorage) {
-      sessionStorage.setItem(userKey, JSON.stringify(data))
-    }
+    ck.set(userKey, JSON.stringify(data))
   },
   setWatchlist(state, data) {
     state.user.settings.watch_lists = data
-    if (sessionStorage) {
-      sessionStorage.setItem(userKey, JSON.stringify(state.user))
-    }
+    ck.set(userKey, JSON.stringify(data))
   }
 }
 
@@ -112,24 +107,22 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
     commit('logout')
   },
   async refreshToken({ commit }) {
-    if (typeof localStorage !== typeof undefined) {
-      const token = localStorage.getItem(RefreshKey)
-      if (token) {
-        try {
-          const { data, status } = await refreshToken(token)
-          if (status >= 200 && status < 300 && !!data.token) {
-            commit('setToken', 'Bearer ' + data.token)
-            commit('setRefresh', data.refresh)
-          } else if (status >= 400) {
-            commit('logout')
-          }
-          return status
-        } catch (err) {
+    const token = ck.get(RefreshKey)
+    if (token) {
+      try {
+        const { data, status } = await refreshToken(token)
+        if (status >= 200 && status < 300 && !!data.token) {
+          commit('setToken', 'Bearer ' + data.token)
+          commit('setRefresh', data.refresh)
+        } else if (status >= 400) {
           commit('logout')
         }
+        return status
+      } catch (err) {
+        commit('logout')
       }
-      return 401
     }
+    return 401
   },
   async update_watchlist({ commit }, watchlist) {
     try {
