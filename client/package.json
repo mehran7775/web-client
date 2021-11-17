@@ -20,13 +20,15 @@
     "nuxt": "^2.15.8",
     "nuxt-i18n": "latest",
     "splitpanes": "^2.3.8",
+    "js-cookie": "^3.0.1",
     "@hcaptcha/vue-hcaptcha": "^0.3.2"
   },
   "devDependencies": {
     "@mdi/font": "^6.1.95",
     "@nuxt/types": "^2.15.8",
-    "@types/luxon":"2.0.5",
+    "@types/luxon": "2.0.5",
     "@types/splitpanes": "2.2.1",
+    "@types/js-cookie": "^3.0.1",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/composition-api": "^0.28.0",
     "@nuxtjs/eslint-config-typescript": "^6.0.0",

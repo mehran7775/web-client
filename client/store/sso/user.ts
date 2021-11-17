@@ -1,4 +1,5 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
+import { get, set } from "js-cookie"
 import { login, refreshToken } from '~/repositories/sso/jwt_token'
 import * as stores from '@/types/stores'
 import { User, Setting, UserCredentials, AnonymousUser } from '@/types'
