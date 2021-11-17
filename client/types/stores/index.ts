@@ -6,6 +6,9 @@ export class RootState {
   constructor() {
     this.locale = process.env.VUE_APP_I18N_LOCALE ?? ''
   }
+  toJSON() {
+    return { ...this }
+  }
 }
 
 export class UserState {
@@ -18,5 +21,8 @@ export class UserState {
     this.user = AnonymousUser()
     this.refresh = null
     this.userName = null
+  }
+  toJSON() {
+    return { ...this }
   }
 }

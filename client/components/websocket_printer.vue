@@ -41,7 +41,7 @@ export default defineComponent({
       msgls.value.unshift(
         new Message(
           counter++,
-          JSON.stringify(decode(await event.data.arrayBuffer()))
+          //JSON.stringify(decode(await event.data.arrayBuffer()))
         )
       );
     };

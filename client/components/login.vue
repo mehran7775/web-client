@@ -23,16 +23,8 @@
         hide-details
       >
       </v-text-field>
-      <v-text-field
-        v-model="userName"
-        :placeholder="$t('login.captcha')"
-        prepend-inner-icon="mdi-qrcode"
-        dense
-        hide-details
-      ></v-text-field>
       <v-select
         dense
-        hide-details
         :value="1"
         :items="[
           { value: 1, text: $t('login.static') },
@@ -40,6 +32,16 @@
         ]"
       >
       </v-select>
+      <div class="h-captcha" data-sitekey="41a134fc-7604-4ee1-a5df-40c97195491a">
+      </div>
+      <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+      <!-- <v-text-field
+        v-model="userName"
+        :placeholder="$t('login.captcha')"
+        prepend-inner-icon="mdi-qrcode"
+        dense
+        hide-details
+      ></v-text-field> -->
     </v-card-text>
     <v-card-actions>
       <v-btn depressed color="error" @click="login" width="50%" large dark>
