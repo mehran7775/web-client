@@ -1,10 +1,8 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import ck from "js-cookie"
 import { login, refreshToken } from '~/repositories/sso/jwt_token'
 import * as stores from '@/types/stores'
 import { User, Setting, UserCredentials, AnonymousUser } from '@/types'
 import { getProfileImage, getUser, getUserList, updateUserWatchlist } from '@/repositories/sso/user_manager';
-
 
 export const RefreshKey: string = 'jwtRefreshKey';
 export const tokenKey: string = 'jwtKey';
@@ -36,18 +34,18 @@ export const getters: GetterTree<stores.UserState, stores.RootState> = {
 }
 
 export const mutations: MutationTree<stores.UserState> = {
-  setToken(state, token) {
-    if (!!token) {
-      state.token = token
-      state.userName = JSON.parse(Buffer.from(decodeURIComponent(token.split('.')[1]), 'base64').toString()).sub
-      ck.set(tokenKey, token)
+  setToken(state, { data, ck }) {
+    if (!!data) {
+      state.token = data
+      state.userName = JSON.parse(Buffer.from(decodeURIComponent(data.split('.')[1]), 'base64').toString()).sub
+      ck.set(tokenKey, data)
     }
   },
-  setRefresh(state, refresh) {
-    ck.set(RefreshKey, refresh)
-    state.refresh = refresh
+  setRefresh(state, { data, ck }) {
+    ck.set(RefreshKey, data)
+    state.refresh = data
   },
-  logout(state) {
+  logout(state, ck) {
     ck.remove(tokenKey)
     ck.remove(RefreshKey)
     ck.remove(userKey)
@@ -59,23 +57,23 @@ export const mutations: MutationTree<stores.UserState> = {
     state.user = AnonymousUser()
     state.refresh = null
   },
-  setUser(state, data) {
+  setUser(state, { data, ck }) {
     state.user = data
     ck.set(userKey, JSON.stringify(data))
   },
-  setWatchlist(state, data) {
+  setWatchlist(state, { data, ck }) {
     state.user.settings.watch_lists = data
     ck.set(userKey, JSON.stringify(data))
   }
 }
 
 export const actions: ActionTree<stores.UserState, stores.RootState> = {
-  async getUser({ commit }, userName) {
+  async getUser({ commit, rootState }, userName) {
     if (!userName)
       return
     try {
       const { data, status } = await getUser(userName, this.$axios)
-      commit('setUser', data)
+      commit('setUser', { data, ck: rootState.cookie })
       return status
     } catch (err: any) {
       if (err.response) {
@@ -84,7 +82,7 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
       return 450
     }
   },
-  async login({ commit, dispatch }, payload) {
+  async login({ commit, dispatch, rootState }, payload) {
     try {
       const { data, status } = await login(
         payload.userName,
@@ -92,8 +90,8 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
         payload.captcha,
         this.$axios
       )
-      commit('setToken', 'Bearer ' + data.token)
-      commit('setRefresh', data.refresh)
+      commit('setToken', { data: 'Bearer ' + data.token, ck: rootState.cookie })
+      commit('setRefresh', { data: data.refresh, ck: rootState.cookie })
       await dispatch('getUser', payload.userName)
       return status
     } catch (err: any) {
@@ -103,31 +101,31 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
       return 500
     }
   },
-  logout({ commit }) {
-    commit('logout')
+  logout({ commit, rootState }) {
+    commit('logout', rootState.cookie)
   },
-  async refreshToken({ commit }) {
-    const token = ck.get(RefreshKey)
+  async refreshToken({ commit, rootState }) {
+    const token = rootState.cookie?.get(RefreshKey)
     if (token) {
       try {
         const { data, status } = await refreshToken(token)
         if (status >= 200 && status < 300 && !!data.token) {
-          commit('setToken', 'Bearer ' + data.token)
-          commit('setRefresh', data.refresh)
+          commit('setToken', { data: 'Bearer ' + data.token, ck: rootState.cookie })
+          commit('setRefresh', { data: data.refresh, ck: rootState.cookie })
         } else if (status >= 400) {
-          commit('logout')
+          commit('logout', rootState.cookie)
         }
         return status
       } catch (err) {
-        commit('logout')
+        commit('logout', rootState.cookie)
       }
     }
     return 401
   },
-  async update_watchlist({ commit }, watchlist) {
+  async update_watchlist({ commit, rootState }, watchlist) {
     try {
       await updateUserWatchlist(watchlist, this.$axios)
-      commit("setWatchlist", watchlist)
+      commit("setWatchlist", { data: watchlist, ck: rootState.cookie })
     } catch (err: any) {
       return 500
     }

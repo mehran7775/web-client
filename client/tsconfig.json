@@ -30,7 +30,6 @@
       "@types/node",
       "@types/luxon",
       "@types/splitpanes",
-      "@types/js-cookie",
     ]
   },
   "exclude": [
