@@ -20,7 +20,7 @@
     "nuxt": "^2.15.8",
     "nuxt-i18n": "latest",
     "splitpanes": "^2.3.8",
-    "cookie-universal": "^2.1.5",
+    "cookie": "^0.4.1",
     "@hcaptcha/vue-hcaptcha": "^0.3.2"
   },
   "devDependencies": {
@@ -28,6 +28,7 @@
     "@nuxt/types": "^2.15.8",
     "@types/luxon": "2.0.5",
     "@types/splitpanes": "2.2.1",
+    "@types/cookie": "^0.4.1",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/composition-api": "^0.28.0",
     "@nuxtjs/eslint-config-typescript": "^6.0.0",

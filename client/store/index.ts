@@ -1,6 +1,5 @@
 import { GetterTree, MutationTree, ActionTree } from 'vuex'
 import * as stores from '@/types/stores'
-import { ICookie } from "cookie-universal"
 
 
 
@@ -18,8 +17,5 @@ export const getters: GetterTree<stores.RootState, stores.RootState> = {
 export const mutations: MutationTree<stores.RootState> = {
   setLocale(state, payload: string) {
     state.locale = payload
-  },
-  setCookieProvider(state, provider: ICookie) {
-    state.cookie = provider
   }
 }

@@ -1,13 +1,10 @@
 import { User, AnonymousUser } from '@/types/'
-import { ICookie } from "cookie-universal"
 
 export class RootState {
   locale: string
-  cookie: ICookie | null
 
   constructor() {
     this.locale = process.env.VUE_APP_I18N_LOCALE ?? ''
-    this.cookie = null
   }
   toJSON() {
     return { ...this }

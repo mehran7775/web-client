@@ -30,7 +30,7 @@ export default {
     { src: '~/plugins/store-initiator' },
     { src: '~/plugins/hcaptcha', mode: 'client' },
     { src: '~/plugins/i18n.js' },
-    { src: '~/plugins/axios', mode: 'client' }
+    { src: '~/plugins/axios' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
