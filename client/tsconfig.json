@@ -29,7 +29,7 @@
       "@nuxt/content",
       "@types/node",
       "@types/luxon",
-      "@types/splitpanes",
+      "@types/splitpanes"
     ]
   },
   "exclude": [
