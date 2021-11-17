@@ -9,10 +9,10 @@ export default async function ({ store, req, redirect, route }) {
 
   let ck = null;
   if (process.client) {
-    ck = parse(document.cookie)
+    ck = parse(document.cookie ?? "null")
   }
   else {
-    ck = parse(req.headers["cookie"])
+    ck = parse(req.headers["cookie"] ?? "null")
   }
   if (ck) {
     const refresh = ck[RefreshKey] || store.state.sso.user.refresh
