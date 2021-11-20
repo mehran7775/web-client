@@ -170,7 +170,7 @@
     "logout": "Logout",
     "otp": "OTP",
     "static": "Static",
-    "requestPass": "Sms OTP",
+    "send-sms": "Sms OTP",
     "captcha": "Captcha",
     "timeLeft": "Time Lefts",
     "alerts": "alert",

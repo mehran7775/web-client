@@ -52,6 +52,18 @@ html {
   }
 }
 
+.logo {
+  width: 86px;
+  height: 95px;
+  background: url(images/logo.png) no-repeat left top;
+  display: inline-block;
+  padding: 0;
+}
+
+.logo:hover{
+  background-position: right top;
+}
+
 .striped:nth-child(even) {
   background-color: #ffffff;
 }

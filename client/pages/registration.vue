@@ -2,7 +2,7 @@
   <v-container class="login ma-0 pa-0 pt-5" fluid>
     <v-row>
       <v-col></v-col>
-      <v-col class="text-center align-center justify-center">
+      <v-col class="justify-center align-center text-center">
         <nuxt-link to="/about-us" class="logo" />
       </v-col>
       <v-col></v-col>
@@ -10,7 +10,14 @@
     <v-row>
       <v-col md="4" sm="2"></v-col>
       <v-col md="4" sm="8">
-        <login />
+        <v-card>
+          <v-card-title class="text-center justify-center">
+            {{ $t("login.registration") }}
+          </v-card-title>
+          <v-form> 
+
+          </v-form>
+        </v-card>
       </v-col>
       <v-col md="4" sm="2"></v-col>
     </v-row>
@@ -18,13 +25,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
-import login from "~/components/login.vue";
+import { defineComponent } from "@nuxtjs/composition-api";
 
 export default defineComponent({
-  components: {
-    login,
+  setup() {
+    return {};
   },
-  setup() {},
 });
 </script>

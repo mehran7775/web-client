@@ -44,7 +44,7 @@
       <v-btn depressed color="error" @click="login" width="50%" large dark>
         {{ $t("login.login") }}
       </v-btn>
-      <v-btn depressed color="error" @click="register" width="50%" large dark>
+      <v-btn depressed color="error" to="/registration" width="50%" large dark>
         {{ $t("login.registration") }}
       </v-btn>
     </v-card-actions>
@@ -102,7 +102,6 @@ export default {
     ...mapMutations({
       alert: "snacks/showMessage",
     }),
-    register() {},
     captchaResult(code) {
       this.captcha = code;
     },
