@@ -50,7 +50,7 @@
     </v-card-actions>
     <v-divider />
     <v-card-actions>
-      <v-btn depressed color="transparent" @click="login" width="100%" small>
+      <v-btn depressed color="transparent" @click="()=> $router.push('/reset-password')" width="100%" small>
         {{ $t("login.forget-password") }}
       </v-btn>
     </v-card-actions>
