@@ -1,5 +1,6 @@
 <template>
   <v-footer
+    v-if="isLogin"
     :absolute="true"
     :class="{
       'ma-0 pa-0': true,
@@ -75,6 +76,7 @@ export default defineComponent({
       "bottom-panel.bests",
       "bottom-panel.depth",
     ];
+    const isLogin = computed(() => store.getters["sso/user/isLogin"]);
     const tab = computed({
       get(): Tabs {
         return store.getters["bottom-panel/activeTab"] as Tabs;
@@ -114,6 +116,7 @@ export default defineComponent({
       title,
       expanded,
       loading,
+      isLogin,
     };
     function useI18n() {
       return context.root.$i18n;

@@ -23,7 +23,7 @@
       app
       dense
     >
-      <v-img src="/logo.png" max-width="24" />
+      <v-img src="/logo.png" max-width="24" class="me-1" />
       <span v-if="!rightMenu.mini && rightMenu.drawer">{{
         $t("general.proxyCompany")
       }}</span>
@@ -67,7 +67,7 @@
         {{ $t("oms.superBourseIndex") }}:‌ 0
       </v-badge>
       <v-spacer />
-      <v-btn v-if="!isLogin" color="success" nuxt to="/login" height="32" depressed>
+      <v-btn v-if="!isLogin" color="success" nuxt to="/login" height="28" depressed>
         {{ $t("login.login") }}
         <v-icon>mdi-account-arrow-left</v-icon>
       </v-btn>
@@ -94,14 +94,14 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-badge class="ms-3" offset-y="35%" dot left color="error">
+      <v-badge v-if="isLogin" class="ms-3" offset-y="35%" dot left color="error">
         <v-icon @click="leftMenu.drawer = !leftMenu.drawer">
           mdi-bell-outline
         </v-icon>
       </v-badge>
     </v-app-bar>
     <v-main class="dashboardmain-page">
-      <div :class="{ 'dashboardmain-nuxt': isLogin, collaps: collaps }">
+      <div :class="{ 'dashboardmain-nuxt': isLogin, collaps: isLogin && collaps }">
         <nuxt />
       </div>
       <bottom-panel v-if="isLogin" />
@@ -260,7 +260,7 @@ export default defineComponent({
 }
 .dashboardmain-nuxt {
   overflow-y: auto;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 67px);
   padding-bottom: 32px;
 }
 .dashboardmain-nuxt.collaps {

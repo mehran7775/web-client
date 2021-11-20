@@ -74,11 +74,6 @@
       {{ $t("login.alerts") }}
     </v-card-actions>
     <v-divider />
-    <v-card-actions>
-      <v-btn depressed color="transparent" @click="login" width="100%" large>
-        {{ $t("login.about-us") }}
-      </v-btn>
-    </v-card-actions>
   </v-card>
 </template>
 
