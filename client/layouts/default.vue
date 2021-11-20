@@ -67,13 +67,26 @@
         {{ $t("oms.superBourseIndex") }}:‌ 0
       </v-badge>
       <v-spacer />
-      <v-btn v-if="!isLogin" color="success" nuxt to="/login" height="28" depressed>
+      <v-btn
+        v-if="!isLogin"
+        color="success"
+        nuxt
+        to="/login"
+        height="28"
+        depressed
+      >
         {{ $t("login.login") }}
         <v-icon>mdi-account-arrow-left</v-icon>
       </v-btn>
       <v-menu v-model="userMenu" v-if="isLogin" rounded="b-xl" offset-y>
         <template #activator="{ on, attrs }">
-          <v-btn height="30" v-bind="attrs" v-on="on" class="ma-0 pa-0" depressed>
+          <v-btn
+            height="30"
+            v-bind="attrs"
+            v-on="on"
+            class="ma-0 pa-0"
+            depressed
+          >
             <profile-picture
               :address="currentUser.profile && currentUser.profile.profilePic"
             />
@@ -94,80 +107,97 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-badge v-if="isLogin" class="ms-3" offset-y="35%" dot left color="error">
+      <v-badge
+        v-if="isLogin"
+        class="ms-3"
+        offset-y="35%"
+        dot
+        left
+        color="error"
+      >
         <v-icon @click="leftMenu.drawer = !leftMenu.drawer">
           mdi-bell-outline
         </v-icon>
       </v-badge>
     </v-app-bar>
     <v-main class="dashboardmain-page">
-      <div :class="{ 'dashboardmain-nuxt': isLogin, collaps: isLogin && collaps }">
+      <div
+        :class="{ 'dashboardmain-nuxt': isLogin, collaps: isLogin && collaps }"
+      >
         <nuxt />
       </div>
       <bottom-panel v-if="isLogin" />
     </v-main>
     <v-footer class="text-no-wrap ma-0 pa-0" :height="32" :absolute="true" app>
       <v-row dense>
-        <v-col cols="2" sm="3" xs="5">
-          <span>
-            <v-icon small>mdi-account-group</v-icon>
-            &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
+        <v-col cols="1.5" sm="2" xs="5" class="ma-0 pa-0 ps-5 pt-2">
+          <v-icon small>mdi-account-group</v-icon>
+          &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
+        </v-col>
+        <v-col cols="9" sm="8" xs="7" class="ma-0 pa-0">
+          <span v-if="isLogin">
+            <v-badge
+              dot
+              left
+              class="ms-5"
+              color="green"
+              offset-y="75%"
+              offset-x="-5"
+              >{{ $t("accounting.account.amount")
+              }}{{ brif.freeMoney }}</v-badge
+            >
+
+            <v-badge
+              dot
+              left
+              class="ms-5"
+              color="red"
+              offset-y="75%"
+              offset-x="-5"
+              >{{ $t("accounting.account.blockedAmount")
+              }}{{ brif.blockedMoney }}</v-badge
+            >
+
+            <v-badge
+              dot
+              left
+              class="ms-5"
+              color="orange"
+              offset-y="75%"
+              offset-x="-5"
+            >
+              {{ $t("accounting.account.onlineBlockedAmount")
+              }}{{ brif.freeMoney }}
+            </v-badge>
+
+            <v-badge
+              dot
+              left
+              class="ms-5"
+              color="blue"
+              offset-y="75%"
+              offset-x="-5"
+              >{{ $t("accounting.account.remaining")
+              }}{{ brif.freeMoney }}</v-badge
+            >
+
+            <v-badge
+              dot
+              left
+              class="ms-5"
+              color="#89abcd"
+              offset-y="75%"
+              offset-x="-5"
+              >{{ $t("accounting.account.credit")
+              }}{{ brif.freeMoney }}</v-badge
+            >
           </span>
         </v-col>
-        <v-col cols="10" sm="9" xs="7" v-if="isLogin">
-          <v-badge
-            dot
-            left
-            class="ms-5"
-            color="green"
-            offset-y="75%"
-            offset-x="-5"
-            >{{ $t("accounting.account.amount") }}{{ brif.freeMoney }}</v-badge
-          >
-
-          <v-badge
-            dot
-            left
-            class="ms-5"
-            color="red"
-            offset-y="75%"
-            offset-x="-5"
-            >{{ $t("accounting.account.blockedAmount")
-            }}{{ brif.blockedMoney }}</v-badge
-          >
-
-          <v-badge
-            dot
-            left
-            class="ms-5"
-            color="orange"
-            offset-y="75%"
-            offset-x="-5"
-          >
-            {{ $t("accounting.account.onlineBlockedAmount")
-            }}{{ brif.freeMoney }}
-          </v-badge>
-
-          <v-badge
-            dot
-            left
-            class="ms-5"
-            color="blue"
-            offset-y="75%"
-            offset-x="-5"
-            >{{ $t("accounting.account.remaining")
-            }}{{ brif.freeMoney }}</v-badge
-          >
-
-          <v-badge
-            dot
-            left
-            class="ms-5"
-            color="#89abcd"
-            offset-y="75%"
-            offset-x="-5"
-            >{{ $t("accounting.account.credit") }}{{ brif.freeMoney }}</v-badge
-          >
+        <v-col cols="1.5" sm="2" class="ma-0 pa-0">
+          <v-spacer />
+          <v-btn depressed height="28" @click="() => redirect('/about-us')">
+            {{ $t("login.about-us") }}
+          </v-btn>
         </v-col>
       </v-row>
     </v-footer>
@@ -183,6 +213,7 @@ import {
   useStore,
   ref,
   useRouter,
+  useContext,
 } from "@nuxtjs/composition-api";
 import snackbar from "@/components/snacks.vue";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
@@ -201,6 +232,7 @@ export default defineComponent({
     const router = useRouter();
     const store = useStore();
     const host = process.env.VUE_APP_Host;
+    const ctx = useContext();
 
     const isLogin = computed(() => store.getters["sso/user/isLogin"]);
     const collaps = computed(() => {
@@ -238,6 +270,7 @@ export default defineComponent({
       locale,
       wlEditor,
       doLogout,
+      redirect: ctx.redirect,
       isLogin,
       currentUser,
       userMenu,

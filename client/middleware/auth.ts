@@ -1,9 +1,8 @@
 import { Middleware } from '@nuxt/types'
 
-export const publicPages = [/\/login\/?/, /\/docs.*/, /$\/?^/]
+export const publicPages = [/^\/login\/?/, /^\/about-us/, /^\/docs.*/, /^\/?([#].*)?$/]
 
 const auth: Middleware = async ({ store, route, redirect }) => {
-
   if (needLogin(route.fullPath)) {
     let isLogin = store.getters['sso/user/isLogin']
     if (!isLogin) {
@@ -16,6 +15,7 @@ const auth: Middleware = async ({ store, route, redirect }) => {
 }
 
 export function needLogin(path: string): boolean {
+  //console.log(path + ' needs login? ', publicPages.findIndex(item => { return item.test(path) }) == -1)
   return publicPages.findIndex(item => { return item.test(path) }) == -1
 }
 

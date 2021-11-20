@@ -25,7 +25,7 @@ export default async function ({ store, req, redirect, route }) {
       store.commit('sso/user/setUser', user)
       if (route.fullPath == "/login")
         return redirect('/')
-    } else {
+    } else if (needLogin(route.fullPath)) {
       store.commit('sso/user/logout')
       if (needLogin(route.fullPath)) {
         return redirect('/login')
