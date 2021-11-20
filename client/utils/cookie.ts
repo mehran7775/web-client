@@ -16,8 +16,7 @@ export function SetClientCookie(name: string, value: string, options: CookieSeri
 }
 
 export function DeleteClientCookie(name: string) {
-  document.cookie = serialize(name, "", {
-    domain: document.domain,
+  document.cookie = serialize(name, "", Object.assign(DefaultClientOptions, {
     expires: new Date(Date.now())
-  })
+  }))
 }

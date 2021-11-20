@@ -18,11 +18,6 @@ export default async function ({ store, req, redirect, route }) {
     const refresh = ck[refreshKey] ?? store.state.sso.user.refresh
     const jwt = ck[tokenKey] ?? store.state.sso.user.token
     const user = ck[userKey] ? JSON.parse(ck[userKey]) : store.state.sso.user.user
-    if (process.server) {
-      console.log('refresh', refresh)
-      console.log('jwt', jwt)
-      console.log('user', user)
-    }
 
     if (refresh && jwt && user) {
       store.commit('sso/user/setRefresh', refresh)

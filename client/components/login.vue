@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="0" color="transparent" class="login">
+  <v-card elevation="0" color="transparent" class="login" :loading="loading">
     <v-card-title class="justify-center">{{ $t("login.login") }}</v-card-title>
     <v-card-text class="text-center">
       <v-divider />
@@ -92,6 +92,7 @@ export default {
   },
   data: () => {
     return {
+      loading: false,
       showPassword: false,
       userName: null,
       password: null,
@@ -112,6 +113,7 @@ export default {
     },
     login() {
       const self = this;
+      self.loading = true;
       self
         .dologin({
           userName: self.userName,
@@ -119,23 +121,24 @@ export default {
           captcha: self.captcha,
           axios: self.$axios,
         })
-        .then(
-          function (data) {
-            if (data >= 200 && data < 300) {
-              self.$router.push({ path: "/watchlist/" });
-              self.alert({
-                color: "success",
-                content: "login.successful",
-              });
-            } else {
-              self.alert({
-                color: "error",
-                content: "login.failed",
-              });
-            }
-          },
-          function (data) {}
-        );
+        .then(function (data) {
+          if (data >= 200 && data < 300) {
+            self.$router.push({ path: "/watchlist/" });
+            self.alert({
+              color: "success",
+              content: "login.successful",
+            });
+          }
+        })
+        .catch(() => {
+          self.alert({
+            color: "error",
+            content: "login.failed",
+          });
+        })
+        .finally(() => {
+          self.loading = false;
+        });
     },
   },
 };
