@@ -3,10 +3,10 @@ import { login, refreshToken } from '~/repositories/sso/jwt_token'
 import * as stores from '@/types/stores'
 import { User, Setting, UserCredentials, AnonymousUser } from '@/types'
 import { getProfileImage, getUser, getUserList, updateUserWatchlist } from '@/repositories/sso/user_manager';
-import { parse, serialize } from "cookie"
+import { SetClientCookie, DeleteClientCookie } from "@/utils/cookie"
 
 
-export const RefreshKey: string = 'jwtRefreshKey';
+export const refreshKey: string = 'jwtRefreshKey';
 export const tokenKey: string = 'jwtKey';
 export const userKey: string = 'userCache';
 
@@ -42,18 +42,25 @@ export const mutations: MutationTree<stores.UserState> = {
   setToken(state, data) {
     if (!!data) {
       state.token = data
-      state.userName = JSON.parse(Buffer.from(decodeURIComponent(data.split('.')[1]), 'base64').toString()).sub
-      //ck.set(tokenKey, data)
+      const token = JSON.parse(Buffer.from(decodeURIComponent(data.split('.')[1]), 'base64').toString())
+      state.userName = token.sub
+      if (process.client)
+        SetClientCookie(tokenKey, data, {
+          expires: new Date(token.exp * 1000),
+        })
     }
   },
   setRefresh(state, data) {
-    //ck.set(RefreshKey, data)
     state.refresh = data
+    if (process.client)
+      SetClientCookie(refreshKey, data, {})
   },
   logout(state) {
-    //ck.remove(tokenKey)
-    //ck.remove(RefreshKey)
-    //ck.remove(userKey)
+    if (process.client) {
+      DeleteClientCookie(userKey)
+      DeleteClientCookie(tokenKey)
+      DeleteClientCookie(refreshKey)
+    }
     if (process.client) {
       sessionStorage.clear()
       localStorage.clear()
@@ -64,11 +71,13 @@ export const mutations: MutationTree<stores.UserState> = {
   },
   setUser(state, data) {
     state.user = data
-    //ck.set(userKey, JSON.stringify(data))
+    if (process.client)
+      SetClientCookie(userKey, JSON.stringify(data), {})
   },
   setWatchlist(state, data) {
     state.user.settings.watch_lists = data
-    //ck.set(userKey, JSON.stringify(data))
+    if (process.client)
+      SetClientCookie(userKey, JSON.stringify(data), {})
   }
 }
 
@@ -78,7 +87,7 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
       return
     try {
       const { data, status } = await getUser(userName, this.$axios)
-      commit('setUser', { data })
+      commit('setUser', data)
       return status
     } catch (err: any) {
       if (err.response) {
