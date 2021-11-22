@@ -19,72 +19,89 @@
               <v-stepper-step
                 step="0"
                 :complete="step > 0"
-                :rules="[() => form0 == null || form0]"
+                :rules="[() => forms.form0 == null || forms.form0]"
               >
-                {{ $t("profile.id") }}
+                {{ $t("user.profile.id") }}
               </v-stepper-step>
               <v-stepper-step
                 step="1"
                 :complete="step > 1"
-                :rules="[() => form1 == null || form1]"
+                :rules="[() => forms.form1 == null || forms.form1]"
               >
-                {{ $t("profile.confirm") }}
+                {{ $t("user.profile.confirm") }}
               </v-stepper-step>
               <v-stepper-step
                 step="2"
                 :complete="step > 2"
-                :rules="[() => form2 == null || form2]"
+                :rules="[() => forms.form2 == null || forms.form2]"
               >
-                {{ $t("profile.sajam") }}
+                {{ $t("user.profile.sajam") }}
               </v-stepper-step>
             </v-stepper-header>
             <v-stepper-items>
               <v-stepper-content step="0">
-                <v-form v-model="form0" ref="forms.rform0">
+                <v-form v-model="forms.form0" ref="forms.rform0">
                   <v-container fluid>
                     <v-row>
-                      <v-col>
-                        <v-text-field :label="$t('profile.nid')">
+                      <v-col cols="9">
+                        <v-text-field :label="$t('user.profile.nid')">
+                        </v-text-field>
+                        <v-text-field
+                          :label="$t('user.profile.contact.mobile')"
+                        >
                         </v-text-field>
                       </v-col>
-                      <v-col>
-                        <v-text-field :label="$t('profile.contact.phone')">
-                        </v-text-field>
+                      <v-col cols="3" class="justify-center text-center">
+                        <client-only>
+                          <vue-hcaptcha
+                            sitekey="41a134fc-7604-4ee1-a5df-40c97195491a"
+                            language="fa"
+                            size="compact"
+                            data-theme="dark"
+                            @verify="captchaResult"
+                          ></vue-hcaptcha>
+                        </client-only>
                       </v-col>
                     </v-row>
                   </v-container>
                 </v-form>
               </v-stepper-content>
               <v-stepper-content step="1">
-                <v-form v-model="form1" ref="forms.rform1">
+                <v-form v-model="forms.form1" ref="forms.rform1">
                   <v-container fluid>
                     <v-row>
-                      <v-col>
-                        <v-text-field :label="$t('profile.nid')">
-                        </v-text-field>
+                      <v-col cols="9" class="justify-center text-center">
+                        <v-text-field :label="$t('login.otp')"> </v-text-field>
                       </v-col>
-                      <v-col>
-                        <v-text-field :label="$t('profile.contact.phone')">
-                        </v-text-field>
+                      <v-col cols="3" class="justify-center text-center">
+                        <client-only>
+                          <vue-hcaptcha
+                            sitekey="41a134fc-7604-4ee1-a5df-40c97195491a"
+                            language="fa"
+                            size="compact"
+                            data-theme="dark"
+                            @verify="captchaResult"
+                          ></vue-hcaptcha>
+                        </client-only>
+                        <v-btn color="primary">
+                          {{ $t("login.send-sms") }}
+                        </v-btn>
                       </v-col>
                     </v-row>
                   </v-container>
                 </v-form>
               </v-stepper-content>
               <v-stepper-content step="2">
-                <v-form v-model="form2" ref="forms.rform2">
-                  <v-container fluid>
-                    <v-row>
-                      <v-col>
-                        <v-text-field :label="$t('profile.nid')">
-                        </v-text-field>
-                      </v-col>
-                      <v-col>
-                        <v-text-field :label="$t('profile.contact.phone')">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                  </v-container>
+                <v-form v-model="forms.form2" ref="forms.rform2">
+                  <v-card>
+                    <v-card-text>
+                      اطلاعات سجام
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-checkbox :label="$t('general.confirm-information')">
+                      </v-checkbox>
+                    </v-card-actions>
+                  </v-card>
                 </v-form>
               </v-stepper-content>
             </v-stepper-items>
@@ -92,7 +109,7 @@
           <v-card-actions>
             <v-spacer />
             <v-btn color="primary" @click="step = (step - 1) % 3">
-              {{ $t("general.privios") }}
+              {{ $t("general.previous") }}
             </v-btn>
             <v-btn color="primary" @click="validate">
               {{ $t("general.next") }}
@@ -112,25 +129,29 @@ export default defineComponent({
   setup(props) {
     const progress = ref(0);
     const step = ref(0);
-    const form1 = ref(null);
-    const form2 = ref(null);
-    const form0 = ref(null);
     const forms: Ref<any> = ref({
+      form1: null,
+      form2: null,
+      form0: null,
       rform1: null,
       rform2: null,
       rform0: null,
     });
 
+    function captchaResult() {}
+
     function validate() {
-      forms.value["rform" + step]?.validate();
-      step.value = (step.value + 1) % 3;
+      switch (step.value) {
+        default:
+          forms.value["rform" + step.value]?.validate();
+          step.value = (step.value + 1) % 3;
+          break;
+      }
     }
     return {
-      form0,
-      form1,
-      form2,
       forms,
       validate,
+      captchaResult,
       step,
       progress,
     };

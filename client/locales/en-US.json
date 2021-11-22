@@ -10,6 +10,7 @@
     "proxyCompany": "Asre Danesh Afzar",
     "company": "Asre Danesh Afzar",
     "acceptPolicy": "I accept rules and policy.",
+    "confirm-information": "I confirm this information.",
     "draft": "Draft",
     "tomorrow": "Tomorrow",
     "today": "Today",
@@ -18,6 +19,8 @@
     "history": "History",
     "type": "Type",
     "types": "Types",
+    "next": "Next",
+    "previous": "Previous",
     "date": {
       "dt": "D T",
       "d": "D",
@@ -34,11 +37,20 @@
     "search": "Search",
     "username": "Username",
     "password": "Password",
-    "name": "Name",
-    "lastname": "Last Name",
-    "role": "Role",
-    "province": "Province",
-    "city": "City",
+    "profile": {
+      "id": "Identification",
+      "name": "Name",
+      "lastname": "Last Name",
+      "role": "Role",
+      "province": "Province",
+      "city": "City",
+      "nid": "National Id",
+      "confirm": "Confirmation",
+      "sajam": "Sajam Information",
+      "contact": {
+        "phone": "Phone Number"
+      }
+    },
     "branch": "Branch",
     "newUser": "New User",
     "createDialog": "Create New User",
@@ -174,7 +186,7 @@
     "captcha": "Captcha",
     "timeLeft": "Time Lefts",
     "alerts": "alert",
-    "about-us":"about us",
+    "about-us": "about us",
     "successful": "You successfully logged in to the system!",
     "failed": "Username and/or password is not correct!",
     "error": "An unexpected error happen's during login!"

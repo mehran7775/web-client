@@ -31,6 +31,9 @@
     "history": "سابقه",
     "type": "نوع",
     "types": "انواع",
+    "confirm-information": "اطلاعات مورد تایید است",
+    "next": "ادامه",
+    "previous": "قبلی",
     "date": {
       "dt": "D-T",
       "d": "D",
@@ -59,6 +62,22 @@
     "createDialog": "ایجاد کاربر جدید",
     "active": "فعال",
     "inactive": "غیر فعال",
+    "profile": {
+      "id": "مشخصات",
+      "name": "نام",
+      "lastname": "نام خانوادگی",
+      "role": "نقش",
+      "province": "استان",
+      "city": "شهر",
+      "nid": "کد ملی",
+      "confirm": "تایید اطلاعات",
+      "sajam": "اطلاعات سجام",
+      "contact": {
+        "mobile": "تلفن همراه",
+        "phone": "شماره تلفن",
+        "email": "پست الکترونیکی"
+      }
+    },
     "roles": {
       "ADMIN": "مدیر",
       "OPERATOR": "کارگزار",

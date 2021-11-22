@@ -260,6 +260,7 @@ export default defineComponent({
     });
 
     function doLogout() {
+      userMenu.value = false;
       store.dispatch("sso/user/logout");
       router.push("/login");
     }
