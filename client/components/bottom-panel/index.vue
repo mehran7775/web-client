@@ -6,6 +6,7 @@
       'ma-0 pa-0': true,
       expanded: expanded,
       half: tab != -1 && !expanded,
+      hiden: tab == -1,
     }"
   >
     <v-card :class="{ expanded: true }" width="100%">
@@ -45,6 +46,7 @@
           </v-tab-item>
         </v-tabs-items>
       </v-card-text>
+
       <v-card-actions :height="height" class="ma-0 pa-0">
         <v-tabs v-model="tab" :height="height" optional>
           <v-tab v-for="t in tabs" :key="t">
@@ -125,19 +127,23 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.expanded {
-  height: 100%;
-}
-.half {
-  height: calc(50vh - 64px);
-}
-.detail {
-  position: relative;
-  width: 100%;
-  font-size: 1rem;
-  line-height: 1.5;
-  height: calc(100% - 64px);
-  overflow-y: auto;
-}
+<style lang="sass" scoped>
+.expanded
+  transition: all 0.5s ease-in-out
+  height: 100%
+
+.half
+  transition: all 0.5s ease-in-out
+  height: calc(50vh - 64px)
+
+.hiden
+  height: 32px
+
+.detail
+  position: relative
+  width: 100%
+  font-size: 1rem
+  line-height: 1.5
+  height: calc(100% - 64px)
+  overflow-y: auto
 </style>

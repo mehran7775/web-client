@@ -19,14 +19,23 @@
       <v-tab> {{ $t("general.all") }} </v-tab>
     </v-tabs>
     <v-tabs-items class="messages" v-model="activeTab">
-      <v-tab-item> </v-tab-item>
+      <v-tab-item>
+        <message-list
+          v-model="myMessages"
+          :timeFormat="$t('general.date.t')"
+          :loading="loading"
+          @load="loadMyMessages"
+          @select="selectMessage"
+          class="flex-grow-1"
+        />
+      </v-tab-item>
       <v-tab-item>
         <filter-auto-complete class="flex-grow-0" />
         <message-list
           v-model="messages"
           :timeFormat="$t('general.date.t')"
           :loading="loading"
-          @load="loadMessages(messageQuery)"
+          @load="loadMessages"
           @select="selectMessage"
           class="flex-grow-1"
         />
@@ -80,19 +89,32 @@ export default defineComponent({
     });
 
     const loading = ref(false);
+    const myMessages: Message[] = reactive([]);
     const messages: Message[] = reactive([]);
+
+    const myMessageQuery: Ref<MessageQuery> = ref(
+      new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00"))
+    );
 
     const messageQuery: Ref<MessageQuery> = ref(
       new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00"))
     );
 
-    function loadMessages(query: MessageQuery) {
+    function loadMyMessages() {
+      load(myMessageQuery, myMessages);
+    }
+
+    function loadMessages() {
+      load(messageQuery, messages);
+    }
+
+    function load(query: Ref<MessageQuery>, messages: Message[]) {
       loading.value = true;
       store
-        .dispatch("oms/messages/getMessages", query)
+        .dispatch("oms/messages/getMessages", query.value)
         .then((res: AxiosResponse<PaginatedResult<Message>>) => {
           messages.push(...res.data.data);
-          messageQuery.value.offset = messages.length;
+          query.value.offset = messages.length;
         })
         .catch()
         .finally(() => {
@@ -119,17 +141,21 @@ export default defineComponent({
       }
     }
 
-    loadMessages(messageQuery.value);
+    loadMessages();
+    loadMyMessages();
 
     return {
       selectMessage,
       messageQuery,
+      myMessageQuery,
       loading,
       rtl,
       drawer,
       expand,
       messages,
+      myMessages,
       loadMessages,
+      loadMyMessages,
       activeTab: 0,
     };
   },
