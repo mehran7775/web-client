@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios'
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { login, refreshToken } from '~/repositories/sso/jwt_token'
 import * as stores from '@/types/stores'
@@ -13,32 +14,18 @@ export const userKey: string = 'userCache';
 export const state = () => new stores.UserState()
 
 export const getters: GetterTree<stores.UserState, stores.RootState> = {
-  getToken: (state, getters, store) => {
-    return state.token
-  },
-  getRefresh: (state) => {
-    return state.refresh
-  },
-  me: (state) => {
-    if (state && state.user) {
-      return state.user
-    } else {
-      return AnonymousUser()
-    }
-  },
-  isLogin: (state) => {
-    return !!(state && state.token)
-  },
-  watchList(state) {
-    if (state && state.user && state.user.settings) {
-      return state.user.settings.watch_lists
-    } else {
-      return {}
-    }
-  }
+  getToken: (state) => state.token,
+  getRefresh: (state) => state.refresh,
+  me: (state) => state.user ?? AnonymousUser(),
+  isLogin: (state) => !!(state && state.token),
+  watchList: (state) => state.user?.settings?.watch_lists ?? {},
+  failedCount: (state) => state.failedCount
 }
 
 export const mutations: MutationTree<stores.UserState> = {
+  failed(state, data) {
+    state.failedCount = data
+  },
   setToken(state, data) {
     if (!!data) {
       state.token = data
@@ -108,9 +95,12 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
       commit('setRefresh', data.refresh)
       await dispatch('getUser', payload.userName)
       return status
-    } catch (err: any) {
-      if (err.response) {
-        return err.response.status
+    } catch (err: unknown) {
+      const resp = err as AxiosError<any>
+      if (resp.response) {
+        if (resp.response.data.failed)
+          commit('failed', resp.response.data.failed)
+        return resp.response.status
       }
       return 500
     }

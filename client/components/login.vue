@@ -34,6 +34,7 @@
       </v-select>
       <client-only>
         <vue-hcaptcha
+          v-if="failedCount > 3"
           sitekey="41a134fc-7604-4ee1-a5df-40c97195491a"
           language="fa"
           @verify="captchaResult"
@@ -50,7 +51,13 @@
     </v-card-actions>
     <v-divider />
     <v-card-actions>
-      <v-btn depressed color="transparent" @click="()=> $router.push('/reset-password')" width="100%" small>
+      <v-btn
+        depressed
+        color="transparent"
+        @click="() => $router.push('/reset-password')"
+        width="100%"
+        small
+      >
         {{ $t("login.forget-password") }}
       </v-btn>
     </v-card-actions>
@@ -78,7 +85,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from "vuex";
+import { mapActions, mapMutations, mapGetters } from "vuex";
 
 export default {
   name: "Login",
@@ -134,6 +141,9 @@ export default {
           self.loading = false;
         });
     },
+  },
+  computed: {
+    ...mapGetters({ failedCount: "sso/user/failedCount" }),
   },
 };
 </script>
