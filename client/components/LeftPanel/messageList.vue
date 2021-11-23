@@ -82,7 +82,7 @@ export default defineComponent({
 
 <style scoped>
 .scroll {
-  height: calc(100vh - 168px);
+  height: calc(100% - 32px);
 }
 .more {
   overflow: hidden;
