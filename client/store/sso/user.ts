@@ -19,12 +19,12 @@ export const getters: GetterTree<stores.UserState, stores.RootState> = {
   me: (state) => state.user ?? AnonymousUser(),
   isLogin: (state) => !!(state && state.token),
   watchList: (state) => state.user?.settings?.watch_lists ?? {},
-  failedCount: (state) => state.failedCount
+  tryCount: (state) => state.tryCount
 }
 
 export const mutations: MutationTree<stores.UserState> = {
-  failed(state, data) {
-    state.failedCount = data
+  tries(state, data) {
+    state.tryCount = data
   },
   setToken(state, data) {
     if (!!data) {
@@ -98,8 +98,8 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
     } catch (err: unknown) {
       const resp = err as AxiosError<any>
       if (resp.response) {
-        if (resp.response.data.failed)
-          commit('failed', resp.response.data.failed)
+        if (resp.response.data.tryCount)
+          commit('tries', resp.response.data.tryCount)
         return resp.response.status
       }
       return 500

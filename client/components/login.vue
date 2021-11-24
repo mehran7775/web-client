@@ -143,7 +143,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({ failedCount: "sso/user/failedCount" }),
+    ...mapGetters({ failedCount: "sso/user/tryCount" }),
   },
 };
 </script>

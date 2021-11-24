@@ -12,13 +12,13 @@ export class RootState {
 }
 
 export class UserState {
-  failedCount: number
+  tryCount: number
   token: null
   user: User
   refresh: string | null
   userName: string | null
   constructor() {
-    this.failedCount = 0
+    this.tryCount = 0
     this.token = null
     this.user = AnonymousUser()
     this.refresh = null
