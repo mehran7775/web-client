@@ -5,7 +5,7 @@
         <focus-board :instIds="selected" />
       </v-col>
     </v-row>
-    <v-row dense>
+    <v-row class="ma-0 pa-0" dense>
       <v-col
         ><WatchList :watchlists="instruments" :selected.sync="selected"
       /></v-col>
