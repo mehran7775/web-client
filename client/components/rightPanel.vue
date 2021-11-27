@@ -10,7 +10,15 @@
     app
   >
     <v-tabs v-model="selected" :show-arrows="true" vertical hide-slider>
-      <v-tab v-for="item in items" :key="item.title">
+      <v-tab
+        v-for="item in items"
+        :key="item.title"
+        @click="
+          () => {
+            $emit('update:mini', !mini);
+          }
+        "
+      >
         <v-icon right>
           {{ item.icon }}
         </v-icon>

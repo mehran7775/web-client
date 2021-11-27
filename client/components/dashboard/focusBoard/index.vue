@@ -3,7 +3,7 @@
     <v-toolbar color="primary" dark :height="32" dense>
       <instrument-search style="max-width: 200pt" />
       <v-spacer />
-      <v-btn-toggle v-model="viewMode" mandatory>
+      <v-btn-toggle v-model="viewMode" mandatory light>
         <v-btn small>
           <v-icon small> mdi-view-headline </v-icon>
         </v-btn>

@@ -8,7 +8,7 @@ import '@/assets/icons/style.css'
 
 export default function ({ store, app }) {
   const theme = {
-    primary: '#397CEA',
+    primary: '#005cb5',
     secondary: '#CC0000',
     accent: '#ffffff',
     error: '#e5466c',

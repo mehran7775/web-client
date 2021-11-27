@@ -1,7 +1,7 @@
 <template>
   <v-container class="ma-0 pa-0" fluid>
-    <v-row dense>
-      <v-col>
+    <v-row class="ma-0 pa-0" dense>
+      <v-col class="ma-0 pa-0">
         <focus-board :instIds="selected" />
       </v-col>
     </v-row>
