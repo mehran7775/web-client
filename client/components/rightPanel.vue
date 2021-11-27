@@ -9,13 +9,7 @@
     fixed
     app
   >
-    <v-tabs
-      v-model="selected"
-      optional
-      :show-arrows="true"
-      vertical
-      hide-slider
-    >
+    <v-tabs class="ma-0 pa-0" v-model="selected" optional vertical hide-slider centered>
       <v-tab
         v-for="item in items"
         :key="item.title"
@@ -25,7 +19,7 @@
           }
         "
       >
-        <v-icon right>
+        <v-icon>
           {{ item.icon }}
         </v-icon>
       </v-tab>
@@ -36,7 +30,7 @@
         <h4 class="text-center">
           {{ $t(item.title) }}
         </h4>
-        <v-list rounded dense>
+        <v-list dense>
           <v-list-item-group>
             <v-list-item
               v-for="child in item.children ? item.children.value : []"
@@ -188,11 +182,16 @@ export default defineComponent({
 
 <style lang="sass">
 .panel
+  overflow: hidden
   padding-top: 1pt
+  ::-webkit-scrollbar
+    display: none
   .v-tabs-items
-    height: calc(100% - 64px)
-    width: calc(100% - 61px)
+    background-color: #EEEEEE !important
+    height: 100%
+    width: calc(100% - 56px)
     display: inline-block
+    margin-right: -5px
   .v-tabs
     display: inline-block
     width: 56px
@@ -204,39 +203,4 @@ export default defineComponent({
           height: 32px !important
           &--active
             box-shadow: 5px 0px 5px 0px grey
-</style>
-
-<style scoped>
-@media only screen and (min-height: 641px) {
-  .scroll {
-    display: none;
-  }
-}
-@media only screen and (max-height: 640px) {
-  .scroll {
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    height: 15px;
-    width: 100%;
-    color: white;
-    position: fixed;
-  }
-  .scroll.up {
-    top: 0;
-  }
-  .scroll.down {
-    bottom: 0;
-    margin-top: -20px;
-  }
-}
-/* width */
-.panel ::-webkit-scrollbar {
-  display: none;
-}
-.panel {
-  overflow: hidden;
-}
 </style>
