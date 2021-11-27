@@ -1,6 +1,6 @@
 import { Middleware } from '@nuxt/types'
 
-export const publicPages = [/^\/login\/?/,/^\/registration/,/^\/reset-password/, /^\/about-us/, /^\/docs.*/, /^\/?([#].*)?$/]
+export const publicPages = [/^\/login\/?/,/^\/registration/,/^\/reset-password/, /^\/about-us/, /^\/blog.*/, /^\/?([#].*)?$/]
 
 const auth: Middleware = async ({ store, route, redirect }) => {
   if (needLogin(route.fullPath)) {
