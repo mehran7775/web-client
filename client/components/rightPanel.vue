@@ -219,12 +219,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-@media only screen and (min-height: 771px) {
+@media only screen and (min-height: 641px) {
   .scroll {
     display: none;
   }
 }
-@media only screen and (max-height: 770px) {
+@media only screen and (max-height: 640px) {
   .scroll {
     font-weight: bold;
     display: flex;
