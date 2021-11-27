@@ -5,6 +5,7 @@ import * as stores from '@/types/stores'
 import { User, Setting, UserCredentials, AnonymousUser } from '@/types'
 import { getProfileImage, getUser, getUserList, updateUserWatchlist } from '@/repositories/sso/user_manager';
 import { SetClientCookie, DeleteClientCookie } from "@/utils/cookie"
+import { DateTime } from 'luxon'
 
 
 export const refreshKey: string = 'jwtRefreshKey';
@@ -19,7 +20,7 @@ export const getters: GetterTree<stores.UserState, stores.RootState> = {
   me: (state) => state.user ?? AnonymousUser(),
   isLogin: (state) => !!(state && state.token),
   watchList: (state) => state.user?.settings?.watch_lists ?? {},
-  tryCount: (state) => state.tryCount
+  tryCount: (state) => DateTime.fromISO(state.lastTry).diffNow().seconds > 300 ? 0 : state.tryCount
 }
 
 export const mutations: MutationTree<stores.UserState> = {

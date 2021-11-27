@@ -12,12 +12,14 @@ export class RootState {
 }
 
 export class UserState {
+  lastTry: string
   tryCount: number
   token: null
   user: User
   refresh: string | null
   userName: string | null
   constructor() {
+    this.lastTry = '1990-03-01T07:30:00.000'
     this.tryCount = 0
     this.token = null
     this.user = AnonymousUser()
