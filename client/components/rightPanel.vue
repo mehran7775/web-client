@@ -4,91 +4,39 @@
     :mini-variant="mini"
     :clipped="clipped"
     :right="rtl"
-    class="panel"
+    class="panel ps-0"
     width="260"
     fixed
     app
   >
-    <v-list dense>
-      <v-list-item-group :class="{ 'my-32': true }" v-model="selected">
-        <div v-for="(item, i) in items" :key="i">
-          <v-list-group v-if="item.children" class="ma-0 px-0">
-            <v-tooltip slot="activator" left>
-              <template #activator="{ on, attrs }">
-                <v-icon v-bind="attrs" v-on="on" class="pe-2">
-                  {{ item.icon }}
-                </v-icon>
-                <v-list-item-content>
-                  <v-list-item-title v-text="$t(item.title)" />
-                </v-list-item-content>
-              </template>
-              <span>{{ $t(item.title) }}</span>
-            </v-tooltip>
-            <v-list-item-group>
-              <v-list-item
-                v-for="subItem in item.children.value"
-                :key="subItem.title"
-                :to="subItem.to"
-              >
-                <v-list-item-content>
-                  <v-list-item-title v-text="$t(subItem.title)" />
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list-group>
-          <v-list-item v-else :to="item.to" :value="i" router exact dense>
-            <v-tooltip left>
-              <template #activator="{ on, attrs }">
-                <v-icon v-bind="attrs" v-on="on" class="pe-2">
-                  {{ item.icon }}
-                </v-icon>
-                <v-list-item-content>
-                  <v-list-item-title v-text="$t(item.title)" />
-                </v-list-item-content>
-              </template>
-              <span>{{ $t(item.title) }}</span>
-            </v-tooltip>
-          </v-list-item>
-        </div>
-        <v-divider />
-        <v-list-item to="/deposit">
-          <v-tooltip left>
-            <template #activator="{ on, attrs }">
-              <v-icon v-bind="attrs" v-on="on" class="pe-2" color="success">
-                adaico-card-receive
-              </v-icon>
-              <v-list-item-content>
-                <v-list-item-title v-if="selectedItem || !selectedItem.click">
-                  {{ $t("menu.deposit") }}
-                </v-list-item-title>
-              </v-list-item-content>
-            </template>
-            <span>{{ $t("menu.deposit") }}</span>
-          </v-tooltip>
-        </v-list-item>
-        <v-list-item to="/refund">
-          <v-tooltip left>
-            <template #activator="{ on, attrs }">
-              <v-icon v-bind="attrs" v-on="on" class="pe-2" color="error">
-                adaico-card-send
-              </v-icon>
-              <v-list-item-content>
-                <v-list-item-title v-if="selectedItem || !selectedItem.click">
-                  {{ $t("menu.refund") }}
-                </v-list-item-title>
-              </v-list-item-content>
-            </template>
-            <span>{{ $t("menu.refund") }}</span>
-          </v-tooltip>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
-    <div class="scroll up">
-      <v-icon dark>mdi-chevron-up</v-icon>
-    </div>
-    <div class="scroll down">
-      <v-icon dark>mdi-chevron-down</v-icon>
-    </div>
+    <v-tabs v-model="selected" :show-arrows="true" vertical hide-slider>
+      <v-tab v-for="item in items" :key="item.title">
+        <v-icon right>
+          {{ item.icon }}
+        </v-icon>
+      </v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="selected">
+      <v-tab-item v-for="item in items" :key="item.title">
+        <h4 class="text-center">
+          {{ $t(item.title) }}
+        </h4>
+        <v-list rounded dense>
+          <v-list-item-group>
+            <v-list-item
+              v-for="child in item.children ? item.children.value : []"
+              :key="child.title"
+              :to="child.to ? child.to : '#'"
+            >
+              <v-list-item-title>
+                {{ child.text ? child.text : $t(child.title) }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-tab-item>
+    </v-tabs-items>
   </v-navigation-drawer>
 </template>
 
@@ -100,6 +48,7 @@ import {
   computed,
   useStore,
   useContext,
+  watch,
 } from "@nuxtjs/composition-api";
 
 export default defineComponent({
@@ -111,6 +60,7 @@ export default defineComponent({
     clipped: Boolean,
   },
   setup(props, context) {
+    const ctx = useContext();
     const store = useStore();
     const selected: Ref = ref(null);
     const rtl = computed(() => store.getters["rtl"]);
@@ -206,6 +156,10 @@ export default defineComponent({
       },
     });
 
+    watch(selected, (n, o) => {
+      context.emit("update:mini", false);
+    });
+
     return {
       rtl,
       drawer,
@@ -217,6 +171,26 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="sass">
+.panel
+  padding-top: 1pt
+  .v-tabs-items
+    height: calc(100% - 64px)
+    width: calc(100% - 61px)
+    display: inline-block
+  .v-tabs
+    display: inline-block
+    width: 56px
+    vertical-align: top
+    &--vertical
+      > .v-tabs-bar
+        .v-tab
+          justify-content: start !important
+          height: 32px !important
+          &--active
+            box-shadow: 5px 0px 5px 0px grey
+</style>
 
 <style scoped>
 @media only screen and (min-height: 641px) {

@@ -2,7 +2,7 @@
   <v-app>
     <right-panel
       v-if="isLogin"
-      :mini="rightMenu.mini"
+      :mini.sync="rightMenu.mini"
       :clipped="clipped"
       v-model="rightMenu.drawer"
       class="min32"
