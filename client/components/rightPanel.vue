@@ -9,7 +9,13 @@
     fixed
     app
   >
-    <v-tabs v-model="selected" :show-arrows="true" vertical hide-slider>
+    <v-tabs
+      v-model="selected"
+      optional
+      :show-arrows="true"
+      vertical
+      hide-slider
+    >
       <v-tab
         v-for="item in items"
         :key="item.title"
@@ -165,7 +171,7 @@ export default defineComponent({
     });
 
     watch(selected, (n, o) => {
-      context.emit("update:mini", false);
+      if (typeof n != typeof undefined) context.emit("update:mini", false);
     });
 
     return {
