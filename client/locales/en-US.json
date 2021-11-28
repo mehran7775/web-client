@@ -108,11 +108,13 @@
     "dateTime": "Creation Date",
     "opening": "Opening",
     "closing": "Closing",
-    "lastClosing": "Last Closing",
+    "yesterdayPrice": "@:general.yesterday @:oms.price",
     "highest": "Highest",
     "lowest": "Lowest",
     "last": "Last",
-    "search": "Instrument Search"
+    "search": "Instrument Search",
+    "wealth": "@:wealth.wealth"
+
   },
   "accounting": {
     "account": {
@@ -172,6 +174,7 @@
     "shareTypes": "@:oms.share @:general.types"
   },
   "wealth": {
+    "wealth": "Wealth",
     "shares": "Shares",
     "sharesCount": "@:wealth.shares @:oms.count"
   },

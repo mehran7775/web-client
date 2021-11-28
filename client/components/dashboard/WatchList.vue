@@ -67,7 +67,7 @@ export default defineComponent({
         store.getters["sso/user/me"].settings.columns ?? DefaultCols()
       ).map((col: WatchlistColumns) =>
         Object.assign({}, col, {
-          text: i18n.t("instrument." + col.value),
+          text: i18n.t("instrument." + col.text),
         })
       ) as WatchlistColumns[];
     });

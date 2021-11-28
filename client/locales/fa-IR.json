@@ -129,11 +129,12 @@
     "dateTime": "تاریخ ثبت",
     "opening": "قیمت شروع",
     "closing": "قیمت پایانی",
-    "lastClosing": "@:oms.price @:general.yesterday",
+    "yesterdayPrice": "@:oms.price @:general.yesterday",
     "highest": "بالاترین قیمت",
     "lowest": "پایین‌ترین قیمت",
     "last": "آخرین قیمت",
-    "search": "جست‌و‌جوی نماد"
+    "search": "جست‌و‌جوی نماد",
+    "wealth": "@:wealth.wealth"
   },
   "watchList": {
     "editor": {
@@ -200,7 +201,8 @@
     "shareTypes": "@:general.types @:oms.share"
   },
   "wealth": {
-    "shares": "دارایی",
+    "wealth": "دارایی",
+    "shares": "سهام",
     "sharesCount": "@:oms.count @:wealth.shares"
   },
   "login": {

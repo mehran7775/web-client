@@ -9,7 +9,14 @@
     fixed
     app
   >
-    <v-tabs class="ma-0 pa-0" v-model="selected" optional vertical hide-slider centered>
+    <v-tabs
+      class="ma-0 pa-0"
+      v-model="selected"
+      optional
+      vertical
+      hide-slider
+      centered
+    >
       <v-tab
         v-for="item in items"
         :key="item.title"
@@ -78,6 +85,7 @@ export default defineComponent({
       for (let k in lists) {
         res.push({
           title: k,
+          text: k,
           to: "/watchList/" + k,
         });
       }
