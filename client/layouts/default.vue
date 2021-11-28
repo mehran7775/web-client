@@ -23,7 +23,7 @@
       app
       dense
     >
-      <v-img src="/logo.png" max-width="24" class="me-1" />
+      <v-img :src="require(`~/assets/images/logo.png`)" max-width="24" class="me-1" />
       <span v-if="!rightMenu.mini && rightMenu.drawer">{{
         $t("general.proxyCompany")
       }}</span>
