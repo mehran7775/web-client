@@ -5,7 +5,7 @@
     :clipped="clipped"
     :right="rtl"
     class="panel ps-0"
-    width="260"
+    width="220"
     fixed
     app
   >
@@ -26,9 +26,14 @@
           }
         "
       >
-        <v-icon>
-          {{ item.icon }}
-        </v-icon>
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon v-bind="attrs" v-on="on">
+              {{ item.icon }}
+            </v-icon>
+          </template>
+          <span>{{ item.text ? item.text : $t(item.title) }}</span>
+        </v-tooltip>
       </v-tab>
     </v-tabs>
 
