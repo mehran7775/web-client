@@ -20,12 +20,8 @@
       </v-icon>
     </template>
     <template #item.name="{ item }">
-      <v-icon color="success">
-        adaico-bag-tick
-      </v-icon>
-      <v-icon color="error">
-        adaico-bag-cross
-      </v-icon>
+      <v-icon color="success"> adaico-bag-tick </v-icon>
+      <v-icon color="error"> adaico-bag-cross </v-icon>
       <v-badge left dot class="ms-5" offset-x="-5" offset-y="75%">
         {{ item.name }}
       </v-badge>
@@ -39,13 +35,12 @@ import {
   reactive,
   useStore,
   computed,
-  ComputedRef
+  ComputedRef,
 } from "@nuxtjs/composition-api";
 import instrumentCard from "../oms/instrumentCardCompact.vue";
 import LegalRealCard from "../oms/legalRealCard.vue";
 import orderQueueCard from "../oms/orderQueueCard.vue";
 import { WatchlistColumns, DefaultCols, Instrument } from "@/types";
-
 
 export default defineComponent({
   props: ["watchlists", "selected"],
@@ -53,6 +48,7 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const i18n = useI18n();
+    const instruments: Array<Instrument> = reactive([]);
     const expanded = computed({
       set(value: Array<Instrument>) {
         store.commit("oms/instruments/setFocus", value);
@@ -66,20 +62,22 @@ export default defineComponent({
         store.commit("oms/instruments/stopWatchQueue", data.item.id);
       }
     }
-    const instruments: Array<Instrument> = reactive([]);
     const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
-      return (store.getters["sso/user/me"].settings.columns ?? DefaultCols()).map(
-        (col: WatchlistColumns) =>
-          Object.assign({}, col, {
-            text: i18n.t("instrument." + col.value),
-          })
+      return (
+        store.getters["sso/user/me"].settings.columns ?? DefaultCols()
+      ).map((col: WatchlistColumns) =>
+        Object.assign({}, col, {
+          text: i18n.t("instrument." + col.value),
+        })
       ) as WatchlistColumns[];
     });
     store
       .dispatch("oms/instruments/getInstrumentsDetail", props.watchlists)
       .then(() => {
         instruments.push(
-          ...(store.getters["oms/instruments/getAll"] as Array<Instrument>)
+          ...(store.getters["oms/instruments/getAll"](
+            props.watchlists
+          ) as Array<Instrument>)
         );
       });
 

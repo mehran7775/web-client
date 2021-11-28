@@ -6,18 +6,24 @@ import { getInstrumentsDetail, getOrderQueue, getTeammates } from '@/repositorie
 export const state = () => (new RootState())
 
 export class RootState {
-  cache: Map<number, Instrument> = new Map<number, Instrument>()
+  cache: Map<string, Instrument> = new Map<string, Instrument>()
   focus: Array<Instrument> = []
   selected: ActiveInstrument = new ActiveInstrument(0, Side.Buy)
-  orderQueueCache: Map<number, Array<OrderQueueItem>> = new Map<number, Array<OrderQueueItem>>()
+  orderQueueCache: Map<string, Array<OrderQueueItem>> = new Map<string, Array<OrderQueueItem>>()
 }
 
 export const getters: GetterTree<RootState, RootState> = {
-  getAll: (state): Array<Instrument> => {
-    return [...state.cache.values()]
+  getAll: (state) => (ids: Array<string>): Array<Instrument> => {
+    const res: Array<Instrument> = []
+    for (let id in ids) {
+      const tmp = state.cache.get(ids[id]) as Instrument
+      if (tmp)
+        res.push(tmp)
+    }
+    return res
   },
   getByKey: (state) => (key: number): Instrument | null => {
-    return state.cache.get(key) || null
+    return state.cache.get(key.toString()) || null
   },
   getFocus: (state): Array<Instrument> => {
     return state.focus
@@ -33,7 +39,7 @@ export const getters: GetterTree<RootState, RootState> = {
 export const mutations: MutationTree<RootState> = {
   setInstruments(state, data: Array<Instrument>) {
     for (let i in data) {
-      state.cache.set(data[i].id, data[i])
+      state.cache.set(data[i].id.toString(), data[i])
     }
   },
   setFocus(state, data: Array<Instrument>) {
@@ -43,10 +49,10 @@ export const mutations: MutationTree<RootState> = {
     state.focus.splice(state.focus.findIndex((element: Instrument) => element.id == data), 1)
   },
   watchQueue(state, payload: { key: number, data: Array<OrderQueueItem> }) {
-    state.orderQueueCache.set(payload.key, payload.data)
+    state.orderQueueCache.set(payload.key.toString(), payload.data)
   },
   stopWatchQueue(state, key: number) {
-    state.orderQueueCache.delete(key)
+    state.orderQueueCache.delete(key.toString())
   },
   select(state, active: ActiveInstrument) {
     active.side = active.side ?? state.selected.side
@@ -67,7 +73,7 @@ export const actions: ActionTree<RootState, RootState> = {
       let missing: Array<number> = []
       let tmp = null
       for (let i in payload) {
-        tmp = state.cache.get(payload[i])
+        tmp = state.cache.get(payload[i].toString())
         if (tmp) res.push(tmp)
         else missing.push(payload[i])
       }
@@ -86,7 +92,7 @@ export const actions: ActionTree<RootState, RootState> = {
   },
   async getOrderQueue({ state, commit }, payload: number): Promise<Array<OrderQueueItem> | number> {
     try {
-      let queue = state.orderQueueCache.get(payload)
+      let queue = state.orderQueueCache.get(payload.toString())
       if (queue)
         return queue
       const { data } = await getOrderQueue(payload, this.$axios)
