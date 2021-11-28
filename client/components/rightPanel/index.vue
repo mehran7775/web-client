@@ -28,7 +28,18 @@
       >
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
-            <v-icon v-bind="attrs" v-on="on">
+            <v-icon :color="item.color" v-bind="attrs" v-on="on">
+              {{ item.icon }}
+            </v-icon>
+          </template>
+          <span>{{ item.text ? item.text : $t(item.title) }}</span>
+        </v-tooltip>
+      </v-tab>
+      <v-divider />
+      <v-tab v-for="item in staticItems" :key="item.title" :to="item.to">
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon :color="item.color" v-bind="attrs" v-on="on">
               {{ item.icon }}
             </v-icon>
           </template>
@@ -67,8 +78,8 @@ import {
   Ref,
   computed,
   useStore,
-  useContext,
   watch,
+  ComputedRef,
 } from "@nuxtjs/composition-api";
 
 export default defineComponent({
@@ -80,9 +91,15 @@ export default defineComponent({
     clipped: Boolean,
   },
   setup(props, context) {
-    const ctx = useContext();
     const store = useStore();
-    const selected: Ref = ref(null);
+    const selected: ComputedRef<number | null> = computed({
+      get() {
+        return store.getters["menu"];
+      },
+      set(value) {
+        store.commit("setMenu", value);
+      },
+    });
     const rtl = computed(() => store.getters["rtl"]);
     const watchList = computed(() => {
       const lists = store.getters["sso/user/watchList"];
@@ -95,10 +112,6 @@ export default defineComponent({
         });
       }
       return res;
-    });
-    const selectedItem = computed(() => {
-      const ind = parseInt(selected.value);
-      return !isNaN(ind) ? items[selected.value] : false;
     });
     const items = [
       {
@@ -167,7 +180,21 @@ export default defineComponent({
         to: "/inspire",
       },
     ];
-    const expand = ref(true);
+    const staticItems = [
+      {
+        color: "success",
+        icon: "adaico-card-receive",
+        title: "menu.deposit",
+        to: "/deposit",
+      },
+      {
+        color: "error",
+        icon: "adaico-card-send",
+        title: "menu.refund",
+        to: "/refund",
+      },
+    ];
+    const expand: Ref<boolean> = ref(true);
     const drawer = computed({
       get() {
         return props.value;
@@ -186,8 +213,8 @@ export default defineComponent({
       drawer,
       expand,
       selected,
-      selectedItem,
       items,
+      staticItems,
     };
   },
 });
