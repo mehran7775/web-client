@@ -191,7 +191,7 @@ export default defineComponent({
 <style lang="sass">
 .panel
   overflow: hidden
-  padding-top: 1pt
+  padding-top: 4px
   ::-webkit-scrollbar
     display: none
   .v-tabs-items

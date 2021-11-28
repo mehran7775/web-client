@@ -4,10 +4,10 @@
       <instrument-search style="max-width: 200pt" />
       <v-spacer />
       <v-btn-toggle v-model="viewMode" mandatory light>
-        <v-btn small>
+        <v-btn height="28" small>
           <v-icon small> mdi-view-headline </v-icon>
         </v-btn>
-        <v-btn small>
+        <v-btn height="28" small>
           <v-icon small> mdi-view-grid-outline </v-icon>
         </v-btn>
       </v-btn-toggle>

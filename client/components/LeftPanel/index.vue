@@ -12,7 +12,7 @@
     <v-tabs
       v-model="activeTab"
       height="32"
-      class="ma-0 pa-0 px-1 flex-grow-0"
+      class="flex-grow-0 tabs"
       grow
     >
       <v-tab> {{ $t("general.me") }} </v-tab>
@@ -162,16 +162,20 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.messages {
-  height: calc(100% - 32px);
-  overflow-y: auto;
-}
+<style  lang="sass" scoped>
+.tabs
+  margin-bottom: 4px
+  padding: 0 4px 0 4px
+.messages
+  height: calc(100% - 36px)
+  overflow-y: auto
+
 </style>
-<style>
-.messages .v-window-item {
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 auto;
-}
+<style lang="sass">
+.messages
+  .v-window-item
+    display: flex
+    flex-direction: column
+    flex: 1 0 auto
+
 </style>
