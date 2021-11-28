@@ -41,7 +41,7 @@ export class WatchlistColumns {
   constructor(text: string, value: string) {
     this.text = text
     this.value = value
-    this.align = null
+    this.align = 'center'
     this.sortable = null
     this.filterable = null
     this.groupable = null

@@ -61,7 +61,7 @@ html {
   padding: 0;
 }
 
-.logo:hover{
+.logo:hover {
   background-position: right top;
 }
 
@@ -99,7 +99,10 @@ html {
   border: 1px solid rgb(157, 157, 247) !important;
 }
 
-
-.v-window__container{
+.v-window__container {
   height: 100%;
+}
+
+.v-data-table .v-data-table__wrapper table tbody,thead,tfoot tr td,th {
+  padding: 0 4px !important;
 }
