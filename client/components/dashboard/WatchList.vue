@@ -12,17 +12,17 @@
     <template #item.data-table-expand="{ isExpanded, expand }">
       <v-icon
         @click="() => expand(!isExpanded)"
-        :color="isExpanded ? 'warning' : 'primary'"
-        small
+        :color="isExpanded ? 'success' : ''"
+        size="20"
       >
-        {{ isExpanded ? "adaico-eye" : "mdi-eye" }}
+        {{ isExpanded ? "mdi-eye" : "mdi-eye" }}
       </v-icon>
     </template>
     <template #item.name="{ item }">
       <v-row align="center" class="ma-0 pa-0" dense>
         <v-col class="ma-0 pa-0" cols="5">
-          <v-icon color="success"> adaico-bag-tick </v-icon>
-          <v-icon color="error"> adaico-bag-cross </v-icon>
+          <v-icon color="success" size="20"> adaico-bag-tick </v-icon>
+          <v-icon color="error" size="20"> adaico-bag-cross </v-icon>
         </v-col>
         <v-col class="ma-0 pa-0" cols="7">
           <v-badge left dot class="ms-5" offset-x="-5" offset-y="75%">
