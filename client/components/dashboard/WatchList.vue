@@ -12,19 +12,24 @@
     <template #item.data-table-expand="{ isExpanded, expand }">
       <v-icon
         @click="() => expand(!isExpanded)"
-        :color="isExpanded ? 'warning' : 'blue'"
+        :color="isExpanded ? 'warning' : 'primary'"
+        small
       >
-        {{
-          isExpanded ? "mdi-minus-circle-outline" : "mdi-plus-circle-outline"
-        }}
+        {{ isExpanded ? "adaico-eye" : "mdi-eye" }}
       </v-icon>
     </template>
     <template #item.name="{ item }">
-      <v-icon color="success"> adaico-bag-tick </v-icon>
-      <v-icon color="error"> adaico-bag-cross </v-icon>
-      <v-badge left dot class="ms-5" offset-x="-5" offset-y="75%">
-        {{ item.name }}
-      </v-badge>
+      <v-row class="ma-0 pa-0" dense>
+        <v-col class="ma-0 pa-0" cols="5">
+          <v-icon color="success"> adaico-bag-tick </v-icon>
+          <v-icon color="error"> adaico-bag-cross </v-icon>
+        </v-col>
+        <v-col class="ma-0 pa-0" cols="7">
+          <v-badge left dot class="ms-5" offset-x="-5" offset-y="75%">
+            {{ item.name }}
+          </v-badge>
+        </v-col>
+      </v-row>
     </template>
   </v-data-table>
 </template>
@@ -63,13 +68,20 @@ export default defineComponent({
       }
     }
     const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
-      return (
-        store.getters["sso/user/me"].settings.columns ?? DefaultCols()
-      ).map((col: WatchlistColumns) =>
-        Object.assign({}, col, {
-          text: i18n.t("instrument." + col.text),
-        })
-      ) as WatchlistColumns[];
+      const res: Array<WatchlistColumns> = [
+        new WatchlistColumns(i18n.t("instrument.name").toString(), "name"),
+      ];
+      res.push(
+        ...((
+          store.getters["sso/user/me"].settings.columns ?? DefaultCols()
+        ).map((col: WatchlistColumns) =>
+          Object.assign({}, col, {
+            text: i18n.t("instrument." + col.text),
+          })
+        ) as WatchlistColumns[])
+      );
+      res.push(new WatchlistColumns("", "actions"));
+      return res;
     });
     store
       .dispatch("oms/instruments/getInstrumentsDetail", props.watchlists)
