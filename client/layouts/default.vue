@@ -217,16 +217,12 @@ import {
 } from "@nuxtjs/composition-api";
 import snackbar from "@/components/snacks.vue";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
-import RightPanel from "@/components/rightPanel.vue";
-import LeftPanel from "@/components/LeftPanel/index.vue";
 import { User } from "@/types";
 
 export default defineComponent({
   components: {
     snackbar,
-    ProfilePicture,
-    RightPanel,
-    LeftPanel,
+    ProfilePicture
   },
   setup(props, context) {
     const router = useRouter();

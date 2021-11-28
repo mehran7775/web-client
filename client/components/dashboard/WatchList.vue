@@ -19,7 +19,7 @@
       </v-icon>
     </template>
     <template #item.name="{ item }">
-      <v-row class="ma-0 pa-0" dense>
+      <v-row align="center" class="ma-0 pa-0" dense>
         <v-col class="ma-0 pa-0" cols="5">
           <v-icon color="success"> adaico-bag-tick </v-icon>
           <v-icon color="error"> adaico-bag-cross </v-icon>
