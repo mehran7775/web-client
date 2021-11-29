@@ -72,16 +72,18 @@ export class DailyPrice {
 
 export class MarketHistory {
   instrumentId: number
+  instrumentCode: string
   dateTime: string
-  tradesVal: number
-  tradesVol: number
-  tradesCount: number
-  constructor(instrumentId: number, dateTime: string) {
+  totalShares: number
+  totalTrades: number
+  totalTradesValue: number
+  constructor(instrumentId: number, instrumentCode: string, dateTime: string) {
     this.instrumentId = instrumentId
+    this.instrumentCode = instrumentCode
     this.dateTime = dateTime
-    this.tradesCount = 0
-    this.tradesVal = 0
-    this.tradesVol = 0
+    this.totalTrades = 0
+    this.totalTradesValue = 0
+    this.totalShares = 0
   }
 }
 

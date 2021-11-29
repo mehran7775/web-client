@@ -64,9 +64,9 @@ export function AnonymousUser(): User {
 export function DefaultCols(): WatchlistColumns[] {
   return [
     new WatchlistColumns("wealth", "wealth"),
-    new WatchlistColumns("tradeCount", "trades"),
-    new WatchlistColumns("tradeVol", "volume"),
-    new WatchlistColumns("tradeVal", "value"),
+    new WatchlistColumns("tradeCount", "totalTrades"),
+    new WatchlistColumns("tradeVol", "totalShares"),
+    new WatchlistColumns("tradeVal", "totalTradesValue"),
     new WatchlistColumns("lowest", "lowest"),
     new WatchlistColumns("highest", "highest"),
     new WatchlistColumns("yesterdayPrice", "yesterdayPrice"),
