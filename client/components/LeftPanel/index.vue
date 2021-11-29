@@ -9,12 +9,7 @@
     fixed
     app
   >
-    <v-tabs
-      v-model="activeTab"
-      height="32"
-      class="flex-grow-0 tabs"
-      grow
-    >
+    <v-tabs v-model="activeTab" height="32" class="flex-grow-0 tabs" grow>
       <v-tab> {{ $t("general.me") }} </v-tab>
       <v-tab> {{ $t("general.all") }} </v-tab>
     </v-tabs>
@@ -101,25 +96,28 @@ export default defineComponent({
     );
 
     function loadMyMessages() {
-      load(myMessageQuery, myMessages);
+      load(myMessageQuery).then((res) => {
+        myMessages.push(...res);
+        myMessageQuery.value.offset = messages.length;
+      });
     }
 
     function loadMessages() {
-      load(messageQuery, messages);
+      load(messageQuery).then((res) => {
+        messages.push(...res);
+        messageQuery.value.offset = messages.length;
+      });
     }
 
-    function load(query: Ref<MessageQuery>, messages: Message[]) {
+    async function load(query: Ref<MessageQuery>) {
       loading.value = true;
-      store
-        .dispatch("oms/messages/getMessages", query.value)
-        .then((res: AxiosResponse<PaginatedResult<Message>>) => {
-          messages.push(...res.data.data);
-          query.value.offset = messages.length;
-        })
-        .catch()
-        .finally(() => {
-          loading.value = false;
-        });
+      try {
+        const res: AxiosResponse<PaginatedResult<Message>> =
+          await store.dispatch("oms/messages/getMessages", query.value);
+        return res.data.data;
+      } finally {
+        loading.value = false;
+      }
     }
 
     async function selectMessage(id: number) {
@@ -169,7 +167,6 @@ export default defineComponent({
 .messages
   height: calc(100% - 36px)
   overflow-y: auto
-
 </style>
 <style lang="sass">
 .messages
@@ -177,5 +174,4 @@ export default defineComponent({
     display: flex
     flex-direction: column
     flex: 1 0 auto
-
 </style>
