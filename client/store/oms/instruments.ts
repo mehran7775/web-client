@@ -1,31 +1,31 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import { Instrument, OrderQueueItem, Side, ActiveInstrument, SameSectorQuery } from '@/types'
-import { getInstrumentsDetail, getOrderQueue, getTeammates } from '@/repositories/oms/instruments_manager'
+import { Instrument, OrderQueueItem, Side, ActiveInstrument, SameSectorQuery, InstrumentCache, MarketHistory } from '@/types'
+import { getInstrumentsDetail, getOrderQueue, getTeammates, getInstrumentMarketHistory } from '@/repositories/oms/instruments_manager'
 
 
 export const state = () => (new RootState())
 
 export class RootState {
-  cache: Map<string, Instrument> = new Map<string, Instrument>()
-  focus: Array<Instrument> = []
+  cache: Map<string, InstrumentCache> = new Map<string, InstrumentCache>()
+  focus: Array<InstrumentCache> = []
   selected: ActiveInstrument = new ActiveInstrument(0, Side.Buy)
   orderQueueCache: Map<string, Array<OrderQueueItem>> = new Map<string, Array<OrderQueueItem>>()
 }
 
 export const getters: GetterTree<RootState, RootState> = {
-  getAll: (state) => (ids: Array<string>): Array<Instrument> => {
-    const res: Array<Instrument> = []
+  getAll: (state) => (ids: Array<string>): Array<InstrumentCache> => {
+    const res: Array<InstrumentCache> = []
     for (let id in ids) {
-      const tmp = state.cache.get(ids[id]) as Instrument
+      const tmp = state.cache.get(ids[id]) as InstrumentCache
       if (tmp)
         res.push(tmp)
     }
     return res
   },
-  getByKey: (state) => (key: number): Instrument | null => {
+  getByKey: (state) => (key: number): InstrumentCache | null => {
     return state.cache.get(key.toString()) || null
   },
-  getFocus: (state): Array<Instrument> => {
+  getFocus: (state): Array<InstrumentCache> => {
     return state.focus
   },
   getSelected: (state): ActiveInstrument => {
@@ -37,12 +37,12 @@ export const getters: GetterTree<RootState, RootState> = {
 }
 
 export const mutations: MutationTree<RootState> = {
-  setInstruments(state, data: Array<Instrument>) {
+  setInstruments(state, data: Array<InstrumentCache>) {
     for (let i in data) {
       state.cache.set(data[i].id.toString(), data[i])
     }
   },
-  setFocus(state, data: Array<Instrument>) {
+  setFocus(state, data: Array<InstrumentCache>) {
     state.focus = data
   },
   removeFocus(state, data: number) {
@@ -67,20 +67,23 @@ export const mutations: MutationTree<RootState> = {
 }
 
 export const actions: ActionTree<RootState, RootState> = {
-  async getInstrumentsDetail({ state, commit }, payload: Array<number>): Promise<Array<Instrument> | number> {
+  async getInstrumentsDetail({ state, commit }, payload: Array<number>): Promise<Array<InstrumentCache> | number> {
     try {
-      let res: Array<Instrument> = []
+      let res: Array<InstrumentCache> = []
       let missing: Array<number> = []
       let tmp = null
       for (let i in payload) {
         tmp = state.cache.get(payload[i].toString())
-        if (tmp) res.push(tmp)
+        if (tmp && tmp.baseVol) res.push(tmp)
         else missing.push(payload[i])
       }
       if (missing.length > 0) {
-        const { data: { data } } = await getInstrumentsDetail(missing, this.$axios)
-        commit('setInstruments', data)
-        res.push(...data)
+        const getins = getInstrumentsDetail(missing, this.$axios)
+        const { data: { data: market } } = await getInstrumentMarketHistory(missing, this.$axios)
+        const { data: { data } } = await getins
+        res.push(...data.map(
+          (ins) => Object.assign(market.find((item) => item.instrumentId == ins.id), ins)))
+        commit('setInstruments', res)
       }
       return res
     } catch (err: any) {

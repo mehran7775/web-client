@@ -1,3 +1,5 @@
+export interface InstrumentCache extends Instrument, DailyPrice, MarketHistory { }
+
 export class Instrument {
   id: number
   code: string
@@ -23,28 +25,19 @@ export class Instrument {
   expirationDate: string
   lastModification: string
   status: number
-  dateTime: string
-  opening: number
-  closing: number
-  highest: number
-  lowest: number
 
   constructor() {
     this.id = 0
     this.baseVol = 0
     this.categoryName = ""
-    this.closing = 0
     this.code = ""
     this.companyName = ""
-    this.dateTime = ""
     this.expirationDate = ""
     this.firstTradeDate = ""
     this.fullName = ""
-    this.highest = 0
     this.issuePrice = 0
     this.lastModification = ""
     this.lastTradeDate = ""
-    this.lowest = 0
     this.maxAllowedPrice = 0
     this.maxQuantityPerOrder = 0
     this.minQuantityPerOrder = 0
@@ -53,7 +46,6 @@ export class Instrument {
     this.namedPrice = 0
     this.buyPrice = 0
     this.sellPrice = 0
-    this.opening = 0
     this.sectorCode = 0
     this.settlementDelay = 0
     this.tradeVal = 0
@@ -61,5 +53,35 @@ export class Instrument {
     this.status = 0
   }
 
+}
+
+export class DailyPrice {
+  dateTime: string
+  opening: number
+  closing: number
+  highest: number
+  lowest: number
+  constructor() {
+    this.opening = 0
+    this.lowest = 0
+    this.highest = 0
+    this.dateTime = ""
+    this.closing = 0
+  }
+}
+
+export class MarketHistory {
+  instrumentId: number
+  dateTime: string
+  tradesVal: number
+  tradesVol: number
+  tradesCount: number
+  constructor(instrumentId: number, dateTime: string) {
+    this.instrumentId = instrumentId
+    this.dateTime = dateTime
+    this.tradesCount = 0
+    this.tradesVal = 0
+    this.tradesVol = 0
+  }
 }
 
