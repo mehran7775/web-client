@@ -53,7 +53,7 @@
         offset-y="75%"
         offset-x="-5"
       >
-        {{ $t("oms.bourseIndex") }}: 0
+        {{ $t("oms.bourseIndex") }}: {{formatter.format(0.000)}} 
       </v-badge>
       <v-badge
         v-if="isLogin"
@@ -64,7 +64,7 @@
         offset-y="75%"
         offset-x="-5"
       >
-        {{ $t("oms.superBourseIndex") }}:‌ 0
+        {{ $t("oms.superBourseIndex") }}:‌ {{formatter.format(0.000)}} 
       </v-badge>
       <v-spacer />
       <v-btn
@@ -115,7 +115,7 @@
         left
         color="error"
       >
-        <v-icon @click="leftMenu.drawer = !leftMenu.drawer">
+        <v-icon @click="leftMenu.mini = !leftMenu.mini">
           mdi-bell-outline
         </v-icon>
       </v-badge>
@@ -229,6 +229,9 @@ export default defineComponent({
     const store = useStore();
     const host = process.env.VUE_APP_Host;
     const ctx = useContext();
+    const formatter: ComputedRef<Intl.NumberFormat> = computed(
+      () => store.getters["formatter"] as Intl.NumberFormat
+    );
 
     const isLogin = computed(() => store.getters["sso/user/isLogin"]);
     const collaps = computed(() => {
@@ -247,7 +250,7 @@ export default defineComponent({
       drawer: true,
     });
     const leftMenu = ref({
-      mini: false,
+      mini: true,
       drawer: true,
     });
 
@@ -262,6 +265,7 @@ export default defineComponent({
     }
 
     return {
+      formatter,
       collaps,
       host,
       locale,

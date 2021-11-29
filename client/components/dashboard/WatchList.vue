@@ -24,12 +24,52 @@
           <v-icon color="success" size="20"> adaico-bag-tick </v-icon>
           <v-icon color="error" size="20"> adaico-bag-cross </v-icon>
         </v-col>
-        <v-col class="ma-0 pa-0" cols="7">
+        <v-col class="ma-0 pa-0 text-right justify-start" cols="7">
           <v-badge left dot class="ms-5" offset-x="-5" offset-y="75%">
             {{ item.name }}
           </v-badge>
         </v-col>
       </v-row>
+    </template>
+    <template #item.opening="{ item }">
+      <span dir="ltr">
+        {{ formatter.format(item.opening) }}
+      </span>
+    </template>
+    <template #item.closing="{ item }">
+      <span dir="ltr">
+        {{ formatter.format(item.closing) }}
+      </span>
+    </template>
+    <template #item.yesterdayPrice="{ item }">
+      <span dir="ltr">
+        {{ formatter.format(item.yesterdayPrice) }}
+      </span>
+    </template>
+    <template #item.lowest="{ item }">
+      <span dir="ltr">
+        {{ formatter.format(item.lowest) }}
+      </span>
+    </template>
+    <template #item.highest="{ item }">
+      <span dir="ltr">
+        {{ formatter.format(item.highest) }}
+      </span>
+    </template>
+    <template #item.totalTrades="{ item }">
+      <span dir="ltr">
+        {{ formatter.format(item.totalTrades) }}
+      </span>
+    </template>
+    <template #item.totalShares="{ item }">
+      <span dir="ltr">
+        {{ formatter.format(item.totalShares) }}
+      </span>
+    </template>
+    <template #item.totalTradesValue="{ item }">
+      <span dir="ltr">
+        {{ formatter.format(item.totalTradesValue) }}
+      </span>
     </template>
   </v-data-table>
 </template>
@@ -54,6 +94,9 @@ export default defineComponent({
     const store = useStore();
     const i18n = useI18n();
     const instruments: Array<Instrument> = reactive([]);
+    const formatter: ComputedRef<Intl.NumberFormat> = computed(
+      () => store.getters["formatter"] as Intl.NumberFormat
+    );
     const expanded = computed({
       set(value: Array<Instrument>) {
         store.commit("oms/instruments/setFocus", value);
@@ -94,6 +137,7 @@ export default defineComponent({
       });
 
     return {
+      formatter,
       onExpand,
       headers: headers,
       inst: instruments,

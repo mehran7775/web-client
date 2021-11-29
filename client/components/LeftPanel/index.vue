@@ -5,7 +5,7 @@
     :clipped="clipped"
     :right="!rtl"
     class="ma-0 pa-0"
-    width="220"
+    width="240"
     fixed
     app
   >
