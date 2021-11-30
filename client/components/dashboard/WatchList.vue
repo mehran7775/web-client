@@ -21,8 +21,16 @@
     <template #item.name="{ item }">
       <v-row align="center" class="ma-0 pa-0" dense>
         <v-col class="ma-0 pa-0" cols="5">
-          <v-icon color="success" size="20"> adaico-bag-tick </v-icon>
-          <v-icon color="error" size="20"> adaico-bag-cross </v-icon>
+          <v-icon
+            color="success"
+            size="20"
+            @click="() => order(item, Side.Buy)"
+          >
+            adaico-bag-tick
+          </v-icon>
+          <v-icon color="error" size="20" @click="() => order(item, Side.Sell)">
+            adaico-bag-cross
+          </v-icon>
         </v-col>
         <v-col class="ma-0 pa-0 text-right justify-start" cols="7">
           <v-badge left dot class="ms-5" offset-x="-5" offset-y="75%">
@@ -85,7 +93,13 @@ import {
 import instrumentCard from "../oms/instrumentCardCompact.vue";
 import LegalRealCard from "../oms/legalRealCard.vue";
 import orderQueueCard from "../oms/orderQueueCard.vue";
-import { WatchlistColumns, DefaultCols, Instrument } from "@/types";
+import {
+  WatchlistColumns,
+  DefaultCols,
+  Instrument,
+  ActiveInstrument,
+  Side,
+} from "@/types";
 
 export default defineComponent({
   props: ["watchlists", "selected"],
@@ -126,6 +140,15 @@ export default defineComponent({
       res.push(new WatchlistColumns("", "actions"));
       return res;
     });
+    function order(item: Instrument, side: Side) {
+      const active = new ActiveInstrument(item.id, side);
+      if (expanded.value.findIndex((i) => item.id == i.id) == -1) {
+        const tmp = [...expanded.value, item];
+        expanded.value = tmp;
+      }
+      store.commit("oms/instruments/select", active);
+      context.emit("order", active);
+    }
     store
       .dispatch("oms/instruments/getInstrumentsDetail", props.watchlists)
       .then(() => {
@@ -137,6 +160,8 @@ export default defineComponent({
       });
 
     return {
+      Side,
+      order,
       formatter,
       onExpand,
       headers: headers,
