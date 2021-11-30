@@ -3,7 +3,12 @@
     <v-row dense>
       <v-col>
         <v-tabs :height="40" color="primary" v-model="tab" align-with-title>
-          <v-tab v-for="item in instruments" :key="item.id" class="pe-1 ps-5">
+          <v-tab
+            v-for="item in instruments"
+            :key="item.id"
+            :href="'#' + item.id"
+            class="pe-1 ps-5"
+          >
             <v-badge color="success" dot left offset-y="75%" offset-x="-5">
               {{ item.name }}
             </v-badge>
@@ -12,7 +17,11 @@
           </v-tab>
         </v-tabs>
         <v-tabs-items v-model="tab">
-          <v-tab-item v-for="item in instruments" :key="item.id">
+          <v-tab-item
+            v-for="item in instruments"
+            :key="item.id"
+            :value="item.id.toString()"
+          >
             <v-row dense>
               <v-col cols="4" class="ma-0 px-0">
                 <order-queue-card
@@ -103,15 +112,19 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const i18n = useI18n();
-    const instruments = computed(() => store.getters["oms/instruments/getFocus"]);
+    const instruments = computed(
+      () => store.getters["oms/instruments/getFocus"]
+    );
     const count: Ref<number> = ref(0);
     const price: Ref<number> = ref(0);
     const tab = computed({
       get() {
-        return store.getters["oms/instruments/getSelectedIndex"] as number;
+        return (
+          store.getters["oms/instruments/getSelectedId"] as number
+        ).toString();
       },
-      set(value: number | undefined) {
-        store.commit("oms/instruments/selectByIndex", value ?? 0);
+      set(value: string | undefined) {
+        store.commit("oms/instruments/selectById", value ? parseInt(value) : 0);
       },
     });
     function close(id: number) {

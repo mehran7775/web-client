@@ -22,18 +22,12 @@ export const getters: GetterTree<RootState, RootState> = {
     }
     return res
   },
-  getByKey: (state) => (key: number): InstrumentCache | null => {
-    return state.cache.get(key.toString()) || null
-  },
-  getFocus: (state): Array<InstrumentCache> => {
-    return state.focus
-  },
-  getSelected: (state): ActiveInstrument => {
-    return state.selected
-  },
-  getSelectedIndex: (state): number => {
-    return state.focus.findIndex((item) => item.id == state.selected.instrumentId)
-  }
+  getByKey: (state) => (key: number): InstrumentCache | null => state.cache.get(key.toString()) || null,
+  getFocus: (state): Array<InstrumentCache> => state.focus,
+  getSelected: (state): ActiveInstrument => state.selected,
+  getSelectedIndex: (state): number =>
+    state.focus.findIndex((item) => item.id == state.selected.instrumentId),
+  getSelectedId: (state): number => state.selected.instrumentId,
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -60,6 +54,9 @@ export const mutations: MutationTree<RootState> = {
   },
   selectByIndex(state, index: number) {
     state.selected.instrumentId = state.focus[index]?.id
+  },
+  selectById(state, id: number) {
+    state.selected.instrumentId = id
   },
   selectSide(state, side: Side) {
     state.selected.side = side
