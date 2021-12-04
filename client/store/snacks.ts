@@ -1,14 +1,18 @@
 import { MutationTree } from 'vuex'
 
-export const state = () => ({
-  content: '',
-  color: ''
-})
+export class Snack {
+  content: string
+  color: string
+  constructor(content: string, color: string) {
+    this.content = content
+    this.color = color ?? 'warning'
+  }
+}
 
-type RootState = ReturnType<typeof state>
+export const state = (): Snack => new Snack("", "")
 
-export const mutations: MutationTree<RootState>= {
-  showMessage (state, payload) {
+export const mutations: MutationTree<Snack> = {
+  showMessage(state, payload) {
     state.content = payload.content
     state.color = payload.color
   }

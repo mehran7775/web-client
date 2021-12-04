@@ -4,21 +4,22 @@
     <v-card-text class="text-center">
       <v-divider />
       <v-text-field
-        v-model="userName"
+        v-model="data.userName"
         :placeholder="$t('user.username')"
         prepend-inner-icon="mdi-account"
+        @input="checkTries"
         dense
         hide-details
       >
       </v-text-field>
       <v-text-field
-        v-model="password"
+        v-model="data.password"
         :placeholder="$t('user.password')"
         :type="showPassword ? 'text' : 'Password'"
         prepend-inner-icon="mdi-lock"
         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append="showPassword = !showPassword"
-        @keyup.enter="login"
+        @keyup.enter="login(data)"
         dense
         hide-details
       >
@@ -42,7 +43,14 @@
       </client-only>
     </v-card-text>
     <v-card-actions>
-      <v-btn depressed color="error" @click="login" width="50%" large dark>
+      <v-btn
+        depressed
+        color="error"
+        @click="login(data)"
+        width="50%"
+        large
+        dark
+      >
         {{ $t("login.login") }}
       </v-btn>
       <v-btn depressed color="error" to="/registration" width="50%" large dark>
@@ -84,66 +92,89 @@
   </v-card>
 </template>
 
-<script>
-import { mapActions, mapMutations, mapGetters } from "vuex";
+<script lang="ts">
+import {
+  defineComponent,
+  computed,
+  ref,
+  Ref,
+  reactive,
+  watch,
+  useStore,
+  useContext,
+} from "@nuxtjs/composition-api";
+import { AxiosError } from "axios";
+import { Snack } from "~/store/snacks";
+import { Login } from "~/types";
+import { ErrorExtractor } from "~/utils/error";
 
-export default {
+export default defineComponent({
   name: "Login",
   props: {
     msg: String,
   },
-  data: () => {
-    return {
-      loading: false,
-      showPassword: false,
-      userName: null,
-      password: null,
-      captcha: null,
-      snacs: [],
-    };
-  },
-  methods: {
-    ...mapActions({
-      dologin: "sso/user/login",
-    }),
-    ...mapMutations({
-      alert: "snacks/showMessage",
-    }),
-    captchaResult(code) {
-      this.captcha = code;
-    },
-    login() {
-      const self = this;
-      self.loading = true;
-      self
-        .dologin({
-          userName: self.userName,
-          password: self.password,
-          captcha: self.captcha,
-          axios: self.$axios,
-        })
-        .then(function (data) {
-          if (data >= 200 && data < 300) {
-            self.$router.push({ path: "/watchlist/" });
-            self.alert({
-              color: "success",
-              content: "login.successful",
-            });
+  setup(props, context) {
+    const store = useStore();
+    const ctx = useContext();
+    const loading: Ref<boolean> = ref(false);
+    const showPassword: Ref<boolean> = ref(false);
+    const data: Ref<Login> = ref(new Login("", "", ""));
+    const snacs = reactive([]);
+    const i18n = useI18n();
+
+    const failedCount = computed(() => store.getters["sso/user/tryCount"]);
+    async function login(data: Login) {
+      loading.value = true;
+      try {
+        const res = await store.dispatch(
+          "sso/user/login",
+          Object.assign({}, data, { axios: ctx.$axios })
+        );
+        if (res >= 200 && res < 300) {
+          ctx.redirect({ path: "/watchlist/" });
+          snack(new Snack("login.successful", "success"));
+        }
+      } catch (err) {
+        const error = ErrorExtractor(err as AxiosError);
+        if (error.detail.length == 0)
+          snack(new Snack("errors." + error.code, "error"));
+        else {
+          let res = "";
+          for (let e in error.detail) {
+            res += i18n.t(error.detail[e].type) + "\r\n";
           }
-        })
-        .catch(() => {
-          self.alert({
-            color: "error",
-            content: "login.failed",
-          });
-        })
-        .finally(() => {
-          self.loading = false;
-        });
-    },
+          snack(new Snack(res, "error"));
+        }
+      } finally {
+        loading.value = false;
+      }
+    }
+    function snack(data: Snack) {
+      store.commit("snacks/showMessage", data);
+    }
+    function captchaResult(code: string) {
+      data.value.captcha = code;
+    }
+
+    function checkTries(val: string) {
+      store.dispatch("sso/user/checkTries", val);
+    }
+
+    return {
+      login,
+      snack,
+      captchaResult,
+      checkTries,
+      failedCount,
+      loading,
+      showPassword,
+      data,
+      snacs,
+    };
+    //TODO Remove in vue3
+    function useI18n() {
+      return context.root.$i18n;
+    }
   },
-  computed: {
-    ...mapGetters({ failedCount: "sso/user/tryCount" }),
-  },
-};
+});
 </script>

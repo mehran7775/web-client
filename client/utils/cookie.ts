@@ -1,4 +1,4 @@
-import { serialize, CookieSerializeOptions } from "cookie"
+import { serialize, CookieSerializeOptions, parse } from "cookie"
 
 export function DefaultClientOptions(): CookieSerializeOptions {
   return {
@@ -7,6 +7,13 @@ export function DefaultClientOptions(): CookieSerializeOptions {
     secure: true,
     sameSite: 'strict'
   }
+}
+
+export function GetClientCookies() {
+  if (process.client)
+    return parse(document.cookie ?? "null")
+  else
+    return {}
 }
 
 export function SetClientCookie(name: string, value: string, options: CookieSerializeOptions) {

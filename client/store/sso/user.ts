@@ -4,8 +4,8 @@ import { login, refreshToken } from '~/repositories/sso/jwt_token'
 import * as stores from '@/types/stores'
 import { User, Setting, UserCredentials, AnonymousUser } from '@/types'
 import { getProfileImage, getUser, getUserList, updateUserWatchlist } from '@/repositories/sso/user_manager';
-import { SetClientCookie, DeleteClientCookie } from "@/utils/cookie"
-import { DateTime } from 'luxon'
+import { SetClientCookie, DeleteClientCookie, GetClientCookies } from "@/utils/cookie"
+
 
 
 export const refreshKey: string = 'jwtRefreshKey';
@@ -20,12 +20,19 @@ export const getters: GetterTree<stores.UserState, stores.RootState> = {
   me: (state) => state.user ?? AnonymousUser(),
   isLogin: (state) => !!(state && state.token),
   watchList: (state) => state.user?.settings?.watch_lists ?? {},
-  tryCount: (state) => DateTime.fromISO(state.lastTry).diffNow().seconds > 300 ? 0 : state.tryCount
+  tryCount: (state): number => {
+    return state.tryCount
+  }
 }
 
 export const mutations: MutationTree<stores.UserState> = {
-  tries(state, data) {
-    state.tryCount = data
+  tries(state, data: { user: string, tries: number }) {
+    if (data.tries > 0)
+      SetClientCookie(data.user + ".tryCount", data.tries.toString(), { maxAge: 300 })
+    else
+      DeleteClientCookie("tryCount")
+    console.log(data)
+    state.tryCount = data.tries
   },
   setToken(state, data) {
     if (!!data) {
@@ -84,8 +91,17 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
       return 450
     }
   },
-  async login({ commit, dispatch, rootState }, payload) {
+  checkTries({ commit, state }, userName: string) {
+    const tries = GetClientCookies()[userName + ".tryCount"]
+    if (tries && tries != "") {
+      commit("tries", { user: userName, tries: parseInt(tries) })
+    } else {
+      commit("tries", { user: userName, tries: 0 })
+    }
+  },
+  async login({ commit, dispatch, state, rootState }, payload) {
     try {
+      commit("tries", { user: payload.userName, tries: state.tryCount + 1 })
       const { data, status } = await login(
         payload.userName,
         payload.password,
@@ -100,10 +116,10 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
       const resp = err as AxiosError<any>
       if (resp.response) {
         if (resp.response.data.tryCount)
-          commit('tries', resp.response.data.tryCount)
-        return resp.response.status
+          commit('tries', { user: payload.userName, tries: resp.response.data.tryCount })
+        throw err
       }
-      return 500
+      throw err
     }
   },
   logout({ commit, rootState }) {

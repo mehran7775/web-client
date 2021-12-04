@@ -19,12 +19,8 @@
 
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
-import login from "~/components/login.vue";
 
 export default defineComponent({
-  components: {
-    login,
-  },
   setup() {},
 });
 </script>

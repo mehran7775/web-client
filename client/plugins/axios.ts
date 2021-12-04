@@ -1,5 +1,7 @@
 import { Plugin } from "@nuxt/types"
-import { AxiosRequestConfig } from "axios"
+import { Snack } from "~/store/snacks"
+import { AxiosError } from 'axios'
+import { ErrorExtractor } from "~/utils/error"
 
 const accessor: Plugin = ({ $axios, redirect, store }) => {
   $axios.onRequest((config) => {
@@ -15,31 +17,21 @@ const accessor: Plugin = ({ $axios, redirect, store }) => {
     })
   })
 
-  $axios.onError(async (error) => {
-    let code = (error.response && error.response.status) || 500
-    if (code === 401) {
-      code = await store.dispatch('sso/user/refreshToken')
-      if (code >= 400) {
+  $axios.onError(async (err) => {
+    let error = ErrorExtractor(err)
+    if (error.code === 401) {
+      try {
+        await store.dispatch('sso/user/refreshToken')
+      }
+      catch (err) {
+        error = ErrorExtractor(err as AxiosError)
+        store.commit('snacks/showMessage', new Snack('error.' + error.code, 'error'))
         redirect('/login')
       }
-    } else if (code === 403) {
-      store.commit('snacks/showMessage', {
-        content: 'error.403',
-        color: 'error'
-      })
-    } else if (code >= 400 && code < 500 && ![401, 403].includes(code)) {
-      store.commit('snacks/showMessage', {
-        content: 'error.400',
-        color: 'error'
-      })
     } else {
-      store.commit('snacks/showMessage', {
-        content: 'error.500',
-        color: 'error'
-      })
+      store.commit('snacks/showMessage', new Snack('error.' + error.code, 'error'))
     }
   })
-  // store.dispatch('user/init')
 }
 
 export default accessor;

@@ -9,6 +9,17 @@ export type UserCredentials = {
   password: string,
 }
 
+export class Login {
+  userName: string
+  password: string
+  captcha: string
+  constructor(userName: string, password: string, captcha: string) {
+    this.userName = userName
+    this.captcha = captcha
+    this.password = password
+  }
+}
+
 export class User {
   userName: string
   profile: UserProfile
