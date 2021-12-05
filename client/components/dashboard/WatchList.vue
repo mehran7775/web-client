@@ -119,6 +119,7 @@ export default defineComponent({
         return store.getters["oms/instruments/getFocus"] as Array<Instrument>;
       },
     });
+    expanded.value = []
     function onExpand(data: { item: Instrument; value: boolean }) {
       if (!data.value) {
         store.commit("oms/instruments/stopWatchQueue", data.item.id);
