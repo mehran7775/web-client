@@ -37,6 +37,7 @@ import {
   ref,
   Ref,
   computed,
+  ComputedRef
 } from "@nuxtjs/composition-api";
 import { Instrument } from "@/types";
 import { DateTime } from "luxon";
@@ -53,28 +54,31 @@ export default defineComponent({
     const store = useStore();
     const i18n = useI18n();
     const locale = computed(() => store.getters["locale"]);
+    const formatter: ComputedRef<Intl.NumberFormat> = computed(
+      () => store.getters["formatter"] as Intl.NumberFormat
+    );
     const fields: Array<field> = [
       new field(
-        "lastClosing",
+        "yesterdayPrice",
         fieldType.price,
         null,
         getClickEvent(fieldType.price)
       ),
-      new field("tradeCount", fieldType.count, null),
+      new field("totalTrades", fieldType.count, "oms.tradeCount"),
       new field(
         "opening",
         fieldType.price,
         null,
         getClickEvent(fieldType.price)
       ),
-      new field("tradeAmount", fieldType.count, "oms.tradeAmount"),
+      new field("totalShares", fieldType.count, "oms.tradeAmount"),
       new field(
         "lowest",
         fieldType.price,
         null,
         getClickEvent(fieldType.price)
       ),
-      new field("tradeValue", fieldType.price, "oms.tradeValue"),
+      new field("totalTradesValue", fieldType.price, "oms.tradeValue"),
       new field(
         "highest",
         fieldType.price,
@@ -82,7 +86,7 @@ export default defineComponent({
         getClickEvent(fieldType.price)
       ),
       new field("marketValue", fieldType.price, "oms.marketValue"),
-      new field("last", fieldType.price, null, getClickEvent(fieldType.price)),
+      new field("lastPrice", fieldType.price, "instrument.last", getClickEvent(fieldType.price)),
       new field(
         "buyPrice",
         fieldType.price,
@@ -102,13 +106,17 @@ export default defineComponent({
         getClickEvent(fieldType.price)
       ),
       new field("tomorrowThreshold", fieldType.text, "oms.tomorrowThreshold"),
-      new field("baseVol", fieldType.text, null),
+      new field("baseVol", fieldType.number, null),
       new field("todayRange", fieldType.text, "oms.todayRange"),
       new field("lastTradeDate", fieldType.dateTime, null),
     ];
     let instrument: Ref<Instrument> = ref(new Instrument());
     function printField(data: any, type: fieldType) {
       switch (type) {
+        case fieldType.number:
+        case fieldType.price:
+        case fieldType.count:
+          return formatter.value.format(data)
         case fieldType.dateTime:
           return DateTime.fromISO(data)
             .setLocale(locale.value)
