@@ -137,7 +137,12 @@ export default defineComponent({
     store
       .dispatch("oms/instruments/getOrderQueue", props.insId)
       .then((result) => {
-        if (result.queue) queue.push(...result.queue);
+        if (result.queue) {
+          queue.push(...result.queue);
+          for (let i = 5 - queue.length; i > 0; i--) {
+            queue.push(new OrderQueueItem());
+          }
+        }
       });
     return {
       queue,

@@ -40,7 +40,7 @@
                   extra-col
                   responsive
                 />
-                <legal-real-card extra-col hide-headers responsive />
+                <legal-real-card :insId="item.id" extra-col hide-headers responsive />
               </v-col>
               <v-col cols="4" class="ma-0 px-0">
                 <instrument-card

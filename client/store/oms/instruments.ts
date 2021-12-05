@@ -1,6 +1,6 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import { Instrument, OrderQueueItem, Side, ActiveInstrument, SameSectorQuery, InstrumentCache, MarketHistory } from '@/types'
-import { getInstrumentsDetail, getOrderQueue, getTeammates, getInstrumentMarketHistory } from '@/repositories/oms/instruments_manager'
+import { Instrument, OrderQueueItem, Side, ActiveInstrument, SameSectorQuery, InstrumentCache, MarketHistory, PaginatedResult, ClientDistributionResponse, ClientDistribution } from '@/types'
+import { getInstrumentsDetail, getOrderQueue, getTeammates, getInstrumentMarketHistory, getClientDistribution as Distribution } from '@/repositories/oms/instruments_manager'
 
 
 export const state = () => (new RootState())
@@ -10,6 +10,7 @@ export class RootState {
   focus: Array<InstrumentCache> = []
   selected: ActiveInstrument = new ActiveInstrument(0, Side.Buy)
   orderQueueCache: Map<string, Array<OrderQueueItem>> = new Map<string, Array<OrderQueueItem>>()
+  clientDistributionCache: Map<string, ClientDistribution> = new Map<string, ClientDistribution>()
 }
 
 export const getters: GetterTree<RootState, RootState> = {
@@ -65,30 +66,23 @@ export const mutations: MutationTree<RootState> = {
 
 export const actions: ActionTree<RootState, RootState> = {
   async getInstrumentsDetail({ state, commit }, payload: Array<number>): Promise<Array<InstrumentCache> | number> {
-    try {
-      let res: Array<InstrumentCache> = []
-      let missing: Array<number> = []
-      let tmp = null
-      for (let i in payload) {
-        tmp = state.cache.get(payload[i].toString())
-        if (tmp && tmp.baseVol) res.push(tmp)
-        else missing.push(payload[i])
-      }
-      if (missing.length > 0) {
-        const getins = getInstrumentsDetail(missing, this.$axios)
-        const { data: { data: market } } = await getInstrumentMarketHistory(missing, this.$axios)
-        const { data: { data } } = await getins
-        res.push(...data.map(
-          (ins) => Object.assign(market.find((item) => item.instrumentId == ins.id), ins)))
-        commit('setInstruments', res)
-      }
-      return res
-    } catch (err: any) {
-      if (err.response) {
-        return err.response.status as number
-      }
-      return 450
+    let res: Array<InstrumentCache> = []
+    let missing: Array<number> = []
+    let tmp = null
+    for (let i in payload) {
+      tmp = state.cache.get(payload[i].toString())
+      if (tmp && tmp.baseVol) res.push(tmp)
+      else missing.push(payload[i])
     }
+    if (missing.length > 0) {
+      const getins = getInstrumentsDetail(missing, this.$axios)
+      const { data: { data: market } } = await getInstrumentMarketHistory(missing, this.$axios)
+      const { data: { data } } = await getins
+      res.push(...data.map(
+        (ins) => Object.assign(market.find((item) => item.instrumentId == ins.id), ins)))
+      commit('setInstruments', res)
+    }
+    return res
   },
   async getOrderQueue({ state, commit }, payload: number): Promise<Array<OrderQueueItem> | number> {
     try {
@@ -104,6 +98,14 @@ export const actions: ActionTree<RootState, RootState> = {
       }
       return 450
     }
+  },
+  async getClientDistribution({ state, commit }, payload: number): Promise<ClientDistribution | number> {
+    let clients = state.clientDistributionCache.get(payload.toString())
+    if (clients)
+      return clients
+    const { data } = await Distribution(payload, this.$axios)
+    commit('watchQueue', { key: payload, data: data })
+    return data.clients
   },
   async getTeammates({ state, commit }, payload: SameSectorQuery): Promise<Array<OrderQueueItem> | number> {
     try {

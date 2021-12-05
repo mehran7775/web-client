@@ -68,28 +68,29 @@
       }}</v-col>
     </v-row>
     <v-row class="striped" dense>
-      <v-col>1</v-col>
-      <v-col>1</v-col>
-      <v-col>1%</v-col>
+      <v-col>{{ distribution.real.buy.count }}</v-col>
+      <v-col>{{ distribution.real.buy.amount }}</v-col>
+      <v-col>{{ (distribution.real.buy.count / total) * 100 }}%</v-col>
       <v-col class="blue--text">{{ $t("user.personality.real") }}</v-col>
-      <v-col>1</v-col>
-      <v-col>1</v-col>
-      <v-col>1%</v-col>
+      <v-col>{{ distribution.real.sell.count }}</v-col>
+      <v-col>{{ distribution.real.sell.amount }}</v-col>
+      <v-col>{{ (distribution.real.buy.count / total) * 100 }}%</v-col>
     </v-row>
     <v-row class="striped" dense>
-      <v-col>1</v-col>
-      <v-col>1</v-col>
-      <v-col>1%</v-col>
+      <v-col>{{ distribution.legal.buy.count }}</v-col>
+      <v-col>{{ distribution.legal.buy.amount }}</v-col>
+      <v-col>{{ (distribution.legal.buy.count / total) * 100 }}%</v-col>
       <v-col class="blue--text">{{ $t("user.personality.legal") }}</v-col>
-      <v-col>1</v-col>
-      <v-col>1</v-col>
-      <v-col>1%</v-col>
+      <v-col>{{ distribution.legal.sell.count }}</v-col>
+      <v-col>{{ distribution.legal.sell.amount }}</v-col>
+      <v-col>{{ (distribution.legal.buy.count / total) * 100 }}%</v-col>
     </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@nuxtjs/composition-api";
+import { defineComponent, useStore, ref, Ref } from "@nuxtjs/composition-api";
+import { ClientDistribution } from "@/types";
 
 export default defineComponent({
   name: "legal-real-card",
@@ -98,6 +99,27 @@ export default defineComponent({
     "hide-headers": Boolean,
     responsive: Boolean,
   },
-  setup() {},
+  setup(props) {
+    const store = useStore();
+    const distribution: Ref<ClientDistribution> = ref(new ClientDistribution());
+    const total = ref(1);
+    store
+      .dispatch("oms/instruments/getClientDistribution", props.insId)
+      .then((result) => {
+        if (result) {
+          distribution.value = result;
+          total.value =
+            result.real.buy.count +
+            result.real.sell.count +
+            result.legal.buy.count +
+            result.legal.sell.count;
+          total.value = total.value == 0 ? 1 : total.value;
+        }
+      });
+    return {
+      distribution,
+      total,
+    };
+  },
 });
 </script>
