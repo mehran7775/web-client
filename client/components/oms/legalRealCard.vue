@@ -68,28 +68,52 @@
       }}</v-col>
     </v-row>
     <v-row class="striped" dense>
-      <v-col>{{ distribution.real.buy.count }}</v-col>
-      <v-col>{{ distribution.real.buy.amount }}</v-col>
-      <v-col>{{ (distribution.real.buy.count / total) * 100 }}%</v-col>
+      <v-col>{{ formatter.format(distribution.real.buy.count) }}</v-col>
+      <v-col>{{ formatter.format(distribution.real.buy.amount) }}</v-col>
+      <v-col>{{
+        percentFormatter.format(
+          (distribution.real.buy.count * distribution.real.buy.amount) / total
+        )
+      }}</v-col>
       <v-col class="blue--text">{{ $t("user.personality.real") }}</v-col>
-      <v-col>{{ distribution.real.sell.count }}</v-col>
-      <v-col>{{ distribution.real.sell.amount }}</v-col>
-      <v-col>{{ (distribution.real.buy.count / total) * 100 }}%</v-col>
+      <v-col>{{ formatter.format(distribution.real.sell.count) }}</v-col>
+      <v-col>{{ formatter.format(distribution.real.sell.amount) }}</v-col>
+      <v-col>{{
+        percentFormatter.format(
+          (distribution.real.sell.count / total) * distribution.real.sell.amount
+        )
+      }}</v-col>
     </v-row>
     <v-row class="striped" dense>
-      <v-col>{{ distribution.legal.buy.count }}</v-col>
-      <v-col>{{ distribution.legal.buy.amount }}</v-col>
-      <v-col>{{ (distribution.legal.buy.count / total) * 100 }}%</v-col>
+      <v-col>{{ formatter.format(distribution.legal.buy.count) }}</v-col>
+      <v-col>{{ formatter.format(distribution.legal.buy.amount) }}</v-col>
+      <v-col>{{
+        percentFormatter.format(
+          (distribution.legal.buy.count * distribution.legal.buy.amount) / total
+        )
+      }}</v-col>
       <v-col class="blue--text">{{ $t("user.personality.legal") }}</v-col>
-      <v-col>{{ distribution.legal.sell.count }}</v-col>
-      <v-col>{{ distribution.legal.sell.amount }}</v-col>
-      <v-col>{{ (distribution.legal.buy.count / total) * 100 }}%</v-col>
+      <v-col>{{ formatter.format(distribution.legal.sell.count) }}</v-col>
+      <v-col>{{ formatter.format(distribution.legal.sell.amount) }}</v-col>
+      <v-col>{{
+        percentFormatter.format(
+          (distribution.legal.sell.count * distribution.legal.sell.amount) /
+            total
+        )
+      }}</v-col>
     </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, ref, Ref } from "@nuxtjs/composition-api";
+import {
+  defineComponent,
+  useStore,
+  ref,
+  Ref,
+  computed,
+  ComputedRef,
+} from "@nuxtjs/composition-api";
 import { ClientDistribution } from "@/types";
 
 export default defineComponent({
@@ -103,22 +127,30 @@ export default defineComponent({
     const store = useStore();
     const distribution: Ref<ClientDistribution> = ref(new ClientDistribution());
     const total = ref(1);
+    const percentFormatter: ComputedRef<Intl.NumberFormat> = computed(
+      () => store.getters["percentFormatter"] as Intl.NumberFormat
+    );
+    const formatter: ComputedRef<Intl.NumberFormat> = computed(
+      () => store.getters["formatter"] as Intl.NumberFormat
+    );
     store
       .dispatch("oms/instruments/getClientDistribution", props.insId)
       .then((result) => {
         if (result) {
           distribution.value = result;
           total.value =
-            result.real.buy.count +
-            result.real.sell.count +
-            result.legal.buy.count +
-            result.legal.sell.count;
+            result.real.buy.count * result.real.buy.amount +
+            result.real.sell.count * result.real.sell.amount +
+            result.legal.buy.count * result.legal.buy.amount +
+            result.legal.sell.count * result.legal.sell.amount;
           total.value = total.value == 0 ? 1 : total.value;
         }
       });
     return {
       distribution,
       total,
+      formatter,
+      percentFormatter,
     };
   },
 });

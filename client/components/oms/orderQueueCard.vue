@@ -75,9 +75,9 @@
             $emit('count', item.buy.count);
           }
         "
-        >{{ item.buy.count }}</v-col
+        >{{ formatter.format(item.buy.count) }}</v-col
       >
-      <v-col>{{ item.buy.amount }}</v-col>
+      <v-col>{{ formatter.format(item.buy.amount) }}</v-col>
       <v-col
         :class="{ 'copy-cursor': copy }"
         @click="
@@ -85,7 +85,7 @@
             $emit('price', item.buy.price);
           }
         "
-        >{{ item.buy.price }}</v-col
+        >{{ formatter.format(item.buy.price) }}</v-col
       >
 
       <v-col v-if="extraCol"></v-col>
@@ -97,9 +97,9 @@
             $emit('count', item.sell.count);
           }
         "
-        >{{ item.sell.count }}</v-col
+        >{{ formatter.format(item.sell.count) }}</v-col
       >
-      <v-col>{{ item.sell.amount }}</v-col>
+      <v-col>{{ formatter.format(item.sell.amount) }}</v-col>
       <v-col
         :class="{ 'copy-cursor': copy }"
         @click="
@@ -107,7 +107,7 @@
             $emit('price', item.sell.price);
           }
         "
-        >{{ item.sell.price }}</v-col
+        >{{ formatter.format(item.sell.price) }}</v-col
       >
     </v-row>
   </v-container>
@@ -118,6 +118,7 @@ import {
   defineComponent,
   useStore,
   computed,
+  ComputedRef,
   reactive,
 } from "@nuxtjs/composition-api";
 import { OrderQueueItem } from "@/types";
@@ -134,6 +135,9 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const queue: Array<OrderQueueItem> = reactive([]);
+    const formatter: ComputedRef<Intl.NumberFormat> = computed(
+      () => store.getters["formatter"] as Intl.NumberFormat
+    );
     store
       .dispatch("oms/instruments/getOrderQueue", props.insId)
       .then((result) => {
@@ -146,6 +150,7 @@ export default defineComponent({
       });
     return {
       queue,
+      formatter,
     };
   },
 });
