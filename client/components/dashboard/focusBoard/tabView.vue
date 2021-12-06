@@ -1,5 +1,5 @@
 <template>
-  <v-container class="ma-0 pa-0 tabview" fluid>
+  <v-container class="ma-0 pa-0" fluid>
     <v-row dense>
       <v-col>
         <v-tabs :height="32" color="primary" v-model="tab" align-with-title>
@@ -23,7 +23,7 @@
             :value="item.id.toString()"
           >
             <v-row dense>
-              <v-col cols="4" class="ma-0 pa-0 py-1">
+              <v-col cols="4" class="ma-0 pa-0">
                 <order-queue-card
                   :insId="item.id"
                   @count="
@@ -40,9 +40,26 @@
                   extra-col
                   responsive
                 />
-                <legal-real-card :insId="item.id" extra-col hide-headers responsive />
+                <legal-real-card
+                  :insId="item.id"
+                  extra-col
+                  hide-headers
+                  responsive
+                />
+                <v-btn-toggle height="32" style="width:100%;">
+                  <v-tooltip v-for="op in deepOptions" :key="op" bottom>
+                    <template #activator="{ on, attrs }">
+                      <v-btn @click="deep(op, item)" v-bind="attrs" v-on="on" width="20%" height="32">
+                        <v-icon size="24"> mdi-alert </v-icon>
+                      </v-btn>
+                    </template>
+                    <span>
+                      {{ $t("oms." + op) }}
+                    </span>
+                  </v-tooltip>
+                </v-btn-toggle>
               </v-col>
-              <v-col cols="4" class="ma-0 pa-1">
+              <v-col cols="4" class="ma-0 pa-0 px-1">
                 <instrument-card
                   :insId="item.id"
                   @count="
@@ -58,21 +75,8 @@
                   responsive
                 />
               </v-col>
-              <v-col cols="4" class="ma-0 pa-0 py-1">
+              <v-col cols="4" class="ma-0 pa-0">
                 <buy-sell-card :price.sync="price" :count.sync="count" />
-              </v-col>
-            </v-row>
-            <v-row dense>
-              <v-col>
-                <v-btn-toggle>
-                  <v-btn
-                    v-for="op in deepOptions"
-                    :key="op"
-                    @click="deep(op, item)"
-                    small
-                    >{{ $t("oms." + op) }}</v-btn
-                  >
-                </v-btn-toggle>
               </v-col>
             </v-row>
           </v-tab-item>
@@ -170,10 +174,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="sass">
-.tabview
-  .row
-    margin: 0
-    padding: 0
-</style>

@@ -27,7 +27,7 @@
         "
       >
         <v-tooltip left>
-          <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <v-icon :color="item.color" v-bind="attrs" v-on="on">
               {{ item.icon }}
             </v-icon>

@@ -12,7 +12,7 @@
         </v-btn>
       </v-btn-toggle>
     </v-toolbar>
-    <v-card-text v-if="instruments.length > 0" class="ma-0 pa-0">
+    <v-card-text v-if="instruments.length > 0" class="ma-0 pa-0 focus-board">
       <card-view @order="order" v-if="viewMode == 1" />
       <tab-view v-if="viewMode == 0" />
     </v-card-text>
@@ -54,3 +54,13 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="sass">
+.focus-board
+  .row
+    margin: 0
+    padding: 0
+    min-height: 32px
+    .col
+      min-height: 32px
+</style>
