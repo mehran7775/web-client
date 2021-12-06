@@ -227,6 +227,10 @@
   },
   "menu": {
     "watchList": "دیدبان",
+    "basket": "سبد",
+    "industries": "صنایع",
+    "boards": "تابلوها",
+    "instrumentTypes": "انواع اوراق",
     "portfolio": "پورتفوی",
     "accounting": "حسابداری",
     "trades": "معاملات",

@@ -55,8 +55,34 @@
         </h4>
         <v-list dense>
           <v-list-item-group>
+            <v-list-group
+              v-for="child in item.children
+                ? item.children.filter((v) => v.children)
+                : []"
+              :key="child.title"
+            >
+              <v-list-item-title slot="activator">
+                {{ child.text ? child.text : $t(child.title) }}
+              </v-list-item-title>
+              <v-list-item
+                v-for="sub in child.children
+                  ? child.children.value
+                    ? child.children.value
+                    : child.children
+                  : []"
+                :key="sub.title"
+                :to="sub.to ? sub.to : '#'"
+              >
+                <v-list-item-title>
+                  {{ sub.text ? sub.text : $t(sub.title) }}
+                </v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+            <v-divider />
             <v-list-item
-              v-for="child in item.children ? item.children.value : []"
+              v-for="child in item.children
+                ? item.children.filter((v) => !v.children)
+                : []"
               :key="child.title"
               :to="child.to ? child.to : '#'"
             >
@@ -117,7 +143,25 @@ export default defineComponent({
       {
         icon: "adaico-eye",
         title: "menu.watchList",
-        children: watchList,
+        children: [
+          {
+            icon: "mdi-basket",
+            title: "menu.basket",
+            children: watchList,
+          },
+          {
+            icon: "mdi-basket",
+            title: "menu.industries",
+          },
+          {
+            icon: "mdi-basket",
+            title: "menu.boards",
+          },
+          {
+            icon: "mdi-basket",
+            title: "menu.instrumentTypes",
+          },
+        ],
       },
       {
         icon: "adaico-graph",
