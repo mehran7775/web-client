@@ -1,6 +1,6 @@
 <template>
-  <v-container class="text-center ma-0 py-0" fluid>
-    <v-row dense>
+  <v-container class="text-center ma-0 pa-0" fluid>
+    <v-row dense v-if="responsive" class="d-md-none">
       <v-col class="success--text">
         {{ $t("oms.buy") }}
       </v-col>
@@ -24,8 +24,9 @@
       <v-col
         :class="{
           'd-none d-md-block': responsive,
+          'success--text': true
         }"
-        >{{ $t("oms.price") }}</v-col
+        >{{ $t("oms.buy") }}</v-col
       >
       <v-col v-if="responsive" class="d-md-none">{{
         $t("oms.count-short")
@@ -36,14 +37,13 @@
       <v-col v-if="responsive" class="d-md-none">{{
         $t("oms.price-short")
       }}</v-col>
-
       <v-col v-if="extraCol"></v-col>
-
       <v-col
         :class="{
           'd-none d-md-block': responsive,
+          'error--text': true
         }"
-        >{{ $t("oms.count") }}</v-col
+        >{{ $t("oms.sell") }}</v-col
       >
       <v-col
         :class="{
@@ -55,16 +55,16 @@
         :class="{
           'd-none d-md-block': responsive,
         }"
-        >{{ $t("oms.price") }}</v-col
+        >{{ $t("oms.count") }}</v-col
       >
       <v-col v-if="responsive" class="d-md-none">{{
-        $t("oms.count-short")
+        $t("oms.price-short")
       }}</v-col>
       <v-col v-if="responsive" class="d-md-none">{{
         $t("oms.amount-short")
       }}</v-col>
       <v-col v-if="responsive" class="d-md-none">{{
-        $t("oms.price-short")
+        $t("oms.count-short")
       }}</v-col>
     </v-row>
     <v-row class="striped" v-for="(item, index) in queue" :key="index" dense>
@@ -94,20 +94,20 @@
         :class="{ 'copy-cursor': copy }"
         @click="
           () => {
-            $emit('count', item.sell.count);
+            $emit('price', item.sell.price);
           }
         "
-        >{{ formatter.format(item.sell.count) }}</v-col
+        >{{ formatter.format(item.sell.price) }}</v-col
       >
       <v-col>{{ formatter.format(item.sell.amount) }}</v-col>
       <v-col
         :class="{ 'copy-cursor': copy }"
         @click="
           () => {
-            $emit('price', item.sell.price);
+            $emit('count', item.sell.count);
           }
         "
-        >{{ formatter.format(item.sell.price) }}</v-col
+        >{{ formatter.format(item.sell.count) }}</v-col
       >
     </v-row>
   </v-container>

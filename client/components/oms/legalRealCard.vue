@@ -1,5 +1,5 @@
 <template>
-  <v-container class="text-center ma-0 py-0" fluid>
+  <v-container class="text-center ma-0 pa-0" fluid>
     <v-row v-if="!hideHeaders" dense>
       <v-col class="success--text">
         {{ $t("oms.buy") }}

@@ -1,8 +1,8 @@
 <template>
-  <v-container class="ma-0 pa-0" fluid>
+  <v-container class="ma-0 pa-0 tabview" fluid>
     <v-row dense>
       <v-col>
-        <v-tabs :height="40" color="primary" v-model="tab" align-with-title>
+        <v-tabs :height="32" color="primary" v-model="tab" align-with-title>
           <v-tab
             v-for="item in instruments"
             :key="item.id"
@@ -23,7 +23,7 @@
             :value="item.id.toString()"
           >
             <v-row dense>
-              <v-col cols="4" class="ma-0 px-0">
+              <v-col cols="4" class="ma-0 pa-0 py-1">
                 <order-queue-card
                   :insId="item.id"
                   @count="
@@ -42,7 +42,7 @@
                 />
                 <legal-real-card :insId="item.id" extra-col hide-headers responsive />
               </v-col>
-              <v-col cols="4" class="ma-0 px-0">
+              <v-col cols="4" class="ma-0 pa-1">
                 <instrument-card
                   :insId="item.id"
                   @count="
@@ -58,7 +58,7 @@
                   responsive
                 />
               </v-col>
-              <v-col cols="4" class="ma-0 px-0">
+              <v-col cols="4" class="ma-0 pa-0 py-1">
                 <buy-sell-card :price.sync="price" :count.sync="count" />
               </v-col>
             </v-row>
@@ -171,3 +171,9 @@ export default defineComponent({
 });
 </script>
 
+<style lang="sass">
+.tabview
+  .row
+    margin: 0
+    padding: 0
+</style>
