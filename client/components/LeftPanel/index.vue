@@ -9,38 +9,40 @@
     fixed
     app
   >
-    <v-tabs-items class="messages" v-model="activeTab">
-      <v-tab-item>
-        <message-list
-          v-model="myMessages"
-          :timeFormat="$t('general.date.t')"
-          :loading="loading"
-          @load="loadMyMessages"
-          @select="selectMessage"
-          class="flex-grow-1"
-        />
-      </v-tab-item>
-      <v-tab-item>
-        <filter-auto-complete class="flex-grow-0" />
-        <message-list
-          v-model="messages"
-          :timeFormat="$t('general.date.t')"
-          :loading="loading"
-          @load="loadMessages"
-          @select="selectMessage"
-          class="flex-grow-1"
-        />
-      </v-tab-item>
-    </v-tabs-items>
-    <v-tabs
-      v-model="activeTab"
-      class="tabs vertical-tab"
-      optional
-      vertical
-      hide-slider
-    >
-      <v-tab> {{ $t("general.me") }} </v-tab>
-      <v-tab> {{ $t("general.all") }} </v-tab>
+    <div class="v-tabs-items">
+      <message-list
+        @load="loadMyMessages"
+        @select="selectMessage"
+        v-model="myMessages"
+        :class="{
+          'tab-item': true,
+          active: 0 == activeTab,
+        }"
+      >
+      </message-list>
+      <message-list
+        @load="loadMessages"
+        @select="selectMessage"
+        v-model="messages"
+        :class="{
+          'tab-item': true,
+          active: 1 == activeTab,
+        }"
+      >
+      </message-list>
+    </div>
+    <v-tabs v-model="activeTab" optional vertical>
+      <v-tab
+        v-for="item in items"
+        :key="item.title"
+        @click="
+          () => {
+            $emit('update:mini', !mini);
+          }
+        "
+      >
+        {{ $t(item.title) }}
+      </v-tab>
     </v-tabs>
   </v-navigation-drawer>
 </template>
@@ -81,7 +83,6 @@ export default defineComponent({
     const rtl = computed(() => store.getters["rtl"]);
     const activeTab: Ref<number | null> = ref(null);
 
-    const expand = ref(true);
     const drawer = computed({
       get() {
         return props.value;
@@ -108,6 +109,8 @@ export default defineComponent({
       if (typeof n != typeof undefined) context.emit("update:mini", false);
       else context.emit("update:mini", true);
     });
+
+    const items = [{ title: "general.me" }, { title: "general.all" }];
 
     function loadMyMessages() {
       load(myMessageQuery).then((res) => {
@@ -163,7 +166,7 @@ export default defineComponent({
       loading,
       rtl,
       drawer,
-      expand,
+      items,
       messages,
       myMessages,
       loadMessages,
@@ -176,23 +179,45 @@ export default defineComponent({
 
 <style lang="sass">
 .msg-panel
+  padding: 0 !important
+  margin: 0 !important
   overflow: hidden
-  padding-top: 4px
+  &.v-navigation-drawer--mini-variant
+    width: 56px !important
+  .v-navigation-drawer__content
+    display: flex
+    flex-direction: row
   ::-webkit-scrollbar
     display: none
   .v-tabs-items
     background-color: #EEEEEE !important
     height: 100%
+    overflow-y: auto
     width: calc(100% - 56px)
-    display: inline-block
-    margin-right: -5px
+    display: block
+    &::-webkit-scrollbar
+      display: block
+    .tab-item
+      white-space: nowrap
+      position: absolute
+      transform: translateX(100%)
+      height: 0
+      &.active
+        transition: all 0.5s ease-in-out
+        animation: slide-in 0.5s forwards
+        transform: translateX(0%)
+        height: auto
+
   .v-tabs
-    display: inline-block
-    width: 56px
+    background-color: green
     vertical-align: top
-    &--vertical
-      > .v-tabs-bar
-        .v-tab
-          justify-content: center !important
+    max-width: 56px
+    .v-tab
+      transform: rotate(-90deg)
+      margin: 0
+      padding: 0
+      min-width: 48px
+      height: 56px !important
+      justify-content: center !important
 </style>
 

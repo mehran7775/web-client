@@ -1,6 +1,10 @@
 <template>
   <div style="position: relative" class="flex-grow-1">
-    <v-virtual-scroll class="scroll" item-height="32" :items="value">
+    <v-virtual-scroll
+      class="scroll"
+      item-height="32"
+      :items="value"
+    >
       <template #default="{ item }">
         <v-list-item
           :key="item.id"
@@ -9,17 +13,13 @@
         >
           <v-icon> {{ icons[item.origin] }} </v-icon>
           <v-list-item-title class="ma-0 pa-0 ps-5">
-            <v-icon v-if="!item.seenAt" color="warning" x-small>
+            <v-icon v-if="!item.seenDate" color="warning" x-small>
               mdi-alert-circle
             </v-icon>
             {{ item.title }}
           </v-list-item-title>
           <v-list-item-subtitle>
-            {{
-              DateTime.fromISO(item.dateTime)
-                .setLocale(locale)
-                .toFormat(timeFormat)
-            }}
+            
           </v-list-item-subtitle>
         </v-list-item>
       </template>
@@ -81,6 +81,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.scroll {
+  max-height: calc(100% - 32px);
+}
 .more {
   overflow: hidden;
   width: 100%;

@@ -33,24 +33,24 @@ export class Message {
     title: string
     preview: string
     origin: number
-    messageType: number
+    type: number
     flags: number
     message: MessageTemplate
-    seenAt: string
+    seenDate: string
     constructor(
         id: number, title: string, message: MessageTemplate,
         dateTime: string | null = null, flags: number = 0,
         origin: number = 1, type: number = 1,
-        preview: string = "", seenAt: string = "") {
+        preview: string = "", seenDate: string = "") {
         this.id = id
         this.title = title
         this.dateTime = dateTime
         this.preview = preview
         this.origin = origin
-        this.messageType = type
+        this.type = type
         this.flags = flags
         this.message = message
-        this.seenAt = seenAt
+        this.seenDate = seenDate
     }
 }
 

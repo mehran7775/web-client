@@ -9,13 +9,7 @@
     fixed
     app
   >
-    <v-tabs
-      class="ma-0 pa-0"
-      v-model="selected"
-      optional
-      vertical
-      hide-slider
-    >
+    <v-tabs class="ma-0 pa-0" v-model="selected" optional vertical hide-slider>
       <v-tab
         v-for="item in items"
         :key="item.title"
@@ -49,48 +43,50 @@
 
     <v-tabs-items v-model="selected">
       <v-tab-item v-for="item in items" :key="item.title">
-        <h4 class="text-center">
-          {{ $t(item.title) }}
-        </h4>
-        <v-list dense>
-          <v-list-item-group>
-            <v-list-group
-              v-for="child in item.children
-                ? item.children.filter((v) => v.children)
-                : []"
-              :key="child.title"
-            >
-              <v-list-item-title slot="activator">
-                {{ child.text ? child.text : $t(child.title) }}
-              </v-list-item-title>
-              <v-list-item
-                v-for="sub in child.children
-                  ? child.children.value
-                    ? child.children.value
-                    : child.children
+        <div>
+          <h4 class="text-center">
+            {{ $t(item.title) }}
+          </h4>
+          <v-list dense>
+            <v-list-item-group>
+              <v-list-group
+                v-for="child in item.children
+                  ? item.children.filter((v) => v.children)
                   : []"
-                :key="sub.title"
-                :to="sub.to ? sub.to : '#'"
+                :key="child.title"
+              >
+                <v-list-item-title slot="activator">
+                  {{ child.text ? child.text : $t(child.title) }}
+                </v-list-item-title>
+                <v-list-item
+                  v-for="sub in child.children
+                    ? child.children.value
+                      ? child.children.value
+                      : child.children
+                    : []"
+                  :key="sub.title"
+                  :to="sub.to ? sub.to : '#'"
+                >
+                  <v-list-item-title>
+                    {{ sub.text ? sub.text : $t(sub.title) }}
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list-group>
+              <v-divider />
+              <v-list-item
+                v-for="child in item.children
+                  ? item.children.filter((v) => !v.children)
+                  : []"
+                :key="child.title"
+                :to="child.to ? child.to : '#'"
               >
                 <v-list-item-title>
-                  {{ sub.text ? sub.text : $t(sub.title) }}
+                  {{ child.text ? child.text : $t(child.title) }}
                 </v-list-item-title>
               </v-list-item>
-            </v-list-group>
-            <v-divider />
-            <v-list-item
-              v-for="child in item.children
-                ? item.children.filter((v) => !v.children)
-                : []"
-              :key="child.title"
-              :to="child.to ? child.to : '#'"
-            >
-              <v-list-item-title>
-                {{ child.text ? child.text : $t(child.title) }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
+            </v-list-item-group>
+          </v-list>
+        </div>
       </v-tab-item>
     </v-tabs-items>
   </v-navigation-drawer>
@@ -269,22 +265,32 @@ export default defineComponent({
 .panel
   overflow: hidden
   padding-top: 4px
+  &.v-navigation-drawer--mini-variant
+    width: 56px !important
+  .v-navigation-drawer__content
+    display: flex
+    flex-direction: row
   ::-webkit-scrollbar
     display: none
   .v-tabs-items
     background-color: #EEEEEE !important
     height: 100%
     width: calc(100% - 56px)
-    display: inline-block
-    margin-right: -5px
+    display: block
   .v-tabs
-    display: inline-block
     width: 56px
     vertical-align: top
     &--vertical
       > .v-tabs-bar
+        .v-tabs-bar__content
+          display: block
         .v-tab
-          justify-content: start !important
+          padding: 0
+          padding-top: 3px
+          display: block
+          vertical-align: middle
+          justify-content: center !important
+          min-width: 48px
           height: 32px !important
           &--active
             box-shadow: 5px 0px 5px 0px grey
