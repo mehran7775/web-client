@@ -15,7 +15,6 @@
       optional
       vertical
       hide-slider
-      centered
     >
       <v-tab
         v-for="item in items"
@@ -249,7 +248,9 @@ export default defineComponent({
     });
 
     watch(selected, (n, o) => {
-      if (typeof n != typeof undefined) context.emit("update:mini", false);
+      if (typeof n != null) {
+        context.emit("update:mini", false);
+      }
     });
 
     return {

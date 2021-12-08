@@ -4,15 +4,11 @@
     :mini-variant="mini"
     :clipped="clipped"
     :right="!rtl"
-    class="ma-0 pa-0"
+    class="ps-0 msg-panel"
     width="240"
     fixed
     app
   >
-    <v-tabs v-model="activeTab" height="32" class="flex-grow-0 tabs" grow>
-      <v-tab> {{ $t("general.me") }} </v-tab>
-      <v-tab> {{ $t("general.all") }} </v-tab>
-    </v-tabs>
     <v-tabs-items class="messages" v-model="activeTab">
       <v-tab-item>
         <message-list
@@ -36,6 +32,16 @@
         />
       </v-tab-item>
     </v-tabs-items>
+    <v-tabs
+      v-model="activeTab"
+      class="tabs vertical-tab"
+      optional
+      vertical
+      hide-slider
+    >
+      <v-tab> {{ $t("general.me") }} </v-tab>
+      <v-tab> {{ $t("general.all") }} </v-tab>
+    </v-tabs>
   </v-navigation-drawer>
 </template>
 
@@ -47,6 +53,7 @@ import {
   computed,
   useStore,
   reactive,
+  watch,
 } from "@nuxtjs/composition-api";
 import filterAutoComplete from "./filterAutoComplete.vue";
 import { AxiosResponse } from "axios";
@@ -72,6 +79,7 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const rtl = computed(() => store.getters["rtl"]);
+    const activeTab: Ref<number | null> = ref(null);
 
     const expand = ref(true);
     const drawer = computed({
@@ -94,6 +102,12 @@ export default defineComponent({
     const messageQuery: Ref<MessageQuery> = ref(
       new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00"))
     );
+
+    watch(activeTab, (n, o) => {
+      console.log(n);
+      if (typeof n != typeof undefined) context.emit("update:mini", false);
+      else context.emit("update:mini", true);
+    });
 
     function loadMyMessages() {
       load(myMessageQuery).then((res) => {
@@ -154,24 +168,31 @@ export default defineComponent({
       myMessages,
       loadMessages,
       loadMyMessages,
-      activeTab: 0,
+      activeTab,
     };
   },
 });
 </script>
 
-<style  lang="sass" scoped>
-.tabs
-  margin-bottom: 4px
-  padding: 0 4px 0 4px
-.messages
-  height: calc(100% - 36px)
-  overflow-y: auto
-</style>
 <style lang="sass">
-.messages
-  .v-window-item
-    display: flex
-    flex-direction: column
-    flex: 1 0 auto
+.msg-panel
+  overflow: hidden
+  padding-top: 4px
+  ::-webkit-scrollbar
+    display: none
+  .v-tabs-items
+    background-color: #EEEEEE !important
+    height: 100%
+    width: calc(100% - 56px)
+    display: inline-block
+    margin-right: -5px
+  .v-tabs
+    display: inline-block
+    width: 56px
+    vertical-align: top
+    &--vertical
+      > .v-tabs-bar
+        .v-tab
+          justify-content: center !important
 </style>
+

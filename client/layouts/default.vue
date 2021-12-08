@@ -9,7 +9,7 @@
     />
     <left-panel
       v-if="isLogin"
-      :mini="leftMenu.mini"
+      :mini.sync="leftMenu.mini"
       :clipped="clipped"
       v-model="leftMenu.drawer"
     />
