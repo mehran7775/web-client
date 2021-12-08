@@ -1,29 +1,21 @@
 <template>
-  <div style="position: relative" class="flex-grow-1">
-    <v-virtual-scroll
-      class="scroll"
-      item-height="32"
-      :items="value"
-    >
-      <template #default="{ item }">
-        <v-list-item
-          :key="item.id"
-          @click="() => $emit('select', item.id)"
-          dense
-        >
-          <v-icon> {{ icons[item.origin] }} </v-icon>
-          <v-list-item-title class="ma-0 pa-0 ps-5">
-            <v-icon v-if="!item.seenDate" color="warning" x-small>
-              mdi-alert-circle
-            </v-icon>
-            {{ item.title }}
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            
-          </v-list-item-subtitle>
-        </v-list-item>
-      </template>
-    </v-virtual-scroll>
+  <div class="msgs">
+    <div class="scroll">
+      <v-list-item
+        v-for="item in value"
+        :key="item.id"
+        @click="() => $emit('select', item.id)"
+        dense
+      >
+        <v-icon> {{ icons[item.origin] }} </v-icon>
+        <v-list-item-title class="ma-0 pa-0 ps-1">
+          <v-icon v-if="!item.seenDate" color="warning" x-small>
+            mdi-alert-circle
+          </v-icon>
+          {{ item.title }}
+        </v-list-item-title>
+      </v-list-item>
+    </div>
     <v-btn
       @click="$emit('load', $event)"
       color="primary"
@@ -82,7 +74,11 @@ export default defineComponent({
 
 <style scoped>
 .scroll {
-  max-height: calc(100% - 32px);
+  height: calc(100% - 32px);
+  overflow-y: auto;
+}
+.scroll::-webkit-scrollbar {
+  display: block;
 }
 .more {
   overflow: hidden;

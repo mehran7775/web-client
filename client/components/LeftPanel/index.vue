@@ -195,18 +195,16 @@ export default defineComponent({
     overflow-y: auto
     width: calc(100% - 56px)
     display: block
-    &::-webkit-scrollbar
-      display: block
     .tab-item
+      width: 100%
       white-space: nowrap
-      position: absolute
       transform: translateX(100%)
       height: 0
       &.active
-        transition: all 0.5s ease-in-out
+        transition: transform 0.5s ease-in-out
         animation: slide-in 0.5s forwards
         transform: translateX(0%)
-        height: auto
+        height: 100%
 
   .v-tabs
     background-color: green
