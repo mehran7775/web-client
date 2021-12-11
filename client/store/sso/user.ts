@@ -80,16 +80,9 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
   async getUser({ commit, rootState }, userName) {
     if (!userName)
       return
-    try {
-      const { data, status } = await getUser(userName, this.$axios)
-      commit('setUser', data)
-      return status
-    } catch (err: any) {
-      if (err.response) {
-        return err.response.status
-      }
-      return 450
-    }
+    const { data, status } = await getUser(userName, this.$axios)
+    commit('setUser', data)
+    return status
   },
   checkTries({ commit, state }, userName: string) {
     const tries = GetClientCookies()[userName + ".tryCount"]
@@ -144,22 +137,14 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
     return 401
   },
   async update_watchlist({ commit, rootState }, watchlist) {
-    try {
-      await updateUserWatchlist(watchlist, this.$axios)
-      commit("setWatchlist", watchlist)
-    } catch (err: any) {
-      return 500
-    }
+    await updateUserWatchlist(watchlist, this.$axios)
+    commit("setWatchlist", watchlist)
   },
   async getProfilePic(_, name) {
-    try {
-      const img: Uint8Array = (await getProfileImage(name, this.$axios))?.data
-      return 'data:image/jpeg;base64,' +
-        Buffer.from(new Uint8Array(img)
-          .reduce((data, byte) => data + String.fromCharCode(byte), '')).toString('base64');
-    } catch (err: any) {
-      return 500
-    }
+    const img: Uint8Array = (await getProfileImage(name, this.$axios))?.data
+    return 'data:image/jpeg;base64,' +
+      Buffer.from(new Uint8Array(img)
+        .reduce((data, byte) => data + String.fromCharCode(byte), '')).toString('base64');
   }
 
 }

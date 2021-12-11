@@ -22,14 +22,17 @@ const accessor: Plugin = ({ $axios, redirect, store }) => {
     if (error.code === 401) {
       try {
         await store.dispatch('sso/user/refreshToken')
+        return $axios.request(err.config)
       }
       catch (err) {
         error = ErrorExtractor(err as AxiosError)
         store.commit('snacks/showMessage', new Snack('error.' + error.code, 'error'))
         redirect('/login')
+        return Promise.reject(error)
       }
     } else {
       store.commit('snacks/showMessage', new Snack('error.' + error.code, 'error'))
+      return Promise.reject(error)
     }
   })
 }

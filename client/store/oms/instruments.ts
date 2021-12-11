@@ -84,22 +84,15 @@ export const actions: ActionTree<RootState, RootState> = {
     }
     return res
   },
-  async getOrderQueue({ state, commit }, payload: number): Promise<Array<OrderQueueItem> | number> {
-    try {
-      let queue = state.orderQueueCache.get(payload.toString())
-      if (queue)
-        return queue
-      const { data } = await getOrderQueue(payload, this.$axios)
-      commit('watchQueue', { key: payload, data: data })
-      return data
-    } catch (err: any) {
-      if (err.response) {
-        return err.response.status as number
-      }
-      return 450
-    }
+  async getOrderQueue({ state, commit }, payload: number): Promise<Array<OrderQueueItem>> {
+    let queue = state.orderQueueCache.get(payload.toString())
+    if (queue)
+      return queue
+    const { data } = await getOrderQueue(payload, this.$axios)
+    commit('watchQueue', { key: payload, data: data })
+    return data
   },
-  async getClientDistribution({ state, commit }, payload: number): Promise<ClientDistribution | number> {
+  async getClientDistribution({ state, commit }, payload: number): Promise<ClientDistribution> {
     let clients = state.clientDistributionCache.get(payload.toString())
     if (clients)
       return clients
@@ -107,15 +100,8 @@ export const actions: ActionTree<RootState, RootState> = {
     commit('watchQueue', { key: payload, data: data })
     return data.clients
   },
-  async getTeammates({ state, commit }, payload: SameSectorQuery): Promise<Array<OrderQueueItem> | number> {
-    try {
-      const { data } = await getTeammates(payload.instrument, payload.sector, this.$axios)
-      return data
-    } catch (err: any) {
-      if (err.response) {
-        return err.response.status as number
-      }
-      return 450
-    }
+  async getTeammates({ state, commit }, payload: SameSectorQuery): Promise<Array<OrderQueueItem>> {
+    const { data } = await getTeammates(payload.instrument, payload.sector, this.$axios)
+    return data
   }
 }

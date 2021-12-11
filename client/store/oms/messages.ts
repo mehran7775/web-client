@@ -10,25 +10,13 @@ export class MessageState {
 export const state = () => new MessageState()
 
 export const actions: ActionTree<MessageState, MessageState> = {
-  async getMessage(_, id: number): Promise<AxiosResponse<Message> | number> {
-    try {
-      return await getMessage(id, this.$axios)
-    } catch (err: any) {
-      return 500
-    }
+  async getMessage(_, id: number): Promise<AxiosResponse<Message>> {
+    return await getMessage(id, this.$axios)
   },
-  async getMessages(_, searchModel: object): Promise<AxiosResponse<PaginatedResult<Message>> | number> {
-    try {
-      return await getMessageList(searchModel, this.$axios)
-    } catch (err: any) {
-      return 500
-    }
+  async getMessages(_, searchModel: object): Promise<AxiosResponse<PaginatedResult<Message>>> {
+    return await getMessageList(searchModel, this.$axios)
   },
-  async getMessageFilters(_, name: string): Promise<AxiosResponse<PaginatedResult<AutoCompleteItem>> | number> {
-    try {
-      return await getMessageFilters(name, this.$axios)
-    } catch (err: any) {
-      return 500
-    }
+  async getMessageFilters(_, name: string): Promise<AxiosResponse<PaginatedResult<AutoCompleteItem>>> {
+    return await getMessageFilters(name, this.$axios)
   }
 }
