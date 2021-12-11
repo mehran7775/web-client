@@ -24,7 +24,7 @@
       class="more"
     >
       <v-progress-circular size="26" indeterminate v-show="loading" />
-      <v-icon v-show="!loading"> mdi-more </v-icon>
+      <v-icon v-show="!loading"> mdi-dots-horizontal </v-icon>
     </v-btn>
   </div>
 </template>
