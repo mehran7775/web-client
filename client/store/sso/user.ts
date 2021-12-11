@@ -31,7 +31,6 @@ export const mutations: MutationTree<stores.UserState> = {
       SetClientCookie(data.user + ".tryCount", data.tries.toString(), { maxAge: 300 })
     else
       DeleteClientCookie("tryCount")
-    console.log(data)
     state.tryCount = data.tries
   },
   setToken(state, data) {

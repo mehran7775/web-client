@@ -105,7 +105,6 @@ export default defineComponent({
     );
 
     watch(activeTab, (n, o) => {
-      console.log(n);
       if (typeof n != typeof undefined) context.emit("update:mini", false);
       else context.emit("update:mini", true);
     });
