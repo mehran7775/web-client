@@ -1,7 +1,7 @@
 <template>
   <v-card class="ma-0 pa-0 mx-1">
     <v-toolbar color="primary" dark :height="32" dense>
-      <instrument-search style="max-width: 200pt" />
+      <instrument-search style="max-width: 184px" />
       <v-spacer />
       <v-btn-toggle v-model="viewMode" mandatory light>
         <v-btn height="28" small>

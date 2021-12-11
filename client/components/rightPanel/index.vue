@@ -68,7 +68,7 @@
                   :to="sub.to ? sub.to : '#'"
                 >
                   <v-list-item-title>
-                    {{ sub.text ? sub.text : $t(sub.title) }}
+                    &nbta;&nbsp;&nbsp;&nbsp; {{ sub.text ? sub.text : $t(sub.title) }}
                   </v-list-item-title>
                 </v-list-item>
               </v-list-group>
