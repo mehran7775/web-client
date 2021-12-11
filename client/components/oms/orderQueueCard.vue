@@ -24,7 +24,7 @@
       <v-col
         :class="{
           'd-none d-md-block': responsive,
-          'success--text': true
+          'success--text': true,
         }"
         >{{ $t("oms.buy") }}</v-col
       >
@@ -41,7 +41,7 @@
       <v-col
         :class="{
           'd-none d-md-block': responsive,
-          'error--text': true
+          'error--text': true,
         }"
         >{{ $t("oms.sell") }}</v-col
       >
@@ -141,6 +141,7 @@ export default defineComponent({
     store
       .dispatch("oms/instruments/getOrderQueue", props.insId)
       .then((result) => {
+        console.log("res: ", result);
         if (result.queue) {
           queue.push(...result.queue);
           for (let i = 5 - queue.length; i > 0; i--) {

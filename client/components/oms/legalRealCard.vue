@@ -137,6 +137,7 @@ export default defineComponent({
       .dispatch("oms/instruments/getClientDistribution", props.insId)
       .then((result) => {
         if (result) {
+          console.log("legal: ", result);
           distribution.value = result;
           total.value =
             result.real.buy.count * result.real.buy.amount +
