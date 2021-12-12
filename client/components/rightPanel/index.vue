@@ -9,7 +9,7 @@
     fixed
     app
   >
-    <v-tabs class="ma-0 pa-0" v-model="selected" optional vertical hide-slider>
+    <v-tabs class="ma-0 pa-0" v-model="selected" vertical hide-slider>
       <v-tab
         v-for="item in items"
         :key="item.title"
@@ -114,9 +114,9 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
-    const selected: ComputedRef<number | null> = computed({
+    const selected: ComputedRef<number> = computed({
       get() {
-        return store.getters["menu"];
+        return store.getters["menu"] ?? 0;
       },
       set(value) {
         store.commit("setMenu", value);

@@ -23,15 +23,11 @@
       app
       dense
     >
-      <v-img
-        :src="require(`~/assets/images/logo.png`)"
-        max-width="24"
-        class="me-1"
-      />
       <span v-if="!rightMenu.mini && rightMenu.drawer">{{
         $t("general.proxyCompany")
       }}</span>
       <v-app-bar-nav-icon
+        class="ps-2 me-5"
         v-show="isLogin"
         @click.stop="
           () => {
