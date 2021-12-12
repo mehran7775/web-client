@@ -23,7 +23,11 @@
       app
       dense
     >
-      <v-img :src="require(`~/assets/images/logo.png`)" max-width="24" class="me-1" />
+      <v-img
+        :src="require(`~/assets/images/logo.png`)"
+        max-width="24"
+        class="me-1"
+      />
       <span v-if="!rightMenu.mini && rightMenu.drawer">{{
         $t("general.proxyCompany")
       }}</span>
@@ -42,7 +46,7 @@
       >
         <v-icon>mdi-menu-open</v-icon>
       </v-app-bar-nav-icon>
-      <clock :format="$t('general.date.longdt')" width="220" />
+      <clock :format="$t('general.date.longdt')" width="240" />
       <v-spacer />
       <v-badge
         v-if="isLogin"
@@ -53,7 +57,7 @@
         offset-y="75%"
         offset-x="-5"
       >
-        {{ $t("oms.bourseIndex") }}: {{formatter.format(0.000)}} 
+        {{ $t("oms.bourseIndex") }}: {{ formatter.format(0.0) }}
       </v-badge>
       <v-badge
         v-if="isLogin"
@@ -64,7 +68,7 @@
         offset-y="75%"
         offset-x="-5"
       >
-        {{ $t("oms.superBourseIndex") }}:‌ {{formatter.format(0.000)}} 
+        {{ $t("oms.superBourseIndex") }}:‌ {{ formatter.format(0.0) }}
       </v-badge>
       <v-spacer />
       <v-btn
@@ -78,47 +82,44 @@
         {{ $t("login.login") }}
         <v-icon>mdi-account-arrow-left</v-icon>
       </v-btn>
-      <v-menu v-model="userMenu" v-if="isLogin" rounded="b-xl" offset-y>
+      <v-menu v-model="userMenu" v-if="isLogin" offset-y>
         <template #activator="{ on, attrs }">
           <v-btn
-            height="30"
+            height="28"
+            min-width="184px"
             v-bind="attrs"
             v-on="on"
-            class="ma-0 pa-0"
+            class="ma-0 pa-0 ps-3 justify-start"
             depressed
           >
             <profile-picture
               :address="currentUser.profile && currentUser.profile.profilePic"
             />
-            <span class="ms-4 .d-none .d-sm-flex">{{
-              currentUser.userName
-            }}</span>
+            <span class=".d-none .d-sm-flex">{{ currentUser.userName }}</span>
+            <v-spacer />
             <v-icon class=".d-none .d-sm-flex">{{
               userMenu ? "mdi-chevron-up" : "mdi-chevron-down"
             }}</v-icon>
           </v-btn>
         </template>
-        <v-list>
-          <v-list-item>
-            <v-btn color="error" depressed @click="doLogout" small outlined>
-              {{ $t("login.logout") }}
-              <v-icon>mdi-account-arrow-right</v-icon>
-            </v-btn>
+        <v-list dense>
+          <v-list-item
+            v-for="item in userMenuItems"
+            :key="item.title"
+            :to="item.to"
+            @click="
+              () => {
+                if (item.click) item.click();
+              }
+            "
+          >
+            <v-icon :color="item.color">{{ item.icon }}</v-icon>
+            <v-list-item-title :class="item.color + '--text'">
+              {{ $t(item.title) }}
+            </v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-badge
-        v-if="isLogin"
-        class="ms-3"
-        offset-y="35%"
-        dot
-        left
-        color="error"
-      >
-        <v-icon @click="leftMenu.mini = !leftMenu.mini">
-          mdi-bell-outline
-        </v-icon>
-      </v-badge>
     </v-app-bar>
     <v-main class="dashboardmain-page">
       <div
@@ -222,25 +223,14 @@ import { User } from "@/types";
 export default defineComponent({
   components: {
     snackbar,
-    ProfilePicture
+    ProfilePicture,
   },
   setup(props, context) {
     const router = useRouter();
     const store = useStore();
     const host = process.env.VUE_APP_Host;
     const ctx = useContext();
-    const formatter: ComputedRef<Intl.NumberFormat> = computed(
-      () => store.getters["formatter"] as Intl.NumberFormat
-    );
 
-    const isLogin = computed(() => store.getters["sso/user/isLogin"]);
-    const collaps = computed(() => {
-      const tab = store.getters["bottom-panel/activeTab"];
-      return tab != null && tab != -1;
-    });
-    const currentUser: ComputedRef<User> = computed(
-      () => store.getters["sso/user/me"] as User
-    );
     const userMenu = ref(false);
     const blockedMoney = 0;
     const freeMoney = 0;
@@ -253,10 +243,41 @@ export default defineComponent({
       mini: true,
       drawer: true,
     });
+    const userMenuItems = [
+      {
+        icon: "mdi-account-cog",
+        to: "/user/",
+        title: "menu.profile",
+      },
+      {
+        icon: "mdi-application-cog-outline",
+        click: () => {
+          store.commit("editMode", true);
+        },
+        title: "menu.edit-dashboard",
+      },
+      {
+        icon: "mdi-logout",
+        color: "error",
+        click: doLogout,
+        title: "login.logout",
+      },
+    ];
 
     const locale = computed(() => {
       return store.getters["locale"];
     });
+    const formatter: ComputedRef<Intl.NumberFormat> = computed(
+      () => store.getters["formatter"] as Intl.NumberFormat
+    );
+    const isLogin = computed(() => store.getters["sso/user/isLogin"]);
+    const collaps = computed(() => {
+      const tab = store.getters["bottom-panel/activeTab"];
+      return tab != null && tab != -1;
+    });
+    const currentUser: ComputedRef<User> = computed(
+      () => store.getters["sso/user/me"] as User
+    );
 
     function doLogout() {
       userMenu.value = false;
@@ -275,6 +296,7 @@ export default defineComponent({
       isLogin,
       currentUser,
       userMenu,
+      userMenuItems,
       rightMenu,
       leftMenu,
       clipped: true,

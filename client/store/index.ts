@@ -6,8 +6,9 @@ import * as stores from '@/types/stores'
 export const state = () => new stores.RootState()
 
 export const getters: GetterTree<stores.RootState, stores.RootState> = {
-  rtl: (state): boolean => ['fa', 'ar', 'azIr', 'ckb'].includes(state.locale),
   locale: (state): string => state.locale,
+  rtl: (state): boolean => ['fa', 'ar', 'azIr', 'ckb'].includes(state.locale),
+  editMode: (state): boolean => state.editMode,
   menu: (state): number | null => state.menuIndex,
   percentFormatter: (state): Intl.NumberFormat => Intl.NumberFormat(state.locale,
     { style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 3 }),
@@ -18,6 +19,9 @@ export const getters: GetterTree<stores.RootState, stores.RootState> = {
 export const mutations: MutationTree<stores.RootState> = {
   setMenu(state, payload: number | null) {
     state.menuIndex = payload
+  },
+  editMode(state, payload: boolean) {
+    state.editMode = payload
   },
   setLocale(state, payload: string) {
     state.locale = payload

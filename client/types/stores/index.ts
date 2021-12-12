@@ -2,10 +2,12 @@ import { User, AnonymousUser } from '@/types/'
 
 export class RootState {
   locale: string
+  editMode: boolean
   menuIndex: number | null
 
   constructor() {
     this.locale = process.env.VUE_APP_I18N_LOCALE ?? ''
+    this.editMode = false
     this.menuIndex = null
   }
   toJSON() {
