@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import { login, refreshToken } from '~/repositories/sso/jwt_token'
+import { login, refreshToken, logout } from '~/repositories/sso/jwt_token'
 import * as stores from '@/types/stores'
 import { User, Setting, UserCredentials, AnonymousUser, Paginated } from '@/types'
 import { getProfileImage, getUser, getUserList, updateUserWatchlist, getUserLog } from '@/repositories/sso/user_manager';
@@ -114,8 +114,12 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
       throw err
     }
   },
-  logout({ commit, rootState }) {
-    commit('logout')
+  async logout({ commit, rootState }) {
+    try {
+      await logout(this.$axios)
+    } finally {
+      commit('logout')
+    }
   },
   async refreshToken({ commit, state }) {
     const token = state.refresh

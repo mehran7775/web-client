@@ -13,6 +13,10 @@ export async function refreshToken(refresh: string) {
   return res
 }
 
+export async function logout(axios: NuxtAxiosInstance) {
+  await axios.delete('/sso/jwt')
+}
+
 export async function login(username: string, password: string, captcha: string, axios: NuxtAxiosInstance, session = null) {
   return await instance.post('/sso/jwt', {
     username: username,
