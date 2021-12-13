@@ -6,9 +6,9 @@
       </v-col>
     </v-row>
     <v-row class="ma-0 pa-0" dense>
-      <v-col
-        ><WatchList :watchlists="instruments" :selected.sync="selected"
-      /></v-col>
+      <v-col>
+        <WatchList :watchlists="instruments" :selected.sync="selected" />
+      </v-col>
     </v-row>
   </v-container>
 </template>

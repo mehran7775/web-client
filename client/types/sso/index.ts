@@ -1,3 +1,10 @@
+export type Log = {
+  id: string,
+  dateTime: string,
+  ip: string,
+  type: string
+}
+
 export type Setting = {
   lang: string,
   columns: Array<WatchlistColumns>,

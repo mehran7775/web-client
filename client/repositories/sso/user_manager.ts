@@ -37,6 +37,10 @@ export async function getProfileImage(name: string, axios: NuxtAxiosInstance) {
   return await axios.get('/sso/user/download-profile-photo?id=' + name)
 }
 
+export async function getUserLog(username: string, offset: number, length: number, axios: NuxtAxiosInstance) {
+  return await axios.get('/sso/user/enter-exit-log?offset=' + (offset ?? 0) + '&length=' + (length ?? 10) + '&user=' + username)
+}
+
 export function UserRoles(): object[] {
   return [
     {

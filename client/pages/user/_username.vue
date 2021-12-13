@@ -9,6 +9,9 @@
           @input="(a) => profile(a)"
         />
       </v-col>
+      <v-col>
+        <logs />
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -24,10 +27,12 @@ import {
   useStore,
 } from "@nuxtjs/composition-api";
 import profilePic from "@/components/sso/profilePictureEditor.vue";
+import logs from "@/components/sso/userLog.vue";
 
 export default defineComponent({
   components: {
     profilePic,
+    logs
   },
   setup() {
     const store = useStore();

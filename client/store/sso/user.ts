@@ -2,8 +2,8 @@ import { AxiosError } from 'axios'
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { login, refreshToken } from '~/repositories/sso/jwt_token'
 import * as stores from '@/types/stores'
-import { User, Setting, UserCredentials, AnonymousUser } from '@/types'
-import { getProfileImage, getUser, getUserList, updateUserWatchlist } from '@/repositories/sso/user_manager';
+import { User, Setting, UserCredentials, AnonymousUser, Paginated } from '@/types'
+import { getProfileImage, getUser, getUserList, updateUserWatchlist, getUserLog } from '@/repositories/sso/user_manager';
 import { SetClientCookie, DeleteClientCookie, GetClientCookies } from "@/utils/cookie"
 
 
@@ -144,6 +144,9 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
     return 'data:image/jpeg;base64,' +
       Buffer.from(new Uint8Array(img)
         .reduce((data, byte) => data + String.fromCharCode(byte), '')).toString('base64');
+  },
+  async getLogs({ state }, payload: Paginated) {
+    return getUserLog(state.userName ?? '', payload?.offset, payload?.length, this.$axios)
   }
 
 }
