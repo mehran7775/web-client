@@ -219,5 +219,9 @@
     "orders": "Active Orders",
     "depth": "Deep Market Information",
     "more": "Details"
+  },
+  "log":{
+    "enter": "Login",
+    "exit": "Logout"
   }
 }
