@@ -10,6 +10,11 @@
         />
       </v-col>
       <v-col>
+        <profile v-model="currentUser.profile" />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
         <logs />
       </v-col>
     </v-row>
@@ -28,11 +33,13 @@ import {
 } from "@nuxtjs/composition-api";
 import profilePic from "@/components/sso/profilePictureEditor.vue";
 import logs from "@/components/sso/userLog.vue";
+import profile from "@/components/sso/profileViewer.vue";
 
 export default defineComponent({
   components: {
     profilePic,
-    logs
+    logs,
+    profile,
   },
   setup() {
     const store = useStore();
