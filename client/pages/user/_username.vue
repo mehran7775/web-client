@@ -2,20 +2,43 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <h1>
-          Profile
-        </h1>
+        <profile-pic
+          :address="currentUser.profile && currentUser.profile.profilePic"
+          :size="184"
+          v-model="pic"
+          @input="(a) => profile(a)"
+        />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@nuxtjs/composition-api";
+import { User } from "@/types";
+import {
+  defineComponent,
+  ref,
+  Ref,
+  computed,
+  ComputedRef,
+  useStore,
+} from "@nuxtjs/composition-api";
+import profilePic from "@/components/sso/profilePictureEditor.vue";
 
 export default defineComponent({
+  components: {
+    profilePic,
+  },
   setup() {
-    return {};
+    const store = useStore();
+    const currentUser: ComputedRef<User> = computed(
+      () => store.getters["sso/user/me"] as User
+    );
+    const pic: Ref<File | null> = ref(null);
+    function profile(a: any) {
+      console.log("log: ", a);
+    }
+    return { currentUser, pic, profile };
   },
 });
 </script>

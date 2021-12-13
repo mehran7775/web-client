@@ -30,6 +30,7 @@
       "@types/node",
       "@types/luxon",
       "@types/splitpanes",
+      "@types/dropzone",
       "@types/cookie"
     ]
   },
