@@ -7,14 +7,24 @@ import '@mdi/font/css/materialdesignicons.min.css'
 import '@/assets/icons/style.css'
 
 export default function ({ store, app }) {
-  const theme = {
-    primary: '#005cb5',
-    secondary: '#CC0000',
-    accent: '#ffffff',
-    error: '#e5466c',
-    success: '#369c66',
-    darkSuccess: '#057341',
-    warning: '#f39c12'
+  const ltheme = {
+    default: "transparent",
+    secondary: '#EF394E',
+    primary: '#3554D1',
+    accent: '#82B1FF',
+    error: '#FF3B30',
+    info: '#009CF2',
+    success: '#00BD79',
+    warning: '#FFBB46',
+  }
+  const dtheme = {
+    secondary: '#EF394E',
+    primary: '#3554D1',
+    accent: '#82B1FF',
+    error: '#FF3B30',
+    info: '#009CF2',
+    success: '#00BD79',
+    warning: '#FFBB46',
   }
 
   return {
@@ -28,10 +38,11 @@ export default function ({ store, app }) {
       values: {}
     },
     theme: {
+      options: { customProperties: true },
       dark: false,
       themes: {
-        light: theme,
-        dark: theme
+        light: ltheme,
+        dark: dtheme
       }
     }
   }

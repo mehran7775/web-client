@@ -1,38 +1,59 @@
 <template>
-  <v-card elevation="0" color="transparent" class="login" :loading="loading">
-    <v-card-title class="justify-center">{{ $t("login.login") }}</v-card-title>
-    <v-card-text class="text-center">
-      <v-divider />
+  <v-card
+    class="ma-0 pa-0"
+    :max-width="width"
+    elevation="0"
+    color="transparent"
+    :loading="loading"
+  >
+    <v-card-title class="ma-0 pa-0 justify-start font-weight-bold">{{
+      $t("login.title")
+    }}</v-card-title>
+    <v-form>
+      <h4 class="my-1">{{ $t("user.username") }}</h4>
       <v-text-field
+        :height="inputHeight"
         v-model="data.userName"
-        :placeholder="$t('user.username')"
         prepend-inner-icon="mdi-account"
         @input="checkTries"
-        dense
         hide-details
-      >
-      </v-text-field>
+        outlined
+        dense
+      />
+      <h4 class="my-1">{{ $t("user.password") }}</h4>
       <v-text-field
+        :height="inputHeight"
         v-model="data.password"
-        :placeholder="$t('user.password')"
         :type="showPassword ? 'text' : 'Password'"
         prepend-inner-icon="mdi-lock"
         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append="showPassword = !showPassword"
         @keyup.enter="login(data)"
-        dense
         hide-details
-      >
-      </v-text-field>
-      <v-select
+        outlined
         dense
-        :value="1"
-        :items="[
-          { value: 1, text: $t('login.static') },
-          { value: 2, text: $t('login.otp') },
-        ]"
-      >
-      </v-select>
+      />
+      <div class="justify-end">
+        <nuxt-link to="/reset-password">
+          {{ $t("login.forget-password") }}
+        </nuxt-link>
+      </div>
+      <div>
+        <v-radio-group v-model="data.passwordType" row>
+          <v-radio
+            v-for="item in [
+              { value: 1, text: $t('login.static') },
+              { value: 2, text: $t('login.otp') },
+            ]"
+            :key="item.value"
+            :label="item.text"
+            :value="item.value"
+            on-icon="mdi-check-circle"
+            off-icon="mdi-check-circle-outline"
+            class="radio-ckeck ma-0 mx-1 pa-2"
+          />
+        </v-radio-group>
+      </div>
       <client-only>
         <vue-hcaptcha
           v-if="failedCount > 3"
@@ -41,54 +62,35 @@
           @verify="captchaResult"
         ></vue-hcaptcha>
       </client-only>
-    </v-card-text>
+    </v-form>
     <v-card-actions>
       <v-btn
+        class="font-weight-bold"
         depressed
-        color="error"
+        color="primary"
         @click="login(data)"
-        width="50%"
-        large
-        dark
+        width="100%"
+        :height="inputHeight"
       >
         {{ $t("login.login") }}
       </v-btn>
-      <v-btn depressed color="error" to="/registration" width="50%" large dark>
+    </v-card-actions>
+    <v-card-actions>
+      <v-btn
+        class="font-weight-bold"
+        depressed
+        color="primary"
+        to="/registration"
+        width="100%"
+        :height="inputHeight"
+        outlined
+      >
         {{ $t("login.registration") }}
       </v-btn>
     </v-card-actions>
-    <v-divider />
-    <v-card-actions>
-      <v-btn
-        depressed
-        color="transparent"
-        @click="() => $router.push('/reset-password')"
-        width="100%"
-        small
-      >
-        {{ $t("login.forget-password") }}
-      </v-btn>
-    </v-card-actions>
-    <v-divider />
-    <v-card-actions class="justify-center">
-      <v-btn depressed color="transparent" @click="login">
-        <v-icon x-large> mdi-apple </v-icon>
-      </v-btn>
-      <v-btn depressed color="transparent" @click="login">
-        <v-icon x-large> adaico-bag-cross </v-icon>
-      </v-btn>
-      <v-btn depressed color="transparent" @click="login">
-        <v-icon x-large> mdi-android </v-icon>
-      </v-btn>
-      <v-btn depressed color="transparent" @click="login">
-        <v-icon x-large> mdi-microsoft </v-icon>
-      </v-btn>
-    </v-card-actions>
-    <v-divider />
     <v-card-actions class="text-center justify-center">
       {{ $t("login.alerts") }}
     </v-card-actions>
-    <v-divider />
   </v-card>
 </template>
 
@@ -112,6 +114,8 @@ export default defineComponent({
   name: "Login",
   props: {
     msg: String,
+    width: Number,
+    inputHeight: Number,
   },
   setup(props, context) {
     const store = useStore();
@@ -178,3 +182,20 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="sass">
+.radio-ckeck
+  border-radius: 5px
+  width: calc( 50% - 8px )
+  background-color: var(--v-primary-lighten5)
+  font-weight: bold
+  &.v-item--active
+    label
+      color: var(--v-primary-base)
+  .v-input--selection-controls__input
+    width: auto
+    .v-icon
+      font-size: inherit
+    
+
+</style>

@@ -8,6 +8,22 @@
 }
 
 @font-face {
+  font-family: "Iran Sans";
+  src: url("static/fonts/IRANSans(FaNum)_Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: "Iran Sans";
+  src: url("static/fonts/Iranian Sans.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
   font-family: "Times New Roman";
   src: url("static/fonts/times.woff") format("woff"), url("static/fonts/times.ttf") format("truetype");
   font-weight: normal;
@@ -26,10 +42,13 @@ $data-table-row-group-children-td-height: 32px;
 $input-font-size: inherit;
 $label-font-size: inherit;
 
+// Reset Inputs
+$input-slot-margin-bottom: 0;
+
 // All Headers 40 px
 $toolbar-btn-icon-size: 32px;
 $list-dense-min-height: 32px;
 
 
-$body-font-family: "B Yekan", "Times New Roman";
+$body-font-family: "Iran Sans", "Times New Roman";
 
