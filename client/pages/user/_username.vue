@@ -48,7 +48,7 @@ export default defineComponent({
     );
     const pic: Ref<File | null> = ref(null);
     function profile(a: any) {
-      console.log("log: ", a);
+      //TODO
     }
     return { currentUser, pic, profile };
   },

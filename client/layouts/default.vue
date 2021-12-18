@@ -215,6 +215,7 @@ import {
 import snackbar from "@/components/snacks.vue";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
 import { User } from "@/types";
+import { useShortcut } from "@/utils/shortcutManager";
 
 export default defineComponent({
   components: {
@@ -226,7 +227,6 @@ export default defineComponent({
     const store = useStore();
     const host = process.env.VUE_APP_Host;
     const ctx = useContext();
-
     const userMenu = ref(false);
     const blockedMoney = 0;
     const freeMoney = 0;
