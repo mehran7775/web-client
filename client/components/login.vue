@@ -45,6 +45,7 @@
               { value: 1, text: $t('login.static') },
               { value: 2, text: $t('login.otp') },
             ]"
+            :ripple="false"
             :key="item.value"
             :label="item.text"
             :value="item.value"
@@ -88,7 +89,7 @@
         {{ $t("login.registration") }}
       </v-btn>
     </v-card-actions>
-    <v-card-actions class="text-center justify-center">
+    <v-card-actions class="text-center justify-center font-12">
       {{ $t("login.alerts") }}
     </v-card-actions>
   </v-card>
@@ -184,6 +185,8 @@ export default defineComponent({
 </script>
 
 <style lang="sass">
+.font-12
+  font-size: 12px
 .radio-ckeck
   border-radius: 5px
   width: calc( 50% - 8px )
@@ -196,6 +199,4 @@ export default defineComponent({
     width: auto
     .v-icon
       font-size: inherit
-    
-
 </style>
