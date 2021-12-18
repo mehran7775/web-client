@@ -16,6 +16,7 @@ import {
 import ContentViewer from "~/components/contentViewer.vue";
 
 export default defineComponent({
+  layout: "public",
   head: {},
   components: {
     Splitpanes,
