@@ -93,13 +93,7 @@ import {
 import instrumentCard from "../oms/instrumentCardCompact.vue";
 import LegalRealCard from "../oms/legalRealCard.vue";
 import orderQueueCard from "../oms/orderQueueCard.vue";
-import {
-  WatchlistColumns,
-  DefaultCols,
-  Instrument,
-  ActiveInstrument,
-  Side,
-} from "@/types";
+import { WatchlistColumns, DefaultCols, InstrumentCache, Side } from "@/types";
 
 export default defineComponent({
   props: ["watchlists", "selected"],
@@ -107,20 +101,22 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const i18n = useI18n();
-    const instruments: Array<Instrument> = reactive([]);
+    const instruments: Array<InstrumentCache> = reactive([]);
     const formatter: ComputedRef<Intl.NumberFormat> = computed(
       () => store.getters["formatter"] as Intl.NumberFormat
     );
     const expanded = computed({
-      set(value: Array<Instrument>) {
+      set(value: Array<InstrumentCache>) {
         store.commit("oms/instruments/setFocus", value);
       },
-      get(): Array<Instrument> {
-        return store.getters["oms/instruments/getFocus"] as Array<Instrument>;
+      get(): Array<InstrumentCache> {
+        return store.getters[
+          "oms/instruments/getFocus"
+        ] as Array<InstrumentCache>;
       },
     });
-    expanded.value = []
-    function onExpand(data: { item: Instrument; value: boolean }) {
+    expanded.value = [];
+    function onExpand(data: { item: InstrumentCache; value: boolean }) {
       if (!data.value) {
         store.commit("oms/instruments/stopWatchQueue", data.item.id);
       }
@@ -141,14 +137,14 @@ export default defineComponent({
       res.push(new WatchlistColumns("", "actions"));
       return res;
     });
-    function order(item: Instrument, side: Side) {
-      const active = new ActiveInstrument(item.id, side);
+    function order(item: InstrumentCache, side: Side) {
       if (expanded.value.findIndex((i) => item.id == i.id) == -1) {
         const tmp = [...expanded.value, item];
         expanded.value = tmp;
       }
-      store.commit("oms/instruments/select", active);
-      context.emit("order", active);
+      store.commit("oms/instruments/updateInstrument", { id: item.id, side });
+      store.commit("oms/instruments/select", item);
+      context.emit("order");
     }
     store
       .dispatch("oms/instruments/getInstrumentsDetail", props.watchlists)
@@ -156,7 +152,7 @@ export default defineComponent({
         instruments.push(
           ...(store.getters["oms/instruments/getAll"](
             props.watchlists
-          ) as Array<Instrument>)
+          ) as Array<InstrumentCache>)
         );
       });
 

@@ -1,5 +1,5 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import { Instrument, OrderQueueItem, Side, ActiveInstrument, SameSectorQuery, InstrumentCache, MarketHistory, PaginatedResult, ClientDistributionResponse, ClientDistribution } from '@/types'
+import { Instrument, OrderQueueItem, Side, SameSectorQuery, InstrumentCache, MarketHistory, PaginatedResult, ClientDistributionResponse, ClientDistribution, Order } from '@/types'
 import { getInstrumentsDetail, getOrderQueue, getTeammates, getInstrumentMarketHistory, getClientDistribution as Distribution } from '@/repositories/oms/instruments_manager'
 
 
@@ -8,7 +8,7 @@ export const state = () => (new RootState())
 export class RootState {
   cache: Map<string, InstrumentCache> = new Map<string, InstrumentCache>()
   focus: Array<InstrumentCache> = []
-  selected: ActiveInstrument = new ActiveInstrument(0, Side.Buy)
+  selected: InstrumentCache | null = null
   orderQueueCache: Map<string, Array<OrderQueueItem>> = new Map<string, Array<OrderQueueItem>>()
   clientDistributionCache: Map<string, ClientDistribution> = new Map<string, ClientDistribution>()
 }
@@ -25,13 +25,17 @@ export const getters: GetterTree<RootState, RootState> = {
   },
   getByKey: (state) => (key: number): InstrumentCache | null => state.cache.get(key.toString()) || null,
   getFocus: (state): Array<InstrumentCache> => state.focus,
-  getSelected: (state): ActiveInstrument => state.selected,
+  getSelected: (state): InstrumentCache | null => state.selected,
   getSelectedIndex: (state): number =>
-    state.focus.findIndex((item) => item.id == state.selected.instrumentId),
-  getSelectedId: (state): number => state.selected.instrumentId,
+    state.focus.findIndex((item) => item.id == state.selected?.id),
+  getSelectedId: (state): number => state.selected?.id ?? -1,
 }
 
 export const mutations: MutationTree<RootState> = {
+  updateInstrument(state, data) {
+    const inst = state.cache.get(data.id.toString())
+    Object.assign(inst, data)
+  },
   setInstruments(state, data: Array<InstrumentCache>) {
     for (let i in data) {
       state.cache.set(data[i].id.toString(), data[i])
@@ -55,18 +59,14 @@ export const mutations: MutationTree<RootState> = {
   stopWatchDist(state, key: string) {
     state.clientDistributionCache.delete(key)
   },
-  select(state, active: ActiveInstrument) {
-    active.side = active.side ?? state.selected.side
+  select(state, active: InstrumentCache) {
     state.selected = active
   },
   selectByIndex(state, index: number) {
-    state.selected.instrumentId = state.focus[index]?.id
+    state.selected = state.focus[index]
   },
   selectById(state, id: number) {
-    state.selected.instrumentId = id
-  },
-  selectSide(state, side: Side) {
-    state.selected.side = side
+    state.selected = state.cache.get(id.toString()) ?? null
   }
 }
 
@@ -85,7 +85,7 @@ export const actions: ActionTree<RootState, RootState> = {
       const { data: { data: market } } = await getInstrumentMarketHistory(missing, this.$axios)
       const { data: { data } } = await getins
       res.push(...data.map(
-        (ins) => Object.assign(market.find((item) => item.instrumentId == ins.id), ins)))
+        (ins) => Object.assign({ side: Side.Buy }, market.find((item) => item.instrumentId == ins.id), ins)))
       commit('setInstruments', res)
     }
     return res

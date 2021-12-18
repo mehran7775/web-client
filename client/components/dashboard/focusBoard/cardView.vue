@@ -23,7 +23,7 @@
               dark
               x-large
               class="ma-0 pa-0"
-              @click="() => order(item.id, Side.Buy)"
+              @click="() => order(item, Side.Buy)"
             >
               {{ $t("oms.buy") }}
             </v-btn>
@@ -34,7 +34,7 @@
               dark
               x-large
               class="ms-1 pa-0"
-              @click="() => order(item.id, Side.Sell)"
+              @click="() => order(item, Side.Sell)"
             >
               {{ $t("oms.sell") }}
             </v-btn>
@@ -49,7 +49,7 @@
           </v-toolbar>
           <v-card-text class="text-caption ma-0 px-0">
             <order-queue-card :insId="item.id" extra-col />
-            <legal-real-card hide-headers />
+            <legal-real-card :insId="item.id" hide-headers />
             <instrument-card :insId="item.id" hide-headers />
           </v-card-text>
         </v-card>
@@ -60,7 +60,7 @@
 
 <script lang="ts">
 import { defineComponent, useStore, computed } from "@nuxtjs/composition-api";
-import { ActiveInstrument, Side } from "@/types";
+import { Side, InstrumentCache } from "@/types";
 import instrumentCard from "@/components/oms/instrumentCardCompact.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
@@ -74,15 +74,18 @@ export default defineComponent({
   emits: ["order"],
   setup(props, context) {
     const store = useStore();
-    const instruments = computed(() => store.getters["oms/instruments/getFocus"]);
-    function close(id: number) {
-      store.commit("oms/instruments/removeFocus", id);
-      store.commit("oms/instruments/stopWatchQueue", id);
+    const instruments = computed(
+      () => store.getters["oms/instruments/getFocus"]
+    );
+    function close(item: InstrumentCache) {
+      store.commit("oms/instruments/removeFocus", item.id);
+      store.commit("oms/instruments/stopWatchQueue", item.id);
     }
-    function order(index: number, side: Side) {
-      const active = new ActiveInstrument(index, side);
-      store.commit("oms/instruments/select", active);
-      context.emit("order", active);
+    function order(item: InstrumentCache, side: Side) {
+      console.log(item, side);
+      store.commit("oms/instruments/updateInstrument", { id: item.id, side });
+      store.commit("oms/instruments/select", item);
+      context.emit("order");
     }
     return {
       close,

@@ -2,24 +2,28 @@
   <v-container class="ma-0 pa-0" fluid>
     <v-tabs height="27" hide-slider v-model="tab" grow>
       <v-tab
+        :key="Side.Buy"
+        :href="'#' + Side.Buy"
         :class="{
-          'success--text': tab != 0,
-          'success lighten-5': tab == 0,
+          'success--text': tab != 1,
+          'success lighten-5': tab == 1,
         }"
       >
         {{ $t("oms.buy") }}
       </v-tab>
       <v-tab
+        :key="Side.Sell"
+        :href="'#' + Side.Sell"
         :class="{
-          'error--text': tab != 1,
-          'error lighten-5': tab == 1,
+          'error--text': tab != 2,
+          'error lighten-5': tab == 2,
         }"
       >
         {{ $t("oms.sell") }}
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
-      <v-tab-item>
+      <v-tab-item value="1">
         <v-form>
           <v-container fluid>
             <v-row align="center" dense>
@@ -108,7 +112,7 @@
           </v-container>
         </v-form>
       </v-tab-item>
-      <v-tab-item>
+      <v-tab-item value="2">
         <v-form>
           <v-container fluid>
             <v-row align="center" dense>
@@ -201,68 +205,62 @@ import {
   Ref,
   ref,
   watch,
+  ComputedRef,
 } from "@nuxtjs/composition-api";
-import { Side, ActiveInstrument } from "@/types";
+import { InstrumentCache, Side } from "@/types";
 
 export default defineComponent({
   props: {
     count: Number,
     price: Number,
+    insId: Number,
   },
   setup(props, { emit }) {
     const store = useStore();
-    let _count: Ref<number> = ref(0);
-    let _price: Ref<number> = ref(0);
-    const active = computed(
-      () => store.getters["oms/instruments/getSelected"] as ActiveInstrument
-    );
+    const active: Ref<InstrumentCache | null> = ref(null);
     const countVal = computed({
       get() {
-        return _count.value;
+        return props.count?.toString();
       },
-      set(val) {
-        if (typeof val == "string") _count.value = val ? parseInt(val) : 0;
-        emit("update:count", _count.value);
+      set(val: string | undefined) {
+        emit("update:count", val ? parseInt(val) : undefined);
       },
     });
     const priceVal = computed({
       get() {
-        return _price.value;
+        return props.price?.toString();
       },
-      set(val) {
-        if (typeof val == "string") _price.value = val ? parseInt(val) : 0;
-        emit("update:price", _price.value);
+      set(val: string | undefined) {
+        emit("update:price", val ? parseInt(val) : undefined);
       },
     });
     const tab = computed({
-      get(): number {
-        return active.value.side == Side.Buy ? 0 : 1;
+      get() {
+        return (
+          active.value?.side == Side.Sell ? Side.Sell : Side.Buy
+        ).toString();
       },
-      set(value: number) {
-        store.commit(
-          "oms/instruments/selectSide",
-          value ? Side.Sell : Side.Buy
-        );
+      set(value: string) {
+        if (active.value)
+          store.commit("oms/instruments/updateInstrument", {
+            id: active.value.id,
+            side: value == "2" ? Side.Sell : Side.Buy,
+          });
       },
     });
 
-    watch(
-      () => props.count,
-      (val: number | undefined) => {
-        _count.value = val ?? 0;
-      }
-    );
-    watch(
-      () => props.price,
-      (val: number | undefined) => {
-        _price.value = val ?? 0;
-      }
-    );
+    store
+      .dispatch("oms/instruments/getInstrumentsDetail", [props.insId])
+      .then((data: Array<InstrumentCache>) => {
+        active.value = data[0];
+      });
+
     return {
       tab,
       active,
       countVal,
       priceVal,
+      Side,
     };
   },
 });

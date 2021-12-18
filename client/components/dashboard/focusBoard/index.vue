@@ -27,7 +27,6 @@ import {
   Ref,
   ref,
 } from "@nuxtjs/composition-api";
-import { ActiveInstrument } from "@/types";
 import InstrumentSearch from "@/components/oms/instrumentSearch.vue";
 import CardView from "./cardView.vue";
 import TabView from "./tabView.vue";
@@ -43,7 +42,7 @@ export default defineComponent({
     const store = useStore();
     const instruments = computed(() => store.getters["oms/instruments/getFocus"]);
     const viewMode: Ref<number> = ref(0);
-    function order(activeItem: ActiveInstrument) {
+    function order() {
       viewMode.value = 0;
     }
     return {

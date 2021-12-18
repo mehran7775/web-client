@@ -46,10 +46,16 @@
                   hide-headers
                   responsive
                 />
-                <v-btn-toggle height="32" style="width:100%;">
+                <v-btn-toggle height="32" style="width: 100%">
                   <v-tooltip v-for="op in deepOptions" :key="op" bottom>
                     <template #activator="{ on, attrs }">
-                      <v-btn @click="deep(op, item)" v-bind="attrs" v-on="on" width="20%" height="32">
+                      <v-btn
+                        @click="deep(op, item)"
+                        v-bind="attrs"
+                        v-on="on"
+                        width="20%"
+                        height="32"
+                      >
                         <v-icon size="24"> mdi-alert </v-icon>
                       </v-btn>
                     </template>
@@ -76,7 +82,11 @@
                 />
               </v-col>
               <v-col cols="4" class="ma-0 pa-0">
-                <buy-sell-card :price.sync="price" :count.sync="count" />
+                <buy-sell-card
+                  :price.sync="price"
+                  :count.sync="count"
+                  :insId="item.id"
+                />
               </v-col>
             </v-row>
           </v-tab-item>
@@ -127,7 +137,7 @@ export default defineComponent({
           store.getters["oms/instruments/getSelectedId"] as number
         ).toString();
       },
-      set(value: string | undefined) {
+      async set(value: string | undefined) {
         store.commit("oms/instruments/selectById", value ? parseInt(value) : 0);
       },
     });

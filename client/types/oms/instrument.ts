@@ -1,5 +1,3 @@
-export interface InstrumentCache extends Instrument, DailyPrice, MarketHistory { }
-
 export class Instrument {
   id: number
   code: string

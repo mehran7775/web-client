@@ -11,12 +11,3 @@ export class SameSectorQuery {
     this.sector = sector
   }
 }
-
-export class ActiveInstrument {
-  instrumentId: number = 0
-  side: Side | null = Side.Buy
-  constructor(id: number, side: Side | null = null) {
-    this.instrumentId = id
-    this.side = side
-  }
-}
