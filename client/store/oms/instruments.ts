@@ -1,19 +1,21 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { Instrument, OrderQueueItem, Side, SameSectorQuery, InstrumentCache, MarketHistory, PaginatedResult, ClientDistributionResponse, ClientDistribution, Order } from '@/types'
 import { getInstrumentsDetail, getOrderQueue, getTeammates, getInstrumentMarketHistory, getClientDistribution as Distribution } from '@/repositories/oms/instruments_manager'
+import { RootState } from '@/types/stores'
 
 
-export const state = () => (new RootState())
+export const state = () => (new InstrumentState())
 
-export class RootState {
+export class InstrumentState {
   cache: Map<string, InstrumentCache> = new Map<string, InstrumentCache>()
   focus: Array<InstrumentCache> = []
+  focusViewMode: number = 0
   selected: InstrumentCache | null = null
   orderQueueCache: Map<string, Array<OrderQueueItem>> = new Map<string, Array<OrderQueueItem>>()
   clientDistributionCache: Map<string, ClientDistribution> = new Map<string, ClientDistribution>()
 }
 
-export const getters: GetterTree<RootState, RootState> = {
+export const getters: GetterTree<InstrumentState, RootState> = {
   getAll: (state) => (ids: Array<string>): Array<InstrumentCache> => {
     const res: Array<InstrumentCache> = []
     for (let id in ids) {
@@ -25,13 +27,14 @@ export const getters: GetterTree<RootState, RootState> = {
   },
   getByKey: (state) => (key: number): InstrumentCache | null => state.cache.get(key.toString()) || null,
   getFocus: (state): Array<InstrumentCache> => state.focus,
+  getFocusMode: (state): number => state.focusViewMode,
   getSelected: (state): InstrumentCache | null => state.selected,
   getSelectedIndex: (state): number =>
     state.focus.findIndex((item) => item.id == state.selected?.id),
   getSelectedId: (state): number => state.selected?.id ?? -1,
 }
 
-export const mutations: MutationTree<RootState> = {
+export const mutations: MutationTree<InstrumentState> = {
   updateInstrument(state, data) {
     const inst = state.cache.get(data.id.toString())
     Object.assign(inst, data)
@@ -43,6 +46,9 @@ export const mutations: MutationTree<RootState> = {
   },
   setFocus(state, data: Array<InstrumentCache>) {
     state.focus = data
+  },
+  setFocusMode(state, data: number) {
+    state.focusViewMode = data
   },
   removeFocus(state, data: number) {
     state.focus.splice(state.focus.findIndex((element: Instrument) => element.id == data), 1)
@@ -70,7 +76,7 @@ export const mutations: MutationTree<RootState> = {
   }
 }
 
-export const actions: ActionTree<RootState, RootState> = {
+export const actions: ActionTree<InstrumentState, InstrumentState> = {
   async getInstrumentsDetail({ state, commit }, payload: Array<number>): Promise<Array<InstrumentCache> | number> {
     let res: Array<InstrumentCache> = []
     let missing: Array<number> = []

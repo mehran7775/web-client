@@ -3,6 +3,7 @@
     <v-row dense>
       <v-col class="d-flex flex-row ma-0 pa-0" style="overflow-x: scroll">
         <v-card
+          @click="() => select(item)"
           class="me-1 mb-1"
           min-width="430"
           max-width="430"
@@ -71,7 +72,6 @@ export default defineComponent({
     OrderQueueCard,
     LegalRealCard,
   },
-  emits: ["order"],
   setup(props, context) {
     const store = useStore();
     const instruments = computed(
@@ -82,14 +82,17 @@ export default defineComponent({
       store.commit("oms/instruments/stopWatchQueue", item.id);
     }
     function order(item: InstrumentCache, side: Side) {
-      console.log(item, side);
       store.commit("oms/instruments/updateInstrument", { id: item.id, side });
       store.commit("oms/instruments/select", item);
-      context.emit("order");
+      store.commit("oms/instruments/setFocusMode", 0);
+    }
+    function select(item: InstrumentCache) {
+      store.commit("oms/instruments/selectById", item.id);
     }
     return {
       close,
       order,
+      select,
       Side,
       instruments,
     };

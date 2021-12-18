@@ -94,6 +94,7 @@ import instrumentCard from "../oms/instrumentCardCompact.vue";
 import LegalRealCard from "../oms/legalRealCard.vue";
 import orderQueueCard from "../oms/orderQueueCard.vue";
 import { WatchlistColumns, DefaultCols, InstrumentCache, Side } from "@/types";
+import { useShortcut } from "@/utils/shortcutManager";
 
 export default defineComponent({
   props: ["watchlists", "selected"],
@@ -101,6 +102,7 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const i18n = useI18n();
+    const sh = useShortcut();
     const instruments: Array<InstrumentCache> = reactive([]);
     const formatter: ComputedRef<Intl.NumberFormat> = computed(
       () => store.getters["formatter"] as Intl.NumberFormat
@@ -144,7 +146,7 @@ export default defineComponent({
       }
       store.commit("oms/instruments/updateInstrument", { id: item.id, side });
       store.commit("oms/instruments/select", item);
-      context.emit("order");
+      store.commit("oms/instruments/setFocusMode", 0);
     }
     store
       .dispatch("oms/instruments/getInstrumentsDetail", props.watchlists)
@@ -155,6 +157,33 @@ export default defineComponent({
           ) as Array<InstrumentCache>)
         );
       });
+
+    sh.addShortcut({
+      key: "shift+a",
+      action: () => {
+        const item = store.getters["oms/instruments/getSelected"];
+        if (item) {
+          store.commit("oms/instruments/updateInstrument", {
+            id: item.id,
+            side: Side.Buy,
+          });
+          store.commit("oms/instruments/setFocusMode", 0);
+        }
+      },
+    });
+    sh.addShortcut({
+      key: "shift+s",
+      action: () => {
+        const item = store.getters["oms/instruments/getSelected"];
+        if (item) {
+          store.commit("oms/instruments/updateInstrument", {
+            id: item.id,
+            side: Side.Sell,
+          });
+          store.commit("oms/instruments/setFocusMode", 0);
+        }
+      },
+    });
 
     return {
       Side,

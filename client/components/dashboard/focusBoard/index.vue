@@ -13,7 +13,7 @@
       </v-btn-toggle>
     </v-toolbar>
     <v-card-text v-if="instruments.length > 0" class="ma-0 pa-0 focus-board">
-      <card-view @order="order" v-if="viewMode == 1" />
+      <card-view v-if="viewMode == 1" />
       <tab-view v-if="viewMode == 0" />
     </v-card-text>
   </v-card>
@@ -40,13 +40,18 @@ export default defineComponent({
   name: "focus-board",
   setup(props) {
     const store = useStore();
-    const instruments = computed(() => store.getters["oms/instruments/getFocus"]);
-    const viewMode: Ref<number> = ref(0);
-    function order() {
-      viewMode.value = 0;
-    }
+    const instruments = computed(
+      () => store.getters["oms/instruments/getFocus"]
+    );
+    const viewMode = computed({
+      set(value: number) {
+        store.commit("oms/instruments/setFocusMode", value);
+      },
+      get() {
+        return store.getters["oms/instruments/getFocusMode"];
+      },
+    });
     return {
-      order,
       viewMode,
       instruments,
     };
