@@ -126,6 +126,7 @@
 import { defineComponent, ref, Ref } from "@nuxtjs/composition-api";
 
 export default defineComponent({
+  layout: "public",
   setup(props) {
     const progress = ref(0);
     const step = ref(0);

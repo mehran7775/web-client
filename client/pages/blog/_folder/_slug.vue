@@ -13,6 +13,7 @@ import {
 } from "@nuxtjs/composition-api";
 
 export default defineComponent({
+  layout: "public",
   head: {},
   setup(params) {
     const ctx = useContext();

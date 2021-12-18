@@ -60,6 +60,7 @@
 import { defineComponent } from "@vue/composition-api";
 
 export default defineComponent({
+  layout: "public",
   components: {},
   setup() {
     function otp() {}

@@ -11,6 +11,7 @@ import { defineComponent } from "@vue/composition-api";
 import printer from "@/components/websocket_printer.vue";
 
 export default defineComponent({
+  layout: "public",
   components: {
     printer,
   },
