@@ -44,19 +44,21 @@
           {{ $t("login.forget-password") }}
         </nuxt-link>
       </div>
-      <h4 class="my-1">{{ $t("login.captcha") }}</h4>
-      <v-text-field
-        class="captcha"
-        v-model="data.captcha"
-        hide-details
-        outlined
-        dense
-      >
-        <template #append>
-          <v-img :src="captchaUrl" class="ma-0 pa-0 d-inline-block"> </v-img>
-          <v-icon @click="refreshCaptcha"> mdi-refresh </v-icon>
-        </template>
-      </v-text-field>
+      <div v-if="failedCount > 3">
+        <h4 class="my-1">{{ $t("login.captcha") }}</h4>
+        <v-text-field
+          class="captcha"
+          v-model="data.captcha"
+          hide-details
+          outlined
+          dense
+        >
+          <template #append>
+            <v-img :src="captchaUrl" class="ma-0 pa-0 d-inline-block"> </v-img>
+            <v-icon @click="refreshCaptcha"> mdi-refresh </v-icon>
+          </template>
+        </v-text-field>
+      </div>
       <div>
         <v-radio-group v-model="data.passwordType" row>
           <v-radio
