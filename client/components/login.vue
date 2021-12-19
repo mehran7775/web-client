@@ -33,11 +33,30 @@
         outlined
         dense
       />
-      <div class="justify-end">
+      <div
+        :class="{
+          'justify-end my-1': true,
+          'text-left': rtl,
+          'text-right': !rtl,
+        }"
+      >
         <nuxt-link to="/reset-password">
           {{ $t("login.forget-password") }}
         </nuxt-link>
       </div>
+      <h4 class="my-1">{{ $t("login.captcha") }}</h4>
+      <v-text-field
+        class="captcha"
+        v-model="data.captcha"
+        hide-details
+        outlined
+        dense
+      >
+        <template #append>
+          <v-img :src="captchaUrl" class="ma-0 pa-0 d-inline-block"> </v-img>
+          <v-icon @click="refreshCaptcha"> mdi-refresh </v-icon>
+        </template>
+      </v-text-field>
       <div>
         <v-radio-group v-model="data.passwordType" row>
           <v-radio
@@ -55,14 +74,14 @@
           />
         </v-radio-group>
       </div>
-      <client-only>
+      <!-- <client-only>
         <vue-hcaptcha
           v-if="failedCount > 3"
           sitekey="41a134fc-7604-4ee1-a5df-40c97195491a"
           language="fa"
           @verify="captchaResult"
         ></vue-hcaptcha>
-      </client-only>
+      </client-only> -->
     </v-form>
     <v-card-actions>
       <v-btn
@@ -126,8 +145,13 @@ export default defineComponent({
     const data: Ref<Login> = ref(new Login("", "", ""));
     const snacs = reactive([]);
     const i18n = useI18n();
+    const captcha =
+      process.env.VUE_APP_Host + "sso/captcha?width=100&height=32&r=";
+    const captchaUrl = ref(captcha);
 
     const failedCount = computed(() => store.getters["sso/user/tryCount"]);
+    const rtl = computed(() => store.getters["rtl"]);
+
     async function login(data: Login) {
       loading.value = true;
       try {
@@ -165,11 +189,18 @@ export default defineComponent({
       store.dispatch("sso/user/checkTries", val);
     }
 
+    function refreshCaptcha() {
+      captchaUrl.value = captcha + Math.random() * 1000000;
+    }
+
     return {
       login,
       snack,
       captchaResult,
       checkTries,
+      refreshCaptcha,
+      captchaUrl,
+      rtl,
       failedCount,
       loading,
       showPassword,
@@ -185,8 +216,13 @@ export default defineComponent({
 </script>
 
 <style lang="sass">
+a
+  text-decoration: none
 .font-12
   font-size: 12px
+.captcha
+  .v-input__append-inner
+    margin-top: 3px !important
 .radio-ckeck
   border-radius: 5px
   width: calc( 50% - 8px )
