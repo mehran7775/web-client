@@ -27,11 +27,11 @@ export default defineComponent({
   color: white
 .login
   height: 100%
-@media (min-width: 961px)
+@media (min-width: 960px)
   .login-col
     padding: 0 calc(25% - 161px)
 
-@media (max-width: 960px)
+@media (max-width: 959px)
   .login-col
     padding: 0 calc(50% - 161px)
 
