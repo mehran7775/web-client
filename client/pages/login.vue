@@ -27,8 +27,14 @@ export default defineComponent({
   color: white
 .login
   height: 100%
-.login-col
-  padding: 0 calc(50% - 161px)
+@media (min-width: 961px)
+  .login-col
+    padding: 0 calc(25% - 161px)
+
+@media (max-width: 960px)
+  .login-col
+    padding: 0 calc(50% - 161px)
+
 .img-col
   height: 100vh
 .logo
