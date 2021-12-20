@@ -39,6 +39,9 @@
         </v-col>
       </v-row>
     </template>
+    <template #item.wealth="{ item }">
+      {{ getWealth(item) }}
+    </template>
     <template #item.opening="{ item }">
       <span dir="ltr">
         {{ formatter.format(item.opening) }}
@@ -93,7 +96,14 @@ import {
 import instrumentCard from "../oms/instrumentCardCompact.vue";
 import LegalRealCard from "../oms/legalRealCard.vue";
 import orderQueueCard from "../oms/orderQueueCard.vue";
-import { WatchlistColumns, DefaultCols, InstrumentCache, Side } from "@/types";
+import {
+  WatchlistColumns,
+  DefaultCols,
+  InstrumentCache,
+  Side,
+  Wealth,
+  WealthSearchModel,
+} from "@/types";
 import { useShortcut } from "@/utils/shortcutManager";
 
 export default defineComponent({
@@ -104,6 +114,7 @@ export default defineComponent({
     const i18n = useI18n();
     const sh = useShortcut();
     const instruments: Array<InstrumentCache> = reactive([]);
+    const wealth: Array<Wealth> = reactive([]);
     const formatter: ComputedRef<Intl.NumberFormat> = computed(
       () => store.getters["formatter"] as Intl.NumberFormat
     );
@@ -148,6 +159,11 @@ export default defineComponent({
       store.commit("oms/instruments/select", item);
       store.commit("oms/instruments/setFocusMode", 0);
     }
+    const getWealth = computed(() => (item: InstrumentCache) => {
+      return formatter.value.format(
+        wealth.find((w) => w.id == item.id)?.amount ?? 0
+      );
+    });
     store
       .dispatch("oms/instruments/getInstrumentsDetail", props.watchlists)
       .then(() => {
@@ -157,6 +173,10 @@ export default defineComponent({
           ) as Array<InstrumentCache>)
         );
       });
+
+    store.dispatch("wealth/getWealth", new WealthSearchModel()).then((data) => {
+      wealth.push(...data);
+    });
 
     sh.addShortcut({
       key: "shift+a",
@@ -192,6 +212,7 @@ export default defineComponent({
       onExpand,
       headers: headers,
       inst: instruments,
+      getWealth,
       expanded,
     };
     //TODO remove in vue3
