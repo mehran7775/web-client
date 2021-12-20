@@ -38,6 +38,7 @@
     "confirm-information": "اطلاعات مورد تایید است",
     "next": "ادامه",
     "previous": "قبلی",
+    "status":"وضعیت",
     "date": {
       "dt": "D-T",
       "d": "D",
@@ -207,7 +208,14 @@
   "wealth": {
     "wealth": "دارایی",
     "shares": "سهام",
-    "sharesCount": "@:oms.count @:wealth.shares"
+    "sharesCount": "@:oms.count @:wealth.shares",
+    "order": {
+      "creationDate": "تاریخ سفارش",
+      "vol": "حجم سفارش",
+      "type": "نوع",
+      "side": "خرید/فروش",
+      "validity": "اعتبار"
+    }
   },
   "login": {
     "login": "ورود",

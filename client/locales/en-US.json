@@ -21,6 +21,7 @@
     "types": "Types",
     "next": "Next",
     "previous": "Previous",
+    "status": "Status",
     "date": {
       "dt": "D T",
       "d": "D",
@@ -175,7 +176,14 @@
   "wealth": {
     "wealth": "Wealth",
     "shares": "Shares",
-    "sharesCount": "@:wealth.shares @:oms.count"
+    "sharesCount": "@:wealth.shares @:oms.count",
+    "order": {
+      "creationDate": "Creation Date",
+      "vol": "Volume",
+      "type": "Type",
+      "side": "Side",
+      "validity": "Validity"
+    }
   },
   "login": {
     "login": "Login",
@@ -220,7 +228,7 @@
     "depth": "Deep Market Information",
     "more": "Details"
   },
-  "log":{
+  "log": {
     "enter": "Login",
     "exit": "Logout"
   }

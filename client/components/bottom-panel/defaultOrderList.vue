@@ -1,16 +1,19 @@
 <template>
-  <v-container fluid>
-    <v-row dense>
-      <v-col>
-        <v-data-table :items="orders" :headers="cols"> </v-data-table>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-data-table :items="orders" :headers="cols">
+    <template #item.validity="{item}">
+      {{item.validityDate}}
+    </template>
+  </v-data-table>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, useStore } from "@nuxtjs/composition-api";
-import { Order, OrderSearchModel, PaginatedResult } from "@/types";
+import {
+  Order,
+  OrderSearchModel,
+  PaginatedResult,
+  WatchlistColumns,
+} from "@/types";
 
 export default defineComponent({
   setup(params, context) {
@@ -18,10 +21,14 @@ export default defineComponent({
     const i18n = useI18n();
     const orders: Order[] = reactive([]);
     const cols = [
-      {
-        text: "id",
-        value: "id",
-      },
+      new WatchlistColumns(i18n.t("wealth.order.creationDate").toString(), "creationDate"),
+      new WatchlistColumns(i18n.t("instrument.name").toString(), "name"),
+      new WatchlistColumns(i18n.t("wealth.wealth").toString(), "wealth"),
+      new WatchlistColumns(i18n.t("wealth.order.vol").toString(), "quantity"),
+      new WatchlistColumns(i18n.t("wealth.order.type").toString(), "orderType"),
+      new WatchlistColumns(i18n.t("wealth.order.side").toString(), "side"),
+      new WatchlistColumns(i18n.t("wealth.order.validity").toString(), "validity"),
+      new WatchlistColumns(i18n.t("general.status").toString(), "flags"),
     ];
 
     store

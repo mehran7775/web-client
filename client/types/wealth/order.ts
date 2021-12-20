@@ -3,18 +3,18 @@ import { Paginated } from "@/types"
 
 export class Order {
   id: number
-  instrument_id: number
-  creation_date: string
+  instrumentId: number
+  creationDate: string
   quantity: number
-  remain_quantity: number
-  min_quantity: number
-  disclose_quantity: number
-  entered_price: number
-  trigger_price: number
+  remainQuantity: number
+  minQuantity: number
+  discloseQuantity: number
+  enteredPrice: number
+  triggerPrice: number
   side: Side
-  order_type: OrderType
-  validity_type: ValidationType
-  validity_date: string | null
+  orderType: OrderType
+  validityType: ValidationType
+  validityDate: string | null
   flags: number
   constructor(instrument_id: number,
     quantity: number,
@@ -27,18 +27,18 @@ export class Order {
     validity_type: ValidationType,
     validity_date: string | null) {
     this.id = -1
-    this.instrument_id = instrument_id
-    this.creation_date = DateTime.now().toISO()
+    this.instrumentId = instrument_id
+    this.creationDate = DateTime.now().toISO()
     this.quantity = quantity
-    this.remain_quantity = quantity
-    this.min_quantity = min_quantity
-    this.disclose_quantity = disclose_quantity
-    this.entered_price = entered_price
-    this.trigger_price = trigger_price
+    this.remainQuantity = quantity
+    this.minQuantity = min_quantity
+    this.discloseQuantity = disclose_quantity
+    this.enteredPrice = entered_price
+    this.triggerPrice = trigger_price
     this.side = side
-    this.order_type = order_type
-    this.validity_type = validity_type
-    this.validity_date = validity_date
+    this.orderType = order_type
+    this.validityType = validity_type
+    this.validityDate = validity_date
     this.flags = Flags.Draft
   }
 }
