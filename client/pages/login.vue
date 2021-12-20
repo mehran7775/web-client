@@ -1,7 +1,7 @@
 <template>
   <v-container class="login ma-0 pa-0" fluid>
     <v-row class="ma-0 pa-0">
-      <v-col md="6" sm="12" class="ma-0 pt-8 login-col">
+      <v-col md="6" sm="12" class="ma-0 pt-8 login-col justify-center">
         <nuxt-link to="/about-us" class="logo"></nuxt-link>
         <login :width="322" :input-height="42" />
       </v-col>
@@ -28,7 +28,7 @@ export default defineComponent({
 .login
   height: 100%
 .login-col
-  padding: 0 182px
+  padding: 0 calc(50% - 161px)
 .img-col
   height: 100vh
 .logo

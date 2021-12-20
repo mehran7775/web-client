@@ -2,6 +2,7 @@
   <v-card
     class="ma-0 pa-0"
     :max-width="width"
+    :min-width="width"
     elevation="0"
     color="transparent"
     :loading="loading"
@@ -28,7 +29,11 @@
         prepend-inner-icon="mdi-lock"
         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append="showPassword = !showPassword"
-        @keyup.enter="login(data)"
+        @keyup.enter="
+          () => {
+            if (failedCount <= 3) login(data);
+          }
+        "
         hide-details
         outlined
         dense
@@ -49,6 +54,11 @@
         <v-text-field
           class="captcha"
           v-model="data.captcha"
+          @keyup.enter="
+            () => {
+              if (failedCount > 3) login(data);
+            }
+          "
           hide-details
           outlined
           dense
@@ -178,6 +188,7 @@ export default defineComponent({
         }
       } finally {
         loading.value = false;
+        refreshCaptcha();
       }
     }
     function snack(data: Snack) {
