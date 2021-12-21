@@ -239,9 +239,10 @@ a
 .radio-ckeck
   border-radius: 5px
   width: calc( 50% - 8px )
-  background-color: var(--v-primary-lighten5)
+  background-color: var(--v-default-lighten3)
   font-weight: bold
   &.v-item--active
+    background-color: var(--v-primary-lighten5)
     label
       color: var(--v-primary-base)
   .v-input--selection-controls__input

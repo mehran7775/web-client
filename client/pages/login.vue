@@ -6,6 +6,12 @@
         <login :width="322" :input-height="42" />
       </v-col>
       <v-col md="6" sm="0" class="px-8 img-col d-none d-md-block extra">
+        <div class="pie pie-1">
+          <div class="pie-inner"></div>
+        </div>
+        <div class="pie pie-2">
+          <div class="pie-inner"></div>
+        </div>
         <content-slider :interval="7.5" src="login-slider" />
       </v-col>
     </v-row>
@@ -21,9 +27,37 @@ export default defineComponent({
 });
 </script>
 
+<style lang="sass">
+.pie, .pie-inner
+  position: absolute
+  border-radius: 50%
+.pie
+  background-color: var(--v-primary-lighten1)
+  height: 593px
+  width: 593px
+.pie-inner
+    background-color: var(--v-primary-base)
+    height: 296px
+    width: 296px
+.pie-1
+  top: -50%
+  right: -50%
+  .pie-inner
+    top: 25%
+    right: 25%
+    
+.pie-2
+  bottom: -50%
+  left: -50%
+  .pie-inner
+    bottom: 25%
+    left: 25%
+
+</style>
+
 <style lang="sass" scoped>
 .extra
-  background-color: var(--v-primary-lighten1)
+  background-color: var(--v-primary-base)
   color: white
 .login
   height: 100%
@@ -36,9 +70,11 @@ export default defineComponent({
     padding: 0 calc(50% - 161px)
 
 .img-col
+  position: relative
   padding: 5% 0
   height: 100vh
   min-height: 600px
+  overflow: hidden
 .logo
   width: 48px
   height: 54px
