@@ -5,8 +5,8 @@
         <nuxt-link to="/about-us" class="logo"></nuxt-link>
         <login :width="322" :input-height="42" />
       </v-col>
-      <v-col md="6" sm="0" class="img-col d-none d-md-block extra">
-        <content-slider :interval="3" src="login-slider" />
+      <v-col md="6" sm="0" class="px-8 img-col d-none d-md-block extra">
+        <content-slider :interval="7.5" src="login-slider" />
       </v-col>
     </v-row>
   </v-container>

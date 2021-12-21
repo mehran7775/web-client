@@ -24,6 +24,7 @@
         </v-btn>
       </v-item>
     </v-item-group>
+    <div></div>
   </div>
 </template>
 
@@ -84,10 +85,18 @@ export default defineComponent({
 </script>
 
 <style lang="sass" scoped>
+.hover
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: calc(100% - 24px)
 .slider
+  position: relative
   height: 100%
 .slide
   height: calc( 100% - 24px )
+  overflow: auto
 .controll
   text-align: center
   justify-content: center
