@@ -35,7 +35,7 @@ import {
   useContext,
 } from "@nuxtjs/composition-api";
 import { autoComplete } from "@/repositories/oms/instruments_manager";
-import { AutoCompleteItem } from "@/types";
+import { AutoCompleteItem, AutoCompleteSearchModel } from "@/types";
 
 export default defineComponent({
   emits: ["input"],
@@ -49,7 +49,10 @@ export default defineComponent({
         loading.value = true;
         entries.splice(0, entries.length);
         try {
-          const res = await autoComplete(value, axios);
+          const res = await autoComplete(
+            new AutoCompleteSearchModel(value),
+            axios
+          );
           entries.push(...res.data.data);
         } finally {
           loading.value = false;
