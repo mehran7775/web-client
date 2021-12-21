@@ -1,7 +1,7 @@
 <template>
   <splitpanes class="default-theme" :rtl="rtl">
     <pane min-size="10" max-size="30">
-      <v-list class="toc">
+      <v-list class="toc-md">
         <v-list-item-group>
           <v-list-item
             v-for="link of document ? document.toc : []"
@@ -17,7 +17,7 @@
     </pane>
     <pane size="80">
       <v-container tag="article">
-        <nuxt-content :document="document" class="doc" />
+        <nuxt-content :document="document" class="doc-md" />
       </v-container>
     </pane>
   </splitpanes>
@@ -80,21 +80,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="sass">
-.doc
-  *
-    text-align: start
-    unicode-bidi: plaintext
-  h1
-    text-align: center
-  pre, code, .sourceCode, .ltr
-    direction: ltr
-    text-align: left
-    unicode-bidi: -webkit-isolate
-    unicode-bidi: -moz-isolate
-    unicode-bidi: isolate
-.toc
-  height: calc(100vh - 96px)
-  overflow: auto
-</style>

@@ -6,7 +6,7 @@
         <login :width="322" :input-height="42" />
       </v-col>
       <v-col md="6" sm="0" class="img-col d-none d-md-block extra">
-        <h1>this is a picture</h1>
+        <content-slider src="login-slider" />
       </v-col>
     </v-row>
   </v-container>
