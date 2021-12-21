@@ -32,27 +32,26 @@ export default defineComponent({
   position: absolute
   border-radius: 50%
 .pie
-  background-color: var(--v-primary-lighten1)
+  background-color: rgba(255, 255, 255, 0.10)
   height: 593px
   width: 593px
 .pie-inner
-    background-color: var(--v-primary-base)
-    height: 296px
-    width: 296px
+  background-color: var(--v-primary-base)
+  height: 296px
+  width: 296px
 .pie-1
   top: -50%
   right: -50%
   .pie-inner
     top: 25%
     right: 25%
-    
+
 .pie-2
   bottom: -50%
   left: -50%
   .pie-inner
     bottom: 25%
     left: 25%
-
 </style>
 
 <style lang="sass" scoped>
