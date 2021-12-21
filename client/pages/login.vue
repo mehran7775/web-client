@@ -36,7 +36,9 @@ export default defineComponent({
     padding: 0 calc(50% - 161px)
 
 .img-col
+  padding: 5% 0
   height: 100vh
+  min-height: 600px
 .logo
   width: 48px
   height: 54px

@@ -31,7 +31,7 @@
         @click:append="showPassword = !showPassword"
         @keyup.enter="
           () => {
-            if (failedCount <= 3) login(data);
+            if (false) login(data);
           }
         "
         hide-details
@@ -49,14 +49,14 @@
           {{ $t("login.forget-password") }}
         </nuxt-link>
       </div>
-      <div v-if="failedCount > 3">
+      <div v-if="true">
         <h4 class="my-1">{{ $t("login.captcha") }}</h4>
         <v-text-field
           class="captcha"
           v-model="data.captcha"
           @keyup.enter="
             () => {
-              if (failedCount > 3) login(data);
+              if (true) login(data);
             }
           "
           hide-details
