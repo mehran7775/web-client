@@ -1,5 +1,10 @@
 <template>
-  <div class="ma-0 pa-0 slider" fluid>
+  <div
+    class="ma-0 pa-0 slider"
+    @mouseenter="stopTimer"
+    @mouseleave="startTimer"
+    fluid
+  >
     <v-window class="slide" v-model="slide">
       <v-window-item v-for="doc in docs" :key="doc.path">
         <nuxt-content :document="doc" class="doc-md" />
@@ -38,12 +43,24 @@ import {
 export default defineComponent({
   props: {
     src: String,
+    interval: Number,
   },
   setup(params) {
     const ctx = useContext();
     const store = useStore();
     const locale = computed(() => store.getters["locale"]);
     const slide = ref(0);
+    let timer: NodeJS.Timeout | null = null;
+
+    function startTimer() {
+      if (params.interval)
+        timer = setInterval(() => {
+          if (docs.length > 0) slide.value = (slide.value + 1) % docs.length;
+        }, params.interval * 1000);
+    }
+    function stopTimer() {
+      if (timer) clearInterval(timer);
+    }
 
     const docs: FetchReturn[] = reactive([]);
 
@@ -53,9 +70,12 @@ export default defineComponent({
       .then((res) => {
         if (!Array.isArray(res)) docs.push(res);
         else docs.push(...res);
+        startTimer();
       });
 
     return {
+      startTimer,
+      stopTimer,
       docs,
       slide,
     };
