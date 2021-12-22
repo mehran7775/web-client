@@ -69,23 +69,25 @@
           </template>
         </v-text-field>
       </div>
-      <div>
-        <v-radio-group v-model="data.passwordType" row>
-          <v-radio
-            v-for="item in [
-              { value: 1, text: $t('login.static') },
-              { value: 2, text: $t('login.otp') },
-            ]"
-            :ripple="false"
-            :key="item.value"
-            :label="item.text"
-            :value="item.value"
-            on-icon="mdi-check-circle"
-            off-icon="mdi-check-circle-outline"
-            class="radio-ckeck ma-0 mx-1 pa-2"
-          />
-        </v-radio-group>
-      </div>
+      <v-radio-group v-model="data.passwordType" row>
+        <v-radio
+          v-for="(item, index) in [
+            { value: 1, text: $t('login.static') },
+            { value: 2, text: $t('login.otp') },
+          ]"
+          :ripple="false"
+          :key="item.value"
+          :label="item.text"
+          :value="item.value"
+          on-icon="mdi-check-circle"
+          off-icon="mdi-check-circle-outline"
+          :class="{
+            'radio-ckeck ma-0 pa-2': true,
+            'me-1': index != 1, //last index
+          }"
+          style="width: calc(50% - 2px)"
+        />
+      </v-radio-group>
       <!-- <client-only>
         <vue-hcaptcha
           v-if="failedCount > 3"
@@ -94,10 +96,8 @@
           @verify="captchaResult"
         ></vue-hcaptcha>
       </client-only> -->
-    </v-form>
-    <v-card-actions>
       <v-btn
-        class="font-weight-bold"
+        class="font-weight-bold my-1"
         depressed
         color="primary"
         @click="login(data)"
@@ -106,20 +106,19 @@
       >
         {{ $t("login.login") }}
       </v-btn>
-    </v-card-actions>
-    <v-card-actions>
-      <v-btn
-        class="font-weight-bold"
-        depressed
-        color="primary"
-        to="/registration"
-        width="100%"
-        :height="inputHeight"
-        outlined
-      >
-        {{ $t("login.registration") }}
-      </v-btn>
-    </v-card-actions>
+    </v-form>
+    <v-btn
+      class="font-weight-bold my-1"
+      depressed
+      color="primary"
+      to="/registration"
+      width="100%"
+      :height="inputHeight"
+      outlined
+    >
+      {{ $t("login.registration") }}
+    </v-btn>
+
     <v-card-actions class="text-center justify-center font-12">
       {{ $t("login.alerts") }}
     </v-card-actions>
