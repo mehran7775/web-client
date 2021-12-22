@@ -1,6 +1,9 @@
 <template>
   <splitpanes class="default-theme" :rtl="rtl">
-    <pane min-size="10" max-size="30">
+    <pane class="tok" min-size="10" max-size="30">
+      <div class="pie-1 pie">
+        <div class="pie-inner"></div>
+      </div>
       <v-list class="toc-md">
         <v-list-item-group>
           <v-list-item
@@ -16,7 +19,13 @@
       </v-list>
     </pane>
     <pane size="80">
-      <v-container tag="article">
+      <v-container class="article ma-0 pa-5" tag="article">
+        <div class="pie-2 pie">
+          <div class="pie-inner"></div>
+        </div>
+        <div class="pie-3 pie">
+          <div class="pie-inner"></div>
+        </div>
         <nuxt-content :document="document" class="doc-md" />
       </v-container>
     </pane>
@@ -81,6 +90,23 @@ export default defineComponent({
 </script>
 
 <style lang="sass" scoped>
+.pie-1
+  top: 25px
+  right: -390px
+.pie-2
+  top: 0
+  right: -25%
+  transform: scale(50%)
+.pie-3
+  bottom: -35%
+  left: 0
+  transform: scale(75%)
+.article
+  width: 100%
+  height: 100%
+  position: relative
+.tok
+  position: relative
 .toc-md
   .v-list,
   &.v-list
