@@ -1,4 +1,4 @@
-FROM artifactory.asredanesh.com/docker/node:current-buster-slim
+FROM artifactory.asredanesh.com/docker/node:lts-stretch-slim
 # Install node packages
 WORKDIR /usr/src/app
 COPY ./client/package.json ./

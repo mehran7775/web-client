@@ -1,5 +1,5 @@
 <template>
-  <v-container class="ma-0 pa-0 pt-12" fluid>
+  <v-container class="ma-0 pa-0 pt-16" fluid>
     <div class="pie-1 pie">
       <div class="pie-inner"></div>
     </div>
@@ -80,7 +80,7 @@
                         <v-text-field :label="$t('login.otp')"> </v-text-field>
                       </v-col>
                       <v-col cols="3" class="justify-center text-center">
-                        <client-only>
+                        <!-- <client-only>
                           <vue-hcaptcha
                             sitekey="41a134fc-7604-4ee1-a5df-40c97195491a"
                             language="fa"
@@ -88,7 +88,7 @@
                             data-theme="dark"
                             @verify="captchaResult"
                           ></vue-hcaptcha>
-                        </client-only>
+                        </client-only> -->
                         <v-btn color="primary">
                           {{ $t("login.send-sms") }}
                         </v-btn>
