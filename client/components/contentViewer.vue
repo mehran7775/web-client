@@ -26,7 +26,6 @@
 <script lang="ts">
 import { FetchReturn } from "@nuxt/content/types/query-builder";
 import { Splitpanes, Pane } from "splitpanes";
-import "splitpanes/dist/splitpanes.css";
 
 import {
   defineComponent,
@@ -80,3 +79,13 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="sass" scoped>
+.toc-md
+  .v-list,
+  &.v-list
+    color: inherit
+    background-color: transparent
+    .v-list-item
+      color: inherit
+</style>

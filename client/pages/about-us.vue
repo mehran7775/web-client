@@ -5,7 +5,6 @@
 <script lang="ts">
 import { FetchReturn } from "@nuxt/content/types/query-builder";
 import { Splitpanes, Pane } from "splitpanes";
-import "splitpanes/dist/splitpanes.css";
 
 import {
   defineComponent,
