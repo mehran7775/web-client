@@ -37,9 +37,8 @@ export function useShortcut(): ShortcutManager {
     }
   }
   if (process.client) {
-    document.addEventListener("keydown", (ev) => {
-      res.handel(ev)
-    })
+    document.removeEventListener("keydown", res.handel)
+    document.addEventListener("keydown", res.handel)
   }
   return res
 }

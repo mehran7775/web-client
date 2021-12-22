@@ -1,0 +1,18 @@
+.dotted
+  position: relative
+  &::before
+    content: " "
+    position: absolute
+    width: 150px
+    height: 150px
+    top: calc( (100% - 576px) / 2 )
+    left: -45px
+    background-image: url('assets/images/dots.png')
+  &::after
+    content: " "
+    position: absolute
+    width: 150px
+    height: 150px
+    bottom: calc( (100% - 576px) / 2 )
+    right: -45px
+    background-image: url('assets/images/dots.png')

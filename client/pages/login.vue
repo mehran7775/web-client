@@ -5,7 +5,7 @@
         <nuxt-link to="/about-us" class="logo"></nuxt-link>
         <login :width="322" :input-height="42" />
       </v-col>
-      <v-col md="6" sm="0" class="px-8 img-col d-none d-md-block extra">
+      <v-col md="6" sm="0" class="px-8 img-col d-none d-md-block">
         <div class="pie pie-1">
           <div class="pie-inner"></div>
         </div>
@@ -27,39 +27,18 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass">
-.pie, .pie-inner
-  position: absolute
-  border-radius: 50%
-.pie
-  background-color: rgba(255, 255, 255, 0.10)
-  height: 593px
-  width: 593px
-.pie-inner
-  background-color: var(--v-primary-base)
-  height: 296px
-  width: 296px
+<style lang="sass" scoped>
 .pie-1
   top: -296px
   right: -296px
-  .pie-inner
-    top: 25%
-    right: 25%
-
 .pie-2
   bottom: -296px
   left: -296px
-  .pie-inner
-    bottom: 25%
-    left: 25%
-</style>
-
-<style lang="sass" scoped>
-.extra
-  background-color: var(--v-primary-base)
-  color: white
+  
 .login
   height: 100%
+.login-col
+  background-color: white
 @media (min-width: 960px)
   .login-col
     padding: 0 calc(25% - 161px)
@@ -67,7 +46,6 @@ export default defineComponent({
 @media (max-width: 959px)
   .login-col
     padding: 0 calc(50% - 161px)
-
 .img-col
   position: relative
   padding: 5% 0

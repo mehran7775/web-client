@@ -7,17 +7,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@nuxtjs/composition-api";
+import { defineComponent, ref } from "@nuxtjs/composition-api";
 import snackbar from "@/components/snacks.vue";
 
 export default defineComponent({
   components: {
     snackbar,
   },
-  setup(props, context) {},
+  setup(props, context) {
+    const memory = ref(null);
+    return { memory };
+  },
 });
 </script>
 
-<style scoped>
-
+<style lang="sass" scoped>
+.v-main
+  background-color: var(--v-primary-base)
+  color: white
 </style>

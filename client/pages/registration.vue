@@ -1,5 +1,11 @@
 <template>
-  <v-container class="login ma-0 pa-0 pt-5" fluid>
+  <v-container class="ma-0 pa-0 pt-12" fluid>
+    <div class="pie-1 pie">
+      <div class="pie-inner"></div>
+    </div>
+    <div class="pie-2 pie">
+      <div class="pie-inner"></div>
+    </div>
     <v-row>
       <v-col></v-col>
       <v-col class="justify-center align-center text-center">
@@ -10,7 +16,7 @@
     <v-row>
       <v-col cols="2"></v-col>
       <v-col cols="8">
-        <v-card>
+        <v-card class="dotted">
           <v-card-title class="text-center justify-center">
             {{ $t("login.registration") }}
           </v-card-title>
@@ -52,7 +58,7 @@
                         </v-text-field>
                       </v-col>
                       <v-col cols="3" class="justify-center text-center">
-                        <client-only>
+                        <!-- <client-only>
                           <vue-hcaptcha
                             sitekey="41a134fc-7604-4ee1-a5df-40c97195491a"
                             language="fa"
@@ -60,7 +66,7 @@
                             data-theme="dark"
                             @verify="captchaResult"
                           ></vue-hcaptcha>
-                        </client-only>
+                        </client-only> -->
                       </v-col>
                     </v-row>
                   </v-container>
@@ -94,9 +100,7 @@
               <v-stepper-content step="2">
                 <v-form v-model="forms.form2" ref="forms.rform2">
                   <v-card>
-                    <v-card-text>
-                      اطلاعات سجام
-                    </v-card-text>
+                    <v-card-text> اطلاعات سجام </v-card-text>
                     <v-card-actions>
                       <v-checkbox :label="$t('general.confirm-information')">
                       </v-checkbox>
@@ -159,3 +163,12 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="sass" scoped>
+.pie-1
+  top: -290px
+  right: -100px
+.pie-2
+  bottom: -290px
+  left: -100px
+</style>

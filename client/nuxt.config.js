@@ -22,7 +22,6 @@ export default {
   },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    "@/assets/main.scss",
     "@/assets/main.sass",
   ],
 
@@ -85,7 +84,7 @@ export default {
   vuetify: {
     defaultAssets: false,
     treeShake: true,
-    customVariables: ['~/assets/variables.scss'],
+    customVariables: ['~/assets/variables.sass'],
     optionsPath: '@/plugins/vuetify.options.js',
   },
 
