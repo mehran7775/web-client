@@ -40,15 +40,15 @@ export default defineComponent({
   height: 296px
   width: 296px
 .pie-1
-  top: -50%
-  right: -50%
+  top: -296px
+  right: -296px
   .pie-inner
     top: 25%
     right: 25%
 
 .pie-2
-  bottom: -50%
-  left: -50%
+  bottom: -296px
+  left: -296px
   .pie-inner
     bottom: 25%
     left: 25%
