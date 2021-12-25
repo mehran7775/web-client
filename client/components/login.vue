@@ -119,9 +119,10 @@
       {{ $t("login.registration") }}
     </v-btn>
 
-    <v-card-actions class="text-center justify-center font-12">
-      {{ $t("login.alerts") }}
-    </v-card-actions>
+    <div
+      v-html="$t('login.alerts')"
+      class="text-center justify-center font-12"
+    ></div>
   </v-card>
 </template>
 

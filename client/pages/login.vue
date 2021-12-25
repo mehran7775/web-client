@@ -52,13 +52,4 @@ export default defineComponent({
   height: 100vh
   min-height: 600px
   overflow: hidden
-.logo
-  width: 48px
-  height: 54px
-  background: url(@/assets/images/logo.png) no-repeat left top
-  display: inline-block
-  padding: 0
-
-.logo:hover
-  background-position: right top
 </style>
