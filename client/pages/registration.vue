@@ -48,7 +48,7 @@
               </v-stepper-step>
             </v-stepper-header>
             <v-stepper-items>
-              <v-stepper-content class="ma-0 pa-0" step="1">
+              <v-stepper-content class="ma-0 my-2 pa-0" step="1">
                 <v-form v-model="forms.form0" ref="forms.rform0">
                   <h4>{{ $t("user.profile.nid") }}</h4>
                   <v-text-field
@@ -70,16 +70,57 @@
                   </v-text-field>
                 </v-form>
               </v-stepper-content>
-              <v-stepper-content step="2">
+              <v-stepper-content class="ma-0 my-2 pa-0" step="2">
                 <v-form v-model="forms.form1" ref="forms.rform1">
-                  <v-text-field :label="$t('login.otp')"> </v-text-field>
-
-                  <v-btn color="primary">
-                    {{ $t("login.send-sms") }}
-                  </v-btn>
+                  <div v-if="true">
+                    <h4 class="my-1">{{ $t("login.captcha") }}</h4>
+                    <v-text-field
+                      class="captcha"
+                      @keyup.enter="() => {}"
+                      hide-details
+                      outlined
+                      dense
+                    >
+                      <template #append>
+                        <v-img
+                          :src="captchaUrl"
+                          class="ma-0 pa-0 d-inline-block"
+                        >
+                        </v-img>
+                        <v-icon @click="refreshCaptcha"> mdi-refresh </v-icon>
+                      </template>
+                    </v-text-field>
+                  </div>
+                  <div>
+                    <h4>
+                      {{ $t("login.otp") }}
+                    </h4>
+                    <v-text-field class="otp" hide-details outlined dense>
+                      <template #append>
+                        <v-btn
+                          class="primary"
+                          color="primary"
+                          width="100"
+                          :disabled="counter > 0"
+                          @click="requestOtp"
+                          depressed
+                        >
+                          <span v-if="counter == 0">
+                            {{ $t("login.send-sms") }}
+                          </span>
+                          <span v-else>
+                            <v-icon size="17"> mdi-clock </v-icon>
+                            {{ formatter.format(Math.floor(counter / 60)) }}:{{
+                              formatter.format(counter % 60)
+                            }}
+                          </span>
+                        </v-btn>
+                      </template>
+                    </v-text-field>
+                  </div>
                 </v-form>
               </v-stepper-content>
-              <v-stepper-content step="3">
+              <v-stepper-content class="ma-0 my-2 pa-0" step="3">
                 <v-form v-model="forms.form2" ref="forms.rform2">
                   <v-card>
                     <v-card-text> اطلاعات سجام </v-card-text>
@@ -107,13 +148,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, useContext } from "@nuxtjs/composition-api";
+import {
+  defineComponent,
+  ref,
+  Ref,
+  computed,
+  ComputedRef,
+  useContext,
+  useStore,
+} from "@nuxtjs/composition-api";
 
 export default defineComponent({
   layout: "public",
   setup(props) {
+    const store = useStore();
     const ctx = useContext();
     const progress = ref(0);
+    const counter = ref(0);
+    let timer: NodeJS.Timeout | null = null;
     const step = ref(1);
     const forms: Ref<any> = ref({
       form1: null,
@@ -123,6 +175,13 @@ export default defineComponent({
       rform2: null,
       rform0: null,
     });
+    const captcha =
+      process.env.VUE_APP_Host + "sso/captcha?width=100&height=32&r=";
+    const captchaUrl = ref(captcha);
+    const formatter: ComputedRef<Intl.NumberFormat> = computed(
+      () => store.getters["formatter"] as Intl.NumberFormat
+    );
+    const rtl = computed(() => store.getters["rtl"]);
 
     function captchaResult() {}
 
@@ -142,11 +201,30 @@ export default defineComponent({
           break;
       }
     }
+    function refreshCaptcha() {
+      captchaUrl.value = captcha + Math.random() * 1000000;
+    }
+    function requestOtp() {
+      counter.value = 90;
+      timer = setInterval(() => {
+        if (counter.value > 1) counter.value = counter.value - 1;
+        else {
+          if (timer) clearInterval(timer);
+          counter.value = 0;
+        }
+      }, 1000);
+    }
     return {
+      rtl,
+      formatter,
       forms,
+      captchaUrl,
       back,
       validate,
       captchaResult,
+      refreshCaptcha,
+      counter,
+      requestOtp,
       step,
       progress,
     };
@@ -154,7 +232,23 @@ export default defineComponent({
 });
 </script>
 
+<style lang="sass">
+.otp
+  &.v-text-field
+    .v-input
+      &__append-inner
+        margin-top: 0 !important
+      &__slot
+        padding: 4px 12px 4px 4px !important
+</style>
+
 <style lang="sass" scoped>
+.primary
+  &.v-btn
+    &--disabled
+      color: blue !important
+      .v-icon
+        color: blue !important
 .next
   width: 100%
 .back
@@ -164,7 +258,6 @@ export default defineComponent({
 .v-application--is-rtl
   .back
     right: 39px
-
 .v-stepper
   &__header
     box-shadow: none
