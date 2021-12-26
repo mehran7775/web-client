@@ -13,16 +13,25 @@
     <v-form>
       <h4 class="my-1">{{ $t("user.username") }}</h4>
       <v-text-field
+        tabindex="1"
+        ref="userref"
         :height="inputHeight"
         v-model="data.userName"
         prepend-inner-icon="mdi-account"
         @input="checkTries"
+        @keyup.enter="
+          () => {
+            passref.focus();
+          }
+        "
         hide-details
         outlined
         dense
       />
       <h4 class="my-1">{{ $t("user.password") }}</h4>
       <v-text-field
+        tabindex="2"
+        ref="passref"
         :height="inputHeight"
         v-model="data.password"
         :type="showPassword ? 'text' : 'Password'"
@@ -32,6 +41,7 @@
         @keyup.enter="
           () => {
             if (false) login(data);
+            else captcharef.focus();
           }
         "
         hide-details
@@ -52,11 +62,13 @@
       <div v-if="true">
         <h4 class="my-1">{{ $t("login.captcha") }}</h4>
         <v-text-field
+          tabindex="3"
+          ref="captcharef"
           class="captcha"
           v-model="data.captcha"
           @keyup.enter="
             () => {
-              if (true) login(data);
+              login(data);
             }
           "
           hide-details
@@ -133,7 +145,7 @@ import {
   ref,
   Ref,
   reactive,
-  watch,
+  onMounted,
   useStore,
   useContext,
 } from "@nuxtjs/composition-api";
@@ -152,6 +164,11 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const ctx = useContext();
+
+    const userref: Ref<any> = ref(null);
+    const passref: Ref<any> = ref(null);
+    const captcharef: Ref<any> = ref(null);
+
     const loading: Ref<boolean> = ref(false);
     const showPassword: Ref<boolean> = ref(false);
     const data: Ref<Login> = ref(new Login("", "", ""));
@@ -201,10 +218,13 @@ export default defineComponent({
     function checkTries(val: string) {
       store.dispatch("sso/user/checkTries", val);
     }
-
     function refreshCaptcha() {
       captchaUrl.value = captcha + Math.random() * 1000000;
     }
+
+    onMounted(() => {
+      userref.value?.focus();
+    });
 
     return {
       login,
@@ -219,6 +239,9 @@ export default defineComponent({
       showPassword,
       data,
       snacs,
+      userref,
+      passref,
+      captcharef,
     };
     //TODO Remove in vue3
     function useI18n() {
