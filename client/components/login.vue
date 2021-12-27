@@ -59,7 +59,7 @@
           {{ $t("login.forget-password") }}
         </nuxt-link>
       </div>
-      <div v-if="true">
+      <div v-if="true" class="ma-0 pa-0 mt-2 mb-4">
         <h4 class="my-1">{{ $t("login.captcha") }}</h4>
         <v-text-field
           tabindex="3"
@@ -81,7 +81,7 @@
           </template>
         </v-text-field>
       </div>
-      <v-radio-group v-model="data.passwordType" row>
+      <v-radio-group v-model="data.passwordType" class="ma-0 pa-0 mt-2" row>
         <v-radio
           v-for="(item, index) in [
             { value: 1, text: $t('login.static') },
@@ -102,8 +102,9 @@
       </v-radio-group>
       <v-text-field
         v-if="data.passwordType == 2"
-        class="otp"
+        class="otp mt-2 mb-5"
         hide-details
+        hide-spin-buttons
         outlined
         dense
       >
@@ -148,7 +149,7 @@
       </v-btn>
     </v-form>
     <v-btn
-      class="font-weight-bold my-1"
+      class="font-weight-bold my-2"
       depressed
       color="primary"
       to="/registration"
