@@ -100,6 +100,34 @@
           style="width: calc(50% - 2px)"
         />
       </v-radio-group>
+      <v-text-field
+        v-if="data.passwordType == 2"
+        class="otp"
+        hide-details
+        outlined
+        dense
+      >
+        <template #append>
+          <v-btn
+            class="primary"
+            color="primary"
+            width="100"
+            :disabled="counter > 0"
+            @click="requestOtp"
+            depressed
+          >
+            <span v-if="counter == 0">
+              {{ $t("login.send-sms") }}
+            </span>
+            <span v-else>
+              <v-icon size="17"> mdi-clock </v-icon>
+              {{ formatter.format(Math.floor(counter / 60)) }}:{{
+                formatter.format(counter % 60)
+              }}
+            </span>
+          </v-btn>
+        </template>
+      </v-text-field>
       <!-- <client-only>
         <vue-hcaptcha
           v-if="failedCount > 3"
@@ -185,6 +213,10 @@ export default defineComponent({
     const failedCount = computed(() => store.getters["sso/user/tryCount"]);
     const rtl = computed(() => store.getters["rtl"]);
 
+    //OTP
+    const counter = ref(0);
+    let timer: NodeJS.Timeout | null = null;
+
     async function login(data: Login) {
       loading.value = true;
       try {
@@ -226,6 +258,17 @@ export default defineComponent({
       captchaUrl.value = captcha + Math.random() * 1000000;
     }
 
+    function requestOtp() {
+      counter.value = 90;
+      timer = setInterval(() => {
+        if (counter.value > 1) counter.value = counter.value - 1;
+        else {
+          if (timer) clearInterval(timer);
+          counter.value = 0;
+        }
+      }, 1000);
+    }
+
     onMounted(() => {
       userref.value?.focus();
     });
@@ -236,6 +279,8 @@ export default defineComponent({
       captchaResult,
       checkTries,
       refreshCaptcha,
+      requestOtp,
+      counter,
       captchaUrl,
       rtl,
       formatter,
@@ -257,6 +302,13 @@ export default defineComponent({
 </script>
 
 <style lang="sass">
+.otp
+  &.v-text-field
+    .v-input
+      &__append-inner
+        margin-top: 0 !important
+      &__slot
+        padding: 4px 12px 4px 4px !important
 a
   text-decoration: none
 .font-12
@@ -277,4 +329,13 @@ a
     width: auto
     .v-icon
       font-size: inherit
+</style>
+
+<style lang="sass" scoped>
+.primary
+  &.v-btn
+    &--disabled
+      color: var(--v-primary-base) !important
+      .v-icon
+        color: var(--v-primary-base) !important
 </style>
