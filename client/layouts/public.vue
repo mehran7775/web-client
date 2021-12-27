@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :class="locale">
     <v-main>
       <nuxt />
     </v-main>
@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "@nuxtjs/composition-api";
+import { defineComponent, ref, computed, useStore } from "@nuxtjs/composition-api";
 import snackbar from "@/components/snacks.vue";
 
 export default defineComponent({
@@ -15,8 +15,12 @@ export default defineComponent({
     snackbar,
   },
   setup(props, context) {
+    const store = useStore()
+    const locale = computed(() => {
+      return store.getters["locale"];
+    });
     const memory = ref(null);
-    return { memory };
+    return { memory, locale };
   },
 });
 </script>

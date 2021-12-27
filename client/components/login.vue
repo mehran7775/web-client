@@ -148,6 +148,7 @@ import {
   onMounted,
   useStore,
   useContext,
+  ComputedRef,
 } from "@nuxtjs/composition-api";
 import { AxiosError } from "axios";
 import { Snack } from "~/store/snacks";
@@ -168,6 +169,9 @@ export default defineComponent({
     const userref: Ref<any> = ref(null);
     const passref: Ref<any> = ref(null);
     const captcharef: Ref<any> = ref(null);
+    const formatter: ComputedRef<Intl.NumberFormat> = computed(
+      () => store.getters["formatter"] as Intl.NumberFormat
+    );
 
     const loading: Ref<boolean> = ref(false);
     const showPassword: Ref<boolean> = ref(false);
@@ -234,6 +238,7 @@ export default defineComponent({
       refreshCaptcha,
       captchaUrl,
       rtl,
+      formatter,
       failedCount,
       loading,
       showPassword,
