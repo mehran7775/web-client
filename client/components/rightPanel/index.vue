@@ -39,6 +39,33 @@
           <span>{{ item.text ? item.text : $t(item.title) }}</span>
         </v-tooltip>
       </v-tab>
+      <v-tab
+        v-for="item in bookmarks"
+        :key="item.title"
+        :to="item.to + '#'"
+        @click="
+          () => {
+            $emit('update:mini', true);
+          }
+        "
+      >
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon
+              v-if="item.icon"
+              :color="item.color"
+              v-bind="attrs"
+              v-on="on"
+            >
+              {{ item.icon ? item.icon : "mdi-star" }}
+            </v-icon>
+            <v-btn v-bind="attrs" v-on="on" depressed x-small>
+              {{ item.title }}
+            </v-btn>
+          </template>
+          <span>{{ item.text ? item.text : $t(item.title) }}</span>
+        </v-tooltip>
+      </v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="selected">
@@ -71,6 +98,25 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     {{ sub.text ? sub.text : $t(sub.title) }}
                   </v-list-item-title>
+                  <v-list-item-action class="my-0">
+                    <v-btn
+                      @click.prevent="
+                        (ev) => {
+                          if (bookmarks.indexOf(sub) > -1) unmark(sub);
+                          else bookmark(sub);
+                        }
+                      "
+                      icon
+                      x-small
+                    >
+                      <v-icon
+                        :color="isMarked(sub) ? 'secondary' : 'default'"
+                        size="16"
+                      >
+                        mdi-star
+                      </v-icon>
+                    </v-btn>
+                  </v-list-item-action>
                 </v-list-item>
               </v-list-group>
               <v-divider />
@@ -123,6 +169,12 @@ export default defineComponent({
       },
     });
     const rtl = computed(() => store.getters["rtl"]);
+    const bookmarks: ComputedRef<Array<any>> = computed(
+      () => store.getters["sso/user/getBookmarks"]
+    );
+    const isMarked = computed(() => (data: any) => {
+      return bookmarks.value.findIndex((val) => val.to == data.to) > -1;
+    });
     const watchList = computed(() => {
       const lists = store.getters["sso/user/watchList"];
       const res = [];
@@ -244,6 +296,13 @@ export default defineComponent({
       },
     });
 
+    function bookmark(data: object) {
+      store.commit("sso/user/addBookmark", data);
+    }
+    function unmark(data: object) {
+      store.commit("sso/user/removeBookmark", data);
+    }
+
     watch(selected, (n, o) => {
       if (typeof n != null) {
         context.emit("update:mini", false);
@@ -251,6 +310,11 @@ export default defineComponent({
     });
 
     return {
+      bookmark,
+      unmark,
+      isMarked,
+      bookmarks,
+      console,
       rtl,
       drawer,
       expand,

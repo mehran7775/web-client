@@ -15,6 +15,7 @@ export const userKey: string = 'userCache';
 export const state = () => new stores.UserState()
 
 export const getters: GetterTree<stores.UserState, stores.RootState> = {
+  getBookmarks: (state) => state.bookmarks,
   getToken: (state) => state.token,
   getRefresh: (state) => state.refresh,
   me: (state) => state.user ?? AnonymousUser(),
@@ -26,6 +27,12 @@ export const getters: GetterTree<stores.UserState, stores.RootState> = {
 }
 
 export const mutations: MutationTree<stores.UserState> = {
+  addBookmark(state, data: object) {
+    state.bookmarks.push(data)
+  },
+  removeBookmark(state, data: object) {
+    state.bookmarks.splice(state.bookmarks.indexOf(data), 1)
+  },
   tries(state, data: { user: string, tries: number }) {
     if (data.tries > 0)
       SetClientCookie(data.user + ".tryCount", data.tries.toString(), { maxAge: 300 })

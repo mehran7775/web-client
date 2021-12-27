@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :class="locale">
     <right-panel
       v-if="isLogin"
       :mini.sync="rightMenu.mini"

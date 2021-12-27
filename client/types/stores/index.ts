@@ -21,12 +21,14 @@ export class UserState {
   user: User
   refresh: string | null
   userName: string | null
+  bookmarks: Array<object>
   constructor() {
     this.tryCount = 0
     this.token = null
     this.user = AnonymousUser()
     this.refresh = null
     this.userName = null
+    this.bookmarks = []
   }
   toJSON() {
     return { ...this }
