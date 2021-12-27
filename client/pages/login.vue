@@ -5,7 +5,7 @@
         <nuxt-link to="/about-us" class="logo"></nuxt-link>
         <login :width="322" :input-height="42" />
       </v-col>
-      <v-col md="6" sm="0" class="px-8 img-col d-none d-md-block">
+      <v-col md="6" sm="0" class="img-col d-none d-md-block">
         <div class="pie pie-1">
           <div class="pie-inner"></div>
         </div>
@@ -48,7 +48,7 @@ export default defineComponent({
     padding: 0 calc(50% - 161px)
 .img-col
   position: relative
-  padding: 5% 0
+  padding: 81px 69px 31px 69px
   height: 100vh
   min-height: 600px
   overflow: hidden

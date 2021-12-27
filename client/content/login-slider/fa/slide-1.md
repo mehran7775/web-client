@@ -1,4 +1,4 @@
-<br-img height="400" src="/login-slider/fa/slide-1.png"></br-img>
+<br-img width="538" src="/login-slider/fa/slide-1.png"></br-img>
 
 # پنل سامانه عصرتریدر
 
