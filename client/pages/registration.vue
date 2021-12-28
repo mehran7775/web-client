@@ -138,7 +138,7 @@
           </v-btn>
           <div
             v-html="$t('login.alerts')"
-            class="mt-3 text-center font-12"
+            class="mt-3 text-justify"
           ></div>
         </v-card>
       </v-col>

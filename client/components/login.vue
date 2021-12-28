@@ -44,6 +44,7 @@
             else captcharef.focus();
           }
         "
+        :class="{ 'pass-star': !showPassword }"
         hide-details
         outlined
         dense
@@ -160,10 +161,7 @@
       {{ $t("login.registration") }}
     </v-btn>
 
-    <div
-      v-html="$t('login.alerts')"
-      class="text-center justify-center font-12"
-    ></div>
+    <div class="text-justify" v-html="$t('login.alerts')"></div>
   </v-card>
 </template>
 
@@ -312,8 +310,6 @@ export default defineComponent({
         padding: 4px 12px 4px 4px !important
 a
   text-decoration: none
-.font-12
-  font-size: 12px
 .captcha
   .v-input__append-inner
     margin-top: 3px !important
@@ -330,6 +326,14 @@ a
     width: auto
     .v-icon
       font-size: inherit
+
+.pass-star.v-input.v-text-field
+  input
+    color: var(--v-default-lighten3)
+    vertical-align: middle
+    padding-bottom: 16px
+    font-size: 36px
+    line-height: 36px
 </style>
 
 <style lang="sass" scoped>
