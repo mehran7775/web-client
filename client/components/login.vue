@@ -116,7 +116,9 @@
             width="100"
             :disabled="counter > 0"
             @click="requestOtp"
+            :height="inputHeight - 8"
             depressed
+            large
           >
             <span v-if="counter == 0">
               {{ $t("login.send-sms") }}
@@ -139,24 +141,26 @@
         ></vue-hcaptcha>
       </client-only> -->
       <v-btn
-        class="font-weight-bold my-1"
+        class="my-1"
         depressed
         color="primary"
         @click="login(data)"
         width="100%"
         :height="inputHeight"
+        x-large
       >
         {{ $t("login.login") }}
       </v-btn>
     </v-form>
     <v-btn
-      class="font-weight-bold my-2"
+      class="my-2"
       depressed
       color="primary"
       to="/registration"
       width="100%"
       :height="inputHeight"
       outlined
+      x-large
     >
       {{ $t("login.registration") }}
     </v-btn>
@@ -206,7 +210,10 @@ export default defineComponent({
     const snacs = reactive([]);
     const i18n = useI18n();
     const captcha =
-      process.env.VUE_APP_Host + "sso/captcha?width=100&height=32&r=";
+      process.env.VUE_APP_Host +
+      "sso/captcha?width=100&height=" +
+      props.inputHeight +
+      "&r=";
     const captchaUrl = ref(captcha);
 
     const failedCount = computed(() => store.getters["sso/user/tryCount"]);
@@ -316,10 +323,11 @@ a
 .radio-ckeck
   border-radius: 5px
   width: calc( 50% - 8px )
-  background-color: var(--v-default-lighten3)
+  background-color: var(--v-default-lighten4)
   font-weight: bold
   &.v-item--active
-    background-color: var(--v-primary-lighten5)
+    font-size: 1.1667rem
+    background-color: var(--v-alternative-lighten5)
     label
       color: var(--v-primary-base)
   .v-input--selection-controls__input

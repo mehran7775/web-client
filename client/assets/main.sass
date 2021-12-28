@@ -1,6 +1,7 @@
 @import components/all
 @import fonts/iransansx
 @import fonts/times
+@import variables
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button 
@@ -16,10 +17,14 @@ input[type="number"]
 html 
   overflow-y: auto !important
 
-
-form 
-  font-size: 0.857rem
-
+h1
+  font-size: map-get($headings, 'h1', 'size')
+h2
+  font-size: map-get($headings, 'h2', 'size')
+h3
+  font-size: map-get($headings, 'h3', 'size')
+h4
+  font-size: map-get($headings, 'h4', 'size')
 
 /* width */
 ::-webkit-scrollbar 
