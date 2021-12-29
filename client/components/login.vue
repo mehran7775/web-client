@@ -11,7 +11,7 @@
       $t("login.title")
     }}</v-card-title>
     <v-form>
-      <h4 class="my-1">{{ $t("user.username") }}</h4>
+      <h4 class="mt-6 mar-b-6">{{ $t("user.username") }}</h4>
       <v-text-field
         tabindex="1"
         ref="userref"
@@ -32,7 +32,7 @@
           <v-icon> adaico-keyboard </v-icon>
         </template>
       </v-text-field>
-      <h4 class="my-1">{{ $t("user.password") }}</h4>
+      <h4 class="mt-3 mar-b-6">{{ $t("user.password") }}</h4>
       <v-text-field
         tabindex="2"
         ref="passref"
@@ -52,13 +52,15 @@
         dense
       >
         <template #append>
-          <v-icon class="me-3" @click="showPassword = !showPassword"> adaico-eye </v-icon>
+          <v-icon class="me-3" @click="showPassword = !showPassword">
+            adaico-eye
+          </v-icon>
           <v-icon> adaico-keyboard </v-icon>
         </template>
       </v-text-field>
       <div
         :class="{
-          'justify-end my-1': true,
+          'justify-end mt-1': true,
           'text-left': rtl,
           'text-right': !rtl,
         }"
@@ -67,8 +69,8 @@
           {{ $t("login.forget-password") }}
         </nuxt-link>
       </div>
-      <div v-if="true" class="ma-0 pa-0 mt-2 mb-4">
-        <h4 class="my-1">{{ $t("login.captcha") }}</h4>
+      <div v-if="true" class="ma-0 pa-0 mt-1 mb-4">
+        <h4 class="mar-b-6">{{ $t("login.captcha") }}</h4>
         <v-text-field
           tabindex="3"
           ref="captcharef"
@@ -84,12 +86,13 @@
           dense
         >
           <template #append>
-            <v-img :src="captchaUrl" class="ma-0 me-3 pa-0 d-inline-block"> </v-img>
+            <v-img :src="captchaUrl" class="ma-0 me-3 pa-0 d-inline-block">
+            </v-img>
             <v-icon @click="refreshCaptcha"> adaico-refresh-2 </v-icon>
           </template>
         </v-text-field>
       </div>
-      <v-radio-group v-model="data.passwordType" class="ma-0 pa-0 mt-2" row>
+      <v-radio-group v-model="data.passwordType" class="ma-0 pa-0" hide-details row>
         <v-radio
           v-for="(item, index) in [
             { value: 1, text: $t('login.static') },
@@ -110,7 +113,7 @@
       </v-radio-group>
       <v-text-field
         v-if="data.passwordType == 2"
-        class="otp mt-2 mb-5"
+        class="otp mt-4"
         hide-details
         hide-spin-buttons
         outlined
@@ -148,7 +151,7 @@
         ></vue-hcaptcha>
       </client-only> -->
       <v-btn
-        class="my-1"
+        class="my-4"
         depressed
         color="primary"
         @click="login(data)"
@@ -160,7 +163,7 @@
       </v-btn>
     </v-form>
     <v-btn
-      class="my-2"
+      class="mb-6"
       depressed
       color="primary"
       to="/registration"
@@ -352,6 +355,18 @@ a
 </style>
 
 <style lang="sass" scoped>
+.mar-t-6
+  margin-top: 6px
+.mar-b-6
+  margin-bottom: 6px
+.pad-t-6
+  padding-top: 6px
+.pad-b-6
+  padding-bottom: 6px
+.pad-t-24
+  padding-top: 24px
+.pad-b-24
+  padding-bottom: 24px
 .primary
   &.v-btn
     &--disabled
