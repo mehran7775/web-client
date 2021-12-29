@@ -10,7 +10,7 @@
     <v-card-title class="ma-0 mt-2 pa-0 justify-start font-weight-bold">{{
       $t("login.title")
     }}</v-card-title>
-    <v-form>
+    <v-form ref="frm">
       <h4 class="mt-6 mar-b-6">{{ $t("user.username") }}</h4>
       <v-text-field
         tabindex="1"
@@ -18,6 +18,7 @@
         :height="inputHeight"
         v-model="data.userName"
         prepend-inner-icon="adaico-user"
+        :rules="[rules.required]"
         @input="checkTries"
         @keyup.enter="
           () => {
@@ -47,6 +48,7 @@
           }
         "
         :class="{ 'pass-star': !showPassword }"
+        :rules="[rules.required]"
         hide-details
         outlined
         dense
@@ -76,6 +78,7 @@
           ref="captcharef"
           class="captcha"
           v-model="data.captcha"
+          :rules="[rules.required]"
           @keyup.enter="
             () => {
               login(data);
@@ -92,7 +95,12 @@
           </template>
         </v-text-field>
       </div>
-      <v-radio-group v-model="data.passwordType" class="ma-0 pa-0" hide-details row>
+      <v-radio-group
+        v-model="data.passwordType"
+        class="ma-0 pa-0"
+        hide-details
+        row
+      >
         <v-radio
           v-for="(item, index) in [
             { value: 1, text: $t('login.static') },
@@ -195,6 +203,7 @@ import { AxiosError } from "axios";
 import { Snack } from "~/store/snacks";
 import { Login } from "~/types";
 import { ErrorExtractor } from "~/utils/error";
+import { required } from "@/utils/rules";
 
 export default defineComponent({
   name: "Login",
@@ -207,6 +216,7 @@ export default defineComponent({
     const store = useStore();
     const ctx = useContext();
 
+    const frm: Ref<any> = ref(null);
     const userref: Ref<any> = ref(null);
     const passref: Ref<any> = ref(null);
     const captcharef: Ref<any> = ref(null);
@@ -234,30 +244,32 @@ export default defineComponent({
     let timer: NodeJS.Timeout | null = null;
 
     async function login(data: Login) {
-      loading.value = true;
-      try {
-        const res = await store.dispatch(
-          "sso/user/login",
-          Object.assign({}, data, { axios: ctx.$axios })
-        );
-        if (res >= 200 && res < 300) {
-          ctx.redirect({ path: "/watchlist/" });
-          snack(new Snack("login.successful", "success"));
-        }
-      } catch (err) {
-        const error = ErrorExtractor(err as AxiosError);
-        if (error.detail.length == 0)
-          snack(new Snack("errors." + error.code, "error"));
-        else {
-          let res = "";
-          for (let e in error.detail) {
-            res += i18n.t(error.detail[e].type) + "\r\n";
+      if (frm.value?.validate()) {
+        loading.value = true;
+        try {
+          const res = await store.dispatch(
+            "sso/user/login",
+            Object.assign({}, data, { axios: ctx.$axios })
+          );
+          if (res >= 200 && res < 300) {
+            ctx.redirect({ path: "/watchlist/" });
+            snack(new Snack("login.successful", "success"));
           }
-          snack(new Snack(res, "error"));
+        } catch (err) {
+          refreshCaptcha();
+          const error = ErrorExtractor(err as AxiosError);
+          if (error.detail.length == 0)
+            snack(new Snack("errors." + error.code, "error"));
+          else {
+            let res = "";
+            for (let e in error.detail) {
+              res += i18n.t(error.detail[e].type) + "\r\n";
+            }
+            snack(new Snack(res, "error"));
+          }
+        } finally {
+          loading.value = false;
         }
-      } finally {
-        loading.value = false;
-        refreshCaptcha();
       }
     }
     function snack(data: Snack) {
@@ -290,6 +302,7 @@ export default defineComponent({
     });
 
     return {
+      frm,
       login,
       snack,
       captchaResult,
@@ -308,6 +321,9 @@ export default defineComponent({
       userref,
       passref,
       captcharef,
+      rules: {
+        required,
+      },
     };
     //TODO Remove in vue3
     function useI18n() {
@@ -344,7 +360,7 @@ a
     label
       width: auto
       color: var(--v-primary-base)
-  .v-input--selection-controls__input    
+  .v-input--selection-controls__input
     width: auto
     .v-icon
       font-size: inherit
