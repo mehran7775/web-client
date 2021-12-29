@@ -1,3 +1,3 @@
 export function required(val: any): boolean | string {
-  return !!val || "Required."
+  return !!val || "errors.validation.required"
 }

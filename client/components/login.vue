@@ -33,6 +33,18 @@
           <v-icon> adaico-keyboard </v-icon>
         </template>
       </v-text-field>
+      <div v-if="userref && !userref.valid" class="pt-2 error--text">
+        <div
+          v-for="item in userref.validations"
+          :key="item"
+          style="font-size: 10px"
+        >
+          <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
+          <span style="display: inline-block">
+            {{ $t(item) }}
+          </span>
+        </div>
+      </div>
       <h4 class="mt-3 mar-b-6">{{ $t("user.password") }}</h4>
       <v-text-field
         tabindex="2"
@@ -60,6 +72,18 @@
           <v-icon> adaico-keyboard </v-icon>
         </template>
       </v-text-field>
+      <div v-if="passref && !passref.valid" class="pt-2 error--text">
+        <div
+          v-for="item in passref.validations"
+          :key="item"
+          style="font-size: 10px"
+        >
+          <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
+          <span style="display: inline-block">
+            {{ $t(item) }}
+          </span>
+        </div>
+      </div>
       <div
         :class="{
           'justify-end mt-1': true,
@@ -94,6 +118,18 @@
             <v-icon @click="refreshCaptcha"> adaico-refresh-2 </v-icon>
           </template>
         </v-text-field>
+        <div v-if="captcharef && !captcharef.valid" class="pt-2 error--text">
+          <div
+            v-for="item in captcharef.validations"
+            :key="item"
+            style="font-size: 10px"
+          >
+            <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
+            <span style="display: inline-block">
+              {{ $t(item) }}
+            </span>
+          </div>
+        </div>
       </div>
       <v-radio-group
         v-model="data.passwordType"
@@ -302,6 +338,7 @@ export default defineComponent({
     });
 
     return {
+      console,
       frm,
       login,
       snack,
