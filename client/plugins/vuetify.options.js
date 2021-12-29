@@ -11,7 +11,6 @@ export default function ({ store, app }) {
     default: "#828282",
     secondary: '#EF394E',
     primary: '#3554D1',
-    alternative: '#4665E2',
     accent: '#82B1FF',
     error: '#FF3B30',
     info: '#009CF2',

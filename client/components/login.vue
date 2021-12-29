@@ -333,14 +333,18 @@ a
 .radio-ckeck
   border-radius: 5px
   width: calc( 50% - 8px )
-  background-color: var(--v-default-lighten4)
+  background-color: rgba(130, 130, 130, 0.1)
   font-weight: bold
+  display: inline-block !important
+  justify-content: center
+  text-align: center
   &.v-item--active
     font-size: 1.1667rem
-    background-color: var(--v-alternative-lighten5)
+    background-color: rgba(53, 84, 209, 0.05)
     label
+      width: auto
       color: var(--v-primary-base)
-  .v-input--selection-controls__input
+  .v-input--selection-controls__input    
     width: auto
     .v-icon
       font-size: inherit
