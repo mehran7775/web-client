@@ -255,10 +255,10 @@ export default defineComponent({
   &__header
     box-shadow: none
   &__step
-    padding: 24px 0
+    padding: 20px 0
     flex-basis: auto !important
   .v-divider
-    max-width: 33%
+    max-width: 32%
 .reg-ct
   position: relative
   height: 100%

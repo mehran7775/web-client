@@ -119,15 +119,15 @@ $btn-font-sizes: (
   "x-large": 1.334rem,
 );
 
-// Label
+// Inputs
 $input-font-size: inherit;
 $label-font-size: inherit;
-
-// Reset Inputs
 $input-slot-margin-bottom: 0;
 
-// All Headers 40 px
+// All Headers 32 px
 $toolbar-btn-icon-size: 32px;
 $list-dense-min-height: 32px;
+$stepper-step-step-height: 32px;
+$stepper-step-step-width: 32px;
 
 $body-font-family: "Times New Roman";
