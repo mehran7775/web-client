@@ -40,7 +40,6 @@
         v-model="data.password"
         :type="showPassword ? 'text' : 'Password'"
         prepend-inner-icon="adaico-lock"
-        @click:append="showPassword = !showPassword"
         @keyup.enter="
           () => {
             if (false) login(data);
@@ -53,7 +52,7 @@
         dense
       >
         <template #append>
-          <v-icon> adaico-eye </v-icon>
+          <v-icon @click="showPassword = !showPassword"> adaico-eye </v-icon>
           <v-icon> adaico-keyboard </v-icon>
         </template>
       </v-text-field>
