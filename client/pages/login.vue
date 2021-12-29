@@ -12,13 +12,13 @@
         </div>
         <content-slider :interval="7.5" src="login-slider" />
         <floating-button top="calc(50% - 132px)" left="8px" small color="primary lighten-1" depressed>
-          <v-icon> mdi-instagram </v-icon>
+          <v-icon> adaico-instagram </v-icon>
         </floating-button>
         <floating-button top="calc(50% - 88px)" left="8px" small color="primary lighten-1" depressed>
-          <v-icon> mdi-whatsapp </v-icon>
+          <v-icon> adaico-whatsapp </v-icon>
         </floating-button>
         <floating-button top="calc(50% - 44px)" left="8px" small color="primary lighten-1" depressed>
-          <v-icon> mdi-facebook </v-icon>
+          <v-icon> adaico-facebook </v-icon>
         </floating-button>
         <floating-button top="50%" left="8px" small color="primary lighten-1" depressed>
           <v-icon> mdi-dots-horizontal </v-icon>

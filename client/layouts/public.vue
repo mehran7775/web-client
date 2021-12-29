@@ -3,6 +3,11 @@
     <v-main>
       <nuxt />
     </v-main>
+    <v-footer color="transparent" absolute>
+      <span class="default--text text--lighten-2">
+        طراحی و توسعه شرکت عصر دانش افزار
+      </span>
+    </v-footer>
   </v-app>
 </template>
 

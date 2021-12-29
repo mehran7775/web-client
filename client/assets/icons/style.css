@@ -1,6 +1,5 @@
 @font-face {
   font-family: 'Ada Bourse Icons';
-  src:  url('fonts/ada-bourse.eot?67q79x');
   src:  url('fonts/ada-bourse.eot?67q79x#iefix') format('embedded-opentype'),
     url('fonts/ada-bourse.ttf?67q79x') format('truetype'),
     url('fonts/ada-bourse.woff?67q79x') format('woff'),
@@ -59,39 +58,60 @@
 .adaico-eye:before {
   content: "\e90c";
 }
-.adaico-filter-edit:before {
+.adaico-facebook:before {
   content: "\e90d";
 }
-.adaico-graph:before {
+.adaico-filter-edit:before {
   content: "\e90e";
 }
-.adaico-map:before {
+.adaico-graph:before {
   content: "\e90f";
 }
-.adaico-messages:before {
+.adaico-instagram:before {
   content: "\e910";
 }
-.adaico-money-change:before {
+.adaico-keyboard:before {
   content: "\e911";
 }
-.adaico-money-recive:before {
+.adaico-lock:before {
   content: "\e912";
 }
-.adaico-note-2:before {
+.adaico-map:before {
   content: "\e913";
 }
-.adaico-notification:before {
+.adaico-messages:before {
   content: "\e914";
 }
-.adaico-presention-chart:before {
+.adaico-money-change:before {
   content: "\e915";
 }
-.adaico-search-normal:before {
+.adaico-money-recive:before {
   content: "\e916";
 }
-.adaico-setting-2:before {
+.adaico-note-2:before {
   content: "\e917";
 }
-.adaico-status-up:before {
+.adaico-notification:before {
   content: "\e918";
+}
+.adaico-presention-chart:before {
+  content: "\e919";
+}
+.adaico-refresh-2:before {
+  content: "\e91a";
+}
+.adaico-search-normal:before {
+  content: "\e91b";
+}
+.adaico-setting-2:before {
+  content: "\e91c";
+}
+.adaico-status-up:before {
+  content: "\e91d";
+}
+.adaico-user:before {
+  content: "\e91e";
+}
+.adaico-whatsapp:before {
+  content: "\e91f";
 }

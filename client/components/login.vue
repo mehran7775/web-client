@@ -17,7 +17,7 @@
         ref="userref"
         :height="inputHeight"
         v-model="data.userName"
-        prepend-inner-icon="mdi-account"
+        prepend-inner-icon="adaico-user"
         @input="checkTries"
         @keyup.enter="
           () => {
@@ -27,7 +27,11 @@
         hide-details
         outlined
         dense
-      />
+      >
+        <template #append>
+          <v-icon> adaico-keyboard </v-icon>
+        </template>
+      </v-text-field>
       <h4 class="my-1">{{ $t("user.password") }}</h4>
       <v-text-field
         tabindex="2"
@@ -35,8 +39,7 @@
         :height="inputHeight"
         v-model="data.password"
         :type="showPassword ? 'text' : 'Password'"
-        prepend-inner-icon="mdi-lock"
-        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+        prepend-inner-icon="adaico-lock"
         @click:append="showPassword = !showPassword"
         @keyup.enter="
           () => {
@@ -48,7 +51,12 @@
         hide-details
         outlined
         dense
-      />
+      >
+        <template #append>
+          <v-icon> adaico-eye </v-icon>
+          <v-icon> adaico-keyboard </v-icon>
+        </template>
+      </v-text-field>
       <div
         :class="{
           'justify-end my-1': true,
