@@ -274,6 +274,7 @@ export default defineComponent({
   padding: 41px 96px
   max-width: 514px
   min-width: 514px
+  height: 658px
 .pie-1
   top: -290px
   right: -100px
