@@ -70,7 +70,7 @@
         <template #append>
           <v-icon
             class="me-3"
-            :color="showPassword ? 'primary' : undifined"
+            :color="showPassword ? 'primary' : null"
             @click="showPassword = !showPassword"
           >
             adaico-eye
