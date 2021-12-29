@@ -52,7 +52,7 @@
         dense
       >
         <template #append>
-          <v-icon @click="showPassword = !showPassword"> adaico-eye </v-icon>
+          <v-icon class="me-3" @click="showPassword = !showPassword"> adaico-eye </v-icon>
           <v-icon> adaico-keyboard </v-icon>
         </template>
       </v-text-field>
@@ -84,8 +84,8 @@
           dense
         >
           <template #append>
-            <v-img :src="captchaUrl" class="ma-0 pa-0 d-inline-block"> </v-img>
-            <v-icon @click="refreshCaptcha"> mdi-refresh </v-icon>
+            <v-img :src="captchaUrl" class="ma-0 me-3 pa-0 d-inline-block"> </v-img>
+            <v-icon @click="refreshCaptcha"> adaico-refresh-2 </v-icon>
           </template>
         </v-text-field>
       </div>
