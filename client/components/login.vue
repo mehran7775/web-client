@@ -11,7 +11,7 @@
       $t("login.title")
     }}</v-card-title>
     <v-form ref="frm">
-      <h4 class="mt-6 mar-b-6">{{ $t("user.username") }}</h4>
+      <span class="mt-6 mar-b-6">{{ $t("user.username") }}</span>
       <v-text-field
         tabindex="1"
         ref="userref"
@@ -28,6 +28,7 @@
         hide-details
         outlined
         dense
+        validate-on-blur
       >
         <template #append>
           <v-icon> adaico-keyboard </v-icon>
@@ -45,7 +46,7 @@
           </span>
         </div>
       </div>
-      <h4 class="mt-3 mar-b-6">{{ $t("user.password") }}</h4>
+      <span class="mt-3 mar-b-6">{{ $t("user.password") }}</span>
       <v-text-field
         tabindex="2"
         ref="passref"
@@ -64,9 +65,14 @@
         hide-details
         outlined
         dense
+        validate-on-blur
       >
         <template #append>
-          <v-icon class="me-3" @click="showPassword = !showPassword">
+          <v-icon
+            class="me-3"
+            :color="showPassword ? 'primary' : undifined"
+            @click="showPassword = !showPassword"
+          >
             adaico-eye
           </v-icon>
           <v-icon> adaico-keyboard </v-icon>
@@ -90,13 +96,14 @@
           'text-left': rtl,
           'text-right': !rtl,
         }"
+        style="font-size:10px;"
       >
         <nuxt-link to="/reset-password">
           {{ $t("login.forget-password") }}
         </nuxt-link>
       </div>
       <div v-if="true" class="ma-0 pa-0 mt-1 mb-4">
-        <h4 class="mar-b-6">{{ $t("login.captcha") }}</h4>
+        <span class="mar-b-6">{{ $t("login.captcha") }}</span>
         <v-text-field
           tabindex="3"
           ref="captcharef"
@@ -111,6 +118,7 @@
           hide-details
           outlined
           dense
+          validate-on-blur
         >
           <template #append>
             <v-img :src="captchaUrl" class="ma-0 me-3 pa-0 d-inline-block">
