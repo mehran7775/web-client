@@ -1,9 +1,7 @@
 <template>
   <v-container class="ma-0 pa-0 pt-16 reg-ct" fluid>
-    <div class="pie-1 pie">
-    </div>
-    <div class="pie-2 pie">
-    </div>
+    <div class="pie-1 pie"></div>
+    <div class="pie-2 pie"></div>
     <v-row>
       <v-col></v-col>
       <v-col>
@@ -27,7 +25,7 @@
               >
                 {{ $t("user.profile.id") }}
               </v-stepper-step>
-              <v-divider></v-divider>
+              <v-divider :color="step > 1 ? 'primary' : 'default'" />
               <v-stepper-step
                 step="2"
                 :complete="step > 2"
@@ -35,7 +33,7 @@
               >
                 {{ $t("user.profile.confirm") }}
               </v-stepper-step>
-              <v-divider></v-divider>
+              <v-divider :color="step > 2 ? 'primary' : 'default'"/>
               <v-stepper-step
                 step="3"
                 :complete="step > 3"
@@ -134,10 +132,7 @@
           <v-btn color="primary" @click="validate" class="next">
             {{ $t("general.next") }}
           </v-btn>
-          <div
-            v-html="$t('login.alerts')"
-            class="mt-3 text-justify"
-          ></div>
+          <div v-html="$t('login.alerts')" class="mt-3 text-justify"></div>
         </v-card>
       </v-col>
       <v-col></v-col>
