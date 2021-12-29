@@ -212,7 +212,7 @@ export default defineComponent({
     const captcha =
       process.env.VUE_APP_Host +
       "sso/captcha?width=100&height=" +
-      props.inputHeight +
+      ((props.inputHeight ?? 42) - 8) +
       "&r=";
     const captchaUrl = ref(captcha);
 

@@ -1,10 +1,8 @@
 <template>
   <v-container class="ma-0 pa-0 pt-16 reg-ct" fluid>
     <div class="pie-1 pie">
-      <div class="pie-inner"></div>
     </div>
     <div class="pie-2 pie">
-      <div class="pie-inner"></div>
     </div>
     <v-row>
       <v-col></v-col>

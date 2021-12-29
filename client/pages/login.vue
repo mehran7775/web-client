@@ -7,10 +7,8 @@
       </v-col>
       <v-col md="6" sm="0" class="img-col d-none d-md-block">
         <div class="pie pie-1">
-          <div class="pie-inner"></div>
         </div>
         <div class="pie pie-2">
-          <div class="pie-inner"></div>
         </div>
         <content-slider :interval="7.5" src="login-slider" />
         <floating-button top="calc(50% - 132px)" left="8px" small color="primary lighten-1" depressed>

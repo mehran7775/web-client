@@ -2,7 +2,6 @@
   <splitpanes class="default-theme" :rtl="rtl">
     <pane class="tok" min-size="10" max-size="30">
       <div class="pie-1 pie">
-        <div class="pie-inner"></div>
       </div>
       <v-list class="toc-md">
         <v-list-item-group>
@@ -21,10 +20,8 @@
     <pane size="80">
       <v-container class="article ma-0 pa-5" tag="article">
         <div class="pie-2 pie">
-          <div class="pie-inner"></div>
         </div>
         <div class="pie-3 pie">
-          <div class="pie-inner"></div>
         </div>
         <nuxt-content :document="document" class="doc-md" />
       </v-container>
