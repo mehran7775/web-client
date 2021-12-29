@@ -7,7 +7,7 @@
     color="transparent"
     :loading="loading"
   >
-    <v-card-title class="ma-0 pa-0 justify-start font-weight-bold">{{
+    <v-card-title class="ma-0 mt-2 pa-0 justify-start font-weight-bold">{{
       $t("login.title")
     }}</v-card-title>
     <v-form>
