@@ -11,7 +11,7 @@
       $t("login.title")
     }}</v-card-title>
     <v-form ref="frm">
-      <span class="mt-6 mar-b-6">{{ $t("user.username") }}</span>
+      <p class="mt-4 mar-b-6">{{ $t("user.username") }}</p>
       <v-text-field
         tabindex="1"
         ref="userref"
@@ -46,8 +46,52 @@
           </span>
         </div>
       </div>
-      <span class="mt-3 mar-b-6">{{ $t("user.password") }}</span>
+      <p class="mt-3 mar-b-6">{{ $t("user.password") }}</p>
       <v-text-field
+        ref="otpref"
+        v-if="data.passwordType == 2"
+        class="otp"
+        hide-details
+        hide-spin-buttons
+        outlined
+        dense
+      >
+        <template #append>
+          <v-btn
+            class="sms"
+            width="100"
+            :disabled="counter > 0"
+            @click="requestOtp"
+            :height="inputHeight - 8"
+            depressed
+            large
+          >
+            <span v-if="counter == 0">
+              {{ $t("login.send-sms") }}
+            </span>
+            <span v-else>
+              <v-icon size="17"> mdi-clock </v-icon>
+              {{ formatter.format(Math.floor(counter / 60)) }}:{{
+                formatter.format(counter % 60)
+              }}
+            </span>
+          </v-btn>
+        </template>
+      </v-text-field>
+      <div v-if="otpref && !otpref.valid" class="pt-2 error--text">
+        <div
+          v-for="item in otpref.validations"
+          :key="item"
+          style="font-size: 10px"
+        >
+          <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
+          <span style="display: inline-block">
+            {{ $t(item) }}
+          </span>
+        </div>
+      </div>
+      <v-text-field
+        v-if="data.passwordType == 1"
         tabindex="2"
         ref="passref"
         :height="inputHeight"
@@ -78,32 +122,37 @@
           <v-icon> adaico-keyboard </v-icon>
         </template>
       </v-text-field>
-      <div v-if="passref && !passref.valid" class="pt-2 error--text">
-        <div
-          v-for="item in passref.validations"
-          :key="item"
-          style="font-size: 10px"
+      <v-row class="ma-0 mt-1 pa-0">
+        <v-col cols="6" class="ma-0 pa-0">
+          <div v-if="passref">
+            <div
+              v-for="item in passref.validations"
+              :key="item"
+              class="error--text"
+              style="font-size: 10px"
+            >
+              <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
+              <span style="display: inline-block">
+                {{ $t(item) }}
+              </span>
+            </div>
+          </div>
+        </v-col>
+        <v-col
+          cols="6"
+          class="ma-0 pa-0 justify-end"
+          :style="{
+            'font-size': '10px',
+            'text-align': rtl ? 'left' : 'right',
+          }"
         >
-          <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
-          <span style="display: inline-block">
-            {{ $t(item) }}
-          </span>
-        </div>
-      </div>
-      <div
-        :class="{
-          'justify-end mt-1': true,
-          'text-left': rtl,
-          'text-right': !rtl,
-        }"
-        style="font-size:10px;"
-      >
-        <nuxt-link to="/reset-password">
-          {{ $t("login.forget-password") }}
-        </nuxt-link>
-      </div>
+          <nuxt-link to="/reset-password">
+            {{ $t("login.forget-password") }}
+          </nuxt-link>
+        </v-col>
+      </v-row>
       <div v-if="true" class="ma-0 pa-0 mt-1 mb-4">
-        <span class="mar-b-6">{{ $t("login.captcha") }}</span>
+        <p class="mar-b-6">{{ $t("login.captcha") }}</p>
         <v-text-field
           tabindex="3"
           ref="captcharef"
@@ -118,7 +167,6 @@
           hide-details
           outlined
           dense
-          validate-on-blur
         >
           <template #append>
             <v-img :src="captchaUrl" class="ma-0 me-3 pa-0 d-inline-block">
@@ -126,7 +174,10 @@
             <v-icon @click="refreshCaptcha"> adaico-refresh-2 </v-icon>
           </template>
         </v-text-field>
-        <div v-if="captcharef && !captcharef.valid" class="pt-2 error--text">
+        <div
+          v-if="captcharef && !captcharef.isFocused && !captcharef.valid"
+          class="pt-2 error--text"
+        >
           <div
             v-for="item in captcharef.validations"
             :key="item"
@@ -158,42 +209,11 @@
           off-icon="mdi-check-circle-outline"
           :class="{
             'radio-ckeck ma-0 pa-2': true,
-            'me-1': index != 1, //last index
+            'me-4': index != 1, //last index
           }"
-          style="width: calc(50% - 2px)"
+          style="width: calc(50% - 8px)"
         />
       </v-radio-group>
-      <v-text-field
-        v-if="data.passwordType == 2"
-        class="otp mt-4"
-        hide-details
-        hide-spin-buttons
-        outlined
-        dense
-      >
-        <template #append>
-          <v-btn
-            class="primary"
-            color="primary"
-            width="100"
-            :disabled="counter > 0"
-            @click="requestOtp"
-            :height="inputHeight - 8"
-            depressed
-            large
-          >
-            <span v-if="counter == 0">
-              {{ $t("login.send-sms") }}
-            </span>
-            <span v-else>
-              <v-icon size="17"> mdi-clock </v-icon>
-              {{ formatter.format(Math.floor(counter / 60)) }}:{{
-                formatter.format(counter % 60)
-              }}
-            </span>
-          </v-btn>
-        </template>
-      </v-text-field>
       <!-- <client-only>
         <vue-hcaptcha
           v-if="failedCount > 3"
@@ -264,6 +284,7 @@ export default defineComponent({
     const userref: Ref<any> = ref(null);
     const passref: Ref<any> = ref(null);
     const captcharef: Ref<any> = ref(null);
+    const otpref: Ref<any> = ref(null);
     const formatter: ComputedRef<Intl.NumberFormat> = computed(
       () => store.getters["formatter"] as Intl.NumberFormat
     );
@@ -331,14 +352,18 @@ export default defineComponent({
     }
 
     function requestOtp() {
-      counter.value = 90;
-      timer = setInterval(() => {
-        if (counter.value > 1) counter.value = counter.value - 1;
-        else {
-          if (timer) clearInterval(timer);
-          counter.value = 0;
-        }
-      }, 1000);
+      frm.value.validate();
+      otpref.value.focus();
+      if (userref.value.validate() && captcharef.value.validate()) {
+        counter.value = 90;
+        timer = setInterval(() => {
+          if (counter.value > 1) counter.value = counter.value - 1;
+          else {
+            if (timer) clearInterval(timer);
+            counter.value = 0;
+          }
+        }, 1000);
+      }
     }
 
     onMounted(() => {
@@ -366,6 +391,7 @@ export default defineComponent({
       userref,
       passref,
       captcharef,
+      otpref,
       rules: {
         required,
       },
@@ -432,8 +458,10 @@ a
   padding-top: 24px
 .pad-b-24
   padding-bottom: 24px
-.primary
+.sms
   &.v-btn
+    color: var(--v-primary-base)
+    background-color: rgba(0, 0, 0, 0.12) !important
     &--disabled
       color: var(--v-primary-base) !important
       .v-icon

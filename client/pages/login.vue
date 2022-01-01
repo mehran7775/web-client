@@ -1,31 +1,51 @@
 <template>
-  <v-container class="login ma-0 pa-0" fluid>
-    <v-row class="ma-0 pa-0">
-      <v-col md="6" sm="12" class="login-col justify-center">
-        <nuxt-link to="/about-us" class="logo"></nuxt-link>
-        <login :width="322" :input-height="42" />
-      </v-col>
-      <v-col md="6" sm="0" class="img-col d-none d-md-block">
-        <div class="pie pie-1">
-        </div>
-        <div class="pie pie-2">
-        </div>
-        <content-slider :interval="7.5" src="login-slider" />
-        <floating-button top="calc(50% - 132px)" left="8px" small color="primary lighten-1" depressed>
-          <v-icon> adaico-instagram </v-icon>
-        </floating-button>
-        <floating-button top="calc(50% - 88px)" left="8px" small color="primary lighten-1" depressed>
-          <v-icon> adaico-whatsapp </v-icon>
-        </floating-button>
-        <floating-button top="calc(50% - 44px)" left="8px" small color="primary lighten-1" depressed>
-          <v-icon> adaico-facebook </v-icon>
-        </floating-button>
-        <floating-button top="50%" left="8px" small color="primary lighten-1" depressed>
-          <v-icon> mdi-dots-horizontal </v-icon>
-        </floating-button>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-row class="login ma-0 pa-0">
+    <v-col md="6" sm="12" class="login-col justify-center">
+      <nuxt-link to="/about-us" class="logo"></nuxt-link>
+      <login :width="322" :input-height="42" />
+    </v-col>
+    <v-col md="6" sm="0" class="img-col d-none d-md-block">
+      <div class="pie pie-1"></div>
+      <div class="pie pie-2"></div>
+      <content-slider :interval="0" src="login-slider" />
+      <floating-button
+        top="calc(50% - 110px)"
+        left="8px"
+        small
+        color="primary lighten-1"
+        depressed
+      >
+        <v-icon> adaico-instagram </v-icon>
+      </floating-button>
+      <floating-button
+        top="calc(50% - 66px)"
+        left="8px"
+        small
+        color="primary lighten-1"
+        depressed
+      >
+        <v-icon> adaico-whatsapp </v-icon>
+      </floating-button>
+      <floating-button
+        top="calc(50% - 22px)"
+        left="8px"
+        small
+        color="primary lighten-1"
+        depressed
+      >
+        <v-icon> adaico-facebook </v-icon>
+      </floating-button>
+      <floating-button
+        top="calc(50% + 22px)"
+        left="8px"
+        small
+        color="primary lighten-1"
+        depressed
+      >
+        <v-icon> mdi-dots-horizontal </v-icon>
+      </floating-button>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -49,7 +69,7 @@ export default defineComponent({
   height: 100%
 .login-col
   background-color: white
-  height: 100vh
+  height: 100%
   display: flex
   flex-direction: column
 @media (min-width: 960px)
@@ -61,7 +81,7 @@ export default defineComponent({
 .img-col
   position: relative
   padding: 81px 69px 31px 69px
-  height: 100vh
+  height: 100%
   min-height: 600px
   overflow: hidden
 </style>

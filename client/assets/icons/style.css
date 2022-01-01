@@ -19,6 +19,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+
+.adaico-record-bar:before {
+  content: "\e920";
+}
 .adaico-add-circle:before {
   content: "\e900";
 }

@@ -15,12 +15,17 @@
         <v-btn
           height="24"
           width="24"
+          class="mx-2 pa-0"
           :input-value="active"
-          icon
           @click="toggle"
+          aria-hidden
+          icon
           dark
         >
-          <v-icon size="16">mdi-record</v-icon>
+          <div
+            class="item"
+            :style="{ height: '8px', width: active ? '28px' : '8px' }"
+          ></div>
         </v-btn>
       </v-item>
     </v-item-group>
@@ -84,6 +89,14 @@ export default defineComponent({
 });
 </script>
 
+<style lang="sass">
+.controll
+  .v-btn
+    &--active
+      &::before
+        display: none
+</style>
+
 <style lang="sass" scoped>
 .hover
   position: absolute
@@ -101,4 +114,11 @@ export default defineComponent({
   text-align: center
   justify-content: center
   height: 24px
+  .v-btn
+    border: none !important
+    .item
+      transition: all 0.2s ease-in-out
+      display: inline-block
+      background-color: white
+      border-radius: 4px
 </style>

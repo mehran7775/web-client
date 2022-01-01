@@ -2,17 +2,22 @@
   <v-app :class="locale">
     <v-main>
       <nuxt />
+      <v-footer color="transparent" class="justify-start text-start" absolute>
+        <span class="default--text text--lighten-2">
+          طراحی و توسعه شرکت عصر دانش افزار
+        </span>
+      </v-footer>
     </v-main>
-    <v-footer color="transparent" absolute>
-      <span class="default--text text--lighten-2">
-        طراحی و توسعه شرکت عصر دانش افزار
-      </span>
-    </v-footer>
   </v-app>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, useStore } from "@nuxtjs/composition-api";
+import {
+  defineComponent,
+  ref,
+  computed,
+  useStore,
+} from "@nuxtjs/composition-api";
 import snackbar from "@/components/snacks.vue";
 
 export default defineComponent({
@@ -20,7 +25,7 @@ export default defineComponent({
     snackbar,
   },
   setup(props, context) {
-    const store = useStore()
+    const store = useStore();
     const locale = computed(() => {
       return store.getters["locale"];
     });
@@ -32,6 +37,9 @@ export default defineComponent({
 
 <style lang="sass" scoped>
 .v-main
+  overflow-y: auto
+  overflow-x: hidden
   background-color: var(--v-primary-base)
   color: white
+  min-height: 100vh
 </style>
