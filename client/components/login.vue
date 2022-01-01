@@ -46,7 +46,10 @@
           </span>
         </div>
       </div>
-      <p class="mt-3 mar-b-6">{{ $t("user.password") }}</p>
+      <p v-if="data.passwordType == 2" class="mt-3 mar-b-6">
+        {{ $t("login.otp") }}
+      </p>
+      <p v-else class="mt-3 mar-b-6">{{ $t("user.password") }}</p>
       <v-text-field
         ref="otpref"
         v-if="data.passwordType == 2"
