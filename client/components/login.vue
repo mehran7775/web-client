@@ -51,6 +51,7 @@
       </p>
       <p v-else class="mt-3 mar-b-6">{{ $t("user.password") }}</p>
       <v-text-field
+        tabindex="2"
         ref="otpref"
         v-if="data.passwordType == 2"
         class="otp"
@@ -156,42 +157,20 @@
       </v-row>
       <div v-if="true" class="ma-0 pa-0 mt-1 mb-4">
         <p class="mar-b-6">{{ $t("login.captcha") }}</p>
-        <v-text-field
+        <simple-captcha
+          v-model="data.captcha"
           tabindex="3"
           ref="captcharef"
           class="captcha"
-          v-model="data.captcha"
-          :rules="[rules.required]"
+          :height="inputHeight"
           @keyup.enter="
             () => {
               login(data);
             }
           "
-          hide-details
           outlined
           dense
-        >
-          <template #append>
-            <v-img :src="captchaUrl" class="ma-0 me-3 pa-0 d-inline-block">
-            </v-img>
-            <v-icon @click="refreshCaptcha"> adaico-refresh-2 </v-icon>
-          </template>
-        </v-text-field>
-        <div
-          v-if="captcharef && !captcharef.isFocused && !captcharef.valid"
-          class="pt-2 error--text"
-        >
-          <div
-            v-for="item in captcharef.validations"
-            :key="item"
-            style="font-size: 10px"
-          >
-            <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
-            <span style="display: inline-block">
-              {{ $t(item) }}
-            </span>
-          </div>
-        </div>
+        />
       </div>
       <v-radio-group
         v-model="data.passwordType"
@@ -204,6 +183,7 @@
             { value: 1, text: $t('login.static') },
             { value: 2, text: $t('login.otp') },
           ]"
+          tabindex="4"
           :ripple="false"
           :key="item.value"
           :label="item.text"
@@ -226,6 +206,7 @@
         ></vue-hcaptcha>
       </client-only> -->
       <v-btn
+        tabindex="5"
         class="my-4"
         depressed
         color="primary"
@@ -238,6 +219,7 @@
       </v-btn>
     </v-form>
     <v-btn
+      tabindex="6"
       class="mb-6"
       depressed
       color="primary"
@@ -297,12 +279,6 @@ export default defineComponent({
     const data: Ref<Login> = ref(new Login("", "", ""));
     const snacs = reactive([]);
     const i18n = useI18n();
-    const captcha =
-      process.env.VUE_APP_Host +
-      "sso/captcha?width=100&height=" +
-      ((props.inputHeight ?? 42) - 8) +
-      "&r=";
-    const captchaUrl = ref(captcha);
 
     const failedCount = computed(() => store.getters["sso/user/tryCount"]);
     const rtl = computed(() => store.getters["rtl"]);
@@ -324,7 +300,7 @@ export default defineComponent({
             snack(new Snack("login.successful", "success"));
           }
         } catch (err) {
-          refreshCaptcha();
+          captcharef.value.refreshCaptcha();
           const error = ErrorExtractor(err as AxiosError);
           if (error.detail.length == 0)
             snack(new Snack("errors." + error.code, "error"));
@@ -349,9 +325,6 @@ export default defineComponent({
 
     function checkTries(val: string) {
       store.dispatch("sso/user/checkTries", val);
-    }
-    function refreshCaptcha() {
-      captchaUrl.value = captcha + Math.random() * 1000000;
     }
 
     function requestOtp() {
@@ -380,10 +353,8 @@ export default defineComponent({
       snack,
       captchaResult,
       checkTries,
-      refreshCaptcha,
       requestOtp,
       counter,
-      captchaUrl,
       rtl,
       formatter,
       failedCount,
