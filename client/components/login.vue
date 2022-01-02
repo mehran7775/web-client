@@ -34,12 +34,12 @@
           <v-icon> adaico-keyboard </v-icon>
         </template>
       </v-text-field>
-      <div v-if="userref && !userref.valid" class="pt-2 error--text">
-        <div
-          v-for="item in userref.validations"
-          :key="item"
-          style="font-size: 10px"
-        >
+      <div
+        v-if="userref && !userref.valid"
+        class="error--text"
+        style="font-size: 10px"
+      >
+        <div v-for="item in userref.validations" :key="item" class="pt-2">
           <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
           <span style="display: inline-block">
             {{ $t(item) }}
@@ -82,12 +82,12 @@
           </v-btn>
         </template>
       </v-text-field>
-      <div v-if="otpref && !otpref.valid" class="pt-2 error--text">
-        <div
-          v-for="item in otpref.validations"
-          :key="item"
-          style="font-size: 10px"
-        >
+      <div
+        v-if="otpref && !otpref.valid"
+        class="error--text"
+        style="font-size: 10px"
+      >
+        <div v-for="item in otpref.validations" :key="item" class="pt-2">
           <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
           <span style="display: inline-block">
             {{ $t(item) }}
@@ -126,15 +126,10 @@
           <v-icon> adaico-keyboard </v-icon>
         </template>
       </v-text-field>
-      <v-row class="ma-0 mt-1 pa-0">
+      <v-row class="ma-0 mt-1 pa-0" style="font-size: 10px">
         <v-col cols="6" class="ma-0 pa-0">
-          <div v-if="passref">
-            <div
-              v-for="item in passref.validations"
-              :key="item"
-              class="error--text"
-              style="font-size: 10px"
-            >
+          <div v-if="passref" class="error--text">
+            <div v-for="item in passref.validations" :key="item" class="pt-2">
               <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
               <span style="display: inline-block">
                 {{ $t(item) }}
@@ -146,7 +141,6 @@
           cols="6"
           class="ma-0 pa-0 justify-end"
           :style="{
-            'font-size': '10px',
             'text-align': rtl ? 'left' : 'right',
           }"
         >
@@ -379,6 +373,18 @@ export default defineComponent({
 </script>
 
 <style lang="sass">
+.mar-t-6
+  margin-top: 6px
+.mar-b-6
+  margin-bottom: 6px
+.pad-t-6
+  padding-top: 6px
+.pad-b-6
+  padding-bottom: 6px
+.pad-t-24
+  padding-top: 24px
+.pad-b-24
+  padding-bottom: 24px
 .otp
   &.v-text-field
     .v-input
@@ -420,18 +426,6 @@ a
 </style>
 
 <style lang="sass" scoped>
-.mar-t-6
-  margin-top: 6px
-.mar-b-6
-  margin-bottom: 6px
-.pad-t-6
-  padding-top: 6px
-.pad-b-6
-  padding-bottom: 6px
-.pad-t-24
-  padding-top: 24px
-.pad-b-24
-  padding-bottom: 24px
 .sms
   &.v-btn
     color: var(--v-primary-base)

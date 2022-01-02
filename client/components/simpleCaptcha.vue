@@ -9,19 +9,16 @@
       v-bind="$attrs"
     >
       <template #append>
-        <v-img :src="captchaUrl" class="ma-0 me-3 pa-0 d-inline-block"> </v-img>
+        <!-- <v-img :src="captchaUrl" class="ma-0 me-3 pa-0 d-inline-block"> </v-img> -->
         <v-icon @click="refreshCaptcha"> adaico-refresh-2 </v-icon>
       </template>
     </v-text-field>
     <div
       v-if="captcharef && !captcharef.isFocused && !captcharef.valid"
-      class="pt-2 error--text"
+      class="error--text"
+      style="font-size: 10px"
     >
-      <div
-        v-for="item in captcharef.validations"
-        :key="item"
-        style="font-size: 10px"
-      >
+      <div v-for="item in captcharef.validations" :key="item" class="pt-2">
         <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
         <span style="display: inline-block">
           {{ $t(item) }}
