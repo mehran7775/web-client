@@ -135,7 +135,7 @@
       <v-row class="ma-0 mt-1 pa-0" style="font-size: 10px">
         <v-col cols="6" class="ma-0 pa-0">
           <div v-if="passref" class="error--text">
-            <div v-for="item in passref.validations" :key="item" class="pt-2">
+            <div v-for="item in passref.validations" :key="item" class="mb-1">
               <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
               <span style="display: inline-block">
                 {{ $t(item) }}
