@@ -380,17 +380,13 @@ export default defineComponent({
 
 <style lang="sass">
 .mar-t-6
-  margin-top: 6px
+  margin-top: 6px !important
 .mar-b-6
-  margin-bottom: 6px
+  margin-bottom: 6px !important
 .pad-t-6
-  padding-top: 6px
+  padding-top: 6px !important
 .pad-b-6
-  padding-bottom: 6px
-.pad-t-24
-  padding-top: 24px
-.pad-b-24
-  padding-bottom: 24px
+  padding-bottom: 6px !important
 .otp
   &.v-text-field
     .v-input
