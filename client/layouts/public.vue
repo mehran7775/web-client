@@ -8,6 +8,7 @@
         </span>
       </v-footer>
     </v-main>
+    <snackbar />
   </v-app>
 </template>
 
