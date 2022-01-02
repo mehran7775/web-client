@@ -1,6 +1,8 @@
 <template>
   <div>
     <v-text-field
+      aria-label="Picture Captcha"
+      aria-required="true"
       ref="captcharef"
       v-model="captcha"
       :rules="[rules.required]"
@@ -9,8 +11,13 @@
       v-bind="$attrs"
     >
       <template #append>
-        <!-- <v-img :src="captchaUrl" class="ma-0 me-3 pa-0 d-inline-block"> </v-img> -->
-        <v-icon @click="refreshCaptcha"> adaico-refresh-2 </v-icon>
+        <v-img
+          :src="captchaUrl"
+          :height="height - 8"
+          class="ma-0 me-3 pa-0 d-inline-block"
+        >
+        </v-img>
+        <v-icon class="mt-1" @click="refreshCaptcha"> adaico-refresh-2 </v-icon>
       </template>
     </v-text-field>
     <div
@@ -55,6 +62,7 @@ export default defineComponent({
     function refreshCaptcha() {
       captchaUrl.value = url + Math.random() * 1000000;
     }
+    refreshCaptcha();
     return {
       captcharef,
       captchaUrl,
@@ -66,3 +74,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="sass" scoped>
+.refresh
+  display: flex
+  flex-direction: row
+  justify-content: center
+</style>

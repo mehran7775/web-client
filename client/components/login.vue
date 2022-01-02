@@ -13,6 +13,8 @@
     <v-form ref="frm">
       <p class="mt-4 mar-b-6">{{ $t("user.username") }}</p>
       <v-text-field
+        aria-label="username"
+        aria-required="true"
         tabindex="1"
         ref="userref"
         :height="inputHeight"
@@ -51,6 +53,8 @@
       </p>
       <p v-else class="mt-3 mar-b-6">{{ $t("user.password") }}</p>
       <v-text-field
+        aria-label="otp"
+        aria-required="true"
         tabindex="2"
         ref="otpref"
         v-if="data.passwordType == 2"
@@ -95,6 +99,8 @@
         </div>
       </div>
       <v-text-field
+        aria-label="password"
+        aria-required="true"
         v-if="data.passwordType == 1"
         tabindex="2"
         ref="passref"
