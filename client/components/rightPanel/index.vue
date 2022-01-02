@@ -314,7 +314,6 @@ export default defineComponent({
       unmark,
       isMarked,
       bookmarks,
-      console,
       rtl,
       drawer,
       expand,

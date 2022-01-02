@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-text-field
+      class="captcha"
       aria-label="Picture Captcha"
       aria-required="true"
       ref="captcharef"
@@ -43,7 +44,6 @@ export default defineComponent({
   inheritAttrs: false,
   props: ["value", "height"],
   setup(props, ctx) {
-    console.log(props);
     const captcharef: Ref<any> = ref(null);
     const captcha = computed({
       get() {

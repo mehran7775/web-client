@@ -41,11 +41,11 @@
         </v-stepper-header>
         <v-stepper-items>
           <v-stepper-content class="ma-0 my-2 pa-0" step="1">
-            <v-form v-model="forms.form0" ref="forms.rform0">
+            <v-form v-model="forms.form0" ref="rform0" lazy-validation>
               <h4>{{ $t("user.profile.nid") }}</h4>
               <v-text-field
                 class="my-2"
-                prepend-inner-icon="mdi-account"
+                prepend-inner-icon="adaico-user"
                 outlined
                 hide-details
                 dense
@@ -54,7 +54,7 @@
               <h4>{{ $t("user.profile.contact.mobile") }}</h4>
               <v-text-field
                 class="my-2"
-                prepend-inner-icon="mdi-cellphone"
+                prepend-inner-icon="adaico-mobile"
                 outlined
                 hide-details
                 dense
@@ -63,54 +63,30 @@
             </v-form>
           </v-stepper-content>
           <v-stepper-content class="ma-0 my-2 pa-0" step="2">
-            <v-form v-model="forms.form1" ref="forms.rform1">
-              <div v-if="true">
+            <v-form v-model="forms.form1" ref="rform1" lazy-validation>
+              <div>
                 <h4 class="my-1">{{ $t("login.captcha") }}</h4>
-                <v-text-field
-                  class="captcha"
-                  @keyup.enter="() => {}"
-                  hide-details
-                  outlined
-                  dense
-                >
-                  <template #append>
-                    <v-img :src="captchaUrl" class="ma-0 pa-0 d-inline-block">
-                    </v-img>
-                    <v-icon @click="refreshCaptcha"> mdi-refresh </v-icon>
-                  </template>
-                </v-text-field>
+                <simple-captcha tabindex="1" :height="42" outlined dense />
               </div>
               <div>
                 <h4>
                   {{ $t("login.otp") }}
                 </h4>
-                <v-text-field class="otp" hide-details outlined dense>
-                  <template #append>
-                    <v-btn
-                      class="primary"
-                      color="primary"
-                      width="100"
-                      :disabled="counter > 0"
-                      @click="requestOtp"
-                      depressed
-                    >
-                      <span v-if="counter == 0">
-                        {{ $t("login.send-sms") }}
-                      </span>
-                      <span v-else>
-                        <v-icon size="17"> mdi-clock </v-icon>
-                        {{ formatter.format(Math.floor(counter / 60)) }}:{{
-                          formatter.format(counter % 60)
-                        }}
-                      </span>
-                    </v-btn>
-                  </template>
-                </v-text-field>
+                <otp
+                  ref="otpref"
+                  timer="90"
+                  :height="42"
+                  tabindex="2"
+                  @request="requestOtp"
+                  @keyup.enter="validate"
+                  outlined
+                  dense
+                />
               </div>
             </v-form>
           </v-stepper-content>
           <v-stepper-content class="ma-0 my-2 pa-0" step="3">
-            <v-form v-model="forms.form2" ref="forms.rform2">
+            <v-form v-model="forms.form2" ref="rform2" lazy-validation>
               <v-card>
                 <v-row>
                   <v-col cols="6"> نام: حسین </v-col>
@@ -126,6 +102,7 @@
                 <v-checkbox
                   :ripple="false"
                   :label="$t('general.confirm-information')"
+                  color="success"
                 >
                 </v-checkbox>
               </v-card>
@@ -151,33 +128,28 @@ import {
   useContext,
   useStore,
 } from "@nuxtjs/composition-api";
+import simpleCaptcha from "~/components/simpleCaptcha.vue";
 
 export default defineComponent({
+  components: { simpleCaptcha },
   layout: "public",
   setup(props) {
     const store = useStore();
     const ctx = useContext();
     const progress = ref(0);
-    const counter = ref(0);
-    let timer: NodeJS.Timeout | null = null;
+    const otpref: Ref<any> = ref(null);
+
     const step = ref(1);
     const forms: Ref<any> = ref({
       form1: null,
       form2: null,
       form0: null,
-      rform1: null,
-      rform2: null,
-      rform0: null,
     });
-    const captcha =
-      process.env.VUE_APP_Host + "sso/captcha?width=100&height=32&r=";
-    const captchaUrl = ref(captcha);
-    const formatter: ComputedRef<Intl.NumberFormat> = computed(
-      () => store.getters["formatter"] as Intl.NumberFormat
-    );
-    const rtl = computed(() => store.getters["rtl"]);
+    const rform1: Ref<any> = ref(null),
+      rform2: Ref<any> = ref(null),
+      rform0: Ref<any> = ref(null);
 
-    function captchaResult() {}
+    const rtl = computed(() => store.getters["rtl"]);
 
     function back() {
       if (step.value == 1) {
@@ -187,37 +159,32 @@ export default defineComponent({
 
     function validate() {
       switch (step.value) {
+        case 1:
+          if (rform0.value.validate()) step.value = 2;
+          break;
+        case 2:
+          if (rform1.value.validate()) step.value = 3;
+          break;
         case 3:
+          rform2.value.validate();
           break;
         default:
-          forms.value["rform" + step.value]?.validate();
-          step.value = Math.abs((step.value % 3) + 1);
           break;
       }
     }
-    function refreshCaptcha() {
-      captchaUrl.value = captcha + Math.random() * 1000000;
-    }
     function requestOtp() {
-      counter.value = 90;
-      timer = setInterval(() => {
-        if (counter.value > 1) counter.value = counter.value - 1;
-        else {
-          if (timer) clearInterval(timer);
-          counter.value = 0;
-        }
-      }, 1000);
+      otpref.value.setTimer();
     }
+    console.log(rform1);
     return {
       rtl,
-      formatter,
       forms,
-      captchaUrl,
+      rform1,
+      rform2,
+      rform0,
+      otpref,
       back,
       validate,
-      captchaResult,
-      refreshCaptcha,
-      counter,
       requestOtp,
       step,
       progress,

@@ -307,7 +307,6 @@ export default defineComponent({
     });
 
     return {
-      console,
       frm,
       login,
       snack,
