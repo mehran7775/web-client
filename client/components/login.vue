@@ -24,7 +24,8 @@
         @input="checkTries"
         @keyup.enter="
           () => {
-            passref.focus();
+            if (passref) passref.focus();
+            else if (captcharef) captcharef.focus();
           }
         "
         hide-details
@@ -52,52 +53,21 @@
         {{ $t("login.otp") }}
       </p>
       <p v-else class="mt-3 mar-b-6">{{ $t("user.password") }}</p>
-      <v-text-field
-        aria-label="otp"
-        aria-required="true"
-        tabindex="2"
-        ref="otpref"
+      <otp
         v-if="data.passwordType == 2"
-        class="otp"
-        hide-details
-        hide-spin-buttons
+        timer="90"
+        :height="inputHeight"
+        tabindex="4"
+        ref="otpref"
+        @request="requestOtp"
+        @keyup.enter="
+          () => {
+            login(data);
+          }
+        "
         outlined
         dense
-      >
-        <template #append>
-          <v-btn
-            class="sms"
-            width="100"
-            :disabled="counter > 0"
-            @click="requestOtp"
-            :height="inputHeight - 8"
-            depressed
-            large
-          >
-            <span v-if="counter == 0">
-              {{ $t("login.send-sms") }}
-            </span>
-            <span v-else>
-              <v-icon size="17"> mdi-clock </v-icon>
-              {{ formatter.format(Math.floor(counter / 60)) }}:{{
-                formatter.format(counter % 60)
-              }}
-            </span>
-          </v-btn>
-        </template>
-      </v-text-field>
-      <div
-        v-if="otpref && !otpref.valid"
-        class="error--text"
-        style="font-size: 10px"
-      >
-        <div v-for="item in otpref.validations" :key="item" class="pt-2">
-          <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
-          <span style="display: inline-block">
-            {{ $t(item) }}
-          </span>
-        </div>
-      </div>
+      />
       <v-text-field
         aria-label="password"
         aria-required="true"
@@ -165,7 +135,11 @@
           :height="inputHeight"
           @keyup.enter="
             () => {
-              login(data);
+              if (passref) login(data);
+              else if (otpref) {
+                requestOtp();
+                otpref.focus();
+              }
             }
           "
           outlined
@@ -183,7 +157,7 @@
             { value: 1, text: $t('login.static') },
             { value: 2, text: $t('login.otp') },
           ]"
-          tabindex="4"
+          tabindex="5"
           :ripple="false"
           :key="item.value"
           :label="item.text"
@@ -206,7 +180,7 @@
         ></vue-hcaptcha>
       </client-only> -->
       <v-btn
-        tabindex="5"
+        tabindex="6"
         class="my-4"
         depressed
         color="primary"
@@ -219,7 +193,7 @@
       </v-btn>
     </v-form>
     <v-btn
-      tabindex="6"
+      tabindex="7"
       class="mb-6"
       depressed
       color="primary"
@@ -270,9 +244,6 @@ export default defineComponent({
     const passref: Ref<any> = ref(null);
     const captcharef: Ref<any> = ref(null);
     const otpref: Ref<any> = ref(null);
-    const formatter: ComputedRef<Intl.NumberFormat> = computed(
-      () => store.getters["formatter"] as Intl.NumberFormat
-    );
 
     const loading: Ref<boolean> = ref(false);
     const showPassword: Ref<boolean> = ref(false);
@@ -282,10 +253,6 @@ export default defineComponent({
 
     const failedCount = computed(() => store.getters["sso/user/tryCount"]);
     const rtl = computed(() => store.getters["rtl"]);
-
-    //OTP
-    const counter = ref(0);
-    let timer: NodeJS.Timeout | null = null;
 
     async function login(data: Login) {
       if (frm.value?.validate()) {
@@ -331,14 +298,7 @@ export default defineComponent({
       frm.value.validate();
       otpref.value.focus();
       if (userref.value.validate() && captcharef.value.validate()) {
-        counter.value = 90;
-        timer = setInterval(() => {
-          if (counter.value > 1) counter.value = counter.value - 1;
-          else {
-            if (timer) clearInterval(timer);
-            counter.value = 0;
-          }
-        }, 1000);
+        otpref.value.setTimer();
       }
     }
 
@@ -354,9 +314,7 @@ export default defineComponent({
       captchaResult,
       checkTries,
       requestOtp,
-      counter,
       rtl,
-      formatter,
       failedCount,
       loading,
       showPassword,
@@ -387,18 +345,9 @@ export default defineComponent({
   padding-top: 6px !important
 .pad-b-6
   padding-bottom: 6px !important
-.otp
-  &.v-text-field
-    .v-input
-      &__append-inner
-        margin-top: 0 !important
-      &__slot
-        padding: 4px 12px 4px 4px !important
 a
   text-decoration: none
-.captcha
-  .v-input__append-inner
-    margin-top: 3px !important
+
 .radio-ckeck
   border-radius: 5px
   width: calc( 50% - 8px )
@@ -425,15 +374,4 @@ a
     padding-bottom: 16px
     font-size: 36px
     line-height: 36px
-</style>
-
-<style lang="sass" scoped>
-.sms
-  &.v-btn
-    color: var(--v-primary-base)
-    background-color: rgba(0, 0, 0, 0.12) !important
-    &--disabled
-      color: var(--v-primary-base) !important
-      .v-icon
-        color: var(--v-primary-base) !important
 </style>

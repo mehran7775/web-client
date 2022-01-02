@@ -50,7 +50,7 @@ export default defineComponent({
         return props.value;
       },
       set(val) {
-        ctx.emit("input:update", val);
+        ctx.emit("input", val);
       },
     });
     const url =
@@ -70,14 +70,14 @@ export default defineComponent({
       captcha,
       rules: { required },
       focus: () => captcharef.value?.focus(),
+      validate: () => captcharef.value?.validate(),
     };
   },
 });
 </script>
 
-<style lang="sass" scoped>
-.refresh
-  display: flex
-  flex-direction: row
-  justify-content: center
+<style lang="sass">
+.captcha
+  .v-input__append-inner
+    margin-top: 3px !important
 </style>
