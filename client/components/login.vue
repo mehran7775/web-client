@@ -28,13 +28,34 @@
             else if (captcharef) captcharef.focus();
           }
         "
+        @focus="
+          () => {
+            if (keyboard.active)
+              keyboard.setListener((key) => {
+                data.userName = data.userName + key;
+              });
+          }
+        "
         hide-details
         outlined
         dense
         validate-on-blur
       >
         <template #append>
-          <v-icon> adaico-keyboard </v-icon>
+          <v-icon
+            @click="
+              () => {
+                keyboard.active = !keyboard.active;
+                if (keyboard.active)
+                  keyboard.setListener((key) => {
+                    data.userName = data.userName + key;
+                  });
+              }
+            "
+            :color="keyboard.active ? 'primary' : null"
+          >
+            adaico-keyboard
+          </v-icon>
         </template>
       </v-text-field>
       <div
@@ -84,6 +105,14 @@
             else captcharef.focus();
           }
         "
+        @focus="
+          () => {
+            if (keyboard.active)
+              keyboard.setListener((key) => {
+                data.password = data.password + key;
+              });
+          }
+        "
         :class="{ 'pass-star': !showPassword }"
         :rules="[rules.required]"
         hide-details
@@ -99,7 +128,19 @@
           >
             adaico-eye
           </v-icon>
-          <v-icon> adaico-keyboard </v-icon>
+          <v-icon
+            @click="
+              () => {
+                keyboard.active = !keyboard.active;
+                if (keyboard.active)
+                  keyboard.setListener((key) => {
+                    data.password = data.password + key;
+                  });
+              }
+            "
+          >
+            adaico-keyboard
+          </v-icon>
         </template>
       </v-text-field>
       <v-row class="ma-0 mt-1 pa-0" style="font-size: 10px">
@@ -140,6 +181,11 @@
                 requestOtp();
                 otpref.focus();
               }
+            }
+          "
+          @focus="
+            () => {
+              keyboard.active = false;
             }
           "
           outlined
@@ -227,6 +273,7 @@ import { Snack } from "~/store/snacks";
 import { Login } from "~/types";
 import { ErrorExtractor } from "~/utils/error";
 import { required } from "@/utils/rules";
+import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
 
 export default defineComponent({
   name: "Login",
@@ -238,6 +285,7 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const ctx = useContext();
+    const keyboard = ref(useVirtualKeyBoard());
 
     const frm: Ref<any> = ref(null);
     const userref: Ref<any> = ref(null);
@@ -323,6 +371,8 @@ export default defineComponent({
       passref,
       captcharef,
       otpref,
+      keyboard,
+      console,
       rules: {
         required,
       },
