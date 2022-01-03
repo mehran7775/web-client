@@ -175,7 +175,6 @@ export default defineComponent({
     function requestOtp() {
       otpref.value.setTimer();
     }
-    console.log(rform1);
     return {
       rtl,
       forms,
