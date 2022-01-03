@@ -1,8 +1,14 @@
 <template>
   <v-row class="login ma-0 pa-0">
-    <v-col md="6" sm="12" class="login-col justify-center">
+    <v-col
+      md="6"
+      sm="12"
+      class="login-col justify-center"
+      style="position: relative"
+    >
       <nuxt-link to="/about-us" class="logo"></nuxt-link>
       <login :width="322" :input-height="42" />
+      <loading :loading="loading" />
     </v-col>
     <v-col md="6" sm="0" class="img-col d-none d-md-block">
       <div class="pie pie-1"></div>
@@ -49,11 +55,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent, computed, useStore } from "@nuxtjs/composition-api";
 
 export default defineComponent({
   layout: "public",
-  setup() {},
+  setup() {
+    const store = useStore();
+    const loading = computed(() => store.getters["sso/user/renewToken"]);
+    return {
+      loading,
+    };
+  },
 });
 </script>
 

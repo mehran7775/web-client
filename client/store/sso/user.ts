@@ -15,6 +15,7 @@ export const userKey: string = 'userCache';
 export const state = () => new stores.UserState()
 
 export const getters: GetterTree<stores.UserState, stores.RootState> = {
+  renewToken: (state) => state.renewToken,
   getBookmarks: (state) => state.bookmarks,
   getToken: (state) => state.token,
   getRefresh: (state) => state.refresh,
@@ -27,6 +28,9 @@ export const getters: GetterTree<stores.UserState, stores.RootState> = {
 }
 
 export const mutations: MutationTree<stores.UserState> = {
+  renewToken(state, data: boolean) {
+    state.renewToken = data
+  },
   addBookmark(state, data: object) {
     state.bookmarks.push(data)
   },
@@ -100,6 +104,7 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
   },
   async login({ commit, dispatch, state, rootState }, payload) {
     try {
+      commit("renewToken", true)
       commit("tries", { user: payload.userName, tries: state.tryCount + 1 })
       const { data, status } = await login(
         payload.userName,
@@ -119,6 +124,8 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
         throw err
       }
       throw err
+    } finally {
+      commit("renewToken", false)
     }
   },
   async logout({ commit, rootState }) {
@@ -132,6 +139,7 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
     const token = state.refresh
     if (token) {
       try {
+        commit("renewToken", true)
         const { data, status } = await refreshToken(token)
         if (status >= 200 && status < 300 && !!data.token) {
           commit('setToken', 'Bearer ' + data.token)
@@ -142,6 +150,8 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
         return status
       } catch (err) {
         commit('logout')
+      } finally {
+        commit("renewToken", false)
       }
     }
     return 401

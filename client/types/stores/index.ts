@@ -22,6 +22,7 @@ export class UserState {
   refresh: string | null
   userName: string | null
   bookmarks: Array<object>
+  renewToken: boolean
   constructor() {
     this.tryCount = 0
     this.token = null
@@ -29,6 +30,7 @@ export class UserState {
     this.refresh = null
     this.userName = null
     this.bookmarks = []
+    this.renewToken = false
   }
   toJSON() {
     return { ...this }
