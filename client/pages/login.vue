@@ -50,6 +50,7 @@
       >
         <v-icon> mdi-dots-horizontal </v-icon>
       </floating-button>
+      <virtual-keyboard  />
     </v-col>
   </v-row>
 </template>
@@ -84,6 +85,8 @@ export default defineComponent({
   height: 100%
   display: flex
   flex-direction: column
+  overflow-y: auto
+  overflow-x: hidden
 @media (min-width: 960px)
   .login-col
     padding: 0 calc(25% - 161px)
