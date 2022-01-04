@@ -1,14 +1,13 @@
 <template>
   <v-autocomplete
+    height="32"
     v-model="model"
     :placeholder="$t('instrument.search')"
     :loading="loading"
     :items="entries"
-    class="no-translate"
-    flat
-    no-filter
-    rounded
-    append-icon="mdi-magnify"
+    class="instrument-search no-translate"
+    append-icon=""
+    prepend-inner-icon="mdi-magnify"
     item-text="name"
     item-value="id"
     @input="
@@ -21,6 +20,9 @@
         search(val);
       }
     "
+    flat
+    no-filter
+    rounded
     hide-details
     return-object
     dense
@@ -73,3 +75,8 @@ export default defineComponent({
 });
 </script>
 
+<style lang="sass" scoped>
+.instrument-search
+  background-color: var(--v-common-base)
+  border-radius: 8px
+</style>

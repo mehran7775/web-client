@@ -17,7 +17,7 @@
       id="app-bar"
       :clipped-left="clipped"
       :clipped-right="clipped"
-      :height="32"
+      :height="42"
       class="text-no-wrap"
       fixed
       app

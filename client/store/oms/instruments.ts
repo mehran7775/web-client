@@ -13,6 +13,7 @@ export class InstrumentState {
   selected: InstrumentCache | null = null
   orderQueueCache: Map<string, Array<OrderQueueItem>> = new Map<string, Array<OrderQueueItem>>()
   clientDistributionCache: Map<string, ClientDistribution> = new Map<string, ClientDistribution>()
+  editWatchlist: boolean = false
 }
 
 export const getters: GetterTree<InstrumentState, RootState> = {
@@ -32,9 +33,13 @@ export const getters: GetterTree<InstrumentState, RootState> = {
   getSelectedIndex: (state): number =>
     state.focus.findIndex((item) => item.id == state.selected?.id),
   getSelectedId: (state): number => state.selected?.id ?? -1,
+  editWatchlist: (state): boolean => state.editWatchlist,
 }
 
 export const mutations: MutationTree<InstrumentState> = {
+  setEditMode(state, data: boolean) {
+    state.editWatchlist = data
+  },
   updateInstrument(state, data) {
     const inst = state.cache.get(data.id.toString())
     Object.assign(inst, data)

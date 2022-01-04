@@ -1,9 +1,31 @@
 <template>
-  <v-card class="ma-0 pa-0 mx-1">
-    <v-toolbar color="primary" dark :height="32" dense>
-      <instrument-search style="max-width: 184px" />
+  <v-card class="ma-0 pa-0" flat tile>
+    <v-toolbar flat dense>
+      <watchlist-selector v-if="editMode" style="max-width: 164px" />
+      <instrument-search class="ms-1" style="max-width: 164px" />
+      <v-btn
+        v-if="!editMode"
+        @click="goEdit"
+        color="primary"
+        class="ma-0 ms-1 pa-0"
+        height="32"
+        width="56"
+      >
+        <v-icon small>mdi-plus</v-icon>
+        {{ $t("general.add") }}
+      </v-btn>
+      <v-btn
+        v-else
+        @click="apply"
+        color="primary"
+        class="ma-0 ms-1 pa-0"
+        height="32"
+        width="56"
+      >
+        {{ $t("general.apply") }}
+      </v-btn>
       <v-spacer />
-      <v-btn-toggle v-model="viewMode" mandatory light>
+      <v-btn-toggle color="primary" v-model="viewMode" mandatory>
         <v-btn height="28" small>
           <v-icon small> mdi-view-headline </v-icon>
         </v-btn>
@@ -43,6 +65,9 @@ export default defineComponent({
     const instruments = computed(
       () => store.getters["oms/instruments/getFocus"]
     );
+    const editMode = computed(
+      () => store.getters["oms/instruments/editWatchlist"]
+    );
     const viewMode = computed({
       set(value: number) {
         store.commit("oms/instruments/setFocusMode", value);
@@ -51,7 +76,17 @@ export default defineComponent({
         return store.getters["oms/instruments/getFocusMode"];
       },
     });
+    function goEdit() {
+      store.commit("oms/instruments/setFocus", []);
+      store.commit("oms/instruments/setEditMode", true);
+    }
+    function apply() {
+      store.commit("oms/instruments/setEditMode", false);
+    }
     return {
+      apply,
+      goEdit,
+      editMode,
       viewMode,
       instruments,
     };
