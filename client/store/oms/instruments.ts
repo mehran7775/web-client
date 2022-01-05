@@ -1,6 +1,6 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import { Instrument, OrderQueueItem, Side, SameSectorQuery, InstrumentCache, MarketHistory, PaginatedResult, ClientDistributionResponse, ClientDistribution, Order } from '@/types'
-import { getInstruments, getOrderQueue, getTeammates, getInstrumentMarketHistory, getClientDistribution as Distribution } from '@/repositories/oms/instruments_manager'
+import { Instrument, OrderQueueItem, Side, SameSectorQuery, InstrumentCache, MarketHistory, PaginatedResult, ClientDistributionResponse, ClientDistribution, Order, DailyPrice } from '@/types'
+import { getInstruments, getOrderQueue, getTeammates, getInstrumentMarketHistory, getClientDistribution as Distribution, getDailyPrice } from '@/repositories/oms/instruments_manager'
 import { RootState } from '@/types/stores'
 
 
@@ -46,7 +46,7 @@ export const mutations: MutationTree<InstrumentState> = {
   },
   setInstruments(state, data: Array<InstrumentCache>) {
     for (let i in data) {
-      state.cache.set(data[i].id.toString(), data[i])
+      state.cache.set(data[i].id.toString(), Object.assign(new InstrumentCache(), data[i]))
     }
   },
   setFocus(state, data: Array<InstrumentCache>) {
@@ -86,8 +86,8 @@ export const mutations: MutationTree<InstrumentState> = {
 }
 
 export const actions: ActionTree<InstrumentState, InstrumentState> = {
-  async getInstrumentsDetail({ state, commit }, payload: Array<number>): Promise<Array<InstrumentCache> | number> {
-    let res: Array<InstrumentCache> = []
+  async getInstrumentsDetail({ state, commit, dispatch }, payload: Array<number>): Promise<Array<Instrument> | number> {
+    let res: Array<Instrument> = []
     let missing: Array<number> = []
     let tmp = null
     for (let i in payload) {
@@ -97,9 +97,30 @@ export const actions: ActionTree<InstrumentState, InstrumentState> = {
     }
     if (missing.length > 0) {
       const { data: { data } } = await getInstruments(missing, this.$axios)
-      commit('setInstruments', res)
+      commit('setInstruments', data)
+      res.push(...data)
+      dispatch("getInstrumentPrices", missing)
+      dispatch("getMarketHistory", missing)
     }
     return res
+  },
+  async getInstrumentPrices({ state, commit }, payload: Array<number>): Promise<Array<DailyPrice> | number> {
+    const { data: { data } } = await getDailyPrice(payload, this.$axios)
+    data.every((item) => {
+      item.id = item.instrumentId
+      commit('updateInstrument', item)
+      return true
+    })
+    return data
+  },
+  async getMarketHistory({ state, commit }, payload: Array<number>): Promise<Array<MarketHistory> | number> {
+    const { data: { data } } = await getInstrumentMarketHistory(payload, this.$axios)
+    data.every((item) => {
+      item.id = item.instrumentId
+      commit('updateInstrument', item)
+      return true
+    })
+    return data
   },
   async getOrderQueue({ state, commit }, payload: number): Promise<Array<OrderQueueItem>> {
     let queue = state.orderQueueCache.get(payload.toString())

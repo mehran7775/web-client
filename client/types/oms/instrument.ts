@@ -54,21 +54,32 @@ export class Instrument {
 }
 
 export class DailyPrice {
+  id: number
+  instrumentCode: string
+  instrumentId: number
   dateTime: string
   opening: number
   closing: number
   highest: number
   lowest: number
+  priceChange: number
+  yesterdayPrice: number
   constructor() {
+    this.instrumentCode = ""
+    this.instrumentId = 0
+    this.id = this.instrumentId
     this.opening = 0
     this.lowest = 0
     this.highest = 0
     this.dateTime = ""
     this.closing = 0
+    this.priceChange = 0
+    this.yesterdayPrice = 0
   }
 }
 
 export class MarketHistory {
+  id: number
   instrumentId: number
   instrumentCode: string
   dateTime: string
@@ -77,6 +88,7 @@ export class MarketHistory {
   totalTradesValue: number
   constructor(instrumentId: number, instrumentCode: string, dateTime: string) {
     this.instrumentId = instrumentId
+    this.id = instrumentId
     this.instrumentCode = instrumentCode
     this.dateTime = dateTime
     this.totalTrades = 0
