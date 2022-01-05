@@ -1,15 +1,20 @@
 <template>
-  <v-combobox
+  <v-select
     height="32"
-    v-model="model"
-    :placeholder="$t('instrument.search')"
-    :loading="loading"
-    :items="entries"
-    class="instrument-search no-translate"
-    append-icon=""
-    prepend-inner-icon="mdi-magnify"
-    item-text="name"
+    :menu-props="{
+      bottom: true,
+      'offset-y': true,
+    }"
+    :placeholder="$t('watchList.title')"
+    :items="watchList"
+    class="watchlist-select"
+    item-text="text"
     item-value="id"
+    @input="
+      (val) => {
+        select(val);
+      }
+    "
     flat
     no-filter
     rounded
@@ -20,15 +25,51 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@nuxtjs/composition-api";
+import {
+  defineComponent,
+  useStore,
+  useContext,
+  ref,
+  Ref,
+  computed,
+  reactive,
+} from "@nuxtjs/composition-api";
 
 export default defineComponent({
-  setup() {},
+  props: {
+    autoRoute: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup(props) {
+    const store = useStore();
+    const ctx = useContext();
+    const watchList = computed(() => {
+      const lists = store.getters["sso/user/watchList"];
+      const res = [];
+      for (let k in lists) {
+        res.push({
+          text: k,
+          id: k,
+          to: "/watchList/" + k,
+        });
+      }
+      return res;
+    });
+    function select(val: any) {
+      if (props.autoRoute) ctx.redirect(val.to);
+    }
+    return {
+      select,
+      watchList,
+    };
+  },
 });
 </script>
 
 <style lang="sass" scoped>
-.instrument-search
+.watchlist-select
   background-color: var(--v-common-base)
   border-radius: 8px
 </style>

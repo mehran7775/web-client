@@ -147,6 +147,7 @@
     "wealth": "@:wealth.wealth"
   },
   "watchList": {
+    "title": "دیدبان",
     "editor": {
       "title": "ویرایش دیدبان"
     }

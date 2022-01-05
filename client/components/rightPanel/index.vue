@@ -152,7 +152,6 @@ import {
 
 export default defineComponent({
   name: "right-panel",
-  emits: ["openWatchList"],
   props: {
     value: Boolean,
     mini: Boolean,
