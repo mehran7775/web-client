@@ -37,14 +37,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, computed } from "@nuxtjs/composition-api";
+import {
+  defineComponent,
+  ref,
+  Ref,
+  computed,
+  useStore,
+} from "@nuxtjs/composition-api";
 import { required } from "@/utils/rules";
 
 export default defineComponent({
   inheritAttrs: false,
   props: ["value", "height"],
   setup(props, ctx) {
+    const store = useStore();
     const captcharef: Ref<any> = ref(null);
+    const url =
+      process.env.VUE_APP_Host +
+      "sso/captcha?width=100&height=" +
+      ((props.height ?? 42) - 8) +
+      "&r=";
+    const captchaUrl = ref(url);
+    const locale = computed(() => store.getters["locale"]);
     const captcha = computed({
       get() {
         return props.value;
@@ -53,14 +67,9 @@ export default defineComponent({
         ctx.emit("input", val);
       },
     });
-    const url =
-      process.env.VUE_APP_Host +
-      "sso/captcha?width=100&height=" +
-      ((props.height ?? 42) - 8) +
-      "&r=";
-    const captchaUrl = ref(url);
     function refreshCaptcha() {
-      captchaUrl.value = url + Math.random() * 1000000;
+      captchaUrl.value =
+        url + (Math.random() * 1000000).toString() + "&lang=" + locale.value;
     }
     refreshCaptcha();
     return {
