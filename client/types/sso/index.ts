@@ -90,6 +90,7 @@ export function DefaultCols(): WatchlistColumns[] {
     new WatchlistColumns("lowest", "lowest"),
     new WatchlistColumns("highest", "highest"),
     new WatchlistColumns("yesterdayPrice", "yesterdayPrice"),
-    new WatchlistColumns("opening", "opening")
+    new WatchlistColumns("opening", "opening"),
+    new WatchlistColumns("status", "status")
   ]
 }

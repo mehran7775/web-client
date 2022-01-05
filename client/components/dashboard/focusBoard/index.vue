@@ -7,12 +7,11 @@
         v-if="!editMode"
         @click="goEdit"
         color="primary"
-        class="ma-0 ms-1 pa-0"
+        class="ma-0 ms-1 pa-0 px-1"
         height="32"
-        width="56"
       >
-        <v-icon small>mdi-plus</v-icon>
-        {{ $t("general.add") }}
+        <v-icon x-small>mdi-pencil</v-icon>
+        {{ $t("watchList.editor.title") }}
       </v-btn>
       <v-btn
         v-else

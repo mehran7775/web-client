@@ -5,33 +5,20 @@
     @item-expanded="onExpand"
     class="mx-1 elevation-1 light"
     hide-default-footer
-    show-expand
     dense
   >
-    <template #item.data-table-expand="{ isExpanded, expand }">
-      <v-icon
-        @click="() => expand(!isExpanded)"
-        :color="isExpanded ? 'success' : ''"
-        size="20"
-      >
-        {{ isExpanded ? "mdi-eye" : "mdi-eye" }}
-      </v-icon>
-    </template>
     <template #item.name="{ item }">
       <v-row align="center" class="ma-0 pa-0" dense>
-        <v-col class="ma-0 pa-0" cols="5">
-          <v-icon
-            color="success"
-            size="20"
-            @click="() => order(item, Side.Buy)"
-          >
+        <v-col class="ma-0 pa-0">
+          <v-icon small> adaico-eye </v-icon>
+          <v-icon color="success" @click="() => order(item, Side.Buy)" small>
             adaico-bag-tick
           </v-icon>
-          <v-icon color="error" size="20" @click="() => order(item, Side.Sell)">
+          <v-icon color="error" @click="() => order(item, Side.Sell)" small>
             adaico-bag-cross
           </v-icon>
         </v-col>
-        <v-col class="ma-0 pa-0 text-right justify-start" cols="7">
+        <v-col class="ma-0 pa-0 text-right justify-start">
           <v-badge left dot class="ms-5" offset-x="-5" offset-y="75%">
             {{ item.name }}
           </v-badge>
@@ -163,47 +150,50 @@ export default defineComponent({
         wealth.find((w) => w.id == item.id)?.amount ?? 0
       );
     });
-    store
-      .dispatch("oms/instruments/getInstrumentsDetail", props.watchlists)
-      .then(() => {
-        instruments.push(
-          ...(store.getters["oms/instruments/getAll"](
-            props.watchlists
-          ) as Array<InstrumentCache>)
-        );
+    if (process.client) {
+      store
+        .dispatch("oms/instruments/getInstrumentsDetail", props.watchlists)
+        .then(() => {
+          instruments.push(
+            ...(store.getters["oms/instruments/getAll"](
+              props.watchlists
+            ) as Array<InstrumentCache>)
+          );
+        });
+
+      store
+        .dispatch("wealth/getWealth", new WealthSearchModel())
+        .then((data) => {
+          wealth.push(...data);
+        });
+
+      sh.addShortcut({
+        key: "shift+a",
+        action: () => {
+          const item = store.getters["oms/instruments/getSelected"];
+          if (item) {
+            store.commit("oms/instruments/updateInstrument", {
+              id: item.id,
+              side: Side.Buy,
+            });
+            store.commit("oms/instruments/setFocusMode", 0);
+          }
+        },
       });
-
-    store.dispatch("wealth/getWealth", new WealthSearchModel()).then((data) => {
-      wealth.push(...data);
-    });
-
-    sh.addShortcut({
-      key: "shift+a",
-      action: () => {
-        const item = store.getters["oms/instruments/getSelected"];
-        if (item) {
-          store.commit("oms/instruments/updateInstrument", {
-            id: item.id,
-            side: Side.Buy,
-          });
-          store.commit("oms/instruments/setFocusMode", 0);
-        }
-      },
-    });
-    sh.addShortcut({
-      key: "shift+s",
-      action: () => {
-        const item = store.getters["oms/instruments/getSelected"];
-        if (item) {
-          store.commit("oms/instruments/updateInstrument", {
-            id: item.id,
-            side: Side.Sell,
-          });
-          store.commit("oms/instruments/setFocusMode", 0);
-        }
-      },
-    });
-
+      sh.addShortcut({
+        key: "shift+s",
+        action: () => {
+          const item = store.getters["oms/instruments/getSelected"];
+          if (item) {
+            store.commit("oms/instruments/updateInstrument", {
+              id: item.id,
+              side: Side.Sell,
+            });
+            store.commit("oms/instruments/setFocusMode", 0);
+          }
+        },
+      });
+    }
     return {
       Side,
       order,
