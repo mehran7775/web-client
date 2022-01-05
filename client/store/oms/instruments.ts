@@ -1,6 +1,6 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { Instrument, OrderQueueItem, Side, SameSectorQuery, InstrumentCache, MarketHistory, PaginatedResult, ClientDistributionResponse, ClientDistribution, Order } from '@/types'
-import { getInstrumentsDetail, getOrderQueue, getTeammates, getInstrumentMarketHistory, getClientDistribution as Distribution } from '@/repositories/oms/instruments_manager'
+import { getInstruments, getOrderQueue, getTeammates, getInstrumentMarketHistory, getClientDistribution as Distribution } from '@/repositories/oms/instruments_manager'
 import { RootState } from '@/types/stores'
 
 
@@ -96,11 +96,7 @@ export const actions: ActionTree<InstrumentState, InstrumentState> = {
       else missing.push(payload[i])
     }
     if (missing.length > 0) {
-      const getins = getInstrumentsDetail(missing, this.$axios)
-      const { data: { data: market } } = await getInstrumentMarketHistory(missing, this.$axios)
-      const { data: { data } } = await getins
-      res.push(...data.map(
-        (ins) => Object.assign({ side: Side.Buy }, market.find((item) => item.instrumentId == ins.id), ins)))
+      const { data: { data } } = await getInstruments(missing, this.$axios)
       commit('setInstruments', res)
     }
     return res
