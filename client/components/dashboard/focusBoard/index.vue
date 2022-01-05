@@ -2,7 +2,7 @@
   <v-card class="ma-0 pa-0" flat tile>
     <v-toolbar flat dense>
       <watchlist-selector v-if="editMode" style="max-width: 164px" />
-      <instrument-search class="ms-1" style="max-width: 164px" />
+      <instrument-search class="ms-1" style="max-width: 164px" focus-result />
       <v-btn
         v-if="!editMode"
         @click="goEdit"

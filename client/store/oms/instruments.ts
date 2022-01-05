@@ -52,6 +52,10 @@ export const mutations: MutationTree<InstrumentState> = {
   setFocus(state, data: Array<InstrumentCache>) {
     state.focus = data
   },
+  addFocus(state, data: InstrumentCache) {
+    if (state.focus.findIndex((item) => item.id == data.id) == -1)
+      state.focus.push(data)
+  },
   setFocusMode(state, data: number) {
     state.focusViewMode = data
   },
