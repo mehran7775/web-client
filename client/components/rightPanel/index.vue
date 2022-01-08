@@ -146,9 +146,12 @@ import {
   Ref,
   computed,
   useStore,
+  useContext,
+  useRouter,
   watch,
   ComputedRef,
 } from "@nuxtjs/composition-api";
+import { useShortcut } from "@/utils/shortcutManager";
 
 export default defineComponent({
   name: "right-panel",
@@ -159,6 +162,9 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
+    const router = useRouter();
+    const ctx = useContext();
+    const sh = useShortcut();
     const selected: ComputedRef<number> = computed({
       get() {
         return store.getters["menu"] ?? 0;
@@ -302,12 +308,23 @@ export default defineComponent({
       store.commit("sso/user/removeBookmark", data);
     }
 
-    watch(selected, (n, o) => {
-      if (typeof n != null) {
-        context.emit("update:mini", false);
+    if (process.client) {
+      watch(selected, (n, o) => {
+        if (typeof n != null) {
+          context.emit("update:mini", false);
+        }
+      });
+      for (let i = 1; i < 10; i++) {
+        sh.addShortcut({
+          key: "alt+Digit" + i.toString(),
+          action: () => {
+            if (i <= watchList.value.length) {
+              router.push(watchList.value[i - 1].to);
+            }
+          },
+        });
       }
-    });
-
+    }
     return {
       bookmark,
       unmark,

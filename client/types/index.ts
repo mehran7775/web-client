@@ -6,9 +6,9 @@ export * from "./oms"
 export * from "./wealth"
 
 import { Instrument, DailyPrice, MarketHistory } from "./oms"
-import { Side } from "./wealth"
+import { Side, Wealth } from "./wealth"
 
-export interface IInstrumentCache extends Instrument, DailyPrice, MarketHistory {
+export interface IInstrumentCache extends Instrument, DailyPrice, MarketHistory, Wealth {
   side: Side
 }
 
@@ -50,6 +50,7 @@ export class InstrumentCache implements IInstrumentCache {
   totalShares: number
   totalTrades: number
   totalTradesValue: number
+  amount: number;
   constructor() {
     this.side = Side.Buy
     this.id = 0
@@ -88,6 +89,7 @@ export class InstrumentCache implements IInstrumentCache {
     this.totalShares = 0
     this.totalTrades = 0
     this.totalTradesValue = 0
+    this.amount = 0
   }
 }
 

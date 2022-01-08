@@ -40,14 +40,12 @@ export const mutations: MutationTree<InstrumentState> = {
   setEditMode(state, data: boolean) {
     state.editWatchlist = data
   },
-  updateInstrument(state, data) {
+  updateInstrument(state, data: InstrumentCache) {
     const inst = state.cache.get(data.id.toString())
-    Object.assign(inst, data)
-  },
-  setInstruments(state, data: Array<InstrumentCache>) {
-    for (let i in data) {
-      state.cache.set(data[i].id.toString(), Object.assign(new InstrumentCache(), data[i]))
-    }
+    if (inst)
+      Object.assign(inst, data)
+    else
+      state.cache.set(data.id.toString(), Object.assign(new InstrumentCache(), data))
   },
   setFocus(state, data: Array<InstrumentCache>) {
     state.focus = data
@@ -97,7 +95,9 @@ export const actions: ActionTree<InstrumentState, InstrumentState> = {
     }
     if (missing.length > 0) {
       const { data: { data } } = await getInstruments(missing, this.$axios)
-      commit('setInstruments', data)
+      data.forEach((item) => {
+        commit('updateInstrument', item)
+      })
       res.push(...data)
       dispatch("getInstrumentPrices", missing)
       dispatch("getMarketHistory", missing)
@@ -106,19 +106,17 @@ export const actions: ActionTree<InstrumentState, InstrumentState> = {
   },
   async getInstrumentPrices({ state, commit }, payload: Array<number>): Promise<Array<DailyPrice> | number> {
     const { data: { data } } = await getDailyPrice(payload, this.$axios)
-    data.every((item) => {
+    data.forEach((item) => {
       item.id = item.instrumentId
       commit('updateInstrument', item)
-      return true
     })
     return data
   },
   async getMarketHistory({ state, commit }, payload: Array<number>): Promise<Array<MarketHistory> | number> {
     const { data: { data } } = await getInstrumentMarketHistory(payload, this.$axios)
-    data.every((item) => {
+    data.forEach((item) => {
       item.id = item.instrumentId
       commit('updateInstrument', item)
-      return true
     })
     return data
   },

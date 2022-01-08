@@ -68,8 +68,6 @@ import {
   DefaultCols,
   InstrumentCache,
   Side,
-  Wealth,
-  WealthSearchModel,
 } from "@/types";
 import { useShortcut } from "@/utils/shortcutManager";
 
@@ -82,7 +80,6 @@ export default defineComponent({
     const sh = useShortcut();
     const _instruments: Array<InstrumentCache> = reactive([]);
     const instruments: Array<InstrumentCache> = reactive([]);
-    const wealth: Array<Wealth> = reactive([]);
 
     const expanded = computed(() => {
       return store.getters[
@@ -144,12 +141,6 @@ export default defineComponent({
               props.watchlists
             ) as Array<InstrumentCache>)
           );
-        });
-
-      store
-        .dispatch("wealth/getWealth", new WealthSearchModel())
-        .then((data) => {
-          wealth.push(...data);
         });
 
       sh.addShortcut({

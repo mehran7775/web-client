@@ -214,8 +214,7 @@ import {
 } from "@nuxtjs/composition-api";
 import snackbar from "@/components/snacks.vue";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
-import { User } from "@/types";
-import { useShortcut } from "@/utils/shortcutManager";
+import { User, WealthSearchModel } from "@/types";
 
 export default defineComponent({
   components: {
@@ -279,6 +278,10 @@ export default defineComponent({
       userMenu.value = false;
       store.dispatch("sso/user/logout");
       router.push("/login");
+    }
+
+    if (process.client) {
+      store.dispatch("wealth/getWealth", new WealthSearchModel());
     }
 
     return {

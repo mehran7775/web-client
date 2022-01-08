@@ -2,7 +2,6 @@ import { refreshKey, tokenKey, userKey } from "@/store/sso/user"
 import { parse } from "cookie"
 import { needLogin } from "@/middleware/auth"
 
-
 export default async function ({ store, req, redirect, route }) {
   //TODO Replace storage by cookie
 
@@ -24,7 +23,7 @@ export default async function ({ store, req, redirect, route }) {
       store.commit('sso/user/setToken', jwt)
       store.commit('sso/user/setUser', user)
       if (route.fullPath == "/login")
-        return redirect('/')
+        return redirect('/watchList')
     } else if (needLogin(route.fullPath)) {
       store.commit('sso/user/logout')
       if (needLogin(route.fullPath)) {

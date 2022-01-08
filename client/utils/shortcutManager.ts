@@ -1,3 +1,4 @@
+let res: ShortcutManager | null = null
 export function useShortcut(): ShortcutManager {
   //TODO Support Complex key map
   const mem: Array<string> = [];
@@ -18,24 +19,25 @@ export function useShortcut(): ShortcutManager {
     }
     return res
   }
-  const res: ShortcutManager = {
-    handel: (ev: KeyboardEvent) => {
-      const action = _shortcut[EventParser(ev)]
-      if (action) {
-        //ev.preventDefault()
-        action(ev)
+  if (res == null)
+    res = {
+      handel: (ev: KeyboardEvent) => {
+        const action = _shortcut[EventParser(ev)]
+        if (action) {
+          //ev.preventDefault()
+          action(ev)
+        }
+      },
+      addShortcut: (shortcut: Shortcut) => {
+        const tmp = shortcut.key.split('+')
+        const key = tmp.pop()
+        tmp.sort()
+        _shortcut[tmp.join('+') + '+' + (key?.length == 1 ? 'Key' + key?.toUpperCase() : key)] = shortcut.action
+      },
+      removeShortcut: (shortcut: string) => {
+        _shortcut[shortcut] = null
       }
-    },
-    addShortcut: (shortcut: Shortcut) => {
-      const tmp = shortcut.key.split('+')
-      const key = tmp.pop()
-      tmp.sort()
-      _shortcut[tmp.join('+') + '+' + (key?.length == 1 ? 'Key' + key?.toUpperCase() : key?.toUpperCase())] = shortcut.action
-    },
-    removeShortcut: (shortcut: string) => {
-      _shortcut[shortcut] = null
     }
-  }
   if (process.client) {
     document.removeEventListener("keydown", res.handel)
     document.addEventListener("keydown", res.handel)
