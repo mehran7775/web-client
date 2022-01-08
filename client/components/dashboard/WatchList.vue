@@ -2,71 +2,51 @@
   <v-data-table
     :headers="headers"
     :items="inst"
-    @item-expanded="onExpand"
     class="mx-1 elevation-1 light"
     hide-default-footer
     dense
   >
-    <template #item.name="{ item }">
-      <v-row align="center" class="ma-0 pa-0" dense>
-        <v-col class="ma-0 pa-0">
-          <v-icon small> adaico-eye </v-icon>
-          <v-icon color="success" @click="() => order(item, Side.Buy)" small>
-            adaico-bag-tick
-          </v-icon>
-          <v-icon color="error" @click="() => order(item, Side.Sell)" small>
-            adaico-bag-cross
-          </v-icon>
-        </v-col>
-        <v-col class="ma-0 pa-0 text-right justify-start">
-          <v-badge left dot class="ms-5" offset-x="-5" offset-y="75%">
-            {{ item.name }}
-          </v-badge>
-        </v-col>
-      </v-row>
+    <template #item.actions="{ item }">
+      <v-icon small @click="() => focus(item)"> adaico-eye </v-icon>
+      <v-icon color="success" @click="() => order(item, Side.Buy)" small>
+        adaico-bag-tick
+      </v-icon>
+      <v-icon color="error" @click="() => order(item, Side.Sell)" small>
+        adaico-bag-cross
+      </v-icon>
     </template>
-    <template #item.wealth="{ item }">
-      {{ getWealth(item) }}
+    <template #item.name="{ item }">
+      <v-badge left dot offset-x="-5" offset-y="75%">
+        {{ item.name }}
+      </v-badge>
     </template>
     <template #item.opening="{ item }">
-      <span dir="ltr">
-        {{ formatter.format(item.opening) }}
-      </span>
+      <numeric-field :value="item.wealth" />
+    </template>
+
+    <template #item.opening="{ item }">
+      <numeric-field :value="item.opening" />
     </template>
     <template #item.closing="{ item }">
-      <span dir="ltr">
-        {{ formatter.format(item.closing) }}
-      </span>
+      <numeric-field :value="item.closing" />
     </template>
     <template #item.yesterdayPrice="{ item }">
-      <span dir="ltr">
-        {{ formatter.format(item.yesterdayPrice) }}
-      </span>
+      <numeric-field :value="item.yesterdayPrice" />
     </template>
     <template #item.lowest="{ item }">
-      <span dir="ltr">
-        {{ formatter.format(item.lowest) }}
-      </span>
+      <numeric-field :value="item.lowest" />
     </template>
     <template #item.highest="{ item }">
-      <span dir="ltr">
-        {{ formatter.format(item.highest) }}
-      </span>
+      <numeric-field :value="item.highest" />
     </template>
     <template #item.totalTrades="{ item }">
-      <span dir="ltr">
-        {{ formatter.format(item.totalTrades) }}
-      </span>
+      <numeric-field :value="item.totalTrades" />
     </template>
     <template #item.totalShares="{ item }">
-      <span dir="ltr">
-        {{ formatter.format(item.totalShares) }}
-      </span>
+      <numeric-field :value="item.totalShares" />
     </template>
     <template #item.totalTradesValue="{ item }">
-      <span dir="ltr">
-        {{ formatter.format(item.totalTradesValue) }}
-      </span>
+      <numeric-field :value="item.totalTradesValue" />
     </template>
   </v-data-table>
 </template>
@@ -78,6 +58,7 @@ import {
   useStore,
   computed,
   ComputedRef,
+  watch,
 } from "@nuxtjs/composition-api";
 import instrumentCard from "../oms/instrumentCardCompact.vue";
 import LegalRealCard from "../oms/legalRealCard.vue";
@@ -99,62 +80,62 @@ export default defineComponent({
     const store = useStore();
     const i18n = useI18n();
     const sh = useShortcut();
+    const _instruments: Array<InstrumentCache> = reactive([]);
     const instruments: Array<InstrumentCache> = reactive([]);
     const wealth: Array<Wealth> = reactive([]);
-    const formatter: ComputedRef<Intl.NumberFormat> = computed(
-      () => store.getters["formatter"] as Intl.NumberFormat
-    );
-    const expanded = computed({
-      set(value: Array<InstrumentCache>) {
-        store.commit("oms/instruments/setFocus", value);
-      },
-      get(): Array<InstrumentCache> {
-        return store.getters[
-          "oms/instruments/getFocus"
-        ] as Array<InstrumentCache>;
-      },
+
+    const expanded = computed(() => {
+      return store.getters[
+        "oms/instruments/getFocus"
+      ] as Array<InstrumentCache>;
     });
-    expanded.value = [];
-    function onExpand(data: { item: InstrumentCache; value: boolean }) {
-      if (!data.value) {
-        store.commit("oms/instruments/stopWatchQueue", data.item.id);
-      }
-    }
+
     const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
       const res: Array<WatchlistColumns> = [
-        new WatchlistColumns(i18n.t("instrument.name").toString(), "name"),
+        new WatchlistColumns("", "actions"),
       ];
       res.push(
         ...((
           store.getters["sso/user/me"].settings.columns ?? DefaultCols()
         ).map((col: WatchlistColumns) =>
           Object.assign({}, col, {
-            text: i18n.t("instrument." + col.text),
+            text: col.text == "" ? "" : i18n.t(col.text),
           })
         ) as WatchlistColumns[])
       );
-      res.push(new WatchlistColumns("", "actions"));
+      res.push(
+        new WatchlistColumns(i18n.t("instrument.status").toString(), "status")
+      );
       return res;
     });
     function order(item: InstrumentCache, side: Side) {
-      if (expanded.value.findIndex((i) => item.id == i.id) == -1) {
-        const tmp = [...expanded.value, item];
-        expanded.value = tmp;
-      }
       store.commit("oms/instruments/updateInstrument", { id: item.id, side });
+      store.commit("oms/instruments/addFocus", item);
       store.commit("oms/instruments/select", item);
       store.commit("oms/instruments/setFocusMode", 0);
     }
-    const getWealth = computed(() => (item: InstrumentCache) => {
-      return formatter.value.format(
-        wealth.find((w) => w.id == item.id)?.amount ?? 0
-      );
-    });
+    function focus(item: InstrumentCache) {
+      store.commit("oms/instruments/addFocus", item);
+      store.commit("oms/instruments/select", item);
+    }
+
     if (process.client) {
+      watch(_instruments, (val) => {
+        instruments.splice(0, instruments.length);
+        instruments.push(..._instruments);
+      });
+      watch(expanded, (val) => {
+        instruments.splice(0, instruments.length);
+        instruments.push(
+          ..._instruments.filter((item) => {
+            return val.findIndex((i) => i.id == item.id) == -1;
+          })
+        );
+      });
       store
         .dispatch("oms/instruments/getInstrumentsDetail", props.watchlists)
         .then(() => {
-          instruments.push(
+          _instruments.push(
             ...(store.getters["oms/instruments/getAll"](
               props.watchlists
             ) as Array<InstrumentCache>)
@@ -195,14 +176,11 @@ export default defineComponent({
       });
     }
     return {
+      focus,
       Side,
       order,
-      formatter,
-      onExpand,
       headers: headers,
       inst: instruments,
-      getWealth,
-      expanded,
     };
     //TODO remove in vue3
     function useI18n() {

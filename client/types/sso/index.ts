@@ -58,10 +58,10 @@ export class WatchlistColumns {
   width: string | number | null
   filter: Function | null
   sort: Function | null
-  constructor(text: string, value: string) {
+  constructor(text: string, value: string, align: string = 'center') {
     this.text = text
     this.value = value
-    this.align = 'center'
+    this.align = align
     this.sortable = null
     this.filterable = null
     this.groupable = null
@@ -83,14 +83,14 @@ export function AnonymousUser(): User {
 }
 export function DefaultCols(): WatchlistColumns[] {
   return [
-    new WatchlistColumns("wealth", "wealth"),
-    new WatchlistColumns("tradeCount", "totalTrades"),
-    new WatchlistColumns("tradeVol", "totalShares"),
-    new WatchlistColumns("tradeVal", "totalTradesValue"),
-    new WatchlistColumns("lowest", "lowest"),
-    new WatchlistColumns("highest", "highest"),
-    new WatchlistColumns("yesterdayPrice", "yesterdayPrice"),
-    new WatchlistColumns("opening", "opening"),
-    new WatchlistColumns("status", "status")
+    new WatchlistColumns("instrument.name", "name", "start"),
+    new WatchlistColumns("instrument.wealth", "wealth"),
+    new WatchlistColumns("instrument.tradeCount", "totalTrades"),
+    new WatchlistColumns("instrument.tradeVol", "totalShares"),
+    new WatchlistColumns("instrument.tradeVal", "totalTradesValue"),
+    new WatchlistColumns("instrument.lowest", "lowest"),
+    new WatchlistColumns("instrument.highest", "highest"),
+    new WatchlistColumns("instrument.yesterdayPrice", "yesterdayPrice"),
+    new WatchlistColumns("instrument.opening", "opening"),
   ]
 }
