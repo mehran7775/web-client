@@ -1,6 +1,6 @@
 <template>
   <v-card class="ma-0 pa-0" flat tile>
-    <v-toolbar flat dense>
+    <v-toolbar :height="42" flat dense>
       <watchlist-selector v-if="editMode" style="max-width: 164px" auto-route />
       <instrument-search class="ms-1" style="max-width: 164px" focus-result />
       <v-btn
@@ -48,6 +48,7 @@ import {
   Ref,
   ref,
 } from "@nuxtjs/composition-api";
+import { useShortcut } from "@/utils/shortcutManager";
 import InstrumentSearch from "@/components/oms/instrumentSearch.vue";
 import CardView from "./cardView.vue";
 import TabView from "./tabView.vue";
@@ -61,6 +62,7 @@ export default defineComponent({
   name: "focus-board",
   setup(props) {
     const store = useStore();
+    const sh = useShortcut();
     const instruments = computed(
       () => store.getters["oms/instruments/getFocus"]
     );
@@ -82,6 +84,19 @@ export default defineComponent({
     function apply() {
       store.commit("oms/instruments/setEditMode", false);
     }
+
+    if (process.client) {
+      sh.addShortcut({
+        key: "alt+q",
+        action: () => {
+          store.commit(
+            "oms/instruments/setFocusMode",
+            (store.getters["oms/instruments/getFocusMode"] + 1) % 2
+          );
+        },
+      });
+    }
+
     return {
       apply,
       goEdit,

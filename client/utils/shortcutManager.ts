@@ -22,7 +22,7 @@ export function useShortcut(): ShortcutManager {
     handel: (ev: KeyboardEvent) => {
       const action = _shortcut[EventParser(ev)]
       if (action) {
-        ev.preventDefault()
+        //ev.preventDefault()
         action(ev)
       }
     },

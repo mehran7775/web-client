@@ -122,7 +122,11 @@ export default defineComponent({
     if (process.client) {
       watch(_instruments, (val) => {
         instruments.splice(0, instruments.length);
-        instruments.push(..._instruments);
+        instruments.push(
+          ...val.filter((item) => {
+            return expanded.value.findIndex((i) => i.id == item.id) == -1;
+          })
+        );
       });
       watch(expanded, (val) => {
         instruments.splice(0, instruments.length);
@@ -149,7 +153,7 @@ export default defineComponent({
         });
 
       sh.addShortcut({
-        key: "shift+a",
+        key: "alt+shift+a",
         action: () => {
           const item = store.getters["oms/instruments/getSelected"];
           if (item) {
@@ -162,7 +166,7 @@ export default defineComponent({
         },
       });
       sh.addShortcut({
-        key: "shift+s",
+        key: "alt+shift+s",
         action: () => {
           const item = store.getters["oms/instruments/getSelected"];
           if (item) {

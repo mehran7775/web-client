@@ -312,7 +312,7 @@ export default defineComponent({
 }
 .dashboardmain-nuxt {
   overflow-y: auto;
-  height: calc(100vh - 67px);
+  height: calc(100vh - 74px);
   padding-bottom: 32px;
 }
 .dashboardmain-nuxt.collaps {
