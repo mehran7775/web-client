@@ -8,7 +8,7 @@ export type Log = {
 export type Setting = {
   lang: string,
   columns: Array<WatchlistColumns>,
-  watch_lists: object,
+  watch_lists: any,
 }
 
 export type UserCredentials = {

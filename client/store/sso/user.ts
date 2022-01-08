@@ -79,10 +79,8 @@ export const mutations: MutationTree<stores.UserState> = {
     if (process.client)
       SetClientCookie(userKey, JSON.stringify(data), {})
   },
-  setWatchlist(state, data) {
-    state.user.settings.watch_lists = data
-    if (process.client)
-      SetClientCookie(userKey, JSON.stringify(data), {})
+  setWatchlist(state, data: { watchlist: string, name: string }) {
+    state.user.settings.watch_lists[data.name] = data.watchlist
   }
 }
 
@@ -156,8 +154,10 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
     }
     return 401
   },
-  async update_watchlist({ commit, rootState }, watchlist) {
+  async update_watchlist({ commit, state, rootState }, watchlist) {
     await updateUserWatchlist(watchlist, this.$axios)
+    if (process.client)
+      SetClientCookie(userKey, JSON.stringify(state.user), {})
     commit("setWatchlist", watchlist)
   },
   async getProfilePic(_, name) {

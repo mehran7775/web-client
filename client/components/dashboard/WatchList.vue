@@ -2,6 +2,7 @@
   <v-data-table
     :headers="headers"
     :items="inst"
+    item-key="id"
     class="mx-1 elevation-1 light"
     hide-default-footer
     dense
@@ -63,12 +64,7 @@ import {
 import instrumentCard from "../oms/instrumentCardCompact.vue";
 import LegalRealCard from "../oms/legalRealCard.vue";
 import orderQueueCard from "../oms/orderQueueCard.vue";
-import {
-  WatchlistColumns,
-  DefaultCols,
-  InstrumentCache,
-  Side,
-} from "@/types";
+import { WatchlistColumns, DefaultCols, InstrumentCache, Side } from "@/types";
 import { useShortcut } from "@/utils/shortcutManager";
 
 export default defineComponent({
@@ -86,18 +82,18 @@ export default defineComponent({
         "oms/instruments/getFocus"
       ] as Array<InstrumentCache>;
     });
+    const me = computed(() => store.getters["sso/user/me"]);
 
     const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
       const res: Array<WatchlistColumns> = [
         new WatchlistColumns("", "actions"),
       ];
       res.push(
-        ...((
-          store.getters["sso/user/me"].settings.columns ?? DefaultCols()
-        ).map((col: WatchlistColumns) =>
-          Object.assign({}, col, {
-            text: col.text == "" ? "" : i18n.t(col.text),
-          })
+        ...((me.value.settings.columns ?? DefaultCols()).map(
+          (col: WatchlistColumns) =>
+            Object.assign({}, col, {
+              text: col.text == "" ? "" : i18n.t(col.text),
+            })
         ) as WatchlistColumns[])
       );
       res.push(
@@ -115,34 +111,36 @@ export default defineComponent({
       store.commit("oms/instruments/addFocus", item);
       store.commit("oms/instruments/select", item);
     }
-
+    async function getData(val: any) {
+      _instruments.splice(0, _instruments.length);
+      await store.dispatch("oms/instruments/getInstrumentsDetail", val);
+      _instruments.push(
+        ...(store.getters["oms/instruments/getAll"](
+          val
+        ) as Array<InstrumentCache>)
+      );
+    }
+    function refresh() {
+      instruments.splice(0, instruments.length);
+      instruments.push(
+        ..._instruments.filter((item) => {
+          return expanded.value.findIndex((i) => i.id == item.id) == -1;
+        })
+      );
+    }
     if (process.client) {
       watch(_instruments, (val) => {
-        instruments.splice(0, instruments.length);
-        instruments.push(
-          ...val.filter((item) => {
-            return expanded.value.findIndex((i) => i.id == item.id) == -1;
-          })
-        );
+        refresh();
       });
       watch(expanded, (val) => {
-        instruments.splice(0, instruments.length);
-        instruments.push(
-          ..._instruments.filter((item) => {
-            return val.findIndex((i) => i.id == item.id) == -1;
-          })
-        );
+        refresh();
       });
-      store
-        .dispatch("oms/instruments/getInstrumentsDetail", props.watchlists)
-        .then(() => {
-          _instruments.push(
-            ...(store.getters["oms/instruments/getAll"](
-              props.watchlists
-            ) as Array<InstrumentCache>)
-          );
-        });
-
+      watch(
+        () => props.watchlists,
+        (val) => {
+          getData(val);
+        }
+      );
       sh.addShortcut({
         key: "alt+shift+a",
         action: () => {
@@ -169,6 +167,7 @@ export default defineComponent({
           }
         },
       });
+      getData(props.watchlists);
     }
     return {
       focus,

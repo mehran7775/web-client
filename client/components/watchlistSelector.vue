@@ -15,6 +15,7 @@
         select(val);
       }
     "
+    :value="value"
     flat
     no-filter
     rounded
@@ -28,11 +29,10 @@
 import {
   defineComponent,
   useStore,
-  useContext,
-  ref,
-  Ref,
+  useRoute,
+  useRouter,
   computed,
-  reactive,
+  ref,
 } from "@nuxtjs/composition-api";
 
 export default defineComponent({
@@ -44,7 +44,9 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const ctx = useContext();
+    const route = useRoute();
+    const router = useRouter();
+    const value = ref("");
     const watchList = computed(() => {
       const lists = store.getters["sso/user/watchList"];
       const res = [];
@@ -58,10 +60,14 @@ export default defineComponent({
       return res;
     });
     function select(val: any) {
-      if (props.autoRoute) ctx.redirect(val.to);
+      if (props.autoRoute) router.push(val.to);
+    }
+    if (process.client) {
+      value.value = route.value.params.name;
     }
     return {
       select,
+      value,
       watchList,
     };
   },

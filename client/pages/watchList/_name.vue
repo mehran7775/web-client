@@ -2,12 +2,12 @@
   <v-container class="ma-0 pa-0" fluid>
     <v-row class="ma-0 pa-0" dense>
       <v-col class="ma-0 pa-0">
-        <focus-board :instIds="selected" />
+        <focus-board />
       </v-col>
     </v-row>
     <v-row class="ma-0 pa-0" dense>
       <v-col>
-        <WatchList :watchlists="instruments" :selected.sync="selected" />
+        <WatchList :watchlists="instruments" />
       </v-col>
     </v-row>
   </v-container>
@@ -18,7 +18,7 @@
 import {
   computed,
   defineComponent,
-  reactive,
+  useContext,
   useRoute,
   useStore,
 } from "@nuxtjs/composition-api";
@@ -33,13 +33,14 @@ export default defineComponent({
   setup(context) {
     const route = useRoute();
     const store = useStore();
-    const selected = reactive([]);
+    const ctx = useContext();
     let name = route.value.params.name;
     let watchlists = computed(() => store.getters["sso/user/watchList"]);
-    const instruments =
-      watchlists.value[name ?? Object.keys(watchlists.value)[0]];
+    const instruments = computed(() => watchlists.value[name]);
+    if (!name) {
+      ctx.redirect(Object.keys(watchlists.value)[0]);
+    }
     return {
-      selected,
       instruments,
     };
   },

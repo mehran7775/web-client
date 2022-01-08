@@ -35,8 +35,10 @@ import {
   defineComponent,
   ref,
   reactive,
+  computed,
   useContext,
   useStore,
+  useRoute,
 } from "@nuxtjs/composition-api";
 import { autoComplete } from "@/repositories/oms/instruments_manager";
 import {
@@ -50,10 +52,15 @@ export default defineComponent({
   props: { "focus-result": { type: Boolean, default: false } },
   setup(props) {
     const store = useStore();
+    const route = useRoute();
     const model = ref(null);
     const axios = useAxios();
     const loading = ref(false);
     const entries: Array<AutoCompleteItem> = reactive([]);
+
+    const focus = computed(() => store.getters["oms/instruments/getFocus"]);
+    const watchlists = computed(() => store.getters["sso/user/watchList"]);
+
     async function search(value: string) {
       if (!!value) {
         loading.value = true;
@@ -75,7 +82,17 @@ export default defineComponent({
         "oms/instruments/getInstrumentsDetail",
         [val.id]
       );
-      store.commit("oms/instruments/addFocus", inst[0]);
+      if (focus.value.length > 0 || !route.value.params.name) {
+        store.commit("oms/instruments/addFocus", inst[0]);
+      } else {
+        const name = route.value.params.name;
+        const tmp = [val.id.toString()];
+        tmp.push(...watchlists.value[name]);
+        store.commit("sso/user/setWatchlist", {
+          name,
+          watchlist: tmp,
+        });
+      }
       loading.value = false;
       model.value = null;
     }
