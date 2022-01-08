@@ -55,7 +55,7 @@ export default defineComponent({
     const loading = ref(false);
     const entries: Array<AutoCompleteItem> = reactive([]);
     async function search(value: string) {
-      if (value && value.length > 2) {
+      if (!!value) {
         loading.value = true;
         entries.splice(0, entries.length);
         try {
