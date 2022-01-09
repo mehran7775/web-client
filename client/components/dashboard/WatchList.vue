@@ -8,13 +8,20 @@
     dense
   >
     <template #item.actions="{ item }">
-      <v-icon small @click="() => focus(item)"> adaico-eye </v-icon>
-      <v-icon color="success" @click="() => order(item, Side.Buy)" small>
-        adaico-bag-tick
-      </v-icon>
-      <v-icon color="error" @click="() => order(item, Side.Sell)" small>
-        adaico-bag-cross
-      </v-icon>
+      <div v-if="!editMode">
+        <v-icon color="default" @click="() => focus(item)" small>
+          adaico-eye
+        </v-icon>
+        <v-icon color="success" @click="() => order(item, Side.Buy)" small>
+          adaico-bag-tick
+        </v-icon>
+        <v-icon color="error" @click="() => order(item, Side.Sell)" small>
+          adaico-bag-cross
+        </v-icon>
+      </div>
+      <div v-else>
+        <v-icon color="default" size="18"> mdi-cursor-move </v-icon>
+      </div>
     </template>
     <template #item.name="{ item }">
       <v-badge left dot offset-x="-5" offset-y="75%">
@@ -24,7 +31,6 @@
     <template #item.opening="{ item }">
       <numeric-field :value="item.wealth" />
     </template>
-
     <template #item.opening="{ item }">
       <numeric-field :value="item.opening" />
     </template>
@@ -48,6 +54,14 @@
     </template>
     <template #item.totalTradesValue="{ item }">
       <numeric-field :value="item.totalTradesValue" />
+    </template>
+    <template #item.status="{ item }">
+      <div v-if="!editMode">
+        {{ item.status }}
+      </div>
+      <div v-else>
+        <v-icon color="error" size="18"> mdi-delete-forever </v-icon>
+      </div>
     </template>
   </v-data-table>
 </template>
@@ -76,6 +90,10 @@ export default defineComponent({
     const sh = useShortcut();
     const _instruments: Array<InstrumentCache> = reactive([]);
     const instruments: Array<InstrumentCache> = reactive([]);
+
+    const editMode = computed(
+      () => store.getters["oms/instruments/editWatchlist"]
+    );
 
     const expanded = computed(() => {
       return store.getters[
@@ -173,6 +191,7 @@ export default defineComponent({
       focus,
       Side,
       order,
+      editMode,
       headers: headers,
       inst: instruments,
     };
