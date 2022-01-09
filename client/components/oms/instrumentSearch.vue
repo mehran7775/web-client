@@ -82,17 +82,20 @@ export default defineComponent({
         "oms/instruments/getInstrumentsDetail",
         [val.id]
       );
+      // If focus panel is open
       if (focus.value.length > 0 || !route.value.params.name) {
         store.commit("oms/instruments/addFocus", inst[0]);
-      } else {
-        const name = route.value.params.name;
-        const tmp = [val.id.toString()];
-        tmp.push(...watchlists.value[name]);
-        store.commit("sso/user/setWatchlist", {
-          name,
-          watchlist: tmp,
-        });
+        store.commit("oms/instruments/select", inst[0]);
       }
+
+      const name = route.value.params.name;
+      const tmp = [val.id.toString()];
+      tmp.push(...watchlists.value[name]);
+      store.commit("sso/user/setWatchlist", {
+        name,
+        watchlist: tmp,
+      });
+
       loading.value = false;
       model.value = null;
     }
