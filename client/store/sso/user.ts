@@ -25,7 +25,8 @@ export const getters: GetterTree<stores.UserState, stores.RootState> = {
   tryCount: (state): number => {
     return state.tryCount
   },
-  settingsChanged: (state) => state.settingsChanged
+  settingsChanged: (state) => state.settingsChanged,
+  watchlistChanged: (state) => state.watchlistChanged,
 }
 
 export const mutations: MutationTree<stores.UserState> = {
@@ -82,7 +83,10 @@ export const mutations: MutationTree<stores.UserState> = {
   },
   setWatchlist(state, data: { watchlist: string, name: string }) {
     state.user.settings.watch_lists[data.name] = data.watchlist
-    state.settingsChanged = true
+    state.watchlistChanged = true
+  },
+  setWatchlistChanged(state, data: boolean) {
+    state.watchlistChanged = data
   }
 }
 
@@ -156,11 +160,11 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
     }
     return 401
   },
-  async update_watchlist({ commit, state, rootState }, watchlist) {
-    await updateUserWatchlist(watchlist, this.$axios)
+  async update_watchlist({ commit, state }) {
+    await updateUserWatchlist(state.user.settings.watch_lists, this.$axios)
     if (process.client)
       SetClientCookie(userKey, JSON.stringify(state.user), {})
-    commit("setWatchlist", watchlist)
+    commit("setWatchlistChanged", false)
   },
   async getProfilePic(_, name) {
     const img: Uint8Array = (await getProfileImage(name, this.$axios))?.data

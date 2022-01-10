@@ -100,7 +100,7 @@ export default defineComponent({
     const instruments: Array<InstrumentCache> = reactive([]);
     const expanded: Array<InstrumentCache> = reactive([]);
 
-    const editMode = computed(() => store.getters["sso/user/settingsChanged"]);
+    const editMode = computed(() => store.getters["sso/user/watchlistChanged"]);
     const watchlists = computed(() => store.getters["sso/user/watchList"]);
 
     const focused = computed(() => {

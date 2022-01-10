@@ -1,5 +1,5 @@
 <template>
-  <v-card class="ma-0 pa-0" flat tile>
+  <v-card class="ma-0 pa-0" :loading="loading" flat tile>
     <v-toolbar :height="42" flat dense>
       <watchlist-selector style="max-width: 164px" auto-route />
       <instrument-search class="ms-1" style="max-width: 164px" focus-result />
@@ -53,12 +53,11 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const sh = useShortcut();
+    const loading = ref(false);
     const instruments = computed(
       () => store.getters["oms/instruments/getFocus"]
     );
-    const edited = computed(
-      () => store.getters["sso/user/settingsChanged"]
-    );
+    const edited = computed(() => store.getters["sso/user/watchlistChanged"]);
     const viewMode = computed({
       set(value: number) {
         store.commit("oms/instruments/setFocusMode", value);
@@ -67,12 +66,13 @@ export default defineComponent({
         return store.getters["oms/instruments/getFocusMode"];
       },
     });
-    function goEdit() {
-      store.commit("oms/instruments/setFocus", []);
-      store.commit("oms/instruments/setEditMode", true);
-    }
-    function apply() {
-      store.commit("oms/instruments/setEditMode", false);
+    async function apply() {
+      loading.value = true;
+      try {
+        await store.dispatch("sso/user/update_watchlist");
+      } finally {
+        loading.value = false;
+      }
     }
 
     if (process.client) {
@@ -89,7 +89,7 @@ export default defineComponent({
 
     return {
       apply,
-      goEdit,
+      loading,
       edited,
       viewMode,
       instruments,

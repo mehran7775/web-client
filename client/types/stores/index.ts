@@ -21,6 +21,7 @@ export class UserState {
   userName: string | null
   bookmarks: Array<object>
   renewToken: boolean
+  watchlistChanged: boolean
   settingsChanged: boolean
   constructor() {
     this.tryCount = 0
@@ -30,6 +31,7 @@ export class UserState {
     this.userName = null
     this.bookmarks = []
     this.renewToken = false
+    this.watchlistChanged = false
     this.settingsChanged = false
   }
   toJSON() {
