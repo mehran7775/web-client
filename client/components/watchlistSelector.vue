@@ -23,7 +23,15 @@
     return-object
     single-line
     dense
-  />
+  >
+  <template #append-item>
+    <v-list-item>
+      <v-list-item-title>
+        <v-text-field class="ma-0 pa-0" height="32" dense hide-details/>
+      </v-list-item-title>
+    </v-list-item>
+  </template>
+  </v-select>
 </template>
 
 <script lang="ts">
