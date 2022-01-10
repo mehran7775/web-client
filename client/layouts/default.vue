@@ -245,13 +245,6 @@ export default defineComponent({
         title: "menu.profile",
       },
       {
-        icon: "mdi-application-cog-outline",
-        click: () => {
-          store.commit("editMode", true);
-        },
-        title: "menu.edit-dashboard",
-      },
-      {
         icon: "mdi-logout",
         color: "error",
         click: doLogout,

@@ -24,7 +24,8 @@ export const getters: GetterTree<stores.UserState, stores.RootState> = {
   watchList: (state) => state.user?.settings?.watch_lists ?? {},
   tryCount: (state): number => {
     return state.tryCount
-  }
+  },
+  settingsChanged: (state) => state.settingsChanged
 }
 
 export const mutations: MutationTree<stores.UserState> = {
@@ -81,6 +82,7 @@ export const mutations: MutationTree<stores.UserState> = {
   },
   setWatchlist(state, data: { watchlist: string, name: string }) {
     state.user.settings.watch_lists[data.name] = data.watchlist
+    state.settingsChanged = true
   }
 }
 

@@ -2,12 +2,10 @@ import { User, AnonymousUser } from '@/types/'
 
 export class RootState {
   locale: string
-  editMode: boolean
   menuIndex: number | null
 
   constructor() {
     this.locale = process.env.VUE_APP_I18N_LOCALE ?? ''
-    this.editMode = false
     this.menuIndex = null
   }
   toJSON() {
@@ -23,6 +21,7 @@ export class UserState {
   userName: string | null
   bookmarks: Array<object>
   renewToken: boolean
+  settingsChanged: boolean
   constructor() {
     this.tryCount = 0
     this.token = null
@@ -31,6 +30,7 @@ export class UserState {
     this.userName = null
     this.bookmarks = []
     this.renewToken = false
+    this.settingsChanged = false
   }
   toJSON() {
     return { ...this }

@@ -92,7 +92,7 @@ export default defineComponent({
     const instruments: Array<InstrumentCache> = reactive([]);
 
     const editMode = computed(
-      () => store.getters["oms/instruments/editWatchlist"]
+      () => store.getters["sso/user/settingsChanged"]
     );
 
     const expanded = computed(() => {

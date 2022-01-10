@@ -1,20 +1,10 @@
 <template>
   <v-card class="ma-0 pa-0" flat tile>
     <v-toolbar :height="42" flat dense>
-      <watchlist-selector v-if="editMode" style="max-width: 164px" auto-route />
+      <watchlist-selector style="max-width: 164px" auto-route />
       <instrument-search class="ms-1" style="max-width: 164px" focus-result />
       <v-btn
-        v-if="!editMode"
-        @click="goEdit"
-        color="primary"
-        class="ma-0 ms-1 pa-0 px-1"
-        height="32"
-      >
-        <v-icon x-small>mdi-pencil</v-icon>
-        {{ $t("watchList.editor.title") }}
-      </v-btn>
-      <v-btn
-        v-else
+        v-if="edited"
         @click="apply"
         color="primary"
         class="ma-0 ms-1 pa-0"
@@ -66,8 +56,8 @@ export default defineComponent({
     const instruments = computed(
       () => store.getters["oms/instruments/getFocus"]
     );
-    const editMode = computed(
-      () => store.getters["oms/instruments/editWatchlist"]
+    const edited = computed(
+      () => store.getters["sso/user/settingsChanged"]
     );
     const viewMode = computed({
       set(value: number) {
@@ -100,7 +90,7 @@ export default defineComponent({
     return {
       apply,
       goEdit,
-      editMode,
+      edited,
       viewMode,
       instruments,
     };

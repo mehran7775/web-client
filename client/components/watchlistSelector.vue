@@ -15,12 +15,13 @@
         select(val);
       }
     "
-    :value="value"
+    v-model="selected"
     flat
     no-filter
     rounded
     hide-details
     return-object
+    single-line
     dense
   />
 </template>
@@ -33,6 +34,7 @@ import {
   useRouter,
   computed,
   ref,
+  Ref,
 } from "@nuxtjs/composition-api";
 
 export default defineComponent({
@@ -46,28 +48,28 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
-    const value = ref("");
+    const selected: Ref<any> = ref(null);
     const watchList = computed(() => {
       const lists = store.getters["sso/user/watchList"];
-      const res = [];
-      for (let k in lists) {
-        res.push({
+      const res = Object.keys(lists).map((k) => {
+        return {
           text: k,
           id: k,
           to: "/watchList/" + k,
-        });
-      }
+        };
+      });
       return res;
     });
     function select(val: any) {
       if (props.autoRoute) router.push(val.to);
     }
-    if (process.client) {
-      value.value = route.value.params.name;
-    }
+    selected.value = watchList.value.find(
+      (item) => item.id == route.value.params.name
+    );
+
     return {
       select,
-      value,
+      selected,
       watchList,
     };
   },
