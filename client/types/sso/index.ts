@@ -58,7 +58,8 @@ export class WatchlistColumns {
   width: string | number | null
   filter: Function | null
   sort: Function | null
-  constructor(text: string, value: string, align: string = 'center') {
+  icon: string | null = null
+  constructor(text: string, value: string, align: string = 'center', width: string | number | null = null) {
     this.text = text
     this.value = value
     this.align = align
@@ -68,7 +69,7 @@ export class WatchlistColumns {
     this.divider = null
     this.class = null
     this.cellClass = null
-    this.width = null
+    this.width = width
     this.filter = null
     this.sort = null
   }
@@ -83,8 +84,7 @@ export function AnonymousUser(): User {
 }
 export function DefaultCols(): WatchlistColumns[] {
   return [
-    new WatchlistColumns("instrument.name", "name", "start"),
-    new WatchlistColumns("instrument.wealth", "amount"),
+    new WatchlistColumns("instrument.name", "name", "start", '54px'),
     new WatchlistColumns("instrument.tradeCount", "totalTrades"),
     new WatchlistColumns("instrument.tradeVol", "totalShares"),
     new WatchlistColumns("instrument.tradeVal", "totalTradesValue"),
@@ -92,5 +92,8 @@ export function DefaultCols(): WatchlistColumns[] {
     new WatchlistColumns("instrument.highest", "highest"),
     new WatchlistColumns("instrument.yesterdayPrice", "yesterdayPrice"),
     new WatchlistColumns("instrument.opening", "opening"),
+    new WatchlistColumns("instrument.last", "last"),
+    new WatchlistColumns("instrument.closing", "closing"),
+    new WatchlistColumns("instrument.status", "status", 'center', '123px'),
   ]
 }

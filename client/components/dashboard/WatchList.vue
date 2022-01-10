@@ -3,39 +3,58 @@
     :headers="headers"
     :items="inst"
     item-key="id"
-    :expanded="expanded"
-    @click:row="expand"
-    class="mx-1 elevation-1 light"
+    class="mx-1 elevation-1 watchlist"
+    hide-default-header
     hide-default-footer
     dense
   >
-    <template #expanded-item="{ headers, item }">
-      <td class="ma-0 pa-1" :colspan="headers.length">
-        <v-expand-transition>
-          <div class="d-flex flext-row justify-end">
-            <v-btn @click="() => remove(item)" width="75" height="24" small>
-              {{ $t("general.delete") }}
-              <v-icon color="error" small> mdi-delete-forever </v-icon>
-            </v-btn>
-          </div>
-        </v-expand-transition>
-      </td>
+    <template #header="{ on, props }">
+      <thead>
+        <tr>
+          <th
+            v-on="on"
+            v-for="header in props.headers"
+            :key="header.value"
+            :aria-label="header.text"
+            role="columnheader"
+            scope="col"
+            :style="{
+              width: header.width ? header.width : '',
+              'min-width': header.width ? header.width : '',
+            }"
+            :class="['header', 'text-' + header.align, header.class]"
+          >
+            <div>
+              {{ header.text }}
+              <v-icon color="primary" v-if="header.icon" small>
+                {{ header.icon }}
+              </v-icon>
+              <div
+                v-if="header.value != 'actions' && header.value != 'more'"
+                class="divider"
+              >
+                |
+              </div>
+            </div>
+          </th>
+        </tr>
+      </thead>
     </template>
     <template #item.actions="{ item }">
-      <v-icon color="default" @click="() => focus(item)" small>
-        adaico-eye
-      </v-icon>
-      <v-icon color="success" @click="() => order(item, Side.Buy)" small>
-        adaico-bag-tick
-      </v-icon>
-      <v-icon color="error" @click="() => order(item, Side.Sell)" small>
-        adaico-bag-cross
-      </v-icon>
+      <div class="text-no-wrap">
+        <v-icon color="default" @click="() => focus(item)" small>
+          adaico-eye
+        </v-icon>
+        <v-icon color="success" @click="() => order(item, Side.Buy)" small>
+          adaico-bag-tick
+        </v-icon>
+        <v-icon color="error" @click="() => order(item, Side.Sell)" small>
+          adaico-bag-cross
+        </v-icon>
+      </div>
     </template>
     <template #item.name="{ item }">
-      <v-badge left dot offset-x="-5" offset-y="75%">
-        {{ item.name }}
-      </v-badge>
+      {{ item.name }}
     </template>
     <template #item.opening="{ item }">
       <numeric-field :value="item.wealth" />
@@ -66,8 +85,12 @@
     </template>
     <template #item.status="{ item }">
       <div>
-        {{ item.status }}
       </div>
+    </template>
+    <template #item.more="{ item }">
+      <v-icon color="error" @click="() => remove(item)" small>
+        mdi-delete-forever
+      </v-icon>
     </template>
   </v-data-table>
 </template>
@@ -98,7 +121,6 @@ export default defineComponent({
     const sh = useShortcut();
     const _instruments: Array<InstrumentCache> = reactive([]);
     const instruments: Array<InstrumentCache> = reactive([]);
-    const expanded: Array<InstrumentCache> = reactive([]);
 
     const editMode = computed(() => store.getters["sso/user/watchlistChanged"]);
     const watchlists = computed(() => store.getters["sso/user/watchList"]);
@@ -122,9 +144,9 @@ export default defineComponent({
             })
         ) as WatchlistColumns[])
       );
-      res.push(
-        new WatchlistColumns(i18n.t("instrument.status").toString(), "status")
-      );
+      const more = new WatchlistColumns("", "more");
+      more.icon = "mdi-dots-horizontal-circle-outline";
+      res.push(more);
       return res;
     });
     function order(item: InstrumentCache, side: Side) {
@@ -162,12 +184,9 @@ export default defineComponent({
         name,
         watchlist: tmp,
       });
+      await store.dispatch("sso/user/update_watchlist");
     }
-    function expand(item: InstrumentCache) {
-      const index = expanded.indexOf(item);
-      expanded.splice(0, expanded.length);
-      if (index == -1) expanded.push(item);
-    }
+
     if (process.client) {
       watch(_instruments, (val) => {
         refresh();
@@ -217,8 +236,7 @@ export default defineComponent({
       editMode,
       headers: headers,
       inst: instruments,
-      expanded,
-      expand,
+      console,
     };
     //TODO remove in vue3
     function useI18n() {
@@ -228,3 +246,11 @@ export default defineComponent({
 });
 </script>
 
+<style lang="sass" scoped>
+.header
+  position: relative
+.divider
+  position: absolute
+  top: calc(50% - 6px)
+  left: -4px
+</style>

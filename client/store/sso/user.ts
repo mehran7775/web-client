@@ -83,6 +83,12 @@ export const mutations: MutationTree<stores.UserState> = {
   },
   setWatchlist(state, data: { watchlist: string, name: string }) {
     state.user.settings.watch_lists[data.name] = data.watchlist
+    state.user = Object.assign({}, state.user)
+    state.watchlistChanged = true
+  },
+  updateWatchlist(state, data: object) {
+    state.user.settings.watch_lists = data
+    state.user = Object.assign({}, state.user)
     state.watchlistChanged = true
   },
   setWatchlistChanged(state, data: boolean) {
