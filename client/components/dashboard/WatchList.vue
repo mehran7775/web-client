@@ -3,25 +3,34 @@
     :headers="headers"
     :items="inst"
     item-key="id"
+    :expanded="expanded"
+    @click:row="expand"
     class="mx-1 elevation-1 light"
     hide-default-footer
     dense
   >
+    <template #expanded-item="{ headers, item }">
+      <td class="ma-0 pa-1" :colspan="headers.length">
+        <v-expand-transition>
+          <div class="d-flex flext-row justify-end">
+            <v-btn @click="() => remove(item)" width="75" height="24" small>
+              {{ $t("general.delete") }}
+              <v-icon color="error" small> mdi-delete-forever </v-icon>
+            </v-btn>
+          </div>
+        </v-expand-transition>
+      </td>
+    </template>
     <template #item.actions="{ item }">
-      <div v-if="!editMode">
-        <v-icon color="default" @click="() => focus(item)" small>
-          adaico-eye
-        </v-icon>
-        <v-icon color="success" @click="() => order(item, Side.Buy)" small>
-          adaico-bag-tick
-        </v-icon>
-        <v-icon color="error" @click="() => order(item, Side.Sell)" small>
-          adaico-bag-cross
-        </v-icon>
-      </div>
-      <div v-else>
-        <v-icon color="default" size="18"> mdi-cursor-move </v-icon>
-      </div>
+      <v-icon color="default" @click="() => focus(item)" small>
+        adaico-eye
+      </v-icon>
+      <v-icon color="success" @click="() => order(item, Side.Buy)" small>
+        adaico-bag-tick
+      </v-icon>
+      <v-icon color="error" @click="() => order(item, Side.Sell)" small>
+        adaico-bag-cross
+      </v-icon>
     </template>
     <template #item.name="{ item }">
       <v-badge left dot offset-x="-5" offset-y="75%">
@@ -56,11 +65,8 @@
       <numeric-field :value="item.totalTradesValue" />
     </template>
     <template #item.status="{ item }">
-      <div v-if="!editMode">
+      <div>
         {{ item.status }}
-      </div>
-      <div v-else>
-        <v-icon color="error" size="18"> mdi-delete-forever </v-icon>
       </div>
     </template>
   </v-data-table>
@@ -71,6 +77,7 @@ import {
   defineComponent,
   reactive,
   useStore,
+  useRoute,
   computed,
   ComputedRef,
   watch,
@@ -86,16 +93,17 @@ export default defineComponent({
   components: { instrumentCard, LegalRealCard, orderQueueCard },
   setup(props, context) {
     const store = useStore();
+    const route = useRoute();
     const i18n = useI18n();
     const sh = useShortcut();
     const _instruments: Array<InstrumentCache> = reactive([]);
     const instruments: Array<InstrumentCache> = reactive([]);
+    const expanded: Array<InstrumentCache> = reactive([]);
 
-    const editMode = computed(
-      () => store.getters["sso/user/settingsChanged"]
-    );
+    const editMode = computed(() => store.getters["sso/user/settingsChanged"]);
+    const watchlists = computed(() => store.getters["sso/user/watchList"]);
 
-    const expanded = computed(() => {
+    const focused = computed(() => {
       return store.getters[
         "oms/instruments/getFocus"
       ] as Array<InstrumentCache>;
@@ -142,15 +150,29 @@ export default defineComponent({
       instruments.splice(0, instruments.length);
       instruments.push(
         ..._instruments.filter((item) => {
-          return expanded.value.findIndex((i) => i.id == item.id) == -1;
+          return focused.value.findIndex((i) => i.id == item.id) == -1;
         })
       );
+    }
+    async function remove(val: InstrumentCache) {
+      const name = route.value.params.name;
+      const tmp = [...watchlists.value[name]];
+      tmp.splice(tmp.lastIndexOf(val.id.toString()), 1);
+      store.commit("sso/user/setWatchlist", {
+        name,
+        watchlist: tmp,
+      });
+    }
+    function expand(item: InstrumentCache) {
+      const index = expanded.indexOf(item);
+      expanded.splice(0, expanded.length);
+      if (index == -1) expanded.push(item);
     }
     if (process.client) {
       watch(_instruments, (val) => {
         refresh();
       });
-      watch(expanded, (val) => {
+      watch(focused, (val) => {
         refresh();
       });
       watch(
@@ -189,11 +211,14 @@ export default defineComponent({
     }
     return {
       focus,
+      remove,
       Side,
       order,
       editMode,
       headers: headers,
       inst: instruments,
+      expanded,
+      expand,
     };
     //TODO remove in vue3
     function useI18n() {
