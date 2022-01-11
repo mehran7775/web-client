@@ -46,7 +46,7 @@
           adaico-eye
         </v-icon>
         <v-icon color="success" @click="() => order(item, Side.Buy)" small>
-          adaico-bag-tick
+          adaico-bag-tick-2
         </v-icon>
         <v-icon color="error" @click="() => order(item, Side.Sell)" small>
           adaico-bag-cross
@@ -54,7 +54,9 @@
       </div>
     </template>
     <template #item.name="{ item }">
+      <span class="success--text">
       {{ item.name }}
+      </span>
     </template>
     <template #item.opening="{ item }">
       <numeric-field :value="item.wealth" />
@@ -69,16 +71,16 @@
       <numeric-field :value="item.yesterdayPrice" />
     </template>
     <template #item.lowest="{ item }">
-      <numeric-field :value="item.lowest" />
+      <numeric-field class="success--text" :value="item.lowest" />
     </template>
     <template #item.highest="{ item }">
-      <numeric-field :value="item.highest" />
+      <numeric-field class="error--text" :value="item.highest" />
     </template>
     <template #item.totalTrades="{ item }">
       <numeric-field :value="item.totalTrades" />
     </template>
     <template #item.totalShares="{ item }">
-      <numeric-field :value="item.totalShares" />
+      <numeric-field class="info--text" :value="item.totalShares" />
     </template>
     <template #item.totalTradesValue="{ item }">
       <numeric-field :value="item.totalTradesValue" />
@@ -89,7 +91,7 @@
     </template>
     <template #item.more="{ item }">
       <v-icon color="error" @click="() => remove(item)" small>
-        mdi-delete-forever
+        adaico-trash
       </v-icon>
     </template>
   </v-data-table>

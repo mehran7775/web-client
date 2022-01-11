@@ -20,9 +20,6 @@
 }
 
 
-.adaico-mobile:before {
-  content: "\e920";
-}
 .adaico-add-circle:before {
   content: "\e900";
 }
@@ -44,78 +41,99 @@
 .adaico-bag-tick:before {
   content: "\e906";
 }
-.adaico-briefcase:before {
+.adaico-bag-tick-2:before {
   content: "\e907";
 }
-.adaico-calculator:before {
+.adaico-briefcase:before {
   content: "\e908";
 }
-.adaico-card-receive:before {
+.adaico-calculator:before {
   content: "\e909";
 }
-.adaico-card-send:before {
+.adaico-card-receive:before {
   content: "\e90a";
 }
-.adaico-chart-2:before {
+.adaico-card-send:before {
   content: "\e90b";
 }
-.adaico-eye:before {
+.adaico-chart-2:before {
   content: "\e90c";
 }
-.adaico-facebook:before {
+.adaico-edit-2:before {
   content: "\e90d";
 }
-.adaico-filter-edit:before {
+.adaico-element-3:before {
   content: "\e90e";
 }
-.adaico-graph:before {
+.adaico-eye:before {
   content: "\e90f";
 }
-.adaico-instagram:before {
+.adaico-facebook:before {
   content: "\e910";
 }
-.adaico-keyboard:before {
+.adaico-filter-edit:before {
   content: "\e911";
 }
-.adaico-lock:before {
+.adaico-graph:before {
   content: "\e912";
 }
-.adaico-map:before {
+.adaico-instagram:before {
   content: "\e913";
 }
-.adaico-messages:before {
+.adaico-keyboard:before {
   content: "\e914";
 }
-.adaico-money-change:before {
+.adaico-lock:before {
   content: "\e915";
 }
-.adaico-money-recive:before {
+.adaico-map:before {
   content: "\e916";
 }
-.adaico-note-2:before {
+.adaico-menu:before {
   content: "\e917";
 }
-.adaico-notification:before {
+.adaico-messages:before {
   content: "\e918";
 }
-.adaico-presention-chart:before {
+.adaico-mobile:before {
   content: "\e919";
 }
-.adaico-refresh-2:before {
+.adaico-money-change:before {
   content: "\e91a";
 }
-.adaico-search-normal:before {
+.adaico-money-recive:before {
   content: "\e91b";
 }
-.adaico-setting-2:before {
+.adaico-note-2:before {
   content: "\e91c";
 }
-.adaico-status-up:before {
+.adaico-notification:before {
   content: "\e91d";
 }
-.adaico-user:before {
+.adaico-presention-chart:before {
   content: "\e91e";
 }
-.adaico-whatsapp:before {
+.adaico-record-bar:before {
   content: "\e91f";
+}
+.adaico-refresh-2:before {
+  content: "\e920";
+}
+.adaico-search-normal:before {
+  content: "\e921";
+}
+.adaico-setting-2:before {
+  content: "\e922";
+}
+.adaico-status-up:before {
+  content: "\e923";
+}
+.adaico-trash:before {
+  content: "\e924";
+}
+.adaico-user:before {
+  content: "\e925";
+}
+.adaico-whatsapp:before {
+  content: "\e926";
 }

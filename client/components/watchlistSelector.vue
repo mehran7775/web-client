@@ -60,7 +60,7 @@
           color="error"
           small
         >
-          mdi-delete
+          adaico-trash
         </v-icon>
         <v-icon
           v-if="!item.onEdit"
@@ -72,7 +72,7 @@
           color="default"
           small
         >
-          mdi-pencil
+          adaico-edit-2
         </v-icon>
 
         <v-text-field

@@ -7,7 +7,6 @@
     :items="entries"
     class="instrument-search no-translate"
     append-icon=""
-    prepend-inner-icon="mdi-magnify"
     item-text="name"
     item-value="id"
     @input="
@@ -27,7 +26,11 @@
     hide-details
     return-object
     dense
-  />
+  >
+    <template #prepend-inner>
+      <v-icon color="primary" class="mt-2" small> adaico-search-normal </v-icon>
+    </template>
+  </v-autocomplete>
 </template>
 
 <script lang="ts">
