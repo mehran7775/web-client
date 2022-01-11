@@ -55,7 +55,7 @@
     </template>
     <template #item.name="{ item }">
       <span class="success--text">
-      {{ item.name }}
+        {{ item.name }}
       </span>
     </template>
     <template #item.opening="{ item }">
@@ -86,13 +86,43 @@
       <numeric-field :value="item.totalTradesValue" />
     </template>
     <template #item.status="{ item }">
-      <div>
-      </div>
+      <div></div>
     </template>
     <template #item.more="{ item }">
-      <v-icon color="error" @click="() => remove(item)" small>
-        adaico-trash
-      </v-icon>
+      <v-dialog max-width="50%" v-model="confirmInstrumentRemoval">
+        <template #activator="{ on, attrs }">
+          <v-icon color="error" v-on="on" v-bind="attrs" small>
+            adaico-trash
+          </v-icon>
+        </template>
+        <v-card>
+          <v-card-title> {{ $t("general.alert") }} </v-card-title>
+          <v-card-text>
+            {{ $t("instrument.remove") }}
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              width="65"
+              color="primary"
+              @click="
+                () => {
+                  remove(item);
+                  confirmInstrumentRemoval = false;
+                }
+              "
+            >
+              {{ $t("general.yes") }}
+            </v-btn>
+            <v-btn
+              width="65"
+              color="error"
+              @click="() => (confirmInstrumentRemoval = false)"
+            >
+              {{ $t("general.no") }}
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </template>
   </v-data-table>
 </template>
@@ -103,6 +133,7 @@ import {
   reactive,
   useStore,
   useRoute,
+  ref,
   computed,
   ComputedRef,
   watch,
@@ -123,6 +154,7 @@ export default defineComponent({
     const sh = useShortcut();
     const _instruments: Array<InstrumentCache> = reactive([]);
     const instruments: Array<InstrumentCache> = reactive([]);
+    const confirmInstrumentRemoval = ref(false);
 
     const editMode = computed(() => store.getters["sso/user/watchlistChanged"]);
     const watchlists = computed(() => store.getters["sso/user/watchList"]);
@@ -238,7 +270,7 @@ export default defineComponent({
       editMode,
       headers: headers,
       inst: instruments,
-      console,
+      confirmInstrumentRemoval,
     };
     //TODO remove in vue3
     function useI18n() {
