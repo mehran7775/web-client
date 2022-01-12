@@ -63,7 +63,7 @@ import {
 export default defineComponent({
   inheritAttrs: false,
   props: ["headers", "props"],
-  setup() {
+  setup(props) {
     const store = useStore();
     const me: ComputedRef<User> = computed(() => store.getters["sso/user/me"]);
     let draggingCol: WatchlistColumns | null = null;

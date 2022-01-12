@@ -183,7 +183,6 @@ export default defineComponent({
     }
     refresh();
     function drag(ev: DragEvent) {
-      console.log(ev);
     }
 
     watch(selected, select);

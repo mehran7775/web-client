@@ -312,7 +312,6 @@ export default defineComponent({
           );
           if (res >= 200 && res < 300) {
             const user = store.getters["sso/user/me"] as User;
-            console.log(user)
             ctx.redirect({
               path: "/watchlist/" + Object.keys(user.settings.watch_lists)[0],
             });
@@ -376,7 +375,6 @@ export default defineComponent({
       captcharef,
       otpref,
       keyboard,
-      console,
       rules: {
         required,
       },

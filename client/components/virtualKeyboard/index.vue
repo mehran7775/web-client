@@ -89,7 +89,7 @@ export default defineComponent({
       });
     }
 
-    return { shift, normal, alternate, keyboard, console };
+    return { shift, normal, alternate, keyboard };
   },
 });
 </script>
