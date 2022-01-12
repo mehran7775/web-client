@@ -16,12 +16,18 @@ export default async function ({ store, req, redirect, route }) {
   if (ck) {
     const refresh = ck[refreshKey] ?? store.state.sso.user.refresh
     const jwt = ck[tokenKey] ?? store.state.sso.user.token
-    const user = ck[userKey] ? JSON.parse(ck[userKey]) : store.state.sso.user.user
+    const user = ck[userKey]
 
     if (refresh && jwt && user) {
       store.commit('sso/user/setRefresh', refresh)
       store.commit('sso/user/setToken', jwt)
-      store.commit('sso/user/setUser', user)
+      if (process.client) {
+        let uobj = localStorage.getItem(userKey)
+        if (uobj) {
+          store.commit('sso/user/setUser', JSON.parse(uobj))
+        } else
+          await store.dispatch('sso/user/getUser', user)
+      }
       if (route.fullPath == "/login")
         return redirect('/watchList')
     } else if (needLogin(route.fullPath)) {

@@ -76,10 +76,12 @@ export const mutations: MutationTree<stores.UserState> = {
     state.user = AnonymousUser()
     state.refresh = null
   },
-  setUser(state, data) {
+  setUser(state, data: User) {
     state.user = data
-    if (process.client)
-      SetClientCookie(userKey, JSON.stringify(data), {})
+    if (process.client) {
+      SetClientCookie(userKey, data.userName, {})
+      localStorage.setItem(userKey, JSON.stringify(data))
+    }
   },
   setCols(state, data: Array<WatchlistColumns>) {
     state.user.settings.columns = data
@@ -179,7 +181,7 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
     try {
       await updateUserWatchlist(state.user.settings.watch_lists, this.$axios)
       if (process.client)
-        SetClientCookie(userKey, JSON.stringify(state.user), {})
+        localStorage.setItem(userKey, JSON.stringify(state.user))
     } catch (e) {
       commit("setWatchlistChanged", true)
       throw e
@@ -190,7 +192,7 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
     try {
       await updateUserSettings(state.user.settings, this.$axios)
       if (process.client)
-        SetClientCookie(userKey, JSON.stringify(state.user), {})
+        localStorage.setItem(userKey, JSON.stringify(state.user))
     } catch (e) {
       commit("setSettingsChanged", true)
       throw e
