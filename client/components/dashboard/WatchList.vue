@@ -204,7 +204,7 @@ export default defineComponent({
       res.push(more);
       return res;
     });
-    
+
     function order(item: InstrumentCache, side: Side) {
       store.commit("oms/instruments/updateInstrument", { id: item.id, side });
       store.commit("oms/instruments/addFocus", item);
@@ -252,11 +252,8 @@ export default defineComponent({
         const ind = hrs.findIndex((i) => i.value == draggingCol?.value);
         draggingCol = hrs[ind];
         hrs.splice(ind, 1);
-        hrs.splice(
-          hrs.findIndex((i) => i.value == item.value) + 1,
-          0,
-          draggingCol
-        );
+        const target = hrs.findIndex((i) => i.value == item.value);
+        hrs.splice(ind > target ? target : target + 1, 0, draggingCol);
         store.commit("sso/user/setCols", hrs);
       }
       draggingCol = null;
