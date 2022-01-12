@@ -31,7 +31,7 @@
           class="ma-0 pa-0"
           height="32"
           v-model="newName"
-          @keyup.enter="create"
+          @keyup.enter.stop="create"
           dense
           hide-details
         />
@@ -129,7 +129,18 @@ export default defineComponent({
     const watchList: any[] = reactive([]);
     const wls = computed(() => store.getters["sso/user/watchList"]);
 
-    
+    function refresh() {
+      watchList.splice(0, watchList.length);
+      Object.keys(wls.value).forEach((k) => {
+        watchList.push({
+          onEdit: false,
+          newName: k,
+          text: k,
+          id: k,
+          to: "/watchList/" + k,
+        });
+      });
+    }
     async function create() {
       store.commit("sso/user/setWatchlist", {
         name: newName.value,
@@ -168,17 +179,6 @@ export default defineComponent({
 
     function select(val: any) {
       if (props.autoRoute) router.push(val.to);
-    }
-    function refresh() {
-      Object.keys(wls.value).forEach((k) => {
-        watchList.push({
-          onEdit: false,
-          newName: k,
-          text: k,
-          id: k,
-          to: "/watchList/" + k,
-        });
-      });
     }
     refresh();
     selected.value = watchList.find(

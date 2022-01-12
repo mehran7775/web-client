@@ -167,10 +167,16 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
     return 401
   },
   async update_watchlist({ commit, state }) {
-    await updateUserWatchlist(state.user.settings.watch_lists, this.$axios)
-    if (process.client)
-      SetClientCookie(userKey, JSON.stringify(state.user), {})
     commit("setWatchlistChanged", false)
+    try {
+      await updateUserWatchlist(state.user.settings.watch_lists, this.$axios)
+      if (process.client)
+        SetClientCookie(userKey, JSON.stringify(state.user), {})
+    } catch (e) {
+      commit("setWatchlistChanged", true)
+      throw e
+    }
+
   },
   async getProfilePic(_, name) {
     const img: Uint8Array = (await getProfileImage(name, this.$axios))?.data
