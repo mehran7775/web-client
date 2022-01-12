@@ -270,7 +270,7 @@ import {
 } from "@nuxtjs/composition-api";
 import { AxiosError } from "axios";
 import { Snack } from "~/store/snacks";
-import { Login } from "~/types";
+import { Login, User } from "~/types";
 import { ErrorExtractor } from "~/utils/error";
 import { required } from "@/utils/rules";
 import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
@@ -311,7 +311,11 @@ export default defineComponent({
             Object.assign({}, data, { axios: ctx.$axios })
           );
           if (res >= 200 && res < 300) {
-            ctx.redirect({ path: "/watchlist/" });
+            const user = store.getters["sso/user/me"] as User;
+            console.log(user)
+            ctx.redirect({
+              path: "/watchlist/" + Object.keys(user.settings.watch_lists)[0],
+            });
             snack(new Snack("login.successful", "success"));
           }
         } catch (err) {

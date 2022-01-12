@@ -3,7 +3,7 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { login, refreshToken, logout } from '~/repositories/sso/jwt_token'
 import * as stores from '@/types/stores'
 import { User, Setting, UserCredentials, AnonymousUser, Paginated, WatchlistColumns } from '@/types'
-import { getProfileImage, getUser, getUserList, updateUserWatchlist, getUserLog } from '@/repositories/sso/user_manager';
+import { getProfileImage, getUser, getUserList, updateUserWatchlist, getUserLog, updateUserSettings } from '@/repositories/sso/user_manager';
 import { SetClientCookie, DeleteClientCookie, GetClientCookies } from "@/utils/cookie"
 
 
@@ -81,10 +81,10 @@ export const mutations: MutationTree<stores.UserState> = {
     if (process.client)
       SetClientCookie(userKey, JSON.stringify(data), {})
   },
-  setCols(state,data:Array<WatchlistColumns>){
+  setCols(state, data: Array<WatchlistColumns>) {
     state.user.settings.columns = data
     state.user = Object.assign({}, state.user)
-    state.watchlistChanged = true
+    state.settingsChanged = true
   },
   setWatchlist(state, data: { watchlist: string, name: string }) {
     state.user.settings.watch_lists[data.name] = data.watchlist
@@ -98,6 +98,9 @@ export const mutations: MutationTree<stores.UserState> = {
   },
   setWatchlistChanged(state, data: boolean) {
     state.watchlistChanged = data
+  },
+  setSettingsChanged(state, data: boolean) {
+    state.settingsChanged = data
   }
 }
 
@@ -181,7 +184,17 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
       commit("setWatchlistChanged", true)
       throw e
     }
-
+  },
+  async update_settings({ commit, state }) {
+    commit("setSettingsChanged", false)
+    try {
+      await updateUserSettings(state.user.settings, this.$axios)
+      if (process.client)
+        SetClientCookie(userKey, JSON.stringify(state.user), {})
+    } catch (e) {
+      commit("setSettingsChanged", true)
+      throw e
+    }
   },
   async getProfilePic(_, name) {
     const img: Uint8Array = (await getProfileImage(name, this.$axios))?.data

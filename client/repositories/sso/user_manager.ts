@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios"
 import { NuxtAxiosInstance } from "@nuxtjs/axios"
 import { User } from "~/types/sso"
+import { Settings } from "luxon"
 
 
 
@@ -19,6 +20,10 @@ export async function getUserList(searchModel: string, axios: NuxtAxiosInstance)
 
 export async function updateUser(form: object, axios: NuxtAxiosInstance) {
   return await axios.put('/sso/user/update', form)
+}
+
+export async function updateUserSettings(settings: Settings, axios: NuxtAxiosInstance) {
+  return await axios.put('/sso/user/edit-setting', settings)
 }
 
 export async function updateUserWatchlist(watchlist: object, axios: NuxtAxiosInstance) {
