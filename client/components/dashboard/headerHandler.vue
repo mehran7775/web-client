@@ -1,6 +1,6 @@
 <template>
   <thead>
-    <tr>
+    <tr v-on="$listeners" v-bind="$attrs">
       <th
         :draggable="header.draggable"
         @dragstart="() => drag(header)"
@@ -17,8 +17,6 @@
             drop(header);
           }
         "
-        v-on="$listeners"
-        v-bind="$attrs"
         v-for="header in props.headers"
         :key="header.value"
         :aria-label="header.text"
@@ -63,6 +61,7 @@ import {
 } from "@/types";
 
 export default defineComponent({
+  inheritAttrs: false,
   props: ["headers", "props"],
   setup() {
     const store = useStore();

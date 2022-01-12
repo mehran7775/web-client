@@ -10,11 +10,6 @@
     class="watchlist-select"
     item-text="text"
     item-value="id"
-    @input="
-      (val) => {
-        select(val);
-      }
-    "
     v-model="selected"
     flat
     no-filter
@@ -113,6 +108,7 @@ import {
   ref,
   Ref,
   reactive,
+  watch,
 } from "@nuxtjs/composition-api";
 
 export default defineComponent({
@@ -142,6 +138,9 @@ export default defineComponent({
           to: "/watchList/" + k,
         });
       });
+      selected.value =
+        watchList.find((item) => item.id == route.value.params.name) ??
+        watchList[0];
     }
     async function create() {
       store.commit("sso/user/setWatchlist", {
@@ -183,12 +182,12 @@ export default defineComponent({
       if (props.autoRoute) router.push(val.to);
     }
     refresh();
-    selected.value =
-      watchList.find((item) => item.id == route.value.params.name) ??
-      watchList[0];
     function drag(ev: DragEvent) {
       console.log(ev);
     }
+
+    watch(selected, select);
+
     return {
       drag,
       select,

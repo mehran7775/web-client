@@ -17,7 +17,24 @@
       />
     </template>
     <template #item="{ headers, item }">
-      <row-handler :model="{ headers, item }">
+      <row-handler
+        draggable="true"
+        @dragstart="(ev) => drag(item)"
+        @dragover="
+          (ev) => {
+            ev.preventDefault();
+            ev.dataTransfer.dropEffect = 'move';
+          }
+        "
+        dropzone="true"
+        @drop="
+          (ev) => {
+            ev.preventDefault();
+            drop(item);
+          }
+        "
+        :model="{ headers, item }"
+      >
         <template #item.actions="{ item }">
           <div class="text-no-wrap">
             <v-icon color="default" @click="() => focus(item)" small>
@@ -217,6 +234,33 @@ export default defineComponent({
         watchlist: tmp,
       });
       await store.dispatch("sso/user/update_watchlist");
+      refresh();
+    }
+
+    let dragItem: InstrumentCache | null = null;
+    function drag(item: InstrumentCache) {
+      dragItem = item;
+    }
+    async function drop(item: InstrumentCache) {
+      if (dragItem && dragItem != item) {
+        const name = route.value.params.name;
+        const wl = [...watchlists.value[name]];
+        const ind = wl.findIndex((i) => i == dragItem?.id.toString());
+        wl.splice(ind, 1);
+        const target = wl.findIndex((i) => i == item.id.toString());
+        wl.splice(
+          ind > target ? target : target + 1,
+          0,
+          dragItem?.id.toString()
+        );
+        store.commit("sso/user/setWatchlist", {
+          name,
+          watchlist: wl,
+        });
+        await store.dispatch("sso/user/update_watchlist");
+        refresh();
+      }
+      dragItem = null;
     }
 
     if (process.client) {
@@ -261,6 +305,8 @@ export default defineComponent({
       getData(props.watchlists);
     }
     return {
+      drag,
+      drop,
       focus,
       remove,
       Side,
