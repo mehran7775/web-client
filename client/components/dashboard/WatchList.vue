@@ -12,6 +12,21 @@
       <thead>
         <tr>
           <th
+            draggable="true"
+            @dragstart="() => drag(header)"
+            @dragover="
+              (ev) => {
+                ev.preventDefault();
+                ev.dataTransfer.dropEffect = 'move';
+              }
+            "
+            dropzone="true"
+            @drop="
+              (ev) => {
+                ev.preventDefault();
+                drop(header);
+              }
+            "
             v-on="on"
             v-for="header in props.headers"
             :key="header.value"
@@ -141,7 +156,13 @@ import {
 import instrumentCard from "../oms/instrumentCardCompact.vue";
 import LegalRealCard from "../oms/legalRealCard.vue";
 import orderQueueCard from "../oms/orderQueueCard.vue";
-import { WatchlistColumns, DefaultCols, InstrumentCache, Side } from "@/types";
+import {
+  WatchlistColumns,
+  DefaultCols,
+  InstrumentCache,
+  Side,
+  User,
+} from "@/types";
 import { useShortcut } from "@/utils/shortcutManager";
 
 export default defineComponent({
@@ -164,7 +185,7 @@ export default defineComponent({
         "oms/instruments/getFocus"
       ] as Array<InstrumentCache>;
     });
-    const me = computed(() => store.getters["sso/user/me"]);
+    const me: ComputedRef<User> = computed(() => store.getters["sso/user/me"]);
 
     const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
       const res: Array<WatchlistColumns> = [
@@ -183,6 +204,7 @@ export default defineComponent({
       res.push(more);
       return res;
     });
+    
     function order(item: InstrumentCache, side: Side) {
       store.commit("oms/instruments/updateInstrument", { id: item.id, side });
       store.commit("oms/instruments/addFocus", item);
@@ -219,6 +241,25 @@ export default defineComponent({
         watchlist: tmp,
       });
       await store.dispatch("sso/user/update_watchlist");
+    }
+    let draggingCol: WatchlistColumns | null = null;
+    function drag(item: WatchlistColumns) {
+      draggingCol = item;
+    }
+    function drop(item: WatchlistColumns) {
+      if (draggingCol && draggingCol != item) {
+        const hrs = [...(me.value.settings.columns ?? DefaultCols())];
+        const ind = hrs.findIndex((i) => i.value == draggingCol?.value);
+        draggingCol = hrs[ind];
+        hrs.splice(ind, 1);
+        hrs.splice(
+          hrs.findIndex((i) => i.value == item.value) + 1,
+          0,
+          draggingCol
+        );
+        store.commit("sso/user/setCols", hrs);
+      }
+      draggingCol = null;
     }
 
     if (process.client) {
@@ -263,12 +304,14 @@ export default defineComponent({
       getData(props.watchlists);
     }
     return {
+      drag,
+      drop,
       focus,
       remove,
       Side,
       order,
       editMode,
-      headers: headers,
+      headers,
       inst: instruments,
       confirmInstrumentRemoval,
     };

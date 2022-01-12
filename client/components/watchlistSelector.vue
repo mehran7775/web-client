@@ -48,6 +48,8 @@
     </template>
     <template #item="{ item, on, attrs }">
       <v-list-item
+        draggable="true"
+        @dragstart="drag"
         :class="{ item: true, 'px-2': item.onEdit }"
         v-bind="attrs"
         v-on="on"
@@ -181,10 +183,14 @@ export default defineComponent({
       if (props.autoRoute) router.push(val.to);
     }
     refresh();
-    selected.value = watchList.find(
-      (item) => item.id == route.value.params.name
-    );
+    selected.value =
+      watchList.find((item) => item.id == route.value.params.name) ??
+      watchList[0];
+    function drag(ev: DragEvent) {
+      console.log(ev);
+    }
     return {
+      drag,
       select,
       create,
       remove,

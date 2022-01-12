@@ -2,7 +2,7 @@ import { AxiosError } from 'axios'
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { login, refreshToken, logout } from '~/repositories/sso/jwt_token'
 import * as stores from '@/types/stores'
-import { User, Setting, UserCredentials, AnonymousUser, Paginated } from '@/types'
+import { User, Setting, UserCredentials, AnonymousUser, Paginated, WatchlistColumns } from '@/types'
 import { getProfileImage, getUser, getUserList, updateUserWatchlist, getUserLog } from '@/repositories/sso/user_manager';
 import { SetClientCookie, DeleteClientCookie, GetClientCookies } from "@/utils/cookie"
 
@@ -80,6 +80,11 @@ export const mutations: MutationTree<stores.UserState> = {
     state.user = data
     if (process.client)
       SetClientCookie(userKey, JSON.stringify(data), {})
+  },
+  setCols(state,data:Array<WatchlistColumns>){
+    state.user.settings.columns = data
+    state.user = Object.assign({}, state.user)
+    state.watchlistChanged = true
   },
   setWatchlist(state, data: { watchlist: string, name: string }) {
     state.user.settings.watch_lists[data.name] = data.watchlist
