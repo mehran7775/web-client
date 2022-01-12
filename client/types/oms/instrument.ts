@@ -62,6 +62,7 @@ export class DailyPrice {
   closing: number
   highest: number
   lowest: number
+  last: number
   priceChange: number
   yesterdayPrice: number
   constructor() {
@@ -73,6 +74,7 @@ export class DailyPrice {
     this.highest = 0
     this.dateTime = ""
     this.closing = 0
+    this.last = 0
     this.priceChange = 0
     this.yesterdayPrice = 0
   }

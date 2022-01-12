@@ -16,89 +16,93 @@
         :props="props"
       />
     </template>
-    <template #item.actions="{ item }">
-      <div class="text-no-wrap">
-        <v-icon color="default" @click="() => focus(item)" small>
-          adaico-eye
-        </v-icon>
-        <v-icon color="success" @click="() => order(item, Side.Buy)" small>
-          adaico-bag-tick-2
-        </v-icon>
-        <v-icon color="error" @click="() => order(item, Side.Sell)" small>
-          adaico-bag-cross
-        </v-icon>
-      </div>
-    </template>
-    <template #item.name="{ item }">
-      <span class="success--text">
-        {{ item.name }}
-      </span>
-    </template>
-    <template #item.opening="{ item }">
-      <numeric-field :value="item.wealth" />
-    </template>
-    <template #item.opening="{ item }">
-      <numeric-field :value="item.opening" />
-    </template>
-    <template #item.closing="{ item }">
-      <numeric-field :value="item.closing" />
-    </template>
-    <template #item.yesterdayPrice="{ item }">
-      <numeric-field :value="item.yesterdayPrice" />
-    </template>
-    <template #item.lowest="{ item }">
-      <numeric-field class="success--text" :value="item.lowest" />
-    </template>
-    <template #item.highest="{ item }">
-      <numeric-field class="error--text" :value="item.highest" />
-    </template>
-    <template #item.totalTrades="{ item }">
-      <numeric-field :value="item.totalTrades" />
-    </template>
-    <template #item.totalShares="{ item }">
-      <numeric-field class="info--text" :value="item.totalShares" />
-    </template>
-    <template #item.totalTradesValue="{ item }">
-      <numeric-field :value="item.totalTradesValue" />
-    </template>
-    <template #item.status="{ item }">
-      <div></div>
-    </template>
-    <template #item.more="{ item }">
-      <v-dialog max-width="50%" v-model="confirmInstrumentRemoval">
-        <template #activator="{ on, attrs }">
-          <v-icon color="error" v-on="on" v-bind="attrs" small>
-            adaico-trash
-          </v-icon>
+    <template #item="{ headers, item }">
+      <row-handler :model="{ headers, item }">
+        <template #item.actions="{ item }">
+          <div class="text-no-wrap">
+            <v-icon color="default" @click="() => focus(item)" small>
+              adaico-eye
+            </v-icon>
+            <v-icon color="success" @click="() => order(item, Side.Buy)" small>
+              adaico-bag-tick-2
+            </v-icon>
+            <v-icon color="error" @click="() => order(item, Side.Sell)" small>
+              adaico-bag-cross
+            </v-icon>
+          </div>
         </template>
-        <v-card>
-          <v-card-title> {{ $t("general.alert") }} </v-card-title>
-          <v-card-text>
-            {{ $t("instrument.remove") }}
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              width="65"
-              color="primary"
-              @click="
-                () => {
-                  remove(item);
-                  confirmInstrumentRemoval = false;
-                }
-              "
-            >
-              {{ $t("general.yes") }}
-            </v-btn>
-            <v-btn
-              width="65"
-              color="error"
-              @click="() => (confirmInstrumentRemoval = false)"
-            >
-              {{ $t("general.no") }}
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+        <template #item.name="{ item }">
+          <span class="success--text">
+            {{ item.name }}
+          </span>
+        </template>
+        <template #item.opening="{ item }">
+          <numeric-field :value="item.wealth" />
+        </template>
+        <template #item.opening="{ item }">
+          <numeric-field :value="item.opening" />
+        </template>
+        <template #item.closing="{ item }">
+          <numeric-field :value="item.closing" />
+        </template>
+        <template #item.yesterdayPrice="{ item }">
+          <numeric-field :value="item.yesterdayPrice" />
+        </template>
+        <template #item.lowest="{ item }">
+          <numeric-field class="success--text" :value="item.lowest" />
+        </template>
+        <template #item.highest="{ item }">
+          <numeric-field class="error--text" :value="item.highest" />
+        </template>
+        <template #item.totalTrades="{ item }">
+          <numeric-field :value="item.totalTrades" />
+        </template>
+        <template #item.totalShares="{ item }">
+          <numeric-field class="info--text" :value="item.totalShares" />
+        </template>
+        <template #item.totalTradesValue="{ item }">
+          <numeric-field :value="item.totalTradesValue" />
+        </template>
+        <template #item.status="{ item }">
+          <div></div>
+        </template>
+        <template #item.more="{ item }">
+          <v-dialog max-width="50%" v-model="confirmInstrumentRemoval">
+            <template #activator="{ on, attrs }">
+              <v-icon color="error" v-on="on" v-bind="attrs" small>
+                adaico-trash
+              </v-icon>
+            </template>
+            <v-card>
+              <v-card-title> {{ $t("general.alert") }} </v-card-title>
+              <v-card-text>
+                {{ $t("instrument.remove") }}
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  width="65"
+                  color="primary"
+                  @click="
+                    () => {
+                      remove(item);
+                      confirmInstrumentRemoval = false;
+                    }
+                  "
+                >
+                  {{ $t("general.yes") }}
+                </v-btn>
+                <v-btn
+                  width="65"
+                  color="error"
+                  @click="() => (confirmInstrumentRemoval = false)"
+                >
+                  {{ $t("general.no") }}
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </template>
+      </row-handler>
     </template>
   </v-data-table>
 </template>
@@ -127,10 +131,17 @@ import {
 } from "@/types";
 import { useShortcut } from "@/utils/shortcutManager";
 import HeaderHandler from "./headerHandler.vue";
+import RowHandler from "./rowHandler.vue";
 
 export default defineComponent({
   props: ["watchlists", "selected"],
-  components: { instrumentCard, LegalRealCard, orderQueueCard, HeaderHandler },
+  components: {
+    instrumentCard,
+    LegalRealCard,
+    orderQueueCard,
+    HeaderHandler,
+    RowHandler,
+  },
   setup(props, context) {
     const store = useStore();
     const route = useRoute();

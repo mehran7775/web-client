@@ -51,6 +51,7 @@ export class InstrumentCache implements IInstrumentCache {
   totalTrades: number
   totalTradesValue: number
   amount: number;
+  last: number
   constructor() {
     this.side = Side.Buy
     this.id = 0
@@ -90,6 +91,7 @@ export class InstrumentCache implements IInstrumentCache {
     this.totalTrades = 0
     this.totalTradesValue = 0
     this.amount = 0
+    this.last = 0
   }
 }
 

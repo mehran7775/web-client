@@ -17,8 +17,8 @@
             drop(header);
           }
         "
-        :v-on="$on"
-        :v-bind="$attrs"
+        v-on="$listeners"
+        v-bind="$attrs"
         v-for="header in props.headers"
         :key="header.value"
         :aria-label="header.text"
