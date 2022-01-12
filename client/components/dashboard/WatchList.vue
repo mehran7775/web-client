@@ -8,52 +8,13 @@
     hide-default-footer
     dense
   >
-    <template #header="{ on, props }">
-      <thead>
-        <tr>
-          <th
-            draggable="true"
-            @dragstart="() => drag(header)"
-            @dragover="
-              (ev) => {
-                ev.preventDefault();
-                ev.dataTransfer.dropEffect = 'move';
-              }
-            "
-            dropzone="true"
-            @drop="
-              (ev) => {
-                ev.preventDefault();
-                drop(header);
-              }
-            "
-            v-on="on"
-            v-for="header in props.headers"
-            :key="header.value"
-            :aria-label="header.text"
-            role="columnheader"
-            scope="col"
-            :style="{
-              width: header.width ? header.width : '',
-              'min-width': header.width ? header.width : '',
-            }"
-            :class="['header', 'text-' + header.align, header.class]"
-          >
-            <div>
-              {{ header.text }}
-              <v-icon color="primary" v-if="header.icon" small>
-                {{ header.icon }}
-              </v-icon>
-              <div
-                v-if="header.value != 'actions' && header.value != 'more'"
-                class="divider"
-              >
-                |
-              </div>
-            </div>
-          </th>
-        </tr>
-      </thead>
+    <template #header="{ on, props, attrs }">
+      <header-handler
+        :headers="headers"
+        v-on="on"
+        v-bind="attrs"
+        :props="props"
+      />
     </template>
     <template #item.actions="{ item }">
       <div class="text-no-wrap">
@@ -153,6 +114,7 @@ import {
   ComputedRef,
   watch,
 } from "@nuxtjs/composition-api";
+
 import instrumentCard from "../oms/instrumentCardCompact.vue";
 import LegalRealCard from "../oms/legalRealCard.vue";
 import orderQueueCard from "../oms/orderQueueCard.vue";
@@ -164,10 +126,11 @@ import {
   User,
 } from "@/types";
 import { useShortcut } from "@/utils/shortcutManager";
+import HeaderHandler from "./headerHandler.vue";
 
 export default defineComponent({
   props: ["watchlists", "selected"],
-  components: { instrumentCard, LegalRealCard, orderQueueCard },
+  components: { instrumentCard, LegalRealCard, orderQueueCard, HeaderHandler },
   setup(props, context) {
     const store = useStore();
     const route = useRoute();
@@ -188,9 +151,10 @@ export default defineComponent({
     const me: ComputedRef<User> = computed(() => store.getters["sso/user/me"]);
 
     const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
-      const res: Array<WatchlistColumns> = [
-        new WatchlistColumns("", "actions"),
-      ];
+      const res: Array<WatchlistColumns> = [];
+      const actions = new WatchlistColumns("", "actions");
+      actions.draggable = false;
+      res.push(actions);
       res.push(
         ...((me.value.settings.columns ?? DefaultCols()).map(
           (col: WatchlistColumns) =>
@@ -201,6 +165,7 @@ export default defineComponent({
       );
       const more = new WatchlistColumns("", "more");
       more.icon = "mdi-dots-horizontal-circle-outline";
+      more.draggable = false;
       res.push(more);
       return res;
     });
@@ -241,22 +206,6 @@ export default defineComponent({
         watchlist: tmp,
       });
       await store.dispatch("sso/user/update_watchlist");
-    }
-    let draggingCol: WatchlistColumns | null = null;
-    function drag(item: WatchlistColumns) {
-      draggingCol = item;
-    }
-    function drop(item: WatchlistColumns) {
-      if (draggingCol && draggingCol != item) {
-        const hrs = [...(me.value.settings.columns ?? DefaultCols())];
-        const ind = hrs.findIndex((i) => i.value == draggingCol?.value);
-        draggingCol = hrs[ind];
-        hrs.splice(ind, 1);
-        const target = hrs.findIndex((i) => i.value == item.value);
-        hrs.splice(ind > target ? target : target + 1, 0, draggingCol);
-        store.commit("sso/user/setCols", hrs);
-      }
-      draggingCol = null;
     }
 
     if (process.client) {
@@ -301,8 +250,6 @@ export default defineComponent({
       getData(props.watchlists);
     }
     return {
-      drag,
-      drop,
       focus,
       remove,
       Side,
@@ -319,12 +266,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="sass" scoped>
-.header
-  position: relative
-.divider
-  position: absolute
-  top: calc(50% - 6px)
-  left: -4px
-</style>
