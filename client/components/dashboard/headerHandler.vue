@@ -29,7 +29,9 @@
         :class="['header', 'text-' + header.align, header.class]"
       >
         <div>
-          {{ header.text }}
+          <h5>
+            {{ header.text }}
+          </h5>
           <v-icon color="primary" v-if="header.icon" small>
             {{ header.icon }}
           </v-icon>
