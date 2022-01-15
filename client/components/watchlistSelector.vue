@@ -182,8 +182,7 @@ export default defineComponent({
       if (props.autoRoute) router.push(val.to);
     }
     refresh();
-    function drag(ev: DragEvent) {
-    }
+    function drag(ev: DragEvent) {}
 
     watch(selected, select);
 
