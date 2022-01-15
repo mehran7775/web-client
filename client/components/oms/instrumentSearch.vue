@@ -119,6 +119,6 @@ export default defineComponent({
 
 <style lang="sass" scoped>
 .instrument-search
-  background-color: rgba($c-primary,0.1)
+  background-color: rgba($c-primary,0.05)
   border-radius: 8px
 </style>

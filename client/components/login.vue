@@ -409,10 +409,10 @@ a
   text-align: center
   &.v-item--active
     font-size: 1.1667rem
-    background-color: rgba(53, 84, 209, 0.05)
+    background-color: rgba($c-primary,0.05)
     label
       width: auto
-      color: var(--v-primary-base)
+      color: $c-primary
   .v-input--selection-controls__input
     width: auto
     .v-icon

@@ -206,9 +206,9 @@ export default defineComponent({
 .primary
   &.v-btn
     &--disabled
-      color: var(--v-primary-base) !important
+      color: $c-primary !important
       .v-icon
-        color: var(--v-primary-base) !important
+        color: $c-primary !important
 .next
   width: 100%
 .back

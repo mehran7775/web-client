@@ -202,7 +202,7 @@ export default defineComponent({
 
 <style lang="sass" scoped>
 .watchlist-select
-  background-color: rgba($c-primary,0.1)
+  background-color: rgba($c-primary,0.05)
   border-radius: 8px
 .item
   border-bottom-width: 1px

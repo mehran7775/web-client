@@ -40,7 +40,7 @@ export default defineComponent({
 .v-main
   overflow-y: auto
   overflow-x: hidden
-  background-color: var(--v-primary-base)
+  background-color: $c-primary
   color: white
   min-height: 100vh
 </style>

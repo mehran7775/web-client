@@ -110,10 +110,10 @@ export default defineComponent({
 <style lang="sass" scoped>
 .sms
   &.v-btn
-    color: var(--v-primary-base)
+    color: $c-primary
     background-color: rgba(0, 0, 0, 0.12) !important
     &--disabled
-      color: var(--v-primary-base) !important
+      color: $c-primary !important
       .v-icon
-        color: var(--v-primary-base) !important
+        color: $c-primary !important
 </style>
