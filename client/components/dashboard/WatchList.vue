@@ -262,20 +262,19 @@ export default defineComponent({
       }
       dragItem = null;
     }
-
+    watch(_instruments, (val) => {
+      refresh();
+    });
+    watch(focused, (val) => {
+      refresh();
+    });
+    watch(
+      () => props.watchlists,
+      (val) => {
+        getData(val);
+      }
+    );
     if (process.client) {
-      watch(_instruments, (val) => {
-        refresh();
-      });
-      watch(focused, (val) => {
-        refresh();
-      });
-      watch(
-        () => props.watchlists,
-        (val) => {
-          getData(val);
-        }
-      );
       sh.addShortcut({
         key: "alt+shift+a",
         action: () => {
@@ -302,8 +301,8 @@ export default defineComponent({
           }
         },
       });
-      getData(props.watchlists);
     }
+    getData(props.watchlists);
     return {
       drag,
       drop,

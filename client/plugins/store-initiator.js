@@ -1,3 +1,4 @@
+import { WealthSearchModel } from "@/types"
 import { refreshKey, tokenKey, userKey } from "@/store/sso/user"
 import { parse } from "cookie"
 import { needLogin } from "@/middleware/auth"
@@ -14,19 +15,23 @@ export default async function ({ store, req, redirect, route }) {
     ck = parse(req.headers["cookie"] ?? "null")
   }
   if (ck) {
-    const refresh = ck[refreshKey] ?? store.state.sso.user.refresh
-    const jwt = ck[tokenKey] ?? store.state.sso.user.token
+    const refresh = ck[refreshKey]
+    const jwt = ck[tokenKey]
     const user = ck[userKey]
     if (refresh && jwt && user) {
       store.commit('sso/user/setRefresh', refresh)
       store.commit('sso/user/setToken', jwt)
-      if (process.client) {
-        let uobj = localStorage.getItem(userKey)
-        if (uobj) {
-          store.commit('sso/user/setUser', JSON.parse(uobj))
+      const u = store.state.sso.user.user
+      if (u.userName == "anonymous") {
+        if (process.client) {
+          let uobj = localStorage.getItem(userKey)
+          if (uobj) {
+            store.commit('sso/user/setUser', JSON.parse(uobj))
+          }
         }
+        await store.dispatch('sso/user/getUser', user)
+        await store.dispatch("wealth/getWealth", new WealthSearchModel());
       }
-      await store.dispatch('sso/user/getUser', user)
 
       if (route.fullPath == "/login")
         return redirect('/watchList')

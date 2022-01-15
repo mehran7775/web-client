@@ -307,13 +307,12 @@ export default defineComponent({
     function unmark(data: object) {
       store.commit("sso/user/removeBookmark", data);
     }
-
+    watch(selected, (n, o) => {
+      if (typeof n != null) {
+        context.emit("update:mini", false);
+      }
+    });
     if (process.client) {
-      watch(selected, (n, o) => {
-        if (typeof n != null) {
-          context.emit("update:mini", false);
-        }
-      });
       for (let i = 1; i < 10; i++) {
         sh.addShortcut({
           key: "alt+Digit" + i.toString(),

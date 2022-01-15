@@ -246,11 +246,7 @@ export default defineComponent({
       store.dispatch("sso/user/logout");
       router.push("/login");
     }
-
-    if (process.client) {
-      store.dispatch("wealth/getWealth", new WealthSearchModel());
-    }
-
+    
     return {
       formatter,
       collaps,
