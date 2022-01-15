@@ -76,7 +76,7 @@
           v-if="item.onEdit"
           style="width: 116px"
           class="ma-0 pa-0"
-          height="32"
+          height="28"
           v-model="item.newName"
           @click.stop=""
           @keyup.enter.stop="() => rename(item)"

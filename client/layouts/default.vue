@@ -1,14 +1,12 @@
 <template>
   <v-app :class="locale">
     <right-panel
-      v-if="isLogin"
       :mini.sync="rightMenu.mini"
       :clipped="clipped"
       v-model="rightMenu.drawer"
       class="min32"
     />
     <left-panel
-      v-if="isLogin"
       :mini.sync="leftMenu.mini"
       :clipped="clipped"
       v-model="leftMenu.drawer"
@@ -28,7 +26,6 @@
       }}</span>
       <v-app-bar-nav-icon
         class="ps-2 me-5"
-        v-show="isLogin"
         @click.stop="
           () => {
             if (rightMenu.drawer) {
@@ -44,19 +41,10 @@
       </v-app-bar-nav-icon>
       <clock :format="$t('general.date.longdt')" width="240" />
       <v-spacer />
-      <v-badge
-        v-if="isLogin"
-        dot
-        left
-        color="green"
-        class="mx-5"
-        offset-y="75%"
-        offset-x="-5"
-      >
+      <v-badge dot left color="green" class="mx-5" offset-y="75%" offset-x="-5">
         {{ $t("oms.bourseIndex") }}: {{ formatter.format(0.0) }}
       </v-badge>
       <v-badge
-        v-if="isLogin"
         dot
         left
         color="orange"
@@ -64,21 +52,10 @@
         offset-y="75%"
         offset-x="-5"
       >
-        {{ $t("oms.superBourseIndex") }}:‌ {{ formatter.format(0.0) }}
+        {{ $t("oms.superBourseIndex") }}: {{ formatter.format(0.0) }}
       </v-badge>
       <v-spacer />
-      <v-btn
-        v-if="!isLogin"
-        color="success"
-        nuxt
-        to="/login"
-        height="28"
-        depressed
-      >
-        {{ $t("login.login") }}
-        <v-icon>mdi-account-arrow-left</v-icon>
-      </v-btn>
-      <v-menu v-model="userMenu" v-if="isLogin" offset-y>
+      <v-menu v-model="userMenu" offset-y>
         <template #activator="{ on, attrs }">
           <v-btn
             height="28"
@@ -118,12 +95,10 @@
       </v-menu>
     </v-app-bar>
     <v-main class="dashboardmain-page">
-      <div
-        :class="{ 'dashboardmain-nuxt': isLogin, collaps: isLogin && collaps }"
-      >
+      <div :class="{ 'dashboardmain-nuxt': true, collaps: collaps }">
         <nuxt />
       </div>
-      <bottom-panel v-if="isLogin" />
+      <bottom-panel />
     </v-main>
     <v-footer class="text-no-wrap ma-0 pa-0" :height="32" :absolute="true" app>
       <v-row dense>
@@ -132,7 +107,7 @@
           &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
         </v-col>
         <v-col cols="9" sm="8" xs="7" class="ma-0 pa-0">
-          <span v-if="isLogin">
+          <span>
             <v-badge
               dot
               left
@@ -258,7 +233,6 @@ export default defineComponent({
     const formatter: ComputedRef<Intl.NumberFormat> = computed(
       () => store.getters["formatter"] as Intl.NumberFormat
     );
-    const isLogin = computed(() => store.getters["sso/user/isLogin"]);
     const collaps = computed(() => {
       const tab = store.getters["bottom-panel/activeTab"];
       return tab != null && tab != -1;
@@ -285,7 +259,6 @@ export default defineComponent({
       wlEditor,
       doLogout,
       redirect: ctx.redirect,
-      isLogin,
       currentUser,
       userMenu,
       userMenuItems,
