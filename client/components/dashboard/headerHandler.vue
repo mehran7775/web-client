@@ -39,7 +39,7 @@
             v-if="header.value != 'actions' && header.value != 'more'"
             class="divider"
           >
-            |
+            <bar class="ma-0 my-1 pa-0" />
           </div>
         </div>
       </th>
