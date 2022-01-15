@@ -14,13 +14,13 @@
         {{ $t("general.apply") }}
       </v-btn>
       <v-spacer />
-      <v-btn-toggle color="primary" v-model="viewMode" mandatory>
-        <v-btn height="28" small>
+      <v-btn-toggle class="mode" color="primary" v-model="viewMode" mandatory>
+        <v-btn height="28" width="28" depressed class="ma-0" small>
           <v-icon :color="viewMode == 0 ? 'primary' : 'default'" small>
             adaico-menu
           </v-icon>
         </v-btn>
-        <v-btn height="28" small>
+        <v-btn height="28" width="28" depressed  class="ma-0" small>
           <v-icon :color="viewMode == 1 ? 'primary' : 'default'" small>
             adaico-element-3
           </v-icon>
@@ -110,4 +110,9 @@ export default defineComponent({
     min-height: 32px
     .col
       min-height: 32px
+.mode
+  &.v-btn-toggle
+    > .v-btn.v-btn
+      border-radius: $border-radius-root
+      border: none !important
 </style>
