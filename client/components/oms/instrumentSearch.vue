@@ -1,6 +1,6 @@
 <template>
   <v-autocomplete
-    height="32"
+    height="28"
     v-model="model"
     :placeholder="$t('instrument.search')"
     :loading="loading"

@@ -6,7 +6,7 @@
       </v-col>
     </v-row>
     <v-row class="ma-0 pa-0" dense>
-      <v-col>
+      <v-col class="ma-0 pa-0">
         <WatchList :watchlists="instruments" />
       </v-col>
     </v-row>

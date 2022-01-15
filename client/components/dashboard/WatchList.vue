@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="py-1">
     <v-data-table
       :headers="headers"
       :items="inst"
       item-key="id"
-      class="mx-1 elevation-1 watchlist"
+      class="watchlist"
       hide-default-header
       hide-default-footer
       dense

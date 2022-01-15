@@ -1,6 +1,6 @@
 <template>
   <v-select
-    height="32"
+    height="28"
     :menu-props="{
       bottom: true,
       'offset-y': true,

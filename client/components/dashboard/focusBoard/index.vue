@@ -1,8 +1,8 @@
 <template>
   <v-card class="ma-0 pa-0" :loading="loading" flat tile>
     <v-toolbar :height="42" color="defualt-bg" flat dense>
-      <watchlist-selector style="max-width: 164px" auto-route />
-      <instrument-search class="ms-1" style="max-width: 164px" focus-result />
+      <watchlist-selector class="mt-2" style="max-width: 164px" auto-route />
+      <instrument-search class="ms-1 mt-2" style="max-width: 164px" focus-result />
       <v-btn
         v-if="edited"
         @click="apply"
