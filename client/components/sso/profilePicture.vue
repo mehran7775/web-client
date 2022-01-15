@@ -1,7 +1,7 @@
 <template>
-  <v-avatar size="32" rounded>
-    <v-img :src="img" max-width="32">
-      <v-icon slot="placeholder"> mdi-account </v-icon>
+  <v-avatar class="ma-0 pa-0" size="32" rounded>
+    <v-img class="ma-0 pa-0" :src="img" max-width="32">
+      <v-icon class="ma-0 pa-0" slot="placeholder"> mdi-account </v-icon>
     </v-img>
   </v-avatar>
 </template>

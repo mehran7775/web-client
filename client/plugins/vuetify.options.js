@@ -11,12 +11,12 @@ export default function ({ store, app }) {
     default: "#828282",
     secondary: '#EF394E',
     primary: '#3554D1',
-    common: '#f4f6fd',
     accent: '#82B1FF',
     error: '#FF3B30',
     info: '#009CF2',
     success: '#00BD79',
     warning: '#FFBB46',
+    "defualt-bg": "#F9FAFE"
   }
   const dtheme = {
     secondary: '#EF394E',

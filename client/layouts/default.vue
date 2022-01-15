@@ -16,6 +16,7 @@
       :clipped-left="clipped"
       :clipped-right="clipped"
       :height="42"
+      color="defualt-bg"
       class="text-no-wrap"
       fixed
       app
@@ -40,20 +41,28 @@
         <v-icon>mdi-menu-open</v-icon>
       </v-app-bar-nav-icon>
       <clock :format="$t('general.date.longdt')" width="240" />
-      <v-spacer />
-      <v-badge dot left color="green" class="mx-5" offset-y="75%" offset-x="-5">
-        {{ $t("oms.bourseIndex") }}: {{ formatter.format(0.0) }}
-      </v-badge>
-      <v-badge
-        dot
-        left
-        color="orange"
-        class="mx-5"
-        offset-y="75%"
-        offset-x="-5"
-      >
-        {{ $t("oms.superBourseIndex") }}: {{ formatter.format(0.0) }}
-      </v-badge>
+      <div class="center">
+        <v-badge
+          dot
+          left
+          color="green"
+          class="mx-5"
+          offset-y="75%"
+          offset-x="-5"
+        >
+          {{ $t("oms.bourseIndex") }}: {{ formatter.format(0.0) }}
+        </v-badge>
+        <v-badge
+          dot
+          left
+          color="orange"
+          class="mx-5"
+          offset-y="75%"
+          offset-x="-5"
+        >
+          {{ $t("oms.superBourseIndex") }}: {{ formatter.format(0.0) }}
+        </v-badge>
+      </div>
       <v-spacer />
       <v-menu v-model="userMenu" offset-y>
         <template #activator="{ on, attrs }">
@@ -62,17 +71,17 @@
             min-width="184px"
             v-bind="attrs"
             v-on="on"
-            class="ma-0 pa-0 ps-3 justify-start"
+            class="ma-0 pa-0 px-3 justify-start"
             depressed
           >
             <profile-picture
               :address="currentUser.profile && currentUser.profile.profilePic"
             />
-            <span class=".d-none .d-sm-flex">{{ currentUser.userName }}</span>
-            <v-spacer />
-            <v-icon class=".d-none .d-sm-flex">{{
-              userMenu ? "mdi-chevron-up" : "mdi-chevron-down"
-            }}</v-icon>
+            <span class=".d-none .d-sm-flex">{{
+              currentUser.profile.nickname
+                ? currentUser.profile.nickname
+                : currentUser.userName
+            }}</span>
           </v-btn>
         </template>
         <v-list dense>
@@ -246,7 +255,7 @@ export default defineComponent({
       store.dispatch("sso/user/logout");
       router.push("/login");
     }
-    
+
     return {
       formatter,
       collaps,
@@ -271,8 +280,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+#app-bar{
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
+}
 .dashboardmain-page {
-  background-color: #f9f9fb;
+  background-color: var(--v-defualt-bg-base);
   overflow: auto;
 }
 .dashboardmain-nuxt {

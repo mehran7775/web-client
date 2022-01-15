@@ -1,6 +1,6 @@
 <template>
   <thead>
-    <tr v-on="$listeners" v-bind="$attrs">
+    <tr v-on="$listeners" v-bind="$attrs" class="headers">
       <th
         :draggable="header.draggable"
         @dragstart="() => drag(header)"
@@ -94,8 +94,11 @@ export default defineComponent({
 </script>
 
 <style lang="sass" scoped>
+.headers
+  background-color: rgba($c-primary,0.1)
 .header
   position: relative
+  background-color: none
 .divider
   position: absolute
   top: calc(50% - 6px)
