@@ -23,8 +23,8 @@
       <v-list-item class="px-2">
         <v-text-field
           style="width: 116px"
-          class="ma-0 pa-0"
-          height="32"
+          class="ma-0 pa-0 watchlist-select"
+          height="28"
           v-model="newName"
           @keyup.enter.stop="create"
           dense
@@ -41,12 +41,11 @@
         </v-btn>
       </v-list-item>
     </template>
-    <template #item="{ item, on, attrs }">
+    <template #item="{ item, on }">
       <v-list-item
         draggable="true"
         @dragstart="drag"
-        :class="{ item: true, 'px-2': item.onEdit }"
-        v-bind="attrs"
+        :class="{ height: '28px', item: true, 'px-2': item.onEdit }"
         v-on="on"
       >
         <span v-if="!item.onEdit">{{ item.text }}</span>
@@ -75,7 +74,7 @@
         <v-text-field
           v-if="item.onEdit"
           style="width: 116px"
-          class="ma-0 pa-0"
+          class="ma-0 pa-0 watchlist-select"
           height="28"
           v-model="item.newName"
           @click.stop=""
@@ -165,12 +164,10 @@ export default defineComponent({
     }
     async function rename(item: any) {
       const tmp: any = {};
-      Object.keys(wls.value)
-        .filter((key) => key != item.id)
-        .forEach((i) => {
-          tmp[i] = wls.value[i];
-        });
-      tmp[item.newName] = wls.value[item.id];
+      Object.keys(wls.value).forEach((i) => {
+        if (i == item.id) tmp[item.newName] = wls.value[item.id];
+        else tmp[i] = wls.value[i];
+      });
       store.commit("sso/user/updateWatchlist", tmp);
       await store.dispatch("sso/user/update_watchlist");
       if (item.id == route.value.params.name)
@@ -208,4 +205,13 @@ export default defineComponent({
   border-bottom-width: 1px
   border-bottom-color: var(--v-default-lighten4)
   border-bottom-style: dashed
+</style>
+<style lang="sass">
+.watchlist-select
+  &.v-text-field
+    &> .v-input__control
+      &> .v-input__slot
+        &::after,
+        &::before
+          border: none !important
 </style>
