@@ -31,7 +31,7 @@
       >
       </message-list>
     </div>
-    <v-tabs v-model="activeTab" optional vertical>
+    <v-tabs v-model="activeTab" hide-slider optional vertical>
       <v-tab
         v-for="item in items"
         :key="item.title"
@@ -182,7 +182,7 @@ export default defineComponent({
   margin: 0 !important
   overflow: hidden
   &.v-navigation-drawer--mini-variant
-    width: 56px !important
+    width: 42px !important
   .v-navigation-drawer__content
     display: flex
     flex-direction: row
@@ -192,7 +192,7 @@ export default defineComponent({
     background-color: #EEEEEE !important
     height: 100%
     overflow-y: auto
-    width: calc(100% - 56px)
+    width: calc(100% - 42px)
     display: block
     .tab-item
       width: 100%
@@ -204,17 +204,17 @@ export default defineComponent({
         animation: slide-in 0.5s forwards
         transform: translateX(0%)
         height: 100%
-
   .v-tabs
     background-color: green
     vertical-align: top
-    max-width: 56px
+    max-width: 42px
     .v-tab
       transform: rotate(-90deg)
       margin: 0
       padding: 0
-      min-width: 48px
-      height: 56px !important
+      min-width: 42px
+      min-height: 56px !important
       justify-content: center !important
 </style>
+
 

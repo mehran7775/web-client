@@ -21,9 +21,11 @@
       >
         <v-tooltip left>
           <template #activator="{ on, attrs }">
-            <v-icon :color="item.color" v-bind="attrs" v-on="on">
-              {{ item.icon }}
-            </v-icon>
+            <v-btn width="32" height="32" depressed>
+              <v-icon size="16" :color="item.color" v-bind="attrs" v-on="on">
+                {{ item.icon }}
+              </v-icon>
+            </v-btn>
           </template>
           <span>{{ item.text ? item.text : $t(item.title) }}</span>
         </v-tooltip>
@@ -345,7 +347,7 @@ export default defineComponent({
   overflow: hidden
   padding-top: 4px
   &.v-navigation-drawer--mini-variant
-    width: 56px !important
+    width: 42px !important
   .v-navigation-drawer__content
     display: flex
     flex-direction: row
@@ -354,10 +356,10 @@ export default defineComponent({
   .v-tabs-items
     background-color: #EEEEEE !important
     height: 100%
-    width: calc(100% - 56px)
+    width: calc(100% - 42px)
     display: block
   .v-tabs
-    width: 56px
+    width: 42px
     vertical-align: top
     &--vertical
       > .v-tabs-bar
@@ -365,12 +367,13 @@ export default defineComponent({
           display: block
         .v-tab
           padding: 0
-          padding-top: 3px
           display: block
           vertical-align: middle
           justify-content: center !important
-          min-width: 48px
+          min-width: 42px
           height: 32px !important
           &--active
-            box-shadow: 5px 0px 5px 0px grey
+            .v-btn
+              color: $c-primary
+              background-color: rgba($c-primary,0.1)
 </style>

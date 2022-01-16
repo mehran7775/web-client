@@ -4,7 +4,7 @@
       :mini.sync="rightMenu.mini"
       :clipped="clipped"
       v-model="rightMenu.drawer"
-      class="min32 shadow left"
+      class="shadow left"
     />
     <left-panel
       :mini.sync="leftMenu.mini"
@@ -108,7 +108,13 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-main class="dashboardmain-page">
+    <v-main
+      :class="{
+        'dashboardmain-page': true,
+        right: !rightMenu.mini,
+        left: !leftMenu.mini,
+      }"
+    >
       <div :class="{ 'dashboardmain-nuxt': true, collaps: collaps }">
         <nuxt />
       </div>
@@ -298,25 +304,30 @@ export default defineComponent({
     display: none !important
 </style>
 
-<style scoped>
-.center {
-  position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  left: 0;
-  right: 0;
-  width: fit-content;
-}
-.dashboardmain-page {
-  background-color: var(--v-defualt-bg-base);
-  overflow: auto;
-}
-.dashboardmain-nuxt {
-  overflow-y: auto;
-  height: calc(100vh - 74px);
-  padding-bottom: 32px;
-}
-.dashboardmain-nuxt.collaps {
-  height: calc(52vh);
-}
+<style lang="sass" scoped>
+.center
+  position: absolute
+  margin-left: auto
+  margin-right: auto
+  left: 0
+  right: 0
+  width: fit-content
+
+.dashboardmain-page
+  background-color: var(--v-defualt-bg-base)
+  overflow: auto
+  padding-left: 42px !important
+  padding-right: 42px !important
+  &.left
+    padding-left: 240px !important
+  &.right
+    padding-right: 240px !important
+
+.dashboardmain-nuxt
+  overflow-y: auto
+  height: calc(100vh - 74px)
+  padding-bottom: 32px
+
+.dashboardmain-nuxt.collaps
+  height: calc(52vh)
 </style>
