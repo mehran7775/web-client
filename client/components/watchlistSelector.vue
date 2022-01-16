@@ -56,7 +56,7 @@
           color="error"
           small
         >
-          adaico-trash
+          isax-trash
         </v-icon>
         <v-icon
           v-if="!item.onEdit"
@@ -68,7 +68,7 @@
           color="default"
           small
         >
-          adaico-edit-2
+          isax-edit-2
         </v-icon>
 
         <v-text-field

@@ -39,17 +39,17 @@
           <template #item.actions="{ item }">
             <div class="text-no-wrap">
               <v-icon color="default" @click="() => focus(item)" small>
-                adaico-eye
+                isax-eye
               </v-icon>
               <v-icon
                 color="success"
                 @click="() => order(item, Side.Buy)"
                 small
               >
-                adaico-bag-tick-2
+                isax-bag-tick-2
               </v-icon>
               <v-icon color="error" @click="() => order(item, Side.Sell)" small>
-                adaico-bag-cross
+                isax-bag-cross
               </v-icon>
             </div>
           </template>
@@ -97,7 +97,7 @@
               "
               small
             >
-              adaico-trash
+              isax-trash
             </v-icon>
           </template>
         </row-handler>

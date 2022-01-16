@@ -28,7 +28,7 @@
     dense
   >
     <template #prepend-inner>
-      <v-icon color="primary" class="mt-2" small> adaico-search-normal </v-icon>
+      <v-icon color="primary" class="mt-2" small> isax-search-normal </v-icon>
     </template>
   </v-autocomplete>
 </template>

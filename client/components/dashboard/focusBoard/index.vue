@@ -17,7 +17,7 @@
       <v-btn-toggle class="mode" color="primary" v-model="viewMode" mandatory>
         <v-btn height="28" width="28" depressed class="ma-0" small>
           <v-icon :color="viewMode == 0 ? 'primary' : 'default'" small>
-            adaico-menu
+            isax-menu-1
           </v-icon>
         </v-btn>
         <v-btn height="28" width="28" depressed  class="ma-0" small>

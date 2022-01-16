@@ -18,7 +18,7 @@
           class="ma-0 me-3 pa-0 d-inline-block"
         >
         </v-img>
-        <v-icon class="mt-1" @click="refreshCaptcha"> adaico-refresh-2 </v-icon>
+        <v-icon class="mt-1" @click="refreshCaptcha"> isax-refresh-2 </v-icon>
       </template>
     </v-text-field>
     <div

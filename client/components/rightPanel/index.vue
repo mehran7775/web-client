@@ -196,7 +196,7 @@ export default defineComponent({
     });
     const items = [
       {
-        icon: "adaico-eye",
+        icon: "isax-eye",
         title: "menu.watchList",
         children: [
           {
@@ -219,62 +219,62 @@ export default defineComponent({
         ],
       },
       {
-        icon: "adaico-graph",
+        icon: "isax-graph",
         title: "menu.portfolio",
         to: "/portfolio",
       },
       {
-        icon: "adaico-calculator",
+        icon: "isax-calculator",
         title: "menu.accounting",
         to: "/accounting",
       },
       {
-        icon: "adaico-money-change",
+        icon: "isax-money-change",
         title: "menu.trades",
         to: "/trades",
       },
       {
-        icon: "adaico-presention-chart",
+        icon: "isax-presention-chart",
         title: "menu.alerts",
         to: "/alerts",
       },
       {
-        icon: "mdi-book-sync-outline",
+        icon: "isax-convert-card",
         title: "menu.drafts",
         to: "/drafts",
       },
       {
-        icon: "adaico-money-recive",
+        icon: "isax-money-recive",
         title: "menu.conditionalTrades",
         to: "/conditional-trades",
       },
       {
-        icon: "adaico-filter-edit",
+        icon: "isax-filter-edit",
         title: "menu.filter",
         to: "/filters",
       },
       {
-        icon: "adaico-status-up",
+        icon: "isax-status-up",
         title: "menu.technical",
         to: "/technical",
       },
       {
-        icon: "adaico-note-2",
+        icon: "isax-note-2",
         title: "menu.profit",
         to: "/profit",
       },
       {
-        icon: "adaico-map",
+        icon: "isax-map",
         title: "menu.marketMap",
         to: "/market-map",
       },
       {
-        icon: "adaico-setting-2",
+        icon: "isax-setting-2",
         title: "menu.settings",
         to: "/settings",
       },
       {
-        icon: "adaico-chart-2",
+        icon: "isax-chart-2",
         title: "menu.reports",
         to: "/inspire",
       },
@@ -282,13 +282,13 @@ export default defineComponent({
     const staticItems = [
       {
         color: "success",
-        icon: "adaico-card-receive",
+        icon: "isax-card-receive",
         title: "menu.deposit",
         to: "/deposit",
       },
       {
         color: "error",
-        icon: "adaico-card-send",
+        icon: "isax-card-send",
         title: "menu.refund",
         to: "/refund",
       },

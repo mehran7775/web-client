@@ -45,7 +45,7 @@
               <h4>{{ $t("user.profile.nid") }}</h4>
               <v-text-field
                 class="my-2"
-                prepend-inner-icon="adaico-user"
+                prepend-inner-icon="isax-user"
                 outlined
                 hide-details
                 dense
@@ -54,7 +54,7 @@
               <h4>{{ $t("user.profile.contact.mobile") }}</h4>
               <v-text-field
                 class="my-2"
-                prepend-inner-icon="adaico-mobile"
+                prepend-inner-icon="isax-mobile"
                 outlined
                 hide-details
                 dense

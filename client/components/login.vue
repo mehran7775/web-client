@@ -19,7 +19,7 @@
         ref="userref"
         :height="inputHeight"
         v-model="data.userName"
-        prepend-inner-icon="adaico-user"
+        prepend-inner-icon="isax-user"
         :rules="[rules.required]"
         @input="checkTries"
         @keyup.enter="
@@ -54,7 +54,7 @@
             "
             :color="keyboard.active ? 'primary' : null"
           >
-            adaico-keyboard
+            isax-keyboard
           </v-icon>
         </template>
       </v-text-field>
@@ -98,7 +98,7 @@
         :height="inputHeight"
         v-model="data.password"
         :type="showPassword ? 'text' : 'Password'"
-        prepend-inner-icon="adaico-lock"
+        prepend-inner-icon="isax-lock"
         @keyup.enter="
           () => {
             if (false) login(data);
@@ -126,7 +126,7 @@
             :color="showPassword ? 'primary' : null"
             @click="showPassword = !showPassword"
           >
-            adaico-eye
+            isax-eye
           </v-icon>
           <v-icon
             @click="
@@ -139,7 +139,7 @@
               }
             "
           >
-            adaico-keyboard
+            isax-keyboard
           </v-icon>
         </template>
       </v-text-field>

@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'Ada Bourse Icons';
-  src:  url('fonts/ada-bourse.eot?67q79x#iefix') format('embedded-opentype'),
+  src:  url('fonts/ada-bourse.eot?67q79x') format('embedded-opentype'),
     url('fonts/ada-bourse.ttf?67q79x') format('truetype'),
     url('fonts/ada-bourse.woff?67q79x') format('woff'),
-    url('fonts/ada-bourse.svg?67q79x#icomoon') format('svg');
+    url('fonts/ada-bourse.svg?67q79x') format('svg');
   font-weight: normal;
   font-style: normal;
 }

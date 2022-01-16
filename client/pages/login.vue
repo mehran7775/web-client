@@ -21,7 +21,7 @@
         color="primary lighten-1"
         depressed
       >
-        <v-icon> adaico-instagram </v-icon>
+        <v-icon> isax-instagram </v-icon>
       </floating-button>
       <floating-button
         top="calc(50% - 66px)"
@@ -30,7 +30,7 @@
         color="primary lighten-1"
         depressed
       >
-        <v-icon> adaico-whatsapp </v-icon>
+        <v-icon> isax-dcube  </v-icon>
       </floating-button>
       <floating-button
         top="calc(50% - 22px)"
@@ -39,7 +39,7 @@
         color="primary lighten-1"
         depressed
       >
-        <v-icon> adaico-facebook </v-icon>
+        <v-icon> isax-facebook </v-icon>
       </floating-button>
       <floating-button
         top="calc(50% + 22px)"
