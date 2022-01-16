@@ -4,13 +4,13 @@
       :mini.sync="rightMenu.mini"
       :clipped="clipped"
       v-model="rightMenu.drawer"
-      class="min32 shadow"
+      class="min32 shadow left"
     />
     <left-panel
       :mini.sync="leftMenu.mini"
       :clipped="clipped"
       v-model="leftMenu.drawer"
-      class="shadow"
+      class="shadow right"
     />
     <v-app-bar
       id="app-bar"
@@ -18,7 +18,7 @@
       :clipped-right="clipped"
       :height="42"
       color="defualt-bg"
-      class="text-no-wrap shadow"
+      class="text-no-wrap shadow bottom"
       fixed
       app
       dense
@@ -283,7 +283,13 @@ export default defineComponent({
 <style lang="sass">
 .shadow
   border: none !important
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05) !important
+  &.bottom
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05) !important
+  &.right
+    box-shadow: 4px 0px 4px 0px rgba(0, 0, 0, 0.05) !important
+  &.left
+    box-shadow: -4px 0px 4px 0px rgba(0, 0, 0, 0.05)
+
   .v-navigation-drawer__border
     display: none !important
 </style>

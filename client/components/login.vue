@@ -266,7 +266,7 @@ import {
   onMounted,
   useStore,
   useContext,
-  ComputedRef,
+  useRouter,
 } from "@nuxtjs/composition-api";
 import { AxiosError } from "axios";
 import { Snack } from "~/store/snacks";
@@ -285,6 +285,7 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const ctx = useContext();
+    const router = useRouter()
     const keyboard = ref(useVirtualKeyBoard());
 
     const frm: Ref<any> = ref(null);
@@ -312,9 +313,8 @@ export default defineComponent({
           );
           if (res >= 200 && res < 300) {
             const user = store.getters["sso/user/me"] as User;
-            ctx.redirect({
-              path: "/watchlist/" + Object.keys(user.settings.watch_lists)[0],
-            });
+            //TODO push
+            router.push("/watchlist/" + Object.keys(user.settings.watch_lists)[0])
             snack(new Snack("login.successful", "success"));
           }
         } catch (err) {
