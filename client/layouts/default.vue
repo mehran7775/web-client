@@ -18,16 +18,17 @@
       :clipped-right="clipped"
       :height="42"
       color="defualt-bg"
-      class="text-no-wrap shadow bottom"
+      class="text-no-wrap shadow bottom pe-2"
       fixed
       app
       dense
     >
-      <span v-if="!rightMenu.mini && rightMenu.drawer">{{
-        $t("general.proxyCompany")
-      }}</span>
-      <v-app-bar-nav-icon
-        class="ps-2 me-5"
+      <img class="me-1" src="/logo.png" height="20px" width="20px" />
+      <span v-if="!rightMenu.mini && rightMenu.drawer">
+        {{ $t("general.proxyCompany") }}
+      </span>
+
+      <v-icon
         @click.stop="
           () => {
             if (rightMenu.drawer) {
@@ -38,9 +39,12 @@
             }
           }
         "
+        class="ma-0 pa-0 me-5"
+        size="18"
       >
-        <v-icon>mdi-menu-open</v-icon>
-      </v-app-bar-nav-icon>
+        mdi-menu-open
+      </v-icon>
+
       <clock :format="$t('general.date.longdt')" width="240" />
       <div class="center">
         <v-badge

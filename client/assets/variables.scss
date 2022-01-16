@@ -139,8 +139,12 @@ $text-field-outlined-rounded-slot-padding: 0 8px;
 $text-field-outlined-fieldset-border-width: 1px;
 $text-field-outlined-fieldset-border: 1px solid currentColor;
 
-// All Headers 32 px
+//Toolbar
+$toolbar-content-padding-y:0;
+$toolbar-content-padding-x: 8px;
 $toolbar-btn-icon-size: 32px;
+
+// All Headers 32 px
 $list-dense-min-height: 32px;
 $stepper-step-step-height: 32px;
 $stepper-step-step-width: 32px;
