@@ -1,0 +1,139 @@
+@font-face {
+  font-family: 'Ada Bourse Icons';
+  src:  url('fonts/ada-bourse.eot?67q79x#iefix') format('embedded-opentype'),
+    url('fonts/ada-bourse.ttf?67q79x') format('truetype'),
+    url('fonts/ada-bourse.woff?67q79x') format('woff'),
+    url('fonts/ada-bourse.svg?67q79x#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.adaico:before,
+.adaico-set {
+  display: inline-block;
+  font: normal normal normal 24px/1 "Ada Bourse Icons";
+  font-size: inherit;
+  text-rendering: auto;
+  line-height: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.adaico-add-circle:before {
+  content: "\e900";
+}
+.adaico-arrow-down:before {
+  content: "\e901";
+}
+.adaico-arrow-left:before {
+  content: "\e902";
+}
+.adaico-arrow-right:before {
+  content: "\e903";
+}
+.adaico-arrow-up:before {
+  content: "\e904";
+}
+.adaico-bag-cross:before {
+  content: "\e905";
+}
+.adaico-bag-tick:before {
+  content: "\e906";
+}
+.adaico-bag-tick-2:before {
+  content: "\e907";
+}
+.adaico-briefcase:before {
+  content: "\e908";
+}
+.adaico-calculator:before {
+  content: "\e909";
+}
+.adaico-card-receive:before {
+  content: "\e90a";
+}
+.adaico-card-send:before {
+  content: "\e90b";
+}
+.adaico-chart-2:before {
+  content: "\e90c";
+}
+.adaico-edit-2:before {
+  content: "\e90d";
+}
+.adaico-element-3:before {
+  content: "\e90e";
+}
+.adaico-eye:before {
+  content: "\e90f";
+}
+.adaico-facebook:before {
+  content: "\e910";
+}
+.adaico-filter-edit:before {
+  content: "\e911";
+}
+.adaico-graph:before {
+  content: "\e912";
+}
+.adaico-instagram:before {
+  content: "\e913";
+}
+.adaico-keyboard:before {
+  content: "\e914";
+}
+.adaico-lock:before {
+  content: "\e915";
+}
+.adaico-map:before {
+  content: "\e916";
+}
+.adaico-menu:before {
+  content: "\e917";
+}
+.adaico-messages:before {
+  content: "\e918";
+}
+.adaico-mobile:before {
+  content: "\e919";
+}
+.adaico-money-change:before {
+  content: "\e91a";
+}
+.adaico-money-recive:before {
+  content: "\e91b";
+}
+.adaico-note-2:before {
+  content: "\e91c";
+}
+.adaico-notification:before {
+  content: "\e91d";
+}
+.adaico-presention-chart:before {
+  content: "\e91e";
+}
+.adaico-record-bar:before {
+  content: "\e91f";
+}
+.adaico-refresh-2:before {
+  content: "\e920";
+}
+.adaico-search-normal:before {
+  content: "\e921";
+}
+.adaico-setting-2:before {
+  content: "\e922";
+}
+.adaico-status-up:before {
+  content: "\e923";
+}
+.adaico-trash:before {
+  content: "\e924";
+}
+.adaico-user:before {
+  content: "\e925";
+}
+.adaico-whatsapp:before {
+  content: "\e926";
+}
