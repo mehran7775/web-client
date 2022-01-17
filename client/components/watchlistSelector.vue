@@ -20,7 +20,7 @@
     dense
   >
     <template #append-item>
-      <v-list-item class="px-2">
+      <v-list-item style="width: 164px" class="px-2">
         <v-text-field
           style="width: 116px"
           class="ma-0 pa-0 watchlist-select"
@@ -45,7 +45,8 @@
       <v-list-item
         draggable="true"
         @dragstart="drag"
-        :class="{ height: '28px', item: true, 'px-2': item.onEdit }"
+        :style="{ height: '28px', width: '164px' }"
+        class="item px-2"
         v-on="on"
       >
         <span v-if="!item.onEdit">{{ item.text }}</span>
