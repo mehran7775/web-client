@@ -1,5 +1,5 @@
 <template>
-  <div class="py-1">
+  <div class="pb-1">
     <v-data-table
       :headers="headers"
       :items="inst"

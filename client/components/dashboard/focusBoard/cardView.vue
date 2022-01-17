@@ -1,62 +1,53 @@
 <template>
-  <v-container class="py-2" fluid>
-    <v-row dense>
-      <v-col class="d-flex flex-row ma-0 pa-0" style="overflow-x: scroll">
-        <v-card
-          @click="() => select(item)"
-          class="me-1 mb-1"
-          min-width="430"
-          max-width="430"
-          v-for="item in instruments"
-          :key="item.id"
+  <div class="d-flex flex-row ma-0 pa-0" style="overflow-x: scroll">
+    <v-card
+      @click="() => select(item)"
+      class="me-1 mb-1"
+      min-width="430"
+      max-width="430"
+      v-for="item in instruments"
+      :key="item.id"
+    >
+      <v-toolbar height="32" dense flat color="primary" dark>
+        <v-card-title>
+          <v-badge color="success" dot left offset-y="75%" offset-x="-5">
+            {{ item.name }}
+          </v-badge>
+        </v-card-title>
+        <v-spacer />
+        <v-btn
+          depressed
+          height="24px"
+          color="success"
+          dark
+          x-large
+          class="ma-0 pa-0"
+          @click="() => order(item, Side.Buy)"
         >
-          <v-toolbar height="32" dense flat color="primary" dark>
-            <v-card-title>
-              <v-badge color="success" dot left offset-y="75%" offset-x="-5">
-                {{ item.name }}
-              </v-badge>
-            </v-card-title>
-            <v-spacer />
-            <v-btn
-              depressed
-              height="24px"
-              color="success"
-              dark
-              x-large
-              class="ma-0 pa-0"
-              @click="() => order(item, Side.Buy)"
-            >
-              {{ $t("oms.buy") }}
-            </v-btn>
-            <v-btn
-              depressed
-              height="24px"
-              color="error"
-              dark
-              x-large
-              class="ms-1 pa-0"
-              @click="() => order(item, Side.Sell)"
-            >
-              {{ $t("oms.sell") }}
-            </v-btn>
-            <v-icon
-              class="ms-1"
-              color="error"
-              @click="() => close(item.id)"
-              small
-            >
-              mdi-close-circle-outline
-            </v-icon>
-          </v-toolbar>
-          <v-card-text class="text-caption ma-0 px-0">
-            <order-queue-card :insId="item.id" extra-col />
-            <legal-real-card :insId="item.id" hide-headers />
-            <instrument-card :insId="item.id" hide-headers />
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+          {{ $t("oms.buy") }}
+        </v-btn>
+        <v-btn
+          depressed
+          height="24px"
+          color="error"
+          dark
+          x-large
+          class="ms-1 pa-0"
+          @click="() => order(item, Side.Sell)"
+        >
+          {{ $t("oms.sell") }}
+        </v-btn>
+        <v-icon class="ms-1" color="error" @click="() => close(item.id)" small>
+          mdi-close-circle-outline
+        </v-icon>
+      </v-toolbar>
+      <v-card-text class="text-caption ma-0 px-0">
+        <order-queue-card :insId="item.id" extra-col />
+        <legal-real-card :insId="item.id" hide-headers />
+        <instrument-card :insId="item.id" hide-headers />
+      </v-card-text>
+    </v-card>
+  </div>
 </template>
 
 <script lang="ts">

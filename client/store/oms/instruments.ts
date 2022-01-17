@@ -47,7 +47,7 @@ export const mutations: MutationTree<InstrumentState> = {
   },
   addFocus(state, data: InstrumentCache) {
     if (state.focus.findIndex((item) => item.id == data.id) == -1)
-      state.focus.push(data)
+      state.focus.splice(0, 0, data)
   },
   setFocusMode(state, data: number) {
     state.focusViewMode = data

@@ -1,99 +1,95 @@
 <template>
-  <v-container class="ma-0 pa-0" fluid>
-    <v-row dense>
-      <v-col>
-        <v-tabs :height="32" color="primary" v-model="tab" align-with-title>
-          <v-tab
-            v-for="item in instruments"
-            :key="item.id"
-            :href="'#' + item.id"
-            class="pe-1 ps-5"
-          >
-            <v-badge color="success" dot left offset-y="75%" offset-x="-5">
-              {{ item.name }}
-            </v-badge>
-            <v-spacer />
-            <v-icon @click="() => close(item.id)" small> mdi-close </v-icon>
-          </v-tab>
-        </v-tabs>
-        <v-tabs-items v-model="tab">
-          <v-tab-item
-            v-for="item in instruments"
-            :key="item.id"
-            :value="item.id.toString()"
-          >
-            <v-row dense>
-              <v-col cols="4" class="ma-0 pa-0">
-                <order-queue-card
-                  :insId="item.id"
-                  @count="
-                    (val) => {
-                      count = val;
-                    }
-                  "
-                  @price="
-                    (val) => {
-                      price = val;
-                    }
-                  "
-                  copy
-                  extra-col
-                  responsive
-                />
-                <legal-real-card
-                  :insId="item.id"
-                  extra-col
-                  hide-headers
-                  responsive
-                />
-                <v-btn-toggle height="32" style="width: 100%">
-                  <v-tooltip v-for="op in deepOptions" :key="op" bottom>
-                    <template #activator="{ on, attrs }">
-                      <v-btn
-                        @click="deep(op, item)"
-                        v-bind="attrs"
-                        v-on="on"
-                        width="20%"
-                        height="32"
-                      >
-                        <v-icon size="24"> mdi-alert </v-icon>
-                      </v-btn>
-                    </template>
-                    <span>
-                      {{ $t("oms." + op) }}
-                    </span>
-                  </v-tooltip>
-                </v-btn-toggle>
-              </v-col>
-              <v-col cols="4" class="ma-0 pa-0 px-1">
-                <instrument-card
-                  :insId="item.id"
-                  @count="
-                    (val) => {
-                      count = val;
-                    }
-                  "
-                  @price="
-                    (val) => {
-                      price = val;
-                    }
-                  "
-                  responsive
-                />
-              </v-col>
-              <v-col cols="4" class="ma-0 pa-0">
-                <buy-sell-card
-                  :price.sync="price"
-                  :count.sync="count"
-                  :insId="item.id"
-                />
-              </v-col>
-            </v-row>
-          </v-tab-item>
-        </v-tabs-items>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div>
+    <v-tabs :height="32" color="primary" v-model="tab" align-with-title>
+      <v-tab
+        v-for="item in instruments"
+        :key="item.id"
+        :href="'#' + item.id"
+        class="pe-1 ps-5"
+      >
+        <v-badge color="success" dot left offset-y="75%" offset-x="-5">
+          {{ item.name }}
+        </v-badge>
+        <v-spacer />
+        <v-icon @click="() => close(item.id)" small> mdi-close </v-icon>
+      </v-tab>
+    </v-tabs>
+    <v-tabs-items v-model="tab">
+      <v-tab-item
+        v-for="item in instruments"
+        :key="item.id"
+        :value="item.id.toString()"
+      >
+        <v-row dense>
+          <v-col cols="4" class="ma-0 pa-0">
+            <order-queue-card
+              :insId="item.id"
+              @count="
+                (val) => {
+                  count = val;
+                }
+              "
+              @price="
+                (val) => {
+                  price = val;
+                }
+              "
+              copy
+              extra-col
+              responsive
+            />
+            <legal-real-card
+              :insId="item.id"
+              extra-col
+              hide-headers
+              responsive
+            />
+            <v-btn-toggle height="32" style="width: 100%">
+              <v-tooltip v-for="op in deepOptions" :key="op" bottom>
+                <template #activator="{ on, attrs }">
+                  <v-btn
+                    @click="deep(op, item)"
+                    v-bind="attrs"
+                    v-on="on"
+                    width="20%"
+                    height="32"
+                  >
+                    <v-icon size="24"> mdi-alert </v-icon>
+                  </v-btn>
+                </template>
+                <span>
+                  {{ $t("oms." + op) }}
+                </span>
+              </v-tooltip>
+            </v-btn-toggle>
+          </v-col>
+          <v-col cols="4" class="ma-0 pa-0 px-1">
+            <instrument-card
+              :insId="item.id"
+              @count="
+                (val) => {
+                  count = val;
+                }
+              "
+              @price="
+                (val) => {
+                  price = val;
+                }
+              "
+              responsive
+            />
+          </v-col>
+          <v-col cols="4" class="ma-0 pa-0">
+            <buy-sell-card
+              :price.sync="price"
+              :count.sync="count"
+              :insId="item.id"
+            />
+          </v-col>
+        </v-row>
+      </v-tab-item>
+    </v-tabs-items>
+  </div>
 </template>
 
 <script lang="ts">

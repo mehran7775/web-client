@@ -1,35 +1,50 @@
 <template>
   <v-card class="ma-0 pa-0" :loading="loading" flat tile>
     <v-toolbar :height="42" color="defualt-bg" flat dense>
-      <watchlist-selector class="mt-2" style="max-width: 164px" auto-route />
-      <instrument-search class="ms-1 mt-2" style="max-width: 164px" focus-result />
+      <watchlist-selector style="max-width: 164px" auto-route />
+      <instrument-search
+        class="ms-1"
+        style="max-width: 164px"
+        focus-result
+      />
       <v-btn
         v-if="edited"
         @click="apply"
         color="primary"
-        class="ma-0 ms-1 mt-2 pa-0"
+        class="ma-0 ms-1 pa-0"
         height="28"
         width="56"
       >
         {{ $t("general.apply") }}
       </v-btn>
       <v-spacer />
-      <v-btn-toggle class="mode" color="primary" v-model="viewMode" mandatory>
+      <v-btn-toggle
+        class="mode"
+        color="primary"
+        v-model="viewMode"
+        mandatory
+      >
         <v-btn height="28" width="28" depressed class="ma-0" small>
           <v-icon :color="viewMode == 0 ? 'primary' : 'default'" small>
             isax-menu-1
           </v-icon>
         </v-btn>
-        <v-btn height="28" width="28" depressed  class="ma-0" small>
+        <v-btn height="28" width="28" depressed class="ma-0" small>
           <v-icon :color="viewMode == 1 ? 'primary' : 'default'" small>
             adaico-element-3
           </v-icon>
         </v-btn>
       </v-btn-toggle>
     </v-toolbar>
-    <v-card-text v-if="instruments.length > 0" class="ma-0 pa-0 focus-board">
-      <card-view v-if="viewMode == 1" />
-      <tab-view v-if="viewMode == 0" />
+    <v-card-text class="ma-0 pa-0 focus-board" v-if="instruments.length > 0">
+      <v-window v-model="viewMode">
+        <v-window-item>
+          <tab-view />
+        </v-window-item>
+        <v-window-item>
+          <card-view />
+        </v-window-item>
+      </v-window>
     </v-card-text>
   </v-card>
 </template>
