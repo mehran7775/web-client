@@ -55,6 +55,7 @@
           v-if="!item.onEdit"
           @click.stop="remove(item.id)"
           color="error"
+          class="px-1"
           small
         >
           isax-trash
@@ -67,6 +68,7 @@
             }
           "
           color="default"
+          class="px-1"
           small
         >
           isax-edit-2
