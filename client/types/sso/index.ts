@@ -60,7 +60,7 @@ export class WatchlistColumns {
   sort: Function | null
   icon: string | null = null
   draggable: boolean = true
-  constructor(text: string, value: string, align: string = 'center', width: string | number | null = null) {
+  constructor(text: string, value: string, align: string = 'center', width: string | null = null) {
     this.text = text
     this.value = value
     this.align = align

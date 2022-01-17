@@ -80,25 +80,29 @@ export default defineComponent({
       }
     }
     async function select(val: InstrumentCache) {
-      loading.value = true;
-      const inst = await store.dispatch(
-        "oms/instruments/getInstrumentsDetail",
-        [val.id]
-      );
-      // If focus panel is open
-      if (focus.value.length > 0 || !route.value.params.name) {
-        store.commit("oms/instruments/addFocus", inst[0]);
-        store.commit("oms/instruments/select", inst[0]);
-      }
-
       const name = route.value.params.name;
-      const tmp = [val.id.toString()];
-      tmp.push(...watchlists.value[name]);
-      store.commit("sso/user/setWatchlist", {
-        name,
-        watchlist: tmp,
-      });
+      loading.value = true;
+      if (
+        watchlists.value[name] &&
+        watchlists.value[name].indexOf(val.id.toString()) == -1
+      ) {
+        const inst = await store.dispatch(
+          "oms/instruments/getInstrumentsDetail",
+          [val.id]
+        );
+        // If focus panel is open
+        if (focus.value.length > 0 || !route.value.params.name) {
+          store.commit("oms/instruments/addFocus", inst[0]);
+          store.commit("oms/instruments/select", inst[0]);
+        }
 
+        const tmp = [val.id.toString()];
+        tmp.push(...watchlists.value[name]);
+        store.commit("sso/user/setWatchlist", {
+          name,
+          watchlist: tmp,
+        });
+      }
       loading.value = false;
       model.value = null;
     }

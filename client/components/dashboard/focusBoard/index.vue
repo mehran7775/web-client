@@ -7,8 +7,8 @@
         v-if="edited"
         @click="apply"
         color="primary"
-        class="ma-0 ms-1 pa-0"
-        height="32"
+        class="ma-0 ms-1 mt-2 pa-0"
+        height="28"
         width="56"
       >
         {{ $t("general.apply") }}

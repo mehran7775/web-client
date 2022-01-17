@@ -7,6 +7,7 @@
       class="watchlist"
       hide-default-header
       hide-default-footer
+      disable-pagination
       dense
     >
       <template #header="{ on, props, attrs }">
@@ -38,17 +39,28 @@
         >
           <template #item.actions="{ item }">
             <div class="text-no-wrap">
-              <v-icon color="default" @click="() => focus(item)" small>
+              <v-icon
+                class="ma-0 pa-0 mx-2"
+                color="default"
+                @click="() => focus(item)"
+                small
+              >
                 isax-eye
               </v-icon>
               <v-icon
+                class="ma-0 pa-0 mx-2"
                 color="success"
                 @click="() => order(item, Side.Buy)"
                 small
               >
                 isax-bag-tick-2
               </v-icon>
-              <v-icon color="error" @click="() => order(item, Side.Sell)" small>
+              <v-icon
+                class="ma-0 pa-0 mx-2"
+                color="error"
+                @click="() => order(item, Side.Sell)"
+                small
+              >
                 isax-bag-cross
               </v-icon>
             </div>
@@ -197,7 +209,7 @@ export default defineComponent({
 
     const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
       const res: Array<WatchlistColumns> = [];
-      const actions = new WatchlistColumns("", "actions");
+      const actions = new WatchlistColumns("", "actions", "center", "100px");
       actions.draggable = false;
       res.push(actions);
       res.push(
