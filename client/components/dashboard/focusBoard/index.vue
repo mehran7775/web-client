@@ -26,12 +26,12 @@
       >
         <v-btn height="28" width="28" depressed class="ma-0" small>
           <v-icon :color="viewMode == 0 ? 'primary' : 'default'" small>
-            isax-menu-1
+            isax-menu
           </v-icon>
         </v-btn>
         <v-btn height="28" width="28" depressed class="ma-0" small>
           <v-icon :color="viewMode == 1 ? 'primary' : 'default'" small>
-            adaico-element-3
+            isax-element-3-bold
           </v-icon>
         </v-btn>
       </v-btn-toggle>

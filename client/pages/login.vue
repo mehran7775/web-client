@@ -30,7 +30,7 @@
         color="primary lighten-1"
         depressed
       >
-        <v-icon> isax-dcube  </v-icon>
+        <v-icon> isax-whatsapp  </v-icon>
       </floating-button>
       <floating-button
         top="calc(50% - 22px)"

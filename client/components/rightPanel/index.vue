@@ -239,7 +239,7 @@ export default defineComponent({
         to: "/alerts",
       },
       {
-        icon: "isax-convert-card",
+        icon: "isax-convert-card-outline",
         title: "menu.drafts",
         to: "/drafts",
       },

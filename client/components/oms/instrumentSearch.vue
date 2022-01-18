@@ -28,7 +28,7 @@
     dense
   >
     <template #prepend-inner>
-      <v-icon color="primary" class="mt-2" small> isax-search-normal </v-icon>
+      <v-icon color="primary" class="mt-2" small> isax-search-normal-1 </v-icon>
     </template>
   </v-autocomplete>
 </template>
@@ -124,5 +124,5 @@ export default defineComponent({
 <style lang="sass" scoped>
 .instrument-search
   background-color: rgba($c-primary,0.05)
-  border-radius: 8px
+  border-radius: $border-radius-root
 </style>

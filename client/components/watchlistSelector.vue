@@ -13,12 +13,14 @@
     v-model="selected"
     flat
     no-filter
-    rounded
     hide-details
     return-object
     single-line
     dense
   >
+    <template #append>
+      <v-icon class="ma-2 arrow" x-small> isax-arrow-down </v-icon>
+    </template>
     <template #append-item>
       <v-list-item style="width: 164px" class="px-2">
         <v-text-field
@@ -203,7 +205,11 @@ export default defineComponent({
 <style lang="sass" scoped>
 .watchlist-select
   background-color: rgba($c-primary,0.05)
-  border-radius: 8px
+  border-radius: $border-radius-root
+  &.v-select
+    &--is-menu-active
+      .arrow
+        transform: rotate(-180deg)
 .item
   border-bottom-width: 1px
   border-bottom-color: var(--v-default-lighten4)

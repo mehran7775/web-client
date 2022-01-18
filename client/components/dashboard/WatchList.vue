@@ -61,7 +61,7 @@
                 @click="() => order(item, Side.Sell)"
                 small
               >
-                isax-bag-cross
+                isax-bag-cross-1
               </v-icon>
             </div>
           </template>
