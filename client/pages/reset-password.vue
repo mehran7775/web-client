@@ -1,71 +1,90 @@
 <template>
-  <v-container class="login ma-0 pa-0 pt-5" fluid>
-    <v-row>
-      <v-col></v-col>
-      <v-col class="text-center align-center justify-center">
+  <div class="ma-0 pa-0 res-ct">
+    <div class="pie pie-1"></div>
+    <div class="pie pie-2"></div>
+    <v-card
+      elevation="0"
+      class="dotted res-crd"
+      :loading="loading"
+    >
+      <div class="ma-0 pa-0 justify-center text-center">
+        <v-icon size="24" class="back" @click="back"> mdi-arrow-right </v-icon>
         <nuxt-link to="/about-us" class="logo" />
-      </v-col>
-      <v-col></v-col>
-    </v-row>
-    <v-row>
-      <v-col md="4" sm="2"></v-col>
-      <v-col md="4" sm="8">
-        <v-card
-          elevation="0"
-          color="transparent"
-          class="login"
-          :loading="loading"
-        >
-          <v-card-title class="justify-center">{{
-            $t("login.forget-password")
-          }}</v-card-title>
-          <v-card-text class="text-center">
-            <v-form>
-              <v-divider />
-              <v-text-field
-                v-model="userName"
-                :placeholder="$t('user.username')"
-                prepend-inner-icon="mdi-account"
-                hide-details
-                class="mb-2"
-              >
-              </v-text-field>
-              <client-only>
-                <vue-hcaptcha
-                  sitekey="41a134fc-7604-4ee1-a5df-40c97195491a"
-                  language="fa"
-                  @verify="captchaResult"
-                ></vue-hcaptcha>
-              </client-only>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn depressed color="error" @click="otp" width="100%" large dark>
-              {{ $t("login.send-sms") }}
-            </v-btn>
-          </v-card-actions>
+        <h3>{{ $t("login.forget-password") }}</h3>
+      </div>
+      <v-card-text class="text-center">
+        <v-form>
           <v-divider />
-          <v-card-actions class="text-center justify-center">
-            {{ $t("login.alerts") }}
-          </v-card-actions>
-          <v-divider />
-        </v-card>
-      </v-col>
-      <v-col md="4" sm="2"></v-col>
-    </v-row>
-  </v-container>
+          <v-text-field
+            v-model="userName"
+            :placeholder="$t('user.username')"
+            prepend-inner-icon="mdi-account"
+            hide-details
+            class="mb-2"
+          >
+          </v-text-field>
+          <simple-captcha tabindex="1" :height="42" outlined dense />
+        </v-form>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn depressed color="primary" @click="otp" width="100%" large dark>
+          {{ $t("login.send-sms") }}
+        </v-btn>
+      </v-card-actions>
+      <v-divider />
+      <div v-html="$t('login.alerts')" class="mt-3 text-justify"></div>
+      <v-divider />
+    </v-card>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent, ref, useRouter } from "@nuxtjs/composition-api";
 
 export default defineComponent({
   layout: "public",
   components: {},
   setup() {
+    const router = useRouter();
+    const userName = ref("");
+    const loading = ref(false);
     function otp() {}
     function captchaResult() {}
-    return { otp, captchaResult };
+    function back() {
+      router.push("/login");
+    }
+    return { back, otp, captchaResult, userName, loading };
   },
 });
 </script>
+
+<style lang="sass" scoped>
+.back
+  position: absolute
+  top: 72px
+  left: 39px
+
+.v-application--is-rtl
+  .back
+    right: 39px
+.res-ct
+  position: relative
+  height: 100%
+  overflow: hidden
+  display: flex
+  flex-direction: column
+  justify-content: center
+  padding: 0 calc(50% - 257px) !important
+.res-crd
+  border-radius: 24px
+  padding: 41px 96px
+  max-width: 514px
+  min-width: 514px
+  height: 658px
+.pie-1
+  top: -290px
+  right: -100px
+.pie-2
+  bottom: -290px
+  left: -210px
+</style>

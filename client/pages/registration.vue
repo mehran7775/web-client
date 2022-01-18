@@ -1,5 +1,5 @@
 <template>
-  <v-container class="ma-0 pa-0 reg-ct" fluid>
+  <div class="ma-0 pa-0 reg-ct">
     <div class="pie-1 pie"></div>
     <div class="pie-2 pie"></div>
 
@@ -115,7 +115,7 @@
       </v-btn>
       <div v-html="$t('login.alerts')" class="mt-3 text-justify"></div>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script lang="ts">
