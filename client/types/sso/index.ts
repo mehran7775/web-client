@@ -85,7 +85,7 @@ export function AnonymousUser(): User {
 }
 export function DefaultCols(): WatchlistColumns[] {
   return [
-    new WatchlistColumns("instrument.name", "name", "start", '54px'),
+    new WatchlistColumns("instrument.name", "name", "start"),
     new WatchlistColumns("instrument.tradeCount", "totalTrades"),
     new WatchlistColumns("instrument.tradeVol", "totalShares"),
     new WatchlistColumns("instrument.tradeVal", "totalTradesValue"),

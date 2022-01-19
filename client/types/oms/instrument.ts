@@ -99,3 +99,12 @@ export class MarketHistory {
   }
 }
 
+export enum InstrumentStatus {
+  ActiveRead = 0x01,
+  ActiveTrading = 0x05,
+  ActiveOrder = 0x03,
+  Active = 0x07,
+  Inactive = 0x04,
+  Disabled = 0x00,
+  PreActive = 0x02
+}

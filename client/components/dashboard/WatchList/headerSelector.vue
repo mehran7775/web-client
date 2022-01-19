@@ -96,6 +96,8 @@ export default defineComponent({
           case "name":
             col.align = "start";
             break;
+          case "status":
+            col.width = "123px";
         }
         tmp.push(col);
       } else {

@@ -60,7 +60,7 @@
                 isax-bag-tick-2
               </v-icon>
               <v-icon
-                class="ma-0 pa-0 mx-2"
+                class="ma-0 pa-0 ms-2 me-4"
                 color="error"
                 @click="() => order(item, Side.Sell)"
                 small
@@ -70,9 +70,28 @@
             </div>
           </template>
           <template #item.name="{ item }">
-            <span class="success--text">
-              {{ item.name }}
-            </span>
+            <v-badge
+              left
+              offset-y="65%"
+              offset-x="-4px"
+              :color="
+                (item.status & 1) != 1
+                  ? 'error'
+                  : (item.status & 6) != 6
+                  ? 'warning'
+                  : 'success'
+              "
+              dot
+            >
+              <v-tooltip bottom>
+                <template #activator="{ on }">
+                  <h5 style="line-height: 2.5" v-on="on" :class="['d-block']">
+                    {{ item.name }}
+                  </h5>
+                </template>
+                {{ $t(parseStatus(item.status)) }}
+              </v-tooltip>
+            </v-badge>
           </template>
           <template #item.opening="{ item }">
             <numeric-field :value="item.wealth" />
@@ -177,11 +196,13 @@ import {
   InstrumentCache,
   Side,
   User,
+  InstrumentStatus,
 } from "@/types";
 import { useShortcut } from "@/utils/shortcutManager";
 import HeaderHandler from "./headerHandler.vue";
 import RowHandler from "./rowHandler.vue";
 import HeaderSelector from "./headerSelector.vue";
+import { InstrumentState } from "~/store/oms/instruments";
 
 export default defineComponent({
   name: "WatchList",
@@ -232,6 +253,25 @@ export default defineComponent({
       res.push(more);
       return res;
     });
+
+    function parseStatus(state: number) {
+      switch (state & 7) {
+        case InstrumentStatus.Active:
+          return "instrument.state.active";
+        case InstrumentStatus.ActiveOrder:
+          return "instrument.state.activeOrder";
+        case InstrumentStatus.ActiveTrading:
+          return "instrument.state.activeTrading";
+        case InstrumentStatus.ActiveRead:
+          return "instrument.state.activeRead";
+        case InstrumentStatus.Inactive:
+          return "instrument.state.inactive";
+        case InstrumentStatus.Disabled:
+          return "instrument.state.disabled";
+        case InstrumentStatus.PreActive:
+          return "instrument.state.preActive";
+      }
+    }
 
     function order(item: InstrumentCache, side: Side) {
       store.commit("oms/instruments/updateInstrument", { id: item.id, side });
@@ -339,6 +379,7 @@ export default defineComponent({
     }
     getData(props.watchlists);
     return {
+      parseStatus,
       itemToDelete,
       drag,
       drop,
