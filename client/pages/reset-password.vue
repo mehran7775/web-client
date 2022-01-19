@@ -2,11 +2,7 @@
   <div class="ma-0 pa-0 res-ct">
     <div class="pie pie-1"></div>
     <div class="pie pie-2"></div>
-    <v-card
-      elevation="0"
-      class="dotted res-crd"
-      :loading="loading"
-    >
+    <v-card elevation="0" class="dotted res-crd" :loading="loading">
       <div class="ma-0 pa-0 justify-center text-center">
         <v-icon size="24" class="back" @click="back"> mdi-arrow-right </v-icon>
         <nuxt-link to="/about-us" class="logo" />
@@ -14,13 +10,14 @@
       </div>
       <v-card-text class="text-center">
         <v-form>
-          <v-divider />
           <v-text-field
             v-model="userName"
             :placeholder="$t('user.username')"
             prepend-inner-icon="mdi-account"
+            class="my-2"
+            outlined
             hide-details
-            class="mb-2"
+            dense
           >
           </v-text-field>
           <simple-captcha tabindex="1" :height="42" outlined dense />
@@ -31,9 +28,7 @@
           {{ $t("login.send-sms") }}
         </v-btn>
       </v-card-actions>
-      <v-divider />
       <div v-html="$t('login.alerts')" class="mt-3 text-justify"></div>
-      <v-divider />
     </v-card>
   </div>
 </template>
