@@ -1,15 +1,16 @@
 <template>
-  <v-menu min-width="164" offset-y max-height="50vh">
+  <v-menu v-model="menu" min-width="164" offset-y max-height="50vh">
     <template #activator="{ on, attrs }">
       <v-btn
-        color="transparent"
+        :color="menu ? 'primary' : 'transparent'"
         class="ma-0 pa-0"
         v-on="on"
+        v-bind="attrs"
         width="24"
         height="24"
         depressed
       >
-        <v-icon v-bind="attrs" color="primary" size="14">
+        <v-icon :color="menu ? 'white' : 'primary'" size="14">
           mdi-dots-horizontal-circle-outline
         </v-icon>
       </v-btn>
@@ -63,6 +64,7 @@ import { User, InstrumentCache, WatchlistColumns, DefaultCols } from "@/types";
 export default defineComponent({
   setup() {
     const store = useStore();
+    const menu = ref(false);
     const user = computed(() => store.getters["sso/user/me"] as User);
     const currentCols = computed(() => user.value.settings.columns);
     const blackList = [
@@ -107,6 +109,7 @@ export default defineComponent({
       await store.dispatch("sso/user/update_settings");
     }
     return {
+      menu,
       items,
       toggleCol,
       resetDefault,
@@ -117,9 +120,9 @@ export default defineComponent({
 
 <style lang="sass" scoped>
 .item
-    height: 32px !important
-    &.selected
-        background-color: rgba($c-primary,0.05)
+  height: 32px !important
+  &.selected
+    background-color: rgba($c-primary,0.05)
     &:hover
-        background-color: rgba($c-default,0.1)
+      background-color: rgba($c-default,0.1)
 </style>
