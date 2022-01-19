@@ -23,7 +23,7 @@ import {
   useStore,
 } from "@nuxtjs/composition-api";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
-import WatchList from "@/components/dashboard/WatchList.vue";
+import WatchList from "~/components/dashboard/WatchList/index.vue";
 
 export default defineComponent({
   components: {

@@ -17,6 +17,7 @@ export default function ({ store, app }) {
     info: '#009CF2',
     success: '#00BD79',
     warning: '#FFBB46',
+    gray4: "#BDBDBD",
     "defualt-bg": "#F9FAFE"
   }
   const dtheme = {

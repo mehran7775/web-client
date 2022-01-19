@@ -205,7 +205,6 @@ export default defineComponent({
         transform: translateX(0%)
         height: 100%
   .v-tabs
-    background-color: green
     vertical-align: top
     max-width: 42px
     .v-tab

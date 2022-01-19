@@ -1,0 +1,35 @@
+<template>
+  <tr v-on="$listeners" v-bind="$attrs" class="row-border">
+    <td
+      v-for="header in model.headers"
+      :key="header.value"
+      scope="col"
+      :class="['header', 'col-border', 'text-' + header.align, header.class]"
+    >
+      <slot :item="model.item" :name="'item.' + header.value">
+        {{ model.item[header.value] }}
+      </slot>
+    </td>
+  </tr>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "@nuxtjs/composition-api";
+
+export default defineComponent({
+  inheritAttrs: false,
+  props: ["model"],
+  setup() {},
+});
+</script>
+
+<style lang="sass" scoped>
+.row-border
+  border: none
+  border-color: none
+  //border-bottom: 1px solid #E0E0E0
+.col-border
+  border: none
+  border-color: none
+  border-bottom: 1px solid #E0E0E0
+</style>

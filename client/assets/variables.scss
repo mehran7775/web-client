@@ -2,7 +2,7 @@
 $font-size-root: 12px;
 $border-radius-root: 8px;
 
-$default: #828282;
+$c-default: #828282;
 $c-secondary: #EF394E;
 $c-primary: #3554D1;
 $c-accent: #82B1FF;
@@ -11,6 +11,7 @@ $c-info: #009CF2;
 $c-success: #00BD79;
 $c-warning: #FFBB46;
 $c-defualt-bg: #F9FAFE;
+$c-gray4: #BDBDBD;
 
 // Headings
 $headings: (
@@ -108,8 +109,11 @@ $headings: (
 );
 
 // List
+$list-item-padding: 0 4px;
 $list-item-title-font-size: 0.8334rem;
 $list-item-dense-title-font-size: 0.8334rem;
+$list-item-action-icon-margin: 4px;
+$list-item-child-min-width: 4px;
 // Card
 $card-text-font-size: 0.8334rem;
 // Data Table

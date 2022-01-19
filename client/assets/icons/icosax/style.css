@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'iconsax';
   src:
-    url('fonts/iconsax.woff2?e2qth7') format('woff2'),
-    url('fonts/iconsax.woff?e2qth7') format('woff'),
-    url('fonts/iconsax.ttf?e2qth7') format('truetype'),
-    url('fonts/iconsax.svg?e2qth7#iconsax') format('svg');
+    url('fonts/iconsax.woff2?pnxua9') format('woff2'),
+    url('fonts/iconsax.woff?pnxua9') format('woff'),
+    url('fonts/iconsax.ttf?pnxua9') format('truetype'),
+    url('fonts/iconsax.svg?pnxua9#iconsax') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.isax-tick:before {
+  content: "\e9f3";
+}
 .isax-aave-aave-outline:before {
   content: "\e900";
 }

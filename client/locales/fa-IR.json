@@ -14,7 +14,12 @@
     }
   },
   "general": {
-    "alert":"هشدار",
+    "export": "خروجی",
+    "excels": "اکسل",
+    "export-excels": "@:general.export @:general.excels",
+    "default": "پیش‌فرض",
+    "default-settings": "@:general.settings @:general.default",
+    "alert": "هشدار",
     "yes": "بله",
     "no": "خیر",
     "add": "افزودن",
@@ -48,6 +53,7 @@
     "next": "ادامه",
     "previous": "قبلی",
     "status": "وضعیت",
+    "settings": "تنظیمات",
     "date": {
       "dt": "D-T",
       "d": "D",
@@ -112,7 +118,7 @@
     }
   },
   "instrument": {
-    "remove":"آیا از حذف این نماد اطمینان دارید؟",
+    "remove": "آیا از حذف این نماد اطمینان دارید؟",
     "detail": "جزئیات نماد",
     "id": "شناسه",
     "code": "کد",
@@ -136,8 +142,11 @@
     "expirationDate": "تاریخ انقضا",
     "lastModification": "آخرین ویرایش",
     "tradeVal": "ارزش معاملات",
+    "totalTradesValue": "@:instrument.tradeVal",
     "tradeVol": "حجم معاملات",
+    "totalShares": "@:instrument.tradeVol",
     "tradeCount": "تعداد معاملات",
+    "totalTrades": "@:instrument.tradeCount",
     "marketVal": "ارزش بازار",
     "tradingShares": "سهام شناور",
     "status": "وضعیت",
@@ -149,7 +158,10 @@
     "lowest": "پایین‌ترین قیمت",
     "last": "آخرین قیمت",
     "search": "جست‌و‌جوی نماد",
-    "wealth": "@:wealth.wealth"
+    "wealth": "@:wealth.wealth",
+    "amount": "@:wealth.wealth",
+    "buyPrice": "@:oms.price @:oms.buy",
+    "sellPrice": "@:oms.price @:oms.sell"
   },
   "watchList": {
     "title": "دیدبان",
@@ -263,7 +275,7 @@
     "technical": "ابزار تکنیکال",
     "profit": "محاسبه بازده اوراق",
     "marketMap": "نقشه بازار",
-    "settings": "تنظیمات",
+    "settings": "@:general.settings",
     "deposit": "واریز آنی",
     "refund": "برداشت وجه",
     "reports": "گزارشات",
