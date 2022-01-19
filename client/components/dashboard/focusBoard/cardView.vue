@@ -22,7 +22,8 @@
           dark
           x-large
           class="ma-0 pa-0"
-          @click="() => order(item, Side.Buy)"
+          @click.stop="() => order(item, Side.Buy)"
+          :disabled="(item.status & 3) != 3"
         >
           {{ $t("oms.buy") }}
         </v-btn>
@@ -33,11 +34,12 @@
           dark
           x-large
           class="ms-1 pa-0"
-          @click="() => order(item, Side.Sell)"
+          @click.stop="() => order(item, Side.Sell)"
+          :disabled="(item.status & 3) != 3"
         >
           {{ $t("oms.sell") }}
         </v-btn>
-        <v-icon class="ms-1" color="error" @click="() => close(item.id)" small>
+        <v-icon class="ms-1" color="error" @click.stop="() => close(item.id)" small>
           mdi-close-circle-outline
         </v-icon>
       </v-toolbar>

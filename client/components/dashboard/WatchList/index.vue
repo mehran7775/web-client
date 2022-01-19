@@ -55,6 +55,7 @@
                 class="ma-0 pa-0 mx-2"
                 color="success"
                 @click="() => order(item, Side.Buy)"
+                :disabled="(item.status & 3) != 3"
                 small
               >
                 isax-bag-tick-2
@@ -63,6 +64,7 @@
                 class="ma-0 pa-0 ms-2 me-4"
                 color="error"
                 @click="() => order(item, Side.Sell)"
+                :disabled="(item.status & 3) != 3"
                 small
               >
                 isax-bag-cross-1

@@ -106,7 +106,7 @@
               </v-col>
               <v-col md="6" sm="12">
                 <v-btn depressed> {{ $t("general.draft") }} </v-btn>
-                <v-btn color="success" depressed>{{ $t("oms.buy") }}</v-btn>
+                <v-btn color="success" :disabled="!active || (active.status & 3) != 3" depressed>{{ $t("oms.buy") }}</v-btn>
               </v-col>
             </v-row>
           </v-container>
@@ -187,7 +187,7 @@
               </v-col>
               <v-col md="6" sm="12">
                 <v-btn depressed> {{ $t("general.draft") }} </v-btn>
-                <v-btn color="error" depressed>{{ $t("oms.sell") }}</v-btn>
+                <v-btn color="error" :disabled="!active || (active.status & 3) != 3" depressed>{{ $t("oms.sell") }}</v-btn>
               </v-col>
             </v-row>
           </v-container>
