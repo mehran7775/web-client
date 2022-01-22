@@ -30,6 +30,9 @@ export const getters: GetterTree<stores.UserState, stores.RootState> = {
 }
 
 export const mutations: MutationTree<stores.UserState> = {
+  setHome(state, data: string) {
+    state.user.settings.home = data
+  },
   renewToken(state, data: boolean) {
     state.renewToken = data
   },
