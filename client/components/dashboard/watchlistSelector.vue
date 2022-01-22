@@ -155,15 +155,9 @@ export default defineComponent({
       refresh();
     }
     async function remove(name: string) {
-      const tmp: any = {};
-      Object.keys(wls.value)
-        .filter((key) => key != name)
-        .forEach((i) => {
-          tmp[i] = wls.value[i];
-        });
       await store.dispatch("sso/user/update_settings", {
-        path: "/watch_lists",
-        value: tmp,
+        path: "/watch_lists/" + name,
+        value: null,
       });
       if (name == route.value.params.name) router.push(watchList[0].to);
       refresh();
