@@ -45,7 +45,7 @@
             <div class="text-no-wrap">
               <v-icon
                 class="ma-0 pa-0 mx-2"
-                color="default"
+                color="info"
                 @click="() => focus(item)"
                 small
               >
