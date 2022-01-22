@@ -2,7 +2,26 @@
   <v-container class="ma-0 pa-0" fluid>
     <v-row class="ma-0 pa-0" dense>
       <v-col class="ma-0 pa-0">
-        <focus-board />
+        <focus-board>
+          <template #toolbar>
+            <watchlist-selector style="max-width: 164px" auto-route />
+            <instrument-search
+              class="ms-1"
+              style="max-width: 164px"
+              focus-result
+            />
+            <v-btn
+              v-if="edited"
+              @click="apply"
+              color="primary"
+              class="ma-0 ms-1 pa-0"
+              height="28"
+              width="56"
+            >
+              {{ $t("general.apply") }}
+            </v-btn>
+          </template>
+        </focus-board>
       </v-col>
     </v-row>
     <v-row class="ma-0 pa-0" dense>
@@ -10,12 +29,14 @@
         <WatchList :watchlists="instruments" />
       </v-col>
     </v-row>
+    <loading :loading="loading" />
   </v-container>
 </template>
 
 
 <script lang="ts">
 import {
+  ref,
   computed,
   defineComponent,
   useContext,
@@ -24,9 +45,13 @@ import {
 } from "@nuxtjs/composition-api";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";
+import WatchlistSelector from "@/components/dashboard/watchlistSelector.vue";
+import InstrumentSearch from "@/components/oms/instrumentSearch.vue";
 
 export default defineComponent({
   components: {
+    WatchlistSelector,
+    InstrumentSearch,
     WatchList,
     FocusBoard,
   },
@@ -34,13 +59,30 @@ export default defineComponent({
     const route = useRoute();
     const store = useStore();
     const ctx = useContext();
-    let name = route.value.params.name;
-    let watchlists = computed(() => store.getters["sso/user/watchList"]);
+    const loading = ref(false);
+    const name = route.value.params.name;
+    const watchlists = computed(() => store.getters["sso/user/watchList"]);
+    const edited = computed(() => store.getters["sso/user/watchlistChanged"]);
     const instruments = computed(() => watchlists.value[name]);
     if (!name) {
       ctx.redirect(Object.keys(watchlists.value)[0]);
     }
+    async function apply() {
+      loading.value = true;
+      const name = route.value.params.name;
+      try {
+        await store.dispatch("sso/user/update_settings", {
+          path: "/watch_lists/" + name,
+          value: watchlists.value[name],
+        });
+      } finally {
+        loading.value = false;
+      }
+    }
     return {
+      apply,
+      loading,
+      edited,
       instruments,
     };
   },

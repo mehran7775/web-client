@@ -1,18 +1,8 @@
 <template>
-  <v-card class="ma-0 pa-0" :loading="loading" flat tile>
+  <v-card class="ma-0 pa-0" flat tile>
     <v-toolbar :height="42" color="defualt-bg" flat dense>
-      <watchlist-selector style="max-width: 164px" auto-route />
-      <instrument-search class="ms-1" style="max-width: 164px" focus-result />
-      <v-btn
-        v-if="edited"
-        @click="apply"
-        color="primary"
-        class="ma-0 ms-1 pa-0"
-        height="28"
-        width="56"
-      >
-        {{ $t("general.apply") }}
-      </v-btn>
+      <slot name="toolbar">
+      </slot>
       <v-spacer />
       <v-btn-toggle class="mode" color="primary" v-model="viewMode" mandatory>
         <v-btn height="28" width="28" depressed class="ma-0" small>
@@ -45,36 +35,25 @@ import {
   defineComponent,
   computed,
   useStore,
-  Ref,
-  ref,
-  useRoute,
-  ComputedRef,
 } from "@nuxtjs/composition-api";
 import { useShortcut } from "@/utils/shortcutManager";
-import InstrumentSearch from "@/components/oms/instrumentSearch.vue";
 import CardView from "./cardView.vue";
 import TabView from "./tabView.vue";
-import WatchlistSelector from "../watchlistSelector.vue";
 
 export default defineComponent({
   components: {
-    WatchlistSelector,
-    InstrumentSearch,
     CardView,
     TabView,
   },
   name: "focus-board",
   setup(props) {
     const store = useStore();
-    const route = useRoute();
     const sh = useShortcut();
-    const loading = ref(false);
-    const watchlists = computed(() => store.getters["sso/user/watchList"]);
-
+    
+    
     const instruments = computed(
       () => store.getters["oms/instruments/getFocus"]
     );
-    const edited = computed(() => store.getters["sso/user/watchlistChanged"]);
     const viewMode = computed({
       set(value: number) {
         store.commit("oms/instruments/setFocusMode", value);
@@ -83,18 +62,6 @@ export default defineComponent({
         return store.getters["oms/instruments/getFocusMode"];
       },
     });
-    async function apply() {
-      loading.value = true;
-      const name = route.value.params.name;
-      try {
-        await store.dispatch("sso/user/update_settings", {
-          path: "/watch_lists/" + name,
-          value: watchlists.value[name],
-        });
-      } finally {
-        loading.value = false;
-      }
-    }
 
     if (process.client) {
       sh.addShortcut({
@@ -109,9 +76,6 @@ export default defineComponent({
     }
 
     return {
-      apply,
-      loading,
-      edited,
       viewMode,
       instruments,
     };

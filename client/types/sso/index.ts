@@ -9,6 +9,7 @@ export type Setting = {
   lang: string,
   columns: Array<WatchlistColumns>,
   watch_lists: any,
+  home: string,
 }
 
 export type UserCredentials = {
@@ -80,7 +81,7 @@ export function AnonymousUser(): User {
   return new User(
     'anonymous',
     { nickname: 'Anonymous', profilePic: null },
-    { lang: 'fa-IR', columns: [], watch_lists: {} }
+    { lang: 'fa-IR', columns: [], watch_lists: {}, home: '/' }
   )
 }
 export function DefaultCols(): WatchlistColumns[] {

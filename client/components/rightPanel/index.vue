@@ -165,7 +165,6 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const router = useRouter();
-    const ctx = useContext();
     const sh = useShortcut();
     const selected: ComputedRef<number> = computed({
       get() {
@@ -201,20 +200,28 @@ export default defineComponent({
         children: [
           {
             icon: "mdi-basket",
+            title: "menu.wealth",
+            to: "/watchlist/wealth",
+          },
+          {
+            icon: "mdi-basket",
             title: "menu.basket",
             children: watchList,
           },
           {
             icon: "mdi-basket",
             title: "menu.industries",
+            to: "/watchlist/industries",
           },
           {
             icon: "mdi-basket",
             title: "menu.boards",
+            to: "/watchlist/boards",
           },
           {
             icon: "mdi-basket",
             title: "menu.instrumentTypes",
+            to: "/watchlist/instrumentTypes",
           },
         ],
       },

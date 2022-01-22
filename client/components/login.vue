@@ -285,7 +285,7 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const ctx = useContext();
-    const router = useRouter()
+    const router = useRouter();
     const keyboard = ref(useVirtualKeyBoard());
 
     const frm: Ref<any> = ref(null);
@@ -313,8 +313,7 @@ export default defineComponent({
           );
           if (res >= 200 && res < 300) {
             const user = store.getters["sso/user/me"] as User;
-            //TODO push
-            router.push("/watchlist/" + Object.keys(user.settings.watch_lists)[0])
+            router.push(user.settings.home ?? "/watchlist/wealth");
             snack(new Snack("login.successful", "success"));
           }
         } catch (err) {

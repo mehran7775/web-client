@@ -1,6 +1,6 @@
 import { Middleware } from '@nuxt/types'
 
-export const publicPages = [/^\/login\/?/,/^\/registration/,/^\/reset-password/, /^\/about-us/, /^\/blog.*/, /^\/?([#].*)?$/]
+export const publicPages = [/^\/login\/?/, /^\/registration/, /^\/reset-password/, /^\/about-us/, /^\/blog.*/, /^\/?([#].*)?$/]
 
 const auth: Middleware = async ({ store, route, redirect }) => {
   if (needLogin(route.fullPath)) {
@@ -8,7 +8,7 @@ const auth: Middleware = async ({ store, route, redirect }) => {
     if (!isLogin) {
       return redirect('/login')
     } else if (route.fullPath === '/login' && !!isLogin) {
-      return redirect('/')
+      return redirect('/watchlist/wealth')
     }
   }
 

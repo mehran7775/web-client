@@ -30,7 +30,7 @@ export default async function ({ store, req, redirect, route }) {
           }
         }
         await store.dispatch('sso/user/getUser', user)
-        await store.dispatch("wealth/getWealth", new WealthSearchModel());
+        store.dispatch("wealth/getWealth", new WealthSearchModel());
       }
 
       if (route.fullPath == "/login")
