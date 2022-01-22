@@ -22,8 +22,9 @@ export async function updateUser(form: object, axios: NuxtAxiosInstance) {
   return await axios.put('/sso/user/update', form)
 }
 
-export async function updateUserSettings(settings: Settings, axios: NuxtAxiosInstance) {
-  return await axios.put('/sso/user/edit-setting', settings)
+export async function updateUserSettings(path: string, settings: any, axios: NuxtAxiosInstance):
+  Promise<AxiosResponse<Settings>> {
+  return await axios.put('/sso/user/edit-setting' + (path ?? '/'), settings)
 }
 
 export async function updateUserWatchlist(watchlist: object, axios: NuxtAxiosInstance) {

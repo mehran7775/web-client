@@ -104,11 +104,11 @@ export default defineComponent({
         tmp.splice(ind, 1);
       }
       store.commit("sso/user/setCols", tmp);
-      await store.dispatch("sso/user/update_settings");
+      await store.dispatch("sso/user/save_settings");
     }
     async function resetDefault() {
       store.commit("sso/user/setCols", DefaultCols());
-      await store.dispatch("sso/user/update_settings");
+      await store.dispatch("sso/user/save_settings");
     }
     return {
       menu,

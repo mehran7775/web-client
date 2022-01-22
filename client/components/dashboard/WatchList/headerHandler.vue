@@ -81,7 +81,7 @@ export default defineComponent({
         const target = hrs.findIndex((i) => i.value == item.value);
         hrs.splice(ind > target ? target : target + 1, 0, draggingCol);
         store.commit("sso/user/setCols", hrs);
-        await store.dispatch("sso/user/update_settings");
+        await store.dispatch("sso/user/save_settings");
       }
       draggingCol = null;
     }

@@ -147,11 +147,10 @@ export default defineComponent({
         watchList[0];
     }
     async function create() {
-      store.commit("sso/user/setWatchlist", {
-        name: newName.value,
-        watchlist: [],
+      await store.dispatch("sso/user/update_settings", {
+        path: "/watch_lists/" + newName.value,
+        value: [],
       });
-      await store.dispatch("sso/user/update_watchlist");
       newName.value = "";
       refresh();
     }
@@ -162,8 +161,10 @@ export default defineComponent({
         .forEach((i) => {
           tmp[i] = wls.value[i];
         });
-      store.commit("sso/user/updateWatchlist", tmp);
-      await store.dispatch("sso/user/update_watchlist");
+      await store.dispatch("sso/user/update_settings", {
+        path: "/watch_lists",
+        value: tmp,
+      });
       if (name == route.value.params.name) router.push(watchList[0].to);
       refresh();
     }
@@ -173,8 +174,10 @@ export default defineComponent({
         if (i == item.id) tmp[item.newName] = wls.value[item.id];
         else tmp[i] = wls.value[i];
       });
-      store.commit("sso/user/updateWatchlist", tmp);
-      await store.dispatch("sso/user/update_watchlist");
+      await store.dispatch("sso/user/update_settings", {
+        path: "/watch_lists",
+        value: tmp,
+      });
       if (item.id == route.value.params.name)
         router.push("/watchList/" + item.newName);
       refresh();

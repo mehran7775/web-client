@@ -2,11 +2,7 @@
   <v-card class="ma-0 pa-0" :loading="loading" flat tile>
     <v-toolbar :height="42" color="defualt-bg" flat dense>
       <watchlist-selector style="max-width: 164px" auto-route />
-      <instrument-search
-        class="ms-1"
-        style="max-width: 164px"
-        focus-result
-      />
+      <instrument-search class="ms-1" style="max-width: 164px" focus-result />
       <v-btn
         v-if="edited"
         @click="apply"
@@ -18,12 +14,7 @@
         {{ $t("general.apply") }}
       </v-btn>
       <v-spacer />
-      <v-btn-toggle
-        class="mode"
-        color="primary"
-        v-model="viewMode"
-        mandatory
-      >
+      <v-btn-toggle class="mode" color="primary" v-model="viewMode" mandatory>
         <v-btn height="28" width="28" depressed class="ma-0" small>
           <v-icon :color="viewMode == 0 ? 'primary' : 'default'" small>
             isax-menu
@@ -56,12 +47,14 @@ import {
   useStore,
   Ref,
   ref,
+  useRoute,
+  ComputedRef,
 } from "@nuxtjs/composition-api";
 import { useShortcut } from "@/utils/shortcutManager";
 import InstrumentSearch from "@/components/oms/instrumentSearch.vue";
 import CardView from "./cardView.vue";
 import TabView from "./tabView.vue";
-import WatchlistSelector from '../watchlistSelector.vue'
+import WatchlistSelector from "../watchlistSelector.vue";
 
 export default defineComponent({
   components: {
@@ -73,8 +66,11 @@ export default defineComponent({
   name: "focus-board",
   setup(props) {
     const store = useStore();
+    const route = useRoute();
     const sh = useShortcut();
     const loading = ref(false);
+    const watchlists = computed(() => store.getters["sso/user/watchList"]);
+
     const instruments = computed(
       () => store.getters["oms/instruments/getFocus"]
     );
@@ -89,8 +85,12 @@ export default defineComponent({
     });
     async function apply() {
       loading.value = true;
+      const name = route.value.params.name;
       try {
-        await store.dispatch("sso/user/update_watchlist");
+        await store.dispatch("sso/user/update_settings", {
+          path: "/watch_lists/" + name,
+          value: watchlists.value[name],
+        });
       } finally {
         loading.value = false;
       }

@@ -306,11 +306,10 @@ export default defineComponent({
       const name = route.value.params.name;
       const tmp = [...watchlists.value[name]];
       tmp.splice(tmp.lastIndexOf(val.id.toString()), 1);
-      store.commit("sso/user/setWatchlist", {
-        name,
-        watchlist: tmp,
+      await store.dispatch("sso/user/update_settings", {
+        path: "/watch_lists/" + name,
+        value: tmp,
       });
-      await store.dispatch("sso/user/update_watchlist");
       refresh();
     }
 
@@ -334,7 +333,10 @@ export default defineComponent({
           name,
           watchlist: wl,
         });
-        await store.dispatch("sso/user/update_watchlist");
+        await store.dispatch("sso/user/update_settings", {
+          path: "/watch_lists/" + name,
+          value: wl,
+        });
         refresh();
       }
       dragItem = null;

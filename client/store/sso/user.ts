@@ -83,6 +83,11 @@ export const mutations: MutationTree<stores.UserState> = {
       localStorage.setItem(userKey, JSON.stringify(data))
     }
   },
+  setSettings(state, settings: Setting) {
+    state.user.settings = settings
+    state.settingsChanged = false
+    state.watchlistChanged = false
+  },
   setCols(state, data: Array<WatchlistColumns>) {
     state.user.settings.columns = data
     state.user = Object.assign({}, state.user)
@@ -176,21 +181,24 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
     }
     return 401
   },
-  async update_watchlist({ commit, state }) {
-    commit("setWatchlistChanged", false)
+  async update_settings({ commit, state }, payload: { path: string, value: any }) {
+    commit("setSettingsChanged", false)
     try {
-      await updateUserWatchlist(state.user.settings.watch_lists, this.$axios)
-      if (process.client)
-        localStorage.setItem(userKey, JSON.stringify(state.user))
+      const resp = await updateUserSettings(payload.path, payload.value, this.$axios)
+      if (resp.data) {
+        commit("setSettings", resp.data)
+        if (process.client)
+          localStorage.setItem(userKey, JSON.stringify(state.user))
+      }
     } catch (e) {
-      commit("setWatchlistChanged", true)
+      commit("setSettingsChanged", true)
       throw e
     }
   },
-  async update_settings({ commit, state }) {
+  async save_settings({ commit, state }) {
     commit("setSettingsChanged", false)
     try {
-      await updateUserSettings(state.user.settings, this.$axios)
+      await updateUserSettings('/', state.user.settings, this.$axios)
       if (process.client)
         localStorage.setItem(userKey, JSON.stringify(state.user))
     } catch (e) {
