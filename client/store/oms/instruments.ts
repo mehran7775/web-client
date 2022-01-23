@@ -73,7 +73,7 @@ export const actions: ActionTree<InstrumentState, InstrumentState> = {
   async getInstrumentsDetail({ state, commit, dispatch }, payload: InstrumentSearchModel): Promise<Array<InstrumentCache> | number> {
     const res: Array<InstrumentCache> = []
     const missing: Array<number> = []
-    if (!payload.boardIds && !payload.secIds && payload.ids) {
+    if (payload.boardIds.length == 0 && payload.secIds.length == 0 && payload.ids.length != 0) {
       let tmp = null
       for (let i in payload.ids) {
         tmp = state.cache.get(payload.ids[i].toString())
@@ -82,15 +82,16 @@ export const actions: ActionTree<InstrumentState, InstrumentState> = {
       }
       payload.ids = missing
     }
-    if (missing.length > 0 || payload.boardIds || payload.secIds) {
+    if (missing.length > 0 || payload.boardIds.length > 0 || payload.secIds.length > 0) {
       const { data: { data } } = await getInstruments(payload, this.$axios)
       data.forEach((item) => {
         commit('updateInstrument', item)
         res.push(state.cache.get(item.id.toString()) as InstrumentCache)
       })
     }
-    dispatch("getInstrumentPrices", payload.ids)
-    dispatch("getMarketHistory", payload.ids)
+    const ids = res.map((item) => item.id)
+    dispatch("getInstrumentPrices", ids)
+    dispatch("getMarketHistory", ids)
     return res
   },
   async getInstrumentPrices({ state, commit }, payload: Array<number>): Promise<Array<DailyPrice> | number> {

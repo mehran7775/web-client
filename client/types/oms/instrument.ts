@@ -102,12 +102,12 @@ export class MarketHistory {
 }
 
 export class InstrumentSearchModel extends Paginated {
-  ids: Array<number> | undefined
-  boardIds: Array<number> | undefined
-  secIds: Array<number> | undefined
-  constructor(ids: Array<number> | undefined,
-    boards: Array<number> | undefined = undefined,
-    secids: Array<number> | undefined = undefined) {
+  ids: Array<number>
+  boardIds: Array<number>
+  secIds: Array<number>
+  constructor(ids: Array<number> = [],
+    boards: Array<number> = [],
+    secids: Array<number> = []) {
     super()
     this.ids = ids
     this.boardIds = boards

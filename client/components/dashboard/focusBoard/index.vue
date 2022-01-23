@@ -67,7 +67,7 @@ export default defineComponent({
 
     const me: ComputedRef<User> = computed(() => store.getters["sso/user/me"]);
     const home = computed(() => me.value.settings.home);
-    const path = computed(() => route.value.path);
+    const path = computed(() => route.value.fullPath);
 
     const instruments = computed(
       () => store.getters["oms/instruments/getFocus"]
@@ -83,7 +83,7 @@ export default defineComponent({
     async function setHome() {
       await store.dispatch("sso/user/update_settings", {
         path: "/home",
-        value: route.value.path,
+        value: path.value,
       });
     }
 
@@ -101,6 +101,7 @@ export default defineComponent({
 
     return {
       setHome,
+      route,
       home,
       path,
       viewMode,

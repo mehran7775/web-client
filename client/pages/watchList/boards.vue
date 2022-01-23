@@ -4,14 +4,14 @@
       <v-col class="ma-0 pa-0">
         <focus-board>
           <template #toolbar>
-            <board-selector @input="select" />
+            <board-selector @input="select" :value="board" />
           </template>
         </focus-board>
       </v-col>
     </v-row>
     <v-row class="ma-0 pa-0" dense>
       <v-col class="ma-0 pa-0" style="position: relative">
-        <WatchList :watchlists="instruments" />
+        <WatchList :searchModel.sync="searchModel" paginated />
         <loading :loading="loading" />
       </v-col>
     </v-row>
@@ -23,9 +23,10 @@ import {
   ref,
   reactive,
   defineComponent,
-  useStore,
+  useRoute,
+  useRouter,
 } from "@nuxtjs/composition-api";
-import { AutoCompleteItem } from "@/types";
+import { AutoCompleteItem, InstrumentSearchModel } from "@/types";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";
 import BoardSelector from "~/components/oms/boardSelector.vue";
@@ -37,14 +38,20 @@ export default defineComponent({
     BoardSelector,
   },
   setup(context) {
-    const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
     const instruments: Array<string> = reactive([]);
+    const board = ref(-1);
     const loading = ref(false);
+    const searchModel = ref(new InstrumentSearchModel());
+    searchModel.value.length = 15;
+    board.value = parseInt(route.value.query["boardIds"] as string);
 
     async function select(val: AutoCompleteItem) {
       loading.value = true;
       try {
-        store.dispatch("oms/instruments/getInstrumentsDetail", {});
+        router.push("?boardIds=" + val.id);
+        searchModel.value.boardIds = [parseInt(val.id)];
       } finally {
         loading.value = false;
       }
@@ -52,8 +59,10 @@ export default defineComponent({
 
     return {
       select,
+      board,
       loading,
       instruments,
+      searchModel,
     };
   },
 });

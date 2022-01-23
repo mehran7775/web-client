@@ -209,7 +209,7 @@ import { InstrumentState } from "~/store/oms/instruments";
 
 export default defineComponent({
   name: "WatchList",
-  props: ["watchlists", "selected"],
+  props: ["searchModel", "paginated", "selected"],
   components: {
     instrumentCard,
     LegalRealCard,
@@ -286,12 +286,12 @@ export default defineComponent({
       store.commit("oms/instruments/addFocus", item);
       store.commit("oms/instruments/select", item);
     }
-    async function getData(val: any) {
+    async function getData(val: InstrumentSearchModel) {
       _instruments.splice(0, _instruments.length);
       _instruments.push(
         ...((await store.dispatch(
           "oms/instruments/getInstrumentsDetail",
-          new InstrumentSearchModel(val)
+          val
         )) as Array<InstrumentCache>)
       );
     }
@@ -349,9 +349,12 @@ export default defineComponent({
       refresh();
     });
     watch(
-      () => props.watchlists,
+      () => props.searchModel,
       (val) => {
-        getData(val);
+        getData(props.searchModel);
+      },
+      {
+        deep: true,
       }
     );
     if (process.client) {
@@ -382,7 +385,7 @@ export default defineComponent({
         },
       });
     }
-    getData(props.watchlists);
+    getData(props.searchModel);
     return {
       parseStatus,
       itemToDelete,
