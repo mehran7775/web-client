@@ -66,7 +66,9 @@ export default defineComponent({
     const store = useStore();
     const menu = ref(false);
     const user = computed(() => store.getters["sso/user/me"] as User);
-    const currentCols = computed(() => user.value.settings.columns);
+    const currentCols = computed(
+      () => user.value.settings.columns ?? DefaultCols()
+    );
     const blackList = [
       "side",
       "priceChange",

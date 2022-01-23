@@ -188,8 +188,8 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
     commit("setSettingsChanged", false)
     try {
       const resp = await updateUserSettings(payload.path, payload.value, this.$axios)
-      if (resp.data) {
-        commit("setSettings", resp.data)
+      if (resp.data.setting) {
+        commit("setSettings", resp.data.setting)
         if (process.client)
           localStorage.setItem(userKey, JSON.stringify(state.user))
       }

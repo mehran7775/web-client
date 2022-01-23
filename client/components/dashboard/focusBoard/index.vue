@@ -11,7 +11,7 @@
         class="ma-0"
         small
       >
-        <v-icon :color="isHome ? 'primary' : 'default'" small>
+        <v-icon :color="home == path ? 'primary' : 'default'" small>
           isax-home-hashtag
         </v-icon>
       </v-btn>
@@ -66,7 +66,8 @@ export default defineComponent({
     const route = useRoute();
 
     const me: ComputedRef<User> = computed(() => store.getters["sso/user/me"]);
-    const isHome = computed(() => me.value.settings.home == route.value.path);
+    const home = computed(() => me.value.settings.home);
+    const path = computed(() => route.value.path);
 
     const instruments = computed(
       () => store.getters["oms/instruments/getFocus"]
@@ -100,7 +101,8 @@ export default defineComponent({
 
     return {
       setHome,
-      isHome,
+      home,
+      path,
       viewMode,
       instruments,
     };
