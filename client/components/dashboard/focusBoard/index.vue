@@ -1,9 +1,20 @@
 <template>
   <v-card class="ma-0 pa-0" flat tile>
     <v-toolbar :height="42" color="defualt-bg" flat dense>
-      <slot name="toolbar">
-      </slot>
+      <slot name="toolbar"> </slot>
       <v-spacer />
+      <v-btn
+        @click="setHome"
+        height="28"
+        width="28"
+        depressed
+        class="ma-0"
+        small
+      >
+        <v-icon :color="isHome ? 'primary' : 'default'" small>
+          isax-home-hashtag
+        </v-icon>
+      </v-btn>
       <v-btn-toggle class="mode" color="primary" v-model="viewMode" mandatory>
         <v-btn height="28" width="28" depressed class="ma-0" small>
           <v-icon :color="viewMode == 0 ? 'primary' : 'default'" small>
@@ -35,10 +46,13 @@ import {
   defineComponent,
   computed,
   useStore,
+  useRoute,
+  ComputedRef,
 } from "@nuxtjs/composition-api";
 import { useShortcut } from "@/utils/shortcutManager";
 import CardView from "./cardView.vue";
 import TabView from "./tabView.vue";
+import { User } from "~/types";
 
 export default defineComponent({
   components: {
@@ -49,8 +63,11 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const sh = useShortcut();
-    
-    
+    const route = useRoute();
+
+    const me: ComputedRef<User> = computed(() => store.getters["sso/user/me"]);
+    const isHome = computed(() => me.value.settings.home == route.value.path);
+
     const instruments = computed(
       () => store.getters["oms/instruments/getFocus"]
     );
@@ -62,6 +79,12 @@ export default defineComponent({
         return store.getters["oms/instruments/getFocusMode"];
       },
     });
+    async function setHome() {
+      await store.dispatch("sso/user/update_settings", {
+        path: "/home",
+        value: route.value.path,
+      });
+    }
 
     if (process.client) {
       sh.addShortcut({
@@ -76,6 +99,8 @@ export default defineComponent({
     }
 
     return {
+      setHome,
+      isHome,
       viewMode,
       instruments,
     };

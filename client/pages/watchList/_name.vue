@@ -64,6 +64,9 @@ export default defineComponent({
     const watchlists = computed(() => store.getters["sso/user/watchList"]);
     const edited = computed(() => store.getters["sso/user/watchlistChanged"]);
     const instruments = computed(() => watchlists.value[name]);
+    if (Object.keys(watchlists.value).length == 0) {
+      store.commit("/sso/user/setWatchlist", { watchlist: [], name: "new" });
+    }
     if (!name) {
       ctx.redirect(Object.keys(watchlists.value)[0]);
     }
