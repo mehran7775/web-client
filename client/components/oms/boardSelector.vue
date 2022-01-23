@@ -1,14 +1,24 @@
 <template>
   <v-autocomplete
     :items="items"
+    item-value="id"
+    item-text="name"
     v-on="$listeners"
     v-bind="$attrs"
     class="board-search"
     height="28"
     :placeholder="$t('menu.boards')"
-    dense
-    hide-details
+    @input="
+      (val) => {
+        $emit('input', val);
+      }
+    "
+    flat
+    no-filter
     rounded
+    hide-details
+    return-object
+    dense
   >
     <template #append>
       <v-icon class="ma-2 arrow" x-small> isax-arrow-down </v-icon>
@@ -17,20 +27,18 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  reactive,
-  ref,
-  computed,
-  useStore,
-} from "@nuxtjs/composition-api";
+import { defineComponent, reactive, useContext } from "@nuxtjs/composition-api";
+import { AutoCompleteItem } from "@/types";
+import { getBoards } from "@/repositories/oms/board_manager";
 
 export default defineComponent({
   inheritAttrs: false,
   setup() {
-    const store = useStore();
-    const items = reactive([]);
-
+    const context = useContext();
+    const items: Array<AutoCompleteItem> = reactive([]);
+    getBoards(context.$axios).then((resp) => {
+      items.push(...resp.data.data);
+    });
     return {
       items,
     };

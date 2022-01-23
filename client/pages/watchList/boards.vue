@@ -4,7 +4,7 @@
       <v-col class="ma-0 pa-0">
         <focus-board>
           <template #toolbar>
-            <board-selector/>
+            <board-selector @input="select" />
           </template>
         </focus-board>
       </v-col>
@@ -25,7 +25,7 @@ import {
   defineComponent,
   useStore,
 } from "@nuxtjs/composition-api";
-import { WealthSearchModel, Wealth } from "@/types";
+import { AutoCompleteItem } from "@/types";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";
 import BoardSelector from "~/components/oms/boardSelector.vue";
@@ -39,15 +39,19 @@ export default defineComponent({
   setup(context) {
     const store = useStore();
     const instruments: Array<string> = reactive([]);
-    const loading = ref(true);
-    store
-      .dispatch("wealth/getWealth", new WealthSearchModel())
-      .then((wealth: Array<Wealth>) => {
-        instruments.push(...wealth.map((item) => item.id.toString()));
+    const loading = ref(false);
+
+    async function select(val: AutoCompleteItem) {
+      loading.value = true;
+      try {
+        store.dispatch("oms/instruments/getInstrumentsDetail", {});
+      } finally {
         loading.value = false;
-      });
+      }
+    }
 
     return {
+      select,
       loading,
       instruments,
     };

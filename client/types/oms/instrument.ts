@@ -1,3 +1,5 @@
+import { Paginated } from ".."
+
 export class Instrument {
   id: number
   code: string
@@ -96,6 +98,20 @@ export class MarketHistory {
     this.totalTrades = 0
     this.totalTradesValue = 0
     this.totalShares = 0
+  }
+}
+
+export class InstrumentSearchModel extends Paginated {
+  ids: Array<number> | undefined
+  boardIds: Array<number> | undefined
+  secIds: Array<number> | undefined
+  constructor(ids: Array<number> | undefined,
+    boards: Array<number> | undefined = undefined,
+    secids: Array<number> | undefined = undefined) {
+    super()
+    this.ids = ids
+    this.boardIds = boards
+    this.secIds = secids
   }
 }
 

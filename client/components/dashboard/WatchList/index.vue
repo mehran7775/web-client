@@ -199,6 +199,7 @@ import {
   Side,
   User,
   InstrumentStatus,
+  InstrumentSearchModel,
 } from "@/types";
 import { useShortcut } from "@/utils/shortcutManager";
 import HeaderHandler from "./headerHandler.vue";
@@ -287,11 +288,11 @@ export default defineComponent({
     }
     async function getData(val: any) {
       _instruments.splice(0, _instruments.length);
-      await store.dispatch("oms/instruments/getInstrumentsDetail", val);
       _instruments.push(
-        ...(store.getters["oms/instruments/getAll"](
-          val
-        ) as Array<InstrumentCache>)
+        ...((await store.dispatch(
+          "oms/instruments/getInstrumentsDetail",
+          new InstrumentSearchModel(val)
+        )) as Array<InstrumentCache>)
       );
     }
     function refresh() {

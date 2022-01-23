@@ -1,6 +1,6 @@
 import { NuxtAxiosInstance } from '@nuxtjs/axios';
 import { AxiosResponse } from "axios"
-import { PaginatedResult, AutoCompleteItem, InstrumentCache, OrderQueueItem, MarketHistory, Instrument, DailyPrice, ClientDistribution, ClientDistributionResponse, AutoCompleteSearchModel } from "@/types";
+import { PaginatedResult, AutoCompleteItem, OrderQueueItem, MarketHistory, Instrument, DailyPrice, ClientDistribution, ClientDistributionResponse, AutoCompleteSearchModel, InstrumentSearchModel } from "@/types";
 
 /**
  * @deprecated The method should be replace by getInstruments & getDailyPrice
@@ -9,8 +9,12 @@ export async function getInstrumentsDetail(instruments: Array<string | number>, 
   return axios.get('oms/instruments/daily-detail?ids=' + instruments + "&offset=0&length=" + instruments.length)
 }
 
-export async function getInstruments(instruments: Array<string | number>, axios: NuxtAxiosInstance): Promise<AxiosResponse<PaginatedResult<Instrument>>> {
-  return axios.get('/oms/instruments/filter?ids=' + instruments + "&offset=0&length=" + instruments.length)
+export async function getInstruments(searchModel: InstrumentSearchModel, axios: NuxtAxiosInstance): Promise<AxiosResponse<PaginatedResult<Instrument>>> {
+  return axios.get('/oms/instruments/filter?ids=' + searchModel.ids
+    + "&offset=" + searchModel.offset
+    + "&length=" + searchModel.length
+    + "&secIds=" + (searchModel.secIds ?? "")
+    + "&boardIds=" + (searchModel.boardIds ?? ""))
 }
 
 export async function getDailyPrice(instruments: Array<string | number>, axios: NuxtAxiosInstance): Promise<AxiosResponse<PaginatedResult<DailyPrice>>> {

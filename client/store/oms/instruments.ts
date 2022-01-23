@@ -1,5 +1,5 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import { Instrument, OrderQueueItem, Side, SameSectorQuery, InstrumentCache, MarketHistory, PaginatedResult, ClientDistributionResponse, ClientDistribution, Order, DailyPrice } from '@/types'
+import { Instrument, OrderQueueItem, Side, SameSectorQuery, InstrumentCache, MarketHistory, PaginatedResult, ClientDistributionResponse, ClientDistribution, Order, DailyPrice, InstrumentSearchModel } from '@/types'
 import { getInstruments, getOrderQueue, getTeammates, getInstrumentMarketHistory, getClientDistribution as Distribution, getDailyPrice } from '@/repositories/oms/instruments_manager'
 import { RootState } from '@/types/stores'
 
@@ -16,15 +16,6 @@ export class InstrumentState {
 }
 
 export const getters: GetterTree<InstrumentState, RootState> = {
-  getAll: (state) => (ids: Array<string>): Array<InstrumentCache> => {
-    const res: Array<InstrumentCache> = []
-    for (let id in ids) {
-      const tmp = state.cache.get(ids[id]) as InstrumentCache
-      if (tmp)
-        res.push(tmp)
-    }
-    return res
-  },
   getByKey: (state) => (key: number): InstrumentCache | null => state.cache.get(key.toString()) || null,
   getFocus: (state): Array<InstrumentCache> => state.focus,
   getFocusMode: (state): number => state.focusViewMode,
@@ -79,24 +70,27 @@ export const mutations: MutationTree<InstrumentState> = {
 }
 
 export const actions: ActionTree<InstrumentState, InstrumentState> = {
-  async getInstrumentsDetail({ state, commit, dispatch }, payload: Array<number>): Promise<Array<Instrument> | number> {
-    let res: Array<Instrument> = []
-    let missing: Array<number> = []
-    let tmp = null
-    for (let i in payload) {
-      tmp = state.cache.get(payload[i].toString())
-      if (tmp && tmp.baseVol) res.push(tmp)
-      else missing.push(payload[i])
+  async getInstrumentsDetail({ state, commit, dispatch }, payload: InstrumentSearchModel): Promise<Array<InstrumentCache> | number> {
+    const res: Array<InstrumentCache> = []
+    const missing: Array<number> = []
+    if (!payload.boardIds && !payload.secIds && payload.ids) {
+      let tmp = null
+      for (let i in payload.ids) {
+        tmp = state.cache.get(payload.ids[i].toString())
+        if (tmp && tmp.baseVol) res.push(tmp)
+        else missing.push(payload.ids[i])
+      }
+      payload.ids = missing
     }
-    if (missing.length > 0) {
-      const { data: { data } } = await getInstruments(missing, this.$axios)
+    if (missing.length > 0 || payload.boardIds || payload.secIds) {
+      const { data: { data } } = await getInstruments(payload, this.$axios)
       data.forEach((item) => {
         commit('updateInstrument', item)
+        res.push(state.cache.get(item.id.toString()) as InstrumentCache)
       })
-      res.push(...data)
-      dispatch("getInstrumentPrices", missing)
-      dispatch("getMarketHistory", missing)
     }
+    dispatch("getInstrumentPrices", payload.ids)
+    dispatch("getMarketHistory", payload.ids)
     return res
   },
   async getInstrumentPrices({ state, commit }, payload: Array<number>): Promise<Array<DailyPrice> | number> {
