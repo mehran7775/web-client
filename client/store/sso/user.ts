@@ -198,17 +198,6 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
       throw e
     }
   },
-  async save_settings({ commit, state }) {
-    commit("setSettingsChanged", false)
-    try {
-      await updateUserSettings('/', state.user.settings, this.$axios)
-      if (process.client)
-        localStorage.setItem(userKey, JSON.stringify(state.user))
-    } catch (e) {
-      commit("setSettingsChanged", true)
-      throw e
-    }
-  },
   async getProfilePic(_, name) {
     const img: Uint8Array = (await getProfileImage(name, this.$axios))?.data
     return 'data:image/jpeg;base64,' +
