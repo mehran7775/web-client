@@ -2,7 +2,13 @@
   <v-container class="ma-0 pa-0" fluid>
     <v-row class="ma-0 pa-0" dense>
       <v-col class="ma-0 pa-0">
-        <focus-board />
+        <focus-board>
+          <template #toolbar>
+            <v-input class="menu px-2" height="28" dense hide-details>
+              {{ $t("menu.wealth") }}
+            </v-input>
+          </template>
+        </focus-board>
       </v-col>
     </v-row>
     <v-row class="ma-0 pa-0" dense>
@@ -48,3 +54,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="sass" scoped>
+.menu
+  max-width: 164px
+  background-color: rgba($c-primary,0.05)
+  border-radius: $border-radius-root
+</style>
+
