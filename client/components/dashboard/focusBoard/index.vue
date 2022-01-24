@@ -3,7 +3,7 @@
     <v-toolbar :height="42" color="defualt-bg" flat dense>
       <slot name="toolbar"> </slot>
       <v-spacer />
-      <v-btn
+      <!-- <v-btn
         @click="setHome"
         height="28"
         width="28"
@@ -14,7 +14,7 @@
         <v-icon :color="home == path ? 'primary' : 'default'" small>
           isax-home-hashtag
         </v-icon>
-      </v-btn>
+      </v-btn> -->
       <v-btn-toggle class="mode" color="primary" v-model="viewMode" mandatory>
         <v-btn height="28" width="28" depressed class="ma-0" small>
           <v-icon :color="viewMode == 0 ? 'primary' : 'default'" small>
