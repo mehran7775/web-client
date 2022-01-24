@@ -68,7 +68,7 @@ export default defineComponent({
     const watchlists = computed(() => store.getters["sso/user/watchList"]);
 
     async function search(value: string) {
-      if (!!value) {
+      if (!!value && value.length > 0) {
         loading.value = true;
         entries.splice(0, entries.length);
         try {

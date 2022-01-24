@@ -42,6 +42,7 @@ import {
   useContext,
   useRoute,
   useStore,
+  watch,
 } from "@nuxtjs/composition-api";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";
@@ -61,7 +62,7 @@ export default defineComponent({
     const store = useStore();
     const ctx = useContext();
     const loading = ref(false);
-    const name = route.value.params.name;
+    const name = route.value.params.name ?? "new";
     const watchlists = computed(() => store.getters["sso/user/watchList"]);
     const edited = computed(() => store.getters["sso/user/watchlistChanged"]);
     const searchModel = ref(new InstrumentSearchModel(watchlists.value[name]));
@@ -69,9 +70,15 @@ export default defineComponent({
     if (Object.keys(watchlists.value).length == 0) {
       store.commit("/sso/user/setWatchlist", { watchlist: [], name: "new" });
     }
-    if (!name) {
-      ctx.redirect(Object.keys(watchlists.value)[0]);
-    }
+
+    watch(
+      () => store.getters["sso/user/watchList"][name],
+      (wls) => {
+        searchModel.value.ids.splice(0, searchModel.value.ids.length);
+        searchModel.value.ids.push(...wls);
+      }
+    );
+
     async function apply() {
       loading.value = true;
       const name = route.value.params.name;
