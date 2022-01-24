@@ -30,6 +30,7 @@
             >
               {{ $t("general.cancel") }}
             </v-btn>
+            <bar v-if="edited" class="ms-1" />
           </template>
         </focus-board>
       </v-col>
@@ -59,6 +60,7 @@ import WatchList from "~/components/dashboard/WatchList/index.vue";
 import WatchlistSelector from "@/components/dashboard/watchlistSelector.vue";
 import InstrumentSearch from "@/components/oms/instrumentSearch.vue";
 import { InstrumentSearchModel } from "~/types";
+import Bar from "~/components/bar.vue";
 
 export default defineComponent({
   components: {
@@ -66,6 +68,7 @@ export default defineComponent({
     InstrumentSearch,
     WatchList,
     FocusBoard,
+    Bar,
   },
   setup(context) {
     const route = useRoute();
