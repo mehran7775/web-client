@@ -37,9 +37,10 @@ import {
   ref,
   Ref,
   computed,
-  ComputedRef
+  ComputedRef,
 } from "@nuxtjs/composition-api";
-import { Instrument } from "@/types";
+import { useInstrument } from "@/usings";
+import { Instrument, InstrumentSearchModel } from "@/types";
 import { DateTime } from "luxon";
 
 export default defineComponent({
@@ -47,11 +48,12 @@ export default defineComponent({
   props: {
     responsive: Boolean,
     compact: Boolean,
-    insId: Number,
+    insId: { type: Number, required: true },
     "hide-headers": Boolean,
   },
   setup(props, context) {
     const store = useStore();
+    const instrumentManager = useInstrument(store);
     const i18n = useI18n();
     const locale = computed(() => store.getters["locale"]);
     const formatter: ComputedRef<Intl.NumberFormat> = computed(
@@ -86,7 +88,12 @@ export default defineComponent({
         getClickEvent(fieldType.price)
       ),
       new field("marketValue", fieldType.price, "oms.marketValue"),
-      new field("lastPrice", fieldType.price, "instrument.last", getClickEvent(fieldType.price)),
+      new field(
+        "lastPrice",
+        fieldType.price,
+        "instrument.last",
+        getClickEvent(fieldType.price)
+      ),
       new field(
         "buyPrice",
         fieldType.price,
@@ -116,7 +123,7 @@ export default defineComponent({
         case fieldType.number:
         case fieldType.price:
         case fieldType.count:
-          return formatter.value.format(data)
+          return formatter.value.format(data);
         case fieldType.dateTime:
           return DateTime.fromISO(data)
             .setLocale(locale.value)
@@ -135,8 +142,8 @@ export default defineComponent({
           return undefined;
       }
     }
-    store
-      .dispatch("oms/instruments/getInstrumentsDetail", [props.insId])
+    instrumentManager
+      .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
       .then((data: Array<Instrument>) => {
         instrument.value = data[0];
       });

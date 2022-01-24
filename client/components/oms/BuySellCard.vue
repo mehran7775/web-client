@@ -106,7 +106,12 @@
               </v-col>
               <v-col md="6" sm="12">
                 <v-btn depressed> {{ $t("general.draft") }} </v-btn>
-                <v-btn color="success" :disabled="!active || (active.status & 3) != 3" depressed>{{ $t("oms.buy") }}</v-btn>
+                <v-btn
+                  color="success"
+                  :disabled="!active || (active.status & 3) != 3"
+                  depressed
+                  >{{ $t("oms.buy") }}</v-btn
+                >
               </v-col>
             </v-row>
           </v-container>
@@ -187,7 +192,12 @@
               </v-col>
               <v-col md="6" sm="12">
                 <v-btn depressed> {{ $t("general.draft") }} </v-btn>
-                <v-btn color="error" :disabled="!active || (active.status & 3) != 3" depressed>{{ $t("oms.sell") }}</v-btn>
+                <v-btn
+                  color="error"
+                  :disabled="!active || (active.status & 3) != 3"
+                  depressed
+                  >{{ $t("oms.sell") }}</v-btn
+                >
               </v-col>
             </v-row>
           </v-container>
@@ -204,19 +214,19 @@ import {
   computed,
   Ref,
   ref,
-  watch,
-  ComputedRef,
 } from "@nuxtjs/composition-api";
-import { InstrumentCache, Side } from "@/types";
+import { useInstrument } from "@/usings";
+import { InstrumentCache, InstrumentSearchModel, Side } from "@/types";
 
 export default defineComponent({
   props: {
     count: Number,
     price: Number,
-    insId: Number,
+    insId: { type: Number, required: true },
   },
   setup(props, { emit }) {
     const store = useStore();
+    const instrumentManager = useInstrument(store);
     const active: Ref<InstrumentCache | null> = ref(null);
     const countVal = computed({
       get() {
@@ -249,8 +259,8 @@ export default defineComponent({
       },
     });
 
-    store
-      .dispatch("oms/instruments/getInstrumentsDetail", [props.insId])
+    instrumentManager
+      .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
       .then((data: Array<InstrumentCache>) => {
         active.value = data[0];
       });

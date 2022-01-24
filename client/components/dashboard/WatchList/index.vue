@@ -202,6 +202,7 @@ import {
   InstrumentStatus,
   InstrumentSearchModel,
 } from "@/types";
+import { useInstrument } from "@/usings";
 import { useShortcut } from "@/utils/shortcutManager";
 import HeaderHandler from "./headerHandler.vue";
 import RowHandler from "./rowHandler.vue";
@@ -226,6 +227,7 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
+    const instrumentManager = useInstrument(store);
     const route = useRoute();
     const i18n = useI18n();
     const sh = useShortcut();
@@ -294,12 +296,7 @@ export default defineComponent({
     }
     async function getData(val: InstrumentSearchModel) {
       _instruments.splice(0, _instruments.length);
-      _instruments.push(
-        ...((await store.dispatch(
-          "oms/instruments/getInstrumentsDetail",
-          val
-        )) as Array<InstrumentCache>)
-      );
+      _instruments.push(...(await instrumentManager.getInstrumentsDetail(val)));
     }
     function refresh() {
       instruments.splice(0, instruments.length);

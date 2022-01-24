@@ -48,13 +48,16 @@ import {
   AutoCompleteItem,
   AutoCompleteSearchModel,
   InstrumentCache,
+  InstrumentSearchModel,
 } from "@/types";
+import { useInstrument } from "~/usings";
 
 export default defineComponent({
   emits: ["input"],
   props: { "focus-result": { type: Boolean, default: false } },
   setup(props) {
     const store = useStore();
+    const instrumentManager = useInstrument(store);
     const route = useRoute();
     const model = ref(null);
     const axios = useAxios();
@@ -86,10 +89,10 @@ export default defineComponent({
         watchlists.value[name] &&
         watchlists.value[name].indexOf(val.id.toString()) == -1
       ) {
-        const inst = await store.dispatch(
-          "oms/instruments/getInstrumentsDetail",
-          [val.id]
+        const inst = await instrumentManager.getInstrumentsDetail(
+          new InstrumentSearchModel([val.id])
         );
+
         // If focus panel is open
         if (focus.value.length > 0 || !route.value.params.name) {
           store.commit("oms/instruments/addFocus", inst[0]);

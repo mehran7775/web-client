@@ -84,22 +84,24 @@ import {
   Ref,
   computed,
 } from "@nuxtjs/composition-api";
-import { Instrument } from "@/types";
-import {DateTime} from "luxon"
+import { Instrument, InstrumentSearchModel } from "@/types";
+import { DateTime } from "luxon";
+import { useInstrument } from "~/usings";
 
 export default defineComponent({
   name: "instrumnet-card-compact",
   props: {
     responsive: Boolean,
-    insId: Number,
+    insId: { type: Number, required: true },
     "hide-headers": Boolean,
   },
   setup(props, context) {
     const store = useStore();
+    const instrumentManager = useInstrument(store);
     const locale = computed(() => store.getters["locale"]);
     let instrument: Ref<Instrument> = ref(new Instrument());
-    store
-      .dispatch("oms/instruments/getInstrumentsDetail", [props.insId])
+    instrumentManager
+      .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
       .then((data: Array<Instrument>) => {
         instrument.value = data[0];
       });
