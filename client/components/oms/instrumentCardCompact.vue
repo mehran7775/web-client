@@ -86,7 +86,7 @@ import {
 } from "@nuxtjs/composition-api";
 import { Instrument, InstrumentSearchModel } from "@/types";
 import { DateTime } from "luxon";
-import { useInstrument } from "~/usings";
+import { useInstrument } from "~/composables";
 
 export default defineComponent({
   name: "instrumnet-card-compact",

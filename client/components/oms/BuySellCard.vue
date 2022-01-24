@@ -215,7 +215,7 @@ import {
   Ref,
   ref,
 } from "@nuxtjs/composition-api";
-import { useInstrument } from "@/usings";
+import { useInstrument } from "@/composables";
 import { InstrumentCache, InstrumentSearchModel, Side } from "@/types";
 
 export default defineComponent({

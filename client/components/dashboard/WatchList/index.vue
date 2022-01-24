@@ -202,7 +202,7 @@ import {
   InstrumentStatus,
   InstrumentSearchModel,
 } from "@/types";
-import { useInstrument } from "@/usings";
+import { useInstrument } from "@/composables";
 import { useShortcut } from "@/utils/shortcutManager";
 import HeaderHandler from "./headerHandler.vue";
 import RowHandler from "./rowHandler.vue";

@@ -39,7 +39,7 @@ import {
   computed,
   ComputedRef,
 } from "@nuxtjs/composition-api";
-import { useInstrument } from "@/usings";
+import { useInstrument } from "@/composables";
 import { Instrument, InstrumentSearchModel } from "@/types";
 import { DateTime } from "luxon";
 

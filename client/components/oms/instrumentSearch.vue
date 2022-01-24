@@ -50,7 +50,7 @@ import {
   InstrumentCache,
   InstrumentSearchModel,
 } from "@/types";
-import { useInstrument } from "~/usings";
+import { useInstrument } from "~/composables";
 
 export default defineComponent({
   emits: ["input"],
