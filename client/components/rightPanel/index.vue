@@ -41,33 +41,6 @@
           <span>{{ item.text ? item.text : $t(item.title) }}</span>
         </v-tooltip>
       </v-tab>
-      <v-tab
-        v-for="item in bookmarks"
-        :key="item.title"
-        :to="item.to + '#'"
-        @click="
-          () => {
-            $emit('update:mini', true);
-          }
-        "
-      >
-        <v-tooltip left>
-          <template v-slot:activator="{ on, attrs }">
-            <v-icon
-              v-if="item.icon"
-              :color="item.color"
-              v-bind="attrs"
-              v-on="on"
-            >
-              {{ item.icon ? item.icon : "mdi-star" }}
-            </v-icon>
-            <v-btn v-bind="attrs" v-on="on" depressed x-small>
-              {{ item.title }}
-            </v-btn>
-          </template>
-          <span>{{ item.text ? item.text : $t(item.title) }}</span>
-        </v-tooltip>
-      </v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="selected">
@@ -104,8 +77,8 @@
                     <v-btn
                       @click.prevent="
                         (ev) => {
-                          if (bookmarks.indexOf(sub) > -1) unmark(sub);
-                          else bookmark(sub);
+                          if (isMarked(sub)) unmark(sub);
+                          else mark(sub);
                         }
                       "
                       icon
@@ -154,6 +127,7 @@ import {
   ComputedRef,
 } from "@nuxtjs/composition-api";
 import { useShortcut } from "@/utils/shortcutManager";
+import { Bookmark } from "~/types";
 
 export default defineComponent({
   name: "right-panel",
@@ -175,8 +149,8 @@ export default defineComponent({
       },
     });
     const rtl = computed(() => store.getters["rtl"]);
-    const bookmarks: ComputedRef<Array<any>> = computed(
-      () => store.getters["sso/user/getBookmarks"]
+    const bookmarks = computed(
+      () => store.getters["sso/user/getBookmarks"] as Array<Bookmark>
     );
     const isMarked = computed(() => (data: any) => {
       return bookmarks.value.findIndex((val) => val.to == data.to) > -1;
@@ -310,11 +284,26 @@ export default defineComponent({
       },
     });
 
-    function bookmark(data: object) {
-      store.commit("sso/user/addBookmark", data);
+    function mark(data: Bookmark) {
+      const tmp = [
+        ...bookmarks.value,
+        Object.assign({ icon: "mdi-star" }, data),
+      ];
+      store.dispatch("sso/user/update_settings", {
+        path: "/bookmarks",
+        value: tmp,
+      });
     }
-    function unmark(data: object) {
-      store.commit("sso/user/removeBookmark", data);
+    function unmark(data: Bookmark) {
+      let tmp = [...bookmarks.value];
+      tmp.splice(
+        tmp.findIndex((item) => item.to == data.to),
+        1
+      );
+      store.dispatch("sso/user/update_settings", {
+        path: "/bookmarks",
+        value: tmp,
+      });
     }
     watch(selected, (n, o) => {
       if (typeof n != null) {
@@ -334,7 +323,7 @@ export default defineComponent({
       }
     }
     return {
-      bookmark,
+      mark,
       unmark,
       isMarked,
       bookmarks,

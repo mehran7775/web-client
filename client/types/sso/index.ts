@@ -1,3 +1,5 @@
+import { Bookmark } from ".."
+
 export type Log = {
   id: string,
   dateTime: string,
@@ -10,6 +12,7 @@ export type Setting = {
   columns: Array<WatchlistColumns>,
   watch_lists: any,
   home: string,
+  bookmarks: Array<Bookmark>
 }
 
 export type UserCredentials = {
@@ -81,7 +84,7 @@ export function AnonymousUser(): User {
   return new User(
     'anonymous',
     { nickname: 'Anonymous', profilePic: null },
-    { lang: 'fa-IR', columns: [], watch_lists: {}, home: '/' }
+    { lang: 'fa-IR', columns: [], watch_lists: {}, home: '/', bookmarks: [] }
   )
 }
 export function DefaultCols(): WatchlistColumns[] {

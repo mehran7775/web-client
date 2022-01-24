@@ -1,3 +1,10 @@
+export type Bookmark = {
+  title: string,
+  name: string,
+  to: string,
+  icon: string
+}
+
 export enum Tabs {
   none = -1,
   activeOrders = 0,

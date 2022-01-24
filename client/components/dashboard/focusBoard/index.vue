@@ -2,6 +2,17 @@
   <v-card class="ma-0 pa-0" flat tile>
     <v-toolbar :height="42" color="defualt-bg" flat dense>
       <slot name="toolbar"> </slot>
+      <v-btn
+        v-for="b in bookmarks"
+        :key="b.to"
+        color="primary"
+        :to="b.to"
+        height="28"
+        class="ms-1 px-2"
+      >
+        <v-icon v-if="b.icon" x-small> {{ b.icon }} </v-icon>
+        {{ b.text ? b.text : $t(b.title) }}
+      </v-btn>
       <v-spacer />
       <!-- <v-btn
         @click="setHome"
@@ -66,6 +77,7 @@ export default defineComponent({
     const route = useRoute();
 
     const me: ComputedRef<User> = computed(() => store.getters["sso/user/me"]);
+    const bookmarks = computed(() => me.value.settings.bookmarks);
     const home = computed(() => me.value.settings.home);
     const path = computed(() => route.value.fullPath);
 
@@ -106,6 +118,7 @@ export default defineComponent({
       path,
       viewMode,
       instruments,
+      bookmarks,
     };
   },
 });

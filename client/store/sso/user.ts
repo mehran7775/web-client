@@ -16,7 +16,7 @@ export const state = () => new stores.UserState()
 
 export const getters: GetterTree<stores.UserState, stores.RootState> = {
   renewToken: (state) => state.renewToken,
-  getBookmarks: (state) => state.bookmarks,
+  getBookmarks: (state) => state.user.settings.bookmarks || [],
   getToken: (state) => state.token,
   getRefresh: (state) => state.refresh,
   me: (state) => state.user ?? AnonymousUser(),
@@ -35,12 +35,6 @@ export const mutations: MutationTree<stores.UserState> = {
   },
   renewToken(state, data: boolean) {
     state.renewToken = data
-  },
-  addBookmark(state, data: object) {
-    state.bookmarks.push(data)
-  },
-  removeBookmark(state, data: object) {
-    state.bookmarks.splice(state.bookmarks.indexOf(data), 1)
   },
   tries(state, data: { user: string, tries: number }) {
     if (data.tries > 0)

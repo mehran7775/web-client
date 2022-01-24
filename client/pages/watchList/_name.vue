@@ -13,7 +13,7 @@
             <v-btn
               v-if="edited"
               @click="apply"
-              color="primary"
+              color="success"
               class="ma-0 ms-1 pa-0"
               height="28"
               width="56"

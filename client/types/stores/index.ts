@@ -19,7 +19,6 @@ export class UserState {
   user: User
   refresh: string | null
   userName: string | null
-  bookmarks: Array<object>
   renewToken: boolean
   watchlistChanged: boolean
   settingsChanged: boolean
@@ -29,7 +28,6 @@ export class UserState {
     this.user = AnonymousUser()
     this.refresh = null
     this.userName = null
-    this.bookmarks = []
     this.renewToken = false
     this.watchlistChanged = false
     this.settingsChanged = false
