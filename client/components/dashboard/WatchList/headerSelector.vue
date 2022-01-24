@@ -1,5 +1,5 @@
 <template>
-  <v-menu v-model="menu" min-width="164" offset-y max-height="50vh">
+  <v-menu v-model="menu" min-width="164" max-width="164" offset-y max-height="50vh">
     <template #activator="{ on, attrs }">
       <v-btn
         :color="menu ? 'primary' : 'transparent'"
@@ -15,7 +15,7 @@
         </v-icon>
       </v-btn>
     </template>
-    <v-list dense>
+    <v-list min-height="256" dense>
       <v-list-item class="px-2 item" @click.stop="">
         <v-list-item-title>
           {{ $t("general.export-excels") }}
@@ -28,7 +28,7 @@
         </v-list-item-title>
         <v-icon color="info" small> isax-rotate-left </v-icon>
       </v-list-item>
-      <v-divider />
+      <v-divider class="mx-2" />
       <v-list-item
         @click.stop="
           () => {

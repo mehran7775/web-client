@@ -13,7 +13,7 @@
     </v-row>
     <v-row class="ma-0 pa-0" dense>
       <v-col class="ma-0 pa-0" style="position: relative">
-        <WatchList :watchlists="instruments" />
+        <WatchList :searchModel="searchModel" paginated/>
         <loading :loading="loading" />
       </v-col>
     </v-row>
@@ -27,7 +27,7 @@ import {
   defineComponent,
   useStore,
 } from "@nuxtjs/composition-api";
-import { WealthSearchModel, Wealth } from "@/types";
+import { WealthSearchModel, Wealth, InstrumentSearchModel } from "@/types";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";
 
@@ -38,18 +38,18 @@ export default defineComponent({
   },
   setup(context) {
     const store = useStore();
-    const instruments: Array<string> = reactive([]);
+    const searchModel = ref(new InstrumentSearchModel());
     const loading = ref(true);
     store
       .dispatch("wealth/getWealth", new WealthSearchModel())
       .then((wealth: Array<Wealth>) => {
-        instruments.push(...wealth.map((item) => item.id.toString()));
+        searchModel.value.ids.push(...wealth.map((item) => item.id));
         loading.value = false;
       });
 
     return {
       loading,
-      instruments,
+      searchModel,
     };
   },
 });

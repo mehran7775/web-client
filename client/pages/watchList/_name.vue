@@ -26,7 +26,7 @@
     </v-row>
     <v-row class="ma-0 pa-0" dense>
       <v-col class="ma-0 pa-0">
-        <WatchList :watchlists="instruments" />
+        <WatchList :searchModel="searchModel" />
       </v-col>
     </v-row>
     <loading :loading="loading" />
@@ -47,6 +47,7 @@ import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";
 import WatchlistSelector from "@/components/dashboard/watchlistSelector.vue";
 import InstrumentSearch from "@/components/oms/instrumentSearch.vue";
+import { InstrumentSearchModel } from "~/types";
 
 export default defineComponent({
   components: {
@@ -63,7 +64,8 @@ export default defineComponent({
     const name = route.value.params.name;
     const watchlists = computed(() => store.getters["sso/user/watchList"]);
     const edited = computed(() => store.getters["sso/user/watchlistChanged"]);
-    const instruments = computed(() => watchlists.value[name]);
+    const searchModel = ref(new InstrumentSearchModel(watchlists.value[name]));
+
     if (Object.keys(watchlists.value).length == 0) {
       store.commit("/sso/user/setWatchlist", { watchlist: [], name: "new" });
     }
@@ -86,7 +88,7 @@ export default defineComponent({
       apply,
       loading,
       edited,
-      instruments,
+      searchModel,
     };
   },
 });

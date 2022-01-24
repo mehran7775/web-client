@@ -125,6 +125,7 @@
           <template #item.status="{ item }"> </template>
           <template #item.more="{ item }">
             <v-icon
+              v-if="!paginated"
               color="error"
               @click="
                 () => {
@@ -205,11 +206,16 @@ import { useShortcut } from "@/utils/shortcutManager";
 import HeaderHandler from "./headerHandler.vue";
 import RowHandler from "./rowHandler.vue";
 import HeaderSelector from "./headerSelector.vue";
-import { InstrumentState } from "~/store/oms/instruments";
 
 export default defineComponent({
   name: "WatchList",
-  props: ["searchModel", "paginated", "selected"],
+  props: {
+    searchModel: {
+      type: InstrumentSearchModel,
+      required: true,
+    },
+    paginated: Boolean,
+  },
   components: {
     instrumentCard,
     LegalRealCard,
@@ -349,12 +355,15 @@ export default defineComponent({
       refresh();
     });
     watch(
-      () => props.searchModel,
-      (val) => {
+      () => [
+        props.searchModel.ids as Array<number>,
+        props.searchModel.boardIds as Array<number>,
+        props.searchModel.secIds as Array<number>,
+        props.searchModel.offset as number,
+        props.searchModel.length as number,
+      ],
+      ([ids, boards, sectors, offset, len]) => {
         getData(props.searchModel);
-      },
-      {
-        deep: true,
       }
     );
     if (process.client) {

@@ -77,13 +77,13 @@ export const actions: ActionTree<InstrumentState, InstrumentState> = {
       let tmp = null
       for (let i in payload.ids) {
         tmp = state.cache.get(payload.ids[i].toString())
-        if (tmp && tmp.baseVol) res.push(tmp)
+        if (tmp) res.push(tmp)
         else missing.push(payload.ids[i])
       }
-      payload.ids = missing
     }
+    
     if (missing.length > 0 || payload.boardIds.length > 0 || payload.secIds.length > 0) {
-      const { data: { data } } = await getInstruments(payload, this.$axios)
+      const { data: { data } } = await getInstruments(Object.assign({}, payload, { ids: missing }), this.$axios)
       data.forEach((item) => {
         commit('updateInstrument', item)
         res.push(state.cache.get(item.id.toString()) as InstrumentCache)

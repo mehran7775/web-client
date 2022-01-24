@@ -1,11 +1,15 @@
 <template>
-  <v-autocomplete
+  <v-select
     :items="items"
     item-value="id"
     item-text="name"
     v-on="$listeners"
     v-bind="$attrs"
     class="board-search"
+    :menu-props="{
+      bottom: true,
+      'offset-y': true,
+    }"
     height="28"
     :placeholder="$t('menu.boards')"
     @input="
@@ -23,7 +27,7 @@
     <template #append>
       <v-icon class="ma-2 arrow" x-small> isax-arrow-down </v-icon>
     </template>
-  </v-autocomplete>
+  </v-select>
 </template>
 
 <script lang="ts">
