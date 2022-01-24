@@ -69,12 +69,16 @@ export const mutations: MutationTree<stores.UserState> = {
       sessionStorage.clear()
       localStorage.clear()
     }
+    state.watchlistChanged = false
+    state.settingsChanged = false
     state.token = null
     state.user = AnonymousUser()
     state.refresh = null
   },
   setUser(state, data: User) {
     state.user = data
+    state.watchlistChanged = false
+    state.settingsChanged = false
     if (process.client) {
       SetClientCookie(userKey, data.userName, {})
       localStorage.setItem(userKey, JSON.stringify(data))
@@ -109,10 +113,8 @@ export const mutations: MutationTree<stores.UserState> = {
 }
 
 export const actions: ActionTree<stores.UserState, stores.RootState> = {
-  async getUser({ commit, rootState }, userName) {
-    if (!userName)
-      return
-    const { data, status } = await getUser(userName, this.$axios)
+  async getUser({ commit, state }, userName) {
+    const { data, status } = await getUser(userName ?? state.userName, this.$axios)
     commit('setUser', data)
     return status
   },

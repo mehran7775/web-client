@@ -20,6 +20,16 @@
             >
               {{ $t("general.apply") }}
             </v-btn>
+            <v-btn
+              v-if="edited"
+              @click="reset"
+              color="error"
+              class="ma-0 ms-1 pa-0"
+              height="28"
+              width="56"
+            >
+              {{ $t("general.cancel") }}
+            </v-btn>
           </template>
         </focus-board>
       </v-col>
@@ -78,6 +88,14 @@ export default defineComponent({
         searchModel.value.ids.push(...wls);
       }
     );
+    async function reset() {
+      loading.value = true;
+      try {
+        await store.dispatch("sso/user/getUser");
+      } finally {
+        loading.value = false;
+      }
+    }
 
     async function apply() {
       loading.value = true;
@@ -93,6 +111,7 @@ export default defineComponent({
     }
     return {
       apply,
+      reset,
       loading,
       edited,
       searchModel,
