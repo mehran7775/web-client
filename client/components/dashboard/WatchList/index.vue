@@ -285,14 +285,14 @@ export default defineComponent({
     }
 
     function order(item: InstrumentCache, side: Side) {
-      store.commit("oms/instruments/updateInstrument", { id: item.id, side });
-      store.commit("oms/instruments/addFocus", item);
-      store.commit("oms/instruments/select", item);
-      store.commit("oms/instruments/setFocusMode", 0);
+      instrumentManager.updateInstrument(Object.assign({}, item, { side }));
+      instrumentManager.addFocus(item);
+      instrumentManager.select(item);
+      instrumentManager.setFocusMode(0);
     }
     function focus(item: InstrumentCache) {
-      store.commit("oms/instruments/addFocus", item);
-      store.commit("oms/instruments/select", item);
+      instrumentManager.addFocus(item);
+      instrumentManager.select(item);
     }
     async function getData(val: InstrumentSearchModel) {
       _instruments.splice(0, _instruments.length);
@@ -369,11 +369,12 @@ export default defineComponent({
         action: () => {
           const item = store.getters["oms/instruments/getSelected"];
           if (item) {
-            store.commit("oms/instruments/updateInstrument", {
-              id: item.id,
-              side: Side.Buy,
-            });
-            store.commit("oms/instruments/setFocusMode", 0);
+            instrumentManager.updateInstrument(
+              Object.assign({}, item, {
+                side: Side.Buy,
+              })
+            );
+            instrumentManager.setFocusMode(0);
           }
         },
       });
@@ -382,11 +383,12 @@ export default defineComponent({
         action: () => {
           const item = store.getters["oms/instruments/getSelected"];
           if (item) {
-            store.commit("oms/instruments/updateInstrument", {
+            instrumentManager.updateInstrument(
+              Object.assign({}, item, {
               id: item.id,
               side: Side.Sell,
-            });
-            store.commit("oms/instruments/setFocusMode", 0);
+            }));
+            instrumentManager.setFocusMode(0);
           }
         },
       });

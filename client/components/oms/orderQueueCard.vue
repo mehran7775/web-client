@@ -122,32 +122,32 @@ import {
   reactive,
 } from "@nuxtjs/composition-api";
 import { OrderQueueItem } from "@/types";
+import { useInstrument } from "~/composables";
 
 export default defineComponent({
   name: "order-queue-card",
   emits: ["count", "price"],
   props: {
-    insId: Number,
+    insId: { type: Number, required: true },
     copy: Boolean,
     responsive: Boolean,
     "extra-col": Boolean,
   },
   setup(props) {
     const store = useStore();
+    const instrumentManager = useInstrument(store);
     const queue: Array<OrderQueueItem> = reactive([]);
     const formatter: ComputedRef<Intl.NumberFormat> = computed(
       () => store.getters["formatter"] as Intl.NumberFormat
     );
-    store
-      .dispatch("oms/instruments/getOrderQueue", props.insId)
-      .then((result) => {
-        if (result.queue) {
-          queue.push(...result.queue);
-          for (let i = 5 - queue.length; i > 0; i--) {
-            queue.push(new OrderQueueItem());
-          }
+    instrumentManager.getOrderQueue(props.insId).then((result) => {
+      if (result.queue) {
+        queue.push(...result.queue);
+        for (let i = 5 - queue.length; i > 0; i--) {
+          queue.push(new OrderQueueItem());
         }
-      });
+      }
+    });
     return {
       queue,
       formatter,

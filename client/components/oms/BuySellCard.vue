@@ -252,10 +252,12 @@ export default defineComponent({
       },
       set(value: string) {
         if (active.value)
-          store.commit("oms/instruments/updateInstrument", {
-            id: active.value.id,
-            side: value == "2" ? Side.Sell : Side.Buy,
-          });
+          instrumentManager.updateInstrument(
+            Object.assign({}, active.value, {
+              id: active.value.id,
+              side: value == "2" ? Side.Sell : Side.Buy,
+            })
+          );
       },
     });
 

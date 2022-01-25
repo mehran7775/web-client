@@ -64,6 +64,7 @@ import { useShortcut } from "@/utils/shortcutManager";
 import CardView from "./cardView.vue";
 import TabView from "./tabView.vue";
 import { User } from "~/types";
+import { useInstrument } from "~/composables";
 
 export default defineComponent({
   components: {
@@ -73,6 +74,7 @@ export default defineComponent({
   name: "focus-board",
   setup(props) {
     const store = useStore();
+    const instrumentManager = useInstrument(store);
     const sh = useShortcut();
     const route = useRoute();
 
@@ -86,7 +88,7 @@ export default defineComponent({
     );
     const viewMode = computed({
       set(value: number) {
-        store.commit("oms/instruments/setFocusMode", value);
+        instrumentManager.setFocusMode(value);
       },
       get() {
         return store.getters["oms/instruments/getFocusMode"];

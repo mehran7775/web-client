@@ -95,8 +95,8 @@ export default defineComponent({
 
         // If focus panel is open
         if (focus.value.length > 0 || !route.value.params.name) {
-          store.commit("oms/instruments/addFocus", inst[0]);
-          store.commit("oms/instruments/select", inst[0]);
+          instrumentManager.addFocus(inst[0]);
+          instrumentManager.select(inst[0]);
         }
 
         const tmp = [val.id.toString()];

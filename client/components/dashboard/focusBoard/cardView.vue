@@ -39,7 +39,12 @@
         >
           {{ $t("oms.sell") }}
         </v-btn>
-        <v-icon class="ms-1" color="error" @click.stop="() => close(item.id)" small>
+        <v-icon
+          class="ms-1"
+          color="error"
+          @click.stop="() => close(item.id)"
+          small
+        >
           mdi-close-circle-outline
         </v-icon>
       </v-toolbar>
@@ -58,6 +63,7 @@ import { Side, InstrumentCache } from "@/types";
 import instrumentCard from "@/components/oms/instrumentCardCompact.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
+import { useInstrument } from "~/composables";
 
 export default defineComponent({
   components: {
@@ -67,20 +73,20 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
+    const instrumentManager = useInstrument(store);
     const instruments = computed(
       () => store.getters["oms/instruments/getFocus"]
     );
     function close(item: InstrumentCache) {
-      store.commit("oms/instruments/removeFocus", item.id);
-      store.commit("oms/instruments/stopWatchQueue", item.id);
+      instrumentManager.removeFocus(item.id);
     }
     function order(item: InstrumentCache, side: Side) {
-      store.commit("oms/instruments/updateInstrument", { id: item.id, side });
-      store.commit("oms/instruments/select", item);
-      store.commit("oms/instruments/setFocusMode", 0);
+      instrumentManager.updateInstrument(Object.assign({}, item, { side }));
+      instrumentManager.select(item);
+      instrumentManager.setFocusMode(0);
     }
     function select(item: InstrumentCache) {
-      store.commit("oms/instruments/selectById", item.id);
+      instrumentManager.selectById(item.id);
     }
     return {
       close,

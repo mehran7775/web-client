@@ -46,18 +46,6 @@ export const mutations: MutationTree<InstrumentState> = {
   removeFocus(state, data: number) {
     state.focus.splice(state.focus.findIndex((element: Instrument) => element.id == data), 1)
   },
-  watchQueue(state, payload: { key: string, data: Array<OrderQueueItem> }) {
-    state.orderQueueCache.set(payload.key, payload.data)
-  },
-  stopWatchQueue(state, key: string) {
-    state.orderQueueCache.delete(key)
-  },
-  watchDist(state, payload: { key: string, data: ClientDistribution }) {
-    state.clientDistributionCache.set(payload.key, payload.data)
-  },
-  stopWatchDist(state, key: string) {
-    state.clientDistributionCache.delete(key)
-  },
   select(state, active: InstrumentCache) {
     state.selected = active
   },
@@ -81,7 +69,7 @@ export const actions: ActionTree<InstrumentState, InstrumentState> = {
         else missing.push(payload.ids[i])
       }
     }
-    
+
     if (missing.length > 0 || payload.boardIds.length > 0 || payload.secIds.length > 0) {
       const { data: { data } } = await getInstruments(Object.assign({}, payload, { ids: missing }), this.$axios)
       data.forEach((item) => {
@@ -115,7 +103,6 @@ export const actions: ActionTree<InstrumentState, InstrumentState> = {
     if (queue)
       return queue
     const { data } = await getOrderQueue(payload, this.$axios)
-    commit('watchQueue', { key: payload.toString(), data: data })
     return data
   },
   async getClientDistribution({ state, commit }, payload: number): Promise<ClientDistribution> {
@@ -123,7 +110,6 @@ export const actions: ActionTree<InstrumentState, InstrumentState> = {
     if (clients)
       return clients
     const { data } = await Distribution(payload, this.$axios)
-    commit('watchDist', { key: payload.toString(), data: data.clients })
     return data.clients
   },
   async getTeammates({ state, commit }, payload: SameSectorQuery): Promise<Array<OrderQueueItem>> {

@@ -1,6 +1,6 @@
 import { NuxtAxiosInstance } from '@nuxtjs/axios';
 import { AxiosResponse } from "axios"
-import { PaginatedResult, AutoCompleteItem, OrderQueueItem, MarketHistory, Instrument, DailyPrice, ClientDistribution, ClientDistributionResponse, AutoCompleteSearchModel, InstrumentSearchModel } from "@/types";
+import { PaginatedResult, AutoCompleteItem, OrderQueueItem, MarketHistory, Instrument, DailyPrice, ClientDistribution, ClientDistributionResponse, AutoCompleteSearchModel, InstrumentSearchModel, Paginated } from "@/types";
 
 /**
  * @deprecated The method should be replace by getInstruments & getDailyPrice

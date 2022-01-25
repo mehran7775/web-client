@@ -111,6 +111,7 @@ import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
 import BuySellCard from "@/components/oms/BuySellCard.vue";
+import { useInstrument } from "~/composables";
 
 export default defineComponent({
   components: {
@@ -121,6 +122,7 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
+    const instrumentManager = useInstrument(store);
     const i18n = useI18n();
     const instruments = computed(
       () => store.getters["oms/instruments/getFocus"]
@@ -134,12 +136,11 @@ export default defineComponent({
         ).toString();
       },
       async set(value: string | undefined) {
-        store.commit("oms/instruments/selectById", value ? parseInt(value) : 0);
+        instrumentManager.selectById(value ? parseInt(value) : 0);
       },
     });
     function close(id: number) {
-      store.commit("oms/instruments/removeFocus", id);
-      store.commit("oms/instruments/stopWatchQueue", id);
+      instrumentManager.removeFocus(id);
     }
     async function deep(option: DeepOptions, instrument: Instrument) {
       store.commit("bottom-panel/setDepthData", null);

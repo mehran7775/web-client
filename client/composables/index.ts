@@ -1,1 +1,1 @@
-export * from "./useInstrument"
+export * from "./oms/useInstrument"
