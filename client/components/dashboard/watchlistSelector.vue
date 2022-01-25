@@ -58,7 +58,7 @@
           @click.stop="remove(item.id)"
           color="error"
           class="px-1"
-          small
+          x-small
         >
           isax-trash
         </v-icon>
@@ -71,7 +71,7 @@
           "
           color="default"
           class="px-1"
-          small
+          x-small
         >
           isax-edit-2
         </v-icon>
@@ -201,7 +201,7 @@ export default defineComponent({
 
 <style lang="sass" scoped>
 .watchlist-select
-  background-color: rgba($c-primary,0.05)
+  background-color: rgba($c-primary,0.05) !important
   border-radius: $border-radius-root
   &.v-select
     &--is-menu-active
@@ -211,12 +211,16 @@ export default defineComponent({
   border-bottom-width: 1px
   border-bottom-color: var(--v-default-lighten4)
   border-bottom-style: dashed
+  font-size: 0.6667rem
 </style>
 <style lang="sass">
 .watchlist-select
   &.v-text-field
     &> .v-input__control
       &> .v-input__slot
+        .v-select__selections
+          color: rgba($c-primary,1) !important
+          font-size: 0.75rem !important
         &::after,
         &::before
           border: none !important

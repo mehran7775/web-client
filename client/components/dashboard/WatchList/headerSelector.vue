@@ -1,5 +1,5 @@
 <template>
-  <v-menu v-model="menu" min-width="164" max-width="164" offset-y max-height="50vh">
+  <v-menu content-class="mt-1" v-model="menu" min-width="164" max-width="164" offset-y max-height="50vh">
     <template #activator="{ on, attrs }">
       <v-btn
         :color="menu ? 'primary' : 'transparent'"
