@@ -124,21 +124,11 @@ export default defineComponent({
     const store = useStore();
     const instrumentManager = useInstrument(store);
     const i18n = useI18n();
-    const instruments = computed(
-      () => store.getters["oms/instruments/getFocus"]
-    );
+    const instruments = instrumentManager.getFocus;
+
     const count: Ref<number> = ref(0);
     const price: Ref<number> = ref(0);
-    const tab = computed({
-      get() {
-        return (
-          store.getters["oms/instruments/getSelectedId"] as number
-        ).toString();
-      },
-      async set(value: string | undefined) {
-        instrumentManager.selectById(value ? parseInt(value) : 0);
-      },
-    });
+    const tab = instrumentManager.selectedId;
     function close(id: number) {
       instrumentManager.removeFocus(id);
     }

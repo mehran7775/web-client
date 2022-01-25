@@ -83,17 +83,10 @@ export default defineComponent({
     const home = computed(() => me.value.settings.home);
     const path = computed(() => route.value.fullPath);
 
-    const instruments = computed(
-      () => store.getters["oms/instruments/getFocus"]
-    );
-    const viewMode = computed({
-      set(value: number) {
-        instrumentManager.setFocusMode(value);
-      },
-      get() {
-        return store.getters["oms/instruments/getFocusMode"];
-      },
-    });
+    const instruments = instrumentManager.getFocus;
+
+    const viewMode = instrumentManager.focusMode;
+
     async function setHome() {
       await store.dispatch("sso/user/update_settings", {
         path: "/home",
@@ -105,10 +98,8 @@ export default defineComponent({
       sh.addShortcut({
         key: "alt+q",
         action: () => {
-          store.commit(
-            "oms/instruments/setFocusMode",
-            (store.getters["oms/instruments/getFocusMode"] + 1) % 2
-          );
+          instrumentManager.focusMode.value =
+            (instrumentManager.focusMode.value + 1) % 2;
         },
       });
     }

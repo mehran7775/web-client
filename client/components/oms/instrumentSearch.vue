@@ -64,7 +64,7 @@ export default defineComponent({
     const loading = ref(false);
     const entries: Array<AutoCompleteItem> = reactive([]);
 
-    const focus = computed(() => store.getters["oms/instruments/getFocus"]);
+    const focus = instrumentManager.getFocus;
     const watchlists = computed(() => store.getters["sso/user/watchList"]);
 
     async function search(value: string) {

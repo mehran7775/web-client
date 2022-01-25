@@ -1,3 +1,4 @@
+import { computed } from "@nuxtjs/composition-api"
 import { Store } from "vuex/types"
 import { InstrumentState } from "~/store/oms/instruments"
 import { ClientDistribution, DailyPrice, InstrumentCache, InstrumentSearchModel, MarketHistory, OrderQueueItem, SameSectorQuery } from "~/types"
@@ -7,7 +8,24 @@ export function useInstrument(store: Store<any>) {
     const state = store.state.oms.instruments as InstrumentState
 
     return {
-        //TODO Getters
+        // Getters
+        focusMode: computed({
+            get(): number { return state.focusViewMode },
+            set(data: number) {
+                store.commit("oms/instruments/setFocusMode", data)
+            }
+        }),
+        selectedId: computed({
+            get(): string { return (state.selected?.id ?? -1).toString() },
+            async set(data: string) {
+                store.commit("oms/instruments/selectById", parseInt(data))
+            }
+        }),
+        getByKey: computed(() => (key: number): InstrumentCache | null => state.cache.get(key.toString()) || null),
+        getFocus: computed((): Array<InstrumentCache> => state.focus),
+        getSelected: computed((): InstrumentCache | null => state.selected),
+        getSelectedIndex: computed((): number =>
+            state.focus.findIndex((item) => item.id == state.selected?.id)),
         //TODO Mutations
         updateInstrument(data: InstrumentCache) {
             store.commit("oms/instruments/updateInstrument", data)

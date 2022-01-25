@@ -74,9 +74,8 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const instrumentManager = useInstrument(store);
-    const instruments = computed(
-      () => store.getters["oms/instruments/getFocus"]
-    );
+    const instruments = instrumentManager.getFocus
+    
     function close(item: InstrumentCache) {
       instrumentManager.removeFocus(item.id);
     }

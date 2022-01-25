@@ -367,7 +367,7 @@ export default defineComponent({
       sh.addShortcut({
         key: "alt+shift+a",
         action: () => {
-          const item = store.getters["oms/instruments/getSelected"];
+          const item = instrumentManager.getSelected.value;
           if (item) {
             instrumentManager.updateInstrument(
               Object.assign({}, item, {
@@ -381,13 +381,14 @@ export default defineComponent({
       sh.addShortcut({
         key: "alt+shift+s",
         action: () => {
-          const item = store.getters["oms/instruments/getSelected"];
+          const item = instrumentManager.getSelected.value;
           if (item) {
             instrumentManager.updateInstrument(
               Object.assign({}, item, {
-              id: item.id,
-              side: Side.Sell,
-            }));
+                id: item.id,
+                side: Side.Sell,
+              })
+            );
             instrumentManager.setFocusMode(0);
           }
         },
