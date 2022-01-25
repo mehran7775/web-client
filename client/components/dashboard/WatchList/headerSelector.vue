@@ -1,5 +1,12 @@
 <template>
-  <v-menu content-class="mt-1" v-model="menu" min-width="164" max-width="164" offset-y max-height="50vh">
+  <v-menu
+    content-class="mt-1"
+    v-model="menu"
+    min-width="164"
+    max-width="164"
+    offset-y
+    max-height="50vh"
+  >
     <template #activator="{ on, attrs }">
       <v-btn
         :color="menu ? 'primary' : 'transparent'"
@@ -35,7 +42,7 @@
             toggleCol(i.value);
           }
         "
-        :class="['item', i.selected ? 'selected' : '']"
+        :class="['item']"
         v-for="i in items"
         :key="i.value"
       >
@@ -83,11 +90,13 @@ export default defineComponent({
       (item) => blackList.indexOf(item) == -1
     );
     const items = computed(() => {
-      return cols.map((key) => ({
-        selected:
-          currentCols.value.findIndex((item) => item.value == key) != -1,
-        value: key,
-      }));
+      return cols
+        .map((key) => ({
+          selected:
+            currentCols.value.findIndex((item) => item.value == key) != -1,
+          value: key,
+        }))
+        .sort((a, b) => (a.selected ? 0 : 1) - (b.selected ? 0 : 1));
     });
     async function toggleCol(name: string) {
       const tmp = [...currentCols.value];
@@ -105,18 +114,17 @@ export default defineComponent({
       } else {
         tmp.splice(ind, 1);
       }
-      store.commit("sso/user/setCols", tmp);
       await store.dispatch("sso/user/update_settings", {
-          path: "/columns",
-          value: tmp,
-        });
+        path: "/columns",
+        value: tmp,
+      });
     }
     async function resetDefault() {
       store.commit("sso/user/setCols", DefaultCols());
       await store.dispatch("sso/user/update_settings", {
-          path: "/columns",
-          value: DefaultCols(),
-        });
+        path: "/columns",
+        value: DefaultCols(),
+      });
     }
     return {
       menu,

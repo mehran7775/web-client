@@ -102,6 +102,7 @@ export default defineComponent({
 .header
   position: relative
   background-color: none
+  border: none !important
 .divider
   position: absolute
   top: calc(50% - 6px)

@@ -80,10 +80,6 @@ export default defineComponent({
     const edited = computed(() => store.getters["sso/user/watchlistChanged"]);
     const searchModel = ref(new InstrumentSearchModel(watchlists.value[name]));
 
-    if (Object.keys(watchlists.value).length == 0) {
-      store.commit("/sso/user/setWatchlist", { watchlist: [], name: "new" });
-    }
-
     watch(
       () => store.getters["sso/user/watchList"][name],
       (wls) => {
