@@ -217,14 +217,6 @@
           style="width: calc(50% - 8px)"
         />
       </v-radio-group>
-      <!-- <client-only>
-        <vue-hcaptcha
-          v-if="failedCount > 3"
-          sitekey="41a134fc-7604-4ee1-a5df-40c97195491a"
-          language="fa"
-          @verify="captchaResult"
-        ></vue-hcaptcha>
-      </client-only> -->
       <v-btn
         tabindex="6"
         class="my-4"
