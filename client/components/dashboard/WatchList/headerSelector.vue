@@ -1,10 +1,13 @@
 <template>
   <v-menu
-    content-class="mt-1"
+    content-class="mt-1 ml-n6"
     v-model="menu"
     min-width="164"
     max-width="164"
     offset-y
+    bottom
+    offset-x
+    right
     max-height="50vh"
   >
     <template #activator="{ on, attrs }">
