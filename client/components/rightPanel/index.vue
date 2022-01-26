@@ -51,61 +51,54 @@
           </h4>
           <v-list dense>
             <v-list-item-group>
-              <v-list-group
-                v-for="child in item.children
-                  ? item.children.filter((v) => v.children)
-                  : []"
+              <div
+                v-for="child in item.children ? item.children : []"
                 :key="child.title"
               >
-                <v-list-item-title slot="activator">
-                  {{ child.text ? child.text : $t(child.title) }}
-                </v-list-item-title>
-                <v-list-item
-                  v-for="sub in child.children
-                    ? child.children.value
-                      ? child.children.value
-                      : child.children
-                    : []"
-                  :key="sub.title"
-                  :to="sub.to ? sub.to : '#'"
-                >
-                  <v-list-item-title>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    {{ sub.text ? sub.text : $t(sub.title) }}
+                <v-list-group v-if="child.children" append-icon.size="12">
+                  <v-list-item-title slot="activator">
+                    {{ child.text ? child.text : $t(child.title) }}
                   </v-list-item-title>
-                  <v-list-item-action class="my-0">
-                    <v-btn
-                      @click.prevent="
-                        (ev) => {
-                          if (isMarked(sub)) unmark(sub);
-                          else mark(sub);
-                        }
-                      "
-                      icon
-                      x-small
-                    >
-                      <v-icon
-                        :color="isMarked(sub) ? 'secondary' : 'default'"
-                        size="16"
+                  <v-list-item
+                    v-for="sub in child.children
+                      ? child.children.value
+                        ? child.children.value
+                        : child.children
+                      : []"
+                    :key="sub.title"
+                    :to="sub.to ? sub.to : '#'"
+                  >
+                    <v-list-item-title>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      {{ sub.text ? sub.text : $t(sub.title) }}
+                    </v-list-item-title>
+                    <v-list-item-action class="my-0">
+                      <v-btn
+                        @click.prevent="
+                          (ev) => {
+                            if (isMarked(sub)) unmark(sub);
+                            else mark(sub);
+                          }
+                        "
+                        icon
+                        x-small
                       >
-                        mdi-star
-                      </v-icon>
-                    </v-btn>
-                  </v-list-item-action>
+                        <v-icon
+                          :color="isMarked(sub) ? 'secondary' : 'default'"
+                          size="16"
+                        >
+                          mdi-star
+                        </v-icon>
+                      </v-btn>
+                    </v-list-item-action>
+                  </v-list-item>
+                </v-list-group>
+                <v-list-item v-else :to="child.to ? child.to : '#'">
+                  <v-list-item-title>
+                    {{ child.text ? child.text : $t(child.title) }}
+                  </v-list-item-title>
                 </v-list-item>
-              </v-list-group>
-              <v-divider />
-              <v-list-item
-                v-for="child in item.children
-                  ? item.children.filter((v) => !v.children)
-                  : []"
-                :key="child.title"
-                :to="child.to ? child.to : '#'"
-              >
-                <v-list-item-title>
-                  {{ child.text ? child.text : $t(child.title) }}
-                </v-list-item-title>
-              </v-list-item>
+              </div>
             </v-list-item-group>
           </v-list>
         </div>
@@ -121,15 +114,13 @@ import {
   Ref,
   computed,
   useStore,
-  useContext,
   useRouter,
   watch,
-  ComputedRef,
+  reactive,
 } from "@nuxtjs/composition-api";
 import { useShortcut } from "@/utils/shortcutManager";
 import { Bookmark } from "~/types";
 import { useAsrTrader } from "~/composables";
-
 
 export default defineComponent({
   name: "right-panel",
@@ -144,7 +135,7 @@ export default defineComponent({
     const router = useRouter();
     const sh = useShortcut();
     const selected = appManager.menu;
-    const rtl = appManager.rtl
+    const rtl = appManager.rtl;
     const bookmarks = computed(
       () => store.getters["sso/user/getBookmarks"] as Array<Bookmark>
     );
@@ -256,6 +247,7 @@ export default defineComponent({
         to: "/inspire",
       },
     ];
+
     const staticItems = [
       {
         color: "success",
@@ -270,6 +262,7 @@ export default defineComponent({
         to: "/refund",
       },
     ];
+
     const expand: Ref<boolean> = ref(true);
     const drawer = computed({
       get() {

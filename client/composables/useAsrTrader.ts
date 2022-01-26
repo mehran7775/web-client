@@ -16,7 +16,7 @@ export function useAsrTrader(store: Store<any>) {
     })
     const rtl = computed(() => ['fa', 'ar', 'azIr', 'ckb'].includes(state.locale))
     const menu = computed({
-        get() { return state.menuIndex },
+        get() { return state.menuIndex ?? 0 },
         set(menu: number | null) {
             setMenu(menu)
         }

@@ -26,7 +26,7 @@
   "devDependencies": {
     "@mdi/font": "^6.5.95",
     "@nuxt/types": "^2.15.8",
-    "@types/luxon": "2.0.8",
+    "@types/luxon": "^2.0.9",
     "@types/splitpanes": "2.2.1",
     "@types/cookie": "^0.4.1",
     "@types/dropzone":"5.7.4",
