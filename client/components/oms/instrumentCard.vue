@@ -43,7 +43,6 @@ import { useAsrTrader, useInstrument } from "@/composables";
 import { Instrument, InstrumentSearchModel } from "@/types";
 import { DateTime } from "luxon";
 
-
 export default defineComponent({
   name: "instrumnet-card-compact",
   props: {
@@ -57,10 +56,8 @@ export default defineComponent({
     const appManager = useAsrTrader(store);
     const instrumentManager = useInstrument(store);
     const i18n = useI18n();
-    const locale = appManager.locale
-    const formatter: ComputedRef<Intl.NumberFormat> = computed(
-      () => store.getters["formatter"] as Intl.NumberFormat
-    );
+    const locale = appManager.locale;
+    const formatter = appManager.formatter;
     const fields: Array<field> = [
       new field(
         "yesterdayPrice",

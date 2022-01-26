@@ -11,14 +11,14 @@ import {
   ComputedRef,
   computed,
 } from "@nuxtjs/composition-api";
+import { useAsrTrader } from "~/composables";
 
 export default defineComponent({
   props: { value: Number },
   setup() {
     const store = useStore();
-    const formatter: ComputedRef<Intl.NumberFormat> = computed(
-      () => store.getters["formatter"] as Intl.NumberFormat
-    );
+    const appManager = useAsrTrader(store);
+    const formatter = appManager.formatter;
     return {
       formatter,
     };

@@ -56,21 +56,21 @@ import {
   ComputedRef,
   useStore,
 } from "@nuxtjs/composition-api";
+import { useAsrTrader } from "~/composables";
 
 export default defineComponent({
   emits: ["request"],
   props: ["value", "timer", "height"],
-  inheritAttrs: false,  
+  inheritAttrs: false,
   setup(props, ctx) {
     const store = useStore();
+    const appManager = useAsrTrader(store);
     const otpref: Ref<any> = ref(null);
 
     const counter = ref(0);
     let timer: NodeJS.Timeout | null = null;
 
-    const formatter: ComputedRef<Intl.NumberFormat> = computed(
-      () => store.getters["formatter"] as Intl.NumberFormat
-    );
+    const formatter = appManager.formatter;
     const otp = computed({
       get() {
         return props.value;

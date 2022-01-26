@@ -209,7 +209,7 @@ import {
 } from "@nuxtjs/composition-api";
 import snackbar from "@/components/snacks.vue";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
-import { User, WealthSearchModel } from "@/types";
+import { User } from "@/types";
 import { useAsrTrader } from "~/composables";
 
 export default defineComponent({
@@ -250,9 +250,7 @@ export default defineComponent({
     ];
 
     const locale = appManager.locale;
-    const formatter: ComputedRef<Intl.NumberFormat> = computed(
-      () => store.getters["formatter"] as Intl.NumberFormat
-    );
+    const formatter = appManager.formatter;
     const collaps = computed(() => {
       const tab = store.getters["bottom-panel/activeTab"];
       return tab != null && tab != -1;

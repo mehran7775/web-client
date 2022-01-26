@@ -115,6 +115,7 @@ import {
   ComputedRef,
 } from "@nuxtjs/composition-api";
 import { ClientDistribution } from "@/types";
+import { useAsrTrader } from "~/composables";
 
 export default defineComponent({
   name: "legal-real-card",
@@ -125,14 +126,11 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
+    const appManager = useAsrTrader(store);
     const distribution: Ref<ClientDistribution> = ref(new ClientDistribution());
     const total = ref(1);
-    const percentFormatter: ComputedRef<Intl.NumberFormat> = computed(
-      () => store.getters["percentFormatter"] as Intl.NumberFormat
-    );
-    const formatter: ComputedRef<Intl.NumberFormat> = computed(
-      () => store.getters["formatter"] as Intl.NumberFormat
-    );
+    const percentFormatter = appManager.percentFormatter;
+    const formatter = appManager.formatter;
     store
       .dispatch("oms/instruments/getClientDistribution", props.insId)
       .then((result) => {

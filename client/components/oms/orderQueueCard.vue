@@ -122,7 +122,7 @@ import {
   reactive,
 } from "@nuxtjs/composition-api";
 import { OrderQueueItem } from "@/types";
-import { useInstrument } from "~/composables";
+import { useAsrTrader, useInstrument } from "~/composables";
 
 export default defineComponent({
   name: "order-queue-card",
@@ -135,11 +135,10 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
+    const appManager = useAsrTrader(store);
     const instrumentManager = useInstrument(store);
     const queue: Array<OrderQueueItem> = reactive([]);
-    const formatter: ComputedRef<Intl.NumberFormat> = computed(
-      () => store.getters["formatter"] as Intl.NumberFormat
-    );
+    const formatter = appManager.formatter;
     instrumentManager.getOrderQueue(props.insId).then((result) => {
       if (result.queue) {
         queue.push(...result.queue);
