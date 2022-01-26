@@ -29,22 +29,23 @@ h5
 
 /* width */
 ::-webkit-scrollbar
-  width: 3px
-  height: 7px
+  width: 4px
+  height: 33px
 
 /* Track */
 ::-webkit-scrollbar-track
   box-shadow: inset 0 0 1.25px grey
   border-radius: 2.5px
+  background-color: rgba($c-primary,0.1)
 
 /* Handle */
 ::-webkit-scrollbar-thumb
-  background-image: linear-gradient(135deg, #d0368a 0%, #005cb5 99%)
+  background-color: rgba($c-primary,0.2)
   border-radius: 2.5px
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover
-  background: #78abff
+  background-color: rgba($c-primary,0.3)
 
 @media (min-width: 960px)
   .oddodd:nth-child(4n + 1)
