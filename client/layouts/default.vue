@@ -220,9 +220,9 @@ export default defineComponent({
   padding-left: 42px !important
   padding-right: 42px !important
   &.left
-    padding-left: 240px !important
+    padding-left: 152px !important
   &.right
-    padding-right: 240px !important
+    padding-right: 152px !important
 
 .dashboardmain-nuxt
   overflow-y: auto

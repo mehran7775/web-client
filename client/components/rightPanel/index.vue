@@ -5,7 +5,7 @@
     :clipped="clipped"
     :right="rtl"
     class="panel ps-0"
-    width="240"
+    width="152"
     fixed
     app
   >
@@ -56,6 +56,9 @@
                 :key="child.title"
               >
                 <v-list-group v-if="child.children" append-icon.size="12">
+                  <template #appendIcon>
+                    <v-icon x-small> isax-arrow-down </v-icon>
+                  </template>
                   <v-list-item-title slot="activator">
                     {{ child.text ? child.text : $t(child.title) }}
                   </v-list-item-title>
@@ -339,10 +342,19 @@ export default defineComponent({
   ::-webkit-scrollbar
     display: none
   .v-tabs-items
-    background-color: #EEEEEE !important
     height: 100%
     width: calc(100% - 42px)
     display: block
+    .v-list-item
+      border-radius: $border-radius-root
+    .v-item--active
+      color: $c-primary
+      &::before
+        border-radius: $border-radius-root
+    // .v-list-group
+    //   &__header
+    //     &[aria-expanded="true"]
+    //       background-color: rgba($c-primary,0.1)
   .v-tabs
     width: 42px
     vertical-align: top

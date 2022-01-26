@@ -5,7 +5,7 @@
     :clipped="clipped"
     :right="!rtl"
     class="ps-0 msg-panel"
-    width="240"
+    width="152"
     fixed
     app
   >
