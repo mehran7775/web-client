@@ -68,6 +68,8 @@ import {
   TabTitle,
 } from "@/types";
 import MessageList from "./messageList.vue";
+import { useAsrTrader } from "~/composables";
+
 
 export default defineComponent({
   components: { filterAutoComplete, MessageList },
@@ -80,7 +82,8 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
-    const rtl = computed(() => store.getters["rtl"]);
+    const appManager = useAsrTrader(store);
+    const rtl = appManager.rtl
     const activeTab: Ref<number | null> = ref(null);
 
     const drawer = computed({

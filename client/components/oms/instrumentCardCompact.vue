@@ -86,7 +86,7 @@ import {
 } from "@nuxtjs/composition-api";
 import { Instrument, InstrumentSearchModel } from "@/types";
 import { DateTime } from "luxon";
-import { useInstrument } from "~/composables";
+import { useAsrTrader, useInstrument } from "~/composables";
 
 export default defineComponent({
   name: "instrumnet-card-compact",
@@ -97,8 +97,9 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
+    const appManager = useAsrTrader(store);
     const instrumentManager = useInstrument(store);
-    const locale = computed(() => store.getters["locale"]);
+    const locale = appManager.locale;
     let instrument: Ref<Instrument> = ref(new Instrument());
     instrumentManager
       .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))

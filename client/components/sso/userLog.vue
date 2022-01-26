@@ -18,10 +18,12 @@ import {
 } from "@nuxtjs/composition-api";
 import { Paginated, Log, WatchlistColumns } from "@/types";
 import { DateTime } from "luxon";
+import { useAsrTrader } from "~/composables";
 
 export default defineComponent({
   setup(props, context) {
     const store = useStore();
+    const appManager = useAsrTrader(store);
     const i18n = useI18n();
     const res: Array<Log> = reactive([]);
     const headers: Array<WatchlistColumns> = [
@@ -30,9 +32,7 @@ export default defineComponent({
       new WatchlistColumns("type", "type"),
     ];
     const searchParam: Paginated = new Paginated(0, 10);
-    const locale = computed(() => {
-      return store.getters["locale"];
-    });
+    const locale = appManager.locale;
     function printDate(date: string) {
       return DateTime.fromISO(date)
         .setLocale(locale.value)

@@ -45,6 +45,8 @@ import {
   computed,
   reactive,
 } from "@nuxtjs/composition-api";
+import { useAsrTrader } from "~/composables";
+
 
 export default defineComponent({
   props: {
@@ -54,7 +56,8 @@ export default defineComponent({
   setup(params) {
     const ctx = useContext();
     const store = useStore();
-    const locale = computed(() => store.getters["locale"]);
+    const appManager = useAsrTrader(store);
+    const locale = appManager.locale;
     const slide = ref(0);
     let timer: NodeJS.Timeout | null = null;
 

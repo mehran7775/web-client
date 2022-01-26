@@ -128,6 +128,8 @@ import {
 } from "@nuxtjs/composition-api";
 import { useShortcut } from "@/utils/shortcutManager";
 import { Bookmark } from "~/types";
+import { useAsrTrader } from "~/composables";
+
 
 export default defineComponent({
   name: "right-panel",
@@ -138,17 +140,11 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
+    const appManager = useAsrTrader(store);
     const router = useRouter();
     const sh = useShortcut();
-    const selected: ComputedRef<number> = computed({
-      get() {
-        return store.getters["menu"] ?? 0;
-      },
-      set(value) {
-        store.commit("setMenu", value);
-      },
-    });
-    const rtl = computed(() => store.getters["rtl"]);
+    const selected = appManager.menu;
+    const rtl = appManager.rtl
     const bookmarks = computed(
       () => store.getters["sso/user/getBookmarks"] as Array<Bookmark>
     );

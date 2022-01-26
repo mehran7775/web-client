@@ -129,12 +129,15 @@ import {
   useStore,
 } from "@nuxtjs/composition-api";
 import simpleCaptcha from "~/components/simpleCaptcha.vue";
+import { useAsrTrader } from "~/composables";
+
 
 export default defineComponent({
   components: { simpleCaptcha },
   layout: "public",
   setup(props) {
     const store = useStore();
+    const appManager = useAsrTrader(store);
     const ctx = useContext();
     const progress = ref(0);
     const otpref: Ref<any> = ref(null);
@@ -149,7 +152,7 @@ export default defineComponent({
       rform2: Ref<any> = ref(null),
       rform0: Ref<any> = ref(null);
 
-    const rtl = computed(() => store.getters["rtl"]);
+    const rtl = appManager.rtl;
 
     function back() {
       if (step.value == 1) {

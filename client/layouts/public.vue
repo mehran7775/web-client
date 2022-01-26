@@ -20,6 +20,7 @@ import {
   useStore,
 } from "@nuxtjs/composition-api";
 import snackbar from "@/components/snacks.vue";
+import { useAsrTrader } from "~/composables";
 
 export default defineComponent({
   components: {
@@ -27,9 +28,8 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
-    const locale = computed(() => {
-      return store.getters["locale"];
-    });
+    const appManager = useAsrTrader(store);
+    const locale = appManager.locale;
     const memory = ref(null);
     return { memory, locale };
   },

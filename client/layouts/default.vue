@@ -210,6 +210,7 @@ import {
 import snackbar from "@/components/snacks.vue";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
 import { User, WealthSearchModel } from "@/types";
+import { useAsrTrader } from "~/composables";
 
 export default defineComponent({
   components: {
@@ -219,6 +220,7 @@ export default defineComponent({
   setup(props, context) {
     const router = useRouter();
     const store = useStore();
+    const appManager = useAsrTrader(store);
     const host = process.env.VUE_APP_Host;
     const ctx = useContext();
     const userMenu = ref(false);
@@ -247,9 +249,7 @@ export default defineComponent({
       },
     ];
 
-    const locale = computed(() => {
-      return store.getters["locale"];
-    });
+    const locale = appManager.locale;
     const formatter: ComputedRef<Intl.NumberFormat> = computed(
       () => store.getters["formatter"] as Intl.NumberFormat
     );

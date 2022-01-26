@@ -45,12 +45,15 @@ import {
   useStore,
 } from "@nuxtjs/composition-api";
 import { required } from "@/utils/rules";
+import { useAsrTrader } from "~/composables";
+
 
 export default defineComponent({
   inheritAttrs: false,
   props: ["value", "height"],
   setup(props, ctx) {
     const store = useStore();
+    const appManager = useAsrTrader(store);
     const captcharef: Ref<any> = ref(null);
     const url =
       process.env.VUE_APP_Host +
@@ -58,7 +61,7 @@ export default defineComponent({
       ((props.height ?? 42) - 8) +
       "&r=";
     const captchaUrl = ref(url);
-    const locale = computed(() => store.getters["locale"]);
+    const locale = appManager.locale;
     const captcha = computed({
       get() {
         return props.value;

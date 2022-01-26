@@ -38,6 +38,8 @@ import {
 } from "@nuxtjs/composition-api";
 import { DateTime } from "luxon";
 import { Message } from "@/types";
+import { useAsrTrader } from "~/composables";
+
 
 function defaultIconParser(message: Message): string {
   if ((message.flags & 1) == 1) return "mdi-email-open";
@@ -55,7 +57,8 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
-    const locale = computed(() => store.getters["locale"]);
+    const appManager = useAsrTrader(store);
+    const locale = appManager.locale;
     const icons = [
       "mdi-message-cog-outline",
       "mdi-message-flash-outline",

@@ -41,6 +41,8 @@ import {
   computed,
   watch,
 } from "@nuxtjs/composition-api";
+import { useAsrTrader } from "~/composables";
+
 
 export default defineComponent({
   head: {},
@@ -54,9 +56,8 @@ export default defineComponent({
   setup(params) {
     const doc = ref(params.document as FetchReturn | FetchReturn[] | null);
     const store = useStore();
-    const rtl = computed(() => {
-      return store.getters["rtl"];
-    });
+    const appManager = useAsrTrader(store);
+    const rtl = appManager.rtl;
     const title = ref("");
     const description = ref("");
 

@@ -39,9 +39,10 @@ import {
   computed,
   ComputedRef,
 } from "@nuxtjs/composition-api";
-import { useInstrument } from "@/composables";
+import { useAsrTrader, useInstrument } from "@/composables";
 import { Instrument, InstrumentSearchModel } from "@/types";
 import { DateTime } from "luxon";
+
 
 export default defineComponent({
   name: "instrumnet-card-compact",
@@ -53,9 +54,10 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
+    const appManager = useAsrTrader(store);
     const instrumentManager = useInstrument(store);
     const i18n = useI18n();
-    const locale = computed(() => store.getters["locale"]);
+    const locale = appManager.locale
     const formatter: ComputedRef<Intl.NumberFormat> = computed(
       () => store.getters["formatter"] as Intl.NumberFormat
     );

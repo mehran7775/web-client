@@ -274,6 +274,8 @@ import { Login, User } from "~/types";
 import { ErrorExtractor } from "~/utils/error";
 import { required } from "@/utils/rules";
 import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
+import { useAsrTrader } from "~/composables";
+
 
 export default defineComponent({
   name: "Login",
@@ -284,6 +286,7 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
+    const appManager = useAsrTrader(store);
     const ctx = useContext();
     const router = useRouter();
     const keyboard = ref(useVirtualKeyBoard());
@@ -301,7 +304,7 @@ export default defineComponent({
     const i18n = useI18n();
 
     const failedCount = computed(() => store.getters["sso/user/tryCount"]);
-    const rtl = computed(() => store.getters["rtl"]);
+    const rtl = appManager.rtl
 
     async function login(data: Login) {
       if (frm.value?.validate()) {
