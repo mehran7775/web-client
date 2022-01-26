@@ -20,7 +20,7 @@
         height="24"
         depressed
       >
-        <v-icon :color="menu ? 'white' : 'primary'" size="14">
+        <v-icon :color="menu ? 'white' : 'primary'" size="16">
           mdi-dots-horizontal-circle-outline
         </v-icon>
       </v-btn>
