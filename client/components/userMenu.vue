@@ -49,35 +49,35 @@ import {
   useStore,
 } from "@nuxtjs/composition-api";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
-import { User } from "~/types";
+import { MenuItem, User } from "~/types";
+import { useUser } from "~/composables";
 
 export default defineComponent({
-  components:{
+  components: {
     ProfilePicture,
   },
   setup() {
     const store = useStore();
     const router = useRouter();
+    const userManager = useUser(store);
     const userMenu = ref(false);
-    const currentUser: ComputedRef<User> = computed(
-      () => store.getters["sso/user/me"] as User
-    );
-    const userMenuItems = [
-      {
+    const currentUser = userManager.me;
+    const userMenuItems: Array<MenuItem> = [
+      new MenuItem({
         icon: "mdi-account-cog",
         to: "/user/",
         title: "menu.profile",
-      },
-      {
+      }),
+      new MenuItem({
         icon: "mdi-logout",
         color: "error",
         click: doLogout,
         title: "login.logout",
-      },
+      }),
     ];
     function doLogout() {
       userMenu.value = false;
-      store.dispatch("sso/user/logout");
+      userManager.doLogout();
       router.push("/login");
     }
     return {

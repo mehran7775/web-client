@@ -61,6 +61,7 @@ import WatchlistSelector from "@/components/dashboard/watchlistSelector.vue";
 import InstrumentSearch from "@/components/oms/instrumentSearch.vue";
 import { InstrumentSearchModel } from "~/types";
 import Bar from "~/components/bar.vue";
+import { useUser } from "~/composables";
 
 export default defineComponent({
   components: {
@@ -73,15 +74,15 @@ export default defineComponent({
   setup(context) {
     const route = useRoute();
     const store = useStore();
-    const ctx = useContext();
+    const userManager = useUser(store);
     const loading = ref(false);
     const name = route.value.params.name ?? "new";
-    const watchlists = computed(() => store.getters["sso/user/watchList"]);
-    const edited = computed(() => store.getters["sso/user/watchlistChanged"]);
+    const watchlists = userManager.watchList;
+    const edited = userManager.watchlistChanged;
     const searchModel = ref(new InstrumentSearchModel(watchlists.value[name]));
 
     watch(
-      () => store.getters["sso/user/watchList"][name],
+      () => userManager.watchList.value[name],
       (wls) => {
         searchModel.value.ids.splice(0, searchModel.value.ids.length);
         searchModel.value.ids.push(...wls);
@@ -90,7 +91,7 @@ export default defineComponent({
     async function reset() {
       loading.value = true;
       try {
-        await store.dispatch("sso/user/getUser");
+        await userManager.getUser(userManager.me.value.userName);
       } finally {
         loading.value = false;
       }
@@ -100,7 +101,7 @@ export default defineComponent({
       loading.value = true;
       const name = route.value.params.name;
       try {
-        await store.dispatch("sso/user/update_settings", {
+        await userManager.update_settings({
           path: "/watch_lists/" + name,
           value: watchlists.value[name],
         });

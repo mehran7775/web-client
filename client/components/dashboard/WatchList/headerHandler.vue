@@ -61,13 +61,15 @@ import {
   Side,
   User,
 } from "@/types";
+import { useUser } from "~/composables";
 
 export default defineComponent({
   inheritAttrs: false,
   props: ["headers", "props"],
   setup(props) {
     const store = useStore();
-    const me: ComputedRef<User> = computed(() => store.getters["sso/user/me"]);
+    const userManager = useUser(store);
+    const me = userManager.me;
     let draggingCol: WatchlistColumns | null = null;
     function drag(item: WatchlistColumns) {
       draggingCol = item;
@@ -80,8 +82,8 @@ export default defineComponent({
         hrs.splice(ind, 1);
         const target = hrs.findIndex((i) => i.value == item.value);
         hrs.splice(ind > target ? target : target + 1, 0, draggingCol);
-        store.commit("sso/user/setCols", hrs);
-        await store.dispatch("sso/user/update_settings", {
+        userManager.setCols(hrs);
+        await userManager.update_settings({
           path: "/columns",
           value: hrs,
         });

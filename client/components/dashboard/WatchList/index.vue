@@ -202,7 +202,7 @@ import {
   InstrumentStatus,
   InstrumentSearchModel,
 } from "@/types";
-import { useInstrument } from "@/composables";
+import { useInstrument, useUser } from "@/composables";
 import { useShortcut } from "@/utils/shortcutManager";
 import HeaderHandler from "./headerHandler.vue";
 import RowHandler from "./rowHandler.vue";
@@ -227,6 +227,7 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
+    const userManager = useUser(store);
     const instrumentManager = useInstrument(store);
     const route = useRoute();
     const i18n = useI18n();
@@ -236,15 +237,11 @@ export default defineComponent({
     const instruments: Array<InstrumentCache> = reactive([]);
     const confirmInstrumentRemoval = ref(false);
 
-    const editMode = computed(() => store.getters["sso/user/watchlistChanged"]);
-    const watchlists = computed(() => store.getters["sso/user/watchList"]);
+    const editMode = userManager.watchlistChanged;
+    const watchlists = userManager.watchList;
 
-    const focused = computed(() => {
-      return store.getters[
-        "oms/instruments/getFocus"
-      ] as Array<InstrumentCache>;
-    });
-    const me: ComputedRef<User> = computed(() => store.getters["sso/user/me"]);
+    const focused = instrumentManager.getFocus;
+    const me = userManager.me;
 
     const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
       const res: Array<WatchlistColumns> = [];
@@ -310,7 +307,7 @@ export default defineComponent({
       const name = route.value.params.name;
       const tmp = [...watchlists.value[name]];
       tmp.splice(tmp.lastIndexOf(val.id.toString()), 1);
-      await store.dispatch("sso/user/update_settings", {
+      await userManager.update_settings({
         path: "/watch_lists/" + name,
         value: tmp,
       });
@@ -333,11 +330,11 @@ export default defineComponent({
           0,
           dragItem?.id.toString()
         );
-        store.commit("sso/user/setWatchlist", {
+        userManager.setWatchlist({
           name,
           watchlist: wl,
         });
-        await store.dispatch("sso/user/update_settings", {
+        await userManager.update_settings({
           path: "/watch_lists/" + name,
           value: wl,
         });

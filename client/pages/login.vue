@@ -30,7 +30,7 @@
         color="primary lighten-1"
         depressed
       >
-        <v-icon> isax-whatsapp  </v-icon>
+        <v-icon> isax-whatsapp </v-icon>
       </floating-button>
       <floating-button
         top="calc(50% - 22px)"
@@ -50,19 +50,21 @@
       >
         <v-icon> mdi-dots-horizontal </v-icon>
       </floating-button>
-      <virtual-keyboard  />
+      <virtual-keyboard />
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed, useStore } from "@nuxtjs/composition-api";
+import { useUser } from "~/composables";
 
 export default defineComponent({
   layout: "public",
   setup() {
     const store = useStore();
-    const loading = computed(() => store.getters["sso/user/renewToken"]);
+    const userManager = useUser(store);
+    const loading = userManager.refreshingToken;
     return {
       loading,
     };

@@ -34,6 +34,7 @@ import {
 import profilePic from "@/components/sso/profilePictureEditor.vue";
 import logs from "@/components/sso/userLog.vue";
 import profile from "@/components/sso/profileViewer.vue";
+import { useUser } from "~/composables";
 
 export default defineComponent({
   components: {
@@ -43,9 +44,8 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    const currentUser: ComputedRef<User> = computed(
-      () => store.getters["sso/user/me"] as User
-    );
+    const userManager = useUser(store);
+    const currentUser = userManager.me;
     const pic: Ref<File | null> = ref(null);
     function profile(a: any) {
       //TODO

@@ -18,11 +18,12 @@ import {
 } from "@nuxtjs/composition-api";
 import { Paginated, Log, WatchlistColumns } from "@/types";
 import { DateTime } from "luxon";
-import { useAsrTrader } from "~/composables";
+import { useAsrTrader, useUser } from "~/composables";
 
 export default defineComponent({
   setup(props, context) {
     const store = useStore();
+    const userManager = useUser(store);
     const appManager = useAsrTrader(store);
     const i18n = useI18n();
     const res: Array<Log> = reactive([]);
@@ -41,7 +42,7 @@ export default defineComponent({
     function printType(typ: string) {
       return i18n.t("log." + typ.toLowerCase());
     }
-    store.dispatch("sso/user/getLogs", searchParam).then((resp) => {
+    userManager.getLogs(searchParam).then((resp) => {
       res.push(...resp.data.data);
     });
     return {

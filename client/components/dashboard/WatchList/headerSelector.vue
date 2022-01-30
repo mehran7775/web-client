@@ -70,12 +70,14 @@ import {
   ref,
 } from "@nuxtjs/composition-api";
 import { User, InstrumentCache, WatchlistColumns, DefaultCols } from "@/types";
+import { useUser } from "~/composables";
 
 export default defineComponent({
   setup() {
     const store = useStore();
+    const userManager = useUser(store);
     const menu = ref(false);
-    const user = computed(() => store.getters["sso/user/me"] as User);
+    const user = userManager.me;
     const currentCols = computed(
       () => user.value.settings.columns ?? DefaultCols()
     );
@@ -117,14 +119,14 @@ export default defineComponent({
       } else {
         tmp.splice(ind, 1);
       }
-      await store.dispatch("sso/user/update_settings", {
+      await userManager.update_settings({
         path: "/columns",
         value: tmp,
       });
     }
     async function resetDefault() {
-      store.commit("sso/user/setCols", DefaultCols());
-      await store.dispatch("sso/user/update_settings", {
+      userManager.setCols(DefaultCols());
+      await userManager.update_settings({
         path: "/columns",
         value: DefaultCols(),
       });

@@ -262,12 +262,11 @@ import {
 } from "@nuxtjs/composition-api";
 import { AxiosError } from "axios";
 import { Snack } from "~/store/snacks";
-import { Login, User } from "~/types";
+import { LoginModel, PasswordType, User } from "~/types";
 import { ErrorExtractor } from "~/utils/error";
 import { required } from "@/utils/rules";
 import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
-import { useAsrTrader } from "~/composables";
-
+import { useAsrTrader, useUser } from "~/composables";
 
 export default defineComponent({
   name: "Login",
@@ -279,7 +278,7 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const appManager = useAsrTrader(store);
-    const ctx = useContext();
+    const userManager = useUser(store);
     const router = useRouter();
     const keyboard = ref(useVirtualKeyBoard());
 
@@ -291,24 +290,26 @@ export default defineComponent({
 
     const loading: Ref<boolean> = ref(false);
     const showPassword: Ref<boolean> = ref(false);
-    const data: Ref<Login> = ref(new Login("", "", ""));
+    const data: Ref<LoginModel> = ref({
+      userName: "",
+      password: "",
+      passwordType: PasswordType.static,
+      captcha: "",
+    });
     const snacs = reactive([]);
     const i18n = useI18n();
 
-    const failedCount = computed(() => store.getters["sso/user/tryCount"]);
-    const rtl = appManager.rtl
+    const failedCount = userManager.tryCount;
+    const rtl = appManager.rtl;
 
-    async function login(data: Login) {
+    async function login(data: LoginModel) {
       if (frm.value?.validate()) {
         loading.value = true;
         try {
-          const res = await store.dispatch(
-            "sso/user/login",
-            Object.assign({}, data, { axios: ctx.$axios })
-          );
+          const res = await userManager.login(data);
           if (res >= 200 && res < 300) {
-            const user = store.getters["sso/user/me"] as User;
-            router.push(user.settings.home ?? "/watchlist/wealth");
+            const user = userManager.me
+            router.push(user.value?.settings?.home ?? "/watchlist/wealth");
             snack(new Snack("login.successful", "success"));
           }
         } catch (err) {
@@ -335,10 +336,6 @@ export default defineComponent({
       data.value.captcha = code;
     }
 
-    function checkTries(val: string) {
-      store.dispatch("sso/user/checkTries", val);
-    }
-
     function requestOtp() {
       frm.value.validate();
       otpref.value.focus();
@@ -356,7 +353,7 @@ export default defineComponent({
       login,
       snack,
       captchaResult,
-      checkTries,
+      checkTries: userManager.checkTries,
       requestOtp,
       rtl,
       failedCount,

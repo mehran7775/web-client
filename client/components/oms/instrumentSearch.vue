@@ -50,13 +50,14 @@ import {
   InstrumentCache,
   InstrumentSearchModel,
 } from "@/types";
-import { useInstrument } from "~/composables";
+import { useInstrument, useUser } from "~/composables";
 
 export default defineComponent({
   emits: ["input"],
   props: { "focus-result": { type: Boolean, default: false } },
   setup(props) {
     const store = useStore();
+    const userManager = useUser(store);
     const instrumentManager = useInstrument(store);
     const route = useRoute();
     const model = ref(null);
@@ -65,7 +66,7 @@ export default defineComponent({
     const entries: Array<AutoCompleteItem> = reactive([]);
 
     const focus = instrumentManager.getFocus;
-    const watchlists = computed(() => store.getters["sso/user/watchList"]);
+    const watchlists = userManager.watchList;
 
     async function search(value: string) {
       if (!!value && value.length > 0) {
@@ -101,7 +102,7 @@ export default defineComponent({
 
         const tmp = [val.id.toString()];
         tmp.push(...watchlists.value[name]);
-        store.commit("sso/user/setWatchlist", {
+        userManager.setWatchlist({
           name,
           watchlist: tmp,
         });

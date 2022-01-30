@@ -136,7 +136,7 @@ import {
 } from "@nuxtjs/composition-api";
 import { useShortcut } from "@/utils/shortcutManager";
 import { Bookmark, BookmarkPosition, CreateBookmark, MenuItem } from "~/types";
-import { useAsrTrader } from "~/composables";
+import { useAsrTrader, useUser } from "~/composables";
 
 export default defineComponent({
   name: "right-panel",
@@ -147,21 +147,20 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
+    const userManager = useUser(store);
     const appManager = useAsrTrader(store);
     const router = useRouter();
     const sh = useShortcut();
     const selected = appManager.menu;
     const rtl = appManager.rtl;
-    const bookmarks = computed(
-      () => store.getters["sso/user/getBookmarks"] as Array<Bookmark>
-    );
+    const bookmarks = userManager.getBookmarks;
     const isMarked = computed(() => (data: any) => {
       return bookmarks.value.findIndex((val) => val.to == data.to) > -1;
     });
     const watchList = computed(() => {
-      const lists = store.getters["sso/user/watchList"];
+      const lists = userManager.watchList;
       const res = [];
-      for (let k in lists) {
+      for (let k in lists.value) {
         res.push(
           new MenuItem({
             title: k,
@@ -300,11 +299,8 @@ export default defineComponent({
       switch (data.bookmarkPosition) {
         case BookmarkPosition.ToolBar:
           {
-            const tmp = [
-              ...bookmarks.value,
-              CreateBookmark(data)
-            ];
-            store.dispatch("sso/user/update_settings", {
+            const tmp = [...bookmarks.value, CreateBookmark(data)];
+            userManager.update_settings({
               path: "/bookmarks",
               value: tmp,
             });
@@ -312,11 +308,8 @@ export default defineComponent({
           break;
         case BookmarkPosition.RightPanel:
           {
-            const tmp = [
-              ...bookmarks.value,
-              CreateBookmark(data)
-            ];
-            store.dispatch("sso/user/update_settings", {
+            const tmp = [...bookmarks.value, CreateBookmark(data)];
+            userManager.update_settings({
               path: "/sourtcuts",
               value: tmp,
             });
@@ -330,7 +323,7 @@ export default defineComponent({
         tmp.findIndex((item) => item.to == data.to),
         1
       );
-      store.dispatch("sso/user/update_settings", {
+      userManager.update_settings({
         path: "/bookmarks",
         value: tmp,
       });

@@ -65,6 +65,7 @@ import furtherInformation from "./furtherInformation/index.vue";
 import DefaultOrderList from "./defaultOrderList.vue";
 import DeepInformation from "./deepInformation/index.vue";
 import Bests from "./bests.vue";
+import { useUser } from "~/composables";
 
 //TODO not working on small displays
 
@@ -72,13 +73,14 @@ export default defineComponent({
   components: { furtherInformation, DeepInformation, DefaultOrderList, Bests },
   setup(props, context) {
     const store = useStore();
+    const userManager = useUser(store);
     const i18n = useI18n();
     const tabs = [
       "bottom-panel.orders",
       "bottom-panel.bests",
       "bottom-panel.depth",
     ];
-    const isLogin = computed(() => store.getters["sso/user/isLogin"]);
+    const isLogin = userManager.isLogin
     const tab = computed({
       get(): Tabs {
         return store.getters["bottom-panel/activeTab"] as Tabs;

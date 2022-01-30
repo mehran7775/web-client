@@ -1,8 +1,8 @@
-import { AxiosError } from 'axios'
+import { AxiosError,AxiosResponse } from 'axios'
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { login, refreshToken, logout } from '~/repositories/sso/jwt_token'
 import * as stores from '@/types/stores'
-import { User, Setting, UserCredentials, AnonymousUser, Paginated, WatchlistColumns } from '@/types'
+import { User, Setting, UserCredentials, AnonymousUser, Paginated, WatchlistColumns, LoginModel } from '@/types'
 import { getProfileImage, getUser, getUserList, updateUserWatchlist, getUserLog, updateUserSettings } from '@/repositories/sso/user_manager';
 import { SetClientCookie, DeleteClientCookie, GetClientCookies } from "@/utils/cookie"
 
@@ -116,7 +116,7 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
   async getUser({ commit, state }, userName) {
     const { data, status } = await getUser(userName ?? state.userName, this.$axios)
     commit('setUser', data)
-    return status
+    return data || status
   },
   checkTries({ commit, state }, userName: string) {
     const tries = GetClientCookies()[userName + ".tryCount"]
@@ -126,7 +126,7 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
       commit("tries", { user: userName, tries: 0 })
     }
   },
-  async login({ commit, dispatch, state, rootState }, payload) {
+  async login({ commit, dispatch, state, rootState }, payload: LoginModel) {
     try {
       commit("renewToken", true)
       commit("tries", { user: payload.userName, tries: state.tryCount + 1 })

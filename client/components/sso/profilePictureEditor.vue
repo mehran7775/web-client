@@ -19,6 +19,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, useStore } from "@nuxtjs/composition-api";
+import { useUser } from "~/composables";
 
 export default defineComponent({
   name: "profile-picture",
@@ -28,11 +29,13 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
+    const userManager = useUser(store);
     const img = ref("");
     const pic = ref(null);
     if (props.address) {
-      store
-        .dispatch("sso/user/getProfilePic", props.address)
+      store;
+      userManager
+        .getProfilePic(props.address)
         .then((res) => {
           img.value = res;
         })

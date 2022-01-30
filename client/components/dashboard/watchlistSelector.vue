@@ -114,6 +114,7 @@ import {
   reactive,
   watch,
 } from "@nuxtjs/composition-api";
+import { useUser } from "~/composables";
 
 export default defineComponent({
   props: {
@@ -126,10 +127,11 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
+    const userManager = useUser(store);
     const selected: Ref<any> = ref(null);
     const newName = ref("");
     const watchList: any[] = reactive([]);
-    const wls = computed(() => store.getters["sso/user/watchList"]);
+    const wls = userManager.watchList;
 
     function refresh() {
       watchList.splice(0, watchList.length);
@@ -147,7 +149,7 @@ export default defineComponent({
         watchList[0];
     }
     async function create() {
-      await store.dispatch("sso/user/update_settings", {
+      await userManager.update_settings({
         path: "/watch_lists/" + newName.value,
         value: [],
       });
@@ -155,7 +157,7 @@ export default defineComponent({
       refresh();
     }
     async function remove(name: string) {
-      await store.dispatch("sso/user/update_settings", {
+      await userManager.update_settings({
         path: "/watch_lists/" + name,
         value: null,
       });
@@ -168,7 +170,7 @@ export default defineComponent({
         if (i == item.id) tmp[item.newName] = wls.value[item.id];
         else tmp[i] = wls.value[i];
       });
-      await store.dispatch("sso/user/update_settings", {
+      await userManager.update_settings({
         path: "/watch_lists",
         value: tmp,
       });

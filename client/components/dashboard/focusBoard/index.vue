@@ -64,7 +64,7 @@ import { useShortcut } from "@/utils/shortcutManager";
 import CardView from "./cardView.vue";
 import TabView from "./tabView.vue";
 import { User } from "~/types";
-import { useInstrument } from "~/composables";
+import { useInstrument, useUser } from "~/composables";
 
 export default defineComponent({
   components: {
@@ -75,10 +75,11 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const instrumentManager = useInstrument(store);
+    const userManager = useUser(store);
     const sh = useShortcut();
     const route = useRoute();
 
-    const me: ComputedRef<User> = computed(() => store.getters["sso/user/me"]);
+    const me = userManager.me;
     const bookmarks = computed(() => me.value.settings.bookmarks);
     const home = computed(() => me.value.settings.home);
     const path = computed(() => route.value.fullPath);
@@ -88,7 +89,7 @@ export default defineComponent({
     const viewMode = instrumentManager.focusMode;
 
     async function setHome() {
-      await store.dispatch("sso/user/update_settings", {
+      await userManager.update_settings({
         path: "/home",
         value: path.value,
       });

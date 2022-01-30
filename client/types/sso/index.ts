@@ -1,5 +1,18 @@
 import { Bookmark } from ".."
 
+export enum PasswordType {
+  static = 1,
+  smsOtp = 2,
+  totp = 3
+}
+
+export type LoginModel = {
+  userName: string,
+  password: string,
+  passwordType: PasswordType
+  captcha: string
+}
+
 export type Log = {
   id: string,
   dateTime: string,
@@ -20,18 +33,6 @@ export type UserCredentials = {
   password: string,
 }
 
-export class Login {
-  userName: string
-  password: string
-  passwordType: number
-  captcha: string
-  constructor(userName: string, password: string, captcha: string) {
-    this.userName = userName
-    this.captcha = captcha
-    this.password = password
-    this.passwordType = 1
-  }
-}
 
 export class User {
   userName: string
