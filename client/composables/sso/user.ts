@@ -65,10 +65,10 @@ export function useUser(store: Store<any>) {
         return await store.dispatch("sso/user/getUser", data)
     }
     function checkTries(data: string) {
-        store.dispatch("sso/user/getUser", data)
+        store.dispatch("sso/user/checkTries", data)
     }
     async function login(data: LoginModel): Promise<number> {
-        return await store.dispatch("sso/user/getUser", data)
+        return await store.dispatch("sso/user/login", data)
     }
     async function doLogout(): Promise<void> {
         return await store.dispatch("sso/user/logout")
