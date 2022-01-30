@@ -4,7 +4,7 @@
     :mini-variant="mini"
     :clipped="clipped"
     :right="rtl"
-    class="panel ps-0"
+    class="r-panel ps-0"
     width="152"
     fixed
     app
@@ -34,9 +34,11 @@
       <v-tab v-for="item in staticItems" :key="item.title" :to="item.to">
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
-            <v-icon :color="item.color" v-bind="attrs" v-on="on">
-              {{ item.icon }}
-            </v-icon>
+            <v-btn width="32" height="32" depressed>
+              <v-icon size="16" :color="item.color" v-bind="attrs" v-on="on">
+                {{ item.icon }}
+              </v-icon>
+            </v-btn>
           </template>
           <span>{{ item.text ? item.text : $t(item.title) }}</span>
         </v-tooltip>
@@ -55,48 +57,59 @@
                 v-for="child in item.children ? item.children : []"
                 :key="child.title"
               >
-                <v-list-group v-if="child.children" append-icon.size="12">
+                <v-list-group
+                  class="item mx-1 group"
+                  v-if="child.children"
+                  append-icon.size="12"
+                >
                   <template #appendIcon>
                     <v-icon x-small> isax-arrow-down </v-icon>
                   </template>
                   <v-list-item-title slot="activator">
                     {{ child.text ? child.text : $t(child.title) }}
                   </v-list-item-title>
-                  <v-list-item
+                  <div
                     v-for="sub in child.children
                       ? child.children.value
                         ? child.children.value
                         : child.children
                       : []"
                     :key="sub.title"
-                    :to="sub.to ? sub.to : '#'"
+                    class="sub-item ps-4"
                   >
-                    <v-list-item-title>
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      {{ sub.text ? sub.text : $t(sub.title) }}
-                    </v-list-item-title>
-                    <v-list-item-action class="my-0">
-                      <v-btn
-                        @click.prevent="
-                          (ev) => {
-                            if (isMarked(sub)) unmark(sub);
-                            else mark(sub);
-                          }
-                        "
-                        icon
-                        x-small
-                      >
-                        <v-icon
-                          :color="isMarked(sub) ? 'secondary' : 'default'"
-                          size="16"
+                    <div class="path ms-n2"></div>
+                    <v-list-item :to="sub.to ? sub.to : '#'">
+                      <v-list-item-title>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ sub.text ? sub.text : $t(sub.title) }}
+                      </v-list-item-title>
+                      <v-list-item-action class="my-0">
+                        <v-btn
+                          @click.prevent="
+                            (ev) => {
+                              if (isMarked(sub)) unmark(sub);
+                              else mark(sub);
+                            }
+                          "
+                          icon
+                          x-small
                         >
-                          mdi-star
-                        </v-icon>
-                      </v-btn>
-                    </v-list-item-action>
-                  </v-list-item>
+                          <v-icon
+                            :color="isMarked(sub) ? 'secondary' : 'default'"
+                            size="16"
+                          >
+                            mdi-star
+                          </v-icon>
+                        </v-btn>
+                      </v-list-item-action>
+                    </v-list-item>
+                  </div>
                 </v-list-group>
-                <v-list-item v-else :to="child.to ? child.to : '#'">
+                <v-list-item
+                  v-else
+                  class="item mx-1"
+                  :to="child.to ? child.to : '#'"
+                >
                   <v-list-item-title>
                     {{ child.text ? child.text : $t(child.title) }}
                   </v-list-item-title>
@@ -122,7 +135,7 @@ import {
   reactive,
 } from "@nuxtjs/composition-api";
 import { useShortcut } from "@/utils/shortcutManager";
-import { Bookmark } from "~/types";
+import { Bookmark, BookmarkPosition, CreateBookmark, MenuItem } from "~/types";
 import { useAsrTrader } from "~/composables";
 
 export default defineComponent({
@@ -149,122 +162,129 @@ export default defineComponent({
       const lists = store.getters["sso/user/watchList"];
       const res = [];
       for (let k in lists) {
-        res.push({
-          title: k,
-          text: k,
-          to: "/watchList/" + k,
-        });
+        res.push(
+          new MenuItem({
+            title: k,
+            text: k,
+            to: "/watchList/" + k,
+            bookmarkPosition: BookmarkPosition.ToolBar,
+          })
+        );
       }
       return res;
     });
-    const items = [
-      {
+    const items: Array<MenuItem> = [
+      new MenuItem({
         icon: "isax-eye",
         title: "menu.watchList",
         children: [
-          {
+          new MenuItem({
             icon: "mdi-basket",
             title: "menu.wealth",
             to: "/watchlist/wealth",
-          },
-          {
+          }),
+          new MenuItem({
             icon: "mdi-basket",
             title: "menu.basket",
             children: watchList,
-          },
-          {
+          }),
+          new MenuItem({
             icon: "mdi-basket",
             title: "menu.industries",
             to: "/watchlist/industries",
-          },
-          {
+          }),
+          new MenuItem({
             icon: "mdi-basket",
             title: "menu.boards",
             to: "/watchlist/boards",
-          },
-          {
+          }),
+          new MenuItem({
             icon: "mdi-basket",
             title: "menu.instrumentTypes",
             to: "/watchlist/instrumentTypes",
-          },
+          }),
         ],
-      },
-      {
+      }),
+      new MenuItem({
         icon: "isax-graph",
         title: "menu.portfolio",
-        to: "/portfolio",
-      },
-      {
+        children: [
+          new MenuItem({
+            icon: "isax-graph",
+            title: "menu.brokerage",
+            to: "/portfolio/brokerage",
+          }),
+          new MenuItem({
+            icon: "isax-graph",
+            title: "menu.realtime",
+            to: "/portfolio/realtime",
+          }),
+        ],
+      }),
+      new MenuItem({
         icon: "isax-calculator",
         title: "menu.accounting",
-        to: "/accounting",
-      },
-      {
+        children: [
+          new MenuItem({
+            icon: "isax-calculator",
+            title: "menu.deposit",
+            to: "/accounting/deposit",
+          }),
+          new MenuItem({
+            icon: "isax-calculator",
+            title: "menu.refund",
+            to: "/accounting/refund",
+          }),
+        ],
+      }),
+      new MenuItem({
         icon: "isax-money-change",
         title: "menu.trades",
         to: "/trades",
-      },
-      {
+      }),
+      new MenuItem({
         icon: "isax-presention-chart",
         title: "menu.alerts",
         to: "/alerts",
-      },
-      {
+      }),
+      new MenuItem({
         icon: "isax-convert-card-outline",
         title: "menu.drafts",
         to: "/drafts",
-      },
-      {
+      }),
+      new MenuItem({
         icon: "isax-money-recive",
         title: "menu.conditionalTrades",
         to: "/conditional-trades",
-      },
-      {
+      }),
+      new MenuItem({
         icon: "isax-filter-edit",
         title: "menu.filter",
         to: "/filters",
-      },
-      {
+      }),
+      new MenuItem({
         icon: "isax-status-up",
         title: "menu.technical",
         to: "/technical",
-      },
-      {
+      }),
+      new MenuItem({
         icon: "isax-note-2",
         title: "menu.profit",
         to: "/profit",
-      },
-      {
-        icon: "isax-map",
+      }),
+      new MenuItem({
+        icon: "isax-map-outline",
         title: "menu.marketMap",
         to: "/market-map",
-      },
-      {
+      }),
+      new MenuItem({
         icon: "isax-setting-2",
         title: "menu.settings",
         to: "/settings",
-      },
-      {
-        icon: "isax-chart-2",
-        title: "menu.reports",
-        to: "/inspire",
-      },
+      }),
     ];
 
-    const staticItems = [
-      {
-        color: "success",
-        icon: "isax-card-receive",
-        title: "menu.deposit",
-        to: "/deposit",
-      },
-      {
-        color: "error",
-        icon: "isax-card-send",
-        title: "menu.refund",
-        to: "/refund",
-      },
-    ];
+    const staticItems: Array<Bookmark> = [];
 
     const expand: Ref<boolean> = ref(true);
     const drawer = computed({
@@ -276,15 +296,33 @@ export default defineComponent({
       },
     });
 
-    function mark(data: Bookmark) {
-      const tmp = [
-        ...bookmarks.value,
-        Object.assign({ icon: "mdi-star" }, data),
-      ];
-      store.dispatch("sso/user/update_settings", {
-        path: "/bookmarks",
-        value: tmp,
-      });
+    function mark(data: MenuItem) {
+      switch (data.bookmarkPosition) {
+        case BookmarkPosition.ToolBar:
+          {
+            const tmp = [
+              ...bookmarks.value,
+              CreateBookmark(data)
+            ];
+            store.dispatch("sso/user/update_settings", {
+              path: "/bookmarks",
+              value: tmp,
+            });
+          }
+          break;
+        case BookmarkPosition.RightPanel:
+          {
+            const tmp = [
+              ...bookmarks.value,
+              CreateBookmark(data)
+            ];
+            store.dispatch("sso/user/update_settings", {
+              path: "/sourtcuts",
+              value: tmp,
+            });
+          }
+          break;
+      }
     }
     function unmark(data: Bookmark) {
       let tmp = [...bookmarks.value];
@@ -308,7 +346,7 @@ export default defineComponent({
           key: "alt+Digit" + i.toString(),
           action: () => {
             if (i <= watchList.value.length) {
-              router.push(watchList.value[i - 1].to);
+              router.push(watchList.value[i - 1].to ?? "#");
             }
           },
         });
@@ -330,10 +368,27 @@ export default defineComponent({
 });
 </script>
 
+<style lang="sass" scoped>
+.sub-item:first-child
+  .path
+    height: 28px
+    top: -12px
+.sub-item
+  position: relative
+  .path
+    content: ''
+    top: -20px
+    height: 37px
+    width: 12px
+    border-right: 1px solid rgba(0, 0, 0, 0.05)
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05)
+    border-radius: 0 0 $border-radius-root 0
+    position: absolute
+</style>
+
 <style lang="sass">
-.panel
+.r-panel
   overflow: hidden
-  padding-top: 4px
   &.v-navigation-drawer--mini-variant
     width: 42px !important
   .v-navigation-drawer__content
