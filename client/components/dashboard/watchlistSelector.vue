@@ -149,6 +149,7 @@ export default defineComponent({
         watchList[0];
     }
     async function create() {
+      if (!newName.value || newName.value == "") return;
       await userManager.update_settings({
         path: "/watch_lists/" + newName.value,
         value: [],
