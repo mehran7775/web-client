@@ -6,6 +6,7 @@
     :right="rtl"
     class="r-panel ps-0"
     width="152"
+    mobile-breakpoint="960"
     fixed
     app
   >

@@ -6,6 +6,7 @@
     :right="!rtl"
     class="ps-0 msg-panel"
     width="152"
+    mobile-breakpoint="960"
     fixed
     app
   >
@@ -70,7 +71,6 @@ import {
 import MessageList from "./messageList.vue";
 import { useAsrTrader } from "~/composables";
 
-
 export default defineComponent({
   components: { filterAutoComplete, MessageList },
   name: "right-panel",
@@ -83,7 +83,7 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const appManager = useAsrTrader(store);
-    const rtl = appManager.rtl
+    const rtl = appManager.rtl;
     const activeTab: Ref<number | null> = ref(null);
 
     const drawer = computed({

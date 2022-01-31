@@ -217,12 +217,19 @@ export default defineComponent({
 .dashboardmain-page
   background-color: var(--v-defualt-bg-base)
   overflow: auto
-  padding-left: 42px !important
-  padding-right: 42px !important
-  &.left
-    padding-left: 152px !important
-  &.right
-    padding-right: 152px !important
+
+@media (min-width: 960px)
+  .dashboardmain-page
+    padding-left: 42px !important
+    padding-right: 42px !important
+    &.left
+      padding-left: 152px !important
+    &.right
+      padding-right: 152px !important
+@media (max-width: 959px)
+  .dashboardmain-page
+    padding-left: 0 !important
+    padding-right: 0 !important
 
 .dashboardmain-nuxt
   overflow-y: auto
