@@ -25,7 +25,8 @@ export type Setting = {
   columns: Array<WatchlistColumns>,
   watch_lists: any,
   home: string,
-  bookmarks: Array<Bookmark>
+  bookmarks: Array<Bookmark>,
+  shourtcuts: Array<Bookmark>
 }
 
 export type UserCredentials = {
@@ -85,7 +86,7 @@ export function AnonymousUser(): User {
   return new User(
     'anonymous',
     { nickname: 'Anonymous', profilePic: null },
-    { lang: 'fa-IR', columns: [], watch_lists: {}, home: '/', bookmarks: [] }
+    { lang: 'fa-IR', columns: [], watch_lists: {}, home: '/', bookmarks: [], shourtcuts: [] }
   )
 }
 export function DefaultCols(): WatchlistColumns[] {

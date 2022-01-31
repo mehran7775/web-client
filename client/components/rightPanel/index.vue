@@ -31,7 +31,7 @@
         </v-tooltip>
       </v-tab>
       <v-divider />
-      <v-tab v-for="item in staticItems" :key="item.title" :to="item.to">
+      <v-tab v-for="item in shourtcuts" :key="item.title" :to="item.to">
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
             <v-btn width="32" height="32" depressed>
@@ -92,11 +92,11 @@
                             }
                           "
                           icon
-                          x-small
+                          small
                         >
                           <v-icon
                             :color="isMarked(sub) ? 'secondary' : 'default'"
-                            size="16"
+                            x-small
                           >
                             mdi-star
                           </v-icon>
@@ -113,6 +113,28 @@
                   <v-list-item-title>
                     {{ child.text ? child.text : $t(child.title) }}
                   </v-list-item-title>
+                  <v-list-item-action
+                    v-if="child.to && child.to != ''"
+                    class="my-0"
+                  >
+                    <v-btn
+                      @click.prevent="
+                        (ev) => {
+                          if (isMarked(child)) unmark(child);
+                          else mark(child);
+                        }
+                      "
+                      icon
+                      small
+                    >
+                      <v-icon
+                        :color="isMarked(child) ? 'secondary' : 'default'"
+                        x-small
+                      >
+                        mdi-star
+                      </v-icon>
+                    </v-btn>
+                  </v-list-item-action>
                 </v-list-item>
               </div>
             </v-list-item-group>
@@ -154,8 +176,14 @@ export default defineComponent({
     const selected = appManager.menu;
     const rtl = appManager.rtl;
     const bookmarks = userManager.getBookmarks;
-    const isMarked = computed(() => (data: any) => {
-      return bookmarks.value.findIndex((val) => val.to == data.to) > -1;
+    const shourtcuts = userManager.getShourtcuts;
+    const isMarked = computed(() => (data: MenuItem) => {
+      switch (data.bookmarkPosition) {
+        case BookmarkPosition.ToolBar:
+          return bookmarks.value.findIndex((val) => val.to == data.to) > -1;
+        case BookmarkPosition.RightPanel:
+          return shourtcuts.value.findIndex((val) => val.to == data.to) > -1;
+      }
     });
     const watchList = computed(() => {
       const lists = userManager.watchList;
@@ -283,8 +311,6 @@ export default defineComponent({
       }),
     ];
 
-    const staticItems: Array<Bookmark> = [];
-
     const expand: Ref<boolean> = ref(true);
     const drawer = computed({
       get() {
@@ -308,25 +334,44 @@ export default defineComponent({
           break;
         case BookmarkPosition.RightPanel:
           {
-            const tmp = [...bookmarks.value, CreateBookmark(data)];
+            const tmp = [...shourtcuts.value, CreateBookmark(data)];
             userManager.update_settings({
-              path: "/sourtcuts",
+              path: "/shourtcuts",
               value: tmp,
             });
           }
           break;
       }
     }
-    function unmark(data: Bookmark) {
-      let tmp = [...bookmarks.value];
-      tmp.splice(
-        tmp.findIndex((item) => item.to == data.to),
-        1
-      );
-      userManager.update_settings({
-        path: "/bookmarks",
-        value: tmp,
-      });
+    function unmark(data: MenuItem) {
+      switch (data.bookmarkPosition) {
+        case BookmarkPosition.ToolBar:
+          {
+            let tmp = [...bookmarks.value];
+            tmp.splice(
+              tmp.findIndex((item) => item.to == data.to),
+              1
+            );
+            userManager.update_settings({
+              path: "/bookmarks",
+              value: tmp,
+            });
+          }
+          break;
+        case BookmarkPosition.RightPanel:
+          {
+            let tmp = [...shourtcuts.value];
+            tmp.splice(
+              tmp.findIndex((item) => item.to == data.to),
+              1
+            );
+            userManager.update_settings({
+              path: "/shourtcuts",
+              value: tmp,
+            });
+          }
+          break;
+      }
     }
     watch(selected, (n, o) => {
       if (typeof n != null) {
@@ -355,7 +400,7 @@ export default defineComponent({
       expand,
       selected,
       items,
-      staticItems,
+      shourtcuts,
     };
   },
 });

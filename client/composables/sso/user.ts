@@ -10,6 +10,7 @@ export function useUser(store: Store<any>) {
     // Getters
     const refreshingToken = computed(() => state.renewToken)
     const getBookmarks = computed(() => state.user.settings.bookmarks || [])
+    const getShourtcuts = computed(() => state.user.settings.shourtcuts || [])
     const getToken = computed(() => state.token)
     const getRefresh = computed(() => state.refresh)
     const me = computed(() => state.user ?? AnonymousUser())
@@ -90,6 +91,7 @@ export function useUser(store: Store<any>) {
         // Getters
         refreshingToken,
         getBookmarks,
+        getShourtcuts,
         getToken,
         getRefresh,
         me,

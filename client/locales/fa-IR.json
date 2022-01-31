@@ -54,6 +54,7 @@
     "previous": "قبلی",
     "status": "وضعیت",
     "settings": "تنظیمات",
+    "brokerage": "کارگزاری",
     "date": {
       "dt": "D-T",
       "d": "D",
@@ -290,7 +291,9 @@
     "reports": "گزارشات",
     "users": "کاربران",
     "about": "درباره",
-    "wealth": "سبدبان"
+    "wealth": "سبدبان",
+    "realtime": "لحظه‌ای",
+    "brokerage": "@:general.brokerage"
   },
   "bottom-panel": {
     "bests": "برترین‌ها",

@@ -10,6 +10,7 @@ export class MenuItem {
   to: string | undefined
   children: Array<MenuItem> | undefined
   bookmarkPosition: BookmarkPosition
+  click: Function | undefined
 
   constructor(item:any){
     this.icon = item.icon
@@ -19,6 +20,7 @@ export class MenuItem {
     this.to = item.to
     this.children = item.children
     this.bookmarkPosition = item.bookmarkPosition ?? BookmarkPosition.RightPanel
+    this.click = item.click
   }
 }
 
