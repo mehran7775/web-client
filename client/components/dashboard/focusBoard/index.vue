@@ -8,8 +8,17 @@
         color="primary"
         :to="b.to"
         height="28"
-        class="ms-1 px-2"
+        class="ms-1 px-2 bookmark"
       >
+        <v-btn
+          @click.stop.prevent="() => unmark(b)"
+          width="16"
+          height="16"
+          class="removeMark pa-0 ma-0"
+          color="error"
+        >
+          <v-icon class="pa-0 ma-0" x-small>mdi-close</v-icon>
+        </v-btn>
         <v-icon v-if="b.icon" x-small> {{ b.icon }} </v-icon>
         {{ b.text ? b.text : $t(b.title) }}
       </v-btn>
@@ -58,12 +67,11 @@ import {
   computed,
   useStore,
   useRoute,
-  ComputedRef,
 } from "@nuxtjs/composition-api";
 import { useShortcut } from "@/utils/shortcutManager";
 import CardView from "./cardView.vue";
 import TabView from "./tabView.vue";
-import { User } from "~/types";
+import { Bookmark } from "~/types";
 import { useInstrument, useUser } from "~/composables";
 
 export default defineComponent({
@@ -80,7 +88,7 @@ export default defineComponent({
     const route = useRoute();
 
     const me = userManager.me;
-    const bookmarks = computed(() => me.value.settings.bookmarks);
+    const bookmarks = userManager.getBookmarks;
     const home = computed(() => me.value.settings.home);
     const path = computed(() => route.value.fullPath);
 
@@ -92,6 +100,14 @@ export default defineComponent({
       await userManager.update_settings({
         path: "/home",
         value: path.value,
+      });
+    }
+
+    async function unmark(bookmark: Bookmark) {
+      const tmp = [...bookmarks.value.filter((item) => item.to != bookmark.to)];
+      userManager.update_settings({
+        path: "/bookmarks",
+        value: tmp,
       });
     }
 
@@ -107,6 +123,7 @@ export default defineComponent({
 
     return {
       setHome,
+      unmark,
       route,
       home,
       path,
@@ -117,6 +134,20 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="sass" scoped>
+.bookmark
+  position: relative
+  .removeMark
+    position: absolute
+    bottom: -15px
+    left: -15px
+    z-index: 1000
+    display: none
+  &:hover
+    .removeMark
+      display: block
+</style>
 
 <style lang="sass">
 .focus-board
