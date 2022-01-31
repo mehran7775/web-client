@@ -1,3 +1,5 @@
+import { ComputedRef } from '@nuxtjs/composition-api'
+
 export enum BookmarkPosition {
   ToolBar = 1,
   RightPanel = 2
@@ -5,22 +7,15 @@ export enum BookmarkPosition {
 export class MenuItem {
   icon: string
   title: string
-  text: string | undefined
-  color: string | undefined
-  to: string | undefined
-  children: Array<MenuItem> | undefined
-  bookmarkPosition: BookmarkPosition
-  click: Function | undefined
-
-  constructor(item:any){
-    this.icon = item.icon
-    this.title = item.title
-    this.text = item.text
-    this.color = item.color
-    this.to = item.to
-    this.children = item.children
-    this.bookmarkPosition = item.bookmarkPosition ?? BookmarkPosition.RightPanel
-    this.click = item.click
+  text?: string
+  color?: string
+  to?: string
+  children?: Array<MenuItem> | ComputedRef<Array<MenuItem>>
+  bookmarkPosition?: BookmarkPosition = BookmarkPosition.RightPanel
+  click?: Function
+  constructor(icon: string, title: string) {
+    this.icon = icon
+    this.title = title
   }
 }
 

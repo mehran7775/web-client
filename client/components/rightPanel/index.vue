@@ -189,126 +189,187 @@ export default defineComponent({
       const lists = userManager.watchList;
       const res = [];
       for (let k in lists.value) {
-        res.push(
-          new MenuItem({
-            title: k,
-            text: k,
-            to: "/watchList/" + k,
-            bookmarkPosition: BookmarkPosition.ToolBar,
-          })
-        );
+        res.push({
+          icon: "isax-eye",
+          title: k,
+          text: k,
+          to: "/watchList/" + k,
+          bookmarkPosition: BookmarkPosition.ToolBar,
+        });
       }
       return res;
     });
     const items: Array<MenuItem> = [
-      new MenuItem({
+      {
         icon: "isax-eye",
         title: "menu.watchList",
         children: [
-          new MenuItem({
-            icon: "mdi-basket",
+          {
+            icon: "isax-basket",
             title: "menu.wealth",
             to: "/watchlist/wealth",
-          }),
-          new MenuItem({
-            icon: "mdi-basket",
+            bookmarkPosition: BookmarkPosition.ToolBar,
+          },
+          {
+            icon: "isax-eye",
             title: "menu.basket",
             children: watchList,
-          }),
-          new MenuItem({
-            icon: "mdi-basket",
+          },
+          {
+            icon: "isax-eye",
             title: "menu.industries",
             to: "/watchlist/industries",
-          }),
-          new MenuItem({
-            icon: "mdi-basket",
+            bookmarkPosition: BookmarkPosition.ToolBar,
+          },
+          {
+            icon: "isax-eye",
             title: "menu.boards",
             to: "/watchlist/boards",
-          }),
-          new MenuItem({
-            icon: "mdi-basket",
+            bookmarkPosition: BookmarkPosition.ToolBar,
+          },
+          {
+            icon: "isax-eye",
             title: "menu.instrumentTypes",
             to: "/watchlist/instrumentTypes",
-          }),
+            bookmarkPosition: BookmarkPosition.ToolBar,
+          },
+          {
+            icon: "isax-eye",
+            title: "menu.conditional",
+            to: "/watchlist/conditional",
+            bookmarkPosition: BookmarkPosition.ToolBar,
+          },
         ],
-      }),
-      new MenuItem({
+      },
+      {
         icon: "isax-graph",
         title: "menu.portfolio",
         children: [
-          new MenuItem({
+          {
             icon: "isax-graph",
             title: "menu.brokerage",
             to: "/portfolio/brokerage",
-          }),
-          new MenuItem({
+            bookmarkPosition: BookmarkPosition.RightPanel,
+          },
+          {
             icon: "isax-graph",
             title: "menu.realtime",
             to: "/portfolio/realtime",
-          }),
+            bookmarkPosition: BookmarkPosition.RightPanel,
+          },
         ],
-      }),
-      new MenuItem({
+      },
+      {
         icon: "isax-calculator",
         title: "menu.accounting",
         children: [
-          new MenuItem({
-            icon: "isax-calculator",
+          {
+            icon: "isax-card-receive",
             title: "menu.deposit",
             to: "/accounting/deposit",
-          }),
-          new MenuItem({
-            icon: "isax-calculator",
+            color: "success",
+            bookmarkPosition: BookmarkPosition.RightPanel,
+          },
+          {
+            icon: "isax-card-send",
             title: "menu.refund",
             to: "/accounting/refund",
-          }),
+            color: "error",
+            bookmarkPosition: BookmarkPosition.RightPanel,
+          },
+          {
+            icon: "isax-calculator",
+            title: "menu.refundReport",
+            to: "/accounting/refundReport",
+            bookmarkPosition: BookmarkPosition.RightPanel,
+          },
+          {
+            icon: "isax-calculator",
+            title: "menu.depositReport",
+            to: "/accounting/depositReport",
+            bookmarkPosition: BookmarkPosition.RightPanel,
+          },
+          {
+            icon: "isax-calculator",
+            title: "menu.credits",
+            to: "/accounting/credits",
+            bookmarkPosition: BookmarkPosition.RightPanel,
+          },
         ],
-      }),
-      new MenuItem({
+      },
+      {
         icon: "isax-money-change",
         title: "menu.trades",
-        to: "/trades",
-      }),
-      new MenuItem({
+        children: [
+          {
+            icon: "isax-money-change",
+            title: "menu.tradesReport",
+            to: "tradesReport",
+            bookmarkPosition: BookmarkPosition.RightPanel,
+          },
+          {
+            icon: "isax-money-change",
+            title: "menu.switchBrokerage",
+            to: "switchBrokerage",
+            color: "warning",
+            bookmarkPosition: BookmarkPosition.RightPanel,
+          },
+          {
+            icon: "isax-money-change",
+            title: "menu.switchBrokerageReport",
+            to: "switchBrokerageReport",
+            bookmarkPosition: BookmarkPosition.RightPanel,
+          },
+        ],
+      },
+      {
         icon: "isax-presention-chart",
         title: "menu.alerts",
         to: "/alerts",
-      }),
-      new MenuItem({
+        bookmarkPosition: BookmarkPosition.RightPanel,
+      },
+      {
         icon: "isax-convert-card-outline",
         title: "menu.drafts",
         to: "/drafts",
-      }),
-      new MenuItem({
+        bookmarkPosition: BookmarkPosition.RightPanel,
+      },
+      {
         icon: "isax-money-recive",
         title: "menu.conditionalTrades",
         to: "/conditional-trades",
-      }),
-      new MenuItem({
+        bookmarkPosition: BookmarkPosition.RightPanel,
+      },
+      {
         icon: "isax-filter-edit",
         title: "menu.filter",
         to: "/filters",
-      }),
-      new MenuItem({
+        bookmarkPosition: BookmarkPosition.RightPanel,
+      },
+      {
         icon: "isax-status-up",
         title: "menu.technical",
         to: "/technical",
-      }),
-      new MenuItem({
+        bookmarkPosition: BookmarkPosition.RightPanel,
+      },
+      {
         icon: "isax-note-2",
         title: "menu.profit",
         to: "/profit",
-      }),
-      new MenuItem({
+        bookmarkPosition: BookmarkPosition.RightPanel,
+      },
+      {
         icon: "isax-map-outline",
         title: "menu.marketMap",
         to: "/market-map",
-      }),
-      new MenuItem({
+        bookmarkPosition: BookmarkPosition.RightPanel,
+      },
+      {
         icon: "isax-setting-2",
         title: "menu.settings",
         to: "/settings",
-      }),
+        bookmarkPosition: BookmarkPosition.RightPanel,
+      },
     ];
 
     const expand: Ref<boolean> = ref(true);

@@ -63,17 +63,17 @@ export default defineComponent({
     const userMenu = ref(false);
     const currentUser = userManager.me;
     const userMenuItems: Array<MenuItem> = [
-      new MenuItem({
+      {
         icon: "mdi-account-cog",
         to: "/user/",
         title: "menu.profile",
-      }),
-      new MenuItem({
+      },
+      {
         icon: "mdi-logout",
         color: "error",
         click: doLogout,
         title: "login.logout",
-      }),
+      },
     ];
     function doLogout() {
       userMenu.value = false;

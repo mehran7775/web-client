@@ -54,7 +54,9 @@
     "previous": "قبلی",
     "status": "وضعیت",
     "settings": "تنظیمات",
-    "brokerage": "کارگزاری",
+    "conditional": "شرطی",
+    "switch": "تغییر",
+    "report": "گزارش",
     "date": {
       "dt": "D-T",
       "d": "D",
@@ -190,6 +192,7 @@
     }
   },
   "oms": {
+    "brokerage": "کارگزاری",
     "marketModerator": "ناظر",
     "news": "اخبار",
     "notifications": "اطلاعیه",
@@ -277,10 +280,10 @@
     "instrumentTypes": "انواع اوراق",
     "portfolio": "پورتفوی",
     "accounting": "حسابداری",
-    "trades": "معاملات",
+    "trades": "@:oms.trades",
     "alerts": "مدیریت هشدار",
     "drafts": "معاملات گروهی",
-    "conditionalTrades": "معاملات شرطی",
+    "conditionalTrades": "@:oms.trades شرطی",
     "filter": "فیلترنویسی",
     "technical": "ابزار تکنیکال",
     "profit": "محاسبه بازده اوراق",
@@ -288,12 +291,19 @@
     "settings": "@:general.settings",
     "deposit": "واریز آنی",
     "refund": "برداشت وجه",
+    "depositReport": "@:general.report واریز",
+    "refundReport": "@:general.report تقاضای وجه",
     "reports": "گزارشات",
     "users": "کاربران",
     "about": "درباره",
     "wealth": "سبدبان",
     "realtime": "لحظه‌ای",
-    "brokerage": "@:general.brokerage"
+    "credits": "اعتبارات",
+    "tradesReport": "@:general.report @:oms.trades",
+    "switchBrokerage": "@:general.switch @:oms.brokerage",
+    "switchBrokerageReport": "@:general.report @:general.switch @:oms.brokerage",
+    "brokerage": "@:oms.brokerage",
+    "conditional": "@:general.conditional"
   },
   "bottom-panel": {
     "bests": "برترین‌ها",

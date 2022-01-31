@@ -55,30 +55,24 @@ export class WatchlistColumns {
   text: string
   value: string
   align: string | null
-  sortable: boolean | null
-  filterable: boolean | null
-  groupable: boolean | null
-  divider: boolean | null
-  class: string | string[] | null
-  cellClass: string | string[] | null
-  width: string | number | null
-  filter: Function | null
-  sort: Function | null
-  icon: string | null = null
-  draggable: boolean = true
+  sortable?: boolean | null
+  filterable?: boolean | null
+  groupable?: boolean | null
+  divider?: boolean | null
+  class?: string | string[] | null
+  cellClass?: string | string[] | null
+  width?: string | number | null
+  filter?: Function | null
+  sort?: Function | null
+  icon?: string | null
+  draggable: boolean
   constructor(text: string, value: string, align: string = 'center', width: string | null = null) {
     this.text = text
     this.value = value
     this.align = align
-    this.sortable = null
-    this.filterable = null
-    this.groupable = null
-    this.divider = null
-    this.class = null
-    this.cellClass = null
-    this.width = width
-    this.filter = null
-    this.sort = null
+    this.draggable = true
+    if (width)
+      this.width = width
   }
 }
 
