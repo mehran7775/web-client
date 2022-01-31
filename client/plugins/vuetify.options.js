@@ -6,6 +6,7 @@ import az from 'vuetify/es5/locale/az'
 import '@mdi/font/css/materialdesignicons.min.css'
 //import '@/assets/icons/ada/style.css'
 import '@/assets/icons/icosax/style.css'
+import '@/assets/icons/lotfisax/style.css'
 
 export default function ({ store, app }) {
   const ltheme = {

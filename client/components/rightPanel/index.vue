@@ -69,34 +69,75 @@
                   <v-list-item-title slot="activator">
                     {{ child.text ? child.text : $t(child.title) }}
                   </v-list-item-title>
-                  <div
+                  <v-tooltip
                     v-for="sub in child.children
                       ? child.children.value
                         ? child.children.value
                         : child.children
                       : []"
                     :key="sub.title"
-                    class="sub-item ps-4"
+                    left
                   >
-                    <div class="path ms-n2"></div>
-                    <v-list-item :to="sub.to ? sub.to : '#'">
+                    <template #activator="{ on, attrs }">
+                      <div v-on="on" v-bind="attrs" class="sub-item ps-4">
+                        <div class="path ms-n2"></div>
+                        <v-list-item :to="sub.to ? sub.to : '#'">
+                          <v-list-item-title>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            {{ sub.text ? sub.text : $t(sub.title) }}
+                          </v-list-item-title>
+                          <v-list-item-action class="my-0">
+                            <v-btn
+                              @click.prevent="
+                                (ev) => {
+                                  if (isMarked(sub)) unmark(sub);
+                                  else mark(sub);
+                                }
+                              "
+                              icon
+                              small
+                            >
+                              <v-icon
+                                :color="isMarked(sub) ? 'secondary' : 'default'"
+                                x-small
+                              >
+                                mdi-star
+                              </v-icon>
+                            </v-btn>
+                          </v-list-item-action>
+                        </v-list-item>
+                      </div>
+                    </template>
+                    {{ sub.text ? sub.text : $t(sub.title) }}
+                  </v-tooltip>
+                </v-list-group>
+                <v-tooltip v-else left>
+                  <template #activator="{ on, attrs }">
+                    <v-list-item
+                      v-on="on"
+                      v-bind="attrs"
+                      class="item mx-1"
+                      :to="child.to ? child.to : '#'"
+                    >
                       <v-list-item-title>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        {{ sub.text ? sub.text : $t(sub.title) }}
+                        {{ child.text ? child.text : $t(child.title) }}
                       </v-list-item-title>
-                      <v-list-item-action class="my-0">
+                      <v-list-item-action
+                        v-if="child.to && child.to != ''"
+                        class="my-0"
+                      >
                         <v-btn
                           @click.prevent="
                             (ev) => {
-                              if (isMarked(sub)) unmark(sub);
-                              else mark(sub);
+                              if (isMarked(child)) unmark(child);
+                              else mark(child);
                             }
                           "
                           icon
                           small
                         >
                           <v-icon
-                            :color="isMarked(sub) ? 'secondary' : 'default'"
+                            :color="isMarked(child) ? 'secondary' : 'default'"
                             x-small
                           >
                             mdi-star
@@ -104,39 +145,9 @@
                         </v-btn>
                       </v-list-item-action>
                     </v-list-item>
-                  </div>
-                </v-list-group>
-                <v-list-item
-                  v-else
-                  class="item mx-1"
-                  :to="child.to ? child.to : '#'"
-                >
-                  <v-list-item-title>
-                    {{ child.text ? child.text : $t(child.title) }}
-                  </v-list-item-title>
-                  <v-list-item-action
-                    v-if="child.to && child.to != ''"
-                    class="my-0"
-                  >
-                    <v-btn
-                      @click.prevent="
-                        (ev) => {
-                          if (isMarked(child)) unmark(child);
-                          else mark(child);
-                        }
-                      "
-                      icon
-                      small
-                    >
-                      <v-icon
-                        :color="isMarked(child) ? 'secondary' : 'default'"
-                        x-small
-                      >
-                        mdi-star
-                      </v-icon>
-                    </v-btn>
-                  </v-list-item-action>
-                </v-list-item>
+                  </template>
+                  {{ child.text ? child.text : $t(child.title) }}
+                </v-tooltip>
               </div>
             </v-list-item-group>
           </v-list>
@@ -202,40 +213,40 @@ export default defineComponent({
     });
     const items: Array<MenuItem> = [
       {
-        icon: "isax-eye",
+        icon: "lotfi-task-square",
         title: "menu.watchList",
         children: [
           {
-            icon: "isax-basket",
+            icon: "mdi-basket",
             title: "menu.wealth",
             to: "/watchlist/wealth",
             bookmarkPosition: BookmarkPosition.ToolBar,
           },
           {
-            icon: "isax-eye",
+            icon: "lotfi-task-square",
             title: "menu.basket",
             children: watchList,
           },
           {
-            icon: "isax-eye",
+            icon: "lotfi-task-square",
             title: "menu.industries",
             to: "/watchlist/industries",
             bookmarkPosition: BookmarkPosition.ToolBar,
           },
           {
-            icon: "isax-eye",
+            icon: "lotfi-task-square",
             title: "menu.boards",
             to: "/watchlist/boards",
             bookmarkPosition: BookmarkPosition.ToolBar,
           },
           {
-            icon: "isax-eye",
+            icon: "lotfi-task-square",
             title: "menu.instrumentTypes",
             to: "/watchlist/instrumentTypes",
             bookmarkPosition: BookmarkPosition.ToolBar,
           },
           {
-            icon: "isax-eye",
+            icon: "lotfi-task-square",
             title: "menu.conditional",
             to: "/watchlist/conditional",
             bookmarkPosition: BookmarkPosition.ToolBar,
@@ -279,19 +290,19 @@ export default defineComponent({
             bookmarkPosition: BookmarkPosition.RightPanel,
           },
           {
-            icon: "isax-calculator",
+            icon: "lotfi-receipt-edit",
             title: "menu.refundReport",
             to: "/accounting/refundReport",
             bookmarkPosition: BookmarkPosition.RightPanel,
           },
           {
-            icon: "isax-calculator",
+            icon: "lotfi-receipt-edit-3",
             title: "menu.depositReport",
             to: "/accounting/depositReport",
             bookmarkPosition: BookmarkPosition.RightPanel,
           },
           {
-            icon: "isax-calculator",
+            icon: "lotfi-empty-wallet-tick",
             title: "menu.credits",
             to: "/accounting/credits",
             bookmarkPosition: BookmarkPosition.RightPanel,
@@ -303,20 +314,20 @@ export default defineComponent({
         title: "menu.trades",
         children: [
           {
-            icon: "isax-money-change",
+            icon: "lotfi-receipt-edit-2",
             title: "menu.tradesReport",
             to: "tradesReport",
             bookmarkPosition: BookmarkPosition.RightPanel,
           },
           {
-            icon: "isax-money-change",
+            icon: "lotfi-group",
             title: "menu.switchBrokerage",
             to: "switchBrokerage",
             color: "warning",
             bookmarkPosition: BookmarkPosition.RightPanel,
           },
           {
-            icon: "isax-money-change",
+            icon: "lotfi-receipt-edit-1",
             title: "menu.switchBrokerageReport",
             to: "switchBrokerageReport",
             bookmarkPosition: BookmarkPosition.RightPanel,
@@ -336,7 +347,7 @@ export default defineComponent({
         bookmarkPosition: BookmarkPosition.RightPanel,
       },
       {
-        icon: "isax-money-recive",
+        icon: "lotfi-wallet-money",
         title: "menu.conditionalTrades",
         to: "/conditional-trades",
         bookmarkPosition: BookmarkPosition.RightPanel,

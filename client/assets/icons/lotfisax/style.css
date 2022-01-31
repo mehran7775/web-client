@@ -1,0 +1,105 @@
+@font-face {
+  font-family: 'lotfisax';
+  src:  url('fonts/lotfisax.eot?vws94z');
+  src:  url('fonts/lotfisax.eot?vws94z#iefix') format('embedded-opentype'),
+    url('fonts/lotfisax.ttf?vws94z') format('truetype'),
+    url('fonts/lotfisax.woff?vws94z') format('woff'),
+    url('fonts/lotfisax.svg?vws94z#lotfisax') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="lotfi-"], [class*=" lotfi-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'lotfisax' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.lotfi-wallet-money:before {
+  content: "\e900";
+}
+.lotfi-task-square:before {
+  content: "\e901";
+}
+.lotfi-sms:before {
+  content: "\e902";
+}
+.lotfi-receipt-edit-4:before {
+  content: "\e903";
+}
+.lotfi-receipt-edit-3:before {
+  content: "\e904";
+}
+.lotfi-receipt-edit-2:before {
+  content: "\e905";
+}
+.lotfi-receipt-edit-1:before {
+  content: "\e906";
+}
+.lotfi-receipt-edit:before {
+  content: "\e907";
+}
+.lotfi-notification-bing:before {
+  content: "\e908";
+}
+.lotfi-note-favorite:before {
+  content: "\e909";
+}
+.lotfi-note-2:before {
+  content: "\e90a";
+}
+.lotfi-money-change:before {
+  content: "\e90b";
+}
+.lotfi-messages-3:before {
+  content: "\e90c";
+}
+.lotfi-link:before {
+  content: "\e90d";
+}
+.lotfi-group:before {
+  content: "\e90e";
+}
+.lotfi-empty-wallet-tick:before {
+  content: "\e90f";
+}
+.lotfi-document-text:before {
+  content: "\e910";
+}
+.lotfi-danger:before {
+  content: "\e911";
+}
+.lotfi-close-square:before {
+  content: "\e912";
+}
+.lotfi-card-send:before {
+  content: "\e913";
+}
+.lotfi-card-receive:before {
+  content: "\e914";
+}
+.lotfi-calendar-search-1:before {
+  content: "\e915";
+}
+.lotfi-calendar-search:before {
+  content: "\e916";
+}
+.lotfi-calendar-remove:before {
+  content: "\e917";
+}
+.lotfi-calendar-add:before {
+  content: "\e918";
+}
+.lotfi-calendar:before {
+  content: "\e919";
+}
