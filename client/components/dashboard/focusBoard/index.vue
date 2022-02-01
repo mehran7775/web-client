@@ -12,8 +12,8 @@
       >
         <v-btn
           @click.stop.prevent="() => unmark(b)"
-          width="16"
-          height="16"
+          width="14"
+          height="14"
           class="removeMark pa-0 ma-0"
           color="error"
         >
@@ -140,7 +140,7 @@ export default defineComponent({
   position: relative
   .removeMark
     position: absolute
-    bottom: -15px
+    top: -10px
     left: -15px
     z-index: 1000
     display: none
