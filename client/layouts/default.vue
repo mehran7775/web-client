@@ -82,66 +82,81 @@
         <nuxt />
       </div>
       <bottom-panel />
+      <v-footer
+        class="text-no-wrap ma-0 pa-0"
+        :height="32"
+      >
+        <v-row dense>
+          <v-col cols="1.5" sm="2" xs="5" class="ma-0 pa-0 ps-5 pt-2">
+            <v-icon small>mdi-account-group</v-icon>
+            &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
+          </v-col>
+          <v-col cols="9" sm="8" xs="7" class="ma-0 pa-0">
+            <span>
+              <v-badge
+                dot
+                left
+                class="ms-5"
+                color="green"
+                offset-y="75%"
+                offset-x="-5"
+                >{{ $t("accounting.account.amount") }}0</v-badge
+              >
+              <v-badge
+                dot
+                left
+                class="ms-5"
+                color="red"
+                offset-y="75%"
+                offset-x="-5"
+                >{{ $t("accounting.account.blockedAmount") }}0</v-badge
+              >
+              <v-badge
+                dot
+                left
+                class="ms-5"
+                color="orange"
+                offset-y="75%"
+                offset-x="-5"
+              >
+                {{ $t("accounting.account.onlineBlockedAmount") }}0
+              </v-badge>
+              <v-badge
+                dot
+                left
+                class="ms-5"
+                color="blue"
+                offset-y="75%"
+                offset-x="-5"
+                >{{ $t("accounting.account.remaining") }}0</v-badge
+              >
+              <v-badge
+                dot
+                left
+                class="ms-5"
+                color="#89abcd"
+                offset-y="75%"
+                offset-x="-5"
+                >{{ $t("accounting.account.credit") }}0</v-badge
+              >
+            </span>
+          </v-col>
+          <v-col cols="1.5" sm="2" class="ma-0 pa-0"> </v-col>
+        </v-row>
+      </v-footer>
     </v-main>
-    <v-footer class="text-no-wrap ma-0 pa-0" :height="32" :absolute="true" app>
-      <v-row dense>
-        <v-col cols="1.5" sm="2" xs="5" class="ma-0 pa-0 ps-5 pt-2">
-          <v-icon small>mdi-account-group</v-icon>
-          &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
-        </v-col>
-        <v-col cols="9" sm="8" xs="7" class="ma-0 pa-0">
-          <span>
-            <v-badge
-              dot
-              left
-              class="ms-5"
-              color="green"
-              offset-y="75%"
-              offset-x="-5"
-              >{{ $t("accounting.account.amount") }}0</v-badge
-            >
-            <v-badge
-              dot
-              left
-              class="ms-5"
-              color="red"
-              offset-y="75%"
-              offset-x="-5"
-              >{{ $t("accounting.account.blockedAmount") }}0</v-badge
-            >
-            <v-badge
-              dot
-              left
-              class="ms-5"
-              color="orange"
-              offset-y="75%"
-              offset-x="-5"
-            >
-              {{ $t("accounting.account.onlineBlockedAmount") }}0
-            </v-badge>
-            <v-badge
-              dot
-              left
-              class="ms-5"
-              color="blue"
-              offset-y="75%"
-              offset-x="-5"
-              >{{ $t("accounting.account.remaining") }}0</v-badge
-            >
-            <v-badge
-              dot
-              left
-              class="ms-5"
-              color="#89abcd"
-              offset-y="75%"
-              offset-x="-5"
-              >{{ $t("accounting.account.credit") }}0</v-badge
-            >
-          </span>
-        </v-col>
-        <v-col cols="1.5" sm="2" class="ma-0 pa-0"> </v-col>
-      </v-row>
-    </v-footer>
+    <floating-button
+      bottom="8px"
+      right="8px"
+      width="32px"
+      height="32px"
+      z-index="1000"
+      small
+      color="primary lighten-1"
+      depressed
+    >
+      <v-icon> isax-messages-2-bold </v-icon>
+    </floating-button>
     <snackbar />
   </v-app>
 </template>
@@ -233,8 +248,7 @@ export default defineComponent({
 
 .dashboardmain-nuxt
   overflow-y: auto
-  height: calc(100vh - 74px)
-  padding-bottom: 32px
+  height: calc(100vh - 106px)
 
 .dashboardmain-nuxt.collaps
   height: calc(52vh)

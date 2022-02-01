@@ -363,7 +363,7 @@ export default defineComponent({
         bookmarkPosition: BookmarkPosition.RightPanel,
       },
       {
-        icon: "isax-note-2",
+        icon: "lotfi-note-2",
         title: "menu.profit",
         to: "/profit",
         bookmarkPosition: BookmarkPosition.RightPanel,

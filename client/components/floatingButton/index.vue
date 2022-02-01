@@ -31,6 +31,18 @@ export default defineComponent({
       type: String,
       default: "absolute",
     },
+    "z-index":{
+      type: Number,
+      default: 1000,
+    },
+    width: {
+      type: String,
+      default: undefined,
+    },
+    height: {
+      type: String,
+      default: undefined,
+    },
   },
   inheritAttrs: false,
   setup(props) {

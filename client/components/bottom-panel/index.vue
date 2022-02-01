@@ -1,7 +1,5 @@
 <template>
   <v-footer
-    v-if="isLogin"
-    :absolute="true"
     :class="{
       'ma-0 pa-0': true,
       expanded: expanded,
