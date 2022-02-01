@@ -11,7 +11,7 @@ export class MenuItem {
   color?: string
   to?: string
   children?: Array<MenuItem> | ComputedRef<Array<MenuItem>>
-  bookmarkPosition?: BookmarkPosition = BookmarkPosition.RightPanel
+  bookmarkPosition?: BookmarkPosition | null = null
   click?: Function
   constructor(icon: string, title: string) {
     this.icon = icon

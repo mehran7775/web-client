@@ -22,8 +22,8 @@
       >
         <v-tooltip left>
           <template #activator="{ on, attrs }">
-            <v-btn width="32" height="32" depressed>
-              <v-icon size="16" :color="item.color" v-bind="attrs" v-on="on">
+            <v-btn width="32" height="32" color="transparent" depressed>
+              <v-icon size="18" :color="item.color" v-bind="attrs" v-on="on">
                 {{ item.icon }}
               </v-icon>
             </v-btn>
@@ -36,7 +36,7 @@
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
             <v-btn width="32" height="32" depressed>
-              <v-icon size="16" :color="item.color" v-bind="attrs" v-on="on">
+              <v-icon size="18" :color="item.color" v-bind="attrs" v-on="on">
                 {{ item.icon }}
               </v-icon>
             </v-btn>
@@ -94,6 +94,7 @@
                                   else mark(sub);
                                 }
                               "
+                              v-if="sub.bookmarkPosition"
                               icon
                               small
                             >
@@ -133,6 +134,7 @@
                               else mark(child);
                             }
                           "
+                          v-if="child.bookmarkPosition"
                           icon
                           small
                         >
@@ -231,25 +233,21 @@ export default defineComponent({
             icon: "lotfi-task-square",
             title: "menu.industries",
             to: "/watchlist/industries",
-            bookmarkPosition: BookmarkPosition.ToolBar,
           },
           {
             icon: "lotfi-task-square",
             title: "menu.boards",
             to: "/watchlist/boards",
-            bookmarkPosition: BookmarkPosition.ToolBar,
           },
           {
             icon: "lotfi-task-square",
             title: "menu.instrumentTypes",
             to: "/watchlist/instrumentTypes",
-            bookmarkPosition: BookmarkPosition.ToolBar,
           },
           {
             icon: "lotfi-task-square",
             title: "menu.conditional",
             to: "/watchlist/conditional",
-            bookmarkPosition: BookmarkPosition.ToolBar,
           },
         ],
       },
@@ -536,7 +534,9 @@ export default defineComponent({
           min-width: 42px
           height: 32px !important
           &--active
+            &::before
+              background-color: rgba(0,0,0,0) !important
             .v-btn
               color: $c-primary
-              background-color: rgba($c-primary,0.1)
+              background-color: rgba($c-primary,0.1) !important
 </style>
