@@ -10,7 +10,7 @@
     fixed
     app
   >
-    <v-tabs class="ma-0 pa-0" v-model="selected" vertical hide-slider>
+    <v-tabs class="ma-0 pa-0 tabs" v-model="selected" vertical hide-slider>
       <v-tab
         v-for="item in items"
         :key="item.title"
@@ -35,7 +35,7 @@
       <v-tab v-for="item in shourtcuts" :key="item.title" :to="item.to">
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
-            <v-btn width="32" height="32" depressed>
+            <v-btn width="32" height="32" color="transparent" depressed>
               <v-icon size="18" :color="item.color" v-bind="attrs" v-on="on">
                 {{ item.icon }}
               </v-icon>
@@ -49,7 +49,7 @@
     <v-tabs-items v-model="selected">
       <v-tab-item v-for="item in items" :key="item.title">
         <div>
-          <h4 class="text-center">
+          <h4 class="text-center mt-1">
             {{ $t(item.title) }}
           </h4>
           <v-list dense>
@@ -168,11 +168,12 @@ import {
   useStore,
   useRouter,
   watch,
-  reactive,
+  ComputedRef,
 } from "@nuxtjs/composition-api";
 import { useShortcut } from "@/utils/shortcutManager";
-import { Bookmark, BookmarkPosition, CreateBookmark, MenuItem } from "~/types";
+import { BookmarkPosition, CreateBookmark, MenuItem } from "~/types";
 import { useAsrTrader, useUser } from "~/composables";
+import { getMenuItems } from "./items";
 
 export default defineComponent({
   name: "right-panel",
@@ -199,7 +200,7 @@ export default defineComponent({
           return shourtcuts.value.findIndex((val) => val.to == data.to) > -1;
       }
     });
-    const watchList = computed(() => {
+    const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
       const lists = userManager.watchList;
       const res = [];
       for (let k in lists.value) {
@@ -213,174 +214,7 @@ export default defineComponent({
       }
       return res;
     });
-    const items: Array<MenuItem> = [
-      {
-        icon: "lotfi-task-square",
-        title: "menu.watchList",
-        children: [
-          {
-            icon: "mdi-basket",
-            title: "menu.wealth",
-            to: "/watchlist/wealth",
-            bookmarkPosition: BookmarkPosition.ToolBar,
-          },
-          {
-            icon: "lotfi-task-square",
-            title: "menu.basket",
-            children: watchList,
-          },
-          {
-            icon: "lotfi-task-square",
-            title: "menu.industries",
-            to: "/watchlist/industries",
-          },
-          {
-            icon: "lotfi-task-square",
-            title: "menu.boards",
-            to: "/watchlist/boards",
-          },
-          {
-            icon: "lotfi-task-square",
-            title: "menu.instrumentTypes",
-            to: "/watchlist/instrumentTypes",
-          },
-          {
-            icon: "lotfi-task-square",
-            title: "menu.conditional",
-            to: "/watchlist/conditional",
-          },
-        ],
-      },
-      {
-        icon: "isax-graph",
-        title: "menu.portfolio",
-        children: [
-          {
-            icon: "isax-graph",
-            title: "menu.brokerage",
-            to: "/portfolio/brokerage",
-            bookmarkPosition: BookmarkPosition.RightPanel,
-          },
-          {
-            icon: "isax-graph",
-            title: "menu.realtime",
-            to: "/portfolio/realtime",
-            bookmarkPosition: BookmarkPosition.RightPanel,
-          },
-        ],
-      },
-      {
-        icon: "isax-calculator",
-        title: "menu.accounting",
-        children: [
-          {
-            icon: "isax-card-receive",
-            title: "menu.deposit",
-            to: "/accounting/deposit",
-            color: "success",
-            bookmarkPosition: BookmarkPosition.RightPanel,
-          },
-          {
-            icon: "isax-card-send",
-            title: "menu.refund",
-            to: "/accounting/refund",
-            color: "error",
-            bookmarkPosition: BookmarkPosition.RightPanel,
-          },
-          {
-            icon: "lotfi-receipt-edit",
-            title: "menu.refundReport",
-            to: "/accounting/refundReport",
-            bookmarkPosition: BookmarkPosition.RightPanel,
-          },
-          {
-            icon: "lotfi-receipt-edit-3",
-            title: "menu.depositReport",
-            to: "/accounting/depositReport",
-            bookmarkPosition: BookmarkPosition.RightPanel,
-          },
-          {
-            icon: "lotfi-empty-wallet-tick",
-            title: "menu.credits",
-            to: "/accounting/credits",
-            bookmarkPosition: BookmarkPosition.RightPanel,
-          },
-        ],
-      },
-      {
-        icon: "isax-money-change",
-        title: "menu.trades",
-        children: [
-          {
-            icon: "lotfi-receipt-edit-2",
-            title: "menu.tradesReport",
-            to: "tradesReport",
-            bookmarkPosition: BookmarkPosition.RightPanel,
-          },
-          {
-            icon: "lotfi-group",
-            title: "menu.switchBrokerage",
-            to: "switchBrokerage",
-            color: "warning",
-            bookmarkPosition: BookmarkPosition.RightPanel,
-          },
-          {
-            icon: "lotfi-receipt-edit-1",
-            title: "menu.switchBrokerageReport",
-            to: "switchBrokerageReport",
-            bookmarkPosition: BookmarkPosition.RightPanel,
-          },
-        ],
-      },
-      {
-        icon: "isax-presention-chart",
-        title: "menu.alerts",
-        to: "/alerts",
-        bookmarkPosition: BookmarkPosition.RightPanel,
-      },
-      {
-        icon: "isax-convert-card-outline",
-        title: "menu.drafts",
-        to: "/drafts",
-        bookmarkPosition: BookmarkPosition.RightPanel,
-      },
-      {
-        icon: "lotfi-wallet-money",
-        title: "menu.conditionalTrades",
-        to: "/conditional-trades",
-        bookmarkPosition: BookmarkPosition.RightPanel,
-      },
-      {
-        icon: "isax-filter-edit",
-        title: "menu.filter",
-        to: "/filters",
-        bookmarkPosition: BookmarkPosition.RightPanel,
-      },
-      {
-        icon: "isax-status-up",
-        title: "menu.technical",
-        to: "/technical",
-        bookmarkPosition: BookmarkPosition.RightPanel,
-      },
-      {
-        icon: "lotfi-note-2",
-        title: "menu.profit",
-        to: "/profit",
-        bookmarkPosition: BookmarkPosition.RightPanel,
-      },
-      {
-        icon: "isax-map-outline",
-        title: "menu.marketMap",
-        to: "/market-map",
-        bookmarkPosition: BookmarkPosition.RightPanel,
-      },
-      {
-        icon: "isax-setting-2",
-        title: "menu.settings",
-        to: "/settings",
-        bookmarkPosition: BookmarkPosition.RightPanel,
-      },
-    ];
+    const items = getMenuItems(watchList);
 
     const expand: Ref<boolean> = ref(true);
     const drawer = computed({
@@ -493,11 +327,14 @@ export default defineComponent({
     border-bottom: 1px solid rgba(0, 0, 0, 0.05)
     border-radius: 0 0 $border-radius-root 0
     position: absolute
+.tabs
+  background-color: rgba($c-primary,0.05)
 </style>
 
 <style lang="sass">
 .r-panel
   overflow: hidden
+  overflow-y: auto
   &.v-navigation-drawer--mini-variant
     width: 42px !important
   .v-navigation-drawer__content

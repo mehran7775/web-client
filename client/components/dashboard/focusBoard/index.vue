@@ -8,7 +8,7 @@
         color="primary"
         :to="b.to"
         height="28"
-        class="ms-1 px-2 bookmark"
+        class="ms-1 me-1 px-2 bookmark"
       >
         <v-btn
           @click.stop.prevent="() => unmark(b)"

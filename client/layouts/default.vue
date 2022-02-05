@@ -147,7 +147,7 @@
     </v-main>
     <floating-button
       bottom="8px"
-      right="8px"
+      right="4px"
       width="32px"
       height="32px"
       z-index="1000"

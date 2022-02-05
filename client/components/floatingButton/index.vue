@@ -31,8 +31,8 @@ export default defineComponent({
       type: String,
       default: "absolute",
     },
-    "z-index":{
-      type: Number,
+    "z-index": {
+      type: [Number, String],
       default: 1000,
     },
     width: {

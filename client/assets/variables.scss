@@ -1,6 +1,6 @@
 // Root
 $font-size-root: 12px;
-$border-radius-root: 8px;
+$border-radius-root: 6px;
 
 $c-default: #828282;
 $c-secondary: #EF394E;
@@ -123,6 +123,9 @@ $data-table-dense-header-height: 32px;
 $data-table-regular-header-height: 32px;
 $data-table-regular-row-height: 32px;
 $data-table-row-group-children-td-height: 32px;
+
+// Tabs
+$tabs-bar-background-color: rgba($c-primary,0);
 
 // Button
 $btn-text-transform: none;
