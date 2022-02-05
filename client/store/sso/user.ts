@@ -1,4 +1,5 @@
-import { AxiosError,AxiosResponse } from 'axios'
+import { reactive, ref } from "@nuxtjs/composition-api"
+import { AxiosError, AxiosResponse } from 'axios'
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { login, refreshToken, logout } from '~/repositories/sso/jwt_token'
 import * as stores from '@/types/stores'
@@ -26,7 +27,6 @@ export const getters: GetterTree<stores.UserState, stores.RootState> = {
     return state.tryCount
   },
   settingsChanged: (state) => state.settingsChanged,
-  watchlistChanged: (state) => state.watchlistChanged,
 }
 
 export const mutations: MutationTree<stores.UserState> = {
@@ -69,16 +69,14 @@ export const mutations: MutationTree<stores.UserState> = {
       sessionStorage.clear()
       localStorage.clear()
     }
-    state.watchlistChanged = false
-    state.settingsChanged = false
+    state.settingsChanged = reactive([])
     state.token = null
     state.user = AnonymousUser()
     state.refresh = null
   },
   setUser(state, data: User) {
     state.user = data
-    state.watchlistChanged = false
-    state.settingsChanged = false
+    state.settingsChanged = reactive([])
     if (process.client) {
       SetClientCookie(userKey, data.userName, {})
       localStorage.setItem(userKey, JSON.stringify(data))
@@ -86,29 +84,25 @@ export const mutations: MutationTree<stores.UserState> = {
   },
   setSettings(state, settings: Setting) {
     state.user.settings = settings
-    state.settingsChanged = false
-    state.watchlistChanged = false
   },
   setCols(state, data: Array<WatchlistColumns>) {
+    if (state.settingsChanged.findIndex(item => item.key == '/columns') == -1)
+      state.settingsChanged.push({ key: '/columns', value: [...state.user.settings.columns] })
     state.user.settings.columns = data
-    state.user = Object.assign({}, state.user)
-    state.settingsChanged = true
+
   },
   setWatchlist(state, data: { watchlist: Array<string>, name: string }) {
+    if (state.settingsChanged.findIndex(item => item.key == '/watch_lists/' + data.name) == -1)
+      state.settingsChanged.push({ key: '/watch_lists/' + data.name, value: [...state.user.settings.columns] })
     state.user.settings.watch_lists[data.name] = data.watchlist
-    state.user = Object.assign({}, state.user)
-    state.watchlistChanged = true
+
   },
-  updateWatchlist(state, data: object) {
-    state.user.settings.watch_lists = data
-    state.user = Object.assign({}, state.user)
-    state.watchlistChanged = true
+  settingsChanged(state, data: { key: string, value: any }) {
+    if (state.settingsChanged.findIndex(item => item.key == data.key) == -1)
+      state.settingsChanged.push({ key: data.key, value: data.value })
   },
-  setWatchlistChanged(state, data: boolean) {
-    state.watchlistChanged = data
-  },
-  setSettingsChanged(state, data: boolean) {
-    state.settingsChanged = data
+  settingsNotChanged(state, data: string) {
+    state.settingsChanged.splice(state.settingsChanged.findIndex(item => item.key == data), 1)
   }
 }
 
@@ -181,7 +175,7 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
     return 401
   },
   async update_settings({ commit, state }, payload: { path: string, value: any }) {
-    commit("setSettingsChanged", false)
+    commit("settingsChanged", { key: payload.path, value: null })
     try {
       const resp = await updateUserSettings(payload.path, payload.value, this.$axios)
       if (resp.data.setting) {
@@ -190,7 +184,7 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
           localStorage.setItem(userKey, JSON.stringify(state.user))
       }
     } catch (e) {
-      commit("setSettingsChanged", true)
+      commit("settingsNotChanged", payload.path)
       throw e
     }
   },

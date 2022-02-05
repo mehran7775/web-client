@@ -1,4 +1,6 @@
 import { User, AnonymousUser } from '@/types/'
+import { reactive } from "@nuxtjs/composition-api"
+import { KeyValuePairs } from '../collection'
 
 export class RootState {
   locale: string
@@ -20,8 +22,7 @@ export class UserState {
   refresh: string | null
   userName: string | null
   renewToken: boolean
-  watchlistChanged: boolean
-  settingsChanged: boolean
+  settingsChanged: Array<KeyValuePairs<string, any>>
   constructor() {
     this.tryCount = 0
     this.token = null
@@ -29,8 +30,7 @@ export class UserState {
     this.refresh = null
     this.userName = null
     this.renewToken = false
-    this.watchlistChanged = false
-    this.settingsChanged = false
+    this.settingsChanged = reactive([])
   }
   toJSON() {
     return { ...this }

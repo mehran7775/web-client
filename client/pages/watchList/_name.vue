@@ -78,7 +78,13 @@ export default defineComponent({
     const loading = ref(false);
     const name = route.value.params.name ?? "new";
     const watchlists = userManager.watchList;
-    const edited = userManager.watchlistChanged;
+    const edited = computed(
+      () =>
+        userManager.settingsChanged.value.findIndex(
+          (item) => item.key == "/watch_lists/" + name
+        ) != -1
+    );
+
     const searchModel = ref(new InstrumentSearchModel(watchlists.value[name]));
 
     watch(
@@ -86,6 +92,12 @@ export default defineComponent({
       (wls) => {
         searchModel.value.ids.splice(0, searchModel.value.ids.length);
         searchModel.value.ids.push(...wls);
+      }
+    );
+    watch(
+      () => Object.keys(userManager.settingsChanged.value),
+      (val) => {
+        console.log(val);
       }
     );
     async function reset() {

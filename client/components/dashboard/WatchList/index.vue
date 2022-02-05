@@ -233,11 +233,11 @@ export default defineComponent({
     const i18n = useI18n();
     const sh = useShortcut();
     const itemToDelete = ref(null);
+    const name = route.value.params.name;
     const _instruments: Array<InstrumentCache> = reactive([]);
     const instruments: Array<InstrumentCache> = reactive([]);
     const confirmInstrumentRemoval = ref(false);
-
-    const editMode = userManager.watchlistChanged;
+    
     const watchlists = userManager.watchList;
 
     const focused = instrumentManager.getFocus;
@@ -320,7 +320,6 @@ export default defineComponent({
     }
     async function drop(item: InstrumentCache) {
       if (dragItem && dragItem != item) {
-        const name = route.value.params.name;
         const wl = [...watchlists.value[name]];
         const ind = wl.findIndex((i) => i == dragItem?.id.toString());
         wl.splice(ind, 1);
@@ -401,7 +400,6 @@ export default defineComponent({
       remove,
       Side,
       order,
-      editMode,
       headers,
       inst: instruments,
       confirmInstrumentRemoval,

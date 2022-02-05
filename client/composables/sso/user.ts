@@ -18,7 +18,6 @@ export function useUser(store: Store<any>) {
     const watchList = computed(() => state.user?.settings?.watch_lists ?? {})
     const tryCount = computed(() => state.tryCount)
     const settingsChanged = computed(() => state.settingsChanged)
-    const watchlistChanged = computed(() => state.watchlistChanged)
 
     // Mutations
     function setHome(data: string) {
@@ -50,15 +49,6 @@ export function useUser(store: Store<any>) {
     }
     function setWatchlist(data: { watchlist: Array<string>, name: string }) {
         store.commit("sso/user/setWatchlist", data)
-    }
-    function updateWatchlist(data: Object) {
-        store.commit("sso/user/updateWatchlist", data)
-    }
-    function setWatchlistChanged(data: boolean) {
-        store.commit("sso/user/setWatchlistChanged", data)
-    }
-    function setSettingsChanged(data: boolean) {
-        store.commit("sso/user/setSettingsChanged", data)
     }
 
     // Actions TODO Move buisiness here
@@ -99,7 +89,6 @@ export function useUser(store: Store<any>) {
         watchList,
         tryCount,
         settingsChanged,
-        watchlistChanged,
         // Mutations
         setHome,
         setRefreshingToken,
@@ -111,9 +100,6 @@ export function useUser(store: Store<any>) {
         setSettings,
         setCols,
         setWatchlist,
-        updateWatchlist,
-        setWatchlistChanged,
-        setSettingsChanged,
         // Actions
         getUser,
         checkTries,
