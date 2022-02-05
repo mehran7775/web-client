@@ -10,45 +10,53 @@
     fixed
     app
   >
-    <v-tabs class="ma-0 pa-0 tabs" v-model="selected" vertical hide-slider>
-      <v-tab
-        v-for="item in items"
-        :key="item.title"
-        @click="
-          () => {
-            $emit('update:mini', !mini);
-          }
-        "
-      >
-        <v-tooltip left>
-          <template #activator="{ on, attrs }">
-            <v-btn width="32" height="32" color="transparent" depressed>
-              <v-icon size="18" :color="item.color" v-bind="attrs" v-on="on">
-                {{ item.icon }}
-              </v-icon>
-            </v-btn>
-          </template>
-          <span>{{ item.text ? item.text : $t(item.title) }}</span>
-        </v-tooltip>
-      </v-tab>
-      <v-divider />
-      <v-tab v-for="item in shourtcuts" :key="item.title" :to="item.to">
-        <v-tooltip left>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn width="32" height="32" color="transparent" depressed>
-              <v-icon size="18" :color="item.color" v-bind="attrs" v-on="on">
-                {{ item.icon }}
-              </v-icon>
-            </v-btn>
-          </template>
-          <span>{{ item.text ? item.text : $t(item.title) }}</span>
-        </v-tooltip>
-      </v-tab>
+    <v-tabs
+      class="ma-0 pa-0 pt-1"
+      v-model="selected"
+      vertical
+      hide-slider
+      center-active
+    >
+      <div class="tabs">
+        <v-tab
+          v-for="item in items"
+          :key="item.title"
+          @click="
+            () => {
+              $emit('update:mini', !mini);
+            }
+          "
+        >
+          <v-tooltip left>
+            <template #activator="{ on, attrs }">
+              <v-btn width="32" height="32" color="transparent" depressed>
+                <v-icon size="18" :color="item.color" v-bind="attrs" v-on="on">
+                  {{ item.icon }}
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>{{ item.text ? item.text : $t(item.title) }}</span>
+          </v-tooltip>
+        </v-tab>
+        <v-divider />
+        <v-tab v-for="item in shourtcuts" :key="item.title" :to="item.to">
+          <v-tooltip left>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn width="32" height="32" color="transparent" depressed>
+                <v-icon size="18" :color="item.color" v-bind="attrs" v-on="on">
+                  {{ item.icon }}
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>{{ item.text ? item.text : $t(item.title) }}</span>
+          </v-tooltip>
+        </v-tab>
+      </div>
     </v-tabs>
 
     <v-tabs-items v-model="selected">
       <v-tab-item v-for="item in items" :key="item.title">
-        <div>
+        <div class="details">
           <h4 class="text-center mt-1">
             {{ $t(item.title) }}
           </h4>
@@ -329,12 +337,19 @@ export default defineComponent({
     position: absolute
 .tabs
   background-color: rgba($c-primary,0.05)
+  overflow-y: auto
+  height: 100vh
+  padding-bottom: 54px
+  width: 42px
+.details
+  overflow-y: auto
 </style>
 
 <style lang="sass">
 .r-panel
-  overflow: hidden
-  overflow-y: auto
+  .tabs
+    &::-webkit-scrollbar
+      display: block
   &.v-navigation-drawer--mini-variant
     width: 42px !important
   .v-navigation-drawer__content
