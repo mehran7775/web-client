@@ -82,67 +82,60 @@
         <nuxt />
       </div>
       <bottom-panel />
-      <v-footer
-        class="text-no-wrap ma-0 pa-0"
-        :height="32"
-      >
-        <v-row dense>
-          <v-col cols="1.5" sm="2" xs="5" class="ma-0 pa-0 ps-5 pt-2">
-            <v-icon small>mdi-account-group</v-icon>
+      <v-footer class="text-no-wrap ma-0 pa-2" :height="32">
+        <div class="d-flex flex-grow-1 flex-row">
+          <div class="center">
+            <v-badge
+              dot
+              left
+              class="ms-5"
+              color="green"
+              offset-y="75%"
+              offset-x="-5"
+              >{{ $t("accounting.account.amount") }}0</v-badge
+            >
+            <v-badge
+              dot
+              left
+              class="ms-5"
+              color="red"
+              offset-y="75%"
+              offset-x="-5"
+              >{{ $t("accounting.account.blockedAmount") }}0</v-badge
+            >
+            <v-badge
+              dot
+              left
+              class="ms-5"
+              color="orange"
+              offset-y="75%"
+              offset-x="-5"
+            >
+              {{ $t("accounting.account.onlineBlockedAmount") }}0
+            </v-badge>
+            <v-badge
+              dot
+              left
+              class="ms-5"
+              color="blue"
+              offset-y="75%"
+              offset-x="-5"
+              >{{ $t("accounting.account.remaining") }}0</v-badge
+            >
+            <v-badge
+              dot
+              left
+              class="ms-5"
+              color="#89abcd"
+              offset-y="75%"
+              offset-x="-5"
+              >{{ $t("accounting.account.credit") }}0</v-badge
+            >
+          </div>
+          <div class="d-flex ms-auto cw">
             &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
-          </v-col>
-          <v-col cols="9" sm="8" xs="7" class="ma-0 pa-0">
-            <span>
-              <v-badge
-                dot
-                left
-                class="ms-5"
-                color="green"
-                offset-y="75%"
-                offset-x="-5"
-                >{{ $t("accounting.account.amount") }}0</v-badge
-              >
-              <v-badge
-                dot
-                left
-                class="ms-5"
-                color="red"
-                offset-y="75%"
-                offset-x="-5"
-                >{{ $t("accounting.account.blockedAmount") }}0</v-badge
-              >
-              <v-badge
-                dot
-                left
-                class="ms-5"
-                color="orange"
-                offset-y="75%"
-                offset-x="-5"
-              >
-                {{ $t("accounting.account.onlineBlockedAmount") }}0
-              </v-badge>
-              <v-badge
-                dot
-                left
-                class="ms-5"
-                color="blue"
-                offset-y="75%"
-                offset-x="-5"
-                >{{ $t("accounting.account.remaining") }}0</v-badge
-              >
-              <v-badge
-                dot
-                left
-                class="ms-5"
-                color="#89abcd"
-                offset-y="75%"
-                offset-x="-5"
-                >{{ $t("accounting.account.credit") }}0</v-badge
-              >
-            </span>
-          </v-col>
-          <v-col cols="1.5" sm="2" class="ma-0 pa-0"> </v-col>
-        </v-row>
+          </div>
+        </div>
       </v-footer>
     </v-main>
     <floating-button
@@ -252,4 +245,6 @@ export default defineComponent({
 
 .dashboardmain-nuxt.collaps
   height: calc(52vh)
+.cw
+  color: rgba($c-default,0.5 )
 </style>
