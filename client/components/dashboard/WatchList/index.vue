@@ -87,9 +87,9 @@
             >
               <v-tooltip bottom>
                 <template #activator="{ on }">
-                  <h4 style="line-height: 2.5" v-on="on" :class="['d-block']">
+                  <span style="line-height: 2.5" v-on="on" class="d-block">
                     {{ item.name }}
-                  </h4>
+                  </span>
                 </template>
                 {{ $t(parseStatus(item.status)) }}
               </v-tooltip>
