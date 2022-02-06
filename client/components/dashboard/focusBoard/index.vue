@@ -138,7 +138,6 @@ export default defineComponent({
 </script>
 
 <style lang="sass" scoped>
-$bookmark-width: 75px
 .bookmark
   position: relative
   width: $bookmark-width
