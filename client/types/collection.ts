@@ -5,8 +5,8 @@ export type KeyValuePairs<key, value> = {
 
 export class AutoCompleteItem {
   id: string
-  name: String
-  fullname: String
+  name: string
+  fullname: string
   constructor(id: string, name: string, fullname: string = "") {
     this.id = id
     this.name = name

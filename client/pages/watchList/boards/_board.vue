@@ -46,13 +46,13 @@ export default defineComponent({
     const searchModel = ref(new InstrumentSearchModel());
     searchModel.value.length = 15;
     board.value = parseInt(
-      (route.value.query["boardIds"] as string | null) ?? "-1"
+      (route.value.params["board"] as string | null) ?? "-1"
     );
 
     async function select(val: AutoCompleteItem) {
       loading.value = true;
       try {
-        router.push("?boardIds=" + val.id);
+        router.push("/watchlist/boards/" + val.id);
         searchModel.value.boardIds = [parseInt(val.id)];
       } finally {
         loading.value = false;

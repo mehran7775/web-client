@@ -21,10 +21,10 @@ export class MenuItem {
 
 export type Bookmark = {
   title: string,
-  text: string | undefined,
+  text?: string | undefined,
   to: string,
   icon: string,
-  color: string | undefined,
+  color?: string | undefined,
 }
 export function CreateBookmark(item: MenuItem): Bookmark {
   return { color: item.color, icon: item.icon, text: item.text, title: item.title, to: item.to ?? "#" + item.title }

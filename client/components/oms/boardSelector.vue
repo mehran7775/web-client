@@ -28,24 +28,116 @@
     <template #append>
       <v-icon class="ma-2 arrow" x-small> isax-arrow-down </v-icon>
     </template>
+    <template #item="{ item, on, attrs }">
+      <v-list-item v-on="on" v-bind="attrs">
+        <v-list-item-title>
+          {{ item.name }}
+        </v-list-item-title>
+        <div class="d-flex flex-row justify-end my-0">
+          <v-btn
+            @click.stop.prevent="
+              (ev) => {
+                if (isMarked(item)) unmark(item);
+                else mark(item);
+              }
+            "
+            icon
+            x-small
+          >
+            <v-icon :color="isMarked(item) ? 'secondary' : 'default'" x-small>
+              mdi-star
+            </v-icon>
+          </v-btn>
+          <v-btn
+            @click.stop.prevent="
+              (ev) => {
+                setHome(item);
+              }
+            "
+            icon
+            x-small
+          >
+            <v-icon
+              :color="generateAddress(item.id) == home ? 'info' : 'default'"
+              x-small
+            >
+              mdi-home
+            </v-icon>
+          </v-btn>
+        </div>
+      </v-list-item>
+    </template>
   </v-select>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, useContext } from "@nuxtjs/composition-api";
-import { AutoCompleteItem } from "@/types";
+import {
+  computed,
+  defineComponent,
+  reactive,
+  useContext,
+  useStore,
+} from "@nuxtjs/composition-api";
+import { AutoCompleteItem, Bookmark } from "@/types";
 import { getBoards } from "@/repositories/oms/board_manager";
+import { useUser } from "~/composables";
 
 export default defineComponent({
   inheritAttrs: false,
   props: {
     value: {
-      type: Number
+      type: Number,
     },
   },
   setup(props, ctx) {
+    const store = useStore();
+    const userManager = useUser(store);
     const context = useContext();
+    const bookmarks = userManager.getBookmarks;
     const items: Array<AutoCompleteItem> = reactive([]);
+    const home = computed(() => userManager.me.value.settings.home);
+    function generateAddress(id: string): string {
+      return "/watchlist/boards/" + id;
+    }
+
+    const isMarked = computed(() => (data: AutoCompleteItem) => {
+      return (
+        bookmarks.value.findIndex((val) => val.to == generateAddress(data.id)) >
+        -1
+      );
+    });
+    function setHome(item: AutoCompleteItem) {
+      userManager.update_settings({
+        path: "/home",
+        value: generateAddress(item.id),
+      });
+    }
+    function mark(item: AutoCompleteItem) {
+      const bk: Bookmark = {
+        to: generateAddress(item.id),
+        title: item.name,
+        text: item.name,
+        icon: "mdi-bulletin-board",
+      };
+      const tmp = [...bookmarks.value, bk];
+      userManager.update_settings({
+        path: "/bookmarks",
+        value: tmp,
+      });
+    }
+    function unmark(item: AutoCompleteItem) {
+      const to = generateAddress(item.id);
+      let tmp = [...bookmarks.value];
+      tmp.splice(
+        tmp.findIndex((item) => item.to == to),
+        1
+      );
+      userManager.update_settings({
+        path: "/bookmarks",
+        value: tmp,
+      });
+    }
+
     getBoards(context.$axios).then((resp) => {
       items.push(...resp.data.data);
       if (props.value != -1) {
@@ -56,6 +148,12 @@ export default defineComponent({
       }
     });
     return {
+      isMarked,
+      generateAddress,
+      mark,
+      unmark,
+      setHome,
+      home,
       items,
     };
   },

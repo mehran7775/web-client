@@ -2,28 +2,33 @@
   <v-card class="ma-0 pa-0" flat tile>
     <v-toolbar :height="42" color="defualt-bg" flat dense>
       <slot name="toolbar"> </slot>
-      <v-btn
-        v-for="b in bookmarks"
-        :key="b.to"
-        color="primary"
-        :to="b.to"
-        height="28"
-        class="ms-1 me-1 px-2 bookmark"
-      >
-        <v-btn
-          @click.stop.prevent="() => unmark(b)"
-          width="14"
-          height="14"
-          class="removeMark pa-0 ma-0"
-          color="error"
-        >
-          <v-icon class="pa-0 ma-0" x-small>mdi-close</v-icon>
-        </v-btn>
-        <span class="label">
-          <v-icon v-if="b.icon" x-small> {{ b.icon }} </v-icon>
-          {{ b.text ? b.text : $t(b.title) }}
-        </span>
-      </v-btn>
+      <v-tooltip v-for="b in bookmarks" :key="b.to">
+        <template #activator="{ on, attrs }">
+          <v-btn
+            color="primary"
+            :to="b.to"
+            v-on="on"
+            v-bind="attrs"
+            height="28"
+            class="ms-1 me-1 px-2 bookmark"
+          >
+            <v-btn
+              @click.stop.prevent="() => unmark(b)"
+              width="14"
+              height="14"
+              class="removeMark pa-0 ma-0"
+              color="error"
+            >
+              <v-icon class="pa-0 ma-0" x-small>mdi-close</v-icon>
+            </v-btn>
+            <span class="label">
+              <v-icon v-if="b.icon" x-small> {{ b.icon }} </v-icon>
+              {{ b.text ? b.text : $t(b.title) }}
+            </span>
+          </v-btn>
+        </template>
+        {{ b.text ? b.text : $t(b.title) }}
+      </v-tooltip>
       <v-spacer />
       <!-- <v-btn
         @click="setHome"
