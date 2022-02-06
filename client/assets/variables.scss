@@ -110,15 +110,15 @@ $headings: (
 
 // List
 $list-item-padding: 0 4px;
-$list-item-title-font-size: 0.8334rem;
-$list-item-dense-title-font-size: 0.8334rem;
+$list-item-title-font-size: 0.857rem;
+$list-item-dense-title-font-size: 0.875rem;
 $list-item-action-icon-margin: 4px;
 $list-item-child-min-width: 4px;
 // Card
 $card-text-font-size: 0.8334rem;
 // Data Table
 $data-table-regular-header-font-size: 0.8334rem;
-$data-table-regular-row-font-size: 0.8334rem;
+$data-table-regular-row-font-size: 1rem;
 $data-table-dense-header-height: 32px;
 $data-table-regular-header-height: 32px;
 $data-table-regular-row-height: 32px;
@@ -156,7 +156,8 @@ $list-dense-min-height: 32px;
 $stepper-step-step-height: 32px;
 $stepper-step-step-width: 32px;
 
-$body-font-family: "Times New Roman";
+
+$body-font-family: "Iran Sans X FaNum, Times New Roman";
 
 
 @import "./light.scss";

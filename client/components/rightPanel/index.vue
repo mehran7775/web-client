@@ -340,7 +340,7 @@ export default defineComponent({
   overflow-y: auto
   height: 100vh
   padding-bottom: 54px
-  width: 42px
+  width: 48px
 .details
   overflow-y: auto
 </style>
@@ -351,7 +351,7 @@ export default defineComponent({
     &::-webkit-scrollbar
       display: block
   &.v-navigation-drawer--mini-variant
-    width: 42px !important
+    width: 48px !important
   .v-navigation-drawer__content
     display: flex
     flex-direction: row
@@ -372,7 +372,7 @@ export default defineComponent({
     //     &[aria-expanded="true"]
     //       background-color: rgba($c-primary,0.1)
   .v-tabs
-    width: 42px
+    width: 48px
     vertical-align: top
     &--vertical
       > .v-tabs-bar
@@ -383,7 +383,7 @@ export default defineComponent({
           display: block
           vertical-align: middle
           justify-content: center !important
-          min-width: 42px
+          min-width: 48px
           height: 32px !important
           &--active
             &::before

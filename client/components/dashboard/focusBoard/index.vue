@@ -19,8 +19,10 @@
         >
           <v-icon class="pa-0 ma-0" x-small>mdi-close</v-icon>
         </v-btn>
-        <v-icon v-if="b.icon" x-small> {{ b.icon }} </v-icon>
-        {{ b.text ? b.text : $t(b.title) }}
+        <span class="label">
+          <v-icon v-if="b.icon" x-small> {{ b.icon }} </v-icon>
+          {{ b.text ? b.text : $t(b.title) }}
+        </span>
       </v-btn>
       <v-spacer />
       <!-- <v-btn
@@ -136,8 +138,15 @@ export default defineComponent({
 </script>
 
 <style lang="sass" scoped>
+$bookmark-width: 75px
 .bookmark
   position: relative
+  width: $bookmark-width
+  .label
+    max-width: calc($bookmark-width - 8px)
+    text-overflow: ellipsis
+    overflow: hidden
+    white-space: nowrap
   .removeMark
     position: absolute
     top: -10px

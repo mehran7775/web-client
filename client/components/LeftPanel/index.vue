@@ -185,7 +185,7 @@ export default defineComponent({
   margin: 0 !important
   overflow: hidden
   &.v-navigation-drawer--mini-variant
-    width: 42px !important
+    width: 48px !important
   .v-navigation-drawer__content
     display: flex
     flex-direction: row
@@ -195,7 +195,7 @@ export default defineComponent({
     background-color: #EEEEEE !important
     height: 100%
     overflow-y: auto
-    width: calc(100% - 42px)
+    width: calc(100% - 48px)
     display: block
     .tab-item
       width: 100%
@@ -209,7 +209,7 @@ export default defineComponent({
         height: 100%
   .v-tabs
     vertical-align: top
-    max-width: 42px
+    max-width: 48px
     .v-tab
       transform: rotate(-90deg)
       margin: 0

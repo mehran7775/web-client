@@ -39,7 +39,13 @@
             }
           }
         "
-        class="ma-0 pa-0 me-5"
+        :class="[
+          'ma-0',
+          'pa-0',
+          'me-5',
+          'drawer-activator',
+          !rightMenu.mini && rightMenu.drawer ? 'open' : '',
+        ]"
         size="18"
       >
         mdi-menu-open
@@ -140,7 +146,7 @@
     </v-main>
     <floating-button
       bottom="8px"
-      right="4px"
+      right="8px"
       width="32px"
       height="32px"
       z-index="1000"
@@ -214,6 +220,9 @@ export default defineComponent({
 </style>
 
 <style lang="sass" scoped>
+.drawer-activator
+  &.open
+    transform: rotate(-180deg)
 .center
   position: absolute
   margin-left: auto
@@ -228,8 +237,8 @@ export default defineComponent({
 
 @media (min-width: 960px)
   .dashboardmain-page
-    padding-left: 42px !important
-    padding-right: 42px !important
+    padding-left: 48px !important
+    padding-right: 48px !important
     &.left
       padding-left: 152px !important
     &.right
