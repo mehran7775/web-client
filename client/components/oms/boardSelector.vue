@@ -3,6 +3,7 @@
     :items="items"
     item-value="id"
     item-text="name"
+    :value="value"
     v-on="$listeners"
     v-bind="$attrs"
     class="board-search"
@@ -37,11 +38,22 @@ import { getBoards } from "@/repositories/oms/board_manager";
 
 export default defineComponent({
   inheritAttrs: false,
-  setup() {
+  props: {
+    value: {
+      type: Number
+    },
+  },
+  setup(props, ctx) {
     const context = useContext();
     const items: Array<AutoCompleteItem> = reactive([]);
     getBoards(context.$axios).then((resp) => {
       items.push(...resp.data.data);
+      if (props.value != -1) {
+        ctx.emit(
+          "input",
+          items.find((item) => item.id == props.value?.toString())
+        );
+      }
     });
     return {
       items,
@@ -54,10 +66,20 @@ export default defineComponent({
 .board-search
   background-color: rgba($c-primary,0.05)
   border-radius: $border-radius-root
+  font-size: 0.75rem
   max-width: 164px
   &.v-select
     &--is-menu-active
       .arrow
         transform: rotate(-180deg)
 </style>
-
+<style lang="sass">
+.board-search
+  &.v-select
+    *
+      color: $c-primary !important
+  input
+    color: $c-primary !important
+    &::placeholder
+      color: $c-primary !important
+</style>

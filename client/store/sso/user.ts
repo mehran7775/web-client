@@ -175,7 +175,6 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
     return 401
   },
   async update_settings({ commit, state }, payload: { path: string, value: any }) {
-    commit("settingsChanged", { key: payload.path, value: null })
     try {
       const resp = await updateUserSettings(payload.path, payload.value, this.$axios)
       if (resp.data.setting) {
@@ -184,7 +183,7 @@ export const actions: ActionTree<stores.UserState, stores.RootState> = {
           localStorage.setItem(userKey, JSON.stringify(state.user))
       }
     } catch (e) {
-      commit("settingsNotChanged", payload.path)
+      commit("settingsChanged", { key: payload.path, value: null })
       throw e
     }
   },

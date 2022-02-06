@@ -45,7 +45,9 @@ export default defineComponent({
     const loading = ref(false);
     const searchModel = ref(new InstrumentSearchModel());
     searchModel.value.length = 15;
-    board.value = parseInt(route.value.query["boardIds"] as string);
+    board.value = parseInt(
+      (route.value.query["boardIds"] as string | null) ?? "-1"
+    );
 
     async function select(val: AutoCompleteItem) {
       loading.value = true;
