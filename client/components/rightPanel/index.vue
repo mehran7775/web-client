@@ -39,7 +39,16 @@
           </v-tooltip>
         </v-tab>
         <v-divider />
-        <v-tab v-for="item in shourtcuts" :key="item.title" :to="item.to">
+        <v-tab
+          v-for="item in shourtcuts"
+          :key="item.title"
+          :to="item.to"
+          @click="
+            () => {
+              $emit('update:mini', true);
+            }
+          "
+        >
           <v-tooltip left>
             <template v-slot:activator="{ on, attrs }">
               <v-btn width="32" height="32" color="transparent" depressed>
@@ -203,9 +212,13 @@ export default defineComponent({
     const isMarked = computed(() => (data: MenuItem) => {
       switch (data.bookmarkPosition) {
         case BookmarkPosition.ToolBar:
-          return bookmarks.value.findIndex((val) => val.to == data.to) > -1;
+          return (
+            bookmarks.value.findIndex((val) => val.title == data.title) > -1
+          );
         case BookmarkPosition.RightPanel:
-          return shourtcuts.value.findIndex((val) => val.to == data.to) > -1;
+          return (
+            shourtcuts.value.findIndex((val) => val.title == data.title) > -1
+          );
       }
     });
     const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
@@ -235,10 +248,16 @@ export default defineComponent({
     });
 
     function mark(data: MenuItem) {
+      const bk = CreateBookmark(data);
+      if (bk.to.indexOf("?") > -1) {
+        bk.to = bk.to + "&s=maked";
+      } else {
+        bk.to = bk.to + "?s=maked";
+      }
       switch (data.bookmarkPosition) {
         case BookmarkPosition.ToolBar:
           {
-            const tmp = [...bookmarks.value, CreateBookmark(data)];
+            const tmp = [...bookmarks.value, bk];
             userManager.update_settings({
               path: "/bookmarks",
               value: tmp,
@@ -247,7 +266,7 @@ export default defineComponent({
           break;
         case BookmarkPosition.RightPanel:
           {
-            const tmp = [...shourtcuts.value, CreateBookmark(data)];
+            const tmp = [...shourtcuts.value, bk];
             userManager.update_settings({
               path: "/shourtcuts",
               value: tmp,
@@ -287,7 +306,7 @@ export default defineComponent({
       }
     }
     watch(selected, (n, o) => {
-      if (typeof n != null) {
+      if (typeof n == 'string' || typeof n != null) {
         context.emit("update:mini", false);
       }
     });

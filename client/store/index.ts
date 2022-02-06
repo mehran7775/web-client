@@ -8,7 +8,7 @@ export const state = () => new stores.RootState()
 export const getters: GetterTree<stores.RootState, stores.RootState> = {
   locale: (state): string => state.locale,
   rtl: (state): boolean => ['fa', 'ar', 'azIr', 'ckb'].includes(state.locale),
-  menu: (state): number | null => state.menuIndex,
+  menu: (state): string | number | null => state.menu,
   percentFormatter: (state): Intl.NumberFormat => Intl.NumberFormat(state.locale,
     { style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 3 }),
   currencyFormatter: (state): Intl.NumberFormat => Intl.NumberFormat(state.locale, { style: 'currency', currency: 'IRR', minimumFractionDigits: 3, maximumFractionDigits: 3 }),
@@ -17,7 +17,7 @@ export const getters: GetterTree<stores.RootState, stores.RootState> = {
 
 export const mutations: MutationTree<stores.RootState> = {
   setMenu(state, payload: number | null) {
-    state.menuIndex = payload
+    state.menu = payload
   },
   setLocale(state, payload: string) {
     state.locale = payload

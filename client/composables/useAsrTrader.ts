@@ -16,8 +16,8 @@ export function useAsrTrader(store: Store<any>) {
     })
     const rtl = computed(() => ['fa', 'ar', 'azIr', 'ckb'].includes(state.locale))
     const menu = computed({
-        get() { return state.menuIndex ?? 0 },
-        set(menu: number | null) {
+        get() { return state.menu ?? 0 },
+        set(menu: string | number | null) {
             setMenu(menu)
         }
     })
@@ -27,7 +27,7 @@ export function useAsrTrader(store: Store<any>) {
     const formatter = computed(() => Intl.NumberFormat(state.locale, { minimumFractionDigits: 0, maximumFractionDigits: 3 }))
 
     // Mutations
-    function setMenu(payload: number | null) {
+    function setMenu(payload: string | number | null) {
         store.commit("setMenu", payload)
     }
     function setLocale(payload: string) {

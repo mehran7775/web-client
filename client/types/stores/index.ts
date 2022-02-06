@@ -4,11 +4,11 @@ import { KeyValuePairs } from '../collection'
 
 export class RootState {
   locale: string
-  menuIndex: number | null
+  menu: string | number | null
 
   constructor() {
     this.locale = process.env.VUE_APP_I18N_LOCALE ?? ''
-    this.menuIndex = null
+    this.menu = null
   }
   toJSON() {
     return { ...this }
