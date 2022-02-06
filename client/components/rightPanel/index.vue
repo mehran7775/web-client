@@ -103,7 +103,7 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             {{ sub.text ? sub.text : $t(sub.title) }}
                           </v-list-item-title>
-                          <v-list-item-action class="my-0">
+                          <div class="d-flex flex-row my-0">
                             <v-btn
                               @click.prevent="
                                 (ev) => {
@@ -113,7 +113,7 @@
                               "
                               v-if="sub.bookmarkPosition"
                               icon
-                              small
+                              x-small
                             >
                               <v-icon
                                 :color="isMarked(sub) ? 'secondary' : 'default'"
@@ -122,7 +122,24 @@
                                 mdi-star
                               </v-icon>
                             </v-btn>
-                          </v-list-item-action>
+                            <v-btn
+                              @click.prevent="
+                                (ev) => {
+                                  setHome(sub);
+                                }
+                              "
+                              v-if="sub.bookmarkPosition"
+                              icon
+                              x-small
+                            >
+                              <v-icon
+                                :color="sub.to == home ? 'info' : 'default'"
+                                x-small
+                              >
+                                mdi-home
+                              </v-icon>
+                            </v-btn>
+                          </div>
                         </v-list-item>
                       </div>
                     </template>
@@ -140,9 +157,9 @@
                       <v-list-item-title>
                         {{ child.text ? child.text : $t(child.title) }}
                       </v-list-item-title>
-                      <v-list-item-action
+                      <div
                         v-if="child.to && child.to != ''"
-                        class="my-0"
+                        class="d-flex flex-row my-0"
                       >
                         <v-btn
                           @click.prevent="
@@ -153,7 +170,7 @@
                           "
                           v-if="child.bookmarkPosition"
                           icon
-                          small
+                          x-small
                         >
                           <v-icon
                             :color="isMarked(child) ? 'secondary' : 'default'"
@@ -162,7 +179,24 @@
                             mdi-star
                           </v-icon>
                         </v-btn>
-                      </v-list-item-action>
+                        <v-btn
+                          @click.prevent="
+                            (ev) => {
+                              setHome(child);
+                            }
+                          "
+                          v-if="child.bookmarkPosition"
+                          icon
+                          x-small
+                        >
+                          <v-icon
+                            :color="child.to == home ? 'info' : 'default'"
+                            x-small
+                          >
+                            mdi-home
+                          </v-icon>
+                        </v-btn>
+                      </div>
                     </v-list-item>
                   </template>
                   {{ child.text ? child.text : $t(child.title) }}
@@ -236,6 +270,7 @@ export default defineComponent({
       return res;
     });
     const items = getMenuItems(watchList);
+    const home = computed(() => userManager.me.value.settings.home);
 
     const expand: Ref<boolean> = ref(true);
     const drawer = computed({
@@ -246,7 +281,13 @@ export default defineComponent({
         context.emit("input", value);
       },
     });
-
+    function setHome(item: MenuItem) {
+      if (item.to)
+        userManager.update_settings({
+          path: "/home",
+          value: item.to,
+        });
+    }
     function mark(data: MenuItem) {
       const bk = CreateBookmark(data);
       if (bk.to.indexOf("?") > -1) {
@@ -306,7 +347,7 @@ export default defineComponent({
       }
     }
     watch(selected, (n, o) => {
-      if (typeof n == 'string' || typeof n != null) {
+      if (typeof n == "string" || typeof n != null) {
         context.emit("update:mini", false);
       }
     });
@@ -325,6 +366,8 @@ export default defineComponent({
     return {
       mark,
       unmark,
+      setHome,
+      home,
       isMarked,
       bookmarks,
       rtl,
