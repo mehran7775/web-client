@@ -140,9 +140,9 @@ export default defineComponent({
 <style lang="sass" scoped>
 .bookmark
   position: relative
-  width: $bookmark-width
+  width: 75px
   .label
-    max-width: calc($bookmark-width - 8px)
+    max-width: calc(75px - 8px)
     text-overflow: ellipsis
     overflow: hidden
     white-space: nowrap
