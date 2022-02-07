@@ -1,11 +1,14 @@
 import { computed } from "@nuxtjs/composition-api"
 import { Store } from "vuex/types"
 import { InstrumentState } from "~/store/oms/instruments"
-import { ClientDistribution, DailyPrice, InstrumentCache, InstrumentSearchModel, MarketHistory, OrderQueueItem, SameSectorQuery } from "~/types"
+import { ClientDistribution, DailyPrice, Instrument, InstrumentCache, InstrumentSearchModel, MarketHistory, OrderQueueItem, SameSectorQuery, Wealth } from "~/types"
+import manager from '@/repositories/oms/instruments_manager'
+import { useAxios } from "../useAxios"
 
 export function useInstrument(store: Store<any>) {
 
     const state = store.state.oms.instruments as InstrumentState
+    const axios = useAxios(store)
 
     // Getters
     const focusMode = computed({
@@ -27,7 +30,7 @@ export function useInstrument(store: Store<any>) {
         state.focus.findIndex((item) => item.id == state.selected?.id))
 
     // Mutations
-    function updateInstrument(data: InstrumentCache) {
+    function updateInstrument(data: InstrumentCache | Instrument | DailyPrice | MarketHistory | Wealth) {
         store.commit("oms/instruments/updateInstrument", data)
     }
     function setFocus(data: Array<InstrumentCache>) {
@@ -54,22 +57,62 @@ export function useInstrument(store: Store<any>) {
 
     //TODO Move Actions Buisiness here
     async function getInstrumentsDetail(searchModel: InstrumentSearchModel): Promise<Array<InstrumentCache>> {
-        return await store.dispatch("oms/instruments/getInstrumentsDetail", searchModel) as Array<InstrumentCache>
+        const res: Array<InstrumentCache> = []
+        const missing: Array<number> = []
+        if (searchModel.boardIds.length == 0 && searchModel.secIds.length == 0 && searchModel.ids.length != 0) {
+            let tmp = null
+            for (let i in searchModel.ids) {
+                tmp = state.cache.get(searchModel.ids[i].toString())
+                if (tmp) res.push(tmp)
+                else missing.push(searchModel.ids[i])
+            }
+        }
+
+        if (missing.length > 0 || searchModel.boardIds.length > 0 || searchModel.secIds.length > 0) {
+            const { data: { data } } = await manager.getInstruments(Object.assign({}, searchModel, { ids: missing }), axios)
+            data.forEach((item) => {
+                updateInstrument(item)
+                res.push(state.cache.get(item.id.toString()) as InstrumentCache)
+            })
+        }
+        const ids = res.map((item) => item.id)
+        getInstrumentPrices(ids)
+        getMarketHistory(ids)
+        return res
     }
     async function getInstrumentPrices(ids: Array<number>): Promise<Array<DailyPrice> | number> {
-        return await store.dispatch("oms/instruments/getInstrumentPrices", ids) as Array<DailyPrice>
+        const { data: { data } } = await manager.getDailyPrice(ids, axios)
+        data.forEach((item) => {
+            item.id = item.instrumentId
+            updateInstrument(item)
+        })
+        return data
     }
     async function getMarketHistory(ids: Array<number>): Promise<Array<MarketHistory> | number> {
-        return await store.dispatch("oms/instruments/getMarketHistory", ids) as Array<MarketHistory>
+        const { data: { data } } = await manager.getInstrumentMarketHistory(ids, axios)
+        data.forEach((item) => {
+            item.id = item.instrumentId
+            updateInstrument(item)
+        })
+        return data
     }
     async function getOrderQueue(id: number): Promise<{ queue: Array<OrderQueueItem> }> {
-        return await store.dispatch("oms/instruments/getOrderQueue", id)
+        let queue = state.orderQueueCache.get(id.toString())
+        if (queue)
+            return { queue }
+        const { data } = await manager.getOrderQueue(id, axios)
+        return data
     }
     async function getClientDistribution(id: number): Promise<ClientDistribution> {
-        return await store.dispatch("oms/instruments/getClientDistribution", id) as ClientDistribution
+        let clients = state.clientDistributionCache.get(id.toString())
+        if (clients)
+            return clients
+        const { data } = await manager.getClientDistribution(id, axios)
+        return data.clients
     }
     async function getTeammates(searchModel: SameSectorQuery): Promise<{ queue: Array<OrderQueueItem> }> {
-        return await store.dispatch("oms/instruments/getTeammates", searchModel)
+        const { data } = await manager.getTeammates(searchModel.instrument, searchModel.sector, axios)
+        return data
     }
 
     return {

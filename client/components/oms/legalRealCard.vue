@@ -115,35 +115,34 @@ import {
   ComputedRef,
 } from "@nuxtjs/composition-api";
 import { ClientDistribution } from "@/types";
-import { useAsrTrader } from "~/composables";
+import { useAsrTrader, useInstrument } from "~/composables";
 
 export default defineComponent({
   name: "legal-real-card",
   props: {
-    insId: Number,
+    insId: { type: Number, required: true },
     "hide-headers": Boolean,
     responsive: Boolean,
   },
   setup(props) {
     const store = useStore();
+    const instrumentManager = useInstrument(store);
     const appManager = useAsrTrader(store);
     const distribution: Ref<ClientDistribution> = ref(new ClientDistribution());
     const total = ref(1);
     const percentFormatter = appManager.percentFormatter;
     const formatter = appManager.formatter;
-    store
-      .dispatch("oms/instruments/getClientDistribution", props.insId)
-      .then((result) => {
-        if (result) {
-          distribution.value = result;
-          total.value =
-            result.real.buy.count * result.real.buy.amount +
-            result.real.sell.count * result.real.sell.amount +
-            result.legal.buy.count * result.legal.buy.amount +
-            result.legal.sell.count * result.legal.sell.amount;
-          total.value = total.value == 0 ? 1 : total.value;
-        }
-      });
+    instrumentManager.getClientDistribution(props.insId).then((result) => {
+      if (result) {
+        distribution.value = result;
+        total.value =
+          result.real.buy.count * result.real.buy.amount +
+          result.real.sell.count * result.real.sell.amount +
+          result.legal.buy.count * result.legal.buy.amount +
+          result.legal.sell.count * result.legal.sell.amount;
+        total.value = total.value == 0 ? 1 : total.value;
+      }
+    });
     return {
       distribution,
       total,

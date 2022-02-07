@@ -28,7 +28,9 @@
     dense
   >
     <template #prepend-inner>
-      <v-icon color="primary" class="mt-2" size="14"> isax-search-normal-1 </v-icon>
+      <v-icon color="primary" class="mt-2" size="14">
+        isax-search-normal-1
+      </v-icon>
     </template>
   </v-autocomplete>
 </template>
@@ -88,8 +90,9 @@ export default defineComponent({
       loading.value = true;
       if (
         watchlists.value[name] &&
-        watchlists.value[name].indexOf(val.id.toString()) == -1
+        watchlists.value[name]?.indexOf(val.id.toString()) == -1
       ) {
+        const sm = new InstrumentSearchModel([val.id]);
         const inst = await instrumentManager.getInstrumentsDetail(
           new InstrumentSearchModel([val.id])
         );
@@ -101,7 +104,7 @@ export default defineComponent({
         }
 
         const tmp = [val.id.toString()];
-        tmp.push(...watchlists.value[name]);
+        tmp.push(...(watchlists.value[name] ?? []));
         userManager.setWatchlist({
           name,
           watchlist: tmp,

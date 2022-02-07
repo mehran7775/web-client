@@ -1,7 +1,5 @@
-import { GetterTree, ActionTree, MutationTree } from 'vuex'
-import { Instrument, OrderQueueItem, Side, SameSectorQuery, InstrumentCache, MarketHistory, PaginatedResult, ClientDistributionResponse, ClientDistribution, Order, DailyPrice, InstrumentSearchModel } from '@/types'
-import { getInstruments, getOrderQueue, getTeammates, getInstrumentMarketHistory, getClientDistribution as Distribution, getDailyPrice } from '@/repositories/oms/instruments_manager'
-import { RootState } from '@/types/stores'
+import { MutationTree } from 'vuex'
+import { Instrument, OrderQueueItem, InstrumentCache, ClientDistribution } from '@/types'
 
 
 export const state = () => (new InstrumentState())
@@ -13,16 +11,6 @@ export class InstrumentState {
   selected: InstrumentCache | null = null
   orderQueueCache: Map<string, Array<OrderQueueItem>> = new Map<string, Array<OrderQueueItem>>()
   clientDistributionCache: Map<string, ClientDistribution> = new Map<string, ClientDistribution>()
-}
-
-export const getters: GetterTree<InstrumentState, RootState> = {
-  getByKey: (state) => (key: number): InstrumentCache | null => state.cache.get(key.toString()) || null,
-  getFocus: (state): Array<InstrumentCache> => state.focus,
-  getFocusMode: (state): number => state.focusViewMode,
-  getSelected: (state): InstrumentCache | null => state.selected,
-  getSelectedIndex: (state): number =>
-    state.focus.findIndex((item) => item.id == state.selected?.id),
-  getSelectedId: (state): number => state.selected?.id ?? -1,
 }
 
 export const mutations: MutationTree<InstrumentState> = {
@@ -57,63 +45,3 @@ export const mutations: MutationTree<InstrumentState> = {
   }
 }
 
-export const actions: ActionTree<InstrumentState, InstrumentState> = {
-  async getInstrumentsDetail({ state, commit, dispatch }, payload: InstrumentSearchModel): Promise<Array<InstrumentCache> | number> {
-    const res: Array<InstrumentCache> = []
-    const missing: Array<number> = []
-    if (payload.boardIds.length == 0 && payload.secIds.length == 0 && payload.ids.length != 0) {
-      let tmp = null
-      for (let i in payload.ids) {
-        tmp = state.cache.get(payload.ids[i].toString())
-        if (tmp) res.push(tmp)
-        else missing.push(payload.ids[i])
-      }
-    }
-
-    if (missing.length > 0 || payload.boardIds.length > 0 || payload.secIds.length > 0) {
-      const { data: { data } } = await getInstruments(Object.assign({}, payload, { ids: missing }), this.$axios)
-      data.forEach((item) => {
-        commit('updateInstrument', item)
-        res.push(state.cache.get(item.id.toString()) as InstrumentCache)
-      })
-    }
-    const ids = res.map((item) => item.id)
-    dispatch("getInstrumentPrices", ids)
-    dispatch("getMarketHistory", ids)
-    return res
-  },
-  async getInstrumentPrices({ state, commit }, payload: Array<number>): Promise<Array<DailyPrice> | number> {
-    const { data: { data } } = await getDailyPrice(payload, this.$axios)
-    data.forEach((item) => {
-      item.id = item.instrumentId
-      commit('updateInstrument', item)
-    })
-    return data
-  },
-  async getMarketHistory({ state, commit }, payload: Array<number>): Promise<Array<MarketHistory> | number> {
-    const { data: { data } } = await getInstrumentMarketHistory(payload, this.$axios)
-    data.forEach((item) => {
-      item.id = item.instrumentId
-      commit('updateInstrument', item)
-    })
-    return data
-  },
-  async getOrderQueue({ state, commit }, payload: number): Promise<Array<OrderQueueItem>> {
-    let queue = state.orderQueueCache.get(payload.toString())
-    if (queue)
-      return queue
-    const { data } = await getOrderQueue(payload, this.$axios)
-    return data
-  },
-  async getClientDistribution({ state, commit }, payload: number): Promise<ClientDistribution> {
-    let clients = state.clientDistributionCache.get(payload.toString())
-    if (clients)
-      return clients
-    const { data } = await Distribution(payload, this.$axios)
-    return data.clients
-  },
-  async getTeammates({ state, commit }, payload: SameSectorQuery): Promise<Array<OrderQueueItem>> {
-    const { data } = await getTeammates(payload.instrument, payload.sector, this.$axios)
-    return data
-  }
-}

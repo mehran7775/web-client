@@ -237,7 +237,7 @@ export default defineComponent({
     const _instruments: Array<InstrumentCache> = reactive([]);
     const instruments: Array<InstrumentCache> = reactive([]);
     const confirmInstrumentRemoval = ref(false);
-    
+
     const watchlists = userManager.watchList;
 
     const focused = instrumentManager.getFocus;
@@ -305,7 +305,7 @@ export default defineComponent({
     }
     async function remove(val: InstrumentCache) {
       const name = route.value.params.name;
-      const tmp = [...watchlists.value[name]];
+      const tmp = [...(watchlists.value[name] ?? [])];
       tmp.splice(tmp.lastIndexOf(val.id.toString()), 1);
       await userManager.update_settings({
         path: "/watch_lists/" + name,
@@ -320,7 +320,7 @@ export default defineComponent({
     }
     async function drop(item: InstrumentCache) {
       if (dragItem && dragItem != item) {
-        const wl = [...watchlists.value[name]];
+        const wl = [...(watchlists.value[name] ?? [])];
         const ind = wl.findIndex((i) => i == dragItem?.id.toString());
         wl.splice(ind, 1);
         const target = wl.findIndex((i) => i == item.id.toString());
@@ -349,11 +349,11 @@ export default defineComponent({
     });
     watch(
       () => [
-        props.searchModel.ids as Array<number>,
-        props.searchModel.boardIds as Array<number>,
-        props.searchModel.secIds as Array<number>,
-        props.searchModel.offset as number,
-        props.searchModel.length as number,
+        props.searchModel.ids,
+        props.searchModel.boardIds,
+        props.searchModel.secIds,
+        props.searchModel.offset,
+        props.searchModel.length,
       ],
       ([ids, boards, sectors, offset, len]) => {
         getData(props.searchModel);

@@ -13,7 +13,7 @@
     </v-row>
     <v-row class="ma-0 pa-0" dense>
       <v-col class="ma-0 pa-0" style="position: relative">
-        <WatchList :searchModel="searchModel" paginated/>
+        <WatchList :searchModel="searchModel" paginated />
         <loading :loading="loading" />
       </v-col>
     </v-row>

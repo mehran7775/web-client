@@ -85,19 +85,17 @@ export default defineComponent({
         ) != -1
     );
 
-    const searchModel = ref(new InstrumentSearchModel(watchlists.value[name]));
+    const searchModel = ref(
+      new InstrumentSearchModel(
+        watchlists.value[name]?.map((item) => parseInt(item)) ?? []
+      )
+    );
 
     watch(
       () => userManager.watchList.value[name],
       (wls) => {
         searchModel.value.ids.splice(0, searchModel.value.ids.length);
-        searchModel.value.ids.push(...wls);
-      }
-    );
-    watch(
-      () => Object.keys(userManager.settingsChanged.value),
-      (val) => {
-        console.log(val);
+        searchModel.value.ids.push(...(wls?.map((item) => parseInt(item)) ?? []));
       }
     );
     async function reset() {

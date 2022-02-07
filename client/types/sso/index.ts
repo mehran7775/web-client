@@ -23,7 +23,7 @@ export type Log = {
 export type Setting = {
   lang: string,
   columns: Array<WatchlistColumns>,
-  watch_lists: any,
+  watch_lists: { [key: string]: Array<string> | null },
   home: string,
   bookmarks: Array<Bookmark>,
   shourtcuts: Array<Bookmark>

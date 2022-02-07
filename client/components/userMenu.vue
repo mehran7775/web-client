@@ -77,7 +77,6 @@ export default defineComponent({
     ];
     function doLogout() {
       userMenu.value = false;
-      console.log('123')
       userManager.doLogout();
       router.push("/login");
     }
