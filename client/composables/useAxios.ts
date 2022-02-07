@@ -34,9 +34,11 @@ export function useAxios(store: Store<any>): AxiosInstance {
                     }
                 })
             }
+            return config
         })
 
-        instance.interceptors.response.use((response) => { }, async (err) => {
+        instance.interceptors.response.use((response) => { return response }, async (err) => {
+            console.log(err)
             let error = ErrorExtractor(err)
             if (error.code === 401) {
                 //TODO Handel refresh token

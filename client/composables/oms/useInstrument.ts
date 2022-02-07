@@ -59,6 +59,7 @@ export function useInstrument(store: Store<any>) {
     async function getInstrumentsDetail(searchModel: InstrumentSearchModel): Promise<Array<InstrumentCache>> {
         const res: Array<InstrumentCache> = []
         const missing: Array<number> = []
+
         if (searchModel.boardIds.length == 0 && searchModel.secIds.length == 0 && searchModel.ids.length != 0) {
             let tmp = null
             for (let i in searchModel.ids) {
@@ -75,9 +76,12 @@ export function useInstrument(store: Store<any>) {
                 res.push(state.cache.get(item.id.toString()) as InstrumentCache)
             })
         }
+
         const ids = res.map((item) => item.id)
-        getInstrumentPrices(ids)
-        getMarketHistory(ids)
+        if (ids.length > 0) {
+            getInstrumentPrices(ids)
+            getMarketHistory(ids)
+        }
         return res
     }
     async function getInstrumentPrices(ids: Array<number>): Promise<Array<DailyPrice> | number> {
