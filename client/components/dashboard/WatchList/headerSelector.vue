@@ -25,14 +25,14 @@
         </v-icon>
       </v-btn>
     </template>
-    <v-list min-height="256" dense>
-      <v-list-item class="px-2 item" @click.stop="">
+    <v-list class="pt-0" min-height="256" dense>
+      <v-list-item class="px-2 item" @click.stop="" dense>
         <v-list-item-title>
           {{ $t("general.export-excels") }}
         </v-list-item-title>
         <v-icon color="green" small> mdi-file-excel-outline </v-icon>
       </v-list-item>
-      <v-list-item class="px-2 item" @click.stop="resetDefault">
+      <v-list-item class="px-2 item" @click.stop="resetDefault" dense>
         <v-list-item-title>
           {{ $t("general.default-settings") }}
         </v-list-item-title>
