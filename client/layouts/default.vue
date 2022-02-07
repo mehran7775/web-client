@@ -23,11 +23,12 @@
       app
       dense
     >
-      <img class="me-1" src="/logo.png" height="20px" width="20px" />
-      <span v-if="!rightMenu.mini && rightMenu.drawer">
-        {{ $t("general.proxyCompany") }}
-      </span>
-
+      <nuxt-link class="d-flex flex-row px-2" :to="home">
+        <img class="ma-0 pa-0 me-1" src="/logo.png" height="20px" width="20px" />
+        <span v-if="!rightMenu.mini && rightMenu.drawer">
+          {{ $t("general.proxyCompany") }}
+        </span>
+      </nuxt-link>
       <v-icon
         @click.stop="
           () => {
@@ -166,9 +167,10 @@ import {
   computed,
   useStore,
   ref,
+  useRouter,
 } from "@nuxtjs/composition-api";
 import snackbar from "@/components/snacks.vue";
-import { useAsrTrader } from "~/composables";
+import { useAsrTrader, useUser } from "~/composables";
 
 export default defineComponent({
   components: {
@@ -177,6 +179,8 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const appManager = useAsrTrader(store);
+    const userManager = useUser(store);
+    const router = useRouter();
     const rightMenu = ref({
       mini: true,
       drawer: true,
@@ -193,7 +197,10 @@ export default defineComponent({
       return tab != null && tab != -1;
     });
 
+    const home = computed(() => userManager.me.value.settings.home);
+
     return {
+      home,
       formatter,
       collaps,
       locale,

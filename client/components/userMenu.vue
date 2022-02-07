@@ -1,12 +1,13 @@
 <template>
-  <v-menu v-model="userMenu" offset-y>
+  <v-menu v-model="userMenu" class="user-menu" offset-y>
     <template #activator="{ on, attrs }">
       <v-btn
         height="28"
         min-width="184px"
         v-bind="attrs"
         v-on="on"
-        class="ma-0 pa-0 px-3 justify-start"
+        class="ma-0 pa-0 px-3 justify-start user-menu-activator"
+        color="transparent"
         depressed
       >
         <profile-picture
@@ -41,8 +42,6 @@
 
 <script lang="ts">
 import {
-  computed,
-  ComputedRef,
   defineComponent,
   ref,
   useRouter,
@@ -88,3 +87,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="sass" scoped>
+.user-menu-activator
+  &::before
+    background-color: $c-primary !important
+</style>
