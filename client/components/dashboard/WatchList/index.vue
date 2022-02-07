@@ -52,7 +52,7 @@
                 isax-eye
               </v-icon>
               <v-icon
-                class="ma-0 pa-0 mx-2"
+                class="ma-0 pa-0 mx-1"
                 color="success"
                 @click="() => order(item, Side.Buy)"
                 :disabled="(item.status & 3) != 3"
@@ -85,7 +85,7 @@
               "
               dot
             >
-              <v-tooltip bottom>
+              <v-tooltip right>
                 <template #activator="{ on }">
                   <span style="line-height: 2.5" v-on="on" class="d-block">
                     {{ item.name }}

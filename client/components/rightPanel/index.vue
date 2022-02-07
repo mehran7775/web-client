@@ -11,13 +11,13 @@
     app
   >
     <v-tabs
-      class="ma-0 pa-0 pt-1"
+      class="ma-0 pa-0"
       v-model="selected"
       vertical
       hide-slider
       center-active
     >
-      <div class="tabs">
+      <div class="tabs pt-1">
         <v-tab
           v-for="item in items"
           :key="item.title"

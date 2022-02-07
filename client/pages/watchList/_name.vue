@@ -17,6 +17,7 @@
               class="ma-0 ms-1 pa-0"
               height="28"
               width="56"
+              depressed
             >
               {{ $t("general.apply") }}
             </v-btn>
@@ -27,6 +28,7 @@
               class="ma-0 ms-1 pa-0"
               height="28"
               width="56"
+              depressed
             >
               {{ $t("general.cancel") }}
             </v-btn>

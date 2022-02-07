@@ -11,6 +11,7 @@
             v-bind="attrs"
             height="28"
             class="ms-1 me-1 px-2 bookmark"
+            depressed
           >
             <v-btn
               @click.stop.prevent="() => unmark(b)"
