@@ -2,8 +2,10 @@ import { Plugin } from "@nuxt/types"
 import { Snack } from "~/store/snacks"
 import { AxiosError } from 'axios'
 import { ErrorExtractor } from "~/utils/error"
+import { useUser } from "~/composables"
 
 const accessor: Plugin = ({ $axios, redirect, store }) => {
+  const userManager = useUser(store)
   $axios.onRequest((config) => {
     Object.assign(config, {
       withCredentials: true,
@@ -11,7 +13,7 @@ const accessor: Plugin = ({ $axios, redirect, store }) => {
       headers: {
         ...config.headers,
         ...{
-          authorization: store.getters['sso/user/getToken']
+          authorization: userManager.getToken.value
         }
       }
     })
@@ -21,7 +23,7 @@ const accessor: Plugin = ({ $axios, redirect, store }) => {
     let error = ErrorExtractor(err)
     if (error.code === 401) {
       try {
-        await store.dispatch('sso/user/refreshToken')
+        await userManager.refreshToken()
         return $axios.request(err.config)
       }
       catch (err) {

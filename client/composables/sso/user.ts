@@ -3,12 +3,25 @@ import { computed } from "@nuxtjs/composition-api"
 import { Store } from "vuex/types"
 import { AnonymousUser, Log, LoginModel, Paginated, PaginatedResult, Setting, User, WatchlistColumns } from "~/types"
 import { UserState } from "~/types/stores"
+import userManager from '@/repositories/sso/user_manager';
+import jwtManager from '~/repositories/sso/jwt_token'
+import { GetClientCookies } from '~/utils/cookie'
+import { useAxios } from '../useAxios'
+
+export const refreshKey: string = 'jwtRefreshKey';
+export const tokenKey: string = 'jwtKey';
+export const userKey: string = 'userCache';
 
 export function useUser(store: Store<any>) {
     const state = store.state.sso.user as UserState
 
+    const axios = useAxios(store)
+
     // Getters
-    const refreshingToken = computed(() => state.renewToken)
+    const refreshingToken = computed({
+        get() { return state.renewToken },
+        set(val: boolean) { setRefreshingToken(val) }
+    })
     const getBookmarks = computed(() => state.user.settings.bookmarks || [])
     const getShourtcuts = computed(() => state.user.settings.shourtcuts || [])
     const getToken = computed(() => state.token)
@@ -50,31 +63,101 @@ export function useUser(store: Store<any>) {
     function setWatchlist(data: { watchlist: Array<string>, name: string }) {
         store.commit("sso/user/setWatchlist", data)
     }
+    function setSettingsChanged(data: { key: string, value: any }) {
+        store.commit("sso/user/settingsChanged", data)
+    }
+    function settingsNotChanged(data: string) {
+        store.commit("sso/user/settingsNotChanged", data)
+    }
 
     // Actions TODO Move buisiness here
-    async function getUser(data: string): Promise<User | number> {
-        return await store.dispatch("sso/user/getUser", data)
+    async function getUser(userName: string): Promise<User | number> {
+        const { data, status } = await userManager.getUser(userName ?? state.userName, axios)
+        setUser(data)
+        return data || status
     }
-    function checkTries(data: string) {
-        store.dispatch("sso/user/checkTries", data)
+    function checkTries(userName: string) {
+        const tr = GetClientCookies()[userName + ".tryCount"]
+        if (tr && tr != "") {
+            tries({ user: userName, tries: parseInt(tr) })
+        } else {
+            tries({ user: userName, tries: 0 })
+        }
     }
-    async function login(data: LoginModel): Promise<number> {
-        return await store.dispatch("sso/user/login", data)
+    async function login(payload: LoginModel): Promise<number> {
+        try {
+            refreshingToken.value = true
+            tries({ user: payload.userName, tries: state.tryCount + 1 })
+            const { data, status } = await jwtManager.login(
+                payload.userName,
+                payload.password,
+                payload.captcha
+            )
+            setToken('Bearer ' + data.token)
+            setRefresh(data.refresh)
+            await getUser(payload.userName)
+            return status
+        } catch (err: unknown) {
+            const resp = err as AxiosError<any>
+            if (resp.response) {
+                if (resp.response.data.tryCount)
+                    tries({ user: payload.userName, tries: resp.response.data.tryCount })
+                throw err
+            }
+            throw err
+        } finally {
+            refreshingToken.value = false
+        }
     }
     async function doLogout(): Promise<void> {
-        return await store.dispatch("sso/user/logout")
+        try {
+            await jwtManager.logout(axios)
+        } finally {
+            logout()
+        }
     }
     async function refreshToken(): Promise<number> {
-        return await store.dispatch("sso/user/refreshToken")
+        const token = state.refresh
+        if (token) {
+            try {
+                refreshingToken.value = true
+                const { data, status } = await jwtManager.refreshToken(token)
+                if (status >= 200 && status < 300 && !!data.token) {
+                    setToken('Bearer ' + data.token)
+                    setRefresh(data.refresh)
+                } else if (status >= 400) {
+                    logout()
+                }
+                return status
+            } catch (err) {
+                logout()
+            } finally {
+                refreshingToken.value = false
+            }
+        }
+        return 401
     }
-    async function update_settings(data: { path: string, value: any }): Promise<void> {
-        return await store.dispatch("sso/user/update_settings", data)
+    async function update_settings(payload: { path: string, value: any }): Promise<void> {
+        try {
+            const resp = await userManager.updateUserSettings(payload.path, payload.value, axios)
+            if (resp.data.setting) {
+                setSettings(resp.data.setting)
+                if (process.client)
+                    localStorage.setItem(userKey, JSON.stringify(state.user))
+            }
+        } catch (e) {
+            setSettingsChanged({ key: payload.path, value: null })
+            throw e
+        }
     }
-    async function getProfilePic(data: string): Promise<string> {
-        return await store.dispatch("sso/user/getProfilePic", data)
+    async function getProfilePic(name: string): Promise<string> {
+        const img: Uint8Array = (await userManager.getProfileImage(name, axios))?.data
+        return 'data:image/jpeg;base64,' +
+            Buffer.from(new Uint8Array(img)
+                .reduce((data, byte) => data + String.fromCharCode(byte), '')).toString('base64');
     }
-    async function getLogs(data: Paginated): Promise<AxiosResponse<PaginatedResult<Log>>> {
-        return await store.dispatch("sso/user/getLogs", data)
+    async function getLogs(payload: Paginated): Promise<AxiosResponse<PaginatedResult<Log>>> {
+        return userManager.getUserLog(state.userName ?? '', payload?.offset, payload?.length, axios)
     }
 
     return {

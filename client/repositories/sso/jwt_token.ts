@@ -1,7 +1,5 @@
 /* eslint-disable object-shorthand */
-import { NuxtAxiosInstance } from '@nuxtjs/axios';
-import axios from 'axios';
-
+import axios, { AxiosInstance } from 'axios';
 
 const instance = axios.create({
   withCredentials: true,
@@ -13,11 +11,13 @@ export async function refreshToken(refresh: string) {
   return res
 }
 
-export async function logout(axios: NuxtAxiosInstance) {
+export async function logout(axios: AxiosInstance) {
   await axios.delete('/sso/jwt')
 }
 
-export async function login(username: string, password: string, captcha: string, axios: NuxtAxiosInstance, session = null) {
+export type dict = { [key: string]: string | number | dict }
+
+export async function login(username: string, password: string, captcha: string, session: dict = {}) {
   return await instance.post('/sso/jwt', {
     username: username,
     password: password,
@@ -25,3 +25,10 @@ export async function login(username: string, password: string, captcha: string,
     session: session
   })
 }
+
+export default {
+  refreshToken,
+  logout,
+  login
+}
+

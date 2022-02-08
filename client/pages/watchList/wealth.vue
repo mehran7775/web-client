@@ -27,25 +27,25 @@ import {
   defineComponent,
   useStore,
 } from "@nuxtjs/composition-api";
-import { WealthSearchModel, Wealth, InstrumentSearchModel } from "@/types";
+import { WealthSearchModel, InstrumentSearchModel } from "@/types";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";
+import { useWealth } from "~/composables";
 
 export default defineComponent({
   components: {
     WatchList,
     FocusBoard,
   },
-  setup(context) {
+  setup() {
     const store = useStore();
+    const wealthManager = useWealth(store);
     const searchModel = ref(new InstrumentSearchModel());
     const loading = ref(true);
-    store
-      .dispatch("wealth/getWealth", new WealthSearchModel())
-      .then((wealth: Array<Wealth>) => {
-        searchModel.value.ids.push(...wealth.map((item) => item.id));
-        loading.value = false;
-      });
+    wealthManager.getWealth(new WealthSearchModel()).then((wealth) => {
+      if (wealth) searchModel.value.ids.push(...wealth.map((item) => item.id));
+      loading.value = false;
+    });
 
     return {
       loading,
