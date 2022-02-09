@@ -10,7 +10,7 @@
             v-on="on"
             v-bind="attrs"
             height="28"
-            class="ms-1 me-1 px-2 bookmark"
+            class="ms-1 me-1 bookmark"
             depressed
           >
             <v-btn
@@ -145,8 +145,11 @@ export default defineComponent({
 
 <style lang="sass" scoped>
 .bookmark
+  padding: 0 !important
   position: relative
   width: 75px
+  min-width: 75px
+  max-width: 75px
   .label
     max-width: calc(75px - 8px)
     text-overflow: ellipsis
@@ -155,7 +158,7 @@ export default defineComponent({
   .removeMark
     position: absolute
     top: -10px
-    left: -15px
+    left: -6px
     z-index: 1000
     display: none
   &:hover
