@@ -12,14 +12,14 @@
       <v-col
         :class="{
           'd-none d-md-block': responsive,
-          'buy': true
+          buy: true,
         }"
         >{{ $t("oms.count") }}</v-col
       >
       <v-col
         :class="{
           'd-none d-md-block': responsive,
-          'buy': true
+          buy: true,
         }"
         >{{ $t("oms.amount") }}</v-col
       >
@@ -37,21 +37,21 @@
         :class="{
           'd-none d-md-block': responsive,
           'error--text': true,
-          'sell': true
+          sell: true,
         }"
         >{{ $t("oms.sell") }}</v-col
       >
       <v-col
         :class="{
           'd-none d-md-block': responsive,
-          'sell': true
+          sell: true,
         }"
         >{{ $t("oms.amount") }}</v-col
       >
       <v-col
         :class="{
           'd-none d-md-block': responsive,
-          'sell': true
+          sell: true,
         }"
         >{{ $t("oms.count") }}</v-col
       >
@@ -67,9 +67,12 @@
             $emit('count', item.buy.count);
           }
         "
-        >{{ formatter.format(item.buy.count) }}</v-col
       >
-      <v-col class="col-border">{{ formatter.format(item.buy.amount) }}</v-col>
+        <numeric-field v-model="item.buy.count"></numeric-field>
+      </v-col>
+      <v-col class="col-border">
+        <numeric-field v-model="item.buy.amount"></numeric-field>
+      </v-col>
       <v-col
         :class="{ 'copy-cursor': copy, 'col-border': true }"
         @click="
@@ -77,7 +80,8 @@
             $emit('price', item.buy.price);
           }
         "
-        >{{ formatter.format(item.buy.price) }}
+      >
+        <numeric-field v-model="item.buy.price"></numeric-field>
         <bar />
       </v-col>
       <v-col
@@ -87,9 +91,12 @@
             $emit('price', item.sell.price);
           }
         "
-        >{{ formatter.format(item.sell.price) }}</v-col
       >
-      <v-col class="col-border">{{ formatter.format(item.sell.amount) }}</v-col>
+        <numeric-field v-model="item.sell.price"></numeric-field>
+      </v-col>
+      <v-col class="col-border">
+        <numeric-field v-model="item.sell.amount"></numeric-field>
+      </v-col>
       <v-col
         :class="{ 'copy-cursor': copy, 'col-border': true }"
         @click="
@@ -97,22 +104,17 @@
             $emit('count', item.sell.count);
           }
         "
-        >{{ formatter.format(item.sell.count) }}</v-col
       >
+        <numeric-field v-model="item.sell.count"></numeric-field>
+      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  useStore,
-  computed,
-  ComputedRef,
-  reactive,
-} from "@nuxtjs/composition-api";
+import { defineComponent, useStore, reactive } from "@nuxtjs/composition-api";
 import { OrderQueueItem } from "@/types";
-import { useAsrTrader, useInstrument } from "~/composables";
+import { useInstrument } from "~/composables";
 
 export default defineComponent({
   name: "order-queue-card",
@@ -125,12 +127,17 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const appManager = useAsrTrader(store);
     const instrumentManager = useInstrument(store);
-    const queue: Array<OrderQueueItem> = reactive([]);
-    const formatter = appManager.formatter;
+    const queue: Array<OrderQueueItem> = reactive([
+      new OrderQueueItem(),
+      new OrderQueueItem(),
+      new OrderQueueItem(),
+      new OrderQueueItem(),
+      new OrderQueueItem(),
+    ]);
     instrumentManager.getOrderQueue(props.insId).then((result) => {
       if (result.queue) {
+        queue.splice(0, queue.length);
         queue.push(...result.queue);
         for (let i = 5 - queue.length; i > 0; i--) {
           queue.push(new OrderQueueItem());
@@ -139,7 +146,6 @@ export default defineComponent({
     });
     return {
       queue,
-      formatter,
     };
   },
 });

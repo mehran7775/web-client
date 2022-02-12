@@ -8,11 +8,11 @@
     <v-row>
       <v-col class="d-flex justify-space-between text-wrap ma-0 pa-0 px-3 col-border">
         <span>{{ $t("oms.count") }}</span>
-        <span>{{ instrument.totalTrades }}</span>
+        <numeric-field v-model="instrument.totalTrades"></numeric-field>
         <span>{{ $t("oms.volume") }}</span>
-        <span>{{ instrument.totalShares }}</span>
+        <numeric-field v-model="instrument.totalShares"></numeric-field>
         <span>{{ $t("oms.value") }}</span>
-        <span>{{ instrument.totalTradesValue }}</span>
+        <numeric-field v-model="instrument.totalTradesValue"></numeric-field>
       </v-col>
     </v-row>
     <v-row dense>
@@ -30,10 +30,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, ref, Ref, computed } from "@nuxtjs/composition-api";
-import { Instrument, InstrumentCache, InstrumentSearchModel } from "@/types";
-import { DateTime } from "luxon";
-import { useAsrTrader, useInstrument } from "~/composables";
+import { defineComponent, useStore, ref, Ref } from "@nuxtjs/composition-api";
+import { InstrumentCache, InstrumentSearchModel } from "@/types";
+import { useInstrument } from "~/composables";
 
 export default defineComponent({
   name: "instrumnet-card-compact",
@@ -44,9 +43,7 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore();
-    const appManager = useAsrTrader(store);
     const instrumentManager = useInstrument(store);
-    const locale = appManager.locale;
     let instrument: Ref<InstrumentCache> = ref(new InstrumentCache());
     instrumentManager
       .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
@@ -54,8 +51,6 @@ export default defineComponent({
         instrument.value = data[0];
       });
     return {
-      DateTime,
-      locale,
       instrument,
     };
   },

@@ -159,7 +159,14 @@
       "active": "مجاز",
       "inactive": "ممنوع",
       "disabled": "ممنوع - متوقف",
-      "preActive": "ممنوع - محفوظ"
+      "preActive": "ممنوع - محفوظ",
+      "0": "@:instrument.state.disabled",
+      "1": "@:instrument.state.activeRead",
+      "2": "@:instrument.state.preActive",
+      "3": "@:instrument.state.activeOrder",
+      "4": "@:instrument.state.inactive",
+      "5": "@:instrument.state.activeTrading",
+      "7": "@:instrument.state.active"
     },
     "dateTime": "تاریخ ثبت",
     "opening": "قیمت شروع",

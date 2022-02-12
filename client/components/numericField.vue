@@ -1,16 +1,11 @@
-<template>
+<template lang="vue">
   <span>
     {{ formatter.format(value) }}
   </span>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  useStore,
-  ComputedRef,
-  computed,
-} from "@nuxtjs/composition-api";
+import { defineComponent, useStore } from "@nuxtjs/composition-api";
 import { useAsrTrader } from "~/composables";
 
 export default defineComponent({

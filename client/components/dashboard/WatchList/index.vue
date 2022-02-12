@@ -1,4 +1,4 @@
-<template>
+<template lang="vue">
   <div class="pb-1">
     <v-data-table
       :headers="headers"
@@ -47,6 +47,7 @@
                 class="ma-0 pa-0 mx-2"
                 color="info"
                 @click="() => focus(item)"
+                :disabled="focused.length > 4"
                 small
               >
                 isax-eye
@@ -122,7 +123,11 @@
           <template #item.totalTradesValue="{ item }">
             <numeric-field :value="item.totalTradesValue" />
           </template>
-          <template #item.status="{ item }"> </template>
+          <template #item.status="{ item }"> 
+            <span>
+              {{$t("instrument.state."+item.status)}}
+            </span>
+          </template>
           <template #item.more="{ item }">
             <v-icon
               v-if="!paginated"
@@ -401,6 +406,7 @@ export default defineComponent({
       Side,
       order,
       headers,
+      focused,
       inst: instruments,
       confirmInstrumentRemoval,
     };

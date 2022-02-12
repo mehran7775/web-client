@@ -2,18 +2,30 @@
   <div class="d-flex flex-row ma-0 pa-0" style="overflow-x: scroll">
     <v-card
       @click="() => select(item)"
-      class="me-1 mb-1 card-view"
+      class="me-3 card-view"
       min-width="346"
       max-width="346"
       v-for="item in instruments"
       :key="item.id"
     >
       <v-toolbar height="32" dense flat class="toolbar pa-0 ma-0">
-        <v-card-title>
-          <v-badge color="success" dot left offset-y="75%" offset-x="-5">
-            {{ item.name }}
-          </v-badge>
-        </v-card-title>
+        <v-badge
+          left
+          class="title"
+          offset-y="65%"
+          offset-x="-4px"
+          :color="
+            (item.status & 1) != 1
+              ? 'error'
+              : (item.status & 6) != 6
+              ? 'warning'
+              : 'success'
+          "
+          dot
+        >
+          {{ item.name }}
+        </v-badge>
+        ({{$t("instrument.state."+item.status)}})
         <v-spacer />
         <v-btn
           depressed
@@ -108,6 +120,11 @@ export default defineComponent({
   background-color: rgba($c-primary,0.1) !important
 .toolbar
   background-color: rgba($c-primary,0.05) !important
+  .title
+    font-weight: 700
+    font-size: 1rem !important
+    color: $c-primary
+    margin: 0 8px
 </style>
 
 <style lang="sass">
