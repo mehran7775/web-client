@@ -65,6 +65,11 @@
       <div class="text-caption ma-0 px-0">
         <order-queue-card :insId="item.id" extra-col />
         <instrument-card :insId="item.id" hide-headers />
+        <v-row dens>
+          <v-col class="ma-0 pa-0" dens>
+            <instrument-flag v-model="item.flags"></instrument-flag>
+          </v-col>
+        </v-row>
       </div>
     </v-card>
   </div>
