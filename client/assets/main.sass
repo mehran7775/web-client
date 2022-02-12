@@ -30,7 +30,7 @@ h5
 /* width */
 ::-webkit-scrollbar
   width: 4px
-  height: 33px
+  height: 4px
 
 /* Track */
 ::-webkit-scrollbar-track
@@ -118,6 +118,9 @@ h5
   border-top: 1px solid #4F4F4F
   width: 16px
   transform: rotate(90deg)
+  position: absolute
+  left: -8px
+  top: 50%
 
 .v-menu
   &__content
@@ -128,3 +131,8 @@ h5
   &--is-menu-active
     border-bottom-left-radius: 0 !important
     border-bottom-right-radius: 0 !important
+
+.col-border
+  border: none
+  border-color: none
+  border-bottom: 1px solid #E0E0E0

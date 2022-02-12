@@ -1,14 +1,14 @@
-<template>
+<template lang="vue">
   <div class="d-flex flex-row ma-0 pa-0" style="overflow-x: scroll">
     <v-card
       @click="() => select(item)"
-      class="me-1 mb-1"
-      min-width="430"
-      max-width="430"
+      class="me-1 mb-1 card-view"
+      min-width="346"
+      max-width="346"
       v-for="item in instruments"
       :key="item.id"
     >
-      <v-toolbar height="32" dense flat color="primary" dark>
+      <v-toolbar height="32" dense flat class="toolbar pa-0 ma-0">
         <v-card-title>
           <v-badge color="success" dot left offset-y="75%" offset-x="-5">
             {{ item.name }}
@@ -18,41 +18,42 @@
         <v-btn
           depressed
           height="24px"
+          width="56px"
           color="success"
           dark
-          x-large
-          class="ma-0 pa-0"
+          small
+          class="ma-0 me-3 pa-0 buy"
           @click.stop="() => order(item, Side.Buy)"
-          :disabled="(item.status & 3) != 3"
         >
           {{ $t("oms.buy") }}
         </v-btn>
         <v-btn
           depressed
           height="24px"
+          width="56px"
           color="error"
           dark
-          x-large
-          class="ms-1 pa-0"
+          small
+          class="me-3 pa-0 sell"
           @click.stop="() => order(item, Side.Sell)"
-          :disabled="(item.status & 3) != 3"
         >
           {{ $t("oms.sell") }}
         </v-btn>
-        <v-icon
-          class="ms-1"
-          color="error"
-          @click.stop="() => close(item.id)"
+        <v-btn
+          @click.stop="() => close(item)"
+          height="24px"
+          width="24px"
+          class="close me-1"
+          depressed
           small
         >
-          mdi-close-circle-outline
-        </v-icon>
+          <v-icon color="primary" x-small> mdi-close </v-icon>
+        </v-btn>
       </v-toolbar>
-      <v-card-text class="text-caption ma-0 px-0">
+      <div class="text-caption ma-0 px-0">
         <order-queue-card :insId="item.id" extra-col />
-        <legal-real-card :insId="item.id" hide-headers />
         <instrument-card :insId="item.id" hide-headers />
-      </v-card-text>
+      </div>
     </v-card>
   </div>
 </template>
@@ -74,8 +75,8 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const instrumentManager = useInstrument(store);
-    const instruments = instrumentManager.getFocus
-    
+    const instruments = instrumentManager.getFocus;
+
     function close(item: InstrumentCache) {
       instrumentManager.removeFocus(item.id);
     }
@@ -98,3 +99,28 @@ export default defineComponent({
 });
 </script>
 
+<style lang="sass" scoped>
+.buy
+  background-color: rgba($c-success,0.7) !important
+.sell
+  background-color: rgba($c-error,0.7) !important
+.close
+  background-color: rgba($c-primary,0.1) !important
+.toolbar
+  background-color: rgba($c-primary,0.05) !important
+</style>
+
+<style lang="sass">
+.card-view
+  *
+    font-size: 0.75rem !important
+    line-height: 31px  !important
+  .row
+    padding: 0 !important
+    background-color: white
+  .col
+    padding: 0
+    position: relative
+  .bar
+    opacity: 0.3
+</style>

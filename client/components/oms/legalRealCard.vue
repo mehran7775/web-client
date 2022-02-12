@@ -27,15 +27,9 @@
         }"
         >{{ $t("oms.percent") }}</v-col
       >
-      <v-col v-if="responsive" class="d-md-none">{{
-        $t("oms.count-short")
-      }}</v-col>
-      <v-col v-if="responsive" class="d-md-none">{{
-        $t("oms.amount-short")
-      }}</v-col>
-      <v-col v-if="responsive" class="d-md-none">{{
-        $t("oms.percent-short")
-      }}</v-col>
+      <v-col v-if="responsive" class="d-md-none">{{ $t("oms.count-short") }}</v-col>
+      <v-col v-if="responsive" class="d-md-none">{{ $t("oms.amount-short") }}</v-col>
+      <v-col v-if="responsive" class="d-md-none">{{ $t("oms.percent-short") }}</v-col>
 
       <v-col></v-col>
 
@@ -57,17 +51,11 @@
         }"
         >{{ $t("oms.percent") }}</v-col
       >
-      <v-col v-if="responsive" class="d-md-none">{{
-        $t("oms.count-short")
-      }}</v-col>
-      <v-col v-if="responsive" class="d-md-none">{{
-        $t("oms.amount-short")
-      }}</v-col>
-      <v-col v-if="responsive" class="d-md-none">{{
-        $t("oms.percent-short")
-      }}</v-col>
+      <v-col v-if="responsive" class="d-md-none">{{ $t("oms.count-short") }}</v-col>
+      <v-col v-if="responsive" class="d-md-none">{{ $t("oms.amount-short") }}</v-col>
+      <v-col v-if="responsive" class="d-md-none">{{ $t("oms.percent-short") }}</v-col>
     </v-row>
-    <v-row class="striped" dense>
+    <v-row dense>
       <v-col>{{ formatter.format(distribution.real.buy.count) }}</v-col>
       <v-col>{{ formatter.format(distribution.real.buy.amount) }}</v-col>
       <v-col>{{
@@ -97,8 +85,7 @@
       <v-col>{{ formatter.format(distribution.legal.sell.amount) }}</v-col>
       <v-col>{{
         percentFormatter.format(
-          (distribution.legal.sell.count * distribution.legal.sell.amount) /
-            total
+          (distribution.legal.sell.count * distribution.legal.sell.amount) / total
         )
       }}</v-col>
     </v-row>
@@ -121,7 +108,7 @@ export default defineComponent({
   name: "legal-real-card",
   props: {
     insId: { type: Number, required: true },
-    "hide-headers": Boolean,
+    hideHeaders: Boolean,
     responsive: Boolean,
   },
   setup(props) {

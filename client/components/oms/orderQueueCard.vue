@@ -1,6 +1,6 @@
 <template>
   <v-container class="text-center ma-0 pa-0" fluid>
-    <v-row dense v-if="responsive" class="d-md-none">
+    <v-row dense v-if="responsive" class="d-md-none headers">
       <v-col class="success--text">
         {{ $t("oms.buy") }}
       </v-col>
@@ -8,68 +8,60 @@
         {{ $t("oms.sell") }}
       </v-col>
     </v-row>
-    <v-row class="text-no-wrap" dense>
+    <v-row class="text-no-wrap headers" dense>
       <v-col
         :class="{
           'd-none d-md-block': responsive,
+          'buy': true
         }"
         >{{ $t("oms.count") }}</v-col
       >
       <v-col
         :class="{
           'd-none d-md-block': responsive,
+          'buy': true
         }"
         >{{ $t("oms.amount") }}</v-col
       >
       <v-col
         :class="{
           'd-none d-md-block': responsive,
-          'success--text': true,
+          'success--text buy': true,
         }"
         >{{ $t("oms.buy") }}</v-col
       >
-      <v-col v-if="responsive" class="d-md-none">{{
-        $t("oms.count-short")
-      }}</v-col>
-      <v-col v-if="responsive" class="d-md-none">{{
-        $t("oms.amount-short")
-      }}</v-col>
-      <v-col v-if="responsive" class="d-md-none">{{
-        $t("oms.price-short")
-      }}</v-col>
-      <v-col v-if="extraCol"></v-col>
+      <v-col v-if="responsive" class="d-md-none buy">{{ $t("oms.count-short") }}</v-col>
+      <v-col v-if="responsive" class="d-md-none buy">{{ $t("oms.amount-short") }}</v-col>
+      <v-col v-if="responsive" class="d-md-none buy">{{ $t("oms.price-short") }}</v-col>
       <v-col
         :class="{
           'd-none d-md-block': responsive,
           'error--text': true,
+          'sell': true
         }"
         >{{ $t("oms.sell") }}</v-col
       >
       <v-col
         :class="{
           'd-none d-md-block': responsive,
+          'sell': true
         }"
         >{{ $t("oms.amount") }}</v-col
       >
       <v-col
         :class="{
           'd-none d-md-block': responsive,
+          'sell': true
         }"
         >{{ $t("oms.count") }}</v-col
       >
-      <v-col v-if="responsive" class="d-md-none">{{
-        $t("oms.price-short")
-      }}</v-col>
-      <v-col v-if="responsive" class="d-md-none">{{
-        $t("oms.amount-short")
-      }}</v-col>
-      <v-col v-if="responsive" class="d-md-none">{{
-        $t("oms.count-short")
-      }}</v-col>
+      <v-col v-if="responsive" class="d-md-none sell">{{ $t("oms.price-short") }}</v-col>
+      <v-col v-if="responsive" class="d-md-none sell">{{ $t("oms.amount-short") }}</v-col>
+      <v-col v-if="responsive" class="d-md-none sell">{{ $t("oms.count-short") }}</v-col>
     </v-row>
-    <v-row class="striped" v-for="(item, index) in queue" :key="index" dense>
+    <v-row v-for="(item, index) in queue" :key="index" dense>
       <v-col
-        :class="{ 'copy-cursor': copy }"
+        :class="{ 'copy-cursor': copy, 'col-border': true }"
         @click="
           () => {
             $emit('count', item.buy.count);
@@ -77,21 +69,19 @@
         "
         >{{ formatter.format(item.buy.count) }}</v-col
       >
-      <v-col>{{ formatter.format(item.buy.amount) }}</v-col>
+      <v-col class="col-border">{{ formatter.format(item.buy.amount) }}</v-col>
       <v-col
-        :class="{ 'copy-cursor': copy }"
+        :class="{ 'copy-cursor': copy, 'col-border': true }"
         @click="
           () => {
             $emit('price', item.buy.price);
           }
         "
-        >{{ formatter.format(item.buy.price) }}</v-col
-      >
-
-      <v-col v-if="extraCol"></v-col>
-
+        >{{ formatter.format(item.buy.price) }}
+        <bar />
+      </v-col>
       <v-col
-        :class="{ 'copy-cursor': copy }"
+        :class="{ 'copy-cursor': copy, 'col-border': true }"
         @click="
           () => {
             $emit('price', item.sell.price);
@@ -99,9 +89,9 @@
         "
         >{{ formatter.format(item.sell.price) }}</v-col
       >
-      <v-col>{{ formatter.format(item.sell.amount) }}</v-col>
+      <v-col class="col-border">{{ formatter.format(item.sell.amount) }}</v-col>
       <v-col
-        :class="{ 'copy-cursor': copy }"
+        :class="{ 'copy-cursor': copy, 'col-border': true }"
         @click="
           () => {
             $emit('count', item.sell.count);
@@ -154,3 +144,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="sass" scoped>
+.headers
+  .sell
+    background-color: #efeff1
+  .buy
+    background-color: #e0e0e0
+</style>

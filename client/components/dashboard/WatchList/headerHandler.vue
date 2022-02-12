@@ -1,5 +1,5 @@
-<template>
-  <thead>
+<template lang="vue">
+<thead>
     <tr v-on="$listeners" v-bind="$attrs" class="headers">
       <th
         :draggable="header.draggable"
@@ -35,12 +35,7 @@
           <v-icon color="primary" v-if="header.icon" small>
             {{ header.icon }}
           </v-icon>
-          <div
-            v-if="header.value != 'actions' && header.value != 'more'"
-            class="divider"
-          >
-            <bar class="ma-0 my-1 pa-0" />
-          </div>
+          <bar v-if="header.value != 'actions' && header.value != 'more'" />
         </slot>
       </th>
     </tr>
@@ -54,13 +49,7 @@ import {
   computed,
   ComputedRef,
 } from "@nuxtjs/composition-api";
-import {
-  WatchlistColumns,
-  DefaultCols,
-  InstrumentCache,
-  Side,
-  User,
-} from "@/types";
+import { WatchlistColumns, DefaultCols, InstrumentCache, Side, User } from "@/types";
 import { useUser } from "~/composables";
 
 export default defineComponent({
@@ -105,8 +94,4 @@ export default defineComponent({
   position: relative
   background-color: none
   border: none !important
-.divider
-  position: absolute
-  top: calc(50% - 6px)
-  left: -4px
 </style>
