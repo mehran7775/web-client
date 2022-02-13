@@ -1,6 +1,7 @@
-<template lang="vue">
-  <span>
+<template>
+  <span class="text-no-wrap" dir="ltr">
     {{ formatter.format(value) }}
+    <slot />
   </span>
 </template>
 

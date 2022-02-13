@@ -65,9 +65,11 @@
       <div class="text-caption ma-0 px-0">
         <order-queue-card :insId="item.id" extra-col />
         <instrument-card :insId="item.id" hide-headers />
-        <v-row dens>
-          <v-col class="ma-0 pa-0" dens>
-            <instrument-flag v-model="item.flags"></instrument-flag>
+        <v-row>
+          <v-col class="justify-center text-center">
+            <v-icon size="16">
+              isax-presention-chart
+            </v-icon>
           </v-col>
         </v-row>
       </div>
@@ -76,11 +78,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, computed } from "@nuxtjs/composition-api";
+import { defineComponent, useStore } from "@nuxtjs/composition-api";
 import { Side, InstrumentCache } from "@/types";
 import instrumentCard from "@/components/oms/instrumentCardCompact.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
+import InstrumentFlag from "@/components/oms/instrumentFlag.vue";
 import { useInstrument } from "~/composables";
 
 export default defineComponent({
@@ -88,6 +91,7 @@ export default defineComponent({
     instrumentCard,
     OrderQueueCard,
     LegalRealCard,
+    InstrumentFlag,
   },
   setup(props, context) {
     const store = useStore();
@@ -135,7 +139,7 @@ export default defineComponent({
 <style lang="sass">
 .card-view
   *
-    font-size: 0.75rem !important
+    font-size: 0.8334rem
     line-height: 31px  !important
   .row
     padding: 0 !important

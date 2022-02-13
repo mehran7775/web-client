@@ -26,7 +26,7 @@
       <v-col
         :class="{
           'd-none d-md-block': responsive,
-          'success--text buy': true,
+          buy: true,
         }"
         >{{ $t("oms.buy") }}</v-col
       >
@@ -36,7 +36,6 @@
       <v-col
         :class="{
           'd-none d-md-block': responsive,
-          'error--text': true,
           sell: true,
         }"
         >{{ $t("oms.sell") }}</v-col
@@ -59,7 +58,11 @@
       <v-col v-if="responsive" class="d-md-none sell">{{ $t("oms.amount-short") }}</v-col>
       <v-col v-if="responsive" class="d-md-none sell">{{ $t("oms.count-short") }}</v-col>
     </v-row>
-    <v-row v-for="(item, index) in queue" :key="index" dense>
+    <v-row class="queue" v-for="(item, index) in queue" :key="index" dense>
+      <double-bar-chart
+        :left="totalSell ? (item.sell.count * item.sell.amount * 100) / totalSell : 0"
+        :right="totalBuy ? (item.buy.count * item.buy.amount * 100) / totalBuy : 0"
+      />
       <v-col
         :class="{ 'copy-cursor': copy, 'col-border': true }"
         @click="
@@ -81,7 +84,14 @@
           }
         "
       >
-        <numeric-field v-model="item.buy.price"></numeric-field>
+        <numeric-field v-model="item.buy.price">
+          <span
+            :class="[change(item.sell.price) < 0 ? 'error--text' : 'success--text']"
+            style="font-size: 7px !important"
+          >
+            (%{{ formatter.format(change(item.buy.price)) }})
+          </span>
+        </numeric-field>
         <bar />
       </v-col>
       <v-col
@@ -92,7 +102,14 @@
           }
         "
       >
-        <numeric-field v-model="item.sell.price"></numeric-field>
+        <numeric-field v-model="item.sell.price">
+          <span
+            :class="[change(item.sell.price) < 0 ? 'error--text' : 'success--text']"
+            style="font-size: 7px !important"
+          >
+            (%{{ formatter.format(change(item.buy.price)) }})
+          </span>
+        </numeric-field>
       </v-col>
       <v-col class="col-border">
         <numeric-field v-model="item.sell.amount"></numeric-field>
@@ -112,11 +129,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, reactive } from "@nuxtjs/composition-api";
-import { OrderQueueItem } from "@/types";
-import { useInstrument } from "~/composables";
+import {
+  defineComponent,
+  useStore,
+  reactive,
+  ref,
+  computed,
+  Ref,
+} from "@nuxtjs/composition-api";
+import { InstrumentCache, InstrumentSearchModel, OrderQueueItem } from "@/types";
+import { useAsrTrader, useInstrument } from "~/composables";
+import doubleBarChart from "../doubleBarChart.vue";
 
 export default defineComponent({
+  components: { doubleBarChart },
   name: "order-queue-card",
   emits: ["count", "price"],
   props: {
@@ -127,7 +153,19 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
+    const appManager = useAsrTrader(store);
     const instrumentManager = useInstrument(store);
+    const formatter = appManager.formatter;
+    const instrument: Ref<InstrumentCache | null> = ref(null);
+    const change = computed(() => (price: number) => {
+      if (instrument.value && price) {
+        return ((price - instrument.value.last) / price) * 100;
+      }
+      return 0;
+    });
+    const totalBuy = ref(0);
+    const totalSell = ref(0);
+    const totalQueue = computed(() => totalBuy.value + totalSell.value);
     const queue: Array<OrderQueueItem> = reactive([
       new OrderQueueItem(),
       new OrderQueueItem(),
@@ -135,17 +173,32 @@ export default defineComponent({
       new OrderQueueItem(),
       new OrderQueueItem(),
     ]);
+    instrumentManager
+      .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
+      .then((res) => {
+        instrument.value = res[0];
+      });
     instrumentManager.getOrderQueue(props.insId).then((result) => {
       if (result.queue) {
         queue.splice(0, queue.length);
-        queue.push(...result.queue);
+        result.queue.forEach((item) => {
+          queue.push(item);
+          totalBuy.value += item.buy.count * item.buy.amount;
+          totalSell.value += item.sell.count * item.sell.amount;
+        });
         for (let i = 5 - queue.length; i > 0; i--) {
           queue.push(new OrderQueueItem());
         }
       }
     });
+
     return {
+      formatter,
+      change,
       queue,
+      totalBuy,
+      totalSell,
+      totalQueue,
     };
   },
 });
@@ -153,8 +206,12 @@ export default defineComponent({
 
 <style lang="sass" scoped>
 .headers
+  .col
+    font-size: 0.75rem !important
   .sell
     background-color: #efeff1
   .buy
     background-color: #e0e0e0
+.queue
+  position: relative
 </style>
