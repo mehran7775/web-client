@@ -53,10 +53,11 @@ export default defineComponent({
         ";" +
         "width: " +
         props.value +
-        "%;" +
-        (props.xPosition == "left"
-          ? "border-radius: 0px 6px 6px 0px;"
-          : "border-radius: 6px 0px 0px 6px;")
+        "%;" 
+        // +
+        // (props.xPosition == "left"
+        //   ? "border-radius: 0px 6px 6px 0px;"
+        //   : "border-radius: 6px 0px 0px 6px;")
       );
     });
     return {

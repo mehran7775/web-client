@@ -85,12 +85,12 @@
         "
       >
         <numeric-field v-model="item.buy.price">
-          <span
+          <!-- <span
             :class="[change(item.sell.price) < 0 ? 'error--text' : 'success--text']"
             style="font-size: 7px !important"
           >
             (%{{ formatter.format(change(item.buy.price)) }})
-          </span>
+          </span> -->
         </numeric-field>
         <bar />
       </v-col>
@@ -103,12 +103,12 @@
         "
       >
         <numeric-field v-model="item.sell.price">
-          <span
+          <!-- <span
             :class="[change(item.sell.price) < 0 ? 'error--text' : 'success--text']"
             style="font-size: 7px !important"
           >
             (%{{ formatter.format(change(item.buy.price)) }})
-          </span>
+          </span> -->
         </numeric-field>
       </v-col>
       <v-col class="col-border">
@@ -208,6 +208,7 @@ export default defineComponent({
 .headers
   .col
     font-size: 0.75rem !important
+    font-weight: 700
   .sell
     background-color: #efeff1
   .buy

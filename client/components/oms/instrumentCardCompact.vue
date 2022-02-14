@@ -7,22 +7,22 @@
     </v-row>
     <v-row>
       <v-col class="d-flex justify-space-between text-wrap ma-0 pa-0 px-3 col-border">
-        <span>{{ $t("oms.count") }}</span>
+        <span class="header">{{ $t("oms.count") }}</span>
         <numeric-field v-model="instrument.totalTrades"></numeric-field>
-        <span>{{ $t("oms.volume") }}</span>
+        <span class="header">{{ $t("oms.volume") }}</span>
         <numeric-field v-model="instrument.totalShares"></numeric-field>
-        <span>{{ $t("oms.value") }}</span>
+        <span class="header">{{ $t("oms.value") }}</span>
         <numeric-field v-model="instrument.totalTradesValue"></numeric-field>
       </v-col>
     </v-row>
     <v-row dense>
       <v-col md="6" class="d-flex justify-space-between text-wrap ma-0 pa-0 px-3 col-border">
-        <span>{{ $t("instrument.closing") }}</span>
+        <span class="header">{{ $t("instrument.closing") }}</span>
         <span>{{ instrument.closing }}</span>
         <bar />
       </v-col>
       <v-col md="6" class="d-flex justify-space-between text-wrap ma-0 pa-0 px-3 col-border">
-        <span>{{ $t("instrument.last") }}</span>
+        <span class="header">{{ $t("instrument.last") }}</span>
         <span>{{ instrument.last }}</span>
       </v-col>
     </v-row>
@@ -58,6 +58,8 @@ export default defineComponent({
 </script>
 
 <style lang="sass" scoped>
+.header
+  color: $c-info
 .col-border
   position: relative
   vertical-align: middle

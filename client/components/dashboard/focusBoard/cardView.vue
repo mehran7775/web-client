@@ -1,5 +1,5 @@
 <template lang="vue">
-  <div class="d-flex flex-row ma-0 pa-0" style="overflow-x: scroll">
+  <div class="d-flex flex-row ma-0 pa-0 card-row">
     <v-card
       @click="() => select(item)"
       class="me-3 card-view"
@@ -7,6 +7,8 @@
       max-width="346"
       v-for="item in instruments"
       :key="item.id"
+      tile
+      elevation="0"
     >
       <v-toolbar height="32" dense flat class="toolbar pa-0 ma-0">
         <v-badge
@@ -34,7 +36,7 @@
           color="success"
           dark
           small
-          class="ma-0 me-3 pa-0 buy"
+          class="ma-0 me-2 pa-0 buy"
           @click.stop="() => order(item, Side.Buy)"
         >
           {{ $t("oms.buy") }}
@@ -149,4 +151,12 @@ export default defineComponent({
     position: relative
   .bar
     opacity: 0.3
+</style>
+<style lang="sass" scoped>
+.card-view
+  border-left: 1px solid #E0E0E0
+  border-right: 1px solid #E0E0E0
+.card-row
+  overflow-x: scroll
+  height: 328px
 </style>

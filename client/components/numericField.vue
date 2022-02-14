@@ -1,5 +1,5 @@
 <template>
-  <span class="text-no-wrap" dir="ltr">
+  <span class="text-no-wrap value" dir="ltr">
     {{ formatter.format(value) }}
     <slot />
   </span>
@@ -21,3 +21,7 @@ export default defineComponent({
   },
 });
 </script>
+<style lang="sass" scoped>
+.value
+  font-size: $value-font-size
+</style>

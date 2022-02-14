@@ -144,6 +144,8 @@ export default defineComponent({
 </script>
 
 <style lang="sass" scoped>
+.focus-board
+  height: 330px
 .bookmark
   padding: 0 !important
   position: relative
