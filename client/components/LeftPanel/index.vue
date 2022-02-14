@@ -112,7 +112,11 @@ export default defineComponent({
       else context.emit("update:mini", true);
     });
 
-    const items = [{ title: "general.me" }, { title: "general.all" }];
+    const items = [
+      { title: "general.me" },
+      { title: "general.all" },
+      { title: "عرضه اولیه" },
+    ];
 
     function loadMyMessages() {
       load(myMessageQuery).then((res) => {
@@ -131,8 +135,10 @@ export default defineComponent({
     async function load(query: Ref<MessageQuery>) {
       loading.value = true;
       try {
-        const res: AxiosResponse<PaginatedResult<Message>> =
-          await store.dispatch("oms/messages/getMessages", query.value);
+        const res: AxiosResponse<PaginatedResult<Message>> = await store.dispatch(
+          "oms/messages/getMessages",
+          query.value
+        );
         return res.data.data;
       } finally {
         loading.value = false;
@@ -143,9 +149,8 @@ export default defineComponent({
       try {
         store.commit("bottom-panel/setLoading", true);
         store.commit("bottom-panel/setActiveTab", Tabs.furtherInfo);
-        const message: Message = (
-          await store.dispatch("oms/messages/getMessage", id)
-        ).data;
+        const message: Message = (await store.dispatch("oms/messages/getMessage", id))
+          .data;
         store.commit("bottom-panel/setMessage", message);
         store.commit(
           "bottom-panel/setTitle",
@@ -211,12 +216,10 @@ export default defineComponent({
     vertical-align: top
     max-width: 48px
     .v-tab
-      transform: rotate(-90deg)
       margin: 0
       padding: 0
-      min-width: 42px
-      min-height: 56px !important
+      min-width: 48px
+      max-width: 48px
       justify-content: center !important
+      white-space: normal
 </style>
-
-
