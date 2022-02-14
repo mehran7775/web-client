@@ -157,6 +157,6 @@ export default defineComponent({
   border-left: 1px solid #E0E0E0
   border-right: 1px solid #E0E0E0
 .card-row
-  overflow-x: scroll
+  overflow-x: auto
   height: 328px
 </style>
