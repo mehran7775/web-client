@@ -4,6 +4,7 @@
     :menu-props="{
       bottom: true,
       'offset-y': true,
+      'content-class':'watchlist-select__content'
     }"
     :placeholder="$t('watchList.title')"
     :items="watchList"
@@ -19,13 +20,13 @@
     dense
   >
     <template #append>
-      <v-icon class="ma-2 arrow" x-small> isax-arrow-down </v-icon>
+      <v-icon class="ma-2 arrow" color="white" x-small> isax-arrow-down </v-icon>
     </template>
     <template #append-item>
       <v-list-item style="width: 164px" class="px-2">
         <v-text-field
           style="width: 116px"
-          class="ma-0 pa-0 watchlist-select"
+          class="ma-0 pa-0"
           height="28"
           v-model="newName"
           @keyup.enter.stop="create"
@@ -79,7 +80,7 @@
         <v-text-field
           v-if="item.onEdit"
           style="width: 116px"
-          class="ma-0 pa-0 watchlist-select"
+          class="ma-0 pa-0"
           height="28"
           v-model="item.newName"
           @click.stop=""
@@ -204,8 +205,10 @@ export default defineComponent({
 
 <style lang="sass" scoped>
 .watchlist-select
-  background-color: rgba($c-primary,0.05) !important
+  background-color: $c-primary !important
   border-radius: $border-radius-root
+  &__content
+    background-color: rgba($c-primary,0.1) !important
   &.v-select
     &--is-menu-active
       .arrow
@@ -218,11 +221,19 @@ export default defineComponent({
 </style>
 <style lang="sass">
 .watchlist-select
+  &__content
+    .v-input__slot
+      input
+        background-color: rgba($c-primary,0.1) !important
+        border-radius: $border-radius-root
+      &::after,
+      &::before
+        border: none !important
   &.v-text-field
     &> .v-input__control
       &> .v-input__slot
         .v-select__selections
-          color: rgba($c-primary,1) !important
+          color: white !important
           font-size: 0.75rem !important
         &::after,
         &::before
