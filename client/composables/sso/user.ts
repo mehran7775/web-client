@@ -145,6 +145,7 @@ export function useUser(store: Store<any>) {
                 if (process.client)
                     localStorage.setItem(userKey, JSON.stringify(state.user))
             }
+            settingsNotChanged(payload.path)
         } catch (e) {
             setSettingsChanged({ key: payload.path, value: null })
             throw e

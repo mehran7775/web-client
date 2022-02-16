@@ -115,7 +115,7 @@ export default defineComponent({
     const items = [
       { title: "general.me" },
       { title: "general.all" },
-      { title: "عرضه اولیه" },
+      { title: "oms.openingTrade" },
     ];
 
     function loadMyMessages() {

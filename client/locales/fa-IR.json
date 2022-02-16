@@ -198,6 +198,7 @@
     }
   },
   "oms": {
+    "openingTrade":"عرضه اولیه",
     "brokerage": "کارگزاری",
     "marketModerator": "ناظر",
     "news": "اخبار",
