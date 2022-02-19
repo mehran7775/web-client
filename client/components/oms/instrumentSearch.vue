@@ -20,6 +20,11 @@
         search(val);
       }
     "
+    :menu-props="{
+      bottom: true,
+      'offset-y': true,
+      'content-class': 'instrument-search__content',
+    }"
     flat
     no-filter
     rounded
@@ -29,6 +34,11 @@
   >
     <template #prepend-inner>
       <v-icon color="primary" class="mt-2" size="14"> isax-search-normal-1 </v-icon>
+    </template>
+    <template #item="{ item, on, attrs }">
+      <v-list-item v-bind="attrs" v-on="on">
+        <v-list-item-title v-html="item.fullName"> </v-list-item-title>
+      </v-list-item>
     </template>
   </v-autocomplete>
 </template>
@@ -74,7 +84,16 @@ export default defineComponent({
         entries.splice(0, entries.length);
         try {
           const res = await autoComplete(new AutoCompleteSearchModel(value), axios);
-          entries.push(...res.data.data);
+          entries.push(
+            ...res.data.data.map((item) => ({
+              name: item.name,
+              id: item.id,
+              fullName: (item.name + " - " + item.fullName).replace(
+                value,
+                '<span class="instrument-search-text">' + value + "</span>"
+              ),
+            }))
+          );
         } finally {
           loading.value = false;
         }
@@ -130,6 +149,9 @@ export default defineComponent({
   font-size: 0.75rem
 </style>
 <style lang="sass">
+.v-autocomplete__content
+  .instrument-search-text
+    color: $c-primary
 .instrument-search
   input
     color: $c-primary !important

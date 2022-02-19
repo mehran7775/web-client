@@ -6,11 +6,11 @@ export type KeyValuePairs<key, value> = {
 export class AutoCompleteItem {
   id: string
   name: string
-  fullname: string
+  fullName: string
   constructor(id: string, name: string, fullname: string = "") {
     this.id = id
     this.name = name
-    this.fullname = fullname
+    this.fullName = fullname
   }
 }
 
