@@ -1,5 +1,5 @@
 import { DateTime } from "luxon"
-import { Paginated } from "@/types"
+import { SearchModel } from "@/types"
 
 export class Order {
   id: number
@@ -43,13 +43,17 @@ export class Order {
   }
 }
 
-export class OrderSearchModel extends Paginated {
+export class OrderSearchModel implements SearchModel {
   id: number | null
   flags: number | null
+  offset: number;
+  length: number;
+  echo: any;
   constructor(offset: number = 0, length: number = 10, flags: number | null = null, id: number | null = null) {
-    super(offset, length)
     this.id = id
     this.flags = flags
+    this.offset = offset
+    this.length = length
   }
 }
 

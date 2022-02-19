@@ -1,67 +1,77 @@
-import { Paginated } from "./collection"
+import { SearchModel } from "./collection";
 
-export class MessageQuery extends Paginated {
-    filters: MessageFilter
-    constructor(offset: number, length: number, filters: MessageFilter) {
-        super(offset, length)
-        this.filters = filters
-    }
+export class MessageQuery implements SearchModel {
+  filters: MessageFilter;
+  offset: number;
+  length: number;
+  echo: any;
+  constructor(offset: number, length: number, filters: MessageFilter) {
+    this.filters = filters;
+    this.offset = offset;
+    this.length = length;
+  }
 }
 
 export class MessageFilter {
-    //TODO Change name to from
-    dateTime: string | null
-    tags: MessageTag[]
-    constructor(tags: MessageTag[], dateTime: string | null = null) {
-        this.tags = tags
-        this.dateTime = dateTime
-    }
+  //TODO Change name to from
+  dateTime: string | null;
+  tags: MessageTag[];
+  constructor(tags: MessageTag[], dateTime: string | null = null) {
+    this.tags = tags;
+    this.dateTime = dateTime;
+  }
 }
 
 export class MessageTag {
-    recordId: number
-    entity: number
-    constructor(record: number, entity: number) {
-        this.recordId = record
-        this.entity = entity
-    }
+  recordId: number;
+  entity: number;
+  constructor(record: number, entity: number) {
+    this.recordId = record;
+    this.entity = entity;
+  }
 }
 
 export class Message {
-    id: number
-    dateTime: string | null
-    title: string
-    preview: string
-    origin: number
-    type: number
-    flags: number
-    message: MessageTemplate
-    seenDate: string
-    constructor(
-        id: number, title: string, message: MessageTemplate,
-        dateTime: string | null = null, flags: number = 0,
-        origin: number = 1, type: number = 1,
-        preview: string = "", seenDate: string = "") {
-        this.id = id
-        this.title = title
-        this.dateTime = dateTime
-        this.preview = preview
-        this.origin = origin
-        this.type = type
-        this.flags = flags
-        this.message = message
-        this.seenDate = seenDate
-    }
+  id: number;
+  dateTime: string | null;
+  title: string;
+  preview: string;
+  origin: number;
+  type: number;
+  flags: number;
+  message: MessageTemplate;
+  seenDate: string;
+  constructor(
+    id: number,
+    title: string,
+    message: MessageTemplate,
+    dateTime: string | null = null,
+    flags: number = 0,
+    origin: number = 1,
+    type: number = 1,
+    preview: string = "",
+    seenDate: string = ""
+  ) {
+    this.id = id;
+    this.title = title;
+    this.dateTime = dateTime;
+    this.preview = preview;
+    this.origin = origin;
+    this.type = type;
+    this.flags = flags;
+    this.message = message;
+    this.seenDate = seenDate;
+  }
 }
 
 export class MessageTemplate {
-    constructor() { }
+  constructor() {}
 }
 
 export class MessageTemplate_1 extends MessageTemplate {
-    body: String
-    constructor(body: string) {
-        super()
-        this.body = body
-    }
+  body: String;
+  constructor(body: string) {
+    super();
+    this.body = body;
+  }
 }

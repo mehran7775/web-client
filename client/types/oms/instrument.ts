@@ -1,4 +1,4 @@
-import { Paginated } from ".."
+import { SearchModel } from ".."
 
 export class Instrument {
   id: number
@@ -101,14 +101,16 @@ export class MarketHistory {
   }
 }
 
-export class InstrumentSearchModel extends Paginated {
+export class InstrumentSearchModel implements SearchModel {
   ids: Array<number>
   boardIds: Array<number>
   secIds: Array<number>
+  offset: number = 0;
+  length: number = 1;
+  echo: any
   constructor(ids: Array<number> = [],
     boards: Array<number> = [],
     secids: Array<number> = []) {
-    super()
     this.ids = ids
     this.boardIds = boards
     this.secIds = secids

@@ -10,12 +10,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  useStore,
-  reactive,
-  computed,
-} from "@nuxtjs/composition-api";
+import { defineComponent, useStore, reactive, computed } from "@nuxtjs/composition-api";
 import { Paginated, Log, WatchlistColumns } from "@/types";
 import { DateTime } from "luxon";
 import { useAsrTrader, useUser } from "~/composables";
@@ -32,7 +27,7 @@ export default defineComponent({
       new WatchlistColumns("ip", "ip"),
       new WatchlistColumns("type", "type"),
     ];
-    const searchParam: Paginated = new Paginated(0, 10);
+    const searchParam: Paginated = { offset: 0, length: 10 };
     const locale = appManager.locale;
     function printDate(date: string) {
       return DateTime.fromISO(date)
@@ -58,4 +53,3 @@ export default defineComponent({
   },
 });
 </script>
-

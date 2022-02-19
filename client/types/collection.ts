@@ -1,40 +1,48 @@
-export type KeyValuePairs<key, value> = {
-  key: key,
-  value: value
+export interface KeyValuePairs<key, value> {
+  key: key;
+  value: value;
 }
 
 export class AutoCompleteItem {
-  id: string
-  name: string
-  fullName: string
+  id: string;
+  name: string;
+  fullName: string;
   constructor(id: string, name: string, fullname: string = "") {
-    this.id = id
-    this.name = name
-    this.fullName = fullname
+    this.id = id;
+    this.name = name;
+    this.fullName = fullname;
   }
 }
 
-export class Paginated {
-  offset: number
-  length: number
-  constructor(offset: number = 0, length: number = 10) {
+export interface Paginated {
+  offset: number;
+  length: number;
+}
+
+export interface SearchModel extends Paginated {
+  echo: any;
+}
+
+export class AutoCompleteSearchModel implements SearchModel {
+  name: string;
+  offset: number;
+  length: number;
+  echo: any;
+  constructor(value: string) {
+    this.name = value;
+    this.offset = 0
+    this.length = 1
+  }
+}
+
+export class PaginatedResult<type> implements SearchModel {
+  data: type[];
+  offset: number;
+  length: number;
+  echo: any;
+  constructor(data: type[], offset: number = 0, length: number = 10) {
+    this.data = data;
     this.offset = offset
     this.length = length
-  }
-}
-
-export class AutoCompleteSearchModel extends Paginated {
-  name: string
-  constructor(value: string) {
-    super(0, 7)
-    this.name = value
-  }
-}
-
-export class PaginatedResult<type> extends Paginated {
-  data: type[]
-  constructor(data: type[], offset: number = 0, length: number = 10) {
-    super(offset, length)
-    this.data = data
   }
 }
