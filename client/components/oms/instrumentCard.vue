@@ -13,7 +13,7 @@
         :class="{
           'copy-cursor': !!field.click,
           'col-sm-12': responsive,
-          'col-border d-flex justify-space-between px-1': true,
+          'col-border d-flex justify-space-between px-3': true,
         }"
         @click="
           () => {

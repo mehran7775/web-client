@@ -1,29 +1,15 @@
 <template>
-  <v-container class="ma-0 pa-0" fluid>
-    <v-tabs height="27" hide-slider v-model="tab" grow>
-      <v-tab
-        :key="Side.Buy"
-        :href="'#' + Side.Buy"
-        :class="{
-          'success--text': tab != 1,
-          'success lighten-5': tab == 1,
-        }"
-      >
+  <v-container class="ma-0 pa-0 buy-sell" fluid>
+    <v-tabs height="32" hide-slider v-model="tab" grow>
+      <v-tab class="buy" :key="Side.Buy" :href="'#' + Side.Buy">
         {{ $t("oms.buy") }}
       </v-tab>
-      <v-tab
-        :key="Side.Sell"
-        :href="'#' + Side.Sell"
-        :class="{
-          'error--text': tab != 2,
-          'error lighten-5': tab == 2,
-        }"
-      >
+      <v-tab class="sell" :key="Side.Sell" :href="'#' + Side.Sell">
         {{ $t("oms.sell") }}
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
-      <v-tab-item value="1">
+      <v-tab-item value="1" class="px-3">
         <v-form>
           <v-container fluid>
             <v-row align="center" dense>
@@ -59,11 +45,7 @@
                 </v-text-field>
               </v-col>
               <v-col md="6" sm="12">
-                <v-select
-                  dense
-                  :placeholder="$t('accounting.account.type')"
-                  hide-details
-                >
+                <v-select dense :placeholder="$t('accounting.account.type')" hide-details>
                 </v-select>
               </v-col>
               <v-col md="6" sm="12">
@@ -208,13 +190,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  useStore,
-  computed,
-  Ref,
-  ref,
-} from "@nuxtjs/composition-api";
+import { defineComponent, useStore, computed, Ref, ref } from "@nuxtjs/composition-api";
 import { useInstrument } from "@/composables";
 import { InstrumentCache, InstrumentSearchModel, Side } from "@/types";
 
@@ -246,9 +222,7 @@ export default defineComponent({
     });
     const tab = computed({
       get() {
-        return (
-          active.value?.side == Side.Sell ? Side.Sell : Side.Buy
-        ).toString();
+        return (active.value?.side == Side.Sell ? Side.Sell : Side.Buy).toString();
       },
       set(value: string) {
         if (active.value)
@@ -278,4 +252,21 @@ export default defineComponent({
 });
 </script>
 
+<style lang="sass" scoped>
 
+</style>
+
+<style lang="sass">
+.buy-sell
+  .v-tab
+    color: black
+    background-color: #e0e0e0
+    &--active
+      &::before
+        background-color: rgba(0,0,0,0)
+        opacity: 0
+      &.buy
+        background-color: rgba($c-success,0.7)
+      &.sell
+        background-color: rgba($c-error,0.7)
+</style>

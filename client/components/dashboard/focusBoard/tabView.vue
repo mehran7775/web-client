@@ -17,7 +17,7 @@
     <v-tabs-items v-model="tab">
       <v-tab-item v-for="item in instruments" :key="item.id" :value="item.id.toString()">
         <v-row dense>
-          <v-col cols="4" class="ma-0 pa-0">
+          <v-col cols="4" class="ma-0 pa-0 panel">
             <order-queue-card
               :insId="item.id"
               @count="
@@ -41,23 +41,27 @@
             </v-row>
           </v-col>
           <v-col cols="4" class="ma-0 pa-0 px-1">
-            <instrument-card
-              :insId="item.id"
-              @count="
-                (val) => {
-                  count = val;
-                }
-              "
-              @price="
-                (val) => {
-                  price = val;
-                }
-              "
-              responsive
-            />
+            <div class="panel">
+              <instrument-card
+                :insId="item.id"
+                @count="
+                  (val) => {
+                    count = val;
+                  }
+                "
+                @price="
+                  (val) => {
+                    price = val;
+                  }
+                "
+                responsive
+              />
+            </div>
           </v-col>
           <v-col cols="4" class="ma-0 pa-0">
-            <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" />
+            <div class="panel">
+              <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" />
+            </div>
           </v-col>
         </v-row>
       </v-tab-item>
@@ -137,12 +141,20 @@ export default defineComponent({
 .tab-view
   *
     font-size: 0.75rem
-    line-height: 31px  !important
+    line-height: 30px  !important
+    padding: 0
+    margin: 0
   .row
-    padding: 0 !important
+    padding: 0
   .col
     padding: 0
     position: relative
   .bar
     opacity: 0.3
+</style>
+
+<style lang="sass" scoped>
+.panel
+  border-left: 1px solid #E0E0E0
+  border-right: 1px solid #E0E0E0
 </style>
