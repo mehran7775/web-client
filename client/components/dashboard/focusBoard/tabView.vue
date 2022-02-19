@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tab-view">
     <v-tabs :height="32" color="primary" v-model="tab" align-with-title>
       <v-tab
         v-for="item in instruments"
@@ -15,11 +15,7 @@
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
-      <v-tab-item
-        v-for="item in instruments"
-        :key="item.id"
-        :value="item.id.toString()"
-      >
+      <v-tab-item v-for="item in instruments" :key="item.id" :value="item.id.toString()">
         <v-row dense>
           <v-col cols="4" class="ma-0 pa-0">
             <order-queue-card
@@ -35,33 +31,14 @@
                 }
               "
               copy
-              extra-col
               responsive
             />
-            <legal-real-card
-              :insId="item.id"
-              extra-col
-              hide-headers
-              responsive
-            />
-            <v-btn-toggle height="32" style="width: 100%">
-              <v-tooltip v-for="op in deepOptions" :key="op" bottom>
-                <template #activator="{ on, attrs }">
-                  <v-btn
-                    @click="deep(op, item)"
-                    v-bind="attrs"
-                    v-on="on"
-                    width="20%"
-                    height="32"
-                  >
-                    <v-icon size="24"> mdi-alert </v-icon>
-                  </v-btn>
-                </template>
-                <span>
-                  {{ $t("oms." + op) }}
-                </span>
-              </v-tooltip>
-            </v-btn-toggle>
+            <legal-real-card :insId="item.id" hide-headers responsive />
+            <v-row>
+              <v-col class="justify-center text-center">
+                <v-icon size="16"> isax-presention-chart </v-icon>
+              </v-col>
+            </v-row>
           </v-col>
           <v-col cols="4" class="ma-0 pa-0 px-1">
             <instrument-card
@@ -80,11 +57,7 @@
             />
           </v-col>
           <v-col cols="4" class="ma-0 pa-0">
-            <buy-sell-card
-              :price.sync="price"
-              :count.sync="count"
-              :insId="item.id"
-            />
+            <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" />
           </v-col>
         </v-row>
       </v-tab-item>
@@ -93,20 +66,8 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  useStore,
-  computed,
-  ref,
-  Ref,
-} from "@nuxtjs/composition-api";
-import {
-  Tabs,
-  DeepOptions,
-  TabTitle,
-  Instrument,
-  SameSectorQuery,
-} from "@/types";
+import { defineComponent, useStore, computed, ref, Ref } from "@nuxtjs/composition-api";
+import { Tabs, DeepOptions, TabTitle, Instrument, SameSectorQuery } from "@/types";
 import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
@@ -171,3 +132,17 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="sass">
+.tab-view
+  *
+    font-size: 0.75rem
+    line-height: 31px  !important
+  .row
+    padding: 0 !important
+  .col
+    padding: 0
+    position: relative
+  .bar
+    opacity: 0.3
+</style>

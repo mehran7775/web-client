@@ -65,7 +65,7 @@
         </v-btn>
       </v-toolbar>
       <div class="text-caption ma-0 px-0">
-        <order-queue-card :insId="item.id" extra-col />
+        <order-queue-card :insId="item.id" />
         <instrument-card :insId="item.id" hide-headers />
         <v-row>
           <v-col class="justify-center text-center">
@@ -136,6 +136,12 @@ export default defineComponent({
     font-size: 1rem !important
     color: $c-primary
     margin: 0 8px
+.card-view
+  border-left: 1px solid #E0E0E0
+  border-right: 1px solid #E0E0E0
+.card-row
+  overflow-x: auto
+  height: 328px
 </style>
 
 <style lang="sass">
@@ -151,12 +157,4 @@ export default defineComponent({
     position: relative
   .bar
     opacity: 0.3
-</style>
-<style lang="sass" scoped>
-.card-view
-  border-left: 1px solid #E0E0E0
-  border-right: 1px solid #E0E0E0
-.card-row
-  overflow-x: auto
-  height: 328px
 </style>

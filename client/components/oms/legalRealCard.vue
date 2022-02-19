@@ -1,5 +1,5 @@
 <template>
-  <v-container class="text-center ma-0 pa-0" fluid>
+  <v-container class="text-center legal-real ma-0 pa-0" fluid>
     <v-row v-if="!hideHeaders" dense>
       <v-col class="success--text">
         {{ $t("oms.buy") }}
@@ -56,39 +56,56 @@
       <v-col v-if="responsive" class="d-md-none">{{ $t("oms.percent-short") }}</v-col>
     </v-row>
     <v-row dense>
-      <v-col>{{ formatter.format(distribution.real.buy.count) }}</v-col>
-      <v-col>{{ formatter.format(distribution.real.buy.amount) }}</v-col>
-      <v-col>{{
-        percentFormatter.format(
-          (distribution.real.buy.count * distribution.real.buy.amount) / total
-        )
-      }}</v-col>
-      <v-col class="blue--text">{{ $t("user.personality.real") }}</v-col>
-      <v-col>{{ formatter.format(distribution.real.sell.count) }}</v-col>
-      <v-col>{{ formatter.format(distribution.real.sell.amount) }}</v-col>
-      <v-col>{{
-        percentFormatter.format(
-          (distribution.real.sell.count / total) * distribution.real.sell.amount
-        )
-      }}</v-col>
+      <v-col class="col-border">
+        <numeric-field :value="distribution.real.buy.count" />
+      </v-col>
+      <v-col class="col-border">
+        <numeric-field :value="distribution.real.buy.amount" />
+      </v-col>
+      <v-col class="col-border">
+        <percent-field
+          :value="(distribution.real.buy.count * distribution.real.buy.amount) / total"
+        />
+      </v-col>
+      <v-col class="col-border real">{{ $t("user.personality.real") }}</v-col>
+      <v-col class="col-border">
+        <numeric-field :value="distribution.real.sell.count" />
+      </v-col>
+      <v-col class="col-border">
+        <numeric-field :value="distribution.real.sell.amount" />
+      </v-col>
+      <v-col class="col-border">
+        <percent-field
+          :value="(distribution.real.sell.count / total) * distribution.real.sell.amount"
+        />
+      </v-col>
     </v-row>
-    <v-row class="striped" dense>
-      <v-col>{{ formatter.format(distribution.legal.buy.count) }}</v-col>
-      <v-col>{{ formatter.format(distribution.legal.buy.amount) }}</v-col>
-      <v-col>{{
-        percentFormatter.format(
-          (distribution.legal.buy.count * distribution.legal.buy.amount) / total
-        )
-      }}</v-col>
-      <v-col class="blue--text">{{ $t("user.personality.legal") }}</v-col>
-      <v-col>{{ formatter.format(distribution.legal.sell.count) }}</v-col>
-      <v-col>{{ formatter.format(distribution.legal.sell.amount) }}</v-col>
-      <v-col>{{
-        percentFormatter.format(
-          (distribution.legal.sell.count * distribution.legal.sell.amount) / total
-        )
-      }}</v-col>
+    <v-row dense>
+      <v-col class="col-border">
+        <numeric-field :value="distribution.legal.buy.count" />
+      </v-col>
+      <v-col class="col-border">
+        <numeric-field :value="distribution.legal.buy.amount" />
+      </v-col>
+      <v-col class="col-border">
+        <percent-field
+          :value="(distribution.legal.buy.count * distribution.legal.buy.amount) / total"
+        />
+      </v-col>
+      <v-col class="col-border legal">{{ $t("user.personality.real") }}</v-col>
+      <v-col class="col-border">
+        <numeric-field :value="distribution.legal.sell.count" />
+      </v-col>
+      <v-col class="col-border">
+        <numeric-field :value="distribution.legal.sell.amount" />
+      </v-col>
+      <v-col class="col-border">
+        <percent-field
+          :value="(distribution.legal.sell.count / total) * distribution.legal.sell.amount"
+        />
+      </v-col>
     </v-row>
+    
   </v-container>
 </template>
 
@@ -98,13 +115,14 @@ import {
   useStore,
   ref,
   Ref,
-  computed,
-  ComputedRef,
 } from "@nuxtjs/composition-api";
 import { ClientDistribution } from "@/types";
-import { useAsrTrader, useInstrument } from "~/composables";
+import { useInstrument } from "~/composables";
+import numericField from "../numericField.vue";
+import PercentField from "../percentField.vue";
 
 export default defineComponent({
+  components: { numericField, PercentField },
   name: "legal-real-card",
   props: {
     insId: { type: Number, required: true },
@@ -114,11 +132,8 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const instrumentManager = useInstrument(store);
-    const appManager = useAsrTrader(store);
     const distribution: Ref<ClientDistribution> = ref(new ClientDistribution());
     const total = ref(1);
-    const percentFormatter = appManager.percentFormatter;
-    const formatter = appManager.formatter;
     instrumentManager.getClientDistribution(props.insId).then((result) => {
       if (result) {
         distribution.value = result;
@@ -133,9 +148,20 @@ export default defineComponent({
     return {
       distribution,
       total,
-      formatter,
-      percentFormatter,
     };
   },
 });
 </script>
+<style lang="sass">
+.legal-real
+  .col
+    background-color: rgba($c-default,0.05)
+</style>
+<style lang="sass" scoped>
+.real
+  color: $c-info
+  background-color: rgba($c-info,0.1)
+.legal
+  color: $c-info
+  background-color: rgba($c-info,0.1)
+</style>
