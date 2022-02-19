@@ -1,19 +1,19 @@
 <template>
   <v-container fluid class="text-no-wrap ma-0 pa-0">
     <v-row v-show="!hideHeaders" dense>
-      <v-col md="12" class="text-center">
+      <v-col md="12" class="text-center header">
         {{ $t("instrument.detail") }}
       </v-col>
     </v-row>
     <v-row dense>
       <v-col
-        v-for="field in fields"
+        v-for="(field, index) in fields"
         :key="field.name"
         md="6"
         :class="{
           'copy-cursor': !!field.click,
           'col-sm-12': responsive,
-          'oddodd d-flex justify-space-between px-1': true,
+          'col-border d-flex justify-space-between px-1': true,
         }"
         @click="
           () => {
@@ -22,9 +22,10 @@
         "
       >
         <span>{{ $t(field.i18n) }}</span>
-        <span>
+        <span class="value">
           {{ printField(instrument[field.name], field.type) }}
         </span>
+        <bar class="d-none d-md-block" v-if="index % 2 == 0" />
       </v-col>
     </v-row>
   </v-container>
@@ -59,33 +60,13 @@ export default defineComponent({
     const locale = appManager.locale;
     const formatter = appManager.formatter;
     const fields: Array<field> = [
-      new field(
-        "yesterdayPrice",
-        fieldType.price,
-        null,
-        getClickEvent(fieldType.price)
-      ),
+      new field("yesterdayPrice", fieldType.price, null, getClickEvent(fieldType.price)),
       new field("totalTrades", fieldType.count, "oms.tradeCount"),
-      new field(
-        "opening",
-        fieldType.price,
-        null,
-        getClickEvent(fieldType.price)
-      ),
+      new field("opening", fieldType.price, null, getClickEvent(fieldType.price)),
       new field("totalShares", fieldType.count, "oms.tradeAmount"),
-      new field(
-        "lowest",
-        fieldType.price,
-        null,
-        getClickEvent(fieldType.price)
-      ),
+      new field("lowest", fieldType.price, null, getClickEvent(fieldType.price)),
       new field("totalTradesValue", fieldType.price, "oms.tradeValue"),
-      new field(
-        "highest",
-        fieldType.price,
-        null,
-        getClickEvent(fieldType.price)
-      ),
+      new field("highest", fieldType.price, null, getClickEvent(fieldType.price)),
       new field("marketValue", fieldType.price, "oms.marketValue"),
       new field(
         "lastPrice",
@@ -99,12 +80,7 @@ export default defineComponent({
         "oms.buyPrice",
         getClickEvent(fieldType.price)
       ),
-      new field(
-        "closing",
-        fieldType.price,
-        null,
-        getClickEvent(fieldType.price)
-      ),
+      new field("closing", fieldType.price, null, getClickEvent(fieldType.price)),
       new field(
         "sellPrice",
         fieldType.price,
@@ -117,7 +93,7 @@ export default defineComponent({
       new field("lastTradeDate", fieldType.dateTime, null),
     ];
     let instrument: Ref<Instrument> = ref(new Instrument());
-    function printField(data: any, type: fieldType) {
+    function printField(data: any, type: fieldType): string {
       switch (type) {
         case fieldType.number:
         case fieldType.price:
@@ -188,3 +164,9 @@ class field {
 }
 </script>
 
+<style lang="sass" scoped>
+.header
+  background-color: #e0e0e0
+.value
+  font-size: $value-font-size
+</style>
