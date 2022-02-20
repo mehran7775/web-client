@@ -84,7 +84,6 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const instrumentManager = useInstrument(store);
-    const i18n = useI18n();
     const instruments = instrumentManager.getFocus;
 
     const count: Ref<number> = ref(0);
@@ -125,10 +124,6 @@ export default defineComponent({
       instruments,
       deepOptions: DeepOptions,
     };
-    //TODO remove in vue 3
-    function useI18n() {
-      return context.root.$i18n;
-    }
   },
 });
 </script>
@@ -136,7 +131,7 @@ export default defineComponent({
 <style lang="sass">
 .tab-view
   *
-    font-size: 0.75rem
+    font-size: 0.8334rem
     line-height: 30px  !important
     padding: 0
     margin: 0
