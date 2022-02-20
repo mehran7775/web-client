@@ -47,7 +47,7 @@
                 class="ma-0 pa-0 mx-2"
                 color="info"
                 @click="() => focus(item)"
-                :disabled="focused.length > 4"
+                :disabled="!canfocus"
                 small
               >
                 isax-eye
@@ -246,6 +246,10 @@ export default defineComponent({
     const watchlists = userManager.watchList;
 
     const focused = instrumentManager.getFocus;
+    const canfocus = computed(()=>{
+      if(!process.client) return false
+      return focused.value.length < Math.floor(window.screen.width / 360)
+    })
     const me = userManager.me;
 
     const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
@@ -407,6 +411,7 @@ export default defineComponent({
       order,
       headers,
       focused,
+      canfocus,
       inst: instruments,
       confirmInstrumentRemoval,
     };
