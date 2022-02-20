@@ -141,7 +141,8 @@ export default defineComponent({
   border-right: 1px solid #E0E0E0
 .card-row
   overflow-x: auto
-  height: 328px
+  overflow-y: hidden
+  height: 320px
 </style>
 
 <style lang="sass">

@@ -1,6 +1,6 @@
 <template>
   <v-card class="ma-0 pa-0" flat tile>
-    <v-toolbar :height="42" color="defualt-bg" flat dense>
+    <v-toolbar ref="toolbar" :height="42" color="defualt-bg" flat dense>
       <slot name="toolbar"> </slot>
       <v-tooltip v-for="b in bookmarks" :key="b.to">
         <template #activator="{ on, attrs }">
@@ -75,6 +75,11 @@ import {
   computed,
   useStore,
   useRoute,
+  ref,
+  onMounted,
+  Ref,
+  watch,
+  onBeforeUnmount,
 } from "@nuxtjs/composition-api";
 import { useShortcut } from "@/utils/shortcutManager";
 import CardView from "./cardView.vue";
@@ -94,6 +99,7 @@ export default defineComponent({
     const userManager = useUser(store);
     const sh = useShortcut();
     const route = useRoute();
+    const toolbar: Ref<any> = ref(null);
 
     const me = userManager.me;
     const bookmarks = userManager.getBookmarks;
@@ -123,15 +129,23 @@ export default defineComponent({
       sh.addShortcut({
         key: "alt+q",
         action: () => {
-          instrumentManager.focusMode.value =
-            (instrumentManager.focusMode.value + 1) % 2;
+          instrumentManager.focusMode.value = (instrumentManager.focusMode.value + 1) % 2;
         },
       });
+      function resize() {
+        instrumentManager.setWidth(toolbar.value?.$el?.clientWidth);
+      }
+      onMounted(() => {
+        window.addEventListener("mousemove", resize);
+      });
+      onBeforeUnmount(() => {
+        window.removeEventListener("mousemove", resize);
+      });
     }
-
     return {
       setHome,
       unmark,
+      toolbar,
       route,
       home,
       path,
@@ -145,7 +159,7 @@ export default defineComponent({
 
 <style lang="sass" scoped>
 .focus-board
-  height: 330px
+  height: 320px
 .bookmark
   padding: 0 !important
   position: relative

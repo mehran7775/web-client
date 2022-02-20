@@ -17,7 +17,7 @@
     <v-tabs-items v-model="tab">
       <v-tab-item v-for="item in instruments" :key="item.id" :value="item.id.toString()">
         <v-row dense>
-          <v-col cols="4" class="ma-0 pa-0 panel">
+          <v-col class="ma-0 pa-0 panel">
             <order-queue-card
               :insId="item.id"
               @count="
@@ -40,28 +40,24 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col cols="4" class="ma-0 pa-0 px-1">
-            <div class="panel">
-              <instrument-card
-                :insId="item.id"
-                @count="
-                  (val) => {
-                    count = val;
-                  }
-                "
-                @price="
-                  (val) => {
-                    price = val;
-                  }
-                "
-                responsive
-              />
-            </div>
+          <v-col class="ma-0 pa-0 mx-3 panel">
+            <instrument-card
+              :insId="item.id"
+              @count="
+                (val) => {
+                  count = val;
+                }
+              "
+              @price="
+                (val) => {
+                  price = val;
+                }
+              "
+              responsive
+            />
           </v-col>
-          <v-col cols="4" class="ma-0 pa-0">
-            <div class="panel">
-              <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" />
-            </div>
+          <v-col class="ma-0 pa-0 panel">
+            <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" />
           </v-col>
         </v-row>
       </v-tab-item>

@@ -11,6 +11,7 @@ export class InstrumentState {
   selected: InstrumentCache | null = null
   orderQueueCache: Map<string, Array<OrderQueueItem>> = new Map<string, Array<OrderQueueItem>>()
   clientDistributionCache: Map<string, ClientDistribution> = new Map<string, ClientDistribution>()
+  width: number = process.client ? window.screen.availWidth : 800
 }
 
 export const mutations: MutationTree<InstrumentState> = {
@@ -42,6 +43,9 @@ export const mutations: MutationTree<InstrumentState> = {
   },
   selectById(state, id: number) {
     state.selected = state.cache.get(id.toString()) ?? null
+  },
+  setWidth(state, width: number) {
+    state.width = width
   }
 }
 

@@ -18,7 +18,7 @@
           :props="props"
         >
           <template #header.more>
-            <header-selector> </header-selector>
+            <header-selector/>
           </template>
         </header-handler>
       </template>
@@ -129,18 +129,11 @@
             </span>
           </template>
           <template #item.more="{ item }">
-            <v-icon
-              v-if="!paginated"
-              color="error"
-              @click="
-                () => {
-                  itemToDelete = item;
-                  confirmInstrumentRemoval = true;
-                }
-              "
-              small
-            >
-              isax-trash
+            <v-icon 
+              color="error" 
+              @click="() => { itemToDelete = item; confirmInstrumentRemoval = true; }" 
+              small>
+                isax-trash
             </v-icon>
           </template>
         </row-handler>
@@ -193,6 +186,8 @@ import {
   computed,
   ComputedRef,
   watch,
+  onMounted,
+  onBeforeUnmount,
 } from "@nuxtjs/composition-api";
 
 import instrumentCard from "../../oms/instrumentCardCompact.vue";
@@ -220,7 +215,10 @@ export default defineComponent({
       type: InstrumentSearchModel,
       required: true,
     },
-    paginated: Boolean,
+    paginated: {
+      type: Boolean,
+      default: false
+    },
   },
   components: {
     instrumentCard,
@@ -248,7 +246,7 @@ export default defineComponent({
     const focused = instrumentManager.getFocus;
     const canfocus = computed(()=>{
       if(!process.client) return false
-      return focused.value.length < Math.floor(window.screen.width / 360)
+      return focused.value.length < Math.floor(instrumentManager.width.value / 360)
     })
     const me = userManager.me;
 

@@ -11,6 +11,12 @@ export function useInstrument(store: Store<any>) {
     const axios = useAxios(store)
 
     // Getters
+    const width = computed({
+        get(): number { return state.width },
+        set(data: number) {
+            setWidth(data)
+        }
+    })
     const focusMode = computed({
         get(): number { return state.focusViewMode },
         set(data: number) {
@@ -53,6 +59,9 @@ export function useInstrument(store: Store<any>) {
     }
     function selectById(data: number) {
         store.commit("oms/instruments/selectById", data)
+    }
+    function setWidth(data:number) {
+        store.commit("oms/instruments/setWidth", data)
     }
 
     //TODO Move Actions Buisiness here
@@ -121,6 +130,7 @@ export function useInstrument(store: Store<any>) {
 
     return {
         // Getters
+        width,
         focusMode,
         selectedId,
         getByKey,
@@ -136,6 +146,7 @@ export function useInstrument(store: Store<any>) {
         select,
         selectByIndex,
         selectById,
+        setWidth,
         // Actions
         getInstrumentsDetail,
         getInstrumentPrices,
