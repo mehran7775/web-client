@@ -99,6 +99,9 @@
                 hide-details
               />
             </v-col>
+            <v-col class="d-flex justify-end">
+              <clock :format="$t('general.date.dt')" :width="100" class="d-flex justify-end" />
+            </v-col>
             <v-col cols="12" class="d-flex justify-space-around">
               <v-btn class="draft" height="24" width="149" depressed>
                 {{ $t("general.draft") }}
@@ -133,7 +136,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const store = useStore();
     const instrumentManager = useInstrument(store);
-    const active: Ref<InstrumentCache | null> = ref(null);
+    const active: Ref<InstrumentCache> = ref(new InstrumentCache());
     const countVal = computed({
       get() {
         return props.count?.toString();
@@ -156,11 +159,10 @@ export default defineComponent({
       },
       set(value: string) {
         if (active.value)
-          instrumentManager.updateInstrument(
-            Object.assign({}, active.value, {
-              side: value == "2" ? Side.Sell : Side.Buy,
-            })
-          );
+          instrumentManager.updateInstrument({
+            id: active.value.id,
+            side: value == "2" ? Side.Sell : Side.Buy,
+          });
       },
     });
 
@@ -188,7 +190,7 @@ export default defineComponent({
     color: white
   &:before
     display: none
-    
+
 .draft
   &:hover
     background-color: $c-info
