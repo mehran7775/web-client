@@ -21,9 +21,9 @@ export default async function ({ store, req, redirect, route }) {
     const refresh = ck[refreshKey]
     const jwt = ck[tokenKey]
     const user = ck[userKey]
-    // console.log('refresh', refresh)
-    // console.log('jwt', jwt)
-    // console.log('user', user)
+    console.log('refresh', refresh)
+    console.log('jwt', jwt)
+    console.log('user', user)
     if (refresh && jwt && user) {
       userManager.setRefresh(refresh)
       userManager.setToken(jwt)
@@ -38,8 +38,8 @@ export default async function ({ store, req, redirect, route }) {
         u = await userManager.getUser(user)
         wealthManager.getWealth(new WealthSearchModel());
       }
-      // console.log('user: ', u)
-      // console.log('path: ', route.fullPath)
+      console.log('user: ', u)
+      console.log('path: ', route.fullPath)
       if (route.fullPath == "/login")
         return redirect(userManager.me.value.settings.home)
     } else if (needLogin(route.fullPath)) {
