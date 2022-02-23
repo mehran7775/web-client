@@ -38,7 +38,7 @@ export default async function ({ store, req, redirect, route }) {
         u = await userManager.getUser(user)
         wealthManager.getWealth(new WealthSearchModel());
       }
-      console.log('user: ', u)
+      console.log('user: ', u.userName)
       console.log('path: ', route.fullPath)
       if (route.fullPath == "/login")
         return redirect(userManager.me.value.settings.home)
