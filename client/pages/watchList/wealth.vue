@@ -21,16 +21,11 @@
 </template>
 
 <script lang="ts">
-import {
-  ref,
-  reactive,
-  defineComponent,
-  useStore,
-} from "@nuxtjs/composition-api";
+import { ref, reactive, defineComponent, useStore } from "@nuxtjs/composition-api";
 import { WealthSearchModel, InstrumentSearchModel } from "@/types";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";
-import { useWealth } from "~/composables";
+import { useInstrument, useWealth } from "~/composables";
 
 export default defineComponent({
   components: {
@@ -40,10 +35,13 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const wealthManager = useWealth(store);
+    const instrumentManager = useInstrument(store);
     const searchModel = ref(new InstrumentSearchModel());
     const loading = ref(true);
     wealthManager.getWealth(new WealthSearchModel()).then((wealth) => {
-      if (wealth) searchModel.value.ids.push(...wealth.map((item) => item.id));
+      if (wealth) {
+        searchModel.value.ids.push(...wealth.map((item) => item.id));
+      }
       loading.value = false;
     });
 
@@ -61,4 +59,3 @@ export default defineComponent({
   background-color: rgba($c-primary,0.05)
   border-radius: $border-radius-root
 </style>
-

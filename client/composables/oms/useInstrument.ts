@@ -108,7 +108,7 @@ export function useInstrument(store: Store<any>) {
       let tmp = null;
       for (let i in searchModel.ids) {
         tmp = state.cache.get(searchModel.ids[i].toString());
-        if (tmp) res.push(tmp);
+        if (tmp?.name) res.push(tmp);
         else missing.push(searchModel.ids[i]);
       }
     }
