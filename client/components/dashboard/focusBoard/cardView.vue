@@ -4,7 +4,8 @@
       @click="() => select(item)"
       class="me-3 card-view"
       min-width="346"
-      max-width="346"
+      :width="maxwidth - 14"
+      :max-width="maxwidth"
       v-for="item in instruments"
       :key="item.id"
       tile
@@ -80,7 +81,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore } from "@nuxtjs/composition-api";
+import { computed, defineComponent, useStore } from "@nuxtjs/composition-api";
 import { Side, InstrumentCache } from "@/types";
 import instrumentCard from "@/components/oms/instrumentCardCompact.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
@@ -99,6 +100,10 @@ export default defineComponent({
     const store = useStore();
     const instrumentManager = useInstrument(store);
     const instruments = instrumentManager.getFocus;
+    const maxwidth = computed(
+      () =>
+        instrumentManager.width.value / Math.floor(instrumentManager.width.value / 360)
+    );
 
     function close(item: InstrumentCache) {
       instrumentManager.removeFocus(item.id);
@@ -115,6 +120,7 @@ export default defineComponent({
       close,
       order,
       select,
+      maxwidth,
       Side,
       instruments,
     };
