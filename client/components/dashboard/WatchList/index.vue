@@ -339,6 +339,7 @@ export default defineComponent({
         userManager.setWatchlist({
           name,
           watchlist: wl,
+          changeState: false
         });
         await userManager.update_settings({
           path: "/watch_lists/" + name,

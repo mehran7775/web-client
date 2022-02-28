@@ -122,6 +122,7 @@ export default defineComponent({
         userManager.setWatchlist({
           name,
           watchlist: tmp,
+          changeState: true,
         });
       }
       loading.value = false;
