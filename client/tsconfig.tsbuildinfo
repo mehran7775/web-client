@@ -1747,8 +1747,8 @@
         "affectsGlobalScope": false
       },
       "./components/textInput.vue.ts": {
-        "version": "3ac7a7eb11a045ec4a685a3750afeae42a6d907f39520b0f5dd03e5da8eb4db7",
-        "signature": "219564eb34676138b5e77364b4706cb3e4656c3a5f48c3e0ac911a94f3f06151",
+        "version": "0dc198750953184fdce4e6fc76ef2b2554c0855019e1e77503175ebb5a0e714d",
+        "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
         "affectsGlobalScope": false
       },
       "./components/sso/profilePicture.vue.ts": {
@@ -1957,7 +1957,7 @@
         "affectsGlobalScope": false
       },
       "./components/oms/BuySellCard.vue.ts": {
-        "version": "a4c613ee35d960a9f0e923a4b8c7443f09447c0d91d4c286e19f843b3f3f6034",
+        "version": "57d0b2d4c679424a8bd72f29a8578d97b7ef330d5d0948ef69f43a27e9c6a571",
         "signature": "9733aec114228ffd6df517645251c765e6144a4f97d0b0821f414209ad443c66",
         "affectsGlobalScope": false
       },
@@ -4912,10 +4912,6 @@
         "./node_modules/vue/types/index.d.ts",
         "./types/index.ts"
       ],
-      "./components/textInput.vue.ts": [
-        "./node_modules/@vue/composition-api/dist/vue-composition-api.d.ts",
-        "./node_modules/vue/types/index.d.ts"
-      ],
       "./components/userMenu.vue.ts": [
         "./node_modules/@vue/composition-api/dist/vue-composition-api.d.ts",
         "./node_modules/vue/types/index.d.ts",
@@ -6946,7 +6942,19 @@
       "./components/sso/profilePictureEditor.vue.ts",
       "./components/sso/profileViewer.vue.ts",
       "./components/sso/userLog.vue.ts",
-      "./components/textInput.vue.ts",
+      [
+        "./components/textInput.vue.ts",
+        [
+          {
+            "file": "./components/textInput.vue.ts",
+            "start": 102,
+            "length": 11,
+            "messageText": "Cannot find name 'defineProps'.",
+            "category": 1,
+            "code": 2304
+          }
+        ]
+      ],
       "./components/userMenu.vue.ts",
       "./components/virtualKeyboard/index.vue.ts",
       "./components/websocket_printer.vue.ts",

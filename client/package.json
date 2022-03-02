@@ -5,7 +5,7 @@
   "license": "All rights reserved for Asre Danesh Afzar",
   "scripts": {
     "dev": "nuxt",
-    "build": "nuxt build",
+    "build": "vue-tsc --noEmit && nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
@@ -24,6 +24,7 @@
     "dropzone": "6.0.0-beta.2"
   },
   "devDependencies": {
+    "vue-tsc": "^0.32.1",
     "@vue/runtime-dom": "^3.2.31",
     "@mdi/font": "^6.5.95",
     "@nuxt/types": "^2.15.8",
@@ -32,6 +33,7 @@
     "@types/cookie": "^0.4.1",
     "@types/dropzone": "5.7.4",
     "@nuxt/typescript-build": "^2.1.0",
+    "unplugin-vue2-script-setup": "^0.10.0",
     "@nuxtjs/composition-api": "^0.32.0",
     "@nuxtjs/eslint-config-typescript": "^8.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
@@ -42,6 +44,10 @@
     "eslint-plugin-vue": "^8.2.0",
     "tailwindcss": "^3.0.23",
     "postcss": "latest",
+    "postcss-preset-env": "latest",
+    "postcss-nested": "latest",
+    "postcss-scss": "latest",
+    "postcss-advanced-variables": "latest",
     "autoprefixer": "latest",
     "@nuxt/postcss8": "^1.1.3"
   }

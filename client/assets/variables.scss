@@ -1,4 +1,4 @@
-// Root
+
 $font-size-root: 12px;
 $value-font-size: 1rem;
 $border-radius-root: 6px;
@@ -14,7 +14,7 @@ $c-warning: #FFBB46;
 $c-defualt-bg: #F9FAFE;
 $c-gray4: #BDBDBD;
 
-// Headings
+
 $headings: (
   "h1": (
     "size": 2rem,
@@ -109,15 +109,15 @@ $headings: (
   ),
 );
 
-// List
+
 $list-item-padding: 0 4px;
 $list-item-title-font-size: 0.857rem;
 $list-item-dense-title-font-size: 0.875rem;
 $list-item-action-icon-margin: 4px;
 $list-item-child-min-width: 4px;
-// Card
+
 $card-text-font-size: 0.8334rem;
-// Data Table
+
 $data-table-regular-header-font-size: 0.8334rem;
 $data-table-regular-row-font-size: 1rem;
 $data-table-dense-header-height: 32px;
@@ -125,10 +125,10 @@ $data-table-regular-header-height: 32px;
 $data-table-regular-row-height: 32px;
 $data-table-row-group-children-td-height: 32px;
 
-// Tabs
+
 $tabs-bar-background-color: rgba($c-primary,0);
 
-// Button
+
 $btn-text-transform: none;
 $btn-font-weight: 700;
 $btn-font-sizes: (
@@ -139,7 +139,7 @@ $btn-font-sizes: (
   "x-large": 1.334rem,
 );
 
-// Inputs
+
 $input-font-size: inherit;
 $label-font-size: inherit;
 $input-slot-margin-bottom: 0;
@@ -147,12 +147,12 @@ $text-field-outlined-rounded-slot-padding: 0 8px;
 $text-field-outlined-fieldset-border-width: 1px;
 $text-field-outlined-fieldset-border: 1px solid currentColor;
 
-//Toolbar
+
 $toolbar-content-padding-y:0;
 $toolbar-content-padding-x: 8px;
 $toolbar-btn-icon-size: 32px;
 
-// All Headers 32 px
+
 $list-dense-min-height: 32px;
 $stepper-step-step-height: 32px;
 $stepper-step-step-width: 32px;

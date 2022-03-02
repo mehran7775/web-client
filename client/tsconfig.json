@@ -32,7 +32,8 @@
       "@types/luxon",
       "@types/splitpanes",
       "@types/dropzone",
-      "@types/cookie"
+      "@types/cookie",
+      "unplugin-vue2-script-setup/types"
     ]
   },
   "exclude": [

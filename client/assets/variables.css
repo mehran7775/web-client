@@ -1,0 +1,7 @@
+
+:root {
+    --c-primary: 53, 84, 209;
+    --c-primary-rgb: rgb(53, 84, 209);
+    --border-radius-root: 6px;
+    --border-radius-input: 4px;
+  }

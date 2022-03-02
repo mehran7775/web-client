@@ -213,6 +213,7 @@
     "amount": "حجم",
     "volume": "@:oms.amount",
     "count": "تعداد",
+    "view-count":"حجم نمایشی",
     "price-short": "ق",
     "amount-short": "ح",
     "count-short": "ت",

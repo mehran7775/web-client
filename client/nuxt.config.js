@@ -40,12 +40,13 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/typescript
-    '@nuxt/typescript-build',
+    ['@nuxt/typescript-build', { typeCheck: false }],
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     '@nuxtjs/composition-api/module',
     '@nuxt/postcss8'
   ],
+  scriptSetup: { /* options */ },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -94,6 +95,11 @@ export default {
   build: {
     postcss: {
       plugins: {
+        "postcss-import":{},
+        "postcss-preset-env":{},
+        "postcss-advanced-variables":{},
+        "tailwindcss/nesting": {},
+        'postcss-nested': {},
         tailwindcss: {},
         autoprefixer: {},
       },

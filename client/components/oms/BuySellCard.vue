@@ -58,18 +58,17 @@
               </v-select>
             </v-col>
             <v-col cols="6">
-              <v-text-field
-                :label="$t('oms.count')"
+              <text-input
+                :label="$t('oms.view-count')"
                 type="number"
                 v-model="countVal"
-                hide-details
-                dense
+                class="tw-w-full"
               >
                 <template #append>
                   <v-icon color="primary" small>isax-lock-bold</v-icon>
                   <v-icon color="primary" small>isax-calculator</v-icon>
                 </template>
-              </v-text-field>
+              </text-input>
             </v-col>
             <v-col cols="6">
               <v-checkbox
@@ -100,7 +99,11 @@
               />
             </v-col>
             <v-col class="d-flex justify-end">
-              <clock :format="$t('general.date.dt')" :width="100" class="d-flex justify-end" />
+              <clock
+                :format="$t('general.date.dt')"
+                :width="100"
+                class="d-flex justify-end"
+              />
             </v-col>
             <v-col cols="12" class="d-flex justify-space-around">
               <v-btn class="draft" height="24" width="149" depressed>
