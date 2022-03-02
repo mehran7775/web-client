@@ -24,20 +24,25 @@
     "dropzone": "6.0.0-beta.2"
   },
   "devDependencies": {
+    "@vue/runtime-dom": "^3.2.31",
     "@mdi/font": "^6.5.95",
     "@nuxt/types": "^2.15.8",
     "@types/luxon": "^2.0.9",
     "@types/splitpanes": "2.2.1",
     "@types/cookie": "^0.4.1",
-    "@types/dropzone":"5.7.4",
+    "@types/dropzone": "5.7.4",
     "@nuxt/typescript-build": "^2.1.0",
-    "@nuxtjs/composition-api": "^0.31.0",
+    "@nuxtjs/composition-api": "^0.32.0",
     "@nuxtjs/eslint-config-typescript": "^8.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/vuetify": "1.12.3",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.5.0",
     "eslint-plugin-nuxt": "^3.1.0",
-    "eslint-plugin-vue": "^8.2.0"
+    "eslint-plugin-vue": "^8.2.0",
+    "tailwindcss": "^3.0.23",
+    "postcss": "latest",
+    "autoprefixer": "latest",
+    "@nuxt/postcss8": "^1.1.3"
   }
 }

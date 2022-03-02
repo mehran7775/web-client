@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,
     "target": "ES2018",
     "module": "ESNext",
     "moduleResolution": "Node",
@@ -38,5 +39,13 @@
     "node_modules",
     ".nuxt",
     "dist"
-  ]
+  ],
+  "vueCompilerOptions": {
+    "experimentalCompatMode": 2, // delete after migrating to vue3 (or nuxt3)
+    "experimentalTemplateCompilerOptions": {
+      "compatConfig": {
+        "MODE": 2
+      } // delete after migrating to vue3 (or nuxt3)
+    }
+  }
 }
