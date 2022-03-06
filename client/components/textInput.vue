@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { ref } from "@nuxtjs/composition-api";
+import { computed, ref } from "@nuxtjs/composition-api";
 const value = ref<string | null>(null);
 const props = defineProps<{
   label: string;
   type: string;
 }>();
+const ltr = computed<boolean>(() => {
+  return props.type == "number";
+});
 </script>
 
 <template>
-  <label class="ada-input tw-flex tw-whitespace-nowrap">
+  <label :class="['ada-input', 'tw-flex', 'tw-whitespace-nowrap', ltr ? 'ltr' : '']">
     <div class="label">
       {{ label }}
     </div>
@@ -22,13 +25,36 @@ const props = defineProps<{
 
 <style lang="postcss" scoped>
 .ada-input {
+  height: 24px;
   border-radius: var(--border-radius-input);
   .input-container {
     background-color: rgba(var(--c-primary), 0.1);
     border-radius: var(--border-radius-input);
+    margin: 0 0 0 5px;
+    padding: 0 6px 0 0;
   }
   input {
+    outline-style: none;
+    line-height: 0.83334rem !important;
+    height: 16px;
+    font-size: 0.83334rem;
+    margin: auto 4px auto 4px;
+    padding: 0 6px 0 6px;
+    background-color: white;
     border-radius: var(--border-radius-input);
+  }
+  &.ltr {
+    input {
+      direction: ltr;
+    }
+  }
+}
+.rtl {
+  .ada-input {
+    .input-container {
+      margin: 0 5px 0 0;
+      padding: 0 0 0 6px;
+    }
   }
 }
 </style>

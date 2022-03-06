@@ -10,7 +10,7 @@
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item value="1" class="px-3">
-        <v-form>
+        <v-form class="tw-m-0 tw-p-0">
           <v-row align="center" dense>
             <v-col cols="6">
               <span>{{ $t("oms.countThreshold") }}: </span>
@@ -20,34 +20,32 @@
               <span>{{ $t("oms.priceThreshold") }}: </span>
               <numeric-field :value="1000" />
             </v-col>
-            <v-col cols="6">
-              <v-text-field
+            <v-col cols="6" class="tw-pt-4">
+              <text-input
                 :label="$t('oms.count')"
                 type="number"
                 v-model="countVal"
-                hide-details
-                dense
+                class="me-3 tw-mt-1"
               >
                 <template #append>
                   <v-icon color="primary" small>isax-lock-bold</v-icon>
                   <v-icon color="primary" small>isax-calculator</v-icon>
                 </template>
-              </v-text-field>
+              </text-input>
             </v-col>
             <v-col cols="6">
-              <v-text-field
+              <text-input
                 :label="$t('oms.price')"
                 type="number"
                 v-model="priceVal"
-                hide-details
-                dense
+                class="me-3 tw-mt-1"
               >
                 <template #append>
                   <v-icon color="primary" small>isax-lock-bold</v-icon>
                   <v-icon color="primary" small>isax-arrow-up-2</v-icon>
                   <v-icon color="primary" small>isax-arrow-down-2</v-icon>
                 </template>
-              </v-text-field>
+              </text-input>
             </v-col>
             <v-col cols="6">
               <v-select dense :placeholder="$t('accounting.account.type')" hide-details>
@@ -62,11 +60,10 @@
                 :label="$t('oms.view-count')"
                 type="number"
                 v-model="countVal"
-                class="tw-w-full"
+                class="me-3 tw-mt-1"
               >
                 <template #append>
-                  <v-icon color="primary" small>isax-lock-bold</v-icon>
-                  <v-icon color="primary" small>isax-calculator</v-icon>
+                  <span class="tw-w-6 tw-inline-block">0</span>
                 </template>
               </text-input>
             </v-col>
@@ -75,7 +72,7 @@
                 :label="$t('oms.splitOrders')"
                 dense
                 hide-details
-                class="ma-0 pa-0"
+                class="tw-m-0 tw-p-0 tw-mt-1"
                 :ripple="false"
               />
             </v-col>
@@ -127,7 +124,7 @@
 
 <script lang="ts">
 import { defineComponent, useStore, computed, Ref, ref } from "@nuxtjs/composition-api";
-import { useInstrument } from "@/composables";
+import { useAsrTrader, useInstrument } from "@/composables";
 import { InstrumentCache, InstrumentSearchModel, Side } from "@/types";
 
 export default defineComponent({
@@ -138,6 +135,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const store = useStore();
+    const appManager = useAsrTrader(store);
     const instrumentManager = useInstrument(store);
     const active: Ref<InstrumentCache> = ref(new InstrumentCache());
     const countVal = computed({

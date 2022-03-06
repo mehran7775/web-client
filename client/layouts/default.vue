@@ -54,24 +54,10 @@
 
       <clock :format="$t('general.date.longdt')" width="240" />
       <div class="center">
-        <v-badge
-          dot
-          left
-          color="green"
-          class="mx-5"
-          offset-y="75%"
-          offset-x="-5"
-        >
+        <v-badge dot left color="green" class="mx-5" offset-y="75%" offset-x="-5">
           {{ $t("oms.bourseIndex") }}: {{ formatter.format(0.0) }}
         </v-badge>
-        <v-badge
-          dot
-          left
-          color="orange"
-          class="mx-5"
-          offset-y="75%"
-          offset-x="-5"
-        >
+        <v-badge dot left color="orange" class="mx-5" offset-y="75%" offset-x="-5">
           {{ $t("oms.superBourseIndex") }}: {{ formatter.format(0.0) }}
         </v-badge>
       </div>
@@ -83,6 +69,7 @@
         'dashboardmain-page': true,
         right: !rightMenu.mini,
         left: !leftMenu.mini,
+        rtl: rtl,
       }"
     >
       <div :class="{ 'dashboardmain-nuxt': true, collaps: collaps }">
@@ -92,50 +79,19 @@
       <v-footer class="text-no-wrap ma-0 pa-2" :height="32">
         <div class="d-flex flex-grow-1 flex-row">
           <div class="center">
-            <v-badge
-              dot
-              left
-              class="ms-5"
-              color="green"
-              offset-y="75%"
-              offset-x="-5"
+            <v-badge dot left class="ms-5" color="green" offset-y="75%" offset-x="-5"
               >{{ $t("accounting.account.amount") }}0</v-badge
             >
-            <v-badge
-              dot
-              left
-              class="ms-5"
-              color="red"
-              offset-y="75%"
-              offset-x="-5"
+            <v-badge dot left class="ms-5" color="red" offset-y="75%" offset-x="-5"
               >{{ $t("accounting.account.blockedAmount") }}0</v-badge
             >
-            <v-badge
-              dot
-              left
-              class="ms-5"
-              color="orange"
-              offset-y="75%"
-              offset-x="-5"
-            >
+            <v-badge dot left class="ms-5" color="orange" offset-y="75%" offset-x="-5">
               {{ $t("accounting.account.onlineBlockedAmount") }}0
             </v-badge>
-            <v-badge
-              dot
-              left
-              class="ms-5"
-              color="blue"
-              offset-y="75%"
-              offset-x="-5"
+            <v-badge dot left class="ms-5" color="blue" offset-y="75%" offset-x="-5"
               >{{ $t("accounting.account.remaining") }}0</v-badge
             >
-            <v-badge
-              dot
-              left
-              class="ms-5"
-              color="#89abcd"
-              offset-y="75%"
-              offset-x="-5"
+            <v-badge dot left class="ms-5" color="#89abcd" offset-y="75%" offset-x="-5"
               >{{ $t("accounting.account.credit") }}0</v-badge
             >
           </div>
@@ -180,7 +136,7 @@ export default defineComponent({
     const store = useStore();
     const appManager = useAsrTrader(store);
     const userManager = useUser(store);
-    const router = useRouter();
+
     const rightMenu = ref({
       mini: true,
       drawer: true,
@@ -207,6 +163,7 @@ export default defineComponent({
       rightMenu,
       leftMenu,
       clipped: true,
+      rtl: appManager.rtl,
     };
   },
 });

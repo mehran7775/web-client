@@ -132,14 +132,15 @@ export default defineComponent({
 .tab-view
   *
     font-size: 0.8334rem
-    line-height: 30px  !important
-    padding: 0
-    margin: 0
   .row
     padding: 0
+    margin: 0
+    line-height: 30px  !important
   .col
     padding: 0
+    margin: 0
     position: relative
+    line-height: 30px  !important
   .bar
     opacity: 0.3
 </style>
