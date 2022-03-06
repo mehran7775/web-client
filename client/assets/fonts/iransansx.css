@@ -1,0 +1,21 @@
+@font-face {
+  font-family: "Iran Sans X FaNum";
+  src: url("/fonts/IRANSansX/IRANSansXFaNum-ExtraBold.ttf") format("truetype");
+  font-weight: bolder;
+  font-style: normal;
+  font-stretch: normal;
+}
+@font-face {
+  font-family: "Iran Sans X FaNum";
+  src: url("/fonts/IRANSansX/IRANSansXFaNum-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+}
+@font-face {
+  font-family: "Iran Sans X FaNum";
+  src: url("/fonts/IRANSansX/IRANSansXFaNum-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+}

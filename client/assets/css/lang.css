@@ -1,0 +1,18 @@
+@import '../fonts/iransansx';
+@import '../fonts/times.css';
+
+.fa * {
+    font-family: "Iran Sans X FaNum" !important
+}
+
+.en * {
+    font-family: "Times New Roman" !important
+}
+
+.rtl {
+    direction: rtl;
+}
+
+.ltr {
+    direction: ltr;
+}
