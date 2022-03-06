@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from "@nuxtjs/composition-api";
-const value = ref<string | null>(null);
 const props = defineProps<{
   label: string;
   type: string;
@@ -8,6 +7,7 @@ const props = defineProps<{
 const ltr = computed<boolean>(() => {
   return props.type == "number";
 });
+const value = ref<string | null>(null);
 </script>
 
 <template>
@@ -50,9 +50,6 @@ const ltr = computed<boolean>(() => {
     padding: 0 6px 0 6px;
     background-color: white;
     border-radius: var(--border-radius-input);
-    &.ltr {
-      direction: ltr;
-    }
   }
 }
 

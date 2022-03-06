@@ -103,7 +103,6 @@ import {
   useStore,
   useRoute,
   useRouter,
-  computed,
   ref,
   Ref,
   reactive,
@@ -199,15 +198,15 @@ export default defineComponent({
 .watchlist-select {
   background-color: var(--c-primary-rgb) !important;
   border-radius: var(--border-radius-root);
-  &__content {
-    background-color: rgba(var(--c-primary), 0.1) !important;
-  }
   &.v-select {
     &--is-menu-active {
       .arrow {
         transform: rotate(-180deg);
       }
     }
+  }
+  &__content {
+    background-color: rgba(var(--c-primary), 0.1) !important;
   }
   .item {
     border-bottom-width: 1px;

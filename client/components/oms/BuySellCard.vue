@@ -50,8 +50,17 @@
               </text-input>
             </v-col>
             <v-col cols="6">
-              <v-select dense :placeholder="$t('accounting.account.type')" hide-details>
-              </v-select>
+              <account-type
+                :placeholder="$t('accounting.account.type')"
+                class="account-type me-3"
+                height="32px"
+              >
+                <template #append>
+                  <v-icon class="ma-2 arrow" color="white" x-small>
+                    isax-arrow-down
+                  </v-icon>
+                </template>
+              </account-type>
             </v-col>
             <v-col cols="6">
               <v-select dense :placeholder="$t('accounting.account.credit')" hide-details>
@@ -120,66 +129,57 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { defineComponent, useStore, computed, Ref, ref } from "@nuxtjs/composition-api";
-import { useAsrTrader, useInstrument } from "@/composables";
+<script setup lang="ts">
+import { useStore, computed, Ref, ref } from "@nuxtjs/composition-api";
+import { useInstrument } from "@/composables";
 import { InstrumentCache, InstrumentSearchModel, Side } from "@/types";
+import accountType from "@/components/wealth/accountType.vue";
 
-export default defineComponent({
-  props: {
-    count: Number,
-    price: Number,
-    insId: { type: Number, required: true },
+const props = defineProps<{
+  count: number;
+  price: number;
+  insId: number;
+}>();
+
+const emit = defineEmits(["update:count", "update:price"]);
+
+const store = useStore();
+const instrumentManager = useInstrument(store);
+const active: Ref<InstrumentCache> = ref(new InstrumentCache());
+const countVal = computed({
+  get() {
+    return props.count?.toString();
   },
-  setup(props, { emit }) {
-    const store = useStore();
-    const appManager = useAsrTrader(store);
-    const instrumentManager = useInstrument(store);
-    const active: Ref<InstrumentCache> = ref(new InstrumentCache());
-    const countVal = computed({
-      get() {
-        return props.count?.toString();
-      },
-      set(val: string | undefined) {
-        emit("update:count", val ? parseInt(val) : undefined);
-      },
-    });
-    const priceVal = computed({
-      get() {
-        return props.price?.toString();
-      },
-      set(val: string | undefined) {
-        emit("update:price", val ? parseInt(val) : undefined);
-      },
-    });
-    const tab = computed({
-      get() {
-        return (active.value?.side == Side.Sell ? Side.Sell : Side.Buy).toString();
-      },
-      set(value: string) {
-        if (active.value)
-          instrumentManager.updateInstrument({
-            id: active.value.id,
-            side: value == "2" ? Side.Sell : Side.Buy,
-          });
-      },
-    });
-
-    instrumentManager
-      .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
-      .then((data: Array<InstrumentCache>) => {
-        active.value = data[0];
-      });
-
-    return {
-      tab,
-      active,
-      countVal,
-      priceVal,
-      Side,
-    };
+  set(val: string | undefined) {
+    emit("update:count", val ? parseInt(val) : undefined);
   },
 });
+const priceVal = computed({
+  get() {
+    return props.price?.toString();
+  },
+  set(val: string | undefined) {
+    emit("update:price", val ? parseInt(val) : undefined);
+  },
+});
+const tab = computed({
+  get() {
+    return (active.value?.side == Side.Sell ? Side.Sell : Side.Buy).toString();
+  },
+  set(value: string) {
+    if (active.value)
+      instrumentManager.updateInstrument({
+        id: active.value.id,
+        side: value == "2" ? Side.Sell : Side.Buy,
+      });
+  },
+});
+
+instrumentManager
+  .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
+  .then((data: Array<InstrumentCache>) => {
+    active.value = data[0];
+  });
 </script>
 
 <style lang="postcss" scoped>
