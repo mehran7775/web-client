@@ -182,33 +182,44 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.buy
-  &:hover
-    background-color: $c-success
-    color: white
-  &:before
-    display: none
-
-.draft
-  &:hover
-    background-color: $c-info
-    color: white
-  &:before
-    display: none
+<style lang="postcss" scoped>
+.buy {
+  &:hover {
+    background-color: var(--c-success-rgb);
+    color: white;
+  }
+  &:before {
+    display: none;
+  }
+}
+.draft {
+  &:hover {
+    background-color: var(--c-info-rgb);
+    color: white;
+  }
+  &:before {
+    display: none;
+  }
+}
 </style>
 
-<style lang="sass">
-.buy-sell
-  .v-tab
-    color: black
-    background-color: #e0e0e0
-    &--active
-      &::before
-        background-color: rgba(0,0,0,0)
-        opacity: 0
-      &.buy
-        background-color: rgba($c-success,0.7)
-      &.sell
-        background-color: rgba($c-error,0.7)
+<style lang="postcss">
+.buy-sell {
+  .v-tab {
+    color: black;
+    background-color: #e0e0e0;
+    &--active {
+      &::before {
+        background-color: rgba(0, 0, 0, 0);
+        opacity: 0;
+      }
+      &.buy {
+        background-color: rgba(var(--c-success), 0.7);
+      }
+      &.sell {
+        background-color: rgba(var(--c-error), 0.7);
+      }
+    }
+  }
+}
 </style>

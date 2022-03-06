@@ -2,6 +2,25 @@
 :root {
     --c-primary: 53, 84, 209;
     --c-primary-rgb: rgb(53, 84, 209);
+    --c-default: 224, 224, 224;
+    --c-default-rgb: rgb(224, 224, 224);
+    --c-secondary: 239, 57, 78;
+    --c-secondary-rgb: rgb(239, 57, 78);
+    --c-accent: 130, 177, 255;
+    --c-accent-rgb: rgb(130, 177, 255);
+    --c-error: 255, 59, 48;
+    --c-error-rgb: rgb(255, 59, 48);
+    --c-info: 0, 156, 242;
+    --c-info-rgb: rgb(0, 156, 242);
+    --c-success: 0, 189, 121;
+    --c-success-rgb: rgb(0, 189, 121);
+    --c-warning: 255, 187, 70;
+    --c-warning-rgb: rgb(255, 187, 70);
+    --c-defualt-bg: 249, 250, 254;
+    --c-defualt-bg-rgb: rgb(249, 250, 254);
+    --c-gray4: 189, 189, 189;
+    --c-gray4-rgb: rgb(189, 189, 189);
+
     --border-radius-root: 6px;
     --border-radius-input: 4px;
   }
