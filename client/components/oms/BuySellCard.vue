@@ -28,8 +28,8 @@
                 class="me-3 tw-mt-1"
               >
                 <template #append>
-                  <v-icon color="primary" small>isax-lock-bold</v-icon>
-                  <v-icon color="primary" small>isax-calculator</v-icon>
+                  <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
+                  <v-icon color="primary" class="tw-mx-1" x-small>isax-calculator</v-icon>
                 </template>
               </text-input>
             </v-col>
@@ -38,12 +38,14 @@
                 :label="$t('oms.price')"
                 type="number"
                 v-model="priceVal"
-                class="me-3 tw-mt-1"
+                class="tw-mt-1"
               >
                 <template #append>
-                  <v-icon color="primary" small>isax-lock-bold</v-icon>
-                  <v-icon color="primary" small>isax-arrow-up-2</v-icon>
-                  <v-icon color="primary" small>isax-arrow-down-2</v-icon>
+                  <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
+                  <v-icon color="primary" class="tw-mx-1" x-small>isax-arrow-up-2</v-icon>
+                  <v-icon color="primary" class="tw-mx-1" x-small
+                    >isax-arrow-down-2</v-icon
+                  >
                 </template>
               </text-input>
             </v-col>
@@ -95,12 +97,8 @@
                 hide-details
               />
             </v-col>
-            <v-col class="d-flex justify-end">
-              <clock
-                :format="$t('general.date.dt')"
-                :width="100"
-                class="d-flex justify-end"
-              />
+            <v-col class="tw-flex-row ltr">
+              <clock :format="$t('general.date.dt')" class="ltr" />
             </v-col>
             <v-col cols="12" class="d-flex justify-space-around">
               <v-btn class="draft" height="24" width="149" depressed>

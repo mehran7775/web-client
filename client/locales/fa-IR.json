@@ -58,7 +58,7 @@
     "switch": "تغییر",
     "report": "گزارش",
     "date": {
-      "dt": "TT - D",
+      "dt": "D - TT",
       "d": "D",
       "t": "TT",
       "longdt": "cccc DDD / TT"

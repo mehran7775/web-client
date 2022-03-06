@@ -11,13 +11,17 @@ const ltr = computed<boolean>(() => {
 </script>
 
 <template>
-  <label :class="['ada-input', 'tw-flex', 'tw-whitespace-nowrap', ltr ? 'ltr' : '']">
+  <label class="ada-input tw-flex tw-whitespace-nowrap">
     <div class="label">
       {{ label }}
     </div>
     <div class="input-container tw-min-w-0 tw-flex">
       <slot name="prepend"> </slot>
-      <input :type="type" class="tw-min-w-0 tw-inline" v-model="value" />
+      <input
+        :type="type"
+        :class="['tw-min-w-0', 'tw-inline', ltr ? 'ltr' : '']"
+        v-model="value"
+      />
       <slot name="append"></slot>
     </div>
   </label>
@@ -32,6 +36,10 @@ const ltr = computed<boolean>(() => {
     border-radius: var(--border-radius-input);
     margin: 0 0 0 5px;
     padding: 0 6px 0 0;
+    &:dir(rtl) {
+      margin: 0 5px 0 0;
+      padding: 0 0 0 6px;
+    }
   }
   input {
     outline-style: none;
@@ -42,13 +50,12 @@ const ltr = computed<boolean>(() => {
     padding: 0 6px 0 6px;
     background-color: white;
     border-radius: var(--border-radius-input);
-  }
-  &.ltr {
-    input {
+    &.ltr {
       direction: ltr;
     }
   }
 }
+
 .rtl {
   .ada-input {
     .input-container {
