@@ -4,7 +4,7 @@
     :menu-props="{
       bottom: true,
       'offset-y': true,
-      'content-class':'watchlist-select__content'
+      'content-class': 'watchlist-select__content',
     }"
     :placeholder="$t('watchList.title')"
     :items="watchList"
@@ -33,13 +33,7 @@
           dense
           hide-details
         />
-        <v-btn
-          @click.stop="create"
-          class="ms-1"
-          color="primary"
-          height="28"
-          width="28"
-        >
+        <v-btn @click.stop="create" class="ms-1" color="primary" height="28" width="28">
           <v-icon small> mdi-plus </v-icon>
         </v-btn>
       </v-list-item>
@@ -146,8 +140,7 @@ export default defineComponent({
         });
       });
       selected.value =
-        watchList.find((item) => item.id == route.value.params.name) ??
-        watchList[0];
+        watchList.find((item) => item.id == route.value.params.name) ?? watchList[0];
     }
     async function create() {
       if (!newName.value || newName.value == "") return;
@@ -176,8 +169,7 @@ export default defineComponent({
         path: "/watch_lists",
         value: tmp,
       });
-      if (item.id == route.value.params.name)
-        router.push("/watchList/" + item.newName);
+      if (item.id == route.value.params.name) router.push("/watchList/" + item.newName);
       refresh();
     }
 
@@ -203,39 +195,55 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.watchlist-select
-  background-color: $c-primary !important
-  border-radius: $border-radius-root
-  &__content
-    background-color: rgba($c-primary,0.1) !important
-  &.v-select
-    &--is-menu-active
-      .arrow
-        transform: rotate(-180deg)
-.item
-  border-bottom-width: 1px
-  border-bottom-color: var(--v-default-lighten4)
-  border-bottom-style: dashed
-  font-size: 0.6667rem
+<style lang="postcss" scoped>
+.watchlist-select {
+  background-color: var(--c-primary-rgb) !important;
+  border-radius: var(--border-radius-root);
+  &__content {
+    background-color: rgba(var(--c-primary), 0.1) !important;
+  }
+  &.v-select {
+    &--is-menu-active {
+      .arrow {
+        transform: rotate(-180deg);
+      }
+    }
+  }
+  .item {
+    border-bottom-width: 1px;
+    border-bottom-color: var(--v-default-lighten4);
+    border-bottom-style: dashed;
+    font-size: 0.6667rem;
+  }
+}
 </style>
-<style lang="sass">
-.watchlist-select
-  &__content
-    .v-input__slot
-      input
-        background-color: rgba($c-primary,0.1) !important
-        border-radius: $border-radius-root
+<style lang="postcss">
+.watchlist-select {
+  &__content {
+    .v-input__slot {
+      input {
+        background-color: rgba(var(--c-primary), 0.1) !important;
+        border-radius: var(--border-radius-root);
+      }
       &::after,
-      &::before
-        border: none !important
-  &.v-text-field
-    &> .v-input__control
-      &> .v-input__slot
-        .v-select__selections
-          color: white !important
-          font-size: 0.75rem !important
+      &::before {
+        border: none !important;
+      }
+    }
+  }
+  &.v-text-field {
+    & > .v-input__control {
+      & > .v-input__slot {
+        .v-select__selections {
+          color: white !important;
+          font-size: 0.75rem !important;
+        }
         &::after,
-        &::before
-          border: none !important
+        &::before {
+          border: none !important;
+        }
+      }
+    }
+  }
+}
 </style>
