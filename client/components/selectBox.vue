@@ -70,6 +70,7 @@ const getValue: (item: any) => any = eval(
       v-model="SelectedText"
       readonly
       :aria-readonly="readonly"
+      :placeholder="placeholder"
     />
     <slot name="append">
       <i class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"></i>
