@@ -103,16 +103,20 @@ instrumentManager
                 </template>
               </text-input>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="6" class="">
               <account-type
                 :placeholder="$t('accounting.account.type')"
-                class="me-3"
-                height="32px"
+                class="me-3 tw-my-auto"
+                height="24px"
               >
               </account-type>
             </v-col>
             <v-col cols="6">
-              <credit height="32px" :placeholder="$t('accounting.account.credit')">
+              <credit
+                height="24px"
+                class="tw-my-auto"
+                :placeholder="$t('accounting.account.credit')"
+              >
               </credit>
             </v-col>
             <v-col cols="6">

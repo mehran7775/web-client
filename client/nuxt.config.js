@@ -97,7 +97,6 @@ export default {
       plugins: {
         "postcss-import":{},
         "postcss-preset-env":{},
-        "postcss-advanced-variables":{},
         "tailwindcss/nesting": {},
         'postcss-nested': {},
         tailwindcss: {},

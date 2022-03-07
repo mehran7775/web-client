@@ -22,16 +22,18 @@ const props = withDefaults(defineProps<selectProps>(), {
 });
 
 const active = ref(false);
-const SelectedText = ref("");
+const selectedText = ref("");
 const value = ref<string | null>(null);
+const inp = ref<any>(null);
 
 function toggleActive() {
   active.value = !active.value;
+  if (active.value && inp.value) inp.value?.focus();
 }
 
 function select(item: any) {
   value.value = item;
-  SelectedText.value = getText(item);
+  selectedText.value = getText(item);
   active.value = false;
 }
 
@@ -67,13 +69,17 @@ const getValue: (item: any) => any = eval(
     <input
       type="text"
       class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
-      v-model="SelectedText"
+      v-model="selectedText"
       readonly
+      ref="inp"
       :aria-readonly="readonly"
       :placeholder="placeholder"
     />
     <slot name="append">
-      <i class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"></i>
+      <i
+        @click="toggleActive"
+        class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"
+      ></i>
     </slot>
     <ol class="menu tw-m-0 tw-p-0 tw-shadow" v-show="active">
       <slot name="prepend-item"></slot>

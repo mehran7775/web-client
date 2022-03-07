@@ -5,7 +5,7 @@
   "license": "All rights reserved for Asre Danesh Afzar",
   "scripts": {
     "dev": "nuxt",
-    "build": "vue-tsc --noEmit && nuxt build",
+    "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
@@ -15,12 +15,12 @@
     "@msgpack/msgpack": "latest",
     "@nuxt/content": "^1.15.1",
     "@nuxtjs/axios": "^5.13.6",
-    "core-js": "^3.20.0",
-    "luxon": "^2.3.0",
+    "core-js": "^3.21.1",
+    "luxon": "^2.3.1",
     "nuxt": "^2.15.8",
     "vue-i18n": "^8.27.0",
-    "splitpanes": "^2.3.8",
-    "cookie": "^0.4.1",
+    "splitpanes": "^3.1.1",
+    "cookie": "^0.4.2",
     "dropzone": "6.0.0-beta.2"
   },
   "devDependencies": {
@@ -46,8 +46,6 @@
     "postcss": "latest",
     "postcss-preset-env": "latest",
     "postcss-nested": "latest",
-    "postcss-scss": "latest",
-    "postcss-advanced-variables": "latest",
     "autoprefixer": "latest",
     "@nuxt/postcss8": "^1.1.3"
   }
