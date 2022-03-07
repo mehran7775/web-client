@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "@nuxtjs/composition-api";
+import { ref } from "@nuxtjs/composition-api";
 
 interface selectProps {
   label: string;
@@ -7,6 +7,8 @@ interface selectProps {
   height: string;
   readonly: boolean;
   items: any;
+  textPath: string;
+  keyPath: string;
 }
 
 const props = withDefaults(defineProps<selectProps>(), {
@@ -15,9 +17,12 @@ const props = withDefaults(defineProps<selectProps>(), {
   height: "24px",
   items: [],
   readonly: false,
+  textPath: "$.name",
+  keyPath: "$.id",
 });
 
 const active = ref(false);
+const SelectedText = ref("");
 const value = ref<string | null>(null);
 
 function toggleActive() {
@@ -26,8 +31,21 @@ function toggleActive() {
 
 function select(item: any) {
   value.value = item;
+  SelectedText.value = getText(item);
   active.value = false;
 }
+
+const getText: (item: any) => string = eval(
+  "(item)=>{\
+    return " + props.textPath.replace(/^\$/, "item") + ".toString();\
+  }"
+);
+
+const getValue: (item: any) => any = eval(
+  "(item)=>{\
+    return " + props.keyPath.replace(/^\$/, "item") + ";\
+  }"
+);
 </script>
 
 <template>
@@ -49,7 +67,7 @@ function select(item: any) {
     <input
       type="text"
       class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
-      v-model="value"
+      v-model="SelectedText"
       readonly
       :aria-readonly="readonly"
     />
@@ -58,7 +76,9 @@ function select(item: any) {
     </slot>
     <ol class="menu tw-m-0 tw-p-0 tw-shadow" v-show="active">
       <slot name="prepend-item"></slot>
-      <li v-for="item in items" @click="() => select(item)">{{ item }}</li>
+      <li v-for="item in items" :key="getValue(item)" @click="() => select(item)">
+        {{ getText(item) }}
+      </li>
       <slot name="append-item"></slot>
     </ol>
   </label>
