@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "@nuxtjs/composition-api";
+import { ComponentPublicInstance, onBeforeUnmount, ref } from "@nuxtjs/composition-api";
 
 interface selectProps {
   label: string;
@@ -24,11 +24,10 @@ const props = withDefaults(defineProps<selectProps>(), {
 const active = ref(false);
 const selectedText = ref("");
 const value = ref<string | null>(null);
-const inp = ref<any>(null);
+const inp = ref<HTMLInputElement | null>(null);
 
 function toggleActive() {
   active.value = !active.value;
-  if (active.value && inp.value) inp.value?.focus();
 }
 
 function select(item: any) {
@@ -48,6 +47,16 @@ const getValue: (item: any) => any = eval(
     return " + props.keyPath.replace(/^\$/, "item") + ";\
   }"
 );
+if (process.client) {
+  function close(e: MouseEvent) {
+    if (e.target != inp.value) active.value = false;
+  }
+  window.addEventListener("click", close);
+
+  onBeforeUnmount(() => {
+    window.removeEventListener("click", close);
+  });
+}
 </script>
 
 <template>
