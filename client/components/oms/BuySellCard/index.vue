@@ -4,6 +4,7 @@ import { useInstrument } from "@/composables";
 import { InstrumentCache, InstrumentSearchModel, Side } from "@/types";
 import accountType from "@/components/wealth/accountType.vue";
 import credit from "@/components/wealth/credit.vue";
+import percent from "./percent.vue";
 
 const props = defineProps<{
   count: number;
@@ -103,10 +104,10 @@ instrumentManager
                 </template>
               </text-input>
             </v-col>
-            <v-col cols="6" class="">
+            <v-col cols="6" class="tw-pt-1">
               <account-type
                 :placeholder="$t('accounting.account.type')"
-                class="me-3 tw-my-auto"
+                class="me-3 tw-my-1"
                 height="24px"
               >
               </account-type>
@@ -114,7 +115,7 @@ instrumentManager
             <v-col cols="6">
               <credit
                 height="24px"
-                class="tw-my-auto"
+                class="tw-my-1"
                 :placeholder="$t('accounting.account.credit')"
               >
               </credit>
@@ -150,7 +151,10 @@ instrumentManager
               <span>{{ $t("oms.tradeValue") }}: </span>
               <numeric-field :value="1000" />
             </v-col>
-            <v-col class="d-flex justify-space-between" md="12"> درصد سهم </v-col>
+            <v-col class="d-flex justify-space-between" md="12">
+              <span>درصد سهم</span>
+              <percent height="32px" class="tw-flex tw-flex-grow"> </percent>
+            </v-col>
             <v-col cols="6">
               <v-checkbox
                 :label="$t('general.acceptPolicy')"
