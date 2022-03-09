@@ -71,7 +71,7 @@ import { Tabs, DeepOptions, TabTitle, Instrument, SameSectorQuery } from "@/type
 import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
-import BuySellCard from "@/components/oms/BuySellCard.vue";
+import BuySellCard from "@/components/oms/BuySellCard/index.vue";
 import { useInstrument } from "~/composables";
 
 export default defineComponent({

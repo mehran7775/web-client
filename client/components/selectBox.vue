@@ -86,13 +86,13 @@ if (process.client) {
     />
     <slot name="append">
       <i
-        @click="toggleActive"
+        @click.prevent="toggleActive"
         class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"
       ></i>
     </slot>
     <ol class="menu tw-m-0 tw-p-0 tw-shadow" v-show="active">
       <slot name="prepend-item"></slot>
-      <li v-for="item in items" :key="getValue(item)" @click="() => select(item)">
+      <li v-for="item in items" :key="getValue(item)" @click.prevent="() => select(item)">
         {{ getText(item) }}
       </li>
       <slot name="append-item"></slot>
