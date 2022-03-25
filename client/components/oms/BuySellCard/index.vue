@@ -97,10 +97,6 @@ instrumentManager
               >
                 <template #append>
                   <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
-                  <v-icon color="primary" class="tw-mx-1" x-small>isax-arrow-up-2</v-icon>
-                  <v-icon color="primary" class="tw-mx-1" x-small
-                    >isax-arrow-down-2</v-icon
-                  >
                 </template>
               </text-input>
             </v-col>
