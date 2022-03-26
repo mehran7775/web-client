@@ -73,12 +73,8 @@ export default defineComponent({
     const store = useStore();
     const userManager = useUser(store);
     const i18n = useI18n();
-    const tabs = [
-      "bottom-panel.orders",
-      "bottom-panel.bests",
-      "bottom-panel.depth",
-    ];
-    const isLogin = userManager.isLogin
+    const tabs = ["bottom-panel.orders", "bottom-panel.bests", "bottom-panel.depth"];
+    const isLogin = userManager.isLogin;
     const tab = computed({
       get(): Tabs {
         return store.getters["bottom-panel/activeTab"] as Tabs;
@@ -89,9 +85,7 @@ export default defineComponent({
       },
     });
     const icon = computed(() =>
-      store.getters["bottom-panel/expanded"]
-        ? "mdi-arrow-collapse"
-        : "mdi-arrow-expand"
+      store.getters["bottom-panel/expanded"] ? "mdi-arrow-collapse" : "mdi-arrow-expand"
     );
     const expanded = computed(() => store.getters["bottom-panel/expanded"]);
     const loading = computed(() => store.getters["bottom-panel/loading"]);
@@ -127,23 +121,26 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.expanded
-  transition: all 0.5s ease-in-out
-  height: 100%
+<style lang="postcss" scoped>
+.expanded {
+  transition: all 0.5s ease-in-out;
+  height: 100%;
+}
 
-.half
-  transition: all 0.5s ease-in-out
-  height: calc(50vh - 64px)
+.half {
+  transition: all 0.5s ease-in-out;
+  height: calc(50vh - 64px);
+}
 
-.hiden
-  height: 32px
-
-.detail
-  position: relative
-  width: 100%
-  font-size: 1rem
-  line-height: 1.5
-  height: calc(100% - 64px)
-  overflow-y: auto
+.hiden {
+  height: 32px;
+}
+.detail {
+  position: relative;
+  width: 100%;
+  font-size: 1rem;
+  line-height: 1.5;
+  height: calc(100% - 64px);
+  overflow-y: auto;
+}
 </style>

@@ -67,9 +67,7 @@ export default defineComponent({
   setup(props, ctx) {
     const keyboard = ref(useVirtualKeyBoard());
     const shift = ref(false);
-    const normal = reactive(
-      printableKeys.map((key) => ({ name: key, active: false }))
-    );
+    const normal = reactive(printableKeys.map((key) => ({ name: key, active: false })));
     const alternate = reactive(
       printableShiftKeys.map((key) => ({ name: key, active: false }))
     );
@@ -94,12 +92,13 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.keyboard
-  background-color: rgba(0, 0, 0, 0.5)
-  position: absolute
-  width: 100%
-  height: 100%
-  left: 0
-  bottom: 0
+<style lang="postcss" scoped>
+.keyboard {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  bottom: 0;
+}
 </style>

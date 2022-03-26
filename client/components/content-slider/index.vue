@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="ma-0 pa-0 slider"
-    @mouseenter="stopTimer"
-    @mouseleave="startTimer"
-    fluid
-  >
+  <div class="ma-0 pa-0 slider" @mouseenter="stopTimer" @mouseleave="startTimer" fluid>
     <v-window class="slide" v-model="slide">
       <v-window-item v-for="doc in docs" :key="doc.path">
         <nuxt-content :document="doc" class="doc-md" />
@@ -46,7 +41,6 @@ import {
   reactive,
 } from "@nuxtjs/composition-api";
 import { useAsrTrader } from "~/composables";
-
 
 export default defineComponent({
   props: {
@@ -92,36 +86,46 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass">
-.controll
-  .v-btn
-    &--active
-      &::before
-        display: none
+<style lang="postcss">
+.controll {
+  .v-btn {
+    &--active {
+      &::before {
+        display: none;
+      }
+    }
+  }
+}
 </style>
 
-<style lang="sass" scoped>
-.hover
-  position: absolute
-  top: 0
-  left: 0
-  width: 100%
-  height: calc(100% - 24px)
-.slider
-  position: relative
-  height: 100%
-.slide
-  height: calc( 100% - 24px )
-  overflow: auto
-.controll
-  text-align: center
-  justify-content: center
-  height: 24px
-  .v-btn
-    border: none !important
-    .item
-      transition: all 0.2s ease-in-out
-      display: inline-block
-      background-color: white
-      border-radius: 4px
+<style lang="postcss" scoped>
+.hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 24px);
+}
+.slider {
+  position: relative;
+  height: 100%;
+}
+.slide {
+  height: calc(100% - 24px);
+  overflow: auto;
+}
+.controll {
+  text-align: center;
+  justify-content: center;
+  height: 24px;
+  .v-btn {
+    border: none !important;
+    .item {
+      transition: all 0.2s ease-in-out;
+      display: inline-block;
+      background-color: white;
+      border-radius: 4px;
+    }
+  }
+}
 </style>

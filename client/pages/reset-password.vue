@@ -53,33 +53,40 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.back
-  position: absolute
-  top: 72px
-  left: 39px
+<style lang="postcss" scoped>
+.back {
+  position: absolute;
+  top: 72px;
+  left: 39px;
+}
 
-.v-application--is-rtl
-  .back
-    right: 39px
-.res-ct
-  position: relative
-  height: 100%
-  overflow: hidden
-  display: flex
-  flex-direction: column
-  justify-content: center
-  padding: 0 calc(50% - 257px) !important
-.res-crd
-  border-radius: 24px
-  padding: 41px 96px
-  max-width: 514px
-  min-width: 514px
-  height: 658px
-.pie-1
-  top: -290px
-  right: -100px
-.pie-2
-  bottom: -290px
-  left: -210px
+.v-application--is-rtl {
+  .back {
+    right: 39px;
+  }
+}
+.res-ct {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 calc(50% - 257px) !important;
+}
+.res-crd {
+  border-radius: 24px;
+  padding: 41px 96px;
+  max-width: 514px;
+  min-width: 514px;
+  height: 658px;
+}
+.pie-1 {
+  top: -290px;
+  right: -100px;
+}
+.pie-2 {
+  bottom: -290px;
+  left: -210px;
+}
 </style>

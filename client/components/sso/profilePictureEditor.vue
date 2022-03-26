@@ -49,9 +49,10 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.file
-  position: absolute
-  bottom: 1px
-  width: 100%
+<style lang="postcss" scoped>
+.file {
+  position: absolute;
+  bottom: 1px;
+  width: 100%;
+}
 </style>
