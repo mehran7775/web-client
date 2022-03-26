@@ -1,10 +1,6 @@
 @import components/all
 @import variables
 
-html
-  overflow-y: auto !important
-  mix-blend-mode: Pass through
-
 h1
   font-size: map-get($headings, 'h1', 'size')
 h2
@@ -15,35 +11,6 @@ h4
   font-size: map-get($headings, 'h4', 'size')
 h5
   font-size: map-get($headings, 'h5', 'size')
-
-@media (min-width: 960px)
-  .oddodd:nth-child(4n + 1)
-    background-color: #f2f2f2
-
-  .oddodd:nth-child(4n + 2)
-    background-color: #f2f2f2
-
-@media (max-width: 959px)
-  .oddodd:nth-child(odd)
-    background-color: #ffffff
-
-  .oddodd:nth-child(even)
-    background-color: #f2f2f2
-
-.striped:nth-child(even)
-  background-color: #ffffff
-
-.striped:nth-child(odd)
-  background-color: #f2f2f2
-
-.copy-cursor
-  cursor: copy
-
-.header-box
-  height: 40px
-
-.no-translate *
-  transform: none !important
 
 .v-input
   &--is-focused
@@ -65,24 +32,6 @@ h5
         th
           padding: 0 4px !important
 
-.logo
-  width: 48px
-  height: 54px
-  background: url(@/assets/images/logo.png) no-repeat left top
-  display: inline-block
-  padding: 0
-
-.logo:hover
-  background-position: right top
-
-.bar
-  border-top: 1px solid #4F4F4F
-  width: 16px
-  transform: rotate(90deg)
-  position: absolute
-  left: -8px
-  top: 50%
-
 .v-menu
   &__content
     border-top-left-radius: 0 !important
@@ -92,8 +41,3 @@ h5
   &--is-menu-active
     border-bottom-left-radius: 0 !important
     border-bottom-right-radius: 0 !important
-
-.col-border
-  border: none
-  border-color: none
-  border-bottom: 1px solid #E0E0E0
