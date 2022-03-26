@@ -37,16 +37,9 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  Ref,
-  computed,
-  useStore,
-} from "@nuxtjs/composition-api";
+import { defineComponent, ref, Ref, computed, useStore } from "@nuxtjs/composition-api";
 import { required } from "@/utils/rules";
 import { useAsrTrader } from "~/composables";
-
 
 export default defineComponent({
   inheritAttrs: false,
@@ -88,8 +81,10 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass">
-.captcha
-  .v-input__append-inner
-    margin-top: 3px !important
+<style lang="postcss">
+.captcha {
+  .v-input__append-inner {
+    margin-top: 3px !important;
+  }
+}
 </style>

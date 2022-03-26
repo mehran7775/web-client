@@ -57,12 +57,14 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.header
-  color: $c-info
-.col-border
-  position: relative
-  vertical-align: middle
-  justify-items: center
-  background-color: rgba(224,224,224,0.2)
+<style lang="postcss" scoped>
+.header {
+  color: var(--c-info-rgb);
+}
+.col-border {
+  position: relative;
+  vertical-align: middle;
+  justify-items: center;
+  background-color: rgba(224, 224, 224, 0.2);
+}
 </style>

@@ -53,7 +53,7 @@ export default defineComponent({
         ";" +
         "width: " +
         props.value +
-        "%;" 
+        "%;"
         // +
         // (props.xPosition == "left"
         //   ? "border-radius: 0px 6px 6px 0px;"
@@ -67,10 +67,11 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.single-bar-chart
-  position: absolute
-  content: ""
-  height: 100%
-  opacity: 0.15
+<style lang="postcss" scoped>
+.single-bar-chart {
+  position: absolute;
+  content: "";
+  height: 100%;
+  opacity: 0.15;
+}
 </style>

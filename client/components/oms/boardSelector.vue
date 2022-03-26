@@ -101,10 +101,7 @@ export default defineComponent({
     }
 
     const isMarked = computed(() => (data: AutoCompleteItem) => {
-      return (
-        bookmarks.value.findIndex((val) => val.to == generateAddress(data.id)) >
-        -1
-      );
+      return bookmarks.value.findIndex((val) => val.to == generateAddress(data.id)) > -1;
     });
     function setHome(item: AutoCompleteItem) {
       userManager.update_settings({
@@ -160,24 +157,33 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.board-search
-  background-color: rgba($c-primary,0.05)
-  border-radius: $border-radius-root
-  font-size: 0.75rem
-  max-width: 164px
-  &.v-select
-    &--is-menu-active
-      .arrow
-        transform: rotate(-180deg)
+<style lang="postcss" scoped>
+.board-search {
+  background-color: rgba(var(--c-primary), 0.05);
+  border-radius: var(--border-radius-root);
+  font-size: 0.75rem;
+  max-width: 164px;
+  &.v-select {
+    &--is-menu-active {
+      .arrow {
+        transform: rotate(-180deg);
+      }
+    }
+  }
+}
 </style>
-<style lang="sass">
-.board-search
-  &.v-select
-    *
-      color: $c-primary !important
-  input
-    color: $c-primary !important
-    &::placeholder
-      color: $c-primary !important
+<style lang="postcss">
+.board-search {
+  &.v-select {
+    * {
+      color: var(--c-primary-rgb) !important;
+    }
+  }
+  input {
+    color: var(--c-primary-rgb) !important;
+    &::placeholder {
+      color: var(--c-primary-rgb) !important;
+    }
+  }
+}
 </style>

@@ -164,9 +164,11 @@ class field {
 }
 </script>
 
-<style lang="sass" scoped>
-.header
-  background-color: #e0e0e0
-.value
-  font-size: $value-font-size
+<style lang="postcss" scoped>
+.header {
+  background-color: #e0e0e0;
+}
+.value {
+  font-size: var(--value-font-size);
+}
 </style>

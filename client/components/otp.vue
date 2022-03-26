@@ -32,11 +32,7 @@
         </v-btn>
       </template>
     </v-text-field>
-    <div
-      v-if="otpref && !otpref.valid"
-      class="error--text"
-      style="font-size: 10px"
-    >
+    <div v-if="otpref && !otpref.valid" class="error--text" style="font-size: 10px">
       <div v-for="item in otpref.validations" :key="item" class="pt-2">
         <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
         <span style="display: inline-block">
@@ -97,23 +93,32 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass">
-.otp
-  &.v-text-field
-    .v-input
-      &__append-inner
-        margin-top: 0 !important
-      &__slot
-        padding: 4px 12px 4px 4px !important
+<style lang="postcss">
+.otp {
+  &.v-text-field {
+    .v-input {
+      &__append-inner {
+        margin-top: 0 !important;
+      }
+      &__slot {
+        padding: 4px 12px 4px 4px !important;
+      }
+    }
+  }
+}
 </style>
 
-<style lang="sass" scoped>
-.sms
-  &.v-btn
-    color: $c-primary
-    background-color: rgba(0, 0, 0, 0.12) !important
-    &--disabled
-      color: $c-primary !important
-      .v-icon
-        color: $c-primary !important
+<style lang="postcss" scoped>
+.sms {
+  &.v-btn {
+    color: $c-primary;
+    background-color: rgba(0, 0, 0, 0.12) !important;
+    &--disabled {
+      color: $c-primary !important;
+      .v-icon {
+        color: $c-primary !important;
+      }
+    }
+  }
+}
 </style>

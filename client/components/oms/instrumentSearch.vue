@@ -143,19 +143,25 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.instrument-search
-  background-color: rgba($c-primary,0.05)
-  border-radius: $border-radius-root
-  font-size: 0.75rem
+<style lang="postcss" scoped>
+.instrument-search {
+  background-color: rgba(var(--c-primary), 0.05);
+  border-radius: var(--border-radius-root);
+  font-size: 0.75rem;
+}
 </style>
-<style lang="sass">
-.v-autocomplete__content
-  .instrument-search-text
-    color: $c-primary
-.instrument-search
-  input
-    color: $c-primary !important
-    &::placeholder
-      color: $c-primary !important
+<style lang="postcss">
+.v-autocomplete__content {
+  .instrument-search-text {
+    color: var(--c-primary-rgb);
+  }
+}
+.instrument-search {
+  input {
+    color: var(--c-primary-rgb) !important;
+    &::placeholder {
+      color: var(--c-primary-rgb) !important;
+    }
+  }
+}
 </style>

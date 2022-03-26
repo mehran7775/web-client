@@ -101,21 +101,17 @@
       </v-col>
       <v-col class="col-border">
         <percent-field
-          :value="(distribution.legal.sell.count / total) * distribution.legal.sell.amount"
+          :value="
+            (distribution.legal.sell.count / total) * distribution.legal.sell.amount
+          "
         />
       </v-col>
     </v-row>
-    
   </v-container>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  useStore,
-  ref,
-  Ref,
-} from "@nuxtjs/composition-api";
+import { defineComponent, useStore, ref, Ref } from "@nuxtjs/composition-api";
 import { ClientDistribution } from "@/types";
 import { useInstrument } from "~/composables";
 import numericField from "../numericField.vue";
@@ -152,16 +148,20 @@ export default defineComponent({
   },
 });
 </script>
-<style lang="sass">
-.legal-real
-  .col
-    background-color: rgba($c-default,0.05)
+<style lang="postcss">
+.legal-real {
+  .col {
+    background-color: rgba(var(--c-default), 0.05);
+  }
+}
 </style>
-<style lang="sass" scoped>
-.real
-  color: $c-info
-  background-color: rgba($c-info,0.1)
-.legal
-  color: $c-info
-  background-color: rgba($c-info,0.1)
+<style lang="postcss" scoped>
+.real {
+  color: var(--c-info-rgb);
+  background-color: rgba(var(--c-info), 0.1);
+}
+.legal {
+  color: var(--c-info-rgb);
+  background-color: rgba(var(--c-info), 0.1);
+}
 </style>

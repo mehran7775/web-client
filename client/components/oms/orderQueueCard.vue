@@ -204,17 +204,22 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.headers
-  .col
-    font-size: 0.75rem !important
-    font-weight: 700
-    max-height: 32px
-  .sell
-    background-color: #efeff1
-  .buy
-    background-color: #e0e0e0
-.queue
-  position: relative
-  max-height: 32px
+<style lang="postcss" scoped>
+.headers {
+  .col {
+    font-size: 0.75rem !important;
+    font-weight: 700;
+    max-height: 32px;
+  }
+  .sell {
+    background-color: #efeff1;
+  }
+  .buy {
+    background-color: #e0e0e0;
+  }
+}
+.queue {
+  position: relative;
+  max-height: 32px;
+}
 </style>

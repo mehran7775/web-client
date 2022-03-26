@@ -58,11 +58,7 @@
           </v-icon>
         </template>
       </v-text-field>
-      <div
-        v-if="userref && !userref.valid"
-        class="error--text"
-        style="font-size: 10px"
-      >
+      <div v-if="userref && !userref.valid" class="error--text" style="font-size: 10px">
         <div v-for="item in userref.validations" :key="item" class="pt-2">
           <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
           <span style="display: inline-block">
@@ -192,12 +188,7 @@
           dense
         />
       </div>
-      <v-radio-group
-        v-model="data.passwordType"
-        class="ma-0 pa-0"
-        hide-details
-        row
-      >
+      <v-radio-group v-model="data.passwordType" class="ma-0 pa-0" hide-details row>
         <v-radio
           v-for="(item, index) in [
             { value: 1, text: $t('login.static') },
@@ -308,15 +299,14 @@ export default defineComponent({
         try {
           const res = await userManager.login(data);
           if (res >= 200 && res < 300) {
-            const user = userManager.me
+            const user = userManager.me;
             router.push(user.value?.settings?.home ?? "/watchlist/wealth");
             snack(new Snack("login.successful", "success"));
           }
         } catch (err) {
           captcharef.value.refreshCaptcha();
           const error = ErrorExtractor(err as AxiosError);
-          if (error.detail.length == 0)
-            snack(new Snack("errors." + error.code, "error"));
+          if (error.detail.length == 0) snack(new Snack("errors." + error.code, "error"));
           else {
             let res = "";
             for (let e in error.detail) {
@@ -378,42 +368,54 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass">
-.mar-t-6
-  margin-top: 6px !important
-.mar-b-6
-  margin-bottom: 6px !important
-.pad-t-6
-  padding-top: 6px !important
-.pad-b-6
-  padding-bottom: 6px !important
-a
-  text-decoration: none
+<style lang="postcss">
+.mar-t-6 {
+  margin-top: 6px !important;
+}
+.mar-b-6 {
+  margin-bottom: 6px !important;
+}
+.pad-t-6 {
+  padding-top: 6px !important;
+}
+.pad-b-6 {
+  padding-bottom: 6px !important;
+}
+a {
+  text-decoration: none;
+}
 
-.radio-ckeck
-  border-radius: 5px
-  width: calc( 50% - 8px )
-  background-color: rgba(130, 130, 130, 0.1)
-  font-weight: bold
-  display: inline-block !important
-  justify-content: center
-  text-align: center
-  &.v-item--active
-    font-size: 1.1667rem
-    background-color: rgba($c-primary,0.05)
-    label
-      width: auto
-      color: $c-primary
-  .v-input--selection-controls__input
-    width: auto
-    .v-icon
-      font-size: inherit
+.radio-ckeck {
+  border-radius: 5px;
+  width: calc(50% - 8px);
+  background-color: rgba(130, 130, 130, 0.1);
+  font-weight: bold;
+  display: inline-block !important;
+  justify-content: center;
+  text-align: center;
+  &.v-item--active {
+    font-size: 1.1667rem;
+    background-color: rgba(var(--c-primary), 0.05);
+    label {
+      width: auto;
+      color: var(--c-primary-rgb);
+    }
+  }
+  .v-input--selection-controls__input {
+    width: auto;
+    .v-icon {
+      font-size: inherit;
+    }
+  }
+}
 
-.pass-star.v-input.v-text-field
-  input
-    color: var(--v-default-lighten3)
-    vertical-align: middle
-    padding-bottom: 16px
-    font-size: 36px
-    line-height: 36px
+.pass-star.v-input.v-text-field {
+  input {
+    color: var(--v-default-lighten3);
+    vertical-align: middle;
+    padding-bottom: 16px;
+    font-size: 36px;
+    line-height: 36px;
+  }
+}
 </style>

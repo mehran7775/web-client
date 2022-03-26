@@ -17,7 +17,7 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
+<style lang="postcss" scoped>
 .loading {
   justify-content: center;
   align-items: center;

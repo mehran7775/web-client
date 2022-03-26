@@ -13,16 +13,16 @@ export default defineComponent({
     left: Number,
     right: Number,
   },
-  setup() {
-  },
+  setup() {},
 });
 </script>
-<style lang="sass" scoped>
-.double-chart-bar
-  position: absolute
-  width: 96%
-  height: 100%
-  top:0
-  left:2%
-  content: ""
+<style lang="postcss" scoped>
+.double-chart-bar {
+  position: absolute;
+  width: 96%;
+  height: 100%;
+  top: 0;
+  left: 2%;
+  content: "";
+}
 </style>
