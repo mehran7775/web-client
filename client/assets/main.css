@@ -13,6 +13,10 @@
 html {
   overflow-y: auto !important;
   mix-blend-mode: Pass through;
+  font-size: var(--font-size-root);
+}
+
+body {
 }
 
 @media (min-width: 960px) {
