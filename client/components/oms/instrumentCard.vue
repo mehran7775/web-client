@@ -164,7 +164,7 @@ class field {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .header {
   background-color: #e0e0e0;
 }

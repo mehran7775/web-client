@@ -362,7 +362,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .sub-item:first-child {
   .path {
     height: 28px;
@@ -394,7 +394,7 @@ export default defineComponent({
 }
 </style>
 
-<style lang="scss">
+<style lang="postcss">
 .r-panel {
   .tabs {
     &::-webkit-scrollbar {

@@ -93,7 +93,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="postcss">
 .otp {
   &.v-text-field {
     .v-input {
@@ -108,7 +108,7 @@ export default defineComponent({
 }
 </style>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .sms {
   &.v-btn {
     color: var(--c-primary-rgb);

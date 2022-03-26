@@ -92,7 +92,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .keyboard {
   background-color: rgba(0, 0, 0, 0.5);
   position: absolute;

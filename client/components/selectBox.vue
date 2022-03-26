@@ -100,7 +100,7 @@ if (process.client) {
   </label>
 </template>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .ada-select {
   position: relative;
   border-radius: var(--border-radius-input);

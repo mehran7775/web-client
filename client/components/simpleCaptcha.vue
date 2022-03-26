@@ -81,7 +81,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="postcss">
 .captcha {
   .v-input__append-inner {
     margin-top: 3px !important;

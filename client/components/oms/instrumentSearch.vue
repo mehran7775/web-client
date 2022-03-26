@@ -143,14 +143,14 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .instrument-search {
   background-color: rgba(var(--c-primary), 0.05);
   border-radius: var(--border-radius-root);
   font-size: 0.75rem;
 }
 </style>
-<style lang="scss">
+<style lang="postcss">
 .v-autocomplete__content {
   .instrument-search-text {
     color: var(--c-primary-rgb);

@@ -169,7 +169,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="postcss">
 .shadow {
   border: none !important;
   &.bottom {
@@ -188,7 +188,7 @@ export default defineComponent({
 }
 </style>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .drawer-activator {
   &.open {
     transform: rotate(-180deg);

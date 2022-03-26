@@ -157,7 +157,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .board-search {
   background-color: rgba(var(--c-primary), 0.05);
   border-radius: var(--border-radius-root);
@@ -172,7 +172,7 @@ export default defineComponent({
   }
 }
 </style>
-<style lang="scss">
+<style lang="postcss">
 .board-search {
   &.v-select {
     * {

@@ -87,7 +87,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .headers {
   background-color: rgba(var(--c-primary), 0.1);
 }

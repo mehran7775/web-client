@@ -53,7 +53,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .back {
   position: absolute;
   top: 72px;

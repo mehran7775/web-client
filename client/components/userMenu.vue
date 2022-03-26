@@ -83,7 +83,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .user-menu-activator {
   &::before {
     background-color: var(--c-primary-rgb) !important;

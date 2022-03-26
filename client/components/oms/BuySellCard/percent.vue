@@ -27,7 +27,7 @@ const val = ref(0);
   </div>
 </template>
 
-<style lang="scss">
+<style lang="postcss">
 .percent {
   direction: ltr;
   .point {

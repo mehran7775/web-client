@@ -31,7 +31,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .v-main {
   overflow-y: auto;
   overflow-x: hidden;

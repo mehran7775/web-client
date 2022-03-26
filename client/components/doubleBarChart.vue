@@ -16,7 +16,7 @@ export default defineComponent({
   setup() {},
 });
 </script>
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .double-chart-bar {
   position: absolute;
   width: 96%;

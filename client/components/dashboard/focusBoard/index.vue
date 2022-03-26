@@ -157,7 +157,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .focus-board {
   height: 320px;
 }
@@ -188,7 +188,7 @@ export default defineComponent({
 }
 </style>
 
-<style lang="scss">
+<style lang="postcss">
 .focus-board {
   .row {
     margin: 0;

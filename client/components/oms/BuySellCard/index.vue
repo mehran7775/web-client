@@ -182,7 +182,7 @@ instrumentManager
   </v-container>
 </template>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .buy {
   &:hover {
     background-color: var(--c-success-rgb);
@@ -203,7 +203,7 @@ instrumentManager
 }
 </style>
 
-<style lang="scss">
+<style lang="postcss">
 .buy-sell {
   .v-tab {
     color: black;

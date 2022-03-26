@@ -128,7 +128,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .buy {
   background-color: rgba(var(--c-success), 0.7) !important;
 }
@@ -158,7 +158,7 @@ export default defineComponent({
 }
 </style>
 
-<style lang="scss">
+<style lang="postcss">
 .card-view {
   * {
     font-size: 0.8334rem;

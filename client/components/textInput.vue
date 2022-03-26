@@ -27,7 +27,7 @@ const value = ref<string | null>(null);
   </label>
 </template>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .ada-input {
   height: 24px;
   border-radius: var(--border-radius-input);

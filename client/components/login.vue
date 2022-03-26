@@ -368,7 +368,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="postcss">
 .mar-t-6 {
   margin-top: 6px !important;
 }

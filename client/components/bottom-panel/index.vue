@@ -121,7 +121,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .expanded {
   transition: all 0.5s ease-in-out;
   height: 100%;
