@@ -68,7 +68,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .menu {
   max-width: 164px;
   background-color: rgba(var(--c-primary), 0.05);

@@ -67,7 +67,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .pie-1 {
   top: -296px;
   right: -296px;

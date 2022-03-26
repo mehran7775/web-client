@@ -57,7 +57,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .header {
   color: var(--c-info-rgb);
 }

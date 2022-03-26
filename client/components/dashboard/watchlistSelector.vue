@@ -194,7 +194,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .watchlist-select {
   background-color: var(--c-primary-rgb) !important;
   border-radius: var(--border-radius-root);
@@ -216,7 +216,7 @@ export default defineComponent({
   }
 }
 </style>
-<style lang="postcss">
+<style lang="scss">
 .watchlist-select {
   &__content {
     .v-input__slot {

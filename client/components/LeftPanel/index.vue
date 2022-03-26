@@ -184,7 +184,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss">
+<style lang="scss">
 .msg-panel {
   padding: 0 !important;
   margin: 0 !important;

@@ -131,7 +131,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .item {
   height: 32px !important;
   &.selected {

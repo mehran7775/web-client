@@ -49,7 +49,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .file {
   position: absolute;
   bottom: 1px;

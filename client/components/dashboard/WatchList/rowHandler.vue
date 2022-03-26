@@ -23,7 +23,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .row-border {
   border: none;
   border-color: none;

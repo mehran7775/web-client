@@ -148,14 +148,14 @@ export default defineComponent({
   },
 });
 </script>
-<style lang="postcss">
+<style lang="scss">
 .legal-real {
   .col {
     background-color: rgba(var(--c-default), 0.05);
   }
 }
 </style>
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .real {
   color: var(--c-info-rgb);
   background-color: rgba(var(--c-info), 0.1);

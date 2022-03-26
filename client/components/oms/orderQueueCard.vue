@@ -204,7 +204,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .headers {
   .col {
     font-size: 0.75rem !important;

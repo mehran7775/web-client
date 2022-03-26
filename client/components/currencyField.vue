@@ -21,7 +21,7 @@ export default defineComponent({
   },
 });
 </script>
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .value {
   font-size: var(--value-font-size);
 }

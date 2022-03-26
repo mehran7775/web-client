@@ -194,7 +194,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss">
+<style lang="scss">
 .otp {
   &.v-text-field {
     .v-input {
@@ -209,7 +209,7 @@ export default defineComponent({
 }
 </style>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .primary {
   &.v-btn {
     &--disabled {

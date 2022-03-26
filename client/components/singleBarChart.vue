@@ -67,7 +67,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .single-bar-chart {
   position: absolute;
   content: "";

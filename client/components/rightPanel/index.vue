@@ -362,7 +362,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .sub-item:first-child {
   .path {
     height: 28px;
@@ -378,12 +378,12 @@ export default defineComponent({
     width: 12px;
     border-right: 1px solid rgba(0, 0, 0, 0.05);
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 0 0 $border-radius-root 0;
+    border-radius: 0 0 var(--border-radius-root) 0;
     position: absolute;
   }
 }
 .tabs {
-  background-color: rgba($c-primary, 0.05);
+  background-color: rgba(var(--c-primary), 0.05);
   overflow-y: auto;
   height: 100vh;
   padding-bottom: 54px;
@@ -394,7 +394,7 @@ export default defineComponent({
 }
 </style>
 
-<style lang="postcss">
+<style lang="scss">
 .r-panel {
   .tabs {
     &::-webkit-scrollbar {

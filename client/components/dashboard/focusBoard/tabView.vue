@@ -128,7 +128,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss">
+<style lang="scss">
 .tab-view {
   * {
     font-size: 0.8334rem;
@@ -150,7 +150,7 @@ export default defineComponent({
 }
 </style>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .panel {
   border-left: 1px solid #e0e0e0;
   border-right: 1px solid #e0e0e0;

@@ -86,7 +86,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss">
+<style lang="scss">
 .controll {
   .v-btn {
     &--active {
@@ -98,7 +98,7 @@ export default defineComponent({
 }
 </style>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .hover {
   position: absolute;
   top: 0;
