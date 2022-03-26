@@ -41,12 +41,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  useRouter,
-  useStore,
-} from "@nuxtjs/composition-api";
+import { defineComponent, ref, useRouter, useStore } from "@nuxtjs/composition-api";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
 import { MenuItem, User } from "~/types";
 import { useUser } from "~/composables";
@@ -88,8 +83,10 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.user-menu-activator
-  &::before
-    background-color: $c-primary !important
+<style lang="postcss" scoped>
+.user-menu-activator {
+  &::before {
+    background-color: var(--c-primary-rgb) !important;
+  }
+}
 </style>

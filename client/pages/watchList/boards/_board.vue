@@ -45,9 +45,7 @@ export default defineComponent({
     const loading = ref(false);
     const searchModel = ref(new InstrumentSearchModel());
     searchModel.value.length = 15;
-    board.value = parseInt(
-      (route.value.params["board"] as string | null) ?? "-1"
-    );
+    board.value = parseInt((route.value.params["board"] as string | null) ?? "-1");
 
     async function select(val: AutoCompleteItem) {
       loading.value = true;
@@ -70,10 +68,10 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.menu
-  max-width: 164px
-  background-color: rgba($c-primary,0.05)
-  border-radius: $border-radius-root
+<style lang="postcss" scoped>
+.menu {
+  max-width: 164px;
+  background-color: rgba(var(--c-primary), 0.05);
+  border-radius: var(--border-radius-root);
+}
 </style>
-

@@ -87,11 +87,13 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.headers
-  background-color: rgba($c-primary,0.1)
-.header
-  position: relative
-  background-color: none
-  border: none !important
+<style lang="postcss" scoped>
+.headers {
+  background-color: rgba(var(--c-primary), 0.1);
+}
+.header {
+  position: relative;
+  background-color: none;
+  border: none !important;
+}
 </style>

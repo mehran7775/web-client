@@ -13,12 +13,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  computed,
-  useStore,
-} from "@nuxtjs/composition-api";
+import { defineComponent, ref, computed, useStore } from "@nuxtjs/composition-api";
 import snackbar from "@/components/snacks.vue";
 import { useAsrTrader } from "~/composables";
 
@@ -36,11 +31,12 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.v-main
-  overflow-y: auto
-  overflow-x: hidden
-  background-color: $c-primary
-  color: white
-  min-height: 100vh
+<style lang="postcss" scoped>
+.v-main {
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--c-primary-rgb);
+  color: white;
+  min-height: 100vh;
+}
 </style>

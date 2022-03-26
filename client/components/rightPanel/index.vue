@@ -10,13 +10,7 @@
     fixed
     app
   >
-    <v-tabs
-      class="ma-0 pa-0"
-      v-model="selected"
-      vertical
-      hide-slider
-      center-active
-    >
+    <v-tabs class="ma-0 pa-0" v-model="selected" vertical hide-slider center-active>
       <div class="tabs pt-1">
         <v-tab
           v-for="item in items"
@@ -71,10 +65,7 @@
           </h4>
           <v-list dense>
             <v-list-item-group>
-              <div
-                v-for="child in item.children ? item.children : []"
-                :key="child.title"
-              >
+              <div v-for="child in item.children ? item.children : []" :key="child.title">
                 <v-list-group
                   class="item mx-1 group"
                   v-if="child.children"
@@ -157,10 +148,7 @@
                       <v-list-item-title>
                         {{ child.text ? child.text : $t(child.title) }}
                       </v-list-item-title>
-                      <div
-                        v-if="child.to && child.to != ''"
-                        class="d-flex flex-row my-0"
-                      >
+                      <div v-if="child.to && child.to != ''" class="d-flex flex-row my-0">
                         <v-btn
                           @click.prevent="
                             (ev) => {
@@ -189,10 +177,7 @@
                           icon
                           x-small
                         >
-                          <v-icon
-                            :color="child.to == home ? 'info' : 'default'"
-                            x-small
-                          >
+                          <v-icon :color="child.to == home ? 'info' : 'default'" x-small>
                             mdi-home
                           </v-icon>
                         </v-btn>
@@ -246,13 +231,9 @@ export default defineComponent({
     const isMarked = computed(() => (data: MenuItem) => {
       switch (data.bookmarkPosition) {
         case BookmarkPosition.ToolBar:
-          return (
-            bookmarks.value.findIndex((val) => val.title == data.title) > -1
-          );
+          return bookmarks.value.findIndex((val) => val.title == data.title) > -1;
         case BookmarkPosition.RightPanel:
-          return (
-            shourtcuts.value.findIndex((val) => val.title == data.title) > -1
-          );
+          return shourtcuts.value.findIndex((val) => val.title == data.title) > -1;
       }
     });
     const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
@@ -381,76 +362,96 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.sub-item:first-child
-  .path
-    height: 28px
-    top: -12px
-.sub-item
-  position: relative
-  .path
-    content: ''
-    top: -20px
-    height: 37px
-    width: 12px
-    border-right: 1px solid rgba(0, 0, 0, 0.05)
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05)
-    border-radius: 0 0 $border-radius-root 0
-    position: absolute
-.tabs
-  background-color: rgba($c-primary,0.05)
-  overflow-y: auto
-  height: 100vh
-  padding-bottom: 54px
-  width: 48px
-.details
-  overflow-y: auto
+<style lang="postcss" scoped>
+.sub-item:first-child {
+  .path {
+    height: 28px;
+    top: -12px;
+  }
+}
+.sub-item {
+  position: relative;
+  .path {
+    content: "";
+    top: -20px;
+    height: 37px;
+    width: 12px;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 0 0 $border-radius-root 0;
+    position: absolute;
+  }
+}
+.tabs {
+  background-color: rgba($c-primary, 0.05);
+  overflow-y: auto;
+  height: 100vh;
+  padding-bottom: 54px;
+  width: 48px;
+}
+.details {
+  overflow-y: auto;
+}
 </style>
 
-<style lang="sass">
-.r-panel
-  .tabs
-    &::-webkit-scrollbar
-      display: block
-  &.v-navigation-drawer--mini-variant
-    width: 48px !important
-  .v-navigation-drawer__content
-    display: flex
-    flex-direction: row
-  ::-webkit-scrollbar
-    display: none
-  .v-tabs-items
-    height: 100%
-    width: calc(100% - 42px)
-    display: block
-    .v-list-item
-      border-radius: $border-radius-root
-    .v-item--active
-      color: $c-primary
-      &::before
-        border-radius: $border-radius-root
-    // .v-list-group
-    //   &__header
-    //     &[aria-expanded="true"]
-    //       background-color: rgba($c-primary,0.1)
-  .v-tabs
-    width: 48px
-    vertical-align: top
-    &--vertical
-      > .v-tabs-bar
-        .v-tabs-bar__content
-          display: block
-        .v-tab
-          padding: 0
-          display: block
-          vertical-align: middle
-          justify-content: center !important
-          min-width: 48px
-          height: 32px !important
-          &--active
-            &::before
-              background-color: rgba(0,0,0,0) !important
-            .v-btn
-              color: $c-primary
-              background-color: rgba($c-primary,0.1) !important
+<style lang="postcss">
+.r-panel {
+  .tabs {
+    &::-webkit-scrollbar {
+      display: block;
+    }
+  }
+  &.v-navigation-drawer--mini-variant {
+    width: 48px !important;
+  }
+  .v-navigation-drawer__content {
+    display: flex;
+    flex-direction: row;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  .v-tabs-items {
+    height: 100%;
+    width: calc(100% - 42px);
+    display: block;
+    .v-list-item {
+      border-radius: var(--border-radius-root);
+    }
+    .v-item--active {
+      color: var(--c-primary-rgb);
+      &::before {
+        border-radius: var(--border-radius-root);
+      }
+    }
+  }
+  .v-tabs {
+    width: 48px;
+    vertical-align: top;
+    &--vertical {
+      > .v-tabs-bar {
+        .v-tabs-bar__content {
+          display: block;
+        }
+        .v-tab {
+          padding: 0;
+          display: block;
+          vertical-align: middle;
+          justify-content: center !important;
+          min-width: 48px;
+          height: 32px !important;
+          &--active {
+            &::before {
+              background-color: rgba(0, 0, 0, 0) !important;
+            }
+            .v-btn {
+              color: var(--c-primary-rgb);
+              background-color: rgba(var(--c-primary), 0.1) !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 </style>

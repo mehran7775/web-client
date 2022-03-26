@@ -128,40 +128,52 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.buy
-  background-color: rgba($c-success,0.7) !important
-.sell
-  background-color: rgba($c-error,0.7) !important
-.close
-  background-color: rgba($c-primary,0.1) !important
-.toolbar
-  background-color: rgba($c-primary,0.05) !important
-  .title
-    font-weight: 700
-    font-size: 1rem !important
-    color: $c-primary
-    margin: 0 8px
-.card-view
-  border-left: 1px solid #E0E0E0
-  border-right: 1px solid #E0E0E0
-.card-row
-  overflow-x: auto
-  overflow-y: hidden
-  height: 320px
+<style lang="postcss" scoped>
+.buy {
+  background-color: rgba(var(--c-success), 0.7) !important;
+}
+.sell {
+  background-color: rgba(var(--c-error), 0.7) !important;
+}
+.close {
+  background-color: rgba(var(--c-primary), 0.1) !important;
+}
+.toolbar {
+  background-color: rgba(var(--c-primary), 0.05) !important;
+  .title {
+    font-weight: 700;
+    font-size: 1rem !important;
+    color: $c-primary;
+    margin: 0 8px;
+  }
+}
+.card-view {
+  border-left: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+}
+.card-row {
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 320px;
+}
 </style>
 
-<style lang="sass">
-.card-view
-  *
-    font-size: 0.8334rem
-    line-height: 31px  !important
-  .row
-    padding: 0 !important
-    background-color: white
-  .col
-    padding: 0
-    position: relative
-  .bar
-    opacity: 0.3
+<style lang="postcss">
+.card-view {
+  * {
+    font-size: 0.8334rem;
+    line-height: 31px !important;
+  }
+  .row {
+    padding: 0 !important;
+    background-color: white;
+  }
+  .col {
+    padding: 0;
+    position: relative;
+  }
+  .bar {
+    opacity: 0.3;
+  }
+}
 </style>

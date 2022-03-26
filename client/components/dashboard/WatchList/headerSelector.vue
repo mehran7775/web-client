@@ -50,9 +50,7 @@
         :key="i.value"
       >
         <v-list-item-action>
-          <v-icon :color="i.selected ? 'primary' : 'gray4'" small>
-            isax-tick
-          </v-icon>
+          <v-icon :color="i.selected ? 'primary' : 'gray4'" small> isax-tick </v-icon>
         </v-list-item-action>
         <v-list-item-title>
           {{ $t("instrument." + i.value) }}
@@ -63,12 +61,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  useStore,
-  computed,
-  ref,
-} from "@nuxtjs/composition-api";
+import { defineComponent, useStore, computed, ref } from "@nuxtjs/composition-api";
 import { User, InstrumentCache, WatchlistColumns, DefaultCols } from "@/types";
 import { useUser } from "~/composables";
 
@@ -78,9 +71,7 @@ export default defineComponent({
     const userManager = useUser(store);
     const menu = ref(false);
     const user = userManager.me;
-    const currentCols = computed(
-      () => user.value.settings.columns ?? DefaultCols()
-    );
+    const currentCols = computed(() => user.value.settings.columns ?? DefaultCols());
     const blackList = [
       "side",
       "priceChange",
@@ -97,8 +88,7 @@ export default defineComponent({
     const items = computed(() => {
       return cols
         .map((key) => ({
-          selected:
-            currentCols.value.findIndex((item) => item.value == key) != -1,
+          selected: currentCols.value.findIndex((item) => item.value == key) != -1,
           value: key,
         }))
         .sort((a, b) => (a.selected ? 0 : 1) - (b.selected ? 0 : 1));
@@ -141,11 +131,14 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.item
-  height: 32px !important
-  &.selected
-    background-color: rgba($c-primary,0.05)
-    &:hover
-      background-color: rgba($c-default,0.1)
+<style lang="postcss" scoped>
+.item {
+  height: 32px !important;
+  &.selected {
+    background-color: rgba(var(--c-primary), 0.05);
+    &:hover {
+      background-color: rgba(var(--c-default), 0.1);
+    }
+  }
+}
 </style>

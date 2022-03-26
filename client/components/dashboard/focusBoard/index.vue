@@ -157,42 +157,54 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.focus-board
-  height: 320px
-.bookmark
-  padding: 0 !important
-  position: relative
-  width: 75px
-  min-width: 75px
-  max-width: 75px
-  .label
-    max-width: calc(75px - 8px)
-    text-overflow: ellipsis
-    overflow: hidden
-    white-space: nowrap
-  .removeMark
-    position: absolute
-    top: -10px
-    left: -6px
-    z-index: 1000
-    display: none
-  &:hover
-    .removeMark
-      display: block
+<style lang="postcss" scoped>
+.focus-board {
+  height: 320px;
+}
+.bookmark {
+  padding: 0 !important;
+  position: relative;
+  width: 75px;
+  min-width: 75px;
+  max-width: 75px;
+  .label {
+    max-width: calc(75px - 8px);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .removeMark {
+    position: absolute;
+    top: -10px;
+    left: -6px;
+    z-index: 1000;
+    display: none;
+  }
+  &:hover {
+    .removeMark {
+      display: block;
+    }
+  }
+}
 </style>
 
-<style lang="sass">
-.focus-board
-  .row
-    margin: 0
-    padding: 0
-    min-height: 32px
-    .col
-      min-height: 32px
-.mode
-  &.v-btn-toggle
-    > .v-btn.v-btn
-      border-radius: $border-radius-root
-      border: none !important
+<style lang="postcss">
+.focus-board {
+  .row {
+    margin: 0;
+    padding: 0;
+    min-height: 32px;
+    .col {
+      min-height: 32px;
+    }
+  }
+}
+.mode {
+  &.v-btn-toggle {
+    > .v-btn.v-btn {
+      border-radius: var(--border-radius-root);
+      border: none !important;
+    }
+  }
+}
 </style>

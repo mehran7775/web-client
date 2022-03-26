@@ -53,9 +53,10 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" scoped>
-.menu
-  max-width: 164px
-  background-color: rgba($c-primary,0.05)
-  border-radius: $border-radius-root
+<style lang="postcss" scoped>
+.menu {
+  max-width: 164px;
+  background-color: rgba(var(--c-primary), 0.05);
+  border-radius: var(--border-radius-root);
+}
 </style>

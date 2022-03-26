@@ -128,25 +128,31 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass">
-.tab-view
-  *
-    font-size: 0.8334rem
-  .row
-    padding: 0
-    margin: 0
-    line-height: 30px  !important
-  .col
-    padding: 0
-    margin: 0
-    position: relative
-    line-height: 30px  !important
-  .bar
-    opacity: 0.3
+<style lang="postcss">
+.tab-view {
+  * {
+    font-size: 0.8334rem;
+  }
+  .row {
+    padding: 0;
+    margin: 0;
+    line-height: 30px !important;
+  }
+  .col {
+    padding: 0;
+    margin: 0;
+    position: relative;
+    line-height: 30px !important;
+  }
+  .bar {
+    opacity: 0.3;
+  }
+}
 </style>
 
-<style lang="sass" scoped>
-.panel
-  border-left: 1px solid #E0E0E0
-  border-right: 1px solid #E0E0E0
+<style lang="postcss" scoped>
+.panel {
+  border-left: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+}
 </style>

@@ -169,55 +169,71 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass">
-.shadow
-  border: none !important
-  &.bottom
-    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05) !important
-  &.right
-    box-shadow: 4px 0px 4px 0px rgba(0, 0, 0, 0.05) !important
-  &.left
-    box-shadow: -4px 0px 4px 0px rgba(0, 0, 0, 0.05)
+<style lang="postcss">
+.shadow {
+  border: none !important;
+  &.bottom {
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05) !important;
+  }
+  &.right {
+    box-shadow: 4px 0px 4px 0px rgba(0, 0, 0, 0.05) !important;
+  }
+  &.left {
+    box-shadow: -4px 0px 4px 0px rgba(0, 0, 0, 0.05);
+  }
 
-  .v-navigation-drawer__border
-    display: none !important
+  .v-navigation-drawer__border {
+    display: none !important;
+  }
+}
 </style>
 
-<style lang="sass" scoped>
-.drawer-activator
-  &.open
-    transform: rotate(-180deg)
-.center
-  position: absolute
-  margin-left: auto
-  margin-right: auto
-  left: 0
-  right: 0
-  width: fit-content
+<style lang="postcss" scoped>
+.drawer-activator {
+  &.open {
+    transform: rotate(-180deg);
+  }
+}
+.center {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  width: fit-content;
+}
+.dashboardmain-page {
+  background-color: rgba(var(--c-primary), 0.05);
+  overflow: auto;
+}
 
-.dashboardmain-page
-  background-color: var(--v-defualt-bg-base)
-  overflow: auto
+@media (min-width: 960px) {
+  .dashboardmain-page {
+    padding-left: 48px !important;
+    padding-right: 48px !important;
+    &.left {
+      padding-left: 152px !important;
+    }
+    &.right {
+      padding-right: 152px !important;
+    }
+  }
+}
+@media (max-width: 959px) {
+  .dashboardmain-page {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+.dashboardmain-nuxt {
+  overflow-y: auto;
+  height: calc(100vh - 106px);
+}
 
-@media (min-width: 960px)
-  .dashboardmain-page
-    padding-left: 48px !important
-    padding-right: 48px !important
-    &.left
-      padding-left: 152px !important
-    &.right
-      padding-right: 152px !important
-@media (max-width: 959px)
-  .dashboardmain-page
-    padding-left: 0 !important
-    padding-right: 0 !important
-
-.dashboardmain-nuxt
-  overflow-y: auto
-  height: calc(100vh - 106px)
-
-.dashboardmain-nuxt.collaps
-  height: calc(52vh)
-.cw
-  color: rgba($c-default,0.5 )
+.dashboardmain-nuxt.collaps {
+  height: calc(52vh);
+}
+.cw {
+  color: rgba(var(--c-default), 0.5);
+}
 </style>
