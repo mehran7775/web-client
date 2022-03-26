@@ -1,0 +1,44 @@
+.doc-md {
+  * {
+    text-align: start;
+    unicode-bidi: plaintext;
+  }
+  h1 {
+    text-align: center;
+  }
+  h2 {
+    text-align: center;
+  }
+  h3 {
+    text-indent: 5%;
+  }
+  h4 {
+    text-indent: 10%;
+  }
+  h5 {
+    text-indent: 15%;
+  }
+  img {
+    text-align: center;
+    justify-self: center;
+    align-self: center;
+  }
+  pre,
+  code,
+  .sourceCode,
+  .ltr {
+    direction: ltr;
+    text-align: left;
+    unicode-bidi: -webkit-isolate;
+    unicode-bidi: -moz-isolate;
+    unicode-bidi: isolate;
+  }
+  li {
+    margin: 0 24px;
+  }
+}
+
+.toc-md {
+  height: calc(100vh - 96px);
+  overflow: auto;
+}

@@ -1,11 +1,11 @@
 $material-light: (
-  'text': (
-    'theme': white,
-    'primary': rgba(black, 1),
-    'secondary': rgba(black, 0.8),
-    'disabled': rgba(black, 0.5),
-    'link': $c-info,
-    'link-hover': $c-info
+  "text": (
+    "theme": white,
+    "primary": rgba(black, 1),
+    "secondary": rgba(black, 0.8),
+    "disabled": rgba(black, 0.5),
+    "link": var(--c-info-rgb),
+    "link-hover": var(--c-info-rgb),
   ),
-  'app-bar': $c-default,
-  );
+  "app-bar": var(--c-default-rgb),
+);

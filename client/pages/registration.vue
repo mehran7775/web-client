@@ -131,7 +131,6 @@ import {
 import simpleCaptcha from "~/components/simpleCaptcha.vue";
 import { useAsrTrader } from "~/composables";
 
-
 export default defineComponent({
   components: { simpleCaptcha },
   layout: "public",
@@ -195,59 +194,79 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass">
-.otp
-  &.v-text-field
-    .v-input
-      &__append-inner
-        margin-top: 0 !important
-      &__slot
-        padding: 4px 12px 4px 4px !important
+<style lang="postcss">
+.otp {
+  &.v-text-field {
+    .v-input {
+      &__append-inner {
+        margin-top: 0 !important;
+      }
+      &__slot {
+        padding: 4px 12px 4px 4px !important;
+      }
+    }
+  }
+}
 </style>
 
-<style lang="sass" scoped>
-.primary
-  &.v-btn
-    &--disabled
-      color: $c-primary !important
-      .v-icon
-        color: $c-primary !important
-.next
-  width: 100%
-.back
-  position: absolute
-  top: 72px
-  left: 39px
-
-.v-application--is-rtl
-  .back
-    right: 39px
-.v-stepper
-  &__header
-    box-shadow: none
-  &__step
-    padding: 20px 0
-    flex-basis: auto !important
-  .v-divider
-    max-width: 32%
-.reg-ct
-  position: relative
-  height: 100%
-  overflow: hidden
-  display: flex
-  flex-direction: column
-  justify-content: center
-  padding: 0 calc(50% - 257px) !important
-.reg-crd
-  border-radius: 24px
-  padding: 41px 96px
-  max-width: 514px
-  min-width: 514px
-  height: 658px
-.pie-1
-  top: -290px
-  right: -100px
-.pie-2
-  bottom: -290px
-  left: -210px
+<style lang="postcss" scoped>
+.primary {
+  &.v-btn {
+    &--disabled {
+      color: var(--c-primary-rgb) !important;
+      .v-icon {
+        color: var(--c-primary-rgb) !important;
+      }
+    }
+  }
+}
+.next {
+  width: 100%;
+}
+.back {
+  position: absolute;
+  top: 72px;
+  left: 39px;
+}
+.v-application--is-rtl {
+  .back {
+    right: 39px;
+  }
+}
+.v-stepper {
+  &__header {
+    box-shadow: none;
+  }
+  &__step {
+    padding: 20px 0;
+    flex-basis: auto !important;
+  }
+  .v-divider {
+    max-width: 32%;
+  }
+}
+.reg-ct {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 calc(50% - 257px) !important;
+}
+.reg-crd {
+  border-radius: 24px;
+  padding: 41px 96px;
+  max-width: 514px;
+  min-width: 514px;
+  height: 658px;
+}
+.pie-1 {
+  top: -290px;
+  right: -100px;
+}
+.pie-2 {
+  bottom: -290px;
+  left: -210px;
+}
 </style>

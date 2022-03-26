@@ -1,0 +1,25 @@
+.dotted {
+  position: relative;
+  z-index: 2;
+  &::before {
+    content: " ";
+    position: absolute;
+    width: calc((38% / 20) * 20);
+    height: 170px;
+    top: 59px;
+    left: calc(38% / -2);
+    background-image: url("/assets/images/dots.png");
+    background-repeat: repeat;
+  }
+  &::after {
+    content: " ";
+    position: absolute;
+    width: calc((38% / 20) * 20);
+    height: 170px;
+    bottom: 49px;
+    right: calc(38% / -2);
+    background-image: url("/assets/images/dots.png");
+    background-repeat: repeat;
+    z-index: -1;
+  }
+}
