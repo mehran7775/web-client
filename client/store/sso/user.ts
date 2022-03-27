@@ -1,4 +1,4 @@
-import { reactive, ref } from "@nuxtjs/composition-api";
+import { reactive, ref } from "@vue/composition-api";
 import { MutationTree } from "vuex";
 import * as stores from "@/types/stores";
 import {

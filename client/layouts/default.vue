@@ -118,22 +118,17 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-  useStore,
-  ref,
-  useRouter,
-} from "@nuxtjs/composition-api";
+import { defineComponent, computed, ref } from "@vue/composition-api";
 import snackbar from "@/components/snacks.vue";
 import { useAsrTrader, useUser } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   components: {
     snackbar,
   },
   setup(props, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const appManager = useAsrTrader(store);
     const userManager = useUser(store);
 

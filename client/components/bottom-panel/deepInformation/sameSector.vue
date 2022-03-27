@@ -3,14 +3,9 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  Ref,
-  computed,
-  useStore,
-} from "@nuxtjs/composition-api";
+import { defineComponent, ref, Ref, computed } from "@vue/composition-api";
 import { PaginatedResult, Instrument } from "@/types";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   name: "teammates",
@@ -18,15 +13,15 @@ export default defineComponent({
     value: Object,
   },
   setup(props, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const headers = [
-      { text:"id", value: "id"},
-      { text:"name", value: "code"},
-      { text:"last", value: "lastPrice"},
-      { text:"closing", value: "closing"},
-      { text:"count", value: "totalShares"},
-      { text:"volume", value: "totalTrades"},
-      { text:"value", value: "totalTradeValue"},
+      { text: "id", value: "id" },
+      { text: "name", value: "code" },
+      { text: "last", value: "lastPrice" },
+      { text: "closing", value: "closing" },
+      { text: "count", value: "totalShares" },
+      { text: "volume", value: "totalTrades" },
+      { text: "value", value: "totalTradeValue" },
     ];
     return {
       headers,

@@ -1,5 +1,5 @@
 import { User, AnonymousUser } from '@/types/'
-import { reactive } from "@nuxtjs/composition-api"
+import { reactive } from "@vue/composition-api"
 import { KeyValuePairs } from '../collection'
 
 export class RootState {

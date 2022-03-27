@@ -44,15 +44,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  reactive,
-  computed,
-  useContext,
-  useStore,
-  useRoute,
-} from "@nuxtjs/composition-api";
+import { defineComponent, ref, reactive, computed } from "@vue/composition-api";
 import { autoComplete } from "@/repositories/oms/instruments_manager";
 import {
   AutoCompleteItem,
@@ -61,12 +53,13 @@ import {
   InstrumentSearchModel,
 } from "@/types";
 import { useInstrument, useUser } from "~/composables";
+import { useNuxtApp, useRoute } from "#app";
 
 export default defineComponent({
   emits: ["input"],
   props: { "focus-result": { type: Boolean, default: false } },
   setup(props) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const userManager = useUser(store);
     const instrumentManager = useInstrument(store);
     const route = useRoute();
@@ -100,7 +93,7 @@ export default defineComponent({
       }
     }
     async function select(val: InstrumentCache) {
-      const name = route.value.params.name;
+      const name = route.params.name;
       loading.value = true;
       if (
         val &&
@@ -112,7 +105,7 @@ export default defineComponent({
         );
 
         // If focus panel is open
-        if (focus.value.length > 0 || !route.value.params.name) {
+        if (focus.value.length > 0 || !route.params.name) {
           instrumentManager.addFocus(inst[0]);
           instrumentManager.select(inst[0]);
         }

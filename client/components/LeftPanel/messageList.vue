@@ -29,17 +29,11 @@
   </div>
 </template>
 <script lang="ts">
-import {
-  defineComponent,
-  Ref,
-  ref,
-  computed,
-  useStore,
-} from "@nuxtjs/composition-api";
+import { defineComponent, Ref, ref, computed } from "@vue/composition-api";
 import { DateTime } from "luxon";
 import { Message } from "@/types";
 import { useAsrTrader } from "~/composables";
-
+import { useNuxtApp } from "#app";
 
 function defaultIconParser(message: Message): string {
   if ((message.flags & 1) == 1) return "mdi-email-open";
@@ -56,7 +50,7 @@ export default defineComponent({
     loading: Boolean,
   },
   setup(props, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const appManager = useAsrTrader(store);
     const locale = appManager.locale;
     const icons = [

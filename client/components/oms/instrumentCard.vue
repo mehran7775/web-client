@@ -32,17 +32,11 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  useStore,
-  ref,
-  Ref,
-  computed,
-  ComputedRef,
-} from "@nuxtjs/composition-api";
+import { defineComponent, ref, Ref, computed, ComputedRef } from "@vue/composition-api";
 import { useAsrTrader, useInstrument } from "@/composables";
 import { Instrument, InstrumentSearchModel } from "@/types";
 import { DateTime } from "luxon";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   name: "instrumnet-card-compact",
@@ -53,7 +47,7 @@ export default defineComponent({
     "hide-headers": Boolean,
   },
   setup(props, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const appManager = useAsrTrader(store);
     const instrumentManager = useInstrument(store);
     const i18n = useI18n();

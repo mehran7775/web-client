@@ -57,20 +57,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, computed } from "@nuxtjs/composition-api";
+import { defineComponent, computed } from "@vue/composition-api";
 import { Tabs, TabTitle } from "@/types";
 import furtherInformation from "./furtherInformation/index.vue";
 import DefaultOrderList from "./defaultOrderList.vue";
 import DeepInformation from "./deepInformation/index.vue";
 import Bests from "./bests.vue";
 import { useUser } from "~/composables";
+import { useNuxtApp } from "#app";
 
 //TODO not working on small displays
 
 export default defineComponent({
   components: { furtherInformation, DeepInformation, DefaultOrderList, Bests },
   setup(props, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const userManager = useUser(store);
     const i18n = useI18n();
     const tabs = ["bottom-panel.orders", "bottom-panel.bests", "bottom-panel.depth"];

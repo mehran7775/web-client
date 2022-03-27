@@ -1,4 +1,4 @@
-import { ComputedRef } from "@nuxtjs/composition-api";
+import { ComputedRef } from "@vue/composition-api";
 import { BookmarkPosition, MenuItem } from "~/types";
 
 export default {

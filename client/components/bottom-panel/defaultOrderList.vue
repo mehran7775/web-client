@@ -1,27 +1,26 @@
 <template>
   <v-data-table :items="orders" :headers="cols">
-    <template #item.validity="{item}">
-      {{item.validityDate}}
+    <template #item.validity="{ item }">
+      {{ item.validityDate }}
     </template>
   </v-data-table>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, useStore } from "@nuxtjs/composition-api";
-import {
-  Order,
-  OrderSearchModel,
-  PaginatedResult,
-  WatchlistColumns,
-} from "@/types";
+import { defineComponent, reactive } from "@vue/composition-api";
+import { Order, OrderSearchModel, PaginatedResult, WatchlistColumns } from "@/types";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   setup(params, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const i18n = useI18n();
     const orders: Order[] = reactive([]);
     const cols = [
-      new WatchlistColumns(i18n.t("wealth.order.creationDate").toString(), "creationDate"),
+      new WatchlistColumns(
+        i18n.t("wealth.order.creationDate").toString(),
+        "creationDate"
+      ),
       new WatchlistColumns(i18n.t("instrument.name").toString(), "name"),
       new WatchlistColumns(i18n.t("wealth.wealth").toString(), "wealth"),
       new WatchlistColumns(i18n.t("wealth.order.vol").toString(), "quantity"),
@@ -48,4 +47,3 @@ export default defineComponent({
   },
 });
 </script>
-

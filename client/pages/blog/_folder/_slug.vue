@@ -10,7 +10,7 @@ import {
   ref,
   Ref,
   useMeta,
-} from "@nuxtjs/composition-api";
+} from "@vue/composition-api";
 
 export default defineComponent({
   layout: "public",

@@ -44,22 +44,16 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  Ref,
-  computed,
-  ComputedRef,
-  useStore,
-} from "@nuxtjs/composition-api";
+import { defineComponent, ref, Ref, computed } from "@vue/composition-api";
 import { useAsrTrader } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   emits: ["request"],
   props: ["value", "timer", "height"],
   inheritAttrs: false,
   setup(props, ctx) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const appManager = useAsrTrader(store);
     const otpref: Ref<any> = ref(null);
 

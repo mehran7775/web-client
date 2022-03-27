@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from "@nuxtjs/composition-api";
+import { reactive, ref } from "@vue/composition-api";
 
 const props = defineProps<{
   height: string;

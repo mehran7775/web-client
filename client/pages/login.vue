@@ -1,3 +1,20 @@
+<script lang="ts">
+import { defineComponent, useNuxtApp } from "#app";
+import { useUser } from "~/composables";
+
+export default defineComponent({
+  layout: "public",
+  setup() {
+    const { $store: store } = useNuxtApp();
+    const userManager = useUser(store);
+    const loading = userManager.refreshingToken;
+    return {
+      loading,
+    };
+  },
+});
+</script>
+
 <template>
   <v-row class="login ma-0 pa-0">
     <v-col md="6" sm="12" class="login-col justify-center" style="position: relative">
@@ -49,23 +66,6 @@
     </v-col>
   </v-row>
 </template>
-
-<script lang="ts">
-import { defineComponent, computed, useStore } from "@nuxtjs/composition-api";
-import { useUser } from "~/composables";
-
-export default defineComponent({
-  layout: "public",
-  setup() {
-    const store = useStore();
-    const userManager = useUser(store);
-    const loading = userManager.refreshingToken;
-    return {
-      loading,
-    };
-  },
-});
-</script>
 
 <style lang="postcss" scoped>
 .pie-1 {

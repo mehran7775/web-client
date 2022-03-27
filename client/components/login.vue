@@ -247,10 +247,7 @@ import {
   Ref,
   reactive,
   onMounted,
-  useStore,
-  useContext,
-  useRouter,
-} from "@nuxtjs/composition-api";
+} from "@vue/composition-api";
 import { AxiosError } from "axios";
 import { Snack } from "~/store/snacks";
 import { LoginModel, PasswordType, User } from "~/types";
@@ -258,6 +255,7 @@ import { ErrorExtractor } from "~/utils/error";
 import { required } from "@/utils/rules";
 import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
 import { useAsrTrader, useUser } from "~/composables";
+import { useNuxtApp, useRouter } from "#app";
 
 export default defineComponent({
   name: "Login",
@@ -267,7 +265,7 @@ export default defineComponent({
     inputHeight: Number,
   },
   setup(props, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const appManager = useAsrTrader(store);
     const userManager = useUser(store);
     const router = useRouter();

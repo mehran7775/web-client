@@ -10,14 +10,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, reactive, computed } from "@nuxtjs/composition-api";
+import { defineComponent, reactive, computed } from "@vue/composition-api";
 import { Paginated, Log, WatchlistColumns } from "@/types";
 import { DateTime } from "luxon";
 import { useAsrTrader, useUser } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   setup(props, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const userManager = useUser(store);
     const appManager = useAsrTrader(store);
     const i18n = useI18n();

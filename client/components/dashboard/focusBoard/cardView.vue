@@ -81,13 +81,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, useStore } from "@nuxtjs/composition-api";
+import { computed, defineComponent } from "@vue/composition-api";
 import { Side, InstrumentCache } from "@/types";
 import instrumentCard from "@/components/oms/instrumentCardCompact.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
 import InstrumentFlag from "@/components/oms/instrumentFlag.vue";
 import { useInstrument } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   components: {
@@ -97,7 +98,7 @@ export default defineComponent({
     InstrumentFlag,
   },
   setup(props, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const instrumentManager = useInstrument(store);
     const instruments = instrumentManager.getFocus;
     const maxwidth = computed(

@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from "axios";
-import { computed } from "@nuxtjs/composition-api";
+import { computed } from "@vue/composition-api";
 import { Store } from "vuex/types";
 import {
   AnonymousUser,

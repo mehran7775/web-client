@@ -61,13 +61,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, computed, ref } from "@nuxtjs/composition-api";
+import { defineComponent, computed, ref } from "@vue/composition-api";
 import { User, InstrumentCache, WatchlistColumns, DefaultCols } from "@/types";
 import { useUser } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   setup() {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const userManager = useUser(store);
     const menu = ref(false);
     const user = userManager.me;

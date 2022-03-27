@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref } from "@nuxtjs/composition-api";
+import { defineComponent, ref, Ref } from "@vue/composition-api";
 import { ws_address, Subscrib } from "~/repositories/ws_manager";
 import { decode, encode } from "@msgpack/msgpack";
 

@@ -14,21 +14,14 @@
     small-chips
     deletable-chips
     dense
-    
   >
   </v-autocomplete>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  reactive,
-  ref,
-  useContext,
-  useStore,
-  watch,
-} from "@nuxtjs/composition-api";
+import { defineComponent, reactive, ref, watch } from "@vue/composition-api";
 import { AutoCompleteItem } from "@/types";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   name: "filter-auto-complete",
@@ -40,7 +33,7 @@ export default defineComponent({
       new AutoCompleteItem("-4", "oms.presentation"),
     ];
     const context = useContext();
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const loading = ref(false);
     const search = ref("");
     const items: AutoCompleteItem[] = reactive([]);

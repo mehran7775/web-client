@@ -71,16 +71,11 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  reactive,
-  useContext,
-  useStore,
-} from "@nuxtjs/composition-api";
+import { computed, defineComponent, reactive } from "@vue/composition-api";
 import { AutoCompleteItem, Bookmark } from "@/types";
 import { getBoards } from "@/repositories/oms/board_manager";
 import { useUser } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -90,7 +85,7 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const userManager = useUser(store);
     const context = useContext();
     const bookmarks = userManager.getBookmarks;

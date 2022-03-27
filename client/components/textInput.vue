@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "@nuxtjs/composition-api";
+import { computed, ref } from "@vue/composition-api";
 const props = defineProps<{
   label: string;
   type: string;

@@ -119,23 +119,16 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  Ref,
-  computed,
-  ComputedRef,
-  useContext,
-  useStore,
-} from "@nuxtjs/composition-api";
+import { defineComponent, ref, Ref, computed, ComputedRef } from "@vue/composition-api";
 import simpleCaptcha from "~/components/simpleCaptcha.vue";
 import { useAsrTrader } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   components: { simpleCaptcha },
   layout: "public",
   setup(props) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const appManager = useAsrTrader(store);
     const ctx = useContext();
     const progress = ref(0);

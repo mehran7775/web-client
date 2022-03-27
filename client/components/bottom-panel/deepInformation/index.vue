@@ -15,15 +15,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, useStore } from "@nuxtjs/composition-api";
+import { computed, defineComponent } from "@vue/composition-api";
 import { DeepOptions } from "@/types";
 import Teammates from "./sameSector.vue";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   name: "deep-information",
   components: { Teammates },
   setup(params, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const i18n = useI18n();
     const initData = computed(() => store.getters["bottom-panel/market_depth"]);
 
@@ -38,4 +39,3 @@ export default defineComponent({
   },
 });
 </script>
-

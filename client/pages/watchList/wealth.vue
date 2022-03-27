@@ -21,11 +21,12 @@
 </template>
 
 <script lang="ts">
-import { ref, reactive, defineComponent, useStore } from "@nuxtjs/composition-api";
+import { ref, reactive, defineComponent } from "@vue/composition-api";
 import { WealthSearchModel, InstrumentSearchModel } from "@/types";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";
 import { useInstrument, useWealth } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   components: {
@@ -33,7 +34,7 @@ export default defineComponent({
     FocusBoard,
   },
   setup() {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const wealthManager = useWealth(store);
     const instrumentManager = useInstrument(store);
     const searchModel = ref(new InstrumentSearchModel());

@@ -6,13 +6,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore } from "@nuxtjs/composition-api";
+import { defineComponent } from "@vue/composition-api";
 import { useAsrTrader } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   props: { value: Number },
   setup() {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const appManager = useAsrTrader(store);
     const formatter = appManager.formatter;
     return {

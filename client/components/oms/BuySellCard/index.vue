@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useStore, computed, Ref, ref } from "@nuxtjs/composition-api";
+import { useNuxtApp, computed, Ref, ref } from "#app";
 import { useInstrument } from "@/composables";
 import { InstrumentCache, InstrumentSearchModel, Side } from "@/types";
 import accountType from "@/components/wealth/accountType.vue";
@@ -14,7 +14,7 @@ const props = defineProps<{
 
 const emit = defineEmits(["update:count", "update:price"]);
 
-const store = useStore();
+const { $store: store } = useNuxtApp();
 const instrumentManager = useInstrument(store);
 const active: Ref<InstrumentCache> = ref(new InstrumentCache());
 const countVal = computed({

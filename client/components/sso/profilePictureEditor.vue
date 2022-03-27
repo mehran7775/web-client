@@ -18,8 +18,9 @@
   </v-avatar>
 </template>
 <script lang="ts">
-import { defineComponent, ref, useStore } from "@nuxtjs/composition-api";
+import { defineComponent, ref } from "@vue/composition-api";
 import { useUser } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   name: "profile-picture",
@@ -28,7 +29,7 @@ export default defineComponent({
     size: Number,
   },
   setup(props, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const userManager = useUser(store);
     const img = ref("");
     const pic = ref(null);

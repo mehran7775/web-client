@@ -6,13 +6,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, useStore } from "@nuxtjs/composition-api";
+import { computed, defineComponent } from "@vue/composition-api";
 import { useAsrTrader } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   props: { value: Number },
   setup() {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const appManager = useAsrTrader(store);
     const formatter = computed(() => appManager.currencyFormatter.value());
     return {

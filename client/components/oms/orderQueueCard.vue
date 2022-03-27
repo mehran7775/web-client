@@ -129,17 +129,11 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  useStore,
-  reactive,
-  ref,
-  computed,
-  Ref,
-} from "@nuxtjs/composition-api";
+import { defineComponent, reactive, ref, computed, Ref } from "@vue/composition-api";
 import { InstrumentCache, InstrumentSearchModel, OrderQueueItem } from "@/types";
 import { useAsrTrader, useInstrument } from "~/composables";
 import doubleBarChart from "../doubleBarChart.vue";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   components: { doubleBarChart },
@@ -152,7 +146,7 @@ export default defineComponent({
     "extra-col": Boolean,
   },
   setup(props) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const appManager = useAsrTrader(store);
     const instrumentManager = useInstrument(store);
     const formatter = appManager.formatter;

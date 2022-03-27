@@ -73,19 +73,18 @@
 import {
   defineComponent,
   computed,
-  useStore,
-  useRoute,
   ref,
   onMounted,
   Ref,
   watch,
   onBeforeUnmount,
-} from "@nuxtjs/composition-api";
+} from "@vue/composition-api";
 import { useShortcut } from "@/utils/shortcutManager";
 import CardView from "./cardView.vue";
 import TabView from "./tabView.vue";
 import { Bookmark } from "~/types";
 import { useInstrument, useUser } from "~/composables";
+import { useNuxtApp, useRoute } from "#app";
 
 export default defineComponent({
   components: {
@@ -94,7 +93,7 @@ export default defineComponent({
   },
   name: "focus-board",
   setup(props) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const instrumentManager = useInstrument(store);
     const userManager = useUser(store);
     const sh = useShortcut();
@@ -104,7 +103,7 @@ export default defineComponent({
     const me = userManager.me;
     const bookmarks = userManager.getBookmarks;
     const home = computed(() => me.value.settings.home);
-    const path = computed(() => route.value.fullPath);
+    const path = computed(() => route.fullPath);
 
     const instruments = instrumentManager.getFocus;
 

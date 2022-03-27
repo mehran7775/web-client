@@ -111,11 +111,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, ref, Ref } from "@nuxtjs/composition-api";
+import { defineComponent, ref, Ref } from "@vue/composition-api";
 import { ClientDistribution } from "@/types";
 import { useInstrument } from "~/composables";
 import numericField from "../numericField.vue";
 import PercentField from "../percentField.vue";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   components: { numericField, PercentField },
@@ -126,7 +127,7 @@ export default defineComponent({
     responsive: Boolean,
   },
   setup(props) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const instrumentManager = useInstrument(store);
     const distribution: Ref<ClientDistribution> = ref(new ClientDistribution());
     const total = ref(1);

@@ -48,14 +48,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  Ref,
-  computed,
-  useStore,
-  reactive,
-} from "@nuxtjs/composition-api";
+import { defineComponent, ref, Ref, computed, reactive } from "@vue/composition-api";
 import {
   printableKeys,
   printableShiftKeys,

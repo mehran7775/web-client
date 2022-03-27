@@ -25,7 +25,7 @@ import {
   defineComponent,
   useRoute,
   useRouter,
-} from "@nuxtjs/composition-api";
+} from "@vue/composition-api";
 import { AutoCompleteItem, InstrumentSearchModel } from "@/types";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";

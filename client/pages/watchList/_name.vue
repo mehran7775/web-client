@@ -5,11 +5,7 @@
         <focus-board>
           <template #toolbar>
             <watchlist-selector style="max-width: 164px" auto-route />
-            <instrument-search
-              class="ms-1"
-              style="max-width: 164px"
-              focus-result
-            />
+            <instrument-search class="ms-1" style="max-width: 164px" focus-result />
             <v-btn
               v-if="edited"
               @click="apply"
@@ -46,17 +42,8 @@
   </v-container>
 </template>
 
-
 <script lang="ts">
-import {
-  ref,
-  computed,
-  defineComponent,
-  useContext,
-  useRoute,
-  useStore,
-  watch,
-} from "@nuxtjs/composition-api";
+import { ref, computed, defineComponent, watch } from "@vue/composition-api";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";
 import WatchlistSelector from "@/components/dashboard/watchlistSelector.vue";
@@ -64,6 +51,7 @@ import InstrumentSearch from "@/components/oms/instrumentSearch.vue";
 import { InstrumentSearchModel } from "~/types";
 import Bar from "~/components/bar.vue";
 import { useUser } from "~/composables";
+import { useNuxtApp, useRoute } from "#app";
 
 export default defineComponent({
   components: {
@@ -75,10 +63,10 @@ export default defineComponent({
   },
   setup(context) {
     const route = useRoute();
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const userManager = useUser(store);
     const loading = ref(false);
-    const name = route.value.params.name ?? "new";
+    const name = route.params.name ?? "new";
     const watchlists = userManager.watchList;
     const edited = computed(
       () =>
@@ -111,7 +99,7 @@ export default defineComponent({
 
     async function apply() {
       loading.value = true;
-      const name = route.value.params.name;
+      const name = route.params.name;
       try {
         await userManager.update_settings({
           path: "/watch_lists/" + name,

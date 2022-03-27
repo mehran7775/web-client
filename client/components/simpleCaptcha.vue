@@ -37,15 +37,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, computed, useStore } from "@nuxtjs/composition-api";
+import { defineComponent, ref, Ref, computed } from "@vue/composition-api";
 import { required } from "@/utils/rules";
 import { useAsrTrader } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   inheritAttrs: false,
   props: ["value", "height"],
   setup(props, ctx) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const appManager = useAsrTrader(store);
     const captcharef: Ref<any> = ref(null);
     const url =

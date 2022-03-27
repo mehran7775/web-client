@@ -201,15 +201,14 @@ import {
   ref,
   Ref,
   computed,
-  useStore,
-  useRouter,
   watch,
   ComputedRef,
-} from "@nuxtjs/composition-api";
+} from "@vue/composition-api";
 import { useShortcut } from "@/utils/shortcutManager";
 import { BookmarkPosition, CreateBookmark, MenuItem } from "~/types";
 import { useAsrTrader, useUser } from "~/composables";
 import { getMenuItems } from "./items";
+import { useNuxtApp, useRouter } from "#app";
 
 export default defineComponent({
   name: "right-panel",
@@ -219,7 +218,7 @@ export default defineComponent({
     clipped: Boolean,
   },
   setup(props, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const userManager = useUser(store);
     const appManager = useAsrTrader(store);
     const router = useRouter();

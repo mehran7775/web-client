@@ -1,3 +1,31 @@
+<script setup lang="ts">
+import { useAsrTrader } from "~/composables";
+import { useNuxtApp } from "#app";
+
+const params = defineProps<{
+  src: string;
+  interval: number;
+}>();
+
+const { $store: store } = useNuxtApp();
+const appManager = useAsrTrader(store);
+const locale = appManager.locale;
+const slide = ref(0);
+let timer: NodeJS.Timeout | null = null;
+
+function startTimer() {
+  if (params.interval)
+    timer = setInterval(() => {
+      if (docs.length > 0) slide.value = (slide.value + 1) % docs.length;
+    }, params.interval * 1000);
+}
+function stopTimer() {
+  if (timer) clearInterval(timer);
+}
+
+const docs = reactive([]);
+</script>
+
 <template>
   <div class="ma-0 pa-0 slider" @mouseenter="stopTimer" @mouseleave="startTimer" fluid>
     <v-window class="slide" v-model="slide">
@@ -27,64 +55,6 @@
     <div></div>
   </div>
 </template>
-
-<script lang="ts">
-import { FetchReturn } from "@nuxt/content/types/query-builder";
-import {
-  defineComponent,
-  useContext,
-  useStore,
-  ref,
-  Ref,
-  useMeta,
-  computed,
-  reactive,
-} from "@nuxtjs/composition-api";
-import { useAsrTrader } from "~/composables";
-
-export default defineComponent({
-  props: {
-    src: String,
-    interval: Number,
-  },
-  setup(params) {
-    const ctx = useContext();
-    const store = useStore();
-    const appManager = useAsrTrader(store);
-    const locale = appManager.locale;
-    const slide = ref(0);
-    let timer: NodeJS.Timeout | null = null;
-
-    function startTimer() {
-      if (params.interval)
-        timer = setInterval(() => {
-          if (docs.length > 0) slide.value = (slide.value + 1) % docs.length;
-        }, params.interval * 1000);
-    }
-    function stopTimer() {
-      if (timer) clearInterval(timer);
-    }
-
-    const docs: FetchReturn[] = reactive([]);
-
-    ctx
-      .$content((params.src ?? "slider") + "/" + locale.value, { deep: true })
-      .fetch()
-      .then((res) => {
-        if (!Array.isArray(res)) docs.push(res);
-        else docs.push(...res);
-        startTimer();
-      });
-
-    return {
-      startTimer,
-      stopTimer,
-      docs,
-      slide,
-    };
-  },
-});
-</script>
 
 <style lang="postcss">
 .controll {

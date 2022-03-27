@@ -180,15 +180,13 @@
 import {
   defineComponent,
   reactive,
-  useStore,
-  useRoute,
   ref,
   computed,
   ComputedRef,
   watch,
   onMounted,
   onBeforeUnmount,
-} from "@nuxtjs/composition-api";
+} from "@vue/composition-api";
 
 import instrumentCard from "../../oms/instrumentCardCompact.vue";
 import LegalRealCard from "../../oms/legalRealCard.vue";
@@ -207,6 +205,7 @@ import { useShortcut } from "@/utils/shortcutManager";
 import HeaderHandler from "./headerHandler.vue";
 import RowHandler from "./rowHandler.vue";
 import HeaderSelector from "./headerSelector.vue";
+import { useNuxtApp, useRoute } from "#app";
 
 export default defineComponent({
   name: "WatchList",
@@ -229,14 +228,14 @@ export default defineComponent({
     HeaderSelector,
   },
   setup(props, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const userManager = useUser(store);
     const instrumentManager = useInstrument(store);
     const route = useRoute();
     const i18n = useI18n();
     const sh = useShortcut();
     const itemToDelete = ref(null);
-    const name = route.value.params.name;
+    const name = route.params.name;
     const _instruments: Array<InstrumentCache> = reactive([]);
     const instruments: Array<InstrumentCache> = reactive([]);
     const confirmInstrumentRemoval = ref(false);
@@ -311,7 +310,7 @@ export default defineComponent({
       );
     }
     async function remove(val: InstrumentCache) {
-      const name = route.value.params.name;
+      const name = route.params.name;
       const tmp = [...(watchlists.value[name] ?? [])];
       tmp.splice(tmp.lastIndexOf(val.id.toString()), 1);
       await userManager.update_settings({

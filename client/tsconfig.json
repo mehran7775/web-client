@@ -1,16 +1,39 @@
 {
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
+    "composite": true,
+    "target": "ES2018",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "strict": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "lib": [
+      "ESNext",
+      "ESNext.AsyncIterable",
+      "DOM"
+    ],
     "types": [
+      "@nuxt/types",
       "@nuxtjs/axios",
       "@types/node",
       "@types/luxon",
       "@types/cookie",
+      "unplugin-vue2-script-setup/types"
     ]
   },
   "exclude": [
     "node_modules",
     ".nuxt",
+    ".output",
     "dist"
-  ]
+  ],
+  "vueCompilerOptions": {
+    "experimentalCompatMode": 2, // delete after migrating to vue3 (or nuxt3)
+    "experimentalTemplateCompilerOptions": {
+      "compatConfig": {
+        "MODE": 2
+      } // delete after migrating to vue3 (or nuxt3)
+    }
+  }
 }

@@ -66,13 +66,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, computed, ref, Ref } from "@nuxtjs/composition-api";
+import { defineComponent, ref, Ref } from "@vue/composition-api";
 import { Tabs, DeepOptions, TabTitle, Instrument, SameSectorQuery } from "@/types";
 import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
 import BuySellCard from "@/components/oms/BuySellCard/index.vue";
 import { useInstrument } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   components: {
@@ -82,7 +83,7 @@ export default defineComponent({
     BuySellCard,
   },
   setup(props, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const instrumentManager = useInstrument(store);
     const instruments = instrumentManager.getFocus;
 

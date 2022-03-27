@@ -54,10 +54,9 @@ import {
   Ref,
   ref,
   computed,
-  useStore,
   reactive,
   watch,
-} from "@nuxtjs/composition-api";
+} from "@vue/composition-api";
 import filterAutoComplete from "./filterAutoComplete.vue";
 import { AxiosResponse } from "axios";
 import {
@@ -70,6 +69,7 @@ import {
 } from "@/types";
 import MessageList from "./messageList.vue";
 import { useAsrTrader } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   components: { filterAutoComplete, MessageList },
@@ -81,7 +81,7 @@ export default defineComponent({
     clipped: Boolean,
   },
   setup(props, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const appManager = useAsrTrader(store);
     const rtl = appManager.rtl;
     const activeTab: Ref<number | null> = ref(null);

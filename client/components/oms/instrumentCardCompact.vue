@@ -30,9 +30,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, ref, Ref } from "@nuxtjs/composition-api";
+import { defineComponent, ref, Ref } from "@vue/composition-api";
 import { InstrumentCache, InstrumentSearchModel } from "@/types";
 import { useInstrument } from "~/composables";
+import { useNuxtApp } from "#app";
 
 export default defineComponent({
   name: "instrumnet-card-compact",
@@ -42,7 +43,7 @@ export default defineComponent({
     hideHeaders: Boolean,
   },
   setup(props, context) {
-    const store = useStore();
+    const { $store: store } = useNuxtApp();
     const instrumentManager = useInstrument(store);
     let instrument: Ref<InstrumentCache> = ref(new InstrumentCache());
     instrumentManager
