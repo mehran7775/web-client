@@ -34,7 +34,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useRouter } from "@vue/composition-api";
+import { defineComponent, ref } from "@vue/composition-api";
+import { useRouter } from "#app";
 
 export default defineComponent({
   layout: "public",

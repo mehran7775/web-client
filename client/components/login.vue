@@ -240,14 +240,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-  ref,
-  Ref,
-  reactive,
-  onMounted,
-} from "@vue/composition-api";
+import { defineComponent, ref, Ref, reactive, onMounted } from "@vue/composition-api";
 import { AxiosError } from "axios";
 import { Snack } from "~/store/snacks";
 import { LoginModel, PasswordType, User } from "~/types";

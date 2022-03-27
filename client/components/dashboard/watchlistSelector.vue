@@ -131,7 +131,7 @@ export default defineComponent({
         });
       });
       selected.value =
-        watchList.find((item) => item.id == route.value.params.name) ?? watchList[0];
+        watchList.find((item) => item.id == route.params.name) ?? watchList[0];
     }
     async function create() {
       if (!newName.value || newName.value == "") return;
@@ -147,7 +147,7 @@ export default defineComponent({
         path: "/watch_lists/" + name,
         value: null,
       });
-      if (name == route.value.params.name) router.push(watchList[0].to);
+      if (name == route.params.name) router.push(watchList[0].to);
       refresh();
     }
     async function rename(item: any) {
@@ -160,7 +160,7 @@ export default defineComponent({
         path: "/watch_lists",
         value: tmp,
       });
-      if (item.id == route.value.params.name) router.push("/watchList/" + item.newName);
+      if (item.id == route.params.name) router.push("/watchList/" + item.newName);
       refresh();
     }
 

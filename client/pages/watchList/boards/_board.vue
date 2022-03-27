@@ -19,17 +19,12 @@
 </template>
 
 <script lang="ts">
-import {
-  ref,
-  reactive,
-  defineComponent,
-  useRoute,
-  useRouter,
-} from "@vue/composition-api";
+import { ref, reactive, defineComponent } from "@vue/composition-api";
 import { AutoCompleteItem, InstrumentSearchModel } from "@/types";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";
 import BoardSelector from "~/components/oms/boardSelector.vue";
+import { useRoute, useRouter } from "#app";
 
 export default defineComponent({
   components: {
@@ -45,7 +40,7 @@ export default defineComponent({
     const loading = ref(false);
     const searchModel = ref(new InstrumentSearchModel());
     searchModel.value.length = 15;
-    board.value = parseInt((route.value.params["board"] as string | null) ?? "-1");
+    board.value = parseInt((route.params["board"] as string | null) ?? "-1");
 
     async function select(val: AutoCompleteItem) {
       loading.value = true;
