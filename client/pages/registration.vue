@@ -119,10 +119,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, computed, ComputedRef } from "@vue/composition-api";
+import { defineComponent, ref, Ref } from "@vue/composition-api";
 import simpleCaptcha from "~/components/simpleCaptcha.vue";
 import { useAsrTrader } from "~/composables";
-import { useNuxtApp } from "#app";
+import { useNuxtApp, useRouter } from "#app";
 
 export default defineComponent({
   components: { simpleCaptcha },
@@ -130,7 +130,6 @@ export default defineComponent({
   setup(props) {
     const { $store: store } = useNuxtApp();
     const appManager = useAsrTrader(store);
-    const ctx = useContext();
     const progress = ref(0);
     const otpref: Ref<any> = ref(null);
 
@@ -148,7 +147,7 @@ export default defineComponent({
 
     function back() {
       if (step.value == 1) {
-        ctx.redirect("/login");
+        useRouter().replace("/login");
       } else step.value = (step.value - 1) % 3;
     }
 

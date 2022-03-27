@@ -59,12 +59,11 @@ export default defineComponent({
   emits: ["input"],
   props: { "focus-result": { type: Boolean, default: false } },
   setup(props) {
-    const { $store: store } = useNuxtApp();
+    const { $store: store, $axios } = useNuxtApp();
     const userManager = useUser(store);
     const instrumentManager = useInstrument(store);
     const route = useRoute();
     const model = ref(null);
-    const axios = useAxios();
     const loading = ref(false);
     const entries: Array<AutoCompleteItem> = reactive([]);
 
@@ -76,7 +75,7 @@ export default defineComponent({
         loading.value = true;
         entries.splice(0, entries.length);
         try {
-          const res = await autoComplete(new AutoCompleteSearchModel(value), axios);
+          const res = await autoComplete(new AutoCompleteSearchModel(value), $axios);
           entries.push(
             ...res.data.data.map((item) => ({
               name: item.name,
@@ -128,10 +127,6 @@ export default defineComponent({
       search,
       select,
     };
-    //TODO Use vue3 version
-    function useAxios() {
-      return useContext().$axios;
-    }
   },
 });
 </script>

@@ -1,3 +1,70 @@
+<script setup lang="ts">
+import { computed, defineComponent, reactive } from "@vue/composition-api";
+import { AutoCompleteItem, Bookmark } from "@/types";
+import { getBoards } from "@/repositories/oms/board_manager";
+import { useUser } from "~/composables";
+import { useNuxtApp } from "#app";
+
+const props = defineProps<{
+  value: number;
+}>();
+const emit = defineEmits(["input"]);
+
+const { $store: store, $axios } = useNuxtApp();
+const userManager = useUser(store);
+const bookmarks = userManager.getBookmarks;
+const items: Array<AutoCompleteItem> = reactive([]);
+const home = computed(() => userManager.me.value.settings.home);
+function generateAddress(id: string): string {
+  return "/watchlist/boards/" + id;
+}
+
+const isMarked = computed(() => (data: AutoCompleteItem) => {
+  return bookmarks.value.findIndex((val) => val.to == generateAddress(data.id)) > -1;
+});
+function setHome(item: AutoCompleteItem) {
+  userManager.update_settings({
+    path: "/home",
+    value: generateAddress(item.id),
+  });
+}
+function mark(item: AutoCompleteItem) {
+  const bk: Bookmark = {
+    to: generateAddress(item.id),
+    title: item.name,
+    text: item.name,
+    icon: "mdi-bulletin-board",
+  };
+  const tmp = [...bookmarks.value, bk];
+  userManager.update_settings({
+    path: "/bookmarks",
+    value: tmp,
+  });
+}
+function unmark(item: AutoCompleteItem) {
+  const to = generateAddress(item.id);
+  let tmp = [...bookmarks.value];
+  tmp.splice(
+    tmp.findIndex((item) => item.to == to),
+    1
+  );
+  userManager.update_settings({
+    path: "/bookmarks",
+    value: tmp,
+  });
+}
+
+getBoards($axios).then((resp) => {
+  items.push(...resp.data.data);
+  if (props.value != -1) {
+    emit(
+      "input",
+      items.find((item) => item.id == props.value?.toString())
+    );
+  }
+});
+</script>
+
 <template>
   <v-select
     :items="items"
@@ -69,88 +136,6 @@
     </template>
   </v-select>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, reactive } from "@vue/composition-api";
-import { AutoCompleteItem, Bookmark } from "@/types";
-import { getBoards } from "@/repositories/oms/board_manager";
-import { useUser } from "~/composables";
-import { useNuxtApp } from "#app";
-
-export default defineComponent({
-  inheritAttrs: false,
-  props: {
-    value: {
-      type: Number,
-    },
-  },
-  setup(props, ctx) {
-    const { $store: store } = useNuxtApp();
-    const userManager = useUser(store);
-    const context = useContext();
-    const bookmarks = userManager.getBookmarks;
-    const items: Array<AutoCompleteItem> = reactive([]);
-    const home = computed(() => userManager.me.value.settings.home);
-    function generateAddress(id: string): string {
-      return "/watchlist/boards/" + id;
-    }
-
-    const isMarked = computed(() => (data: AutoCompleteItem) => {
-      return bookmarks.value.findIndex((val) => val.to == generateAddress(data.id)) > -1;
-    });
-    function setHome(item: AutoCompleteItem) {
-      userManager.update_settings({
-        path: "/home",
-        value: generateAddress(item.id),
-      });
-    }
-    function mark(item: AutoCompleteItem) {
-      const bk: Bookmark = {
-        to: generateAddress(item.id),
-        title: item.name,
-        text: item.name,
-        icon: "mdi-bulletin-board",
-      };
-      const tmp = [...bookmarks.value, bk];
-      userManager.update_settings({
-        path: "/bookmarks",
-        value: tmp,
-      });
-    }
-    function unmark(item: AutoCompleteItem) {
-      const to = generateAddress(item.id);
-      let tmp = [...bookmarks.value];
-      tmp.splice(
-        tmp.findIndex((item) => item.to == to),
-        1
-      );
-      userManager.update_settings({
-        path: "/bookmarks",
-        value: tmp,
-      });
-    }
-
-    getBoards(context.$axios).then((resp) => {
-      items.push(...resp.data.data);
-      if (props.value != -1) {
-        ctx.emit(
-          "input",
-          items.find((item) => item.id == props.value?.toString())
-        );
-      }
-    });
-    return {
-      isMarked,
-      generateAddress,
-      mark,
-      unmark,
-      setHome,
-      home,
-      items,
-    };
-  },
-});
-</script>
 
 <style lang="postcss" scoped>
 .board-search {

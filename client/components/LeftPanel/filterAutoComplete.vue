@@ -20,8 +20,9 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, watch } from "@vue/composition-api";
-import { AutoCompleteItem } from "@/types";
+import { AutoCompleteItem, PaginatedResult } from "@/types";
 import { useNuxtApp } from "#app";
+import { AxiosResponse } from "axios";
 
 export default defineComponent({
   name: "filter-auto-complete",
@@ -32,7 +33,6 @@ export default defineComponent({
       new AutoCompleteItem("-3", "oms.news"),
       new AutoCompleteItem("-4", "oms.presentation"),
     ];
-    const context = useContext();
     const { $store: store } = useNuxtApp();
     const loading = ref(false);
     const search = ref("");
@@ -48,7 +48,7 @@ export default defineComponent({
       setTimeout(() => {
         store
           .dispatch("oms/messages/getMessageFilters", value)
-          .then((result) => {
+          .then((result: AxiosResponse<PaginatedResult<AutoCompleteItem>>) => {
             items.splice(0, items.length);
             items.push(...defaultItems);
             if (result?.data) items.push(...result.data.data);
