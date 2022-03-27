@@ -6,6 +6,8 @@ export default defineNuxtConfig({
   target: "server",
   bridge: {
     meta: true,
+    postcss8: true,
+    typescript: true,
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -88,7 +90,7 @@ export default defineNuxtConfig({
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     postcss: {
-      postcssOptions: {
+      //postcssOptions: {
         plugins: {
           "postcss-import": {},
           "postcss-preset-env": {},
@@ -98,12 +100,7 @@ export default defineNuxtConfig({
           autoprefixer: {},
           ...(process.env.NODE_ENV === "production" ? { cssnano: {} } : {}),
         },
-      },
+      //},
     },
-  },
-
-  server: {
-    port: 3000,
-    host: "0.0.0.0",
   },
 });
