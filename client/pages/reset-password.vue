@@ -1,3 +1,22 @@
+<script lang="ts">
+export default {
+  layout: "public",
+};
+</script>
+<script setup lang="ts">
+import { ref } from "@vue/composition-api";
+import { useRouter } from "#app";
+
+const router = useRouter();
+const userName = ref("");
+const loading = ref(false);
+function otp() {}
+function captchaResult() {}
+function back() {
+  router.push("/login");
+}
+</script>
+
 <template>
   <div class="ma-0 pa-0 res-ct">
     <div class="pie pie-1"></div>
@@ -32,27 +51,6 @@
     </v-card>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, ref } from "@vue/composition-api";
-import { useRouter } from "#app";
-
-export default defineComponent({
-  layout: "public",
-  components: {},
-  setup() {
-    const router = useRouter();
-    const userName = ref("");
-    const loading = ref(false);
-    function otp() {}
-    function captchaResult() {}
-    function back() {
-      router.push("/login");
-    }
-    return { back, otp, captchaResult, userName, loading };
-  },
-});
-</script>
 
 <style lang="postcss" scoped>
 .back {

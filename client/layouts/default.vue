@@ -1,3 +1,43 @@
+<script setup lang="ts">
+import { computed, ref } from "@vue/composition-api";
+import snackbar from "@/components/snacks.vue";
+import { useAsrTrader, useUser } from "~/composables";
+import { useNuxtApp } from "#app";
+
+const { $store: store } = useNuxtApp();
+const appManager = useAsrTrader(store);
+const userManager = useUser(store);
+
+const rightMenu = ref({
+  mini: true,
+  drawer: true,
+});
+const leftMenu = ref({
+  mini: true,
+  drawer: true,
+});
+
+const locale = appManager.locale;
+const formatter = appManager.formatter;
+const collaps = computed(() => {
+  const tab = store.getters["bottom-panel/activeTab"];
+  return tab != null && tab != -1;
+});
+
+const home = computed(() => userManager.me.value.settings.home);
+
+defineExpose({
+  home,
+  formatter,
+  collaps,
+  locale,
+  rightMenu,
+  leftMenu,
+  clipped: true,
+  rtl: appManager.rtl,
+});
+</script>
+
 <template>
   <v-app :class="locale">
     <right-panel
@@ -116,53 +156,6 @@
     <snackbar />
   </v-app>
 </template>
-
-<script lang="ts">
-import { defineComponent, computed, ref } from "@vue/composition-api";
-import snackbar from "@/components/snacks.vue";
-import { useAsrTrader, useUser } from "~/composables";
-import { useNuxtApp } from "#app";
-
-export default defineComponent({
-  components: {
-    snackbar,
-  },
-  setup(props, context) {
-    const { $store: store } = useNuxtApp();
-    const appManager = useAsrTrader(store);
-    const userManager = useUser(store);
-
-    const rightMenu = ref({
-      mini: true,
-      drawer: true,
-    });
-    const leftMenu = ref({
-      mini: true,
-      drawer: true,
-    });
-
-    const locale = appManager.locale;
-    const formatter = appManager.formatter;
-    const collaps = computed(() => {
-      const tab = store.getters["bottom-panel/activeTab"];
-      return tab != null && tab != -1;
-    });
-
-    const home = computed(() => userManager.me.value.settings.home);
-
-    return {
-      home,
-      formatter,
-      collaps,
-      locale,
-      rightMenu,
-      leftMenu,
-      clipped: true,
-      rtl: appManager.rtl,
-    };
-  },
-});
-</script>
 
 <style lang="postcss">
 .shadow {

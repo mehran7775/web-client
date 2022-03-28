@@ -1,3 +1,52 @@
+<script lang="ts">
+export default {
+  layout: "public",
+};
+</script>
+<script setup lang="ts">
+import { ref, Ref } from "@vue/composition-api";
+import simpleCaptcha from "~/components/simpleCaptcha.vue";
+import { useNuxtApp, useRouter } from "#app";
+
+const { $store: store } = useNuxtApp();
+const otpref: Ref<any> = ref(null);
+
+const step = ref(1);
+const forms: Ref<any> = ref({
+  form1: null,
+  form2: null,
+  form0: null,
+});
+const rform1: Ref<any> = ref(null),
+  rform2: Ref<any> = ref(null),
+  rform0: Ref<any> = ref(null);
+
+function back() {
+  if (step.value == 1) {
+    useRouter().replace("/login");
+  } else step.value = (step.value - 1) % 3;
+}
+
+function validate() {
+  switch (step.value) {
+    case 1:
+      if (rform0.value.validate()) step.value = 2;
+      break;
+    case 2:
+      if (rform1.value.validate()) step.value = 3;
+      break;
+    case 3:
+      rform2.value.validate();
+      break;
+    default:
+      break;
+  }
+}
+function requestOtp() {
+  otpref.value.setTimer();
+}
+</script>
+
 <template>
   <div class="ma-0 pa-0 reg-ct">
     <div class="pie-1 pie"></div>
@@ -117,74 +166,6 @@
     </v-card>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, ref, Ref } from "@vue/composition-api";
-import simpleCaptcha from "~/components/simpleCaptcha.vue";
-import { useAsrTrader } from "~/composables";
-import { useNuxtApp, useRouter } from "#app";
-
-export default defineComponent({
-  components: { simpleCaptcha },
-  layout: "public",
-  setup(props) {
-    const { $store: store } = useNuxtApp();
-    const appManager = useAsrTrader(store);
-    const progress = ref(0);
-    const otpref: Ref<any> = ref(null);
-
-    const step = ref(1);
-    const forms: Ref<any> = ref({
-      form1: null,
-      form2: null,
-      form0: null,
-    });
-    const rform1: Ref<any> = ref(null),
-      rform2: Ref<any> = ref(null),
-      rform0: Ref<any> = ref(null);
-
-    const rtl = appManager.rtl;
-
-    function back() {
-      if (step.value == 1) {
-        useRouter().replace("/login");
-      } else step.value = (step.value - 1) % 3;
-    }
-
-    function validate() {
-      switch (step.value) {
-        case 1:
-          if (rform0.value.validate()) step.value = 2;
-          break;
-        case 2:
-          if (rform1.value.validate()) step.value = 3;
-          break;
-        case 3:
-          rform2.value.validate();
-          break;
-        default:
-          break;
-      }
-    }
-    function requestOtp() {
-      otpref.value.setTimer();
-    }
-    return {
-      rtl,
-      forms,
-      rform1,
-      rform2,
-      rform0,
-      otpref,
-      back,
-      validate,
-      requestOtp,
-      step,
-      progress,
-    };
-  },
-});
-</script>
 
 <style lang="postcss">
 .otp {

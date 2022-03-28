@@ -1,3 +1,13 @@
+<script setup lang="ts">
+import snackbar from "@/components/snacks.vue";
+import { useAsrTrader } from "~/composables";
+import { useNuxtApp } from "#app";
+
+const { $store: store } = useNuxtApp();
+const appManager = useAsrTrader(store);
+const locale = appManager.locale;
+</script>
+
 <template>
   <v-app :class="locale">
     <v-main>
@@ -11,26 +21,6 @@
     <snackbar />
   </v-app>
 </template>
-
-<script lang="ts">
-import { defineComponent, ref, computed } from "@vue/composition-api";
-import snackbar from "@/components/snacks.vue";
-import { useAsrTrader } from "~/composables";
-import { useNuxtApp } from "#app";
-
-export default defineComponent({
-  components: {
-    snackbar,
-  },
-  setup(props, context) {
-    const { $store: store } = useNuxtApp();
-    const appManager = useAsrTrader(store);
-    const locale = appManager.locale;
-    const memory = ref(null);
-    return { memory, locale };
-  },
-});
-</script>
 
 <style lang="postcss" scoped>
 .v-main {
