@@ -1,4 +1,4 @@
-<template lang="vue">
+<template >
   <div class="d-flex flex-row ma-0 pa-0 card-row">
     <v-card
       @click="() => select(item)"

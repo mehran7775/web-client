@@ -1,4 +1,4 @@
-<template lang="vue">
+<template >
   <div class="pb-1">
     <v-data-table
       :headers="headers"

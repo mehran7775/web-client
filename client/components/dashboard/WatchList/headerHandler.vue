@@ -1,4 +1,4 @@
-<template lang="vue">
+<template >
 <thead>
     <tr v-on="$listeners" v-bind="$attrs" class="headers">
       <th

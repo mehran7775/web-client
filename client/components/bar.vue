@@ -1,3 +1,3 @@
-<template lang="vue">
+<template>
   <div class="bar"></div>
 </template>

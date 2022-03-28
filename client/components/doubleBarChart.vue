@@ -1,4 +1,4 @@
-<template lang="vue">
+<template >
 <div class="double-chart-bar">
     <single-bar-chart :value="right/2" x="50%" success />
     <single-bar-chart :value="left/2" x-position="right" x="50%"/>

@@ -1,4 +1,4 @@
-<template lang="vue">
+<template >
 <v-container fluid class="text-no-wrap ma-0 pa-0">
     <v-row v-show="!hideHeaders" dense>
       <v-col md="12" class="text-center">

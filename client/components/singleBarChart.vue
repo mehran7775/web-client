@@ -1,4 +1,4 @@
-<template lang="vue">
+<template >
 <div class="single-bar-chart" :style="style">
 </div>
 </template>
