@@ -41,7 +41,7 @@ export default defineNuxtConfig({
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: ["@nuxtjs/vuetify"],
+  buildModules: ["@nuxtjs/vuetify", ["@pinia/nuxt", { disableVuex: false }]],
   scriptSetup: {
     /* options */
   },
@@ -89,17 +89,21 @@ export default defineNuxtConfig({
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    transpile: [
+      // necessary for nuxt bridge
+      'pinia',
+    ],
     postcss: {
       //postcssOptions: {
-        plugins: {
-          "postcss-import": {},
-          "postcss-preset-env": {},
-          "tailwindcss/nesting": {},
-          "postcss-nested": {},
-          tailwindcss: {},
-          autoprefixer: {},
-          ...(process.env.NODE_ENV === "production" ? { cssnano: {} } : {}),
-        },
+      plugins: {
+        "postcss-import": {},
+        "postcss-preset-env": {},
+        "tailwindcss/nesting": {},
+        "postcss-nested": {},
+        tailwindcss: {},
+        autoprefixer: {},
+        ...(process.env.NODE_ENV === "production" ? { cssnano: {} } : {}),
+      },
       //},
     },
   },

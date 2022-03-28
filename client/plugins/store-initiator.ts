@@ -1,10 +1,11 @@
+import { Plugin } from "@nuxt/types"
 import { WealthSearchModel } from "@/types"
 import { refreshKey, tokenKey, userKey } from "@/store/sso/user"
 import { parse } from "cookie"
 import { needLogin } from "@/middleware/auth"
 import { useUser, useWealth } from "~/composables"
 
-export default async function ({ store, req, redirect, route }) {
+export default <Plugin> async function ({ store, req, redirect, route }) {
   //TODO Replace storage by cookie
 
   const userManager = useUser(store)

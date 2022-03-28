@@ -17,22 +17,24 @@
     "cookie": "latest",
     "luxon": "latest",
     "nuxt-edge": "latest",
+    "pinia": "^2.0.12",
+    "@pinia/nuxt": "^0.1.8",
     "vue-i18n": "^8.27.0"
   },
   "devDependencies": {
-    "vue-tsc": "0.33.9",
-    "@vue/runtime-dom": "^3.2.31",
-    "@nuxt/types": "^2.15.8",
-    "unplugin-vue2-script-setup": "^0.10.0",
     "@mdi/font": "^6.5.95",
     "@nuxt/bridge": "npm:@nuxt/bridge-edge",
+    "@nuxt/types": "^2.15.8",
     "@nuxtjs/vuetify": "1.12.3",
     "@types/cookie": "latest",
     "@types/luxon": "latest",
+    "@vue/runtime-dom": "^3.2.31",
     "autoprefixer": "latest",
     "postcss": "latest",
     "postcss-nested": "latest",
     "postcss-preset-env": "latest",
-    "tailwindcss": "^3.0.23"
+    "tailwindcss": "^3.0.23",
+    "unplugin-vue2-script-setup": "^0.10.0",
+    "vue-tsc": "0.33.9"
   }
 }
