@@ -14,7 +14,7 @@ export default defineComponent({
   props: ["address"],
   setup(props, context) {
     const { $store: store } = useNuxtApp();
-    const userManager = useUser(store);
+    const userManager = useUser();
     const img = ref("");
     if (props.address) {
       store;

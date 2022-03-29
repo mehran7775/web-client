@@ -94,15 +94,15 @@ export default defineComponent({
   name: "focus-board",
   setup(props) {
     const { $store: store } = useNuxtApp();
-    const instrumentManager = useInstrument(store);
-    const userManager = useUser(store);
+    const instrumentManager = useInstrument();
+    const userManager = useUser();
     const sh = useShortcut();
     const route = useRoute();
     const toolbar: Ref<any> = ref(null);
 
     const me = userManager.me;
     const bookmarks = userManager.getBookmarks;
-    const home = computed(() => me.value.settings.home);
+    const home = computed(() => me.settings.home);
     const path = computed(() => route.fullPath);
 
     const instruments = instrumentManager.getFocus;
@@ -117,7 +117,7 @@ export default defineComponent({
     }
 
     async function unmark(bookmark: Bookmark) {
-      const tmp = [...bookmarks.value.filter((item) => item.to != bookmark.to)];
+      const tmp = [...bookmarks.filter((item) => item.to != bookmark.to)];
       userManager.update_settings({
         path: "/bookmarks",
         value: tmp,
@@ -128,7 +128,7 @@ export default defineComponent({
       sh.addShortcut({
         key: "alt+q",
         action: () => {
-          instrumentManager.focusMode.value = (instrumentManager.focusMode.value + 1) % 2;
+          instrumentManager.setFocusMode((instrumentManager.focusMode + 1) % 2);
         },
       });
       function resize() {

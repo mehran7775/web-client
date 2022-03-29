@@ -64,7 +64,7 @@ export default defineComponent({
   setup(context) {
     const route = useRoute();
     const { $store: store } = useNuxtApp();
-    const userManager = useUser(store);
+    const userManager = useUser();
     const loading = ref(false);
     const name = route.params.name ?? "new";
     const watchlists = userManager.watchList;

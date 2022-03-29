@@ -84,7 +84,7 @@ export default defineComponent({
   },
   setup(props, context) {
     const { $store: store } = useNuxtApp();
-    const instrumentManager = useInstrument(store);
+    const instrumentManager = useInstrument();
     const instruments = instrumentManager.getFocus;
 
     const count: Ref<number> = ref(0);

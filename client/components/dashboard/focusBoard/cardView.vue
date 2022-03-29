@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="d-flex flex-row ma-0 pa-0 card-row">
     <v-card
       @click="() => select(item)"
@@ -28,7 +28,7 @@
         >
           {{ item.name }}
         </v-badge>
-        ({{$t("instrument.state."+item.status)}})
+        ({{ $t("instrument.state." + item.status) }})
         <v-spacer />
         <v-btn
           depressed
@@ -70,9 +70,7 @@
         <instrument-card :insId="item.id" hide-headers />
         <v-row>
           <v-col class="justify-center text-center">
-            <v-icon size="16">
-              isax-presention-chart
-            </v-icon>
+            <v-icon size="16"> isax-presention-chart </v-icon>
           </v-col>
         </v-row>
       </div>
@@ -99,11 +97,10 @@ export default defineComponent({
   },
   setup(props, context) {
     const { $store: store } = useNuxtApp();
-    const instrumentManager = useInstrument(store);
+    const instrumentManager = useInstrument();
     const instruments = instrumentManager.getFocus;
     const maxwidth = computed(
-      () =>
-        instrumentManager.width.value / Math.floor(instrumentManager.width.value / 360)
+      () => instrumentManager.width / Math.floor(instrumentManager.width / 360)
     );
 
     function close(item: InstrumentCache) {

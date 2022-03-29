@@ -46,15 +46,13 @@
 <script lang="ts">
 import { defineComponent, ref, Ref, computed } from "@vue/composition-api";
 import { useAsrTrader } from "~/composables";
-import { useNuxtApp } from "#app";
 
 export default defineComponent({
   emits: ["request"],
   props: ["value", "timer", "height"],
   inheritAttrs: false,
   setup(props, ctx) {
-    const { $store: store } = useNuxtApp();
-    const appManager = useAsrTrader(store);
+    const appManager = useAsrTrader();
     const otpref: Ref<any> = ref(null);
 
     const counter = ref(0);

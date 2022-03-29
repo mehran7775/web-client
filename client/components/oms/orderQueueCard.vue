@@ -147,8 +147,8 @@ export default defineComponent({
   },
   setup(props) {
     const { $store: store } = useNuxtApp();
-    const appManager = useAsrTrader(store);
-    const instrumentManager = useInstrument(store);
+    const appManager = useAsrTrader();
+    const instrumentManager = useInstrument();
     const formatter = appManager.formatter;
     const instrument: Ref<InstrumentCache | null> = ref(null);
     const change = computed(() => (price: number) => {

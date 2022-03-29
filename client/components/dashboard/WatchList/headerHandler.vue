@@ -1,5 +1,5 @@
-<template >
-<thead>
+<template>
+  <thead>
     <tr v-on="$listeners" v-bind="$attrs" class="headers">
       <th
         :draggable="header.draggable"
@@ -52,7 +52,7 @@ export default defineComponent({
   props: ["headers", "props"],
   setup(props) {
     const { $store: store } = useNuxtApp();
-    const userManager = useUser(store);
+    const userManager = useUser();
     const me = userManager.me;
     let draggingCol: WatchlistColumns | null = null;
     function drag(item: WatchlistColumns) {

@@ -60,8 +60,8 @@ export default defineComponent({
   props: { "focus-result": { type: Boolean, default: false } },
   setup(props) {
     const { $store: store, $axios } = useNuxtApp();
-    const userManager = useUser(store);
-    const instrumentManager = useInstrument(store);
+    const userManager = useUser();
+    const instrumentManager = useInstrument();
     const route = useRoute();
     const model = ref(null);
     const loading = ref(false);

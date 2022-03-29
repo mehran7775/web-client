@@ -219,20 +219,20 @@ export default defineComponent({
   },
   setup(props, context) {
     const { $store: store } = useNuxtApp();
-    const userManager = useUser(store);
-    const appManager = useAsrTrader(store);
+    const userManager = useUser();
+    const appManager = useAsrTrader();
     const router = useRouter();
     const sh = useShortcut();
-    const selected = appManager.menu;
+    const selected = computed(() => appManager.menu);
     const rtl = appManager.rtl;
     const bookmarks = userManager.getBookmarks;
     const shourtcuts = userManager.getShourtcuts;
     const isMarked = computed(() => (data: MenuItem) => {
       switch (data.bookmarkPosition) {
         case BookmarkPosition.ToolBar:
-          return bookmarks.value.findIndex((val) => val.title == data.title) > -1;
+          return bookmarks.findIndex((val) => val.title == data.title) > -1;
         case BookmarkPosition.RightPanel:
-          return shourtcuts.value.findIndex((val) => val.title == data.title) > -1;
+          return shourtcuts.findIndex((val) => val.title == data.title) > -1;
       }
     });
     const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
@@ -250,7 +250,7 @@ export default defineComponent({
       return res;
     });
     const items = getMenuItems(watchList);
-    const home = computed(() => userManager.me.value.settings.home);
+    const home = computed(() => userManager.me.settings.home);
 
     const expand: Ref<boolean> = ref(true);
     const drawer = computed({
@@ -278,7 +278,7 @@ export default defineComponent({
       switch (data.bookmarkPosition) {
         case BookmarkPosition.ToolBar:
           {
-            const tmp = [...bookmarks.value, bk];
+            const tmp = [...bookmarks, bk];
             userManager.update_settings({
               path: "/bookmarks",
               value: tmp,
@@ -287,7 +287,7 @@ export default defineComponent({
           break;
         case BookmarkPosition.RightPanel:
           {
-            const tmp = [...shourtcuts.value, bk];
+            const tmp = [...shourtcuts, bk];
             userManager.update_settings({
               path: "/shourtcuts",
               value: tmp,
@@ -300,7 +300,7 @@ export default defineComponent({
       switch (data.bookmarkPosition) {
         case BookmarkPosition.ToolBar:
           {
-            let tmp = [...bookmarks.value];
+            let tmp = [...bookmarks];
             tmp.splice(
               tmp.findIndex((item) => item.to == data.to),
               1
@@ -313,7 +313,7 @@ export default defineComponent({
           break;
         case BookmarkPosition.RightPanel:
           {
-            let tmp = [...shourtcuts.value];
+            let tmp = [...shourtcuts];
             tmp.splice(
               tmp.findIndex((item) => item.to == data.to),
               1

@@ -9,11 +9,11 @@
 <script lang="ts">
 import { defineComponent, reactive } from "@vue/composition-api";
 import { Order, OrderSearchModel, PaginatedResult, WatchlistColumns } from "@/types";
-import { useNuxtApp } from "#app";
+import { useOrder } from "~~/composables";
 
 export default defineComponent({
   setup(params, context) {
-    const { $store: store } = useNuxtApp();
+    const orderManager = useOrder();
     const i18n = useI18n();
     const orders: Order[] = reactive([]);
     const cols = [
@@ -30,10 +30,10 @@ export default defineComponent({
       new WatchlistColumns(i18n.t("general.status").toString(), "flags"),
     ];
 
-    store
-      .dispatch("wealth/order/getOrders", new OrderSearchModel())
-      .then((res: PaginatedResult<Order>) => {
-        orders.push(...res.data);
+    orderManager
+      .getOrders(new OrderSearchModel())
+      .then((res: PaginatedResult<Order> | undefined) => {
+        if (res) orders.push(...res.data);
       });
 
     return {

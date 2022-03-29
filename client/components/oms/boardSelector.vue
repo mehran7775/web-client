@@ -11,7 +11,7 @@ const props = defineProps<{
 const emit = defineEmits(["input"]);
 
 const { $store: store, $axios } = useNuxtApp();
-const userManager = useUser(store);
+const userManager = useUser();
 const bookmarks = userManager.getBookmarks;
 const items: Array<AutoCompleteItem> = reactive([]);
 const home = computed(() => userManager.me.value.settings.home);

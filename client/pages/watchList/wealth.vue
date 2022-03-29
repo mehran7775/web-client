@@ -1,3 +1,34 @@
+<script lang="ts">
+import { ref, defineComponent } from "@vue/composition-api";
+import { WealthSearchModel, InstrumentSearchModel } from "@/types";
+import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
+import WatchList from "~/components/dashboard/WatchList/index.vue";
+import { useWealth } from "~/composables";
+
+export default defineComponent({
+  components: {
+    WatchList,
+    FocusBoard,
+  },
+  setup() {
+    const wealthManager = useWealth();
+    const searchModel = ref(new InstrumentSearchModel());
+    const loading = ref(true);
+    wealthManager.getWealth(new WealthSearchModel()).then((wealth) => {
+      if (wealth) {
+        searchModel.value.ids.push(...wealth.map((item) => item.id));
+      }
+      loading.value = false;
+    });
+
+    return {
+      loading,
+      searchModel,
+    };
+  },
+});
+</script>
+
 <template>
   <v-container class="ma-0 pa-0" fluid>
     <v-row class="ma-0 pa-0" dense>
@@ -19,40 +50,6 @@
     </v-row>
   </v-container>
 </template>
-
-<script lang="ts">
-import { ref, reactive, defineComponent } from "@vue/composition-api";
-import { WealthSearchModel, InstrumentSearchModel } from "@/types";
-import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
-import WatchList from "~/components/dashboard/WatchList/index.vue";
-import { useInstrument, useWealth } from "~/composables";
-import { useNuxtApp } from "#app";
-
-export default defineComponent({
-  components: {
-    WatchList,
-    FocusBoard,
-  },
-  setup() {
-    const { $store: store } = useNuxtApp();
-    const wealthManager = useWealth(store);
-    const instrumentManager = useInstrument(store);
-    const searchModel = ref(new InstrumentSearchModel());
-    const loading = ref(true);
-    wealthManager.getWealth(new WealthSearchModel()).then((wealth) => {
-      if (wealth) {
-        searchModel.value.ids.push(...wealth.map((item) => item.id));
-      }
-      loading.value = false;
-    });
-
-    return {
-      loading,
-      searchModel,
-    };
-  },
-});
-</script>
 
 <style lang="postcss" scoped>
 .menu {

@@ -128,7 +128,7 @@ export default defineComponent({
   },
   setup(props) {
     const { $store: store } = useNuxtApp();
-    const instrumentManager = useInstrument(store);
+    const instrumentManager = useInstrument();
     const distribution: Ref<ClientDistribution> = ref(new ClientDistribution());
     const total = ref(1);
     instrumentManager.getClientDistribution(props.insId).then((result) => {

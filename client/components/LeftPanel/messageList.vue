@@ -51,7 +51,7 @@ export default defineComponent({
   },
   setup(props, context) {
     const { $store: store } = useNuxtApp();
-    const appManager = useAsrTrader(store);
+    const appManager = useAsrTrader();
     const locale = appManager.locale;
     const icons = [
       "mdi-message-cog-outline",

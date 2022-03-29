@@ -4,11 +4,9 @@
 
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
-import { useNuxtApp } from "#app";
 
 export default defineComponent({
   setup(params, context) {
-    const { $store: store } = useNuxtApp();
     const i18n = useI18n();
 
     return {};

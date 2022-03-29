@@ -11,7 +11,7 @@ import { useInstrument, useAxios, useWealth, useUser } from "..";
 import orderManager from "@/repositories/wealth/order_manager";
 
 export const useOrder = defineStore("order", () => {
-  const userState = useUser()
+  const userState = useUser();
   const axios = useAxios();
   const instrumentManager = useInstrument();
   const wealthManager = useWealth();
@@ -21,7 +21,11 @@ export const useOrder = defineStore("order", () => {
   ): Promise<PaginatedResult<Order> | undefined> {
     if (userState.state.userName) {
       const orders = (
-        await orderManager.getOrders(userState.state.userName, payload, axios.createInstance())
+        await orderManager.getOrders(
+          userState.state.userName,
+          payload,
+          axios.createInstance()
+        )
       ).data as PaginatedResult<Order>;
 
       const pi = instrumentManager.getInstrumentsDetail(
@@ -41,5 +45,10 @@ export const useOrder = defineStore("order", () => {
       });
       return orders;
     }
+    return undefined;
   }
+
+  return {
+    getOrders,
+  };
 });

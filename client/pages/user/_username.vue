@@ -38,7 +38,7 @@ export default defineComponent({
   },
   setup() {
     const { $store: store } = useNuxtApp();
-    const userManager = useUser(store);
+    const userManager = useUser();
     const currentUser = userManager.me;
     const pic: Ref<File | null> = ref(null);
     function profile(a: any) {

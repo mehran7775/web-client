@@ -72,7 +72,7 @@ export default defineComponent({
   components: { furtherInformation, DeepInformation, DefaultOrderList, Bests },
   setup(props, context) {
     const { $store: store } = useNuxtApp();
-    const userManager = useUser(store);
+    const userManager = useUser();
     const i18n = useI18n();
     const tabs = ["bottom-panel.orders", "bottom-panel.bests", "bottom-panel.depth"];
     const isLogin = userManager.isLogin;

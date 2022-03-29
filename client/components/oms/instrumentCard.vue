@@ -48,8 +48,8 @@ export default defineComponent({
   },
   setup(props, context) {
     const { $store: store } = useNuxtApp();
-    const appManager = useAsrTrader(store);
-    const instrumentManager = useInstrument(store);
+    const appManager = useAsrTrader();
+    const instrumentManager = useInstrument();
     const i18n = useI18n();
     const locale = appManager.locale;
     const formatter = appManager.formatter;

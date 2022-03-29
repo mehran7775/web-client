@@ -113,7 +113,7 @@ export default defineComponent({
     const { $store: store } = useNuxtApp();
     const route = useRoute();
     const router = useRouter();
-    const userManager = useUser(store);
+    const userManager = useUser();
     const selected: Ref<any> = ref(null);
     const newName = ref("");
     const watchList: any[] = reactive([]);
@@ -121,7 +121,7 @@ export default defineComponent({
 
     function refresh() {
       watchList.splice(0, watchList.length);
-      Object.keys(wls.value).forEach((k) => {
+      Object.keys(wls).forEach((k) => {
         watchList.push({
           onEdit: false,
           newName: k,
@@ -152,9 +152,9 @@ export default defineComponent({
     }
     async function rename(item: any) {
       const tmp: any = {};
-      Object.keys(wls.value).forEach((i) => {
-        if (i == item.id) tmp[item.newName] = wls.value[item.id];
-        else tmp[i] = wls.value[i];
+      Object.keys(wls).forEach((i) => {
+        if (i == item.id) tmp[item.newName] = wls[item.id];
+        else tmp[i] = wls[i];
       });
       await userManager.update_settings({
         path: "/watch_lists",

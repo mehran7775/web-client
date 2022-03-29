@@ -44,7 +44,7 @@ export default defineComponent({
   },
   setup(props, context) {
     const { $store: store } = useNuxtApp();
-    const instrumentManager = useInstrument(store);
+    const instrumentManager = useInstrument();
     let instrument: Ref<InstrumentCache> = ref(new InstrumentCache());
     instrumentManager
       .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))

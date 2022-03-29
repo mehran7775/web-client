@@ -5,8 +5,8 @@ import { useAsrTrader, useUser } from "~/composables";
 import { useNuxtApp } from "#app";
 
 const { $store: store } = useNuxtApp();
-const appManager = useAsrTrader(store);
-const userManager = useUser(store);
+const appManager = useAsrTrader();
+const userManager = useUser();
 
 const rightMenu = ref({
   mini: true,
@@ -24,18 +24,9 @@ const collaps = computed(() => {
   return tab != null && tab != -1;
 });
 
-const home = computed(() => userManager.me.value.settings.home);
-
-defineExpose({
-  home,
-  formatter,
-  collaps,
-  locale,
-  rightMenu,
-  leftMenu,
-  clipped: true,
-  rtl: appManager.rtl,
-});
+const home = computed(() => userManager.me.settings.home);
+const clipped = ref(true);
+const rtl = computed(() => appManager.rtl);
 </script>
 
 <template>

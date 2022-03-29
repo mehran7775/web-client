@@ -8,13 +8,11 @@
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
 import { useAsrTrader } from "~/composables";
-import { useNuxtApp } from "#app";
 
 export default defineComponent({
   props: { value: Number },
   setup() {
-    const { $store: store } = useNuxtApp();
-    const appManager = useAsrTrader(store);
+    const appManager = useAsrTrader();
     const formatter = appManager.percentFormatter;
     return {
       formatter,

@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="pb-1">
     <v-data-table
       :headers="headers"
@@ -11,14 +11,9 @@
       dense
     >
       <template #header="{ on, props, attrs }">
-        <header-handler
-          :headers="headers"
-          v-on="on"
-          v-bind="attrs"
-          :props="props"
-        >
+        <header-handler :headers="headers" v-on="on" v-bind="attrs" :props="props">
           <template #header.more>
-            <header-selector/>
+            <header-selector />
           </template>
         </header-handler>
       </template>
@@ -123,17 +118,23 @@
           <template #item.totalTradesValue="{ item }">
             <numeric-field :value="item.totalTradesValue" />
           </template>
-          <template #item.status="{ item }"> 
+          <template #item.status="{ item }">
             <span>
-              {{$t("instrument.state."+item.status)}}
+              {{ $t("instrument.state." + item.status) }}
             </span>
           </template>
           <template #item.more="{ item }">
-            <v-icon 
-              color="error" 
-              @click="() => { itemToDelete = item; confirmInstrumentRemoval = true; }" 
-              small>
-                isax-trash
+            <v-icon
+              color="error"
+              @click="
+                () => {
+                  itemToDelete = item;
+                  confirmInstrumentRemoval = true;
+                }
+              "
+              small
+            >
+              isax-trash
             </v-icon>
           </template>
         </row-handler>
@@ -216,7 +217,7 @@ export default defineComponent({
     },
     paginated: {
       type: Boolean,
-      default: false
+      default: false,
     },
   },
   components: {
@@ -229,8 +230,8 @@ export default defineComponent({
   },
   setup(props, context) {
     const { $store: store } = useNuxtApp();
-    const userManager = useUser(store);
-    const instrumentManager = useInstrument(store);
+    const userManager = useUser();
+    const instrumentManager = useInstrument();
     const route = useRoute();
     const i18n = useI18n();
     const sh = useShortcut();
@@ -243,10 +244,10 @@ export default defineComponent({
     const watchlists = userManager.watchList;
 
     const focused = instrumentManager.getFocus;
-    const canfocus = computed(()=>{
-      if(!process.client) return false
-      return focused.value.length < Math.floor(instrumentManager.width.value / 360)
-    })
+    const canfocus = computed(() => {
+      if (!process.client) return false;
+      return focused.value.length < Math.floor(instrumentManager.width.value / 360);
+    });
     const me = userManager.me;
 
     const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
@@ -255,11 +256,10 @@ export default defineComponent({
       actions.draggable = false;
       res.push(actions);
       res.push(
-        ...((me.value.settings.columns ?? DefaultCols()).map(
-          (col: WatchlistColumns) =>
-            Object.assign({}, col, {
-              text: col.text == "" ? "" : i18n.t(col.text),
-            })
+        ...((me.value.settings.columns ?? DefaultCols()).map((col: WatchlistColumns) =>
+          Object.assign({}, col, {
+            text: col.text == "" ? "" : i18n.t(col.text),
+          })
         ) as WatchlistColumns[])
       );
       const more = new WatchlistColumns("", "more");
@@ -330,15 +330,11 @@ export default defineComponent({
         const ind = wl.findIndex((i) => i == dragItem?.id.toString());
         wl.splice(ind, 1);
         const target = wl.findIndex((i) => i == item.id.toString());
-        wl.splice(
-          ind > target ? target : target + 1,
-          0,
-          dragItem?.id.toString()
-        );
+        wl.splice(ind > target ? target : target + 1, 0, dragItem?.id.toString());
         userManager.setWatchlist({
           name,
           watchlist: wl,
-          changeState: false
+          changeState: false,
         });
         await userManager.update_settings({
           path: "/watch_lists/" + name,

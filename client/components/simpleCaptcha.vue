@@ -2,7 +2,6 @@
 import { defineComponent, ref, Ref, computed } from "@vue/composition-api";
 import { required } from "@/utils/rules";
 import { useAsrTrader } from "@/composables";
-import { useNuxtApp } from "#app";
 
 export default defineComponent({
   inheritAttrs: false,

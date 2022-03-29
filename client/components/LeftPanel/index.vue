@@ -82,7 +82,7 @@ export default defineComponent({
   },
   setup(props, context) {
     const { $store: store } = useNuxtApp();
-    const appManager = useAsrTrader(store);
+    const appManager = useAsrTrader();
     const rtl = appManager.rtl;
     const activeTab: Ref<number | null> = ref(null);
 

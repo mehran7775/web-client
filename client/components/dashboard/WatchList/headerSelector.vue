@@ -69,7 +69,7 @@ import { useNuxtApp } from "#app";
 export default defineComponent({
   setup() {
     const { $store: store } = useNuxtApp();
-    const userManager = useUser(store);
+    const userManager = useUser();
     const menu = ref(false);
     const user = userManager.me;
     const currentCols = computed(() => user.value.settings.columns ?? DefaultCols());

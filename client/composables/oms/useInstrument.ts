@@ -202,6 +202,7 @@ export const useInstrument = defineStore("instrument", () => {
   }
 
   return {
+    state,
     // Getters
     width,
     focusMode,

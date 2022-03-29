@@ -19,8 +19,8 @@ import { useNuxtApp } from "#app";
 export default defineComponent({
   setup(props, context) {
     const { $store: store } = useNuxtApp();
-    const userManager = useUser(store);
-    const appManager = useAsrTrader(store);
+    const userManager = useUser();
+    const appManager = useAsrTrader();
     const i18n = useI18n();
     const res: Array<Log> = reactive([]);
     const headers: Array<WatchlistColumns> = [

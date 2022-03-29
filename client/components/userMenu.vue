@@ -45,16 +45,15 @@ import { defineComponent, ref } from "@vue/composition-api";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
 import { MenuItem, User } from "~/types";
 import { useUser } from "~/composables";
-import { useNuxtApp, useRouter } from "#app";
+import { useRouter } from "#app";
 
 export default defineComponent({
   components: {
     ProfilePicture,
   },
   setup() {
-    const { $store: store } = useNuxtApp();
     const router = useRouter();
-    const userManager = useUser(store);
+    const userManager = useUser();
     const userMenu = ref(false);
     const currentUser = userManager.me;
     const userMenuItems: Array<MenuItem> = [

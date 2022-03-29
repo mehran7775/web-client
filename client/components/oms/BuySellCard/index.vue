@@ -15,7 +15,7 @@ const props = defineProps<{
 const emit = defineEmits(["update:count", "update:price"]);
 
 const { $store: store } = useNuxtApp();
-const instrumentManager = useInstrument(store);
+const instrumentManager = useInstrument();
 const active: Ref<InstrumentCache> = ref(new InstrumentCache());
 const countVal = computed({
   get() {
