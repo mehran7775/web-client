@@ -1,48 +1,70 @@
-import { computed } from "@vue/composition-api"
-import { Store } from "vuex/types"
-import { RootState } from "@/types/stores"
+import { ref, computed } from "@vue/composition-api";
+import { defineStore } from "pinia";
+import { RootState } from "@/types/stores";
 
-export function useAsrTrader(store: Store<any>) {
-    const state = store.state as RootState
+export const useAsrTrader = defineStore("app", () => {
+  const state = ref(new RootState());
 
-    // Getters
-    const locale = computed({
-        get() {
-            return state.locale
-        },
-        set(locale: string) {
-            setLocale(locale)
-        }
+  // Getters
+  const locale = computed({
+    get() {
+      return state.value.locale;
+    },
+    set(locale: string) {
+      setLocale(locale);
+    },
+  });
+  const rtl = computed(() =>
+    ["fa", "ar", "azIr", "ckb"].includes(state.value.locale)
+  );
+  const menu = computed({
+    get() {
+      return state.value.menu ?? 0;
+    },
+    set(menu: string | number | null) {
+      setMenu(menu);
+    },
+  });
+  const percentFormatter = computed(() =>
+    Intl.NumberFormat(state.value.locale, {
+      style: "percent",
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 3,
     })
-    const rtl = computed(() => ['fa', 'ar', 'azIr', 'ckb'].includes(state.locale))
-    const menu = computed({
-        get() { return state.menu ?? 0 },
-        set(menu: string | number | null) {
-            setMenu(menu)
-        }
+  );
+  const currencyFormatter = computed(
+    () =>
+      (currency: string = "IRR") =>
+        Intl.NumberFormat(state.value.locale, {
+          style: "currency",
+          currency: currency,
+          minimumFractionDigits: 3,
+          maximumFractionDigits: 3,
+        })
+  );
+  const formatter = computed(() =>
+    Intl.NumberFormat(state.value.locale, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 3,
     })
-    const percentFormatter = computed(() =>
-        Intl.NumberFormat(state.locale, { style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 3 }))
-    const currencyFormatter = computed(() => (currency: string = 'IRR') => Intl.NumberFormat(state.locale, { style: 'currency', currency: currency, minimumFractionDigits: 3, maximumFractionDigits: 3 }))
-    const formatter = computed(() => Intl.NumberFormat(state.locale, { minimumFractionDigits: 0, maximumFractionDigits: 3 }))
+  );
 
-    // Mutations
-    function setMenu(payload: string | number | null) {
-        store.commit("setMenu", payload)
-    }
-    function setLocale(payload: string) {
-        store.commit("setLocale", payload)
-    }
+  // Mutations
+  function setMenu(menu: string | number | null) {
+    state.value.menu = menu;
+  }
+  function setLocale(locale: string) {
+    state.value.locale = locale;
+  }
 
-    return {
-        locale,
-        rtl,
-        menu,
-        percentFormatter,
-        currencyFormatter,
-        formatter,
-        setMenu,
-        setLocale
-    }
-
-}
+  return {
+    locale,
+    rtl,
+    menu,
+    percentFormatter,
+    currencyFormatter,
+    formatter,
+    setMenu,
+    setLocale,
+  };
+});

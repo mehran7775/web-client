@@ -1,6 +1,6 @@
 import { AxiosError, AxiosResponse } from "axios";
-import { computed } from "@vue/composition-api";
-import { Store } from "vuex/types";
+import { computed, ref } from "@vue/composition-api";
+import { defineStore } from "pinia";
 import {
   AnonymousUser,
   Log,
@@ -14,83 +14,152 @@ import {
 import { UserState } from "~/types/stores";
 import userManager from "@/repositories/sso/user_manager";
 import jwtManager from "~/repositories/sso/jwt_token";
-import { GetClientCookies } from "~/utils/cookie";
-import { useAxios } from "../useAxios";
+import {
+  DeleteClientCookie,
+  GetClientCookies,
+  SetClientCookie,
+} from "~/utils/cookie";
+import { useAxios } from "..";
 
 export const refreshKey: string = "jwtRefreshKey";
 export const tokenKey: string = "jwtKey";
 export const userKey: string = "userCache";
 
-export function useUser(store: Store<any>) {
-  const state = store.state.sso.user as UserState;
+export const useUser = defineStore("user", () => {
+  const state = ref(new UserState());
 
-  const axios = useAxios(store);
+  const axiosManager = useAxios();
+  const axios = axiosManager.createInstance();
 
   // Getters
   const refreshingToken = computed({
     get() {
-      return state.renewToken;
+      return state.value.renewToken;
     },
     set(val: boolean) {
       setRefreshingToken(val);
     },
   });
-  const getBookmarks = computed(() => state.user.settings.bookmarks || []);
-  const getShourtcuts = computed(() => state.user.settings.shourtcuts || []);
-  const getToken = computed(() => state.token);
-  const getRefresh = computed(() => state.refresh);
-  const me = computed(() => state.user ?? AnonymousUser());
-  const isLogin = computed(() => !!(state && state.token));
-  const watchList = computed(() => state.user?.settings?.watch_lists ?? {});
-  const tryCount = computed(() => state.tryCount);
-  const settingsChanged = computed(() => state.settingsChanged);
+  const getBookmarks = computed(
+    () => state.value.user.settings.bookmarks || []
+  );
+  const getShourtcuts = computed(
+    () => state.value.user.settings.shourtcuts || []
+  );
+  const getToken = computed(() => state.value.token);
+  const getRefresh = computed(() => state.value.refresh);
+  const me = computed(() => state.value.user ?? AnonymousUser());
+  const isLogin = computed(() => !!(state && state.value.token));
+  const watchList = computed(
+    () => state.value.user?.settings?.watch_lists ?? {}
+  );
+  const tryCount = computed(() => state.value.tryCount);
+  const settingsChanged = computed(() => state.value.settingsChanged);
 
   // Mutations
   function setHome(data: string) {
-    store.commit("sso/user/setHome", data);
+    state.value.user.settings.home = data;
   }
   function setRefreshingToken(data: boolean) {
-    store.commit("sso/user/renewToken", data);
+    state.value.renewToken = data;
   }
   function tries(data: { user: string; tries: number }) {
-    store.commit("sso/user/tries", data);
+    if (data.tries > 0)
+      SetClientCookie(data.user + ".tryCount", data.tries.toString(), {
+        maxAge: 300,
+      });
+    else DeleteClientCookie("tryCount");
+    state.value.tryCount = data.tries;
   }
   function setToken(data: string) {
-    store.commit("sso/user/setToken", data);
+    if (!!data) {
+      state.value.token = data;
+      const token = JSON.parse(
+        Buffer.from(decodeURIComponent(data.split(".")[1]), "base64").toString()
+      );
+      state.value.userName = token.sub;
+      if (process.client)
+        SetClientCookie(tokenKey, data, {
+          expires: new Date(token.exp * 1000),
+        });
+    }
   }
   function setRefresh(data: string) {
-    store.commit("sso/user/setRefresh", data);
+    state.value.refresh = data;
+    if (process.client) SetClientCookie(refreshKey, data, {});
   }
   function logout() {
-    store.commit("sso/user/logout");
+    if (process.client) {
+      DeleteClientCookie(userKey);
+      DeleteClientCookie(tokenKey);
+      DeleteClientCookie(refreshKey);
+    }
+    if (process.client) {
+      sessionStorage.clear();
+      localStorage.clear();
+    }
+    state.value.settingsChanged = reactive([]);
+    state.value.token = null;
+    state.value.user = AnonymousUser();
+    state.value.refresh = null;
   }
   function setUser(data: User) {
-    store.commit("sso/user/setUser", data);
+    state.value.user = data;
+    state.value.settingsChanged = reactive([]);
+    if (process.client) {
+      SetClientCookie(userKey, data.userName, {});
+      localStorage.setItem(userKey, JSON.stringify(data));
+    }
   }
-  function setSettings(data: Setting) {
-    store.commit("sso/user/setSettings", data);
+  function setSettings(settings: Setting) {
+    state.value.user.settings = settings;
   }
   function setCols(data: Array<WatchlistColumns>) {
-    store.commit("sso/user/setCols", data);
+    if (
+      state.value.settingsChanged.findIndex((item) => item.key == "/columns") ==
+      -1
+    )
+      state.value.settingsChanged.push({
+        key: "/columns",
+        value: [...state.value.user.settings.columns],
+      });
+    state.value.user.settings.columns = data;
   }
   function setWatchlist(data: {
     watchlist: Array<string>;
     name: string;
     changeState: boolean;
   }) {
-    store.commit("sso/user/setWatchlist", data);
+    if (
+      data.changeState &&
+      state.value.settingsChanged.findIndex(
+        (item) => item.key == "/watch_lists/" + data.name
+      ) == -1
+    )
+      state.value.settingsChanged.push({
+        key: "/watch_lists/" + data.name,
+        value: [...state.user.settings.columns],
+      });
+    state.value.user.settings.watch_lists[data.name] = data.watchlist;
   }
   function setSettingsChanged(data: { key: string; value: any }) {
-    store.commit("sso/user/settingsChanged", data);
+    if (
+      state.value.settingsChanged.findIndex((item) => item.key == data.key) ==
+      -1
+    )
+      state.value.settingsChanged.push({ key: data.key, value: data.value });
   }
   function settingsNotChanged(data: string) {
-    store.commit("sso/user/settingsNotChanged", data);
+    state.value.settingsChanged.splice(
+      state.value.settingsChanged.findIndex((item) => item.key == data),
+      1
+    );
   }
 
   // Actions TODO Move buisiness here
   async function getUser(userName: string): Promise<User | number> {
     const { data, status } = await userManager.getUser(
-      userName ?? state.userName,
+      userName ?? state.value.userName,
       axios
     );
     setUser(data);
@@ -107,7 +176,7 @@ export function useUser(store: Store<any>) {
   async function login(payload: LoginModel): Promise<number> {
     try {
       refreshingToken.value = true;
-      tries({ user: payload.userName, tries: state.tryCount + 1 });
+      tries({ user: payload.userName, tries: state.value.tryCount + 1 });
       const { data, status } = await jwtManager.login(
         payload.userName,
         payload.password,
@@ -137,7 +206,7 @@ export function useUser(store: Store<any>) {
     }
   }
   async function refreshToken(): Promise<number> {
-    const token = state.refresh;
+    const token = state.value.refresh;
     if (token) {
       try {
         refreshingToken.value = true;
@@ -170,7 +239,7 @@ export function useUser(store: Store<any>) {
       if (resp.data.setting) {
         setSettings(resp.data.setting);
         if (process.client)
-          localStorage.setItem(userKey, JSON.stringify(state.user));
+          localStorage.setItem(userKey, JSON.stringify(state.value.user));
       }
       settingsNotChanged(payload.path);
     } catch (e) {
@@ -195,7 +264,7 @@ export function useUser(store: Store<any>) {
     payload: Paginated
   ): Promise<AxiosResponse<PaginatedResult<Log>>> {
     return userManager.getUserLog(
-      state.userName ?? "",
+      state.value.userName ?? "",
       payload?.offset,
       payload?.length,
       axios
@@ -235,4 +304,4 @@ export function useUser(store: Store<any>) {
     getProfilePic,
     getLogs,
   };
-}
+});

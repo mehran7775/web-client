@@ -1,5 +1,14 @@
 import { SearchModel } from "./collection";
 
+export class Snack {
+  content: string;
+  color: string;
+  constructor(content: string, color: string) {
+    this.content = content;
+    this.color = color ?? "warning";
+  }
+}
+
 export class MessageQuery implements SearchModel {
   filters: MessageFilter;
   offset: number;

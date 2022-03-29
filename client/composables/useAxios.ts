@@ -1,23 +1,16 @@
-import axios, {
-  AxiosError,
-  AxiosResponse,
-  AxiosRequestConfig,
-  AxiosInstance,
-} from "axios";
-import { Store } from "vuex/types";
+import { useAsrTrader, useSnacks, useUser } from ".";
+import axios, { AxiosError, AxiosInstance } from "axios";
+import { defineStore } from "pinia";
 import { ErrorExtractor } from "~/utils/error";
-import { Snack } from "~/store/snacks";
-import { RootState, UserState } from "~/types/stores";
+import { Snack } from "@/types";
 
-let instance: AxiosInstance | null = null;
+export const useAxios = defineStore("axios", () => {
+  const user = useUser();
+  const app = useAsrTrader();
+  const snacks = useSnacks();
 
-export function useAxios(store: Store<any>): AxiosInstance {
-  const user = store.state.sso.user as UserState;
-  const app = store.state as RootState;
-
-  if (!instance) {
-    instance = axios.create({});
-
+  function createInstance(): AxiosInstance {
+    const instance = axios.create({});
     instance.interceptors.request.use((config) => {
       Object.assign(config, {
         withCredentials: true,
@@ -29,12 +22,12 @@ export function useAxios(store: Store<any>): AxiosInstance {
           },
         },
       });
-      if (user.token) {
+      if (user.getToken) {
         Object.assign(config, {
           headers: {
             ...config.headers,
             ...{
-              authorization: user.token,
+              authorization: user.getToken,
             },
           },
         });
@@ -51,28 +44,28 @@ export function useAxios(store: Store<any>): AxiosInstance {
         let error = ErrorExtractor(err);
         if (error.code === 401) {
           //TODO Handel refresh token
-          // try {
-          //     await user.refreshToken()
-          //     return instance?.request(err.config)
-          // }
-          // catch (err) {
-          //     error = ErrorExtractor(err as AxiosError)
-          //     store.commit('snacks/showMessage', new Snack('error.' + error.code, 'error'))
-          //     if (process.client) {
-          //         window.history.pushState({}, "", "/login")
-          //     }
-          //     // TODO serverside redirect('/login')
-          //     return Promise.reject(error)
-          // }
+          try {
+            await user.refreshToken();
+            return instance?.request(err.config);
+          } catch (err) {
+            error = ErrorExtractor(err as AxiosError);
+            snacks.showMessage(new Snack("error." + error.code, "error"));
+            if (process.client) {
+              window.history.pushState({}, "", "/login");
+            }
+            // TODO serverside redirect('/login')
+            return Promise.reject(error);
+          }
         } else {
-          store.commit(
-            "snacks/showMessage",
-            new Snack("error." + error.code, "error")
-          );
+          snacks.showMessage(new Snack("error." + error.code, "error"));
           return Promise.reject(error);
         }
       }
     );
+    return instance;
   }
-  return instance as AxiosInstance;
-}
+  const instance = createInstance();
+  return {
+    createInstance,
+  };
+});

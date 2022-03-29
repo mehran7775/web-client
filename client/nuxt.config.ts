@@ -33,7 +33,6 @@ export default defineNuxtConfig({
   plugins: [
     //{ src: '~/plugins/hcaptcha', mode: 'client' },
     { src: "~/plugins/i18n.js" },
-    { src: "~/plugins/axios" },
     { src: "~/plugins/store-initiator" },
   ],
 
@@ -48,12 +47,9 @@ export default defineNuxtConfig({
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    // https://go.nuxtjs.dev/axios
-    "@nuxtjs/axios",
+  
   ],
-
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  
 
   env: {
     VUE_APP_I18N_LOCALE: process.env.VUE_APP_I18N_LOCALE,

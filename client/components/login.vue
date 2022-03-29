@@ -242,12 +242,11 @@
 <script lang="ts">
 import { defineComponent, ref, Ref, reactive, onMounted } from "@vue/composition-api";
 import { AxiosError } from "axios";
-import { Snack } from "~/store/snacks";
-import { LoginModel, PasswordType, User } from "~/types";
+import { LoginModel, PasswordType, Snack } from "@/types";
 import { ErrorExtractor } from "~/utils/error";
 import { required } from "@/utils/rules";
 import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
-import { useAsrTrader, useUser } from "~/composables";
+import { useAsrTrader, useUser, useSnacks } from "@/composables";
 import { useNuxtApp, useRouter } from "#app";
 
 export default defineComponent({
@@ -263,6 +262,7 @@ export default defineComponent({
     const userManager = useUser(store);
     const router = useRouter();
     const keyboard = ref(useVirtualKeyBoard());
+    const snack = useSnacks();
 
     const frm: Ref<any> = ref(null);
     const userref: Ref<any> = ref(null);
@@ -291,27 +291,25 @@ export default defineComponent({
           const res = await userManager.login(data);
           if (res >= 200 && res < 300) {
             const user = userManager.me;
-            router.push(user.value?.settings?.home ?? "/watchlist/wealth");
-            snack(new Snack("login.successful", "success"));
+            router.push(user.settings?.home ?? "/watchlist/wealth");
+            snack.showMessage(new Snack("login.successful", "success"));
           }
         } catch (err) {
           captcharef.value.refreshCaptcha();
           const error = ErrorExtractor(err as AxiosError);
-          if (error.detail.length == 0) snack(new Snack("errors." + error.code, "error"));
+          if (error.detail.length == 0)
+            snack.showMessage(new Snack("errors." + error.code, "error"));
           else {
             let res = "";
             for (let e in error.detail) {
               res += i18n.t(error.detail[e].type) + "\r\n";
             }
-            snack(new Snack(res, "error"));
+            snack.showMessage(new Snack(res, "error"));
           }
         } finally {
           loading.value = false;
         }
       }
-    }
-    function snack(data: Snack) {
-      store.commit("snacks/showMessage", data);
     }
     function captchaResult(code: string) {
       data.value.captcha = code;

@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import snackbar from "@/components/snacks.vue";
 import { useAsrTrader } from "~/composables";
-import { useNuxtApp } from "#app";
 
-const { $store: store } = useNuxtApp();
-const appManager = useAsrTrader(store);
+const appManager = useAsrTrader();
 const locale = appManager.locale;
 </script>
 
