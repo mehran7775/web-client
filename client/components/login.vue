@@ -1,3 +1,98 @@
+<script setup lang="ts">
+import { ref, Ref, reactive, onMounted } from "@vue/composition-api";
+import { AxiosError } from "axios";
+import { LoginModel, PasswordType, Snack } from "@/types";
+import { ErrorExtractor } from "~/utils/error";
+import { required } from "@/utils/rules";
+import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
+import { useAsrTrader, useUser, useSnacks } from "@/composables";
+import { useRouter } from "#app";
+
+const props = withDefaults(
+  defineProps<{
+    width: number;
+    inputHeight: number;
+  }>(),
+  {
+    inputHeight: 32,
+    width: 288,
+  }
+);
+
+const appManager = useAsrTrader();
+const userManager = useUser();
+const router = useRouter();
+const keyboard = ref(useVirtualKeyBoard());
+const snack = useSnacks();
+
+const frm: Ref<any> = ref(null);
+const userref: Ref<any> = ref(null);
+const passref: Ref<any> = ref(null);
+const captcharef: Ref<any> = ref(null);
+const otpref: Ref<any> = ref(null);
+const checkTries = userManager.checkTries;
+const rules = {
+  required,
+};
+
+const loading: Ref<boolean> = ref(false);
+const showPassword: Ref<boolean> = ref(false);
+const data: Ref<LoginModel> = ref({
+  userName: "",
+  password: "",
+  passwordType: PasswordType.static,
+  captcha: "",
+});
+const snacs = reactive([]);
+
+const failedCount = userManager.tryCount;
+const rtl = appManager.rtl;
+
+async function login(data: LoginModel) {
+  if (frm.value?.validate()) {
+    loading.value = true;
+    try {
+      const res = await userManager.login(data);
+      if (res >= 200 && res < 300) {
+        const user = userManager.me;
+        router.push(user.settings?.home ?? "/watchlist/wealth");
+        snack.showMessage(new Snack("login.successful", "success"));
+      }
+    } catch (err) {
+      captcharef.value.refreshCaptcha();
+      const error = ErrorExtractor(err as AxiosError);
+      if (error.detail.length == 0)
+        snack.showMessage(new Snack("errors." + error.code, "error"));
+      else {
+        let res = "";
+        //TODO i18n
+        // for (let e in error.detail) {
+        //   res += i18n.t(error.detail[e].type) + "\r\n";
+        // }
+        snack.showMessage(new Snack(res, "error"));
+      }
+    } finally {
+      loading.value = false;
+    }
+  }
+}
+function captchaResult(code: string) {
+  data.value.captcha = code;
+}
+
+function requestOtp() {
+  frm.value.validate();
+  otpref.value.focus();
+  if (userref.value.validate() && captcharef.value.validate()) {
+    otpref.value.setTimer();
+  }
+}
+
+onMounted(() => {
+  userref.value?.focus();
+});
+</script>
+
 <template>
   <v-card
     class="ma-0 pa-0"
@@ -238,124 +333,6 @@
     <div class="text-justify" v-html="$t('login.alerts')"></div>
   </v-card>
 </template>
-
-<script lang="ts">
-import { defineComponent, ref, Ref, reactive, onMounted } from "@vue/composition-api";
-import { AxiosError } from "axios";
-import { LoginModel, PasswordType, Snack } from "@/types";
-import { ErrorExtractor } from "~/utils/error";
-import { required } from "@/utils/rules";
-import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
-import { useAsrTrader, useUser, useSnacks } from "@/composables";
-import { useNuxtApp, useRouter } from "#app";
-
-export default defineComponent({
-  name: "Login",
-  props: {
-    msg: String,
-    width: Number,
-    inputHeight: Number,
-  },
-  setup(props, context) {
-    const { $store: store } = useNuxtApp();
-    const appManager = useAsrTrader(store);
-    const userManager = useUser(store);
-    const router = useRouter();
-    const keyboard = ref(useVirtualKeyBoard());
-    const snack = useSnacks();
-
-    const frm: Ref<any> = ref(null);
-    const userref: Ref<any> = ref(null);
-    const passref: Ref<any> = ref(null);
-    const captcharef: Ref<any> = ref(null);
-    const otpref: Ref<any> = ref(null);
-
-    const loading: Ref<boolean> = ref(false);
-    const showPassword: Ref<boolean> = ref(false);
-    const data: Ref<LoginModel> = ref({
-      userName: "",
-      password: "",
-      passwordType: PasswordType.static,
-      captcha: "",
-    });
-    const snacs = reactive([]);
-    const i18n = useI18n();
-
-    const failedCount = userManager.tryCount;
-    const rtl = appManager.rtl;
-
-    async function login(data: LoginModel) {
-      if (frm.value?.validate()) {
-        loading.value = true;
-        try {
-          const res = await userManager.login(data);
-          if (res >= 200 && res < 300) {
-            const user = userManager.me;
-            router.push(user.settings?.home ?? "/watchlist/wealth");
-            snack.showMessage(new Snack("login.successful", "success"));
-          }
-        } catch (err) {
-          captcharef.value.refreshCaptcha();
-          const error = ErrorExtractor(err as AxiosError);
-          if (error.detail.length == 0)
-            snack.showMessage(new Snack("errors." + error.code, "error"));
-          else {
-            let res = "";
-            for (let e in error.detail) {
-              res += i18n.t(error.detail[e].type) + "\r\n";
-            }
-            snack.showMessage(new Snack(res, "error"));
-          }
-        } finally {
-          loading.value = false;
-        }
-      }
-    }
-    function captchaResult(code: string) {
-      data.value.captcha = code;
-    }
-
-    function requestOtp() {
-      frm.value.validate();
-      otpref.value.focus();
-      if (userref.value.validate() && captcharef.value.validate()) {
-        otpref.value.setTimer();
-      }
-    }
-
-    onMounted(() => {
-      userref.value?.focus();
-    });
-
-    return {
-      frm,
-      login,
-      snack,
-      captchaResult,
-      checkTries: userManager.checkTries,
-      requestOtp,
-      rtl,
-      failedCount,
-      loading,
-      showPassword,
-      data,
-      snacs,
-      userref,
-      passref,
-      captcharef,
-      otpref,
-      keyboard,
-      rules: {
-        required,
-      },
-    };
-    //TODO Remove in vue3
-    function useI18n() {
-      return context.root.$i18n;
-    }
-  },
-});
-</script>
 
 <style lang="postcss">
 .mar-t-6 {

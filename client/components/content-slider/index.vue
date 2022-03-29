@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { useAsrTrader } from "~/composables";
-import { useNuxtApp } from "#app";
+import { ref, reactive } from "@vue/composition-api";
 
 const params = defineProps<{
   src: string;
   interval: number;
 }>();
 
-const { $store: store } = useNuxtApp();
-const appManager = useAsrTrader(store);
+const appManager = useAsrTrader();
 const locale = appManager.locale;
 const slide = ref(0);
 let timer: NodeJS.Timeout | null = null;
@@ -23,7 +22,7 @@ function stopTimer() {
   if (timer) clearInterval(timer);
 }
 
-const docs = reactive([]);
+const docs = reactive<any>({});
 </script>
 
 <template>

@@ -1,12 +1,11 @@
 <script lang="ts">
-import { defineComponent, useNuxtApp } from "#app";
-import { useUser } from "~/composables";
+import { defineComponent } from "#app";
+import { useUser } from "@/composables";
 
 export default defineComponent({
   layout: "public",
   setup() {
-    const { $store: store } = useNuxtApp();
-    const userManager = useUser(store);
+    const userManager = useUser();
     const loading = userManager.refreshingToken;
     return {
       loading,

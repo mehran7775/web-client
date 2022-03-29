@@ -1,3 +1,47 @@
+<script lang="ts">
+import { defineComponent, ref, Ref, computed } from "@vue/composition-api";
+import { required } from "@/utils/rules";
+import { useAsrTrader } from "@/composables";
+import { useNuxtApp } from "#app";
+
+export default defineComponent({
+  inheritAttrs: false,
+  props: ["value", "height"],
+  setup(props, ctx) {
+    const appManager = useAsrTrader();
+    const captcharef: Ref<any> = ref(null);
+    const url =
+      process.env.VUE_APP_Host +
+      "sso/captcha?width=100&height=" +
+      ((props.height ?? 42) - 8) +
+      "&r=";
+    const captchaUrl = ref(url);
+    const locale = appManager.locale;
+    const captcha = computed({
+      get() {
+        return props.value;
+      },
+      set(val) {
+        ctx.emit("input", val);
+      },
+    });
+    function refreshCaptcha() {
+      captchaUrl.value = url + (Math.random() * 1000000).toString() + "&lang=" + locale;
+    }
+    refreshCaptcha();
+    return {
+      captcharef,
+      captchaUrl,
+      refreshCaptcha,
+      captcha,
+      rules: { required },
+      focus: () => captcharef.value?.focus(),
+      validate: () => captcharef.value?.validate(),
+    };
+  },
+});
+</script>
+
 <template>
   <div>
     <v-text-field
@@ -35,52 +79,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, ref, Ref, computed } from "@vue/composition-api";
-import { required } from "@/utils/rules";
-import { useAsrTrader } from "~/composables";
-import { useNuxtApp } from "#app";
-
-export default defineComponent({
-  inheritAttrs: false,
-  props: ["value", "height"],
-  setup(props, ctx) {
-    const { $store: store } = useNuxtApp();
-    const appManager = useAsrTrader(store);
-    const captcharef: Ref<any> = ref(null);
-    const url =
-      process.env.VUE_APP_Host +
-      "sso/captcha?width=100&height=" +
-      ((props.height ?? 42) - 8) +
-      "&r=";
-    const captchaUrl = ref(url);
-    const locale = appManager.locale;
-    const captcha = computed({
-      get() {
-        return props.value;
-      },
-      set(val) {
-        ctx.emit("input", val);
-      },
-    });
-    function refreshCaptcha() {
-      captchaUrl.value =
-        url + (Math.random() * 1000000).toString() + "&lang=" + locale.value;
-    }
-    refreshCaptcha();
-    return {
-      captcharef,
-      captchaUrl,
-      refreshCaptcha,
-      captcha,
-      rules: { required },
-      focus: () => captcharef.value?.focus(),
-      validate: () => captcharef.value?.validate(),
-    };
-  },
-});
-</script>
 
 <style lang="postcss">
 .captcha {
