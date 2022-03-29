@@ -72,7 +72,7 @@ export default defineComponent({
     const userManager = useUser();
     const menu = ref(false);
     const user = userManager.me;
-    const currentCols = computed(() => user.value.settings.columns ?? DefaultCols());
+    const currentCols = computed(() => user.settings.columns ?? DefaultCols());
     const blackList = [
       "side",
       "priceChange",

@@ -56,3 +56,8 @@ export class InstrumentState {
   width: number = process.client ? window.screen.availWidth : 800
 }
 
+// Message
+
+export class MessageState {
+
+}

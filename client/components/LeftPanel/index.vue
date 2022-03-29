@@ -70,6 +70,7 @@ import {
 import MessageList from "./messageList.vue";
 import { useAsrTrader } from "~/composables";
 import { useNuxtApp } from "#app";
+import { useMessages } from "~~/composables/oms/useMessages";
 
 export default defineComponent({
   components: { filterAutoComplete, MessageList },
@@ -82,6 +83,7 @@ export default defineComponent({
   },
   setup(props, context) {
     const { $store: store } = useNuxtApp();
+    const messageManager = useMessages();
     const appManager = useAsrTrader();
     const rtl = appManager.rtl;
     const activeTab: Ref<number | null> = ref(null);
@@ -135,10 +137,9 @@ export default defineComponent({
     async function load(query: Ref<MessageQuery>) {
       loading.value = true;
       try {
-        const res: AxiosResponse<PaginatedResult<Message>> = await store.dispatch(
-          "oms/messages/getMessages",
-          query.value
-        );
+        const res: AxiosResponse<
+          PaginatedResult<Message>
+        > = await messageManager.getMessages(query.value);
         return res.data.data;
       } finally {
         loading.value = false;

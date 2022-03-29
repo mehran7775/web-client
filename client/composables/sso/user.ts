@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from "axios";
-import { computed, ref } from "@vue/composition-api";
+import { computed, ref, reactive } from "@vue/composition-api";
 import { defineStore } from "pinia";
 import {
   AnonymousUser,
@@ -138,7 +138,7 @@ export const useUser = defineStore("user", () => {
     )
       state.value.settingsChanged.push({
         key: "/watch_lists/" + data.name,
-        value: [...state.user.settings.columns],
+        value: [...state.value.user.settings.columns],
       });
     state.value.user.settings.watch_lists[data.name] = data.watchlist;
   }

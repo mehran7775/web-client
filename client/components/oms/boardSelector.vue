@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineComponent, reactive } from "@vue/composition-api";
+import { computed, reactive } from "@vue/composition-api";
 import { AutoCompleteItem, Bookmark } from "@/types";
 import { getBoards } from "@/repositories/oms/board_manager";
 import { useUser } from "~/composables";
@@ -14,13 +14,13 @@ const { $store: store, $axios } = useNuxtApp();
 const userManager = useUser();
 const bookmarks = userManager.getBookmarks;
 const items: Array<AutoCompleteItem> = reactive([]);
-const home = computed(() => userManager.me.value.settings.home);
+const home = computed(() => userManager.me.settings.home);
 function generateAddress(id: string): string {
   return "/watchlist/boards/" + id;
 }
 
 const isMarked = computed(() => (data: AutoCompleteItem) => {
-  return bookmarks.value.findIndex((val) => val.to == generateAddress(data.id)) > -1;
+  return bookmarks.findIndex((val) => val.to == generateAddress(data.id)) > -1;
 });
 function setHome(item: AutoCompleteItem) {
   userManager.update_settings({
@@ -35,7 +35,7 @@ function mark(item: AutoCompleteItem) {
     text: item.name,
     icon: "mdi-bulletin-board",
   };
-  const tmp = [...bookmarks.value, bk];
+  const tmp = [...bookmarks, bk];
   userManager.update_settings({
     path: "/bookmarks",
     value: tmp,
@@ -43,7 +43,7 @@ function mark(item: AutoCompleteItem) {
 }
 function unmark(item: AutoCompleteItem) {
   const to = generateAddress(item.id);
-  let tmp = [...bookmarks.value];
+  let tmp = [...bookmarks];
   tmp.splice(
     tmp.findIndex((item) => item.to == to),
     1

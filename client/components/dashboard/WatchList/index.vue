@@ -246,7 +246,7 @@ export default defineComponent({
     const focused = instrumentManager.getFocus;
     const canfocus = computed(() => {
       if (!process.client) return false;
-      return focused.value.length < Math.floor(instrumentManager.width.value / 360);
+      return focused.length < Math.floor(instrumentManager.width / 360);
     });
     const me = userManager.me;
 
@@ -256,7 +256,7 @@ export default defineComponent({
       actions.draggable = false;
       res.push(actions);
       res.push(
-        ...((me.value.settings.columns ?? DefaultCols()).map((col: WatchlistColumns) =>
+        ...((me.settings.columns ?? DefaultCols()).map((col: WatchlistColumns) =>
           Object.assign({}, col, {
             text: col.text == "" ? "" : i18n.t(col.text),
           })
@@ -305,13 +305,13 @@ export default defineComponent({
       instruments.splice(0, instruments.length);
       instruments.push(
         ..._instruments.filter((item) => {
-          return focused.value.findIndex((i) => i.id == item.id) == -1;
+          return focused.findIndex((i) => i.id == item.id) == -1;
         })
       );
     }
     async function remove(val: InstrumentCache) {
       const name = route.params.name;
-      const tmp = [...(watchlists.value[name] ?? [])];
+      const tmp = [...(watchlists[name] ?? [])];
       tmp.splice(tmp.lastIndexOf(val.id.toString()), 1);
       await userManager.update_settings({
         path: "/watch_lists/" + name,
@@ -326,7 +326,7 @@ export default defineComponent({
     }
     async function drop(item: InstrumentCache) {
       if (dragItem && dragItem != item) {
-        const wl = [...(watchlists.value[name] ?? [])];
+        const wl = [...(watchlists[name] ?? [])];
         const ind = wl.findIndex((i) => i == dragItem?.id.toString());
         wl.splice(ind, 1);
         const target = wl.findIndex((i) => i == item.id.toString());
@@ -366,7 +366,7 @@ export default defineComponent({
       sh.addShortcut({
         key: "alt+shift+a",
         action: () => {
-          const item = instrumentManager.getSelected.value;
+          const item = instrumentManager.getSelected;
           if (item) {
             instrumentManager.updateInstrument(
               Object.assign({}, item, {
@@ -380,7 +380,7 @@ export default defineComponent({
       sh.addShortcut({
         key: "alt+shift+s",
         action: () => {
-          const item = instrumentManager.getSelected.value;
+          const item = instrumentManager.getSelected;
           if (item) {
             instrumentManager.updateInstrument(
               Object.assign({}, item, {

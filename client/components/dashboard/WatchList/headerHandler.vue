@@ -60,7 +60,7 @@ export default defineComponent({
     }
     async function drop(item: WatchlistColumns) {
       if (draggingCol && draggingCol.draggable && draggingCol != item) {
-        const hrs = [...(me.value.settings.columns ?? DefaultCols())];
+        const hrs = [...(me.settings.columns ?? DefaultCols())];
         const ind = hrs.findIndex((i) => i.value == draggingCol?.value);
         draggingCol = hrs[ind];
         hrs.splice(ind, 1);
