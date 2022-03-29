@@ -1,6 +1,7 @@
-import { User, AnonymousUser } from "@/types/";
+import { User, AnonymousUser, InstrumentCache } from "@/types/";
 import { reactive } from "@vue/composition-api";
 import { KeyValuePairs } from "../collection";
+import { ClientDistribution, OrderQueueItem } from "../wealth";
 
 export class RootState {
   locale: string;
@@ -42,3 +43,16 @@ export class UserState {
     return { ...this };
   }
 }
+
+// Instrument
+
+export class InstrumentState {
+  cache: Map<string, InstrumentCache> = new Map<string, InstrumentCache>()
+  focus: Array<InstrumentCache> = []
+  focusViewMode: number = 0
+  selected: InstrumentCache | null = null
+  orderQueueCache: Map<string, Array<OrderQueueItem>> = new Map<string, Array<OrderQueueItem>>()
+  clientDistributionCache: Map<string, ClientDistribution> = new Map<string, ClientDistribution>()
+  width: number = process.client ? window.screen.availWidth : 800
+}
+

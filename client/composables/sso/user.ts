@@ -272,6 +272,7 @@ export const useUser = defineStore("user", () => {
   }
 
   return {
+    state,
     // Getters
     refreshingToken,
     getBookmarks,

@@ -1,6 +1,6 @@
-import { computed } from "@vue/composition-api";
-import { Store } from "vuex/types";
-import { InstrumentState } from "~/store/oms/instruments";
+import { computed, ref } from "@vue/composition-api";
+import { defineStore } from "pinia";
+import { InstrumentState } from "@/types/stores";
 import {
   ClientDistribution,
   DailyPrice,
@@ -16,14 +16,15 @@ import {
 import manager from "@/repositories/oms/instruments_manager";
 import { useAxios } from "../useAxios";
 
-export function useInstrument(store: Store<any>) {
-  const state = store.state.oms.instruments as InstrumentState;
-  const axios = useAxios(store);
+export const useInstrument = defineStore("instrument", () => {
+  const state = ref(new InstrumentState());
+  const axiosManager = useAxios();
+  const axios = axiosManager.createInstance();
 
   // Getters
   const width = computed({
     get(): number {
-      return state.width;
+      return state.value.width;
     },
     set(data: number) {
       setWidth(data);
@@ -31,7 +32,7 @@ export function useInstrument(store: Store<any>) {
   });
   const focusMode = computed({
     get(): number {
-      return state.focusViewMode;
+      return state.value.focusViewMode;
     },
     set(data: number) {
       setFocusMode(data);
@@ -39,7 +40,7 @@ export function useInstrument(store: Store<any>) {
   });
   const selectedId = computed({
     get(): string {
-      return (state.selected?.id ?? -1).toString();
+      return (state.value.selected?.id ?? -1).toString();
     },
     async set(data: string) {
       selectById(parseInt(data));
@@ -48,12 +49,14 @@ export function useInstrument(store: Store<any>) {
   const getByKey = computed(
     () =>
       (key: number): InstrumentCache | null =>
-        state.cache.get(key.toString()) || null
+        state.value.cache.get(key.toString()) || null
   );
-  const getFocus = computed((): Array<InstrumentCache> => state.focus);
-  const getSelected = computed((): InstrumentCache | null => state.selected);
+  const getFocus = computed((): Array<InstrumentCache> => state.value.focus);
+  const getSelected = computed(
+    (): InstrumentCache | null => state.value.selected
+  );
   const getSelectedIndex = computed((): number =>
-    state.focus.findIndex((item) => item.id == state.selected?.id)
+    state.value.focus.findIndex((item) => item.id == state.value.selected?.id)
   );
 
   // Mutations
@@ -66,31 +69,41 @@ export function useInstrument(store: Store<any>) {
       | Wealth
       | { id: number; side: Side }
   ) {
-    store.commit("oms/instruments/updateInstrument", data);
+    const inst = state.value.cache.get(data.id.toString());
+    if (inst) Object.assign(inst, data);
+    else
+      state.value.cache.set(
+        data.id.toString(),
+        Object.assign(new InstrumentCache(), data)
+      );
   }
   function setFocus(data: Array<InstrumentCache>) {
-    store.commit("oms/instruments/setFocus", data);
+    state.value.focus = data;
   }
   function addFocus(data: InstrumentCache) {
-    store.commit("oms/instruments/addFocus", data);
+    if (state.value.focus.findIndex((item) => item.id == data.id) == -1)
+      state.value.focus.splice(0, 0, data);
   }
   function setFocusMode(data: number) {
-    store.commit("oms/instruments/setFocusMode", data);
+    state.value.focusViewMode = data;
   }
   function removeFocus(data: number) {
-    store.commit("oms/instruments/removeFocus", data);
+    state.value.focus.splice(
+      state.value.focus.findIndex((element: Instrument) => element.id == data),
+      1
+    );
   }
-  function select(data: InstrumentCache) {
-    store.commit("oms/instruments/select", data);
+  function select(active: InstrumentCache) {
+    state.value.selected = active;
   }
-  function selectByIndex(data: number) {
-    store.commit("oms/instruments/selectByIndex", data);
+  function selectByIndex(index: number) {
+    state.value.selected = state.value.focus[index];
   }
-  function selectById(data: number) {
-    store.commit("oms/instruments/selectById", data);
+  function selectById(id: number) {
+    state.value.selected = state.value.cache.get(id.toString()) ?? null;
   }
-  function setWidth(data: number) {
-    store.commit("oms/instruments/setWidth", data);
+  function setWidth(width: number) {
+    state.value.width = width;
   }
 
   //TODO Move Actions Buisiness here
@@ -107,7 +120,7 @@ export function useInstrument(store: Store<any>) {
     ) {
       let tmp = null;
       for (let i in searchModel.ids) {
-        tmp = state.cache.get(searchModel.ids[i].toString());
+        tmp = state.value.cache.get(searchModel.ids[i].toString());
         if (tmp?.name) res.push(tmp);
         else missing.push(searchModel.ids[i]);
       }
@@ -126,7 +139,7 @@ export function useInstrument(store: Store<any>) {
       );
       data.forEach((item) => {
         updateInstrument(item);
-        res.push(state.cache.get(item.id.toString()) as InstrumentCache);
+        res.push(state.value.cache.get(item.id.toString()) as InstrumentCache);
       });
     }
 
@@ -164,7 +177,7 @@ export function useInstrument(store: Store<any>) {
   async function getOrderQueue(
     id: number
   ): Promise<{ queue: Array<OrderQueueItem> }> {
-    let queue = state.orderQueueCache.get(id.toString());
+    let queue = state.value.orderQueueCache.get(id.toString());
     if (queue) return { queue };
     const { data } = await manager.getOrderQueue(id, axios);
     return data;
@@ -172,7 +185,7 @@ export function useInstrument(store: Store<any>) {
   async function getClientDistribution(
     id: number
   ): Promise<ClientDistribution> {
-    let clients = state.clientDistributionCache.get(id.toString());
+    let clients = state.value.clientDistributionCache.get(id.toString());
     if (clients) return clients;
     const { data } = await manager.getClientDistribution(id, axios);
     return data.clients;
@@ -215,4 +228,4 @@ export function useInstrument(store: Store<any>) {
     getClientDistribution,
     getTeammates,
   };
-}
+});

@@ -1,32 +1,27 @@
-import { Store } from "vuex/types";
-import { UserState } from "~/types/stores";
+import { defineStore } from "pinia";
 import {
   InstrumentCache,
   InstrumentSearchModel,
   Order,
   OrderSearchModel,
-  Paginated,
   PaginatedResult,
   Wealth,
-  WealthSearchModel,
 } from "~/types";
-import { useInstrument, useAxios, useWealth } from "..";
-import { doAsync } from "@/utils";
+import { useInstrument, useAxios, useWealth, useUser } from "..";
 import orderManager from "@/repositories/wealth/order_manager";
 
-export function useOrder(store: Store<any>) {
-  const userState = store.state.sso.user as UserState;
-
-  const axios = useAxios(store);
-  const instrumentManager = useInstrument(store);
-  const wealthManager = useWealth(store);
+export const useOrder = defineStore("order", () => {
+  const userState = useUser()
+  const axios = useAxios();
+  const instrumentManager = useInstrument();
+  const wealthManager = useWealth();
 
   async function getOrders(
     payload: OrderSearchModel
   ): Promise<PaginatedResult<Order> | undefined> {
-    if (userState.userName) {
+    if (userState.state.userName) {
       const orders = (
-        await orderManager.getOrders(userState.userName, payload, axios)
+        await orderManager.getOrders(userState.state.userName, payload, axios.createInstance())
       ).data as PaginatedResult<Order>;
 
       const pi = instrumentManager.getInstrumentsDetail(
@@ -47,4 +42,4 @@ export function useOrder(store: Store<any>) {
       return orders;
     }
   }
-}
+});

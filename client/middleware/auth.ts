@@ -1,23 +1,33 @@
-import { Middleware } from '@nuxt/types'
-import { useUser } from '~/composables'
+import { Middleware } from "@nuxt/types";
+import { useUser } from "~/composables";
 
-export const publicPages = [/^\/login\/?/, /^\/registration/, /^\/reset-password/, /^\/about-us/, /^\/blog.*/, /^\/?([#].*)?$/]
+export const publicPages = [
+  /^\/login\/?/,
+  /^\/registration/,
+  /^\/reset-password/,
+  /^\/about-us/,
+  /^\/blog.*/,
+  /^\/?([#].*)?$/,
+];
 
-const auth: Middleware = async ({ store, route, redirect }) => {
-  const userManager = useUser(store)
+const auth: Middleware = async ({ $pinia, route, redirect }) => {
+  const userManager = useUser($pinia);
   if (needLogin(route.fullPath)) {
-    if (!userManager.isLogin.value) {
-      return redirect('/login')
-    } else if (route.fullPath === '/login' && !!userManager.isLogin.value) {
-      return redirect(userManager.me.value.settings.home)
+    if (!userManager.isLogin) {
+      return redirect("/login");
+    } else if (route.fullPath === "/login" && !!userManager.isLogin) {
+      return redirect(userManager.me.settings.home);
     }
   }
-
-}
+};
 
 export function needLogin(path: string): boolean {
   //console.log(path + ' needs login? ', publicPages.findIndex(item => { return item.test(path) }) == -1)
-  return publicPages.findIndex(item => { return item.test(path) }) == -1
+  return (
+    publicPages.findIndex((item) => {
+      return item.test(path);
+    }) == -1
+  );
 }
 
-export default auth
+export default auth;
