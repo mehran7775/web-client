@@ -2,7 +2,7 @@ import { defineNuxtConfig } from "@nuxt/bridge";
 //import postcss from "./postcss.config.js";
 
 export default defineNuxtConfig({
-  ssr: true,
+  ssr: false,
   target: "server",
   bridge: {
     meta: true,

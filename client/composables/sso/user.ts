@@ -78,26 +78,29 @@ export const useUser = defineStore("user", () => {
         Buffer.from(decodeURIComponent(data.split(".")[1]), "base64").toString()
       );
       state.value.userName = token.sub;
-      if (process.client)
+      if (process.client) {
         SetClientCookie(tokenKey, data, {
           expires: new Date(token.exp * 1000),
         });
+      }
     }
   }
   function setRefresh(data: string) {
     state.value.refresh = data;
-    if (process.client) SetClientCookie(refreshKey, data, {});
+    if (process.client) {
+      //SetClientCookie(refreshKey, data, {});
+      localStorage.setItem(refreshKey, data);
+    }
   }
   function logout() {
     if (process.client) {
       DeleteClientCookie(userKey);
       DeleteClientCookie(tokenKey);
       DeleteClientCookie(refreshKey);
-    }
-    if (process.client) {
       sessionStorage.clear();
       localStorage.clear();
     }
+
     state.value.settingsChanged = reactive([]);
     state.value.token = null;
     state.value.user = AnonymousUser();
@@ -107,8 +110,8 @@ export const useUser = defineStore("user", () => {
     state.value.user = data;
     state.value.settingsChanged = reactive([]);
     if (process.client) {
-      SetClientCookie(userKey, data.userName, {});
-      localStorage.setItem(userKey, JSON.stringify(data));
+      //SetClientCookie(userKey, data.userName, {});
+      localStorage.setItem(userKey, data.userName);
     }
   }
   function setSettings(settings: Setting) {
