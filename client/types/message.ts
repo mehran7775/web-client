@@ -31,7 +31,7 @@ export class MessageTag {
   }
 }
 
-export class Message {
+export interface Message {
   id: number;
   dateTime: string | null;
   title: string;
@@ -41,37 +41,11 @@ export class Message {
   flags: number;
   message: MessageTemplate;
   seenDate: string;
-  constructor(
-    id: number,
-    title: string,
-    message: MessageTemplate,
-    dateTime: string | null = null,
-    flags: number = 0,
-    origin: number = 1,
-    type: number = 1,
-    preview: string = "",
-    seenDate: string = ""
-  ) {
-    this.id = id;
-    this.title = title;
-    this.dateTime = dateTime;
-    this.preview = preview;
-    this.origin = origin;
-    this.type = type;
-    this.flags = flags;
-    this.message = message;
-    this.seenDate = seenDate;
-  }
 }
 
-export class MessageTemplate {
-  constructor() {}
+export interface MessageTemplate {
 }
 
-export class MessageTemplate_1 extends MessageTemplate {
+export interface MessageTemplate_1 extends MessageTemplate {
   body: String;
-  constructor(body: string) {
-    super();
-    this.body = body;
-  }
 }

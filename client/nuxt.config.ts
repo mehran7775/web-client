@@ -40,16 +40,13 @@ export default defineNuxtConfig({
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: ["@nuxtjs/vuetify", ["@pinia/nuxt", { disableVuex: false }]],
+  buildModules: ["@nuxtjs/vuetify", ["@pinia/nuxt", { disableVuex: true }]],
   scriptSetup: {
     /* options */
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [
-  
-  ],
-  
+  modules: [],
 
   env: {
     VUE_APP_I18N_LOCALE: process.env.VUE_APP_I18N_LOCALE,

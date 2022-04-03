@@ -6,9 +6,8 @@ export default {
 <script setup lang="ts">
 import { ref, Ref } from "@vue/composition-api";
 import simpleCaptcha from "~/components/simpleCaptcha.vue";
-import { useNuxtApp, useRouter } from "#app";
+import { useRouter } from "#app";
 
-const { $store: store } = useNuxtApp();
 const otpref: Ref<any> = ref(null);
 
 const step = ref(1);

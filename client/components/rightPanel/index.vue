@@ -218,7 +218,6 @@ export default defineComponent({
     clipped: Boolean,
   },
   setup(props, context) {
-    const { $store: store } = useNuxtApp();
     const userManager = useUser();
     const appManager = useAsrTrader();
     const router = useRouter();

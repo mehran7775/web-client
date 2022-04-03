@@ -100,7 +100,7 @@
 <script lang="ts">
 import { defineComponent, ref, Ref, reactive, watch } from "@vue/composition-api";
 import { useUser } from "~/composables";
-import { useNuxtApp, useRoute, useRouter } from "#app";
+import { useRoute, useRouter } from "#app";
 
 export default defineComponent({
   props: {
@@ -110,7 +110,6 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { $store: store } = useNuxtApp();
     const route = useRoute();
     const router = useRouter();
     const userManager = useUser();

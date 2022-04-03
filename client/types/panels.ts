@@ -1,33 +1,39 @@
-import { ComputedRef } from '@vue/composition-api'
+import { ComputedRef } from "@vue/composition-api";
 
 export enum BookmarkPosition {
   ToolBar = 1,
-  RightPanel = 2
+  RightPanel = 2,
 }
 export class MenuItem {
-  icon: string
-  title: string
-  text?: string
-  color?: string
-  to?: string
-  children?: Array<MenuItem> | ComputedRef<Array<MenuItem>>
-  bookmarkPosition?: BookmarkPosition | null = null
-  click?: Function
+  icon: string;
+  title: string;
+  text?: string;
+  color?: string;
+  to?: string;
+  children?: Array<MenuItem> | ComputedRef<Array<MenuItem>>;
+  bookmarkPosition?: BookmarkPosition | null = null;
+  click?: Function;
   constructor(icon: string, title: string) {
-    this.icon = icon
-    this.title = title
+    this.icon = icon;
+    this.title = title;
   }
 }
 
 export type Bookmark = {
-  title: string,
-  text?: string | undefined,
-  to: string,
-  icon: string,
-  color?: string | undefined,
-}
+  title: string;
+  text?: string | undefined;
+  to: string;
+  icon: string;
+  color?: string | undefined;
+};
 export function CreateBookmark(item: MenuItem): Bookmark {
-  return { color: item.color, icon: item.icon, text: item.text, title: item.title, to: item.to ?? "#" + item.title }
+  return {
+    color: item.color,
+    icon: item.icon,
+    text: item.text,
+    title: item.title,
+    to: item.to ?? "#" + item.title,
+  };
 }
 
 export enum Tabs {
@@ -38,13 +44,13 @@ export enum Tabs {
   furtherInfo = 3,
 }
 
-export function TabNames() {
+export function TabNames(): TabTitle[] {
   return [
-    new TabTitle(Tabs.activeOrders, "bottom-panel.orders", []),
-    new TabTitle(Tabs.bests, "bottom-panel.bests", []),
-    new TabTitle(Tabs.depth, "bottom-panel.depth", []),
-    new TabTitle(Tabs.furtherInfo, "bottom-panel.more", []),
-  ]
+    { tab: Tabs.activeOrders, title: "bottom-panel.orders", params: [] },
+    { tab: Tabs.bests, title: "bottom-panel.bests", params: [] },
+    { tab: Tabs.depth, title: "bottom-panel.depth", params: [] },
+    { tab: Tabs.furtherInfo, title: "bottom-panel.more", params: [] },
+  ];
 }
 
 export enum DeepOptions {
@@ -55,13 +61,8 @@ export enum DeepOptions {
   tradeHistory = "tradeHistory",
 }
 
-export class TabTitle {
-  tab: Tabs
-  title: string
-  params: string[]
-  constructor(tab: Tabs, title: string, params: string[] = []) {
-    this.tab = tab
-    this.title = title
-    this.params = params
-  }
+export interface TabTitle {
+  tab: Tabs;
+  title: string;
+  params: string[];
 }

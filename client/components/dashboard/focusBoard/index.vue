@@ -84,7 +84,7 @@ import CardView from "./cardView.vue";
 import TabView from "./tabView.vue";
 import { Bookmark } from "~/types";
 import { useInstrument, useUser } from "~/composables";
-import { useNuxtApp, useRoute } from "#app";
+import { useRoute } from "#app";
 
 export default defineComponent({
   components: {
@@ -93,7 +93,6 @@ export default defineComponent({
   },
   name: "focus-board",
   setup(props) {
-    const { $store: store } = useNuxtApp();
     const instrumentManager = useInstrument();
     const userManager = useUser();
     const sh = useShortcut();

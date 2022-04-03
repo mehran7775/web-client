@@ -22,13 +22,11 @@
 </template>
 
 <script lang="ts">
-import { User } from "@/types";
 import { defineComponent, ref, Ref, computed, ComputedRef } from "@vue/composition-api";
 import profilePic from "@/components/sso/profilePictureEditor.vue";
 import logs from "@/components/sso/userLog.vue";
 import profile from "@/components/sso/profileViewer.vue";
 import { useUser } from "~/composables";
-import { useNuxtApp } from "#app";
 
 export default defineComponent({
   components: {
@@ -37,7 +35,6 @@ export default defineComponent({
     profile,
   },
   setup() {
-    const { $store: store } = useNuxtApp();
     const userManager = useUser();
     const currentUser = userManager.me;
     const pic: Ref<File | null> = ref(null);

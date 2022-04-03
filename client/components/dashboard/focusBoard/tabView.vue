@@ -1,3 +1,62 @@
+<script lang="ts">
+import { defineComponent, ref, Ref } from "@vue/composition-api";
+import { Tabs, DeepOptions, TabTitle, Instrument, SameSectorQuery } from "@/types";
+import instrumentCard from "@/components/oms/instrumentCard.vue";
+import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
+import LegalRealCard from "@/components/oms/legalRealCard.vue";
+import BuySellCard from "@/components/oms/BuySellCard/index.vue";
+import { useBottomPanel, useInstrument } from "~/composables";
+
+export default defineComponent({
+  components: {
+    instrumentCard,
+    OrderQueueCard,
+    LegalRealCard,
+    BuySellCard,
+  },
+  setup() {
+    const bottomPanel = useBottomPanel();
+    const instrumentManager = useInstrument();
+    const instruments = instrumentManager.getFocus;
+
+    const count: Ref<number> = ref(0);
+    const price: Ref<number> = ref(0);
+    const tab = instrumentManager.selectedId;
+    function close(id: number) {
+      instrumentManager.removeFocus(id);
+    }
+    async function deep(option: DeepOptions, instrument: Instrument) {
+      bottomPanel.setDepthData(null);
+      switch (option) {
+        case DeepOptions.teammates:
+          try {
+            bottomPanel.setLoading(true);
+            await bottomPanel.getTeammates(
+              new SameSectorQuery(instrument.id, instrument.sectorCode)
+            );
+          } finally {
+            bottomPanel.setLoading(false);
+          }
+          break;
+        default:
+          bottomPanel.setTitle({ tab: Tabs.depth, title: "oms." + option, params: [] });
+          break;
+      }
+      bottomPanel.setActiveTab(Tabs.depth);
+    }
+    return {
+      close,
+      deep,
+      price,
+      count,
+      tab,
+      instruments,
+      deepOptions: DeepOptions,
+    };
+  },
+});
+</script>
+
 <template>
   <div class="tab-view">
     <v-tabs :height="32" color="primary" v-model="tab" align-with-title>
@@ -65,69 +124,12 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, Ref } from "@vue/composition-api";
-import { Tabs, DeepOptions, TabTitle, Instrument, SameSectorQuery } from "@/types";
-import instrumentCard from "@/components/oms/instrumentCard.vue";
-import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
-import LegalRealCard from "@/components/oms/legalRealCard.vue";
-import BuySellCard from "@/components/oms/BuySellCard/index.vue";
-import { useInstrument } from "~/composables";
-import { useNuxtApp } from "#app";
-
-export default defineComponent({
-  components: {
-    instrumentCard,
-    OrderQueueCard,
-    LegalRealCard,
-    BuySellCard,
-  },
-  setup(props, context) {
-    const { $store: store } = useNuxtApp();
-    const instrumentManager = useInstrument();
-    const instruments = instrumentManager.getFocus;
-
-    const count: Ref<number> = ref(0);
-    const price: Ref<number> = ref(0);
-    const tab = instrumentManager.selectedId;
-    function close(id: number) {
-      instrumentManager.removeFocus(id);
-    }
-    async function deep(option: DeepOptions, instrument: Instrument) {
-      store.commit("bottom-panel/setDepthData", null);
-      switch (option) {
-        case DeepOptions.teammates:
-          try {
-            store.commit("bottom-panel/setLoading", true);
-            await store.dispatch(
-              "bottom-panel/getTeammates",
-              new SameSectorQuery(instrument.id, instrument.sectorCode)
-            );
-          } finally {
-            store.commit("bottom-panel/setLoading", false);
-          }
-          break;
-        default:
-          store.commit(
-            "bottom-panel/setTitle",
-            new TabTitle(Tabs.depth, "oms." + option)
-          );
-          break;
-      }
-      store.commit("bottom-panel/setActiveTab", Tabs.depth);
-    }
-    return {
-      close,
-      deep,
-      price,
-      count,
-      tab,
-      instruments,
-      deepOptions: DeepOptions,
-    };
-  },
-});
-</script>
+<style lang="postcss" scoped>
+.panel {
+  border-left: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+}
+</style>
 
 <style lang="postcss">
 .tab-view {
@@ -148,12 +150,5 @@ export default defineComponent({
   .bar {
     opacity: 0.3;
   }
-}
-</style>
-
-<style lang="postcss" scoped>
-.panel {
-  border-left: 1px solid #e0e0e0;
-  border-right: 1px solid #e0e0e0;
 }
 </style>

@@ -2,7 +2,6 @@
 import { ref, Ref, reactive, onMounted } from "@vue/composition-api";
 import { AxiosError } from "axios";
 import { LoginModel, PasswordType } from "@/types";
-import { Snack } from "@/types/stores";
 import { ErrorExtractor } from "~/utils/error";
 import { required } from "@/utils/rules";
 import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";

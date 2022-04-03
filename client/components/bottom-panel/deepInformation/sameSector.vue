@@ -12,8 +12,7 @@ export default defineComponent({
   props: {
     value: Object,
   },
-  setup(props, context) {
-    const { $store: store } = useNuxtApp();
+  setup() {
     const headers = [
       { text: "id", value: "id" },
       { text: "name", value: "code" },

@@ -133,7 +133,6 @@ import { defineComponent, reactive, ref, computed, Ref } from "@vue/composition-
 import { InstrumentCache, InstrumentSearchModel, OrderQueueItem } from "@/types";
 import { useAsrTrader, useInstrument } from "~/composables";
 import doubleBarChart from "../doubleBarChart.vue";
-import { useNuxtApp } from "#app";
 
 export default defineComponent({
   components: { doubleBarChart },
@@ -146,7 +145,6 @@ export default defineComponent({
     "extra-col": Boolean,
   },
   setup(props) {
-    const { $store: store } = useNuxtApp();
     const appManager = useAsrTrader();
     const instrumentManager = useInstrument();
     const formatter = appManager.formatter;

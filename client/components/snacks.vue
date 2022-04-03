@@ -1,3 +1,20 @@
+<script setup lang="ts">
+import { ref, computed } from "@vue/composition-api";
+import { useSnacks } from "~~/composables";
+
+const snackManager = useSnacks();
+
+const show = computed({
+  get: () => snackManager.state.show,
+  set(val: boolean) {
+    snackManager.state.show = val;
+  },
+});
+const message = computed(() => snackManager.state.content);
+const color = computed(() => snackManager.state.color);
+const timeout = ref(5000);
+</script>
+
 <template>
   <v-snackbar v-model="show" :top="true" :color="color" :timeout="timeout">
     <h4>{{ $t(message) }}</h4>
@@ -8,24 +25,3 @@
     </template>
   </v-snackbar>
 </template>
-
-<script>
-export default {
-  data: () => ({
-    show: false,
-    message: "",
-    color: "",
-    timeout: 5000,
-  }),
-  created() {
-    this.$store.subscribe((mutation, state) => {
-      if (mutation.type === "snacks/showMessage") {
-        this.message = state.snacks.content;
-        this.color = state.snacks.color;
-        this.show = true;
-      }
-    });
-  },
-  methods: {},
-};
-</script>

@@ -116,7 +116,6 @@ import { ClientDistribution } from "@/types";
 import { useInstrument } from "~/composables";
 import numericField from "../numericField.vue";
 import PercentField from "../percentField.vue";
-import { useNuxtApp } from "#app";
 
 export default defineComponent({
   components: { numericField, PercentField },
@@ -127,7 +126,6 @@ export default defineComponent({
     responsive: Boolean,
   },
   setup(props) {
-    const { $store: store } = useNuxtApp();
     const instrumentManager = useInstrument();
     const distribution: Ref<ClientDistribution> = ref(new ClientDistribution());
     const total = ref(1);

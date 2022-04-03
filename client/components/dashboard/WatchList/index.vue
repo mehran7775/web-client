@@ -1,182 +1,3 @@
-<template>
-  <div class="pb-1">
-    <v-data-table
-      :headers="headers"
-      :items="inst"
-      item-key="id"
-      class="watchlist"
-      hide-default-header
-      hide-default-footer
-      disable-pagination
-      dense
-    >
-      <template #header="{ on, props, attrs }">
-        <header-handler :headers="headers" v-on="on" v-bind="attrs" :props="props">
-          <template #header.more>
-            <header-selector />
-          </template>
-        </header-handler>
-      </template>
-      <template #item="{ headers, item }">
-        <row-handler
-          draggable="true"
-          @dragstart="(ev) => drag(item)"
-          @dragover="
-            (ev) => {
-              ev.preventDefault();
-              ev.dataTransfer.dropEffect = 'move';
-            }
-          "
-          dropzone="true"
-          @drop="
-            (ev) => {
-              ev.preventDefault();
-              drop(item);
-            }
-          "
-          :model="{ headers, item }"
-        >
-          <template #item.actions="{ item }">
-            <div class="text-no-wrap">
-              <v-icon
-                class="ma-0 pa-0 mx-2"
-                color="info"
-                @click="() => focus(item)"
-                :disabled="!canfocus"
-                small
-              >
-                isax-eye
-              </v-icon>
-              <v-icon
-                class="ma-0 pa-0 mx-1"
-                color="success"
-                @click="() => order(item, Side.Buy)"
-                :disabled="(item.status & 3) != 3"
-                small
-              >
-                isax-bag-tick-2
-              </v-icon>
-              <v-icon
-                class="ma-0 pa-0 ms-2 me-4"
-                color="error"
-                @click="() => order(item, Side.Sell)"
-                :disabled="(item.status & 3) != 3"
-                small
-              >
-                isax-bag-cross-1
-              </v-icon>
-            </div>
-          </template>
-          <template #item.name="{ item }">
-            <v-badge
-              left
-              offset-y="65%"
-              offset-x="-4px"
-              :color="
-                (item.status & 1) != 1
-                  ? 'error'
-                  : (item.status & 6) != 6
-                  ? 'warning'
-                  : 'success'
-              "
-              dot
-            >
-              <v-tooltip right>
-                <template #activator="{ on }">
-                  <span style="line-height: 2.5" v-on="on" class="d-block">
-                    {{ item.name }}
-                  </span>
-                </template>
-                {{ $t(parseStatus(item.status)) }}
-              </v-tooltip>
-            </v-badge>
-          </template>
-          <template #item.opening="{ item }">
-            <numeric-field :value="item.wealth" />
-          </template>
-          <template #item.opening="{ item }">
-            <numeric-field :value="item.opening" />
-          </template>
-          <template #item.closing="{ item }">
-            <numeric-field :value="item.closing" />
-          </template>
-          <template #item.yesterdayPrice="{ item }">
-            <numeric-field :value="item.yesterdayPrice" />
-          </template>
-          <template #item.lowest="{ item }">
-            <numeric-field class="success--text" :value="item.lowest" />
-          </template>
-          <template #item.highest="{ item }">
-            <numeric-field class="error--text" :value="item.highest" />
-          </template>
-          <template #item.totalTrades="{ item }">
-            <numeric-field :value="item.totalTrades" />
-          </template>
-          <template #item.totalShares="{ item }">
-            <numeric-field class="info--text" :value="item.totalShares" />
-          </template>
-          <template #item.totalTradesValue="{ item }">
-            <numeric-field :value="item.totalTradesValue" />
-          </template>
-          <template #item.status="{ item }">
-            <span>
-              {{ $t("instrument.state." + item.status) }}
-            </span>
-          </template>
-          <template #item.more="{ item }">
-            <v-icon
-              color="error"
-              @click="
-                () => {
-                  itemToDelete = item;
-                  confirmInstrumentRemoval = true;
-                }
-              "
-              small
-            >
-              isax-trash
-            </v-icon>
-          </template>
-        </row-handler>
-      </template>
-    </v-data-table>
-    <v-dialog max-width="50%" v-model="confirmInstrumentRemoval">
-      <v-card>
-        <v-card-title> {{ $t("general.alert") }} </v-card-title>
-        <v-card-text>
-          {{ $t("instrument.remove") }}
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            width="65"
-            color="primary"
-            @click="
-              () => {
-                remove(itemToDelete);
-                confirmInstrumentRemoval = false;
-              }
-            "
-          >
-            {{ $t("general.yes") }}
-          </v-btn>
-          <v-btn
-            width="65"
-            color="error"
-            @click="
-              () => {
-                itemToDelete = null;
-                confirmInstrumentRemoval = false;
-              }
-            "
-          >
-            {{ $t("general.no") }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
-</template>
-
 <script lang="ts">
 import {
   defineComponent,
@@ -185,8 +6,6 @@ import {
   computed,
   ComputedRef,
   watch,
-  onMounted,
-  onBeforeUnmount,
 } from "@vue/composition-api";
 
 import instrumentCard from "../../oms/instrumentCardCompact.vue";
@@ -206,7 +25,7 @@ import { useShortcut } from "@/utils/shortcutManager";
 import HeaderHandler from "./headerHandler.vue";
 import RowHandler from "./rowHandler.vue";
 import HeaderSelector from "./headerSelector.vue";
-import { useNuxtApp, useRoute } from "#app";
+import { useRoute } from "#app";
 
 export default defineComponent({
   name: "WatchList",
@@ -229,7 +48,6 @@ export default defineComponent({
     HeaderSelector,
   },
   setup(props, context) {
-    const { $store: store } = useNuxtApp();
     const userManager = useUser();
     const instrumentManager = useInstrument();
     const route = useRoute();
@@ -416,3 +234,182 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <div class="pb-1">
+    <v-data-table
+      :headers="headers"
+      :items="inst"
+      item-key="id"
+      class="watchlist"
+      hide-default-header
+      hide-default-footer
+      disable-pagination
+      dense
+    >
+      <template #header="{ on, props, attrs }">
+        <header-handler :headers="headers" v-on="on" v-bind="attrs" :props="props">
+          <template #header.more>
+            <header-selector />
+          </template>
+        </header-handler>
+      </template>
+      <template #item="{ headers, item }">
+        <row-handler
+          draggable="true"
+          @dragstart="(ev) => drag(item)"
+          @dragover="
+            (ev) => {
+              ev.preventDefault();
+              ev.dataTransfer.dropEffect = 'move';
+            }
+          "
+          dropzone="true"
+          @drop="
+            (ev) => {
+              ev.preventDefault();
+              drop(item);
+            }
+          "
+          :model="{ headers, item }"
+        >
+          <template #item.actions="{ item }">
+            <div class="text-no-wrap">
+              <v-icon
+                class="ma-0 pa-0 mx-2"
+                color="info"
+                @click="() => focus(item)"
+                :disabled="!canfocus"
+                small
+              >
+                isax-eye
+              </v-icon>
+              <v-icon
+                class="ma-0 pa-0 mx-1"
+                color="success"
+                @click="() => order(item, Side.Buy)"
+                :disabled="(item.status & 3) != 3"
+                small
+              >
+                isax-bag-tick-2
+              </v-icon>
+              <v-icon
+                class="ma-0 pa-0 ms-2 me-4"
+                color="error"
+                @click="() => order(item, Side.Sell)"
+                :disabled="(item.status & 3) != 3"
+                small
+              >
+                isax-bag-cross-1
+              </v-icon>
+            </div>
+          </template>
+          <template #item.name="{ item }">
+            <v-badge
+              left
+              offset-y="65%"
+              offset-x="-4px"
+              :color="
+                (item.status & 1) != 1
+                  ? 'error'
+                  : (item.status & 6) != 6
+                  ? 'warning'
+                  : 'success'
+              "
+              dot
+            >
+              <v-tooltip right>
+                <template #activator="{ on }">
+                  <span style="line-height: 2.5" v-on="on" class="d-block">
+                    {{ item.name }}
+                  </span>
+                </template>
+                {{ $t(parseStatus(item.status)) }}
+              </v-tooltip>
+            </v-badge>
+          </template>
+          <template #item.opening="{ item }">
+            <numeric-field :value="item.wealth" />
+          </template>
+          <template #item.opening="{ item }">
+            <numeric-field :value="item.opening" />
+          </template>
+          <template #item.closing="{ item }">
+            <numeric-field :value="item.closing" />
+          </template>
+          <template #item.yesterdayPrice="{ item }">
+            <numeric-field :value="item.yesterdayPrice" />
+          </template>
+          <template #item.lowest="{ item }">
+            <numeric-field class="success--text" :value="item.lowest" />
+          </template>
+          <template #item.highest="{ item }">
+            <numeric-field class="error--text" :value="item.highest" />
+          </template>
+          <template #item.totalTrades="{ item }">
+            <numeric-field :value="item.totalTrades" />
+          </template>
+          <template #item.totalShares="{ item }">
+            <numeric-field class="info--text" :value="item.totalShares" />
+          </template>
+          <template #item.totalTradesValue="{ item }">
+            <numeric-field :value="item.totalTradesValue" />
+          </template>
+          <template #item.status="{ item }">
+            <span>
+              {{ $t("instrument.state." + item.status) }}
+            </span>
+          </template>
+          <template #item.more="{ item }">
+            <v-icon
+              color="error"
+              @click="
+                () => {
+                  itemToDelete = item;
+                  confirmInstrumentRemoval = true;
+                }
+              "
+              small
+            >
+              isax-trash
+            </v-icon>
+          </template>
+        </row-handler>
+      </template>
+    </v-data-table>
+    <v-dialog max-width="50%" v-model="confirmInstrumentRemoval">
+      <v-card>
+        <v-card-title> {{ $t("general.alert") }} </v-card-title>
+        <v-card-text>
+          {{ $t("instrument.remove") }}
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            width="65"
+            color="primary"
+            @click="
+              () => {
+                remove(itemToDelete);
+                confirmInstrumentRemoval = false;
+              }
+            "
+          >
+            {{ $t("general.yes") }}
+          </v-btn>
+          <v-btn
+            width="65"
+            color="error"
+            @click="
+              () => {
+                itemToDelete = null;
+                confirmInstrumentRemoval = false;
+              }
+            "
+          >
+            {{ $t("general.no") }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
+</template>

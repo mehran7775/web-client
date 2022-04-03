@@ -7,8 +7,9 @@ import '@mdi/font/css/materialdesignicons.min.css'
 //import '@/assets/icons/ada/style.css'
 import '@/assets/icons/icosax/style.css'
 import '@/assets/icons/lotfisax/style.css'
+import { useAsrTrader } from '~~/composables'
 
-export default function ({ store, app }) {
+export default function ({  }) {
   const ltheme = {
     default: "#828282",
     secondary: '#EF394E',
@@ -30,11 +31,12 @@ export default function ({ store, app }) {
     success: '#00BD79',
     warning: '#FFBB46',
   }
+  //const app = useAsrTrader($pinia)
 
   return {
-    rtl: store.getters.rtl,
+    rtl: true,
     lang: {
-      current: store.getters.locale,
+      current: 'fa',
       locales: { en, fa, az, ar, ckb },
     },
     icons: {

@@ -8,16 +8,14 @@
 <script lang="ts">
 import { defineComponent, ref } from "@vue/composition-api";
 import { useUser } from "~/composables";
-import { useNuxtApp } from "#app";
+
 export default defineComponent({
   name: "profile-picture",
   props: ["address"],
-  setup(props, context) {
-    const { $store: store } = useNuxtApp();
+  setup(props) {
     const userManager = useUser();
     const img = ref("");
     if (props.address) {
-      store;
       userManager
         .getProfilePic(props.address)
         .then((res) => {

@@ -62,13 +62,11 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref } from "@vue/composition-api";
-import { User, InstrumentCache, WatchlistColumns, DefaultCols } from "@/types";
+import { InstrumentCache, WatchlistColumns, DefaultCols } from "@/types";
 import { useUser } from "~/composables";
-import { useNuxtApp } from "#app";
 
 export default defineComponent({
   setup() {
-    const { $store: store } = useNuxtApp();
     const userManager = useUser();
     const menu = ref(false);
     const user = userManager.me;

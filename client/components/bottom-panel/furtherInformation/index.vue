@@ -1,22 +1,16 @@
-<template>
-  <template-1 :message="message" v-if="message.messageType == 1" />
-</template>
-
 <script lang="ts">
 import { defineComponent, computed, ComputedRef } from "@vue/composition-api";
 import template1 from "./type1.vue";
-import { Tabs, Message } from "@/types";
-import { useNuxtApp } from "#app";
+import { Message } from "@/types";
+import { useBottomPanel } from "@/composables";
 
 export default defineComponent({
   components: {
     template1,
   },
-  setup(params) {
-    const { $store: store } = useNuxtApp();
-    const message: ComputedRef<Message> = computed(
-      () => store.getters["bottom-panel/further_information"] as Message
-    );
+  setup(_) {
+    const bottomPanel = useBottomPanel();
+    const message: ComputedRef<Message> = computed(() => bottomPanel.further_information);
 
     return {
       message,
@@ -24,3 +18,7 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <template-1 :message="message" v-if="message.type == 1" />
+</template>

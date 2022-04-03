@@ -14,11 +14,9 @@ import { defineComponent, reactive, computed } from "@vue/composition-api";
 import { Paginated, Log, WatchlistColumns } from "@/types";
 import { DateTime } from "luxon";
 import { useAsrTrader, useUser } from "~/composables";
-import { useNuxtApp } from "#app";
 
 export default defineComponent({
-  setup(props, context) {
-    const { $store: store } = useNuxtApp();
+  setup(_, context) {
     const userManager = useUser();
     const appManager = useAsrTrader();
     const i18n = useI18n();
@@ -32,7 +30,7 @@ export default defineComponent({
     const locale = appManager.locale;
     function printDate(date: string) {
       return DateTime.fromISO(date)
-        .setLocale(locale.value)
+        .setLocale(locale)
         .toFormat(i18n.t("general.date.longdt").toString());
     }
     function printType(typ: string) {

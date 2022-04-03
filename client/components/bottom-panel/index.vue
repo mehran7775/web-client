@@ -1,3 +1,68 @@
+<script lang="ts">
+import { defineComponent, computed } from "@vue/composition-api";
+import { Tabs } from "@/types";
+import furtherInformation from "./furtherInformation/index.vue";
+import DefaultOrderList from "./defaultOrderList.vue";
+import DeepInformation from "./deepInformation/index.vue";
+import Bests from "./bests.vue";
+import { useUser, useBottomPanel } from "~/composables";
+
+//TODO not working on small displays
+
+export default defineComponent({
+  components: { furtherInformation, DeepInformation, DefaultOrderList, Bests },
+  setup(_, context) {
+    const userManager = useUser();
+    const bottomPanel = useBottomPanel();
+    const i18n = useI18n();
+    const tabs = ["bottom-panel.orders", "bottom-panel.bests", "bottom-panel.depth"];
+    const isLogin = userManager.isLogin;
+    const tab = computed({
+      get(): Tabs {
+        return bottomPanel.activeTab;
+      },
+      set(value: Tabs) {
+        if (value != null) bottomPanel.setActiveTab(value);
+        else bottomPanel.setActiveTab(Tabs.none);
+      },
+    });
+    const icon = computed(() =>
+      bottomPanel.expanded ? "mdi-arrow-collapse" : "mdi-arrow-expand"
+    );
+    const expanded = computed(() => bottomPanel.expanded);
+    const loading = computed(() => bottomPanel.loading);
+    const title = computed(() => {
+      const tab = bottomPanel.title;
+      return tab ? i18n.t(tab.title, tab.params) : "";
+    });
+
+    function expand() {
+      bottomPanel.toggleExpand();
+    }
+    function close() {
+      if (expanded.value) bottomPanel.toggleExpand();
+      bottomPanel.setActiveTab(Tabs.none);
+    }
+
+    return {
+      height: 32,
+      expand,
+      close,
+      icon,
+      tab,
+      tabs,
+      title,
+      expanded,
+      loading,
+      isLogin,
+    };
+    function useI18n() {
+      return context.root.$i18n;
+    }
+  },
+});
+</script>
+
 <template>
   <v-footer
     :class="{
@@ -55,72 +120,6 @@
     </v-card>
   </v-footer>
 </template>
-
-<script lang="ts">
-import { defineComponent, computed } from "@vue/composition-api";
-import { Tabs, TabTitle } from "@/types";
-import furtherInformation from "./furtherInformation/index.vue";
-import DefaultOrderList from "./defaultOrderList.vue";
-import DeepInformation from "./deepInformation/index.vue";
-import Bests from "./bests.vue";
-import { useUser } from "~/composables";
-import { useNuxtApp } from "#app";
-
-//TODO not working on small displays
-
-export default defineComponent({
-  components: { furtherInformation, DeepInformation, DefaultOrderList, Bests },
-  setup(props, context) {
-    const { $store: store } = useNuxtApp();
-    const userManager = useUser();
-    const i18n = useI18n();
-    const tabs = ["bottom-panel.orders", "bottom-panel.bests", "bottom-panel.depth"];
-    const isLogin = userManager.isLogin;
-    const tab = computed({
-      get(): Tabs {
-        return store.getters["bottom-panel/activeTab"] as Tabs;
-      },
-      set(value: Tabs) {
-        if (value != null) store.commit("bottom-panel/setActiveTab", value);
-        else store.commit("bottom-panel/setActiveTab", Tabs.none);
-      },
-    });
-    const icon = computed(() =>
-      store.getters["bottom-panel/expanded"] ? "mdi-arrow-collapse" : "mdi-arrow-expand"
-    );
-    const expanded = computed(() => store.getters["bottom-panel/expanded"]);
-    const loading = computed(() => store.getters["bottom-panel/loading"]);
-    const title = computed(() => {
-      const tab = store.getters["bottom-panel/title"] as TabTitle;
-      return tab ? i18n.t(tab.title, tab.params) : "";
-    });
-
-    function expand() {
-      store.commit("bottom-panel/toggleExpand");
-    }
-    function close() {
-      if (expanded.value) store.commit("bottom-panel/toggleExpand");
-      store.commit("bottom-panel/setActiveTab", Tabs.none);
-    }
-
-    return {
-      height: 32,
-      expand,
-      close,
-      icon,
-      tab,
-      tabs,
-      title,
-      expanded,
-      loading,
-      isLogin,
-    };
-    function useI18n() {
-      return context.root.$i18n;
-    }
-  },
-});
-</script>
 
 <style lang="postcss" scoped>
 .expanded {

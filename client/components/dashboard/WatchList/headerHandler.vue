@@ -45,13 +45,11 @@
 import { defineComponent, ref, computed, ComputedRef } from "@vue/composition-api";
 import { WatchlistColumns, DefaultCols, InstrumentCache, Side, User } from "@/types";
 import { useUser } from "~/composables";
-import { useNuxtApp } from "#app";
 
 export default defineComponent({
   inheritAttrs: false,
   props: ["headers", "props"],
   setup(props) {
-    const { $store: store } = useNuxtApp();
     const userManager = useUser();
     const me = userManager.me;
     let draggingCol: WatchlistColumns | null = null;

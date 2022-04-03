@@ -1,53 +1,3 @@
-<template>
-  <v-navigation-drawer
-    v-model="drawer"
-    :mini-variant="mini"
-    :clipped="clipped"
-    :right="!rtl"
-    class="ps-0 msg-panel"
-    width="152"
-    mobile-breakpoint="960"
-    fixed
-    app
-  >
-    <div class="v-tabs-items">
-      <message-list
-        @load="loadMyMessages"
-        @select="selectMessage"
-        v-model="myMessages"
-        :class="{
-          'tab-item': true,
-          active: 0 == activeTab,
-        }"
-      >
-      </message-list>
-      <message-list
-        @load="loadMessages"
-        @select="selectMessage"
-        v-model="messages"
-        :class="{
-          'tab-item': true,
-          active: 1 == activeTab,
-        }"
-      >
-      </message-list>
-    </div>
-    <v-tabs v-model="activeTab" hide-slider optional vertical>
-      <v-tab
-        v-for="item in items"
-        :key="item.title"
-        @click="
-          () => {
-            $emit('update:mini', !mini);
-          }
-        "
-      >
-        {{ $t(item.title) }}
-      </v-tab>
-    </v-tabs>
-  </v-navigation-drawer>
-</template>
-
 <script lang="ts">
 import {
   defineComponent,
@@ -68,9 +18,7 @@ import {
   TabTitle,
 } from "@/types";
 import MessageList from "./messageList.vue";
-import { useAsrTrader } from "~/composables";
-import { useNuxtApp } from "#app";
-import { useMessages } from "~~/composables/oms/useMessages";
+import { useAsrTrader, useBottomPanel, useMessages } from "~/composables";
 
 export default defineComponent({
   components: { filterAutoComplete, MessageList },
@@ -82,9 +30,9 @@ export default defineComponent({
     clipped: Boolean,
   },
   setup(props, context) {
-    const { $store: store } = useNuxtApp();
     const messageManager = useMessages();
     const appManager = useAsrTrader();
+    const bottomPanel = useBottomPanel();
     const rtl = appManager.rtl;
     const activeTab: Ref<number | null> = ref(null);
 
@@ -148,19 +96,15 @@ export default defineComponent({
 
     async function selectMessage(id: number) {
       try {
-        store.commit("bottom-panel/setLoading", true);
-        store.commit("bottom-panel/setActiveTab", Tabs.furtherInfo);
-        const message: Message = (await store.dispatch("oms/messages/getMessage", id))
-          .data;
-        store.commit("bottom-panel/setMessage", message);
-        store.commit(
-          "bottom-panel/setTitle",
-          new TabTitle(Tabs.furtherInfo, message.title)
-        );
+        bottomPanel.setLoading(true);
+        bottomPanel.setActiveTab(Tabs.furtherInfo);
+        const message: Message = (await messageManager.getMessage(id)).data;
+        bottomPanel.setMessage(message);
+        bottomPanel.setTitle({ tab: Tabs.furtherInfo, title: message.title, params: [] });
       } catch {
         //TODO Snack for error
       } finally {
-        store.commit("bottom-panel/setLoading", false);
+        bottomPanel.setLoading(false);
       }
     }
 
@@ -184,6 +128,56 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <v-navigation-drawer
+    v-model="drawer"
+    :mini-variant="mini"
+    :clipped="clipped"
+    :right="!rtl"
+    class="ps-0 msg-panel"
+    width="152"
+    mobile-breakpoint="960"
+    fixed
+    app
+  >
+    <div class="v-tabs-items">
+      <message-list
+        @load="loadMyMessages"
+        @select="selectMessage"
+        v-model="myMessages"
+        :class="{
+          'tab-item': true,
+          active: 0 == activeTab,
+        }"
+      >
+      </message-list>
+      <message-list
+        @load="loadMessages"
+        @select="selectMessage"
+        v-model="messages"
+        :class="{
+          'tab-item': true,
+          active: 1 == activeTab,
+        }"
+      >
+      </message-list>
+    </div>
+    <v-tabs v-model="activeTab" hide-slider optional vertical>
+      <v-tab
+        v-for="item in items"
+        :key="item.title"
+        @click="
+          () => {
+            $emit('update:mini', !mini);
+          }
+        "
+      >
+        {{ $t(item.title) }}
+      </v-tab>
+    </v-tabs>
+  </v-navigation-drawer>
+</template>
 
 <style lang="postcss">
 .msg-panel {

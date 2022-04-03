@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from "@vue/composition-api";
 import snackbar from "@/components/snacks.vue";
-import { useAsrTrader, useUser } from "~/composables";
-import { useNuxtApp } from "#app";
+import { useAsrTrader, useUser, useBottomPanel } from "~/composables";
 
-const { $store: store } = useNuxtApp();
 const appManager = useAsrTrader();
 const userManager = useUser();
+const bottomPanelManager = useBottomPanel();
 
 const rightMenu = ref({
   mini: true,
@@ -20,7 +19,7 @@ const leftMenu = ref({
 const locale = appManager.locale;
 const formatter = appManager.formatter;
 const collaps = computed(() => {
-  const tab = store.getters["bottom-panel/activeTab"];
+  const tab = bottomPanelManager.activeTab;
   return tab != null && tab != -1;
 });
 

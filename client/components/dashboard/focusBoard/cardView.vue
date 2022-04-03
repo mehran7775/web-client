@@ -95,8 +95,7 @@ export default defineComponent({
     LegalRealCard,
     InstrumentFlag,
   },
-  setup(props, context) {
-    const { $store: store } = useNuxtApp();
+  setup() {
     const instrumentManager = useInstrument();
     const instruments = instrumentManager.getFocus;
     const maxwidth = computed(
