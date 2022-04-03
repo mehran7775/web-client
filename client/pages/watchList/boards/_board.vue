@@ -1,5 +1,5 @@
 <script lang="ts">
-import { ref, reactive, defineComponent } from "@vue/composition-api";
+import { ref, reactive, defineComponent } from "#app";
 import { AutoCompleteItem, InstrumentSearchModel } from "@/types";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";

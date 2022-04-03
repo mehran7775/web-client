@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from "axios";
-import { computed, ref, reactive } from "@vue/composition-api";
+import { computed, ref, reactive } from "#app";
 import { defineStore } from "pinia";
 import {
   AnonymousUser,

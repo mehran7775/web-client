@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, Ref, reactive, onMounted } from "@vue/composition-api";
+import { ref, Ref, reactive, onMounted } from "#app";
 import { AxiosError } from "axios";
 import { LoginModel, PasswordType } from "@/types";
 import { ErrorExtractor } from "~/utils/error";

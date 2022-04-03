@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, computed, ComputedRef } from "@vue/composition-api";
+import { defineComponent, computed, ComputedRef } from "#app";
 import template1 from "./type1.vue";
 import { Message } from "@/types";
 import { useBottomPanel } from "@/composables";

@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "#app";
 import printer from "@/components/websocket_printer.vue";
 
 export default defineComponent({

@@ -6,7 +6,7 @@ import {
   computed,
   ComputedRef,
   watch,
-} from "@vue/composition-api";
+} from "#app";
 
 import instrumentCard from "../../oms/instrumentCardCompact.vue";
 import LegalRealCard from "../../oms/legalRealCard.vue";

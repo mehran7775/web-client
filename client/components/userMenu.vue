@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "#app";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
 import { MenuItem, User } from "~/types";
 import { useUser } from "~/composables";

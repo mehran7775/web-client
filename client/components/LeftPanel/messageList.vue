@@ -29,7 +29,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, Ref, ref, computed } from "@vue/composition-api";
+import { defineComponent, Ref, ref, computed } from "#app";
 import { DateTime } from "luxon";
 import { Message } from "@/types";
 import { useAsrTrader } from "~/composables";

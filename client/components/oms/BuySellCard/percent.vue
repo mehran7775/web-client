@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from "@vue/composition-api";
+import { reactive, ref } from "#app";
 
 const props = defineProps<{
   height: string;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "@vue/composition-api";
+import { ref, computed } from "#app";
 import { useSnacks } from "~~/composables";
 
 const snackManager = useSnacks();

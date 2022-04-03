@@ -61,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from "@vue/composition-api";
+import { defineComponent, computed, ref } from "#app";
 import { InstrumentCache, WatchlistColumns, DefaultCols } from "@/types";
 import { useUser } from "~/composables";
 

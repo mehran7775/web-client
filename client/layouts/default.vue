@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "@vue/composition-api";
+import { computed, ref } from "#app";
 import snackbar from "@/components/snacks.vue";
 import { useAsrTrader, useUser, useBottomPanel } from "~/composables";
 

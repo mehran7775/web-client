@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAsrTrader } from "~/composables";
-import { ref, reactive } from "@vue/composition-api";
+import { ref, reactive } from "#app";
 
 const params = defineProps<{
   src: string;

@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, computed } from "@vue/composition-api";
+import { defineComponent, ref, Ref, computed } from "#app";
 import { useAsrTrader } from "~/composables";
 
 export default defineComponent({

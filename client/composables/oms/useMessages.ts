@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "@vue/composition-api";
+import { ref } from "#app";
 import {
   getMessage as GetMessage,
   getMessageFilters as GetMessageFilters,

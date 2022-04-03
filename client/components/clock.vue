@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "@vue/composition-api";
+import { ref } from "#app";
 import { DateTime } from "luxon";
 import { useAsrTrader } from "~/composables";
 

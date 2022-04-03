@@ -203,7 +203,7 @@ import {
   computed,
   watch,
   ComputedRef,
-} from "@vue/composition-api";
+} from "#app";
 import { useShortcut } from "@/utils/shortcutManager";
 import { BookmarkPosition, CreateBookmark, MenuItem } from "~/types";
 import { useAsrTrader, useUser } from "~/composables";

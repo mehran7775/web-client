@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "@vue/composition-api";
+import { defineComponent, reactive } from "#app";
 import { Order, OrderSearchModel, PaginatedResult, WatchlistColumns } from "@/types";
 import { useOrder } from "~~/composables";
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, Ref } from "@vue/composition-api";
+import { defineComponent, ref, Ref } from "#app";
 import { Tabs, DeepOptions, TabTitle, Instrument, SameSectorQuery } from "@/types";
 import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";

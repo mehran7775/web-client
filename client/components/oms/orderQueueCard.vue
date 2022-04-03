@@ -129,7 +129,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, computed, Ref } from "@vue/composition-api";
+import { defineComponent, reactive, ref, computed, Ref } from "#app";
 import { InstrumentCache, InstrumentSearchModel, OrderQueueItem } from "@/types";
 import { useAsrTrader, useInstrument } from "~/composables";
 import doubleBarChart from "../doubleBarChart.vue";

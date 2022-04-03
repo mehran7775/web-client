@@ -4,7 +4,7 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import { ref } from "@vue/composition-api";
+import { ref } from "#app";
 import { useRouter } from "#app";
 
 const router = useRouter();

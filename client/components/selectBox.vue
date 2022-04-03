@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ComponentPublicInstance, onBeforeUnmount, ref } from "@vue/composition-api";
+import { ComponentPublicInstance, onBeforeUnmount, ref } from "#app";
 
 interface selectProps {
   label: string;

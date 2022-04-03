@@ -6,7 +6,7 @@ import {
   computed,
   reactive,
   watch,
-} from "@vue/composition-api";
+} from "#app";
 import filterAutoComplete from "./filterAutoComplete.vue";
 import { AxiosResponse } from "axios";
 import {

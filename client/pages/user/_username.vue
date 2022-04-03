@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, computed, ComputedRef } from "@vue/composition-api";
+import { defineComponent, ref, Ref, computed, ComputedRef } from "#app";
 import profilePic from "@/components/sso/profilePictureEditor.vue";
 import logs from "@/components/sso/userLog.vue";
 import profile from "@/components/sso/profileViewer.vue";

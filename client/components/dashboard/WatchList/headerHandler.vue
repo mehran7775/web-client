@@ -42,7 +42,7 @@
   </thead>
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed, ComputedRef } from "@vue/composition-api";
+import { defineComponent, ref, computed, ComputedRef } from "#app";
 import { WatchlistColumns, DefaultCols, InstrumentCache, Side, User } from "@/types";
 import { useUser } from "~/composables";
 

@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, watch } from "@vue/composition-api";
+import { defineComponent, reactive, ref, watch } from "#app";
 import { AutoCompleteItem, PaginatedResult } from "@/types";
 import { AxiosResponse } from "axios";
 import { useMessages } from "~~/composables/oms/useMessages";

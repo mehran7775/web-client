@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive } from "@vue/composition-api";
+import { computed, reactive } from "#app";
 import { AutoCompleteItem, Bookmark } from "@/types";
 import { getBoards } from "@/repositories/oms/board_manager";
 import { useAxios, useUser } from "~/composables";

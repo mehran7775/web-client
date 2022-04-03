@@ -4,7 +4,7 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import { ref, Ref } from "@vue/composition-api";
+import { ref, Ref } from "#app";
 import simpleCaptcha from "~/components/simpleCaptcha.vue";
 import { useRouter } from "#app";
 

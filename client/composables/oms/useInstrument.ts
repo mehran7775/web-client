@@ -1,4 +1,4 @@
-import { computed, ref } from "@vue/composition-api";
+import { computed, ref } from "#app";
 import { defineStore } from "pinia";
 import { InstrumentState } from "@/types/stores";
 import {

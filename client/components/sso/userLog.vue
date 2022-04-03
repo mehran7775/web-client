@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from "@vue/composition-api";
+import { defineComponent, reactive, computed } from "#app";
 import { Paginated, Log, WatchlistColumns } from "@/types";
 import { DateTime } from "luxon";
 import { useAsrTrader, useUser } from "~/composables";

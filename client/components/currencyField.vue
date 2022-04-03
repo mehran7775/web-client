@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "#app";
 import { useAsrTrader } from "~/composables";
 
 export default defineComponent({

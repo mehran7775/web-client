@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, Ref, computed, ComputedRef } from "@vue/composition-api";
+import { defineComponent, ref, Ref, computed, ComputedRef } from "#app";
 import { useAsrTrader, useInstrument } from "@/composables";
 import { Instrument, InstrumentSearchModel } from "@/types";
 import { DateTime } from "luxon";

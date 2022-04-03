@@ -1,4 +1,4 @@
-import { ComputedRef } from "@vue/composition-api";
+import { ComputedRef } from "#app";
 import { BookmarkPosition, MenuItem } from "~/types";
 
 export default {

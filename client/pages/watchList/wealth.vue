@@ -1,5 +1,5 @@
 <script lang="ts">
-import { ref, defineComponent } from "@vue/composition-api";
+import { ref, defineComponent } from "#app";
 import { WealthSearchModel, InstrumentSearchModel } from "@/types";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";

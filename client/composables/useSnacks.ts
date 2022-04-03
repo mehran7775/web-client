@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "@vue/composition-api";
+import { ref } from "#app";
 import { Snack } from "@/types/stores";
 
 export const useSnacks = defineStore("snacks", () => {

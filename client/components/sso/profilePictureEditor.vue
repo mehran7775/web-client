@@ -18,7 +18,7 @@
   </v-avatar>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "#app";
 import { useUser } from "~/composables";
 
 export default defineComponent({

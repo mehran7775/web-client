@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "#app";
 import { DeepOptions } from "@/types";
 import Teammates from "./sameSector.vue";
 import { useBottomPanel } from "@/composables";

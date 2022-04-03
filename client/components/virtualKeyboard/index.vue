@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, computed, reactive } from "@vue/composition-api";
+import { defineComponent, ref, Ref, computed, reactive } from "#app";
 import {
   printableKeys,
   printableShiftKeys,

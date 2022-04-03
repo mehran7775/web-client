@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, reactive, computed } from "@vue/composition-api";
+import { defineComponent, ref, reactive, computed } from "#app";
 import { autoComplete } from "@/repositories/oms/instruments_manager";
 import {
   AutoCompleteItem,

@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, computed } from "@vue/composition-api";
+import { defineComponent, ref, Ref, computed } from "#app";
 import { PaginatedResult, Instrument } from "@/types";
 import { useNuxtApp } from "#app";
 

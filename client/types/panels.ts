@@ -1,4 +1,4 @@
-import { ComputedRef } from "@vue/composition-api";
+import { ComputedRef } from "#app";
 
 export enum BookmarkPosition {
   ToolBar = 1,

@@ -1,5 +1,5 @@
 import { User, AnonymousUser, InstrumentCache } from "@/types/";
-import { reactive } from "@vue/composition-api";
+import { reactive } from "#app";
 import { KeyValuePairs } from "../collection";
 import { ClientDistribution, OrderQueueItem } from "../wealth";
 

@@ -78,7 +78,7 @@ import {
   Ref,
   watch,
   onBeforeUnmount,
-} from "@vue/composition-api";
+} from "#app";
 import { useShortcut } from "@/utils/shortcutManager";
 import CardView from "./cardView.vue";
 import TabView from "./tabView.vue";

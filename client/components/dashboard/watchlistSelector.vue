@@ -98,7 +98,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, reactive, watch } from "@vue/composition-api";
+import { defineComponent, ref, Ref, reactive, watch } from "#app";
 import { useUser } from "~/composables";
 import { useRoute, useRouter } from "#app";
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, Ref } from "@vue/composition-api";
+import { defineComponent, ref, Ref } from "#app";
 import { InstrumentCache, InstrumentSearchModel } from "@/types";
 import { useInstrument } from "~/composables";
 
