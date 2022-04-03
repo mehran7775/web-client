@@ -139,7 +139,114 @@ instrumentManager
             <v-col class="d-flex justify-space-between" md="12">
               <span>{{ $t("wealth.sharesCount") }}: </span>
               <numeric-field :value="1000" />
-              <span>قیمت سر‌به‌سر: </span>
+              <span>{{ $t("oms.tradeWage") }}: </span>
+              <numeric-field :value="1000" />
+              <span>{{ $t("oms.tradeValue") }}: </span>
+              <numeric-field :value="1000" />
+            </v-col>
+            <v-col class="d-flex justify-space-between" md="12"> </v-col>
+            <v-col cols="6">
+              <v-checkbox
+                :label="$t('general.acceptPolicy')"
+                dense
+                :ripple="false"
+                hide-details
+              />
+            </v-col>
+            <v-col class="tw-flex-row ltr">
+              <clock :format="$t('general.date.dt')" class="ltr" />
+            </v-col>
+            <v-col cols="12" class="d-flex justify-space-around">
+              <v-btn class="draft" height="24" width="149" depressed>
+                {{ $t("general.draft") }}
+              </v-btn>
+              <v-btn
+                class="buy"
+                height="24"
+                width="149"
+                :disabled="!active || (active.status & 3) != 3"
+                depressed
+                >{{ $t("oms.buy") }}</v-btn
+              >
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-tab-item>
+      <v-tab-item value="2" class="px-3">
+        <v-form class="tw-m-0 tw-p-0">
+          <v-row align="center" dense>
+            <v-col cols="6">
+              <span>{{ $t("oms.countThreshold") }}: </span>
+              <numeric-field :value="1000" />
+            </v-col>
+            <v-col cols="6">
+              <span>{{ $t("oms.priceThreshold") }}: </span>
+              <numeric-field :value="1000" />
+            </v-col>
+            <v-col cols="6" class="tw-pt-4">
+              <text-input
+                :label="$t('oms.count')"
+                type="number"
+                v-model="countVal"
+                class="me-3 tw-mt-1"
+              >
+                <template #append>
+                  <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
+                  <v-icon color="primary" class="tw-mx-1" x-small>isax-calculator</v-icon>
+                </template>
+              </text-input>
+            </v-col>
+            <v-col cols="6">
+              <text-input
+                :label="$t('oms.price')"
+                type="number"
+                v-model="priceVal"
+                class="tw-mt-1"
+              >
+                <template #append>
+                  <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
+                </template>
+              </text-input>
+            </v-col>
+            <v-col cols="6" class="tw-pt-1">
+              <account-type
+                :placeholder="$t('accounting.account.type')"
+                class="me-3 tw-my-1"
+                height="24px"
+              >
+              </account-type>
+            </v-col>
+            <v-col cols="6">
+              <credit
+                height="24px"
+                class="tw-my-1"
+                :placeholder="$t('accounting.account.credit')"
+              >
+              </credit>
+            </v-col>
+            <v-col cols="6">
+              <text-input
+                :label="$t('oms.view-count')"
+                type="number"
+                v-model="countVal"
+                class="me-3 tw-mt-1"
+              >
+                <template #append>
+                  <span class="tw-w-6 tw-inline-block">0</span>
+                </template>
+              </text-input>
+            </v-col>
+            <v-col cols="6">
+              <v-checkbox
+                :label="$t('oms.splitOrders')"
+                dense
+                hide-details
+                class="tw-m-0 tw-p-0 tw-mt-1"
+                :ripple="false"
+              />
+            </v-col>
+            <v-col class="d-flex justify-space-between" md="12">
+              <span>{{ $t("wealth.sharesCount") }}: </span>
               <numeric-field :value="1000" />
               <span>{{ $t("oms.tradeWage") }}: </span>
               <numeric-field :value="1000" />
@@ -150,14 +257,7 @@ instrumentManager
               <span>درصد سهم</span>
               <percent height="32px" class="tw-flex tw-flex-grow"> </percent>
             </v-col>
-            <v-col cols="6">
-              <v-checkbox
-                :label="$t('general.acceptPolicy')"
-                dense
-                :ripple="false"
-                hide-details
-              />
-            </v-col>
+            <v-col cols="6"> </v-col>
             <v-col class="tw-flex-row ltr">
               <clock :format="$t('general.date.dt')" class="ltr" />
             </v-col>
