@@ -9,6 +9,7 @@ COPY ./client ./app
 WORKDIR /usr/src/app
 # Build App
 RUN yarn build
+ENV HOST=0.0.0.0
 # Deploy
 CMD [ "yarn", "start" ]
 #####
