@@ -88,7 +88,7 @@ export const useUser = defineStore("user", () => {
   function setRefresh(data: string) {
     state.value.refresh = data;
     if (process.client) {
-      //SetClientCookie(refreshKey, data, {});
+      SetClientCookie(refreshKey, data, {});
       localStorage.setItem(refreshKey, data);
     }
   }
@@ -110,7 +110,7 @@ export const useUser = defineStore("user", () => {
     state.value.user = data;
     state.value.settingsChanged = reactive([]);
     if (process.client) {
-      //SetClientCookie(userKey, data.userName, {});
+      SetClientCookie(userKey, data.userName, {});
       localStorage.setItem(userKey, data.userName);
     }
   }

@@ -2,12 +2,13 @@ import { defineNuxtConfig } from "@nuxt/bridge";
 //import postcss from "./postcss.config.js";
 
 export default defineNuxtConfig({
-  ssr: false,
+  ssr: true,
   target: "server",
   bridge: {
     meta: true,
     postcss8: true,
     typescript: true,
+    autoImports: true,
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
