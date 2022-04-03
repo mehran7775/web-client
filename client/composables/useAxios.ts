@@ -2,7 +2,7 @@ import { useAsrTrader, useSnacks, useUser } from ".";
 import axios, { AxiosError, AxiosInstance } from "axios";
 import { defineStore } from "pinia";
 import { ErrorExtractor } from "~/utils/error";
-import { Snack } from "@/types";
+import { Snack } from "@/types/stores";
 
 export const useAxios = defineStore("axios", () => {
   const user = useUser();
@@ -49,7 +49,10 @@ export const useAxios = defineStore("axios", () => {
             return instance?.request(err.config);
           } catch (err) {
             error = ErrorExtractor(err as AxiosError);
-            snacks.showMessage(new Snack("error." + error.code, "error"));
+            snacks.showMessage({
+              content: "error." + error.code,
+              color: "error",
+            });
             if (process.client) {
               window.history.pushState({}, "", "/login");
             }
@@ -57,7 +60,10 @@ export const useAxios = defineStore("axios", () => {
             return Promise.reject(error);
           }
         } else {
-          snacks.showMessage(new Snack("error." + error.code, "error"));
+          snacks.showMessage({
+            content: "error." + error.code,
+            color: "error",
+          });
           return Promise.reject(error);
         }
       }

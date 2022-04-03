@@ -58,6 +58,10 @@ export class InstrumentState {
 
 // Message
 
-export class MessageState {
+export interface MessageState {
+}
 
+export interface Snack {
+  content: string;
+  color: string;
 }

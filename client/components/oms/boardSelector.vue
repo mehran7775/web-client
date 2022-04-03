@@ -2,7 +2,7 @@
 import { computed, reactive } from "@vue/composition-api";
 import { AutoCompleteItem, Bookmark } from "@/types";
 import { getBoards } from "@/repositories/oms/board_manager";
-import { useUser } from "~/composables";
+import { useAxios, useUser } from "~/composables";
 import { useNuxtApp } from "#app";
 
 const props = defineProps<{
@@ -10,8 +10,8 @@ const props = defineProps<{
 }>();
 const emit = defineEmits(["input"]);
 
-const { $store: store, $axios } = useNuxtApp();
 const userManager = useUser();
+const axios = useAxios().createInstance();
 const bookmarks = userManager.getBookmarks;
 const items: Array<AutoCompleteItem> = reactive([]);
 const home = computed(() => userManager.me.settings.home);
@@ -54,7 +54,7 @@ function unmark(item: AutoCompleteItem) {
   });
 }
 
-getBoards($axios).then((resp) => {
+getBoards(axios).then((resp) => {
   items.push(...resp.data.data);
   if (props.value != -1) {
     emit(

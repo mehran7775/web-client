@@ -11,7 +11,7 @@ import { AxiosResponse } from "axios";
 import { useAxios } from "../useAxios";
 
 export const useMessages = defineStore("messages", () => {
-  const state = ref(new MessageState());
+  const state = ref<MessageState>({});
   const axios = useAxios().createInstance();
 
   async function getMessage(id: number): Promise<AxiosResponse<Message>> {

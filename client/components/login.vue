@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, Ref, reactive, onMounted } from "@vue/composition-api";
 import { AxiosError } from "axios";
-import { LoginModel, PasswordType, Snack } from "@/types";
+import { LoginModel, PasswordType } from "@/types";
+import { Snack } from "@/types/stores";
 import { ErrorExtractor } from "~/utils/error";
 import { required } from "@/utils/rules";
 import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
@@ -56,20 +57,20 @@ async function login(data: LoginModel) {
       if (res >= 200 && res < 300) {
         const user = userManager.me;
         router.push(user.settings?.home ?? "/watchlist/wealth");
-        snack.showMessage(new Snack("login.successful", "success"));
+        snack.showMessage({ content: "login.successful", color: "success" });
       }
     } catch (err) {
       captcharef.value.refreshCaptcha();
       const error = ErrorExtractor(err as AxiosError);
       if (error.detail.length == 0)
-        snack.showMessage(new Snack("errors." + error.code, "error"));
+        snack.showMessage({ content: "errors." + error.code, color: "error" });
       else {
         let res = "";
         //TODO i18n
         // for (let e in error.detail) {
         //   res += i18n.t(error.detail[e].type) + "\r\n";
         // }
-        snack.showMessage(new Snack(res, "error"));
+        snack.showMessage({ content: res, color: "error" });
       }
     } finally {
       loading.value = false;
