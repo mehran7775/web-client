@@ -46,20 +46,19 @@ export class UserState {
 
 // Instrument
 
-export class InstrumentState {
-  cache: Map<string, InstrumentCache> = new Map<string, InstrumentCache>()
-  focus: Array<InstrumentCache> = []
-  focusViewMode: number = 0
-  selected: InstrumentCache | null = null
-  orderQueueCache: Map<string, Array<OrderQueueItem>> = new Map<string, Array<OrderQueueItem>>()
-  clientDistributionCache: Map<string, ClientDistribution> = new Map<string, ClientDistribution>()
-  width: number = process.client ? window.screen.availWidth : 800
+export interface InstrumentState {
+  cache: Map<string, InstrumentCache>;
+  focus: Array<InstrumentCache>;
+  focusViewMode: number;
+  selected: InstrumentCache | null;
+  orderQueueCache: Map<string, Array<OrderQueueItem>>;
+  clientDistributionCache: Map<string, ClientDistribution>;
+  width: number;
 }
 
 // Message
 
-export interface MessageState {
-}
+export interface MessageState {}
 
 export interface Snack {
   content: string;

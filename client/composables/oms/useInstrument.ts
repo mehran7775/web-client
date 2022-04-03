@@ -17,7 +17,15 @@ import manager from "@/repositories/oms/instruments_manager";
 import { useAxios } from "../useAxios";
 
 export const useInstrument = defineStore("instrument", () => {
-  const state = ref(new InstrumentState());
+  const state = ref<InstrumentState>({
+    cache: new Map<string, InstrumentCache>(),
+    focus: [],
+    focusViewMode: 0,
+    selected: null,
+    orderQueueCache: new Map<string, Array<OrderQueueItem>>(),
+    clientDistributionCache: new Map<string, ClientDistribution>(),
+    width: process.client ? window.screen.availWidth : 800,
+  });
   const axiosManager = useAxios();
   const axios = axiosManager.createInstance();
 

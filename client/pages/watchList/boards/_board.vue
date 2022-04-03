@@ -1,23 +1,3 @@
-<template>
-  <v-container class="ma-0 pa-0" fluid>
-    <v-row class="ma-0 pa-0" dense>
-      <v-col class="ma-0 pa-0">
-        <focus-board>
-          <template #toolbar>
-            <board-selector @input="select" :value="board" />
-          </template>
-        </focus-board>
-      </v-col>
-    </v-row>
-    <v-row class="ma-0 pa-0" dense>
-      <v-col class="ma-0 pa-0" style="position: relative">
-        <WatchList :searchModel.sync="searchModel" paginated />
-        <loading :loading="loading" />
-      </v-col>
-    </v-row>
-  </v-container>
-</template>
-
 <script lang="ts">
 import { ref, reactive, defineComponent } from "@vue/composition-api";
 import { AutoCompleteItem, InstrumentSearchModel } from "@/types";
@@ -62,6 +42,26 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <v-container class="ma-0 pa-0" fluid>
+    <v-row class="ma-0 pa-0" dense>
+      <v-col class="ma-0 pa-0">
+        <focus-board>
+          <template #toolbar>
+            <board-selector @input="select" :value="board" />
+          </template>
+        </focus-board>
+      </v-col>
+    </v-row>
+    <v-row class="ma-0 pa-0" dense>
+      <v-col class="ma-0 pa-0" style="position: relative">
+        <WatchList :searchModel.sync="searchModel" paginated />
+        <loading :loading="loading" />
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
 
 <style lang="postcss" scoped>
 .menu {
