@@ -83,7 +83,7 @@ const rtl = computed(() => appManager.rtl);
         mdi-menu-open
       </v-icon>
 
-      <clock :format="$t('general.date.longdt')" width="240" />
+      <clock :format="$t('general.date.longdt')" width="240px" />
       <div class="center">
         <v-badge dot left color="green" class="mx-5" offset-y="75%" offset-x="-5">
           {{ $t("oms.bourseIndex") }}: {{ formatter.format(0.0) }}

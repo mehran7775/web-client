@@ -3,10 +3,16 @@ import { ref } from "@vue/composition-api";
 import { DateTime } from "luxon";
 import { useAsrTrader } from "~/composables";
 
-const params = defineProps<{
-  format: string;
-  width: string | number;
-}>();
+const params = withDefaults(
+  defineProps<{
+    format: string;
+    width: string | number;
+  }>(),
+  {
+    format: "HH:mm:ss",
+    width: "auto",
+  }
+);
 
 const appManager = useAsrTrader();
 const locale = appManager.locale;
@@ -17,7 +23,7 @@ setInterval(() => {
 </script>
 
 <template>
-  <div :style="{ width: width + 'px' }">
+  <div :style="{ width: width }">
     {{ date.toFormat(format) }}
   </div>
 </template>

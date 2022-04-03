@@ -1,42 +1,8 @@
-<template>
-  <v-container fluid class="text-no-wrap ma-0 pa-0">
-    <v-row v-show="!hideHeaders" dense>
-      <v-col md="12" class="text-center header">
-        {{ $t("instrument.detail") }}
-      </v-col>
-    </v-row>
-    <v-row dense>
-      <v-col
-        v-for="(field, index) in fields"
-        :key="field.name"
-        md="6"
-        :class="{
-          'copy-cursor': !!field.click,
-          'col-sm-12': responsive,
-          'col-border d-flex justify-space-between px-3': true,
-        }"
-        @click="
-          () => {
-            if (field.click) field.click(instrument[field.name]);
-          }
-        "
-      >
-        <span>{{ $t(field.i18n) }}</span>
-        <span class="value">
-          {{ printField(instrument[field.name], field.type) }}
-        </span>
-        <bar class="d-none d-md-block" v-if="index % 2 == 0" />
-      </v-col>
-    </v-row>
-  </v-container>
-</template>
-
 <script lang="ts">
 import { defineComponent, ref, Ref, computed, ComputedRef } from "@vue/composition-api";
 import { useAsrTrader, useInstrument } from "@/composables";
 import { Instrument, InstrumentSearchModel } from "@/types";
 import { DateTime } from "luxon";
-import { useNuxtApp } from "#app";
 
 export default defineComponent({
   name: "instrumnet-card-compact",
@@ -44,10 +10,9 @@ export default defineComponent({
     responsive: Boolean,
     compact: Boolean,
     insId: { type: Number, required: true },
-    "hide-headers": Boolean,
+    hideHeaders: Boolean,
   },
   setup(props, context) {
-    const { $store: store } = useNuxtApp();
     const appManager = useAsrTrader();
     const instrumentManager = useInstrument();
     const i18n = useI18n();
@@ -92,10 +57,10 @@ export default defineComponent({
         case fieldType.number:
         case fieldType.price:
         case fieldType.count:
-          return formatter.value.format(data);
+          return formatter.format(data);
         case fieldType.dateTime:
           return DateTime.fromISO(data)
-            .setLocale(locale.value)
+            .setLocale(locale)
             .toFormat(i18n.t("general.date.dt").toString());
         default:
           return data;
@@ -157,6 +122,39 @@ class field {
   }
 }
 </script>
+
+<template>
+  <v-container fluid class="text-no-wrap ma-0 pa-0">
+    <v-row v-show="!hideHeaders" dense>
+      <v-col md="12" class="text-center header">
+        {{ $t("instrument.detail") }}
+      </v-col>
+    </v-row>
+    <v-row dense>
+      <v-col
+        v-for="(field, index) in fields"
+        :key="field.name"
+        md="6"
+        :class="{
+          'copy-cursor': !!field.click,
+          'col-sm-12': responsive,
+          'col-border d-flex justify-space-between px-3': true,
+        }"
+        @click="
+          () => {
+            if (field.click) field.click(instrument[field.name]);
+          }
+        "
+      >
+        <span>{{ $t(field.i18n) }}</span>
+        <span class="value">
+          {{ printField(instrument[field.name], field.type) }}
+        </span>
+        <bar class="d-none d-md-block" v-if="index % 2 == 0" />
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
 
 <style lang="postcss" scoped>
 .header {
