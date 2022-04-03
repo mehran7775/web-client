@@ -80,6 +80,10 @@ export default defineNuxtConfig({
     customVariables: ["~/assets/variables.scss"],
     optionsPath: "@/plugins/vuetify.options.js",
   },
+  server: {
+    host: "0.0.0.0",
+    port: 3000,
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
