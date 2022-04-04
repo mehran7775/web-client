@@ -19,7 +19,8 @@
     "nuxt-edge": "latest",
     "pinia": "^2.0.13",
     "@pinia/nuxt": "^0.1.8",
-    "vue-i18n": "^8.27.1"
+    "vue-i18n": "^8.27.1",
+    "marked": "^4.0.12"
   },
   "devDependencies": {
     "@mdi/font": "^6.6.96",
@@ -28,6 +29,7 @@
     "@nuxtjs/vuetify": "1.12.3",
     "@types/cookie": "latest",
     "@types/luxon": "latest",
+    "@types/marked": "^4.0.3",
     "@vue/runtime-dom": "^3.2.31",
     "autoprefixer": "latest",
     "postcss": "latest",

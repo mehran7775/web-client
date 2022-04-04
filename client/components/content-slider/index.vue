@@ -24,22 +24,23 @@ function stopTimer() {
 }
 
 const docs = reactive<any[]>([]);
-
-cntManager.getContent(params.src + locale + "/slide-1.md").then((res) => {
-  docs.push({
-    path: "slide-1",
-    ctx: res,
-  });
-});
+if (process.client) {
+  for (let i = 1; i < 3; i++) {
+    cntManager.getContent(params.src + locale + "/slide-" + i + ".md").then((res) => {
+      docs.push({
+        path: "slide-" + i,
+        ctx: res,
+      });
+    });
+  }
+}
 </script>
 
 <template>
   <div class="ma-0 pa-0 slider" @mouseenter="stopTimer" @mouseleave="startTimer" fluid>
     <v-window class="slide" v-model="slide">
       <v-window-item v-for="doc in docs" :key="doc.path">
-        <div class="doc-md">
-          {{ doc.ctx }}
-        </div>
+        <div class="doc-md" v-html="doc.ctx"></div>
       </v-window-item>
     </v-window>
     <v-item-group class="controll" v-model="slide" mandatory>

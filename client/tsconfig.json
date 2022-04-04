@@ -19,7 +19,8 @@
       "@nuxtjs/axios",
       "@types/node",
       "@types/luxon",
-      "@types/cookie"
+      "@types/cookie",
+      "@types/marked",
     ]
   },
   "exclude": [

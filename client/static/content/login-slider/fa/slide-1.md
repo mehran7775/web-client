@@ -1,4 +1,4 @@
-<br-img width="538" src="/login-slider/fa/slide-1.png"></br-img>
+<img width="538" src="/login-slider/fa/slide-1.png"></img>
 ## پنل سامانه عصر تریدر
 
 ##### دسترسی یکپارچه به تمام سامانه‌های معاملاتی
