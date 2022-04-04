@@ -24,7 +24,7 @@ export default defineComponent({
     <v-col md="6" sm="0" class="img-col d-none d-md-block">
       <div class="pie pie-1"></div>
       <div class="pie pie-2"></div>
-      <content-slider :interval="7.5" src="login-slider" />
+      <content-slider :interval="7.5" src="login-slider/" />
       <floating-button
         top="calc(50% - 110px)"
         left="8px"

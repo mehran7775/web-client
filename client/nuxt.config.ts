@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     postcss8: true,
     typescript: true,
     autoImports: true,
+    scriptSetup: true
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -75,7 +76,7 @@ export default defineNuxtConfig({
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
-    defaultAssets: false,
+    //defaultAssets: false,
     treeShake: true,
     customVariables: ["~/assets/variables.scss"],
     optionsPath: "@/plugins/vuetify.options.js",

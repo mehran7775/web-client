@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAsrTrader } from "~/composables";
+import { useAsrTrader, useContent } from "~/composables";
 import { ref, reactive } from "#app";
 
 const params = defineProps<{
@@ -8,6 +8,7 @@ const params = defineProps<{
 }>();
 
 const appManager = useAsrTrader();
+const cntManager = useContent();
 const locale = appManager.locale;
 const slide = ref(0);
 let timer: NodeJS.Timeout | null = null;
@@ -22,14 +23,23 @@ function stopTimer() {
   if (timer) clearInterval(timer);
 }
 
-const docs = reactive<any>({});
+const docs = reactive<any[]>([]);
+
+cntManager.getContent(params.src + locale + "/slide-1.md").then((res) => {
+  docs.push({
+    path: "slide-1",
+    ctx: res,
+  });
+});
 </script>
 
 <template>
   <div class="ma-0 pa-0 slider" @mouseenter="stopTimer" @mouseleave="startTimer" fluid>
     <v-window class="slide" v-model="slide">
       <v-window-item v-for="doc in docs" :key="doc.path">
-        <nuxt-content :document="doc" class="doc-md" />
+        <div class="doc-md">
+          {{ doc.ctx }}
+        </div>
       </v-window-item>
     </v-window>
     <v-item-group class="controll" v-model="slide" mandatory>

@@ -19,8 +19,7 @@
       "@nuxtjs/axios",
       "@types/node",
       "@types/luxon",
-      "@types/cookie",
-      "unplugin-vue2-script-setup/types"
+      "@types/cookie"
     ]
   },
   "exclude": [
