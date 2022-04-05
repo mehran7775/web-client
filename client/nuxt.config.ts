@@ -98,7 +98,6 @@ export default defineNuxtConfig({
         "postcss-import": {},
         "postcss-preset-env": {},
         "tailwindcss/nesting": {},
-        "postcss-nested": {},
         tailwindcss: {},
         autoprefixer: {},
         ...(process.env.NODE_ENV === "production" ? { cssnano: {} } : {}),
