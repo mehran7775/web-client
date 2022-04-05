@@ -38,22 +38,10 @@ export const useInstrument = defineStore("instrument", () => {
       setWidth(data);
     },
   });
-  const focusMode = computed({
-    get(): number {
-      return state.value.focusViewMode;
-    },
-    set(data: number) {
-      setFocusMode(data);
-    },
-  });
-  const selectedId = computed({
-    get(): string {
-      return (state.value.selected?.id ?? -1).toString();
-    },
-    async set(data: string) {
-      selectById(parseInt(data));
-    },
-  });
+  const focusMode = computed(() => state.value.focusViewMode);
+  const selectedId = computed(() =>
+    (state.value.selected?.id ?? -1).toString()
+  );
   const getByKey = computed(
     () =>
       (key: number): InstrumentCache | null =>

@@ -1,22 +1,11 @@
-<script lang="ts">
-import {
-  defineComponent,
-  reactive,
-  ref,
-  computed,
-  ComputedRef,
-  watch,
-} from "#app";
+<script setup lang="ts">
+import { reactive, ref, computed, ComputedRef, watch } from "#app";
 
-import instrumentCard from "../../oms/instrumentCardCompact.vue";
-import LegalRealCard from "../../oms/legalRealCard.vue";
-import orderQueueCard from "../../oms/orderQueueCard.vue";
 import {
   WatchlistColumns,
   DefaultCols,
   InstrumentCache,
   Side,
-  User,
   InstrumentStatus,
   InstrumentSearchModel,
 } from "@/types";
@@ -25,221 +14,189 @@ import { useShortcut } from "@/utils/shortcutManager";
 import HeaderHandler from "./headerHandler.vue";
 import RowHandler from "./rowHandler.vue";
 import HeaderSelector from "./headerSelector.vue";
-import { useRoute } from "#app";
+import { useRoute, useNuxtApp } from "#app";
 
-export default defineComponent({
-  name: "WatchList",
-  props: {
-    searchModel: {
-      type: InstrumentSearchModel,
-      required: true,
-    },
-    paginated: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  components: {
-    instrumentCard,
-    LegalRealCard,
-    orderQueueCard,
-    HeaderHandler,
-    RowHandler,
-    HeaderSelector,
-  },
-  setup(props, context) {
-    const userManager = useUser();
-    const instrumentManager = useInstrument();
-    const route = useRoute();
-    const i18n = useI18n();
-    const sh = useShortcut();
-    const itemToDelete = ref(null);
-    const name = route.params.name;
-    const _instruments: Array<InstrumentCache> = reactive([]);
-    const instruments: Array<InstrumentCache> = reactive([]);
-    const confirmInstrumentRemoval = ref(false);
+const props = withDefaults(
+  defineProps<{
+    searchModel: InstrumentSearchModel;
+    paginated: boolean;
+  }>(),
+  {
+    paginated: false,
+  }
+);
 
-    const watchlists = userManager.watchList;
+const { $i18n: i18n } = useNuxtApp();
+const userManager = useUser();
+const instrumentManager = useInstrument();
+const route = useRoute();
+const sh = useShortcut();
+const itemToDelete = ref<InstrumentCache | null>(null);
+const name = route.params.name;
+const _instruments: Array<InstrumentCache> = reactive([]);
+const instruments: Array<InstrumentCache> = reactive([]);
+const confirmInstrumentRemoval = ref(false);
 
-    const focused = instrumentManager.getFocus;
-    const canfocus = computed(() => {
-      if (!process.client) return false;
-      return focused.length < Math.floor(instrumentManager.width / 360);
-    });
-    const me = userManager.me;
+const watchlists = userManager.watchList;
 
-    const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
-      const res: Array<WatchlistColumns> = [];
-      const actions = new WatchlistColumns("", "actions", "center", "100px");
-      actions.draggable = false;
-      res.push(actions);
-      res.push(
-        ...((me.settings.columns ?? DefaultCols()).map((col: WatchlistColumns) =>
-          Object.assign({}, col, {
-            text: col.text == "" ? "" : i18n.t(col.text),
-          })
-        ) as WatchlistColumns[])
-      );
-      const more = new WatchlistColumns("", "more");
-      more.draggable = false;
-      res.push(more);
-      return res;
-    });
-
-    function parseStatus(state: number) {
-      switch (state & 7) {
-        case InstrumentStatus.Active:
-          return "instrument.state.active";
-        case InstrumentStatus.ActiveOrder:
-          return "instrument.state.activeOrder";
-        case InstrumentStatus.ActiveTrading:
-          return "instrument.state.activeTrading";
-        case InstrumentStatus.ActiveRead:
-          return "instrument.state.activeRead";
-        case InstrumentStatus.Inactive:
-          return "instrument.state.inactive";
-        case InstrumentStatus.Disabled:
-          return "instrument.state.disabled";
-        case InstrumentStatus.PreActive:
-          return "instrument.state.preActive";
-      }
-    }
-
-    function order(item: InstrumentCache, side: Side) {
-      instrumentManager.updateInstrument(Object.assign({}, item, { side }));
-      instrumentManager.addFocus(item);
-      instrumentManager.select(item);
-      instrumentManager.setFocusMode(0);
-    }
-    function focus(item: InstrumentCache) {
-      instrumentManager.addFocus(item);
-      instrumentManager.select(item);
-    }
-    async function getData(val: InstrumentSearchModel) {
-      _instruments.splice(0, _instruments.length);
-      _instruments.push(...(await instrumentManager.getInstrumentsDetail(val)));
-    }
-    function refresh() {
-      instruments.splice(0, instruments.length);
-      instruments.push(
-        ..._instruments.filter((item) => {
-          return focused.findIndex((i) => i.id == item.id) == -1;
-        })
-      );
-    }
-    async function remove(val: InstrumentCache) {
-      const name = route.params.name;
-      const tmp = [...(watchlists[name] ?? [])];
-      tmp.splice(tmp.lastIndexOf(val.id.toString()), 1);
-      await userManager.update_settings({
-        path: "/watch_lists/" + name,
-        value: tmp,
-      });
-      refresh();
-    }
-
-    let dragItem: InstrumentCache | null = null;
-    function drag(item: InstrumentCache) {
-      dragItem = item;
-    }
-    async function drop(item: InstrumentCache) {
-      if (dragItem && dragItem != item) {
-        const wl = [...(watchlists[name] ?? [])];
-        const ind = wl.findIndex((i) => i == dragItem?.id.toString());
-        wl.splice(ind, 1);
-        const target = wl.findIndex((i) => i == item.id.toString());
-        wl.splice(ind > target ? target : target + 1, 0, dragItem?.id.toString());
-        userManager.setWatchlist({
-          name,
-          watchlist: wl,
-          changeState: false,
-        });
-        await userManager.update_settings({
-          path: "/watch_lists/" + name,
-          value: wl,
-        });
-        refresh();
-      }
-      dragItem = null;
-    }
-    watch(_instruments, (val) => {
-      refresh();
-    });
-    watch(focused, (val) => {
-      refresh();
-    });
-    watch(
-      () => [
-        props.searchModel.ids,
-        props.searchModel.boardIds,
-        props.searchModel.secIds,
-        props.searchModel.offset,
-        props.searchModel.length,
-      ],
-      ([ids, boards, sectors, offset, len]) => {
-        getData(props.searchModel);
-      }
-    );
-    if (process.client) {
-      sh.addShortcut({
-        key: "alt+shift+a",
-        action: () => {
-          const item = instrumentManager.getSelected;
-          if (item) {
-            instrumentManager.updateInstrument(
-              Object.assign({}, item, {
-                side: Side.Buy,
-              })
-            );
-            instrumentManager.setFocusMode(0);
-          }
-        },
-      });
-      sh.addShortcut({
-        key: "alt+shift+s",
-        action: () => {
-          const item = instrumentManager.getSelected;
-          if (item) {
-            instrumentManager.updateInstrument(
-              Object.assign({}, item, {
-                id: item.id,
-                side: Side.Sell,
-              })
-            );
-            instrumentManager.setFocusMode(0);
-          }
-        },
-      });
-    }
-    getData(props.searchModel);
-    return {
-      parseStatus,
-      itemToDelete,
-      drag,
-      drop,
-      focus,
-      remove,
-      Side,
-      order,
-      headers,
-      focused,
-      canfocus,
-      inst: instruments,
-      confirmInstrumentRemoval,
-    };
-    //TODO remove in vue3
-    function useI18n() {
-      return context.root.$i18n;
-    }
-  },
+const focused = instrumentManager.getFocus;
+const canfocus = computed(() => {
+  if (!process.client) return false;
+  return focused.length < Math.floor(instrumentManager.width / 360);
 });
+const me = userManager.me;
+
+const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
+  const res: Array<WatchlistColumns> = [];
+  const actions = new WatchlistColumns("", "actions", "center", "100px");
+  actions.draggable = false;
+  res.push(actions);
+  res.push(
+    ...((me.settings.columns ?? DefaultCols()).map((col: WatchlistColumns) =>
+      Object.assign({}, col, {
+        text: col.text == "" ? "" : i18n.t(col.text),
+      })
+    ) as WatchlistColumns[])
+  );
+  const more = new WatchlistColumns("", "more");
+  more.draggable = false;
+  res.push(more);
+  return res;
+});
+
+function parseStatus(state: number) {
+  switch (state & 7) {
+    case InstrumentStatus.Active:
+      return "instrument.state.active";
+    case InstrumentStatus.ActiveOrder:
+      return "instrument.state.activeOrder";
+    case InstrumentStatus.ActiveTrading:
+      return "instrument.state.activeTrading";
+    case InstrumentStatus.ActiveRead:
+      return "instrument.state.activeRead";
+    case InstrumentStatus.Inactive:
+      return "instrument.state.inactive";
+    case InstrumentStatus.Disabled:
+      return "instrument.state.disabled";
+    case InstrumentStatus.PreActive:
+      return "instrument.state.preActive";
+  }
+}
+
+function order(item: InstrumentCache, side: Side) {
+  instrumentManager.updateInstrument(Object.assign({}, item, { side }));
+  instrumentManager.addFocus(item);
+  instrumentManager.select(item);
+  instrumentManager.setFocusMode(0);
+}
+function focus(item: InstrumentCache) {
+  instrumentManager.addFocus(item);
+  instrumentManager.select(item);
+}
+async function getData(val: InstrumentSearchModel) {
+  _instruments.splice(0, _instruments.length);
+  _instruments.push(...(await instrumentManager.getInstrumentsDetail(val)));
+}
+function refresh() {
+  instruments.splice(0, instruments.length);
+  instruments.push(
+    ..._instruments.filter((item) => {
+      return focused.findIndex((i) => i.id == item.id) == -1;
+    })
+  );
+}
+async function remove(val: InstrumentCache) {
+  const name = route.params.name;
+  const tmp = [...(watchlists[name] ?? [])];
+  tmp.splice(tmp.lastIndexOf(val.id.toString()), 1);
+  await userManager.update_settings({
+    path: "/watch_lists/" + name,
+    value: tmp,
+  });
+  refresh();
+}
+
+let dragItem: InstrumentCache | null = null;
+function drag(item: InstrumentCache) {
+  dragItem = item;
+}
+async function drop(item: InstrumentCache) {
+  if (dragItem && dragItem != item) {
+    const wl = [...(watchlists[name] ?? [])];
+    const ind = wl.findIndex((i) => i == dragItem?.id.toString());
+    wl.splice(ind, 1);
+    const target = wl.findIndex((i) => i == item.id.toString());
+    wl.splice(ind > target ? target : target + 1, 0, dragItem?.id.toString());
+    userManager.setWatchlist({
+      name,
+      watchlist: wl,
+      changeState: false,
+    });
+    await userManager.update_settings({
+      path: "/watch_lists/" + name,
+      value: wl,
+    });
+    refresh();
+  }
+  dragItem = null;
+}
+watch(_instruments, (val) => {
+  refresh();
+});
+watch(focused, (val) => {
+  refresh();
+});
+watch(
+  () => [
+    props.searchModel.ids,
+    props.searchModel.boardIds,
+    props.searchModel.secIds,
+    props.searchModel.offset,
+    props.searchModel.length,
+  ],
+  ([ids, boards, sectors, offset, len]) => {
+    getData(props.searchModel);
+  }
+);
+if (process.client) {
+  sh.addShortcut({
+    key: "alt+shift+a",
+    action: () => {
+      const item = instrumentManager.getSelected;
+      if (item) {
+        instrumentManager.updateInstrument(
+          Object.assign({}, item, {
+            side: Side.Buy,
+          })
+        );
+        instrumentManager.setFocusMode(0);
+      }
+    },
+  });
+  sh.addShortcut({
+    key: "alt+shift+s",
+    action: () => {
+      const item = instrumentManager.getSelected;
+      if (item) {
+        instrumentManager.updateInstrument(
+          Object.assign({}, item, {
+            id: item.id,
+            side: Side.Sell,
+          })
+        );
+        instrumentManager.setFocusMode(0);
+      }
+    },
+  });
+}
+getData(props.searchModel);
 </script>
 
 <template>
   <div class="pb-1">
     <v-data-table
       :headers="headers"
-      :items="inst"
+      :items="instruments"
       item-key="id"
       class="watchlist"
       hide-default-header
@@ -261,7 +218,9 @@ export default defineComponent({
           @dragover="
             (ev) => {
               ev.preventDefault();
-              ev.dataTransfer.dropEffect = 'move';
+              if (ev.dataTransfer) {
+                ev.dataTransfer.dropEffect = 'move';
+              }
             }
           "
           dropzone="true"

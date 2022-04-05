@@ -1,59 +1,56 @@
-<script lang="ts">
-import { defineComponent, ref, Ref } from "#app";
-import { Tabs, DeepOptions, TabTitle, Instrument, SameSectorQuery } from "@/types";
+<script setup lang="ts">
+import { ref, computed } from "#app";
+import { Tabs, DeepOptions, Instrument, SameSectorQuery } from "@/types";
 import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
 import BuySellCard from "@/components/oms/BuySellCard/index.vue";
 import { useBottomPanel, useInstrument } from "~/composables";
 
-export default defineComponent({
-  components: {
-    instrumentCard,
-    OrderQueueCard,
-    LegalRealCard,
-    BuySellCard,
-  },
-  setup() {
-    const bottomPanel = useBottomPanel();
-    const instrumentManager = useInstrument();
-    const instruments = instrumentManager.getFocus;
+const bottomPanel = useBottomPanel();
+const instrumentManager = useInstrument();
+const instruments = instrumentManager.getFocus;
 
-    const count: Ref<number> = ref(0);
-    const price: Ref<number> = ref(0);
-    const tab = instrumentManager.selectedId;
-    function close(id: number) {
-      instrumentManager.removeFocus(id);
-    }
-    async function deep(option: DeepOptions, instrument: Instrument) {
-      bottomPanel.setDepthData(null);
-      switch (option) {
-        case DeepOptions.teammates:
-          try {
-            bottomPanel.setLoading(true);
-            await bottomPanel.getTeammates(
-              new SameSectorQuery(instrument.id, instrument.sectorCode)
-            );
-          } finally {
-            bottomPanel.setLoading(false);
-          }
-          break;
-        default:
-          bottomPanel.setTitle({ tab: Tabs.depth, title: "oms." + option, params: [] });
-          break;
-      }
-      bottomPanel.setActiveTab(Tabs.depth);
-    }
-    return {
-      close,
-      deep,
-      price,
-      count,
-      tab,
-      instruments,
-      deepOptions: DeepOptions,
-    };
+const count = ref(0);
+const price = ref(0);
+const tab = computed({
+  get: () => {
+    return instrumentManager.selectedId;
   },
+  set: (val) => {
+    instrumentManager.selectById(parseInt(val));
+  },
+});
+function close(id: number) {
+  instrumentManager.removeFocus(id);
+}
+async function deep(option: DeepOptions, instrument: Instrument) {
+  bottomPanel.setDepthData(null);
+  switch (option) {
+    case DeepOptions.teammates:
+      try {
+        bottomPanel.setLoading(true);
+        await bottomPanel.getTeammates(
+          new SameSectorQuery(instrument.id, instrument.sectorCode)
+        );
+      } finally {
+        bottomPanel.setLoading(false);
+      }
+      break;
+    default:
+      bottomPanel.setTitle({ tab: Tabs.depth, title: "oms." + option, params: [] });
+      break;
+  }
+  bottomPanel.setActiveTab(Tabs.depth);
+}
+defineExpose({
+  close,
+  deep,
+  price,
+  count,
+  tab,
+  instruments,
+  deepOptions: DeepOptions,
 });
 </script>
 

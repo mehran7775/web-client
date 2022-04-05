@@ -1,3 +1,120 @@
+<script setup lang="ts">
+import { computed, ref, onMounted, Ref, onBeforeUnmount } from "#app";
+import { useShortcut } from "@/utils/shortcutManager";
+import CardView from "./cardView.vue";
+import TabView from "./tabView.vue";
+import { Bookmark } from "~/types";
+import { useInstrument, useUser } from "~/composables";
+import { useRoute } from "#app";
+
+const instrumentManager = useInstrument();
+const userManager = useUser();
+const sh = useShortcut();
+const route = useRoute();
+const toolbar: Ref<any> = ref(null);
+
+const me = userManager.me;
+const bookmarks = userManager.getBookmarks;
+const home = computed(() => me.settings.home);
+const path = computed(() => route.fullPath);
+
+const instruments = instrumentManager.getFocus;
+
+const viewMode = computed({
+  get() {
+    return instrumentManager.focusMode;
+  },
+  set(val: number) {
+    instrumentManager.setFocusMode(val);
+  },
+});
+
+async function setHome() {
+  await userManager.update_settings({
+    path: "/home",
+    value: path.value,
+  });
+}
+
+async function unmark(bookmark: Bookmark) {
+  const tmp = [...bookmarks.filter((item) => item.to != bookmark.to)];
+  userManager.update_settings({
+    path: "/bookmarks",
+    value: tmp,
+  });
+}
+
+if (process.client) {
+  sh.addShortcut({
+    key: "alt+q",
+    action: () => {
+      instrumentManager.setFocusMode((instrumentManager.focusMode + 1) % 2);
+    },
+  });
+  function resize() {
+    instrumentManager.setWidth(toolbar.value?.$el?.clientWidth);
+  }
+  onMounted(() => {
+    window.addEventListener("mousemove", resize);
+  });
+  onBeforeUnmount(() => {
+    window.removeEventListener("mousemove", resize);
+  });
+}
+</script>
+
+<style lang="postcss" scoped>
+.focus-board {
+  height: 320px;
+}
+.bookmark {
+  padding: 0 !important;
+  position: relative;
+  width: 75px;
+  min-width: 75px;
+  max-width: 75px;
+  .label {
+    max-width: calc(75px - 8px);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .removeMark {
+    position: absolute;
+    top: -10px;
+    left: -6px;
+    z-index: 1000;
+    display: none;
+  }
+  &:hover {
+    .removeMark {
+      display: block;
+    }
+  }
+}
+</style>
+
+<style lang="postcss">
+.focus-board {
+  .row {
+    margin: 0;
+    padding: 0;
+    min-height: 32px;
+    .col {
+      min-height: 32px;
+    }
+  }
+}
+.mode {
+  &.v-btn-toggle {
+    > .v-btn.v-btn {
+      border-radius: var(--border-radius-root);
+      border: none !important;
+    }
+  }
+}
+</style>
+
 <template>
   <v-card class="ma-0 pa-0" flat tile>
     <v-toolbar ref="toolbar" :height="42" color="defualt-bg" flat dense>
@@ -68,141 +185,3 @@
     </v-card-text>
   </v-card>
 </template>
-
-<script lang="ts">
-import {
-  defineComponent,
-  computed,
-  ref,
-  onMounted,
-  Ref,
-  watch,
-  onBeforeUnmount,
-} from "#app";
-import { useShortcut } from "@/utils/shortcutManager";
-import CardView from "./cardView.vue";
-import TabView from "./tabView.vue";
-import { Bookmark } from "~/types";
-import { useInstrument, useUser } from "~/composables";
-import { useRoute } from "#app";
-
-export default defineComponent({
-  components: {
-    CardView,
-    TabView,
-  },
-  name: "focus-board",
-  setup(props) {
-    const instrumentManager = useInstrument();
-    const userManager = useUser();
-    const sh = useShortcut();
-    const route = useRoute();
-    const toolbar: Ref<any> = ref(null);
-
-    const me = userManager.me;
-    const bookmarks = userManager.getBookmarks;
-    const home = computed(() => me.settings.home);
-    const path = computed(() => route.fullPath);
-
-    const instruments = instrumentManager.getFocus;
-
-    const viewMode = instrumentManager.focusMode;
-
-    async function setHome() {
-      await userManager.update_settings({
-        path: "/home",
-        value: path.value,
-      });
-    }
-
-    async function unmark(bookmark: Bookmark) {
-      const tmp = [...bookmarks.filter((item) => item.to != bookmark.to)];
-      userManager.update_settings({
-        path: "/bookmarks",
-        value: tmp,
-      });
-    }
-
-    if (process.client) {
-      sh.addShortcut({
-        key: "alt+q",
-        action: () => {
-          instrumentManager.setFocusMode((instrumentManager.focusMode + 1) % 2);
-        },
-      });
-      function resize() {
-        instrumentManager.setWidth(toolbar.value?.$el?.clientWidth);
-      }
-      onMounted(() => {
-        window.addEventListener("mousemove", resize);
-      });
-      onBeforeUnmount(() => {
-        window.removeEventListener("mousemove", resize);
-      });
-    }
-    return {
-      setHome,
-      unmark,
-      toolbar,
-      route,
-      home,
-      path,
-      viewMode,
-      instruments,
-      bookmarks,
-    };
-  },
-});
-</script>
-
-<style lang="postcss" scoped>
-.focus-board {
-  height: 320px;
-}
-.bookmark {
-  padding: 0 !important;
-  position: relative;
-  width: 75px;
-  min-width: 75px;
-  max-width: 75px;
-  .label {
-    max-width: calc(75px - 8px);
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  .removeMark {
-    position: absolute;
-    top: -10px;
-    left: -6px;
-    z-index: 1000;
-    display: none;
-  }
-  &:hover {
-    .removeMark {
-      display: block;
-    }
-  }
-}
-</style>
-
-<style lang="postcss">
-.focus-board {
-  .row {
-    margin: 0;
-    padding: 0;
-    min-height: 32px;
-    .col {
-      min-height: 32px;
-    }
-  }
-}
-.mode {
-  &.v-btn-toggle {
-    > .v-btn.v-btn {
-      border-radius: var(--border-radius-root);
-      border: none !important;
-    }
-  }
-}
-</style>
