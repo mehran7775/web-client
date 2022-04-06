@@ -254,7 +254,6 @@ instrumentManager
               <numeric-field :value="1000" />
             </v-col>
             <v-col class="d-flex justify-space-between" md="12">
-              <span>درصد سهم</span>
               <percent height="32px" class="tw-flex tw-flex-grow"> </percent>
             </v-col>
             <v-col cols="6"> </v-col>

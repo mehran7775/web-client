@@ -13,17 +13,17 @@ const props = withDefaults(
   }
 );
 const width = computed(() => {
-  return val.value - (val.value / 10) * 0.011857708;
+  return val.value - (val.value / 10 + 1) * 0.25;
 });
 const val = ref(props.value);
 function setVal(value: number) {
   val.value = (value + 1) * 10;
-  console.log(val.value, width.value);
 }
 </script>
 
 <template>
-  <div dir="ltr">
+  <div class="percent-container">
+    <TextInput type="number" label="درصد سهم" v-model="val"></TextInput>
     <div class="percent" :style="{ height: height }">
       <span
         v-for="(i, index) in 10"
@@ -48,10 +48,14 @@ function setVal(value: number) {
   </div>
 </template>
 
-<style lang="postcss">
+<style scoped lang="postcss">
+.percent-container {
+  width: 100%;
+}
 .percent {
   direction: ltr;
   position: relative;
+  min-width: 233px;
   .tooltip {
     color: white;
     position: absolute;
@@ -78,7 +82,7 @@ function setVal(value: number) {
     display: inline-block;
     width: 20px;
     height: 6px;
-    margin: auto 0 auto 3px;
+    margin: auto 3px auto 0;
     border-radius: 6px;
     content: "";
     background-color: var(--c-default-rgb);

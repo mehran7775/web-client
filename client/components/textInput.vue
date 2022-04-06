@@ -1,13 +1,24 @@
 <script setup lang="ts">
 import { computed, ref } from "#app";
-const props = defineProps<{
-  label: string;
-  type: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    label: string;
+    type: string;
+    value: string | number;
+  }>(),
+  {
+    label: "",
+    type: "text",
+    value: "",
+  }
+);
+
+const emit = defineEmits(["input"]);
+
 const ltr = computed<boolean>(() => {
   return props.type == "number";
 });
-const value = ref<string | null>(null);
+const val = ref(props.value);
 </script>
 
 <template>
@@ -20,7 +31,8 @@ const value = ref<string | null>(null);
       <input
         :type="type"
         :class="['tw-min-w-0', 'tw-inline', ltr ? 'ltr' : '']"
-        v-model="value"
+        v-model="val"
+        @input="(data) => emit('input', val)"
       />
       <slot name="append"></slot>
     </div>
