@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "#app";
+import { computed, ref, watch } from "#app";
 const props = withDefaults(
   defineProps<{
     label: string;
@@ -19,6 +19,13 @@ const ltr = computed<boolean>(() => {
   return props.type == "number";
 });
 const val = ref(props.value);
+
+watch(
+  () => props.value,
+  (update) => {
+    val.value = update;
+  }
+);
 </script>
 
 <template>
