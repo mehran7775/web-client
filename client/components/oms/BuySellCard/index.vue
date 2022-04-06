@@ -136,7 +136,7 @@ instrumentManager
                 :ripple="false"
               />
             </v-col>
-            <v-col class="d-flex justify-space-between" md="12">
+            <v-col class="tw-flex tw-justify-between" md="12">
               <span>{{ $t("wealth.sharesCount") }}: </span>
               <numeric-field :value="1000" />
               <span>{{ $t("oms.tradeWage") }}: </span>
@@ -144,7 +144,7 @@ instrumentManager
               <span>{{ $t("oms.tradeValue") }}: </span>
               <numeric-field :value="1000" />
             </v-col>
-            <v-col class="d-flex justify-space-between" md="12"> </v-col>
+            <v-col class="" md="12"> </v-col>
             <v-col cols="6">
               <v-checkbox
                 :label="$t('general.acceptPolicy')"
@@ -156,7 +156,7 @@ instrumentManager
             <v-col class="tw-flex-row ltr">
               <clock :format="$t('general.date.dt')" class="ltr" />
             </v-col>
-            <v-col cols="12" class="d-flex justify-space-around">
+            <v-col cols="12" class="tw-flex tw-justify-around">
               <v-btn class="draft" height="24" width="149" depressed>
                 {{ $t("general.draft") }}
               </v-btn>
@@ -245,7 +245,7 @@ instrumentManager
                 :ripple="false"
               />
             </v-col>
-            <v-col class="d-flex justify-space-between" md="12">
+            <v-col class="tw-flex tw-justify-between" md="12">
               <span>{{ $t("wealth.sharesCount") }}: </span>
               <numeric-field :value="1000" />
               <span>{{ $t("oms.tradeWage") }}: </span>
@@ -253,14 +253,14 @@ instrumentManager
               <span>{{ $t("oms.tradeValue") }}: </span>
               <numeric-field :value="1000" />
             </v-col>
-            <v-col class="d-flex justify-space-between" md="12">
+            <v-col md="12">
               <percent height="32px" class="tw-flex tw-flex-grow"> </percent>
             </v-col>
             <v-col cols="6"> </v-col>
             <v-col class="tw-flex-row ltr">
               <clock :format="$t('general.date.dt')" class="ltr" />
             </v-col>
-            <v-col cols="12" class="d-flex justify-space-around">
+            <v-col cols="12" class="tw-flex tw-justify-around">
               <v-btn class="draft" height="24" width="149" depressed>
                 {{ $t("general.draft") }}
               </v-btn>

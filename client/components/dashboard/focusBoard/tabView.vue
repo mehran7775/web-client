@@ -125,6 +125,7 @@ defineExpose({
 .panel {
   border-left: 1px solid #e0e0e0;
   border-right: 1px solid #e0e0e0;
+  max-width: calc(33% - 2px);
 }
 </style>
 

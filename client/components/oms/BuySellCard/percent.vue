@@ -23,7 +23,6 @@ function setVal(value: number) {
 
 <template>
   <div class="percent-container">
-    <TextInput type="number" label="درصد سهم" v-model="val"></TextInput>
     <div class="percent" :style="{ height: height }">
       <span
         v-for="(i, index) in 10"
@@ -47,15 +46,16 @@ function setVal(value: number) {
         </span>
       </div>
     </div>
+    <TextInput dir="rtl" type="number" label="درصد سهم" v-model="val"></TextInput>
   </div>
 </template>
 
 <style scoped lang="postcss">
 .percent-container {
-  width: 100%;
+  @apply tw-w-full tw-max-w-full;
+  direction: ltr;
   .percent {
-    direction: ltr;
-    position: relative;
+    @apply tw-relative;
     min-width: 233px;
     .tooltip-container {
       position: absolute;
