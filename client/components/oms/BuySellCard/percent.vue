@@ -40,8 +40,10 @@ function setVal(value: number) {
           class="point"
         >
         </span>
+      </div>
+      <div class="tooltip-container" :style="{ height: height, width: width + '%' }">
         <span class="tooltip">
-          {{ formatter.format(val) }}
+          {{ formatter.format(val / 100) }}
         </span>
       </div>
     </div>
@@ -51,46 +53,48 @@ function setVal(value: number) {
 <style scoped lang="postcss">
 .percent-container {
   width: 100%;
-}
-.percent {
-  direction: ltr;
-  position: relative;
-  min-width: 233px;
-  .tooltip {
-    color: white;
-    position: absolute;
-    display: block;
-    top: -13px;
-    right: 0;
-    width: 14px;
-    height: 10px;
-    line-height: 10px;
-    border-radius: 2px;
-    font-size: 6px;
-    text-align: center;
-  }
-  .selected {
-    position: absolute;
-    top: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    .point {
-      background-color: var(--c-primary-rgb);
-    }
-  }
-  .point {
-    display: inline-block;
-    width: 20px;
-    height: 6px;
-    margin: auto 3px auto 0;
-    border-radius: 6px;
-    content: "";
-    background-color: var(--c-default-rgb);
-    &:hover {
-      background-color: rgba(var(--c-primary), 0.5);
+  .percent {
+    direction: ltr;
+    position: relative;
+    min-width: 233px;
+    .tooltip-container {
+      position: absolute;
+      top: 0;
+      left: 0;
       .tooltip {
+        color: white;
+        position: absolute;
         display: block;
+        top: 0;
+        right: -7px;
+        width: 14px;
+        height: 10px;
+        line-height: 10px;
+        border-radius: 2px;
+        font-size: 6px;
+        text-align: center;
         background-color: var(--c-primary-rgb);
+      }
+    }
+    .selected {
+      position: absolute;
+      top: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      .point {
+        background-color: var(--c-primary-rgb);
+      }
+    }
+    .point {
+      display: inline-block;
+      width: 20px;
+      height: 6px;
+      margin: auto 3px auto 0;
+      border-radius: 6px;
+      content: "";
+      background-color: var(--c-default-rgb);
+      &:hover {
+        background-color: rgba(var(--c-primary), 0.5);
       }
     }
   }

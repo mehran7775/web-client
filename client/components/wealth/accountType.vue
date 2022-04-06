@@ -4,5 +4,5 @@
 <script setup lang="ts">
 import { AutoCompleteItem } from "~/types";
 
-const items = [new AutoCompleteItem("1", "حساب ۱")];
+const items = [new AutoCompleteItem("1", "نزد کارگزار")];
 </script>
