@@ -270,7 +270,7 @@ export default defineComponent({
       switch (data.bookmarkPosition) {
         case BookmarkPosition.ToolBar:
           {
-            const tmp = [...bookmarks, bk];
+            const tmp = [...bookmarks.value, bk];
             userManager.update_settings({
               path: "/bookmarks",
               value: tmp,
@@ -279,7 +279,7 @@ export default defineComponent({
           break;
         case BookmarkPosition.RightPanel:
           {
-            const tmp = [...shourtcuts, bk];
+            const tmp = [...shourtcuts.value, bk];
             userManager.update_settings({
               path: "/shourtcuts",
               value: tmp,
@@ -292,7 +292,7 @@ export default defineComponent({
       switch (data.bookmarkPosition) {
         case BookmarkPosition.ToolBar:
           {
-            let tmp = [...bookmarks];
+            let tmp = [...bookmarks.value];
             tmp.splice(
               tmp.findIndex((item) => item.to == data.to),
               1
@@ -305,7 +305,7 @@ export default defineComponent({
           break;
         case BookmarkPosition.RightPanel:
           {
-            let tmp = [...shourtcuts];
+            let tmp = [...shourtcuts.value];
             tmp.splice(
               tmp.findIndex((item) => item.to == data.to),
               1

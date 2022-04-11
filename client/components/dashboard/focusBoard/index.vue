@@ -14,7 +14,7 @@ const route = useRoute();
 const toolbar: Ref<any> = ref(null);
 
 const me = userManager.me;
-const bookmarks = userManager.getBookmarks;
+const bookmarks = computed(() => userManager.getBookmarks);
 const home = computed(() => me.settings.home);
 const path = computed(() => route.fullPath);
 
@@ -37,7 +37,7 @@ async function setHome() {
 }
 
 async function unmark(bookmark: Bookmark) {
-  const tmp = [...bookmarks.filter((item) => item.to != bookmark.to)];
+  const tmp = [...bookmarks.value.filter((item) => item.to != bookmark.to)];
   userManager.update_settings({
     path: "/bookmarks",
     value: tmp,

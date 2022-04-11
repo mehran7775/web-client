@@ -14,9 +14,7 @@ const items = [
 
 const window = computed(() => (value.value?.id == "4" ? "date" : "select"));
 const value = ref<AutoCompleteItem | null>();
-watch(value, (val) => {
-  console.log(val);
-});
+//TODO emit update
 </script>
 <template>
   <Windows>
