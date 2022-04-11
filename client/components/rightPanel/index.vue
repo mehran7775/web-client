@@ -196,14 +196,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  Ref,
-  computed,
-  watch,
-  ComputedRef,
-} from "#app";
+import { defineComponent, ref, Ref, computed, watch, ComputedRef } from "#app";
 import { useShortcut } from "@/utils/shortcutManager";
 import { BookmarkPosition, CreateBookmark, MenuItem } from "~/types";
 import { useAsrTrader, useUser } from "~/composables";
@@ -224,18 +217,18 @@ export default defineComponent({
     const sh = useShortcut();
     const selected = computed(() => appManager.menu);
     const rtl = appManager.rtl;
-    const bookmarks = userManager.getBookmarks;
-    const shourtcuts = userManager.getShourtcuts;
+    const bookmarks = computed(() => userManager.getBookmarks);
+    const shourtcuts = computed(() => userManager.getShourtcuts);
     const isMarked = computed(() => (data: MenuItem) => {
       switch (data.bookmarkPosition) {
         case BookmarkPosition.ToolBar:
-          return bookmarks.findIndex((val) => val.title == data.title) > -1;
+          return bookmarks.value.findIndex((val) => val.title == data.title) > -1;
         case BookmarkPosition.RightPanel:
-          return shourtcuts.findIndex((val) => val.title == data.title) > -1;
+          return shourtcuts.value.findIndex((val) => val.title == data.title) > -1;
       }
     });
     const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
-      const lists = userManager.watchList;
+      const lists = computed(() => userManager.watchList);
       const res = [];
       for (let k in lists.value) {
         res.push({

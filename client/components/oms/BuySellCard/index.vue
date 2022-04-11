@@ -3,7 +3,7 @@ import { computed, Ref, ref } from "#app";
 import { useInstrument } from "@/composables";
 import { InstrumentCache, InstrumentSearchModel, Side } from "@/types";
 import accountType from "@/components/wealth/accountType.vue";
-import credit from "@/components/wealth/validity.vue";
+import credit from "@/components/wealth/validity";
 import percent from "./percent.vue";
 
 const props = defineProps<{

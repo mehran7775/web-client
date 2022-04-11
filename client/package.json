@@ -20,7 +20,8 @@
     "pinia": "^2.0.13",
     "@pinia/nuxt": "^0.1.8",
     "vue-i18n": "^8.27.1",
-    "marked": "^4.0.12"
+    "marked": "^4.0.12",
+    "jalali-moment": "^3.3.11"
   },
   "devDependencies": {
     "@mdi/font": "latest",

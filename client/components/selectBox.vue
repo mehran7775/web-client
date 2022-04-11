@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ComponentPublicInstance, onBeforeUnmount, ref } from "#app";
+import { onBeforeUnmount, ref, watch } from "#app";
 
 interface selectProps {
   label: string;
@@ -9,6 +9,7 @@ interface selectProps {
   items: any;
   textPath: string;
   keyPath: string;
+  value: any;
 }
 
 const props = withDefaults(defineProps<selectProps>(), {
@@ -19,19 +20,34 @@ const props = withDefaults(defineProps<selectProps>(), {
   readonly: false,
   textPath: "$.name",
   keyPath: "$.id",
+  value: null,
 });
+
+const emit = defineEmits(["input"]);
 
 const active = ref(false);
 const selectedText = ref("");
-const value = ref<string | null>(null);
+const val = ref<string | null>(props.value);
 const inp = ref<HTMLInputElement | null>(null);
+
+watch(
+  () => props.value,
+  (update) => {
+    if (update) select(update);
+    else {
+      selectedText.value = "";
+      val.value = null;
+    }
+  }
+);
 
 function toggleActive() {
   active.value = !active.value;
 }
 
 function select(item: any) {
-  value.value = item;
+  val.value = item;
+  emit("input", item);
   selectedText.value = getText(item);
   active.value = false;
 }
@@ -67,7 +83,7 @@ if (process.client) {
       'tw-min-w-0',
       'tw-whitespace-nowrap',
       active ? 'active' : 'inactive',
-      value == null ? '' : 'value',
+      val == null ? '' : 'value',
     ]"
     :style="{ height: height }"
     @click="toggleActive"
