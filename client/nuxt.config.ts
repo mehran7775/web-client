@@ -5,7 +5,6 @@ export default defineNuxtConfig({
   ssr: true,
   target: "server",
   bridge: {
-    meta: true,
     postcss8: true,
     typescript: true,
     autoImports: true,
