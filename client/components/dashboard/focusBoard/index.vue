@@ -18,7 +18,7 @@ const bookmarks = computed(() => userManager.getBookmarks);
 const home = computed(() => me.settings.home);
 const path = computed(() => route.fullPath);
 
-const instruments = instrumentManager.getFocus;
+const instruments = computed(() => instrumentManager.getFocus);
 
 const viewMode = computed({
   get() {

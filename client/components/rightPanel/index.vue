@@ -216,7 +216,7 @@ export default defineComponent({
     const router = useRouter();
     const sh = useShortcut();
     const selected = computed(() => appManager.menu);
-    const rtl = appManager.rtl;
+    const rtl = computed(() => appManager.rtl);
     const bookmarks = computed(() => userManager.getBookmarks);
     const shourtcuts = computed(() => userManager.getShourtcuts);
     const isMarked = computed(() => (data: MenuItem) => {
