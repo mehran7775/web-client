@@ -37,12 +37,12 @@ const _instruments: Array<InstrumentCache> = reactive([]);
 const instruments: Array<InstrumentCache> = reactive([]);
 const confirmInstrumentRemoval = ref(false);
 
-const watchlists = userManager.watchList;
+const watchlists = computed(() => userManager.watchList);
 
-const focused = instrumentManager.getFocus;
+const focused = computed(() => instrumentManager.getFocus);
 const canfocus = computed(() => {
   if (!process.client) return false;
-  return focused.length < Math.floor(instrumentManager.width / 360);
+  return focused.value.length < Math.floor(instrumentManager.width / 360);
 });
 const me = userManager.me;
 
@@ -101,13 +101,13 @@ function refresh() {
   instruments.splice(0, instruments.length);
   instruments.push(
     ..._instruments.filter((item) => {
-      return focused.findIndex((i) => i.id == item.id) == -1;
+      return focused.value.findIndex((i) => i.id == item.id) == -1;
     })
   );
 }
 async function remove(val: InstrumentCache) {
   const name = route.params.name;
-  const tmp = [...(watchlists[name] ?? [])];
+  const tmp = [...(watchlists.value[name] ?? [])];
   tmp.splice(tmp.lastIndexOf(val.id.toString()), 1);
   await userManager.update_settings({
     path: "/watch_lists/" + name,
@@ -122,7 +122,7 @@ function drag(item: InstrumentCache) {
 }
 async function drop(item: InstrumentCache) {
   if (dragItem && dragItem != item) {
-    const wl = [...(watchlists[name] ?? [])];
+    const wl = [...(watchlists.value[name] ?? [])];
     const ind = wl.findIndex((i) => i == dragItem?.id.toString());
     wl.splice(ind, 1);
     const target = wl.findIndex((i) => i == item.id.toString());
