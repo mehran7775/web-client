@@ -250,6 +250,20 @@ export const useUser = defineStore("user", () => {
       throw e;
     }
   }
+  async function delete_settings(payload: { path: string }): Promise<void> {
+    try {
+      const resp = await userManager.deleteUserSettings(payload.path, axios);
+      if (resp.data.setting) {
+        setSettings(resp.data.setting);
+        if (process.client)
+          localStorage.setItem(userKey, JSON.stringify(state.value.user));
+      }
+      settingsNotChanged(payload.path);
+    } catch (e) {
+      setSettingsChanged({ key: payload.path, value: null });
+      throw e;
+    }
+  }
   async function getProfilePic(name: string): Promise<string> {
     const img: Uint8Array = (await userManager.getProfileImage(name, axios))
       ?.data;
@@ -305,6 +319,7 @@ export const useUser = defineStore("user", () => {
     doLogout,
     refreshToken,
     update_settings,
+    delete_settings,
     getProfilePic,
     getLogs,
   };

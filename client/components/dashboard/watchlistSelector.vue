@@ -1,3 +1,77 @@
+<script setup lang="ts">
+import { ref, Ref, reactive, watch, computed } from "#app";
+import { useUser } from "~/composables";
+import { useRoute, useRouter } from "#app";
+
+const props = withDefaults(
+  defineProps<{
+    autoRoute: boolean;
+  }>(),
+  {
+    autoRoute: false,
+  }
+);
+
+const route = useRoute();
+const router = useRouter();
+const userManager = useUser();
+const selected: Ref<any> = ref(null);
+const newName = ref("");
+const watchList: any[] = reactive([]);
+const wls = computed(() => userManager.watchList);
+
+function refresh() {
+  watchList.splice(0, watchList.length);
+  Object.keys(wls.value).forEach((k) => {
+    watchList.push({
+      onEdit: false,
+      newName: k,
+      text: k,
+      id: k,
+      to: "/watchList/" + k,
+    });
+  });
+  selected.value = watchList.find((item) => item.id == route.params.name) ?? watchList[0];
+}
+async function create() {
+  if (!newName.value || newName.value == "") return;
+  await userManager.update_settings({
+    path: "/watch_lists/" + newName.value,
+    value: [],
+  });
+  newName.value = "";
+  refresh();
+}
+async function remove(name: string) {
+  await userManager.delete_settings({
+    path: "/watch_lists/" + name,
+  });
+  if (name == route.params.name) router.push(watchList[0].to);
+  refresh();
+}
+async function rename(item: any) {
+  const tmp: any = {};
+  Object.keys(wls).forEach((i) => {
+    if (i == item.id) tmp[item.newName] = wls.value[item.id];
+    else tmp[i] = wls.value[i];
+  });
+  await userManager.update_settings({
+    path: "/watch_lists",
+    value: tmp,
+  });
+  if (item.id == route.params.name) router.push("/watchList/" + item.newName);
+  refresh();
+}
+
+function select(val: any) {
+  if (props.autoRoute) router.push(val.to);
+}
+refresh();
+function drag(ev: DragEvent) {}
+
+watch(selected, select);
+</script>
+
 <template>
   <v-select
     height="28"
@@ -96,94 +170,6 @@
     </template>
   </v-select>
 </template>
-
-<script lang="ts">
-import { defineComponent, ref, Ref, reactive, watch } from "#app";
-import { useUser } from "~/composables";
-import { useRoute, useRouter } from "#app";
-
-export default defineComponent({
-  props: {
-    autoRoute: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props) {
-    const route = useRoute();
-    const router = useRouter();
-    const userManager = useUser();
-    const selected: Ref<any> = ref(null);
-    const newName = ref("");
-    const watchList: any[] = reactive([]);
-    const wls = userManager.watchList;
-
-    function refresh() {
-      watchList.splice(0, watchList.length);
-      Object.keys(wls).forEach((k) => {
-        watchList.push({
-          onEdit: false,
-          newName: k,
-          text: k,
-          id: k,
-          to: "/watchList/" + k,
-        });
-      });
-      selected.value =
-        watchList.find((item) => item.id == route.params.name) ?? watchList[0];
-    }
-    async function create() {
-      if (!newName.value || newName.value == "") return;
-      await userManager.update_settings({
-        path: "/watch_lists/" + newName.value,
-        value: [],
-      });
-      newName.value = "";
-      refresh();
-    }
-    async function remove(name: string) {
-      await userManager.update_settings({
-        path: "/watch_lists/" + name,
-        value: null,
-      });
-      if (name == route.params.name) router.push(watchList[0].to);
-      refresh();
-    }
-    async function rename(item: any) {
-      const tmp: any = {};
-      Object.keys(wls).forEach((i) => {
-        if (i == item.id) tmp[item.newName] = wls[item.id];
-        else tmp[i] = wls[i];
-      });
-      await userManager.update_settings({
-        path: "/watch_lists",
-        value: tmp,
-      });
-      if (item.id == route.params.name) router.push("/watchList/" + item.newName);
-      refresh();
-    }
-
-    function select(val: any) {
-      if (props.autoRoute) router.push(val.to);
-    }
-    refresh();
-    function drag(ev: DragEvent) {}
-
-    watch(selected, select);
-
-    return {
-      drag,
-      select,
-      create,
-      remove,
-      rename,
-      selected,
-      watchList,
-      newName,
-    };
-  },
-});
-</script>
 
 <style lang="postcss" scoped>
 .watchlist-select {
