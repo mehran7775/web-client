@@ -27,6 +27,15 @@ export async function updateUserSettings(path: string, settings: any, axios: Axi
   })
 }
 
+export async function deleteUserSettings(path: string, axios: AxiosInstance):
+  Promise<AxiosResponse<{ setting: Setting }>> {
+  return await axios.delete('/sso/user/edit-setting?keys=' + (path ?? '/'), {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
 export async function updateUserWatchlist(watchlist: object, axios: AxiosInstance) {
   return await axios.put('/sso/user/update-watchlist', watchlist)
 }
@@ -52,6 +61,7 @@ export default {
   getUserList,
   updateUser,
   updateUserSettings,
+  deleteUserSettings,
   updateUserWatchlist,
   createUser,
   deleteUser,

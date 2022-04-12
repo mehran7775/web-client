@@ -5,10 +5,11 @@ export default defineNuxtConfig({
   ssr: true,
   target: "server",
   bridge: {
+    vite: false,
     postcss8: true,
     typescript: true,
     autoImports: true,
-    scriptSetup: true
+    scriptSetup: true,
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
