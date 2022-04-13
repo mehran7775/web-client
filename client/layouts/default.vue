@@ -193,7 +193,7 @@ const rtl = computed(() => appManager.rtl);
       padding-left: 152px !important;
     }
     &.right {
-      padding-right: 152px !important;
+      padding-right: 256px !important;
     }
   }
 }

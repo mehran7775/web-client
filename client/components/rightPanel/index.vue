@@ -1,3 +1,241 @@
+<script setup lang="ts">
+import { defineComponent, ref, Ref, computed, watch, ComputedRef } from "#app";
+import { useShortcut } from "@/utils/shortcutManager";
+import { BookmarkPosition, CreateBookmark, MenuItem } from "~/types";
+import { useAsrTrader, useUser } from "~/composables";
+import { getMenuItems } from "./items";
+import { useRouter } from "#app";
+
+const props = defineProps<{
+  value: boolean;
+  mini: boolean;
+  clipped: boolean;
+}>();
+
+const emit = defineEmits(["input", "update:mini"]);
+
+const userManager = useUser();
+const appManager = useAsrTrader();
+const router = useRouter();
+const sh = useShortcut();
+const selected = computed({
+  get() {
+    return appManager.menu;
+  },
+  set(val: string | number | null) {
+    appManager.setMenu(val);
+  },
+});
+const rtl = computed(() => appManager.rtl);
+const bookmarks = computed(() => userManager.getBookmarks);
+const shourtcuts = computed(() => userManager.getShourtcuts);
+const isMarked = computed(() => (data: MenuItem) => {
+  switch (data.bookmarkPosition) {
+    case BookmarkPosition.ToolBar:
+      return bookmarks.value.findIndex((val) => val.title == data.title) > -1;
+    case BookmarkPosition.RightPanel:
+      return shourtcuts.value.findIndex((val) => val.title == data.title) > -1;
+  }
+});
+const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
+  const lists = computed(() => userManager.watchList);
+  const res = [];
+  for (let k in lists.value) {
+    res.push({
+      icon: "isax-eye",
+      title: k,
+      text: k,
+      to: "/watchList/" + k,
+      bookmarkPosition: BookmarkPosition.ToolBar,
+    });
+  }
+  return res;
+});
+const items = getMenuItems(watchList);
+const home = computed(() => userManager.me.settings.home);
+
+const drawer = computed({
+  get() {
+    return props.value;
+  },
+  set(value: boolean) {
+    emit("input", value);
+  },
+});
+function setHome(item: MenuItem) {
+  if (item.to)
+    userManager.update_settings({
+      path: "/home",
+      value: item.to,
+    });
+}
+function mark(data: MenuItem) {
+  const bk = CreateBookmark(data);
+  switch (data.bookmarkPosition) {
+    case BookmarkPosition.ToolBar:
+      {
+        const tmp = [...bookmarks.value, bk];
+        userManager.update_settings({
+          path: "/bookmarks",
+          value: tmp,
+        });
+      }
+      break;
+    case BookmarkPosition.RightPanel:
+      {
+        const tmp = [...shourtcuts.value, bk];
+        userManager.update_settings({
+          path: "/shourtcuts",
+          value: tmp,
+        });
+      }
+      break;
+  }
+}
+function unmark(data: MenuItem) {
+  switch (data.bookmarkPosition) {
+    case BookmarkPosition.ToolBar:
+      {
+        console.log(data, bookmarks.value);
+        let tmp = [...bookmarks.value];
+        tmp.splice(
+          tmp.findIndex((item) => item.to == data.to),
+          1
+        );
+        userManager.update_settings({
+          path: "/bookmarks",
+          value: tmp,
+        });
+      }
+      break;
+    case BookmarkPosition.RightPanel:
+      {
+        let tmp = [...shourtcuts.value];
+        tmp.splice(
+          tmp.findIndex((item) => item.to == data.to),
+          1
+        );
+        userManager.update_settings({
+          path: "/shourtcuts",
+          value: tmp,
+        });
+      }
+      break;
+  }
+}
+watch(selected, (n, o) => {
+  if (typeof n == "string" || typeof n != null) {
+    emit("update:mini", false);
+  }
+});
+if (process.client) {
+  for (let i = 1; i < 10; i++) {
+    sh.addShortcut({
+      key: "alt+Digit" + i.toString(),
+      action: () => {
+        if (i <= watchList.value.length) {
+          router.push(watchList.value[i - 1].to ?? "#");
+        }
+      },
+    });
+  }
+}
+</script>
+
+<style lang="postcss" scoped>
+.sub-item:first-child {
+  .path {
+    height: 28px;
+    top: -12px;
+  }
+}
+.sub-item {
+  position: relative;
+  .path {
+    content: "";
+    top: -20px;
+    height: 37px;
+    width: 12px;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 0 0 var(--border-radius-root) 0;
+    position: absolute;
+  }
+}
+.tabs {
+  background-color: rgba(var(--c-primary), 0.05);
+  overflow-y: auto;
+  height: 100vh;
+  padding-bottom: 54px;
+  width: 48px;
+}
+.details {
+  overflow-y: auto;
+}
+</style>
+
+<style lang="postcss">
+.r-panel {
+  .tabs {
+    &::-webkit-scrollbar {
+      display: block;
+    }
+  }
+  &.v-navigation-drawer--mini-variant {
+    width: 48px !important;
+  }
+  .v-navigation-drawer__content {
+    display: flex;
+    flex-direction: row;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  .v-tabs-items {
+    height: 100%;
+    width: calc(100% - 42px);
+    display: block;
+    .v-list-item {
+      border-radius: var(--border-radius-root);
+    }
+    .v-item--active {
+      color: var(--c-primary-rgb);
+      &::before {
+        border-radius: var(--border-radius-root);
+      }
+    }
+  }
+  .v-tabs {
+    width: 48px;
+    vertical-align: top;
+    &--vertical {
+      > .v-tabs-bar {
+        .v-tabs-bar__content {
+          display: block;
+        }
+        .v-tab {
+          padding: 0;
+          display: block;
+          vertical-align: middle;
+          justify-content: center !important;
+          min-width: 48px;
+          height: 32px !important;
+          &--active {
+            &::before {
+              background-color: rgba(0, 0, 0, 0) !important;
+            }
+            .v-btn {
+              color: var(--c-primary-rgb);
+              background-color: rgba(var(--c-primary), 0.1) !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</style>
+
 <template>
   <v-navigation-drawer
     v-model="drawer"
@@ -5,7 +243,7 @@
     :clipped="clipped"
     :right="rtl"
     class="r-panel ps-0"
-    width="152"
+    width="256"
     mobile-breakpoint="960"
     fixed
     app
@@ -107,10 +345,10 @@
                               x-small
                             >
                               <v-icon
-                                :color="isMarked(sub) ? 'secondary' : 'default'"
+                                :color="isMarked(sub) ? 'primary' : 'default'"
                                 x-small
                               >
-                                mdi-star
+                                isax-star-1-bold
                               </v-icon>
                             </v-btn>
                             <v-btn
@@ -161,10 +399,10 @@
                           x-small
                         >
                           <v-icon
-                            :color="isMarked(child) ? 'secondary' : 'default'"
+                            :color="isMarked(child) ? 'primary' : 'default'"
                             x-small
                           >
-                            mdi-star
+                            isax-star-1-bold
                           </v-icon>
                         </v-btn>
                         <v-btn
@@ -194,255 +432,3 @@
     </v-tabs-items>
   </v-navigation-drawer>
 </template>
-
-<script lang="ts">
-import { defineComponent, ref, Ref, computed, watch, ComputedRef } from "#app";
-import { useShortcut } from "@/utils/shortcutManager";
-import { BookmarkPosition, CreateBookmark, MenuItem } from "~/types";
-import { useAsrTrader, useUser } from "~/composables";
-import { getMenuItems } from "./items";
-import { useNuxtApp, useRouter } from "#app";
-
-export default defineComponent({
-  name: "right-panel",
-  props: {
-    value: Boolean,
-    mini: Boolean,
-    clipped: Boolean,
-  },
-  setup(props, context) {
-    const userManager = useUser();
-    const appManager = useAsrTrader();
-    const router = useRouter();
-    const sh = useShortcut();
-    const selected = computed(() => appManager.menu);
-    const rtl = computed(() => appManager.rtl);
-    const bookmarks = computed(() => userManager.getBookmarks);
-    const shourtcuts = computed(() => userManager.getShourtcuts);
-    const isMarked = computed(() => (data: MenuItem) => {
-      switch (data.bookmarkPosition) {
-        case BookmarkPosition.ToolBar:
-          return bookmarks.value.findIndex((val) => val.title == data.title) > -1;
-        case BookmarkPosition.RightPanel:
-          return shourtcuts.value.findIndex((val) => val.title == data.title) > -1;
-      }
-    });
-    const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
-      const lists = computed(() => userManager.watchList);
-      const res = [];
-      for (let k in lists.value) {
-        res.push({
-          icon: "isax-eye",
-          title: k,
-          text: k,
-          to: "/watchList/" + k,
-          bookmarkPosition: BookmarkPosition.ToolBar,
-        });
-      }
-      return res;
-    });
-    const items = getMenuItems(watchList);
-    const home = computed(() => userManager.me.settings.home);
-
-    const expand: Ref<boolean> = ref(true);
-    const drawer = computed({
-      get() {
-        return props.value;
-      },
-      set(value: boolean) {
-        context.emit("input", value);
-      },
-    });
-    function setHome(item: MenuItem) {
-      if (item.to)
-        userManager.update_settings({
-          path: "/home",
-          value: item.to,
-        });
-    }
-    function mark(data: MenuItem) {
-      const bk = CreateBookmark(data);
-      if (bk.to.indexOf("?") > -1) {
-        bk.to = bk.to + "&s=maked";
-      } else {
-        bk.to = bk.to + "?s=maked";
-      }
-      switch (data.bookmarkPosition) {
-        case BookmarkPosition.ToolBar:
-          {
-            const tmp = [...bookmarks.value, bk];
-            userManager.update_settings({
-              path: "/bookmarks",
-              value: tmp,
-            });
-          }
-          break;
-        case BookmarkPosition.RightPanel:
-          {
-            const tmp = [...shourtcuts.value, bk];
-            userManager.update_settings({
-              path: "/shourtcuts",
-              value: tmp,
-            });
-          }
-          break;
-      }
-    }
-    function unmark(data: MenuItem) {
-      switch (data.bookmarkPosition) {
-        case BookmarkPosition.ToolBar:
-          {
-            let tmp = [...bookmarks.value];
-            tmp.splice(
-              tmp.findIndex((item) => item.to == data.to),
-              1
-            );
-            userManager.update_settings({
-              path: "/bookmarks",
-              value: tmp,
-            });
-          }
-          break;
-        case BookmarkPosition.RightPanel:
-          {
-            let tmp = [...shourtcuts.value];
-            tmp.splice(
-              tmp.findIndex((item) => item.to == data.to),
-              1
-            );
-            userManager.update_settings({
-              path: "/shourtcuts",
-              value: tmp,
-            });
-          }
-          break;
-      }
-    }
-    watch(selected, (n, o) => {
-      if (typeof n == "string" || typeof n != null) {
-        context.emit("update:mini", false);
-      }
-    });
-    if (process.client) {
-      for (let i = 1; i < 10; i++) {
-        sh.addShortcut({
-          key: "alt+Digit" + i.toString(),
-          action: () => {
-            if (i <= watchList.value.length) {
-              router.push(watchList.value[i - 1].to ?? "#");
-            }
-          },
-        });
-      }
-    }
-    return {
-      mark,
-      unmark,
-      setHome,
-      home,
-      isMarked,
-      bookmarks,
-      rtl,
-      drawer,
-      expand,
-      selected,
-      items,
-      shourtcuts,
-    };
-  },
-});
-</script>
-
-<style lang="postcss" scoped>
-.sub-item:first-child {
-  .path {
-    height: 28px;
-    top: -12px;
-  }
-}
-.sub-item {
-  position: relative;
-  .path {
-    content: "";
-    top: -20px;
-    height: 37px;
-    width: 12px;
-    border-right: 1px solid rgba(0, 0, 0, 0.05);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 0 0 var(--border-radius-root) 0;
-    position: absolute;
-  }
-}
-.tabs {
-  background-color: rgba(var(--c-primary), 0.05);
-  overflow-y: auto;
-  height: 100vh;
-  padding-bottom: 54px;
-  width: 48px;
-}
-.details {
-  overflow-y: auto;
-}
-</style>
-
-<style lang="postcss">
-.r-panel {
-  .tabs {
-    &::-webkit-scrollbar {
-      display: block;
-    }
-  }
-  &.v-navigation-drawer--mini-variant {
-    width: 48px !important;
-  }
-  .v-navigation-drawer__content {
-    display: flex;
-    flex-direction: row;
-  }
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  .v-tabs-items {
-    height: 100%;
-    width: calc(100% - 42px);
-    display: block;
-    .v-list-item {
-      border-radius: var(--border-radius-root);
-    }
-    .v-item--active {
-      color: var(--c-primary-rgb);
-      &::before {
-        border-radius: var(--border-radius-root);
-      }
-    }
-  }
-  .v-tabs {
-    width: 48px;
-    vertical-align: top;
-    &--vertical {
-      > .v-tabs-bar {
-        .v-tabs-bar__content {
-          display: block;
-        }
-        .v-tab {
-          padding: 0;
-          display: block;
-          vertical-align: middle;
-          justify-content: center !important;
-          min-width: 48px;
-          height: 32px !important;
-          &--active {
-            &::before {
-              background-color: rgba(0, 0, 0, 0) !important;
-            }
-            .v-btn {
-              color: var(--c-primary-rgb);
-              background-color: rgba(var(--c-primary), 0.1) !important;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-</style>
