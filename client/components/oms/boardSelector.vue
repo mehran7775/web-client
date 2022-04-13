@@ -110,7 +110,7 @@ getBoards(axios).then((resp) => {
             x-small
           >
             <v-icon :color="isMarked(item) ? 'secondary' : 'default'" x-small>
-              mdi-star
+              isax-frame-4
             </v-icon>
           </v-btn>
           <v-btn
@@ -126,7 +126,7 @@ getBoards(axios).then((resp) => {
               :color="generateAddress(item.id) == home ? 'info' : 'default'"
               x-small
             >
-              mdi-home
+              isax-star-1-bold
             </v-icon>
           </v-btn>
         </div>

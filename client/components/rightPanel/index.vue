@@ -352,7 +352,7 @@ if (process.client) {
                                 :color="isMarked(sub) ? 'primary' : 'default'"
                                 x-small
                               >
-                                isax-star-1-bold
+                                isax-frame-4
                               </v-icon>
                             </v-btn>
                             <v-btn
@@ -369,7 +369,7 @@ if (process.client) {
                                 :color="sub.to == home ? 'info' : 'default'"
                                 x-small
                               >
-                                mdi-home
+                                isax-star-1-bold
                               </v-icon>
                             </v-btn>
                           </div>
@@ -406,7 +406,7 @@ if (process.client) {
                             :color="isMarked(child) ? 'primary' : 'default'"
                             x-small
                           >
-                            isax-star-1-bold
+                            isax-frame-4
                           </v-icon>
                         </v-btn>
                         <v-btn
@@ -420,7 +420,7 @@ if (process.client) {
                           x-small
                         >
                           <v-icon :color="child.to == home ? 'info' : 'default'" x-small>
-                            mdi-home
+                            isax-star-1-bold
                           </v-icon>
                         </v-btn>
                       </div>
