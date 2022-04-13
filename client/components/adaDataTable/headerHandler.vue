@@ -61,7 +61,7 @@ async function drop(item: WatchlistColumns) {
             drop(header);
           }
         "
-        v-for="header in props.headers"
+        v-for="(header, index) in props.headers"
         :key="header.value"
         :aria-label="header.text"
         role="columnheader"
@@ -70,7 +70,7 @@ async function drop(item: WatchlistColumns) {
           width: header.width ? header.width : '',
           'min-width': header.width ? header.width : '',
         }"
-        :class="['header', 'text-' + header.align, header.class]"
+        :class="['header', header.class]"
       >
         <slot :header="header" :name="'header.' + header.value">
           <h5>
@@ -79,7 +79,7 @@ async function drop(item: WatchlistColumns) {
           <v-icon color="primary" v-if="header.icon" small>
             {{ header.icon }}
           </v-icon>
-          <bar v-if="header.value != 'actions' && header.value != 'more'" />
+          <bar v-if="header.divider && index != headers.length - 1" />
         </slot>
       </th>
     </tr>

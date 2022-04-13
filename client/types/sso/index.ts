@@ -71,6 +71,7 @@ export class WatchlistColumns {
     this.value = value
     this.align = align
     this.draggable = true
+    this.divider = true
     if (width)
       this.width = width
   }
