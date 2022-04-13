@@ -14,7 +14,7 @@ const cols = [
   new WatchlistColumns(i18n.t("wealth.order.type").toString(), "orderType"),
   new WatchlistColumns(i18n.t("wealth.order.side").toString(), "side"),
   new WatchlistColumns(i18n.t("wealth.order.validity").toString(), "validity"),
-  new WatchlistColumns(i18n.t("general.status").toString(), "flags"),
+  new WatchlistColumns(i18n.t("general.status").toString(), "flags", "left"),
 ];
 
 orderManager

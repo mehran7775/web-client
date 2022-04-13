@@ -29,7 +29,7 @@ td {
       v-for="header in model.headers"
       :key="header.value"
       scope="col"
-      :class="['text-' + header.align, header.class]"
+      :class="['tw-text-' + header.align, header.class]"
     >
       <slot :item="model.item" :name="'item.' + header.value">
         {{ model.item[header.value] }}
