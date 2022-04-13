@@ -169,6 +169,9 @@ if (process.client) {
   padding-bottom: 54px;
   width: 48px;
 }
+.tab-items {
+  background-color: rgba(var(--c-primary), 0.05);
+}
 .details {
   overflow-y: auto;
 }
@@ -208,6 +211,7 @@ if (process.client) {
   .v-tabs {
     width: 48px;
     vertical-align: top;
+    box-shadow: -4px 0 4px rgba(0, 0, 0, 0.05);
     &--vertical {
       > .v-tabs-bar {
         .v-tabs-bar__content {
@@ -295,7 +299,7 @@ if (process.client) {
       </div>
     </v-tabs>
 
-    <v-tabs-items v-model="selected">
+    <v-tabs-items class="tab-items" v-model="selected">
       <v-tab-item v-for="item in items" :key="item.title">
         <div class="details">
           <h4 class="text-center mt-1">
