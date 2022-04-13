@@ -25,9 +25,9 @@ orderManager
 </script>
 
 <template>
-  <v-data-table :items="orders" :headers="cols">
+  <ada-data-table :items="orders" :headers="cols" id="id" class="tw-w-full">
     <template #item.validity="{ item }">
       {{ item.validityDate }}
     </template>
-  </v-data-table>
+  </ada-data-table>
 </template>

@@ -13,8 +13,10 @@ const props = defineProps<{
 .row-border {
   border: none;
   border-color: none;
+  height: var(--tabel-row-height);
 }
-.col-border {
+td {
+  height: var(--tabel-row-height);
   border: none;
   border-color: none;
   border-bottom: 1px solid #e0e0e0;
@@ -27,7 +29,7 @@ const props = defineProps<{
       v-for="header in model.headers"
       :key="header.value"
       scope="col"
-      :class="['header', 'col-border', 'text-' + header.align, header.class]"
+      :class="['text-' + header.align, header.class]"
     >
       <slot :item="model.item" :name="'item.' + header.value">
         {{ model.item[header.value] }}
