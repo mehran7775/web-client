@@ -1,66 +1,42 @@
-<script lang="ts">
-import { defineComponent, computed } from "#app";
+<script setup lang="ts">
+import { useNuxtApp, computed } from "#app";
 import { Tabs } from "@/types";
 import furtherInformation from "./furtherInformation/index.vue";
 import DefaultOrderList from "./defaultOrderList.vue";
 import DeepInformation from "./deepInformation/index.vue";
 import Bests from "./bests.vue";
-import { useUser, useBottomPanel } from "~/composables";
+import { useBottomPanel } from "~/composables";
 
-//TODO not working on small displays
-
-export default defineComponent({
-  components: { furtherInformation, DeepInformation, DefaultOrderList, Bests },
-  setup(_, context) {
-    const userManager = useUser();
-    const bottomPanel = useBottomPanel();
-    const i18n = useI18n();
-    const tabs = ["bottom-panel.orders", "bottom-panel.bests", "bottom-panel.depth"];
-    const isLogin = userManager.isLogin;
-    const tab = computed({
-      get(): Tabs {
-        return bottomPanel.activeTab;
-      },
-      set(value: Tabs) {
-        if (value != null) bottomPanel.setActiveTab(value);
-        else bottomPanel.setActiveTab(Tabs.none);
-      },
-    });
-    const icon = computed(() =>
-      bottomPanel.expanded ? "mdi-arrow-collapse" : "mdi-arrow-expand"
-    );
-    const expanded = computed(() => bottomPanel.expanded);
-    const loading = computed(() => bottomPanel.loading);
-    const title = computed(() => {
-      const tab = bottomPanel.title;
-      return tab ? i18n.t(tab.title, tab.params) : "";
-    });
-
-    function expand() {
-      bottomPanel.toggleExpand();
-    }
-    function close() {
-      if (expanded.value) bottomPanel.toggleExpand();
-      bottomPanel.setActiveTab(Tabs.none);
-    }
-
-    return {
-      height: 32,
-      expand,
-      close,
-      icon,
-      tab,
-      tabs,
-      title,
-      expanded,
-      loading,
-      isLogin,
-    };
-    function useI18n() {
-      return context.root.$i18n;
-    }
+const height = 32;
+const bottomPanel = useBottomPanel();
+const { $i18n: i18n } = useNuxtApp();
+const tabs = ["bottom-panel.orders", "bottom-panel.bests", "bottom-panel.depth"];
+const tab = computed({
+  get(): Tabs {
+    return bottomPanel.activeTab;
+  },
+  set(value: Tabs) {
+    if (value != null) bottomPanel.setActiveTab(value);
+    else bottomPanel.setActiveTab(Tabs.none);
   },
 });
+const icon = computed(() =>
+  bottomPanel.expanded ? "mdi-arrow-collapse" : "mdi-arrow-expand"
+);
+const expanded = computed(() => bottomPanel.expanded);
+const showLoading = computed(() => bottomPanel.loading);
+const title = computed(() => {
+  const tab = bottomPanel.title;
+  return tab ? i18n.t(tab.title, tab.params) : "";
+});
+
+function expand() {
+  bottomPanel.toggleExpand();
+}
+function close() {
+  if (expanded.value) bottomPanel.toggleExpand();
+  bottomPanel.setActiveTab(Tabs.none);
+}
 </script>
 
 <template>
@@ -93,7 +69,7 @@ export default defineComponent({
         </v-btn>
       </v-toolbar>
       <v-card-text v-if="tab != -1" class="detail ma-0 pa-0">
-        <loading :loading="loading" />
+        <loading :loading="showLoading" />
         <v-tabs-items v-model="tab" :class="{ expanded: expanded }">
           <v-tab-item>
             <default-order-list />
@@ -122,6 +98,10 @@ export default defineComponent({
 </template>
 
 <style lang="postcss" scoped>
+.footer {
+  position: fixed;
+  bottom: 0;
+}
 .expanded {
   transition: all 0.5s ease-in-out;
   height: 100%;
@@ -129,7 +109,7 @@ export default defineComponent({
 
 .half {
   transition: all 0.5s ease-in-out;
-  height: calc(50vh - 64px);
+  height: calc(50vh - 88px);
 }
 
 .hiden {
