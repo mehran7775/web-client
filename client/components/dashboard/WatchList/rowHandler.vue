@@ -26,11 +26,9 @@ export default defineComponent({
 <style lang="postcss" scoped>
 .row-border {
   border: none;
-  border-color: none;
 }
 .col-border {
   border: none;
-  border-color: none;
   border-bottom: 1px solid #e0e0e0;
 }
 </style>

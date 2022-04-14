@@ -11,4 +11,9 @@ module.exports = {
   },
   plugins: [],
   prefix: 'tw-',
+  safelist: [
+    {
+      pattern: /tw-text-\w+/,
+    },
+  ]
 }

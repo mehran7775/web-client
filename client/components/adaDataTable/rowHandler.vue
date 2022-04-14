@@ -12,13 +12,11 @@ const props = defineProps<{
 <style lang="postcss" scoped>
 .row-border {
   border: none;
-  border-color: none;
   height: var(--tabel-row-height);
 }
 td {
   height: var(--tabel-row-height);
   border: none;
-  border-color: none;
   border-bottom: 1px solid #e0e0e0;
 }
 </style>

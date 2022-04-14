@@ -2,6 +2,7 @@ FROM artifactory.asredanesh.com/docker/node:lts-stretch-slim
 # Install node packages
 WORKDIR /usr/src/app
 COPY ./client/package.json ./
+COPY ./client/yarn.lock ./
 RUN yarn install
 # Copy application source
 WORKDIR /usr/src
