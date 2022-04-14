@@ -3,7 +3,7 @@ import { ref, computed, watch } from "#app";
 import { AutoCompleteItem } from "~/types";
 import Window from "~~/components/windows/window.vue";
 import Windows from "~~/components/windows/index.vue";
-import DateInput from "../../dateInput.vue";
+import DateInput from "../../DateTime/dateInput.vue";
 
 const items = [
   new AutoCompleteItem("1", "روز"),

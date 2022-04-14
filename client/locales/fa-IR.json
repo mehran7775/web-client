@@ -198,7 +198,7 @@
     }
   },
   "oms": {
-    "openingTrade":"عرضه اولیه",
+    "openingTrade": "عرضه اولیه",
     "brokerage": "کارگزاری",
     "marketModerator": "ناظر",
     "news": "اخبار",
@@ -213,7 +213,7 @@
     "amount": "حجم",
     "volume": "@:oms.amount",
     "count": "تعداد",
-    "view-count":"حجم نمایشی",
+    "view-count": "حجم نمایشی",
     "price-short": "ق",
     "amount-short": "ح",
     "count-short": "ت",
@@ -255,8 +255,11 @@
     "shares": "سهام",
     "sharesCount": "@:oms.count @:wealth.shares",
     "order": {
+      "lastTransaction": "زمان آخرین معامله",
       "creationDate": "تاریخ سفارش",
       "vol": "حجم سفارش",
+      "vol-rem": "ح.مانده",
+      "vol-done": "ح.انجام شده",
       "type": "نوع",
       "side": "خرید/فروش",
       "validity": "اعتبار"

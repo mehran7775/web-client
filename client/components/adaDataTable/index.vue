@@ -25,6 +25,9 @@ table {
     <tbody>
       <slot>
         <RowHandler v-for="item in data" :key="item[id]" :model="{ headers, item }">
+          <template v-for="header in headers" :slot="'item.' + header.value">
+            <slot :item="item" :name="'item.' + header.value" />
+          </template>
         </RowHandler>
       </slot>
     </tbody>
