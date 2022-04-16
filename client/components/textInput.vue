@@ -6,11 +6,19 @@ const props = withDefaults(
     label: string;
     type: string;
     value: string | number;
+    min: number | null;
+    max: number | null;
+    minlength: number | null;
+    maxlength: number | null;
   }>(),
   {
     label: "",
     type: "text",
     value: "",
+    min: null,
+    max: null,
+    minlength: null,
+    maxlength: null,
   }
 );
 
@@ -38,14 +46,14 @@ watch(
     <div class="label">
       {{ label }}
     </div>
-    <div class="input-container tw-min-w-0 tw-flex">
+    <div class="input-container tw-min-w-0 tw-flex tw-flex-grow">
       <slot name="prepend"> </slot>
       <input
         :type="type"
-        :class="['tw-min-w-0', 'tw-inline', ltr ? 'ltr' : '']"
+        :class="['tw-min-w-0 tw-flex-grow', 'tw-inline', ltr ? 'ltr' : '']"
         v-model="val"
         @input="() => emit('input', val)"
-        v-bind="$attrs"
+        v-bind="{ min, max, minlength, maxlength }"
       />
       <slot name="append"></slot>
     </div>

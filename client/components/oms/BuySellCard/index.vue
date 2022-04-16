@@ -3,14 +3,18 @@ import { computed, Ref, ref } from "#app";
 import { useInstrument } from "@/composables";
 import { InstrumentCache, InstrumentSearchModel, Side } from "@/types";
 import accountType from "@/components/wealth/accountType.vue";
-import credit from "@/components/wealth/validity";
+import credit from "@/components/wealth/validity/index.vue";
 import percent from "./percent.vue";
+import { object, number, AnyObjectSchema } from "yup";
+import TextInput from "~~/components/textInput.vue";
 
 const props = defineProps<{
   count: number;
   price: number;
   insId: number;
 }>();
+
+const buyForm = ref<AnyObjectSchema | null>(null);
 
 const emit = defineEmits(["update:count", "update:price"]);
 
@@ -21,7 +25,7 @@ const countVal = computed({
     return props.count?.toString();
   },
   set(val: string | undefined) {
-    emit("update:count", val ? parseInt(val) : undefined);
+    emit("update:count", val ? parseInt(val) : 0);
   },
 });
 const priceVal = computed({
@@ -29,7 +33,7 @@ const priceVal = computed({
     return props.price?.toString();
   },
   set(val: string | undefined) {
-    emit("update:price", val ? parseInt(val) : undefined);
+    emit("update:price", val ? parseInt(val) : 0);
   },
 });
 const tab = computed({
@@ -45,10 +49,33 @@ const tab = computed({
   },
 });
 
+async function buyCheck() {
+  if (buyForm.value) {
+    try {
+      await buyForm.value.validate({
+        quantity: props.count,
+        fee: props.price,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}
+
 instrumentManager
   .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
   .then((data: Array<InstrumentCache>) => {
     active.value = data[0];
+    emit("update:count", active.value.minQuantityPerOrder);
+    emit("update:price", active.value.minAllowedPrice);
+    buyForm.value = object({
+      quantity: number()
+        .min(active.value.minQuantityPerOrder, "oms.order.validation.minQuantity")
+        .max(active.value.maxQuantityPerOrder, "oms.order.validation.maxQuantity"),
+      fee: number()
+        .min(active.value.minAllowedPrice, "oms.order.validation.minPrice")
+        .max(active.value.maxAllowedPrice, "oms.order.validation.MaxPrice"),
+    });
   });
 </script>
 
@@ -80,6 +107,8 @@ instrumentManager
                 type="number"
                 v-model="countVal"
                 class="me-3 tw-mt-1"
+                :min="!!active ? active.minQuantityPerOrder : 1"
+                :max="!!active ? active.maxQuantityPerOrder : null"
               >
                 <template #append>
                   <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
@@ -93,6 +122,8 @@ instrumentManager
                 type="number"
                 v-model="priceVal"
                 class="tw-mt-1"
+                :min="!!active ? active.minAllowedPrice : 1"
+                :max="!!active ? active.maxAllowedPrice : null"
               >
                 <template #append>
                   <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
@@ -123,7 +154,7 @@ instrumentManager
                 class="me-3 tw-mt-1"
               >
                 <template #append>
-                  <span class="tw-w-6 tw-inline-block">0</span>
+                  <span class="tw-w-6 tw-inline-block">{{ countVal }}</span>
                 </template>
               </text-input>
             </v-col>
@@ -157,7 +188,17 @@ instrumentManager
               <clock :format="$t('general.date.dt')" class="ltr" />
             </v-col>
             <v-col cols="12" class="tw-flex tw-justify-around">
-              <v-btn class="draft" height="24" width="149" depressed>
+              <v-btn
+                class="draft"
+                height="24"
+                width="149"
+                @click="
+                  () => {
+                    buyCheck();
+                  }
+                "
+                depressed
+              >
                 {{ $t("general.draft") }}
               </v-btn>
               <v-btn
@@ -189,6 +230,8 @@ instrumentManager
                 type="number"
                 v-model="countVal"
                 class="me-3 tw-mt-1"
+                :min="!!active ? active.minQuantityPerOrder : 1"
+                :max="!!active ? active.maxQuantityPerOrder : null"
               >
                 <template #append>
                   <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
@@ -202,6 +245,8 @@ instrumentManager
                 type="number"
                 v-model="priceVal"
                 class="tw-mt-1"
+                :min="!!active ? active.minAllowedPrice : 1"
+                :max="!!active ? active.maxAllowedPrice : null"
               >
                 <template #append>
                   <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
@@ -232,7 +277,7 @@ instrumentManager
                 class="me-3 tw-mt-1"
               >
                 <template #append>
-                  <span class="tw-w-6 tw-inline-block">0</span>
+                  <span class="tw-w-6 tw-inline-block">{{ countVal }}</span>
                 </template>
               </text-input>
             </v-col>
@@ -261,7 +306,17 @@ instrumentManager
               <clock :format="$t('general.date.dt')" class="ltr" />
             </v-col>
             <v-col cols="12" class="tw-flex tw-justify-around">
-              <v-btn class="draft" height="24" width="149" depressed>
+              <v-btn
+                class="draft"
+                height="24"
+                width="149"
+                @click="
+                  () => {
+                    buyCheck();
+                  }
+                "
+                depressed
+              >
                 {{ $t("general.draft") }}
               </v-btn>
               <v-btn
