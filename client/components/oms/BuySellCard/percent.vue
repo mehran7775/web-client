@@ -1,23 +1,43 @@
 <script setup lang="ts">
-import { computed, ref } from "#app";
+import { computed, ref, watch } from "#app";
 import { useAsrTrader } from "@/composables";
-const formatter = useAsrTrader().percentFormatter;
 
 const props = withDefaults(
   defineProps<{
     height: string;
     value: number;
+    min: number;
+    max: number;
   }>(),
   {
-    value: 15,
+    value: 0,
+    min: 0,
+    max: 100,
   }
 );
+
+const emit = defineEmits(["input"]);
+
+const formatter = useAsrTrader().percentFormatter;
 const width = computed(() => {
-  return val.value - (val.value / 10 + 1) * 0.25;
+  return (val.value * 203) / 100 + Math.floor(val.value / 10) * 2.5;
 });
+
 const val = ref(props.value);
+
+watch(
+  () => props.value,
+  (update) => {
+    setValue(update);
+  }
+);
+function setValue(update: number | string) {
+  if (typeof update == "string") update = parseInt(update);
+  val.value = update > props.max ? props.max : update < props.min ? props.min : update;
+  emit("input", val.value);
+}
 function setVal(value: number) {
-  val.value = (value + 1) * 10;
+  val.value = value * 10;
 }
 </script>
 
@@ -27,26 +47,34 @@ function setVal(value: number) {
       <span
         v-for="(i, index) in 10"
         :key="index"
-        @click="() => setVal(index)"
+        @click="() => setVal(index + 1)"
         class="point"
       >
       </span>
-      <div class="selected" :style="{ width: width + '%' }">
-        <span
-          v-for="(i, index) in 10"
-          :key="index"
-          @click="() => setVal(index)"
-          class="point"
-        >
-        </span>
-      </div>
-      <div class="tooltip-container" :style="{ height: height, width: width + '%' }">
+      <div class="tooltip-container" :style="{ height: height, width: width + 'px' }">
         <span class="tooltip">
           {{ formatter.format(val / 100) }}
         </span>
       </div>
+      <div class="selected" :style="{ width: width + 'px' }">
+        <span
+          v-for="(i, index) in 10"
+          :key="index"
+          @click="() => setVal(index + 1)"
+          class="point"
+        >
+        </span>
+      </div>
     </div>
-    <TextInput dir="rtl" type="number" label="درصد سهم" v-model="val"></TextInput>
+    <TextInput
+      dir="rtl"
+      type="number"
+      label="درصد سهم"
+      :value="val"
+      @input="setValue"
+      :min="min"
+      :max="max"
+    ></TextInput>
   </div>
 </template>
 

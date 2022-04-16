@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "#app";
+
 const props = withDefaults(
   defineProps<{
     label: string;
     type: string;
     value: string | number;
+    min: number | null;
+    max: number | null;
   }>(),
   {
     label: "",
     type: "text",
     value: "",
+    min: null,
+    max: null,
   }
 );
 
@@ -19,11 +24,19 @@ const ltr = computed<boolean>(() => {
   return props.type == "number";
 });
 const val = ref(props.value);
+console.log("min", props.min);
+console.log("max", props.max);
+
+function setValue(update: any) {
+  val.value = update;
+  if (props.min != null && update < props.min) val.value = props.min;
+  if (props.max != null && update > props.max) val.value = props.max;
+}
 
 watch(
   () => props.value,
   (update) => {
-    val.value = update;
+    setValue(update);
   }
 );
 </script>
@@ -39,7 +52,12 @@ watch(
         :type="type"
         :class="['tw-min-w-0', 'tw-inline', ltr ? 'ltr' : '']"
         v-model="val"
-        @input="(data) => emit('input', val)"
+        @input="
+          () => {
+            setValue(val);
+            emit('input', val);
+          }
+        "
       />
       <slot name="append"></slot>
     </div>

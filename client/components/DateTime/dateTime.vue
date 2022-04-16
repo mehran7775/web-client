@@ -21,5 +21,5 @@ const date = computed(() =>
 );
 </script>
 <template>
-  <span>{{ date }}</span>
+  <span dir="ltr">{{ date }}</span>
 </template>
