@@ -6,15 +6,11 @@ const props = withDefaults(
     label: string;
     type: string;
     value: string | number;
-    min: number | null;
-    max: number | null;
   }>(),
   {
     label: "",
     type: "text",
     value: "",
-    min: null,
-    max: null,
   }
 );
 
@@ -26,19 +22,7 @@ const ltr = computed<boolean>(() => {
 const val = ref(props.value);
 
 function setValue(update: any) {
-  if (props.type == "number") {
-    val.value = parseInt(update);
-    if (props.min != null && update < props.min) val.value = props.min;
-    if (props.max != null && update > props.max) val.value = props.max;
-  } else if (typeof update == "string") {
-    if (
-      (props.min == null || update.length >= props.min) &&
-      (props.max == null || update.length <= props.max)
-    )
-      val.value = update;
-  } else {
-    val.value = update;
-  }
+  val.value = update;
 }
 
 watch(
@@ -60,12 +44,8 @@ watch(
         :type="type"
         :class="['tw-min-w-0', 'tw-inline', ltr ? 'ltr' : '']"
         v-model="val"
-        @input="
-          () => {
-            setValue(val);
-            emit('input', val);
-          }
-        "
+        @input="() => emit('input', val)"
+        v-bind="$attrs"
       />
       <slot name="append"></slot>
     </div>
