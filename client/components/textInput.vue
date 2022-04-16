@@ -24,13 +24,21 @@ const ltr = computed<boolean>(() => {
   return props.type == "number";
 });
 const val = ref(props.value);
-console.log("min", props.min);
-console.log("max", props.max);
 
 function setValue(update: any) {
-  val.value = update;
-  if (props.min != null && update < props.min) val.value = props.min;
-  if (props.max != null && update > props.max) val.value = props.max;
+  if (props.type == "number") {
+    val.value = parseInt(update);
+    if (props.min != null && update < props.min) val.value = props.min;
+    if (props.max != null && update > props.max) val.value = props.max;
+  } else if (typeof update == "string") {
+    if (
+      (props.min == null || update.length >= props.min) &&
+      (props.max == null || update.length <= props.max)
+    )
+      val.value = update;
+  } else {
+    val.value = update;
+  }
 }
 
 watch(

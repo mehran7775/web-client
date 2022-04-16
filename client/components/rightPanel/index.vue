@@ -96,7 +96,6 @@ function unmark(data: MenuItem) {
   switch (data.bookmarkPosition) {
     case BookmarkPosition.ToolBar:
       {
-        console.log(data, bookmarks.value);
         let tmp = [...bookmarks.value];
         tmp.splice(
           tmp.findIndex((item) => item.to == data.to),
