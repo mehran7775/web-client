@@ -1,27 +1,24 @@
-<template>
-  <span class="text-no-wrap value" dir="ltr">
-    {{ formatter.format(value) }}
-    <slot />
-  </span>
-</template>
-
-<script lang="ts">
-import { defineComponent } from "#app";
+<script setup lang="ts">
 import { useAsrTrader } from "~/composables";
 
-export default defineComponent({
-  props: { value: Number },
-  setup() {
-    const appManager = useAsrTrader();
-    const formatter = appManager.formatter;
-    return {
-      formatter,
-    };
-  },
+const props = defineProps<{ value: number }>();
+
+const appManager = useAsrTrader();
+const formatter = appManager.formatter;
+defineExpose({
+  formatter,
 });
 </script>
+
 <style lang="postcss" scoped>
 .value {
   font-size: var(--value-font-size);
 }
 </style>
+
+<template>
+  <span class="tw-whitespace-nowrap value" dir="ltr">
+    {{ formatter.format(value) }}
+    <slot />
+  </span>
+</template>

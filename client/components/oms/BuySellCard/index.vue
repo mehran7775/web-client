@@ -7,6 +7,7 @@ import credit from "@/components/wealth/validity/index.vue";
 import percent from "./percent.vue";
 import { object, number, AnyObjectSchema } from "yup";
 import TextInput from "~~/components/textInput.vue";
+import ShowPercent from "./showPercent.vue";
 
 const props = defineProps<{
   count: number;
@@ -197,16 +198,7 @@ instrumentManager
               </credit>
             </v-col>
             <v-col cols="6" class="col-border">
-              <text-input
-                :label="$t('oms.view-count')"
-                type="number"
-                v-model="countVal"
-                class="tw-mt-1"
-              >
-                <template #append>
-                  <span class="tw-w-6 tw-inline-block">{{ countVal }}</span>
-                </template>
-              </text-input>
+              <show-percent :value="countVal"></show-percent>
               <bar />
             </v-col>
             <v-col cols="6" class="col-border">
@@ -333,16 +325,7 @@ instrumentManager
               </credit>
             </v-col>
             <v-col cols="6" class="col-border">
-              <text-input
-                :label="$t('oms.view-count')"
-                type="number"
-                v-model="countVal"
-                class="tw-mt-1"
-              >
-                <template #append>
-                  <span class="tw-w-6 tw-inline-block">{{ countVal }}</span>
-                </template>
-              </text-input>
+              <show-percent :value="countVal"></show-percent>
               <bar />
             </v-col>
             <v-col cols="6" class="col-border">
