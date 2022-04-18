@@ -67,6 +67,7 @@ function setVal(value: number) {
       </div>
     </div>
     <TextInput
+      class="tw-flex-grow tw-mt-1"
       dir="rtl"
       type="number"
       label="درصد سهم"

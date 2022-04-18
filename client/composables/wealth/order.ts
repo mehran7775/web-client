@@ -5,16 +5,24 @@ import {
   Order,
   OrderSearchModel,
   PaginatedResult,
+  Side,
   Wealth,
 } from "~/types";
 import { useInstrument, useAxios, useWealth, useUser } from "..";
 import orderManager from "@/repositories/wealth/order_manager";
+import { computed, Ref } from "#app";
 
 export const useOrder = defineStore("order", () => {
   const userState = useUser();
   const axios = useAxios();
   const instrumentManager = useInstrument();
   const wealthManager = useWealth();
+
+  const orderFormCache: { [key: string]: Ref<Order> } = {};
+
+  function getForm(side: Side, id: string | number) {
+    return orderFormCache[side + "_" + id];
+  }
 
   async function getOrders(
     payload: OrderSearchModel
@@ -50,5 +58,6 @@ export const useOrder = defineStore("order", () => {
 
   return {
     getOrders,
+    getForm,
   };
 });
