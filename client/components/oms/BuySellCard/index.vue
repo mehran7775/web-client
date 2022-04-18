@@ -17,26 +17,10 @@ const props = defineProps<{
 
 const buyForm = ref<AnyObjectSchema | null>(null);
 
-const emit = defineEmits(["update:count", "update:price"]);
-
 const instrumentManager = useInstrument();
 const active: Ref<InstrumentCache> = ref(new InstrumentCache());
-const countVal = computed({
-  get() {
-    return props.count?.toString();
-  },
-  set(val: string | undefined) {
-    emit("update:count", val ? parseInt(val) : 0);
-  },
-});
-const priceVal = computed({
-  get() {
-    return props.price?.toString();
-  },
-  set(val: string | undefined) {
-    emit("update:price", val ? parseInt(val) : 0);
-  },
-});
+const countVal = ref(props.count);
+const priceVal = ref(props.price);
 const tab = computed({
   get() {
     return (active.value?.side == Side.Sell ? Side.Sell : Side.Buy).toString();
@@ -67,8 +51,8 @@ instrumentManager
   .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
   .then((data: Array<InstrumentCache>) => {
     active.value = data[0];
-    emit("update:count", active.value.minQuantityPerOrder);
-    emit("update:price", active.value.minAllowedPrice);
+    countVal.value = active.value.minQuantityPerOrder;
+    priceVal.value = active.value.minAllowedPrice;
     buyForm.value = object({
       quantity: number()
         .min(active.value.minQuantityPerOrder, "oms.order.validation.minQuantity")

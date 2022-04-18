@@ -7,7 +7,7 @@ const props = defineProps<{
 const emit = defineEmits(["input"]);
 const val = ref(100);
 const total = ref(props.value);
-const res = computed(() => Math.floor(total.value * (val.value / 100)));
+const res = computed(() => Math.ceil(total.value * (val.value / 100)));
 watch(
   () => props.value,
   (update) => {
