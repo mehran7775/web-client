@@ -14,6 +14,7 @@
     }
   },
   "general": {
+    "percent": "درصد",
     "export": "خروجی",
     "excels": "اکسل",
     "export-excels": "@:general.export @:general.excels",
@@ -214,13 +215,13 @@
     "amount": "حجم",
     "volume": "@:oms.amount",
     "count": "تعداد",
-    "view-count": "درصد نمایشی",
+    "view-count": "حجم نمایشی",
     "price-short": "ق",
     "amount-short": "ح",
     "count-short": "ت",
     "sell": "فروش",
     "buy": "خرید",
-    "percent": "درصد",
+    "percent": "@general.percent",
     "percent-short": "%",
     "trade": "معامله",
     "trades": "معاملات",
@@ -263,7 +264,9 @@
       "vol-done": "ح.انجام شده",
       "type": "نوع",
       "side": "خرید/فروش",
-      "validity": "اعتبار"
+      "validity": "اعتبار",
+      "sharePercent":"@:general.percent @:oms.share",
+      "creditPercent":"@:general.percent @:accounting.account.credit"
     }
   },
   "login": {

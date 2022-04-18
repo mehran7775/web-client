@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "#app";
+import { computed, ref, watch, useNuxtApp } from "#app";
 import { useAsrTrader } from "@/composables";
 
 const props = withDefaults(
@@ -8,11 +8,13 @@ const props = withDefaults(
     value: number;
     min: number;
     max: number;
+    label: string;
   }>(),
   {
     value: 0,
     min: 0,
     max: 100,
+    label: "Percent",
   }
 );
 
@@ -70,7 +72,7 @@ function setVal(value: number) {
       class="tw-flex-grow tw-mt-1"
       dir="rtl"
       type="number"
-      label="درصد سهم"
+      :label="label"
       :value="val"
       @input="setValue"
       :min="min"
