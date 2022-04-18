@@ -35,7 +35,7 @@ watch(
     max="100"
   >
     <template #append>
-      <NumericField :value="res" class="tw-px-0 tw-my-[4px] tw-w-[25%] view" />
+      <NumericField :value="res" class="tw-px-0 tw-my-[4px] tw-min-w-[25%] view" />
     </template>
   </text-input>
 </template>
