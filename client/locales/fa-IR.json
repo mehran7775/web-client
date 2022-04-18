@@ -261,8 +261,19 @@
       "vol": "حجم سفارش",
       "vol-rem": "ح.مانده",
       "vol-done": "ح.انجام شده",
-      "type": "نوع",
-      "side": "خرید/فروش",
+      "type": {
+        "title": "نوع",
+        "LIMIT_ORDER": "سفارش محدود", 
+        "MARKET_ON_OPENING_ORDER": "سفارش با قیمت اولین سفارش", 
+        "MARKET_ORDER": "سفارش قیمت بازار",
+        "STOP_ORDER": "سفارش با حد ضرر",
+        "MARKET_TO_LIMIT_ORDER": "سفارش با حد شود"
+      },
+      "side": {
+        "title": "خرید/فروش",
+        "SELL": "فروش",
+        "BUY": "خرید"
+      }, 
       "validity": "اعتبار"
     }
   },

@@ -16,8 +16,7 @@ const cols = [
   new WatchlistColumns(i18n.t("wealth.order.vol-rem").toString(), "remainQuantity"),
   new WatchlistColumns(i18n.t("wealth.order.creationDate").toString(), "creationDate"),
   new WatchlistColumns(i18n.t("wealth.order.lastTransaction").toString(), "last"),
-  new WatchlistColumns(i18n.t("wealth.order.type").toString(), "orderType"),
-  new WatchlistColumns(i18n.t("wealth.order.side").toString(), "side"),
+  new WatchlistColumns(i18n.t("wealth.order.side.title").toString(), "side"),
   new WatchlistColumns(i18n.t("wealth.order.validity").toString(), "validity"),
   new WatchlistColumns(i18n.t("general.status").toString(), "more"),
 ];
@@ -32,13 +31,13 @@ orderManager
 <template>
   <ada-data-table :items="orders" :headers="cols" id="id" class="tw-w-full">
     <template #item.creationDate="{ item }">
-      <DateTime :value="item.creationDate" />
+      <DateTime :value="item.creationDate" :format="$t('general.date.dt')" class="ltr"/>
     </template>
     <template #item.last="{ item }">
-      <DateTime :value="item.creationDate" />
+      <DateTime :value="item.creationDate" :format="$t('general.date.dt')" class="ltr"/>
     </template>
     <template #item.validity="{ item }">
-      <DateTime :value="item.validityDate" />
+      <DateTime :value="item.validityDate" :format="$t('general.date.dt')" class="ltr"/>
     </template>
     <template #item.quantity="{ item }">
       <NumericField :value="item.quantity"></NumericField>
@@ -48,6 +47,9 @@ orderManager
     </template>
     <template #item.doneQuantity="{ item }">
       <NumericField :value="item.quantity - item.remainQuantity"></NumericField>
+    </template>
+    <template #item.side="{ item }">
+      <span>{{ $t("wealth.order.side." + item.side) }}</span>
     </template>
     <template #item.more="{ item }"> {{ item.status }} </template>
   </ada-data-table>
