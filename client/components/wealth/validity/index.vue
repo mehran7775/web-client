@@ -25,17 +25,19 @@ const value = ref<AutoCompleteItem | null>();
     <window value="date" :selected="window">
       <DateInput>
         <template #append>
-          <v-icon
+          <v-btn
             @click="
               () => {
                 value = null;
               }
             "
             color="error"
-            size="16"
+            height="18"
+            class="tw-mt-1"
+            depressed
           >
-            mdi-close
-          </v-icon>
+            {{ $t("general.cancellation") }}
+          </v-btn>
         </template>
       </DateInput>
     </window>

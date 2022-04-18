@@ -74,6 +74,7 @@ watch(
         v-model="year"
         @input="change"
         min="1400"
+        max="9999"
       />
       <slot name="append"></slot>
     </div>
@@ -87,10 +88,8 @@ watch(
   .input-container {
     background-color: rgba(var(--c-primary), 0.1);
     border-radius: var(--border-radius-input);
-    margin: 0 0 0 5px;
-    padding: 0 6px 0 0;
+    padding: 0 4px 0 4px;
     &:dir(rtl) {
-      margin: 0 5px 0 0;
       padding: 0 0 0 6px;
     }
   }
@@ -99,17 +98,21 @@ watch(
     line-height: 0.83334rem !important;
     height: 16px;
     font-size: 0.83334rem;
-    margin: auto 4px auto 4px;
-    padding: 0 6px 0 6px;
+    padding: 0 3px 0 3px;
     background-color: white;
     border-radius: var(--border-radius-input);
+  }
+  input:nth-child(odd) {
+    margin: auto 3px auto 3px;
+  }
+  input:nth-child(2) {
+    margin: auto 0 auto 0;
   }
 }
 
 .rtl {
   .ada-input {
     .input-container {
-      margin: 0 5px 0 0;
       padding: 0 0 0 6px;
     }
   }
