@@ -31,8 +31,8 @@ watch(
       }
     "
     class="tw-mt-1"
-    min="30"
-    max="100"
+    :min="30"
+    :max="100"
   >
     <template #append>
       <NumericField :value="res" class="tw-px-0 tw-my-[4px] tw-min-w-[25%] view" />

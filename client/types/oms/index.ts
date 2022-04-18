@@ -1,7 +1,6 @@
 export * from "./sector"
 export * from "./instrument"
 
-import { Side } from "../wealth"
 
 export class SameSectorQuery {
   instrument: number

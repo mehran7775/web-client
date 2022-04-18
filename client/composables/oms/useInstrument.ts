@@ -10,7 +10,6 @@ import {
   MarketHistory,
   OrderQueueItem,
   SameSectorQuery,
-  Side,
   Wealth,
 } from "~/types";
 import manager from "@/repositories/oms/instruments_manager";
@@ -63,7 +62,6 @@ export const useInstrument = defineStore("instrument", () => {
       | DailyPrice
       | MarketHistory
       | Wealth
-      | { id: number; side: Side }
   ) {
     const inst = state.value.cache.get(data.id.toString());
     if (inst) Object.assign(inst, data);

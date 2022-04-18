@@ -9,7 +9,7 @@ import {
   InstrumentStatus,
   InstrumentSearchModel,
 } from "@/types";
-import { useInstrument, useUser } from "@/composables";
+import { useInstrument, useOrder, useUser } from "@/composables";
 import { useShortcut } from "@/utils/shortcutManager";
 import HeaderHandler from "./headerHandler.vue";
 import RowHandler from "./rowHandler.vue";
@@ -29,6 +29,7 @@ const props = withDefaults(
 const { $i18n: i18n } = useNuxtApp();
 const userManager = useUser();
 const instrumentManager = useInstrument();
+const orderManager = useOrder();
 const route = useRoute();
 const sh = useShortcut();
 const itemToDelete = ref<InstrumentCache | null>(null);
@@ -84,7 +85,7 @@ function parseStatus(state: number) {
 }
 
 function order(item: InstrumentCache, side: Side) {
-  instrumentManager.updateInstrument(Object.assign({}, item, { side }));
+  orderManager.setSide(side, item.id.toString());
   instrumentManager.addFocus(item);
   instrumentManager.select(item);
   instrumentManager.setFocusMode(0);

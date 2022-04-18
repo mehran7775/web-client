@@ -1,59 +1,38 @@
-import { DateTime } from "luxon"
-import { SearchModel } from "@/types"
+import { SearchModel } from "@/types";
 
-export class Order {
-  id: number
-  instrumentId: number
-  creationDate: string
-  quantity: number
-  remainQuantity: number
-  minQuantity: number
-  discloseQuantity: number
-  enteredPrice: number
-  triggerPrice: number
-  side: Side
-  orderType: OrderType
-  validityType: ValidationType
-  validityDate: string | null
-  flags: number
-  constructor(instrument_id: number,
-    quantity: number,
-    min_quantity: number,
-    disclose_quantity: number,
-    entered_price: number,
-    trigger_price: number,
-    side: Side,
-    order_type: OrderType,
-    validity_type: ValidationType,
-    validity_date: string | null) {
-    this.id = -1
-    this.instrumentId = instrument_id
-    this.creationDate = DateTime.now().toISO()
-    this.quantity = quantity
-    this.remainQuantity = quantity
-    this.minQuantity = min_quantity
-    this.discloseQuantity = disclose_quantity
-    this.enteredPrice = entered_price
-    this.triggerPrice = trigger_price
-    this.side = side
-    this.orderType = order_type
-    this.validityType = validity_type
-    this.validityDate = validity_date
-    this.flags = Flags.Draft
-  }
+export interface Order {
+  id: number;
+  instrumentId: number;
+  creationDate: string;
+  quantity: number;
+  remainQuantity: number;
+  minQuantity: number;
+  discloseQuantity: number;
+  enteredPrice: number;
+  triggerPrice: number;
+  side: Side;
+  orderType: OrderType;
+  validityType: ValidationType;
+  validityDate: string | null;
+  flags: number;
 }
 
 export class OrderSearchModel implements SearchModel {
-  id: number | null
-  flags: number | null
+  id: number | null;
+  flags: number | null;
   offset: number;
   length: number;
   echo: any;
-  constructor(offset: number = 0, length: number = 10, flags: number | null = null, id: number | null = null) {
-    this.id = id
-    this.flags = flags
-    this.offset = offset
-    this.length = length
+  constructor(
+    offset: number = 0,
+    length: number = 10,
+    flags: number | null = null,
+    id: number | null = null
+  ) {
+    this.id = id;
+    this.flags = flags;
+    this.offset = offset;
+    this.length = length;
   }
 }
 
@@ -68,7 +47,7 @@ export enum OrderType {
   MarketOnOpening = 2,
   Market = 3,
   Stop = 4,
-  MarketToLimit = 5
+  MarketToLimit = 5,
 }
 
 export enum ValidationType {
@@ -85,5 +64,5 @@ export enum Flags {
   Created = 2,
   Sent = 4,
   Canceled = 8,
-  Confirmed = 16
+  Confirmed = 16,
 }

@@ -85,7 +85,7 @@ import instrumentCard from "@/components/oms/instrumentCardCompact.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
 import InstrumentFlag from "@/components/oms/instrumentFlag.vue";
-import { useInstrument } from "~/composables";
+import { useInstrument, useOrder } from "~/composables";
 import { useNuxtApp } from "#app";
 
 export default defineComponent({
@@ -97,7 +97,8 @@ export default defineComponent({
   },
   setup() {
     const instrumentManager = useInstrument();
-    const instruments = instrumentManager.getFocus;
+    const orderManager = useOrder();
+    const instruments = computed(() => instrumentManager.getFocus);
     const maxwidth = computed(
       () => instrumentManager.width / Math.floor(instrumentManager.width / 360)
     );
@@ -106,7 +107,7 @@ export default defineComponent({
       instrumentManager.removeFocus(item.id);
     }
     function order(item: InstrumentCache, side: Side) {
-      instrumentManager.updateInstrument(Object.assign({}, item, { side }));
+      orderManager.setSide(side, item.id.toString());
       instrumentManager.select(item);
       instrumentManager.setFocusMode(0);
     }

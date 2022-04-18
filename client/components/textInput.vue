@@ -52,7 +52,7 @@ watch(
         :type="type"
         :class="['tw-min-w-0 tw-flex-grow', 'tw-inline', ltr ? 'ltr' : '']"
         v-model="val"
-        @input="() => emit('input', val)"
+        @input="() => emit('input', type == 'number' ? parseInt(val) : val)"
         v-bind="{ min, max, minlength, maxlength }"
       />
       <slot name="append"></slot>

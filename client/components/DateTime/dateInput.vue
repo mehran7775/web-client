@@ -57,24 +57,24 @@ watch(
         class="tw-min-w-0 tw-inline ltr"
         v-model="day"
         @input="change"
-        min="1"
-        max="31"
+        :min="1"
+        :max="31"
       />
       <input
         type="number"
         class="tw-min-w-0 tw-inline ltr"
         v-model="month"
         @input="change"
-        min="1"
-        max="12"
+        :min="1"
+        :max="12"
       />
       <input
         type="number"
         class="tw-min-w-0 tw-inline ltr"
         v-model="year"
         @input="change"
-        min="1400"
-        max="9999"
+        :min="1400"
+        :max="9999"
       />
       <slot name="append"></slot>
     </div>

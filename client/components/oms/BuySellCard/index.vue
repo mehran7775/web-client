@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, Ref, ref } from "#app";
-import { useInstrument } from "@/composables";
+import { useInstrument, useOrder } from "@/composables";
 import { InstrumentCache, InstrumentSearchModel, Side } from "@/types";
 import accountType from "@/components/wealth/accountType.vue";
 import credit from "@/components/wealth/validity/index.vue";
@@ -18,19 +18,21 @@ const props = defineProps<{
 const buyForm = ref<AnyObjectSchema | null>(null);
 
 const instrumentManager = useInstrument();
+const orderManager = useOrder();
 const active: Ref<InstrumentCache> = ref(new InstrumentCache());
+const order = computed(() => orderManager.getForm(props.insId.toString()));
 const countVal = ref(props.count);
 const priceVal = ref(props.price);
 const tab = computed({
   get() {
-    return (active.value?.side == Side.Sell ? Side.Sell : Side.Buy).toString();
+    return order.value.side.toString();
   },
   set(value: string) {
     if (active.value)
-      instrumentManager.updateInstrument({
-        id: active.value.id,
-        side: value == "2" ? Side.Sell : Side.Buy,
-      });
+      orderManager.setSide(
+        value == "2" ? Side.Sell : Side.Buy,
+        active.value.id.toString()
+      );
   },
 });
 

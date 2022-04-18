@@ -4,13 +4,16 @@ import {
   InstrumentSearchModel,
   Order,
   OrderSearchModel,
+  OrderType,
   PaginatedResult,
   Side,
+  ValidationType,
   Wealth,
 } from "~/types";
 import { useInstrument, useAxios, useWealth, useUser } from "..";
 import orderManager from "@/repositories/wealth/order_manager";
-import { computed, Ref } from "#app";
+import { DateTime } from "luxon";
+import { Ref, ref } from "#app";
 
 export const useOrder = defineStore("order", () => {
   const userState = useUser();
@@ -20,8 +23,28 @@ export const useOrder = defineStore("order", () => {
 
   const orderFormCache: { [key: string]: Ref<Order> } = {};
 
-  function getForm(side: Side, id: string | number) {
-    return orderFormCache[side + "_" + id];
+  function getForm(id: string) {
+    let tmp = orderFormCache[id];
+    if (typeof tmp == "undefined") {
+      tmp = ref(<Order>{
+        creationDate: DateTime.now().toISO(),
+        discloseQuantity: 0,
+        enteredPrice: 0,
+        flags: 0,
+        id: 0,
+        instrumentId: parseInt(id),
+        minQuantity: 0,
+        orderType: OrderType.Market,
+        quantity: 0,
+        remainQuantity: 0,
+        side: Side.Buy,
+        triggerPrice: 0,
+        validityDate: "",
+        validityType: ValidationType.Day,
+      });
+      orderFormCache[id] = tmp;
+    }
+    return tmp.value;
   }
 
   async function getOrders(
@@ -56,8 +79,14 @@ export const useOrder = defineStore("order", () => {
     return undefined;
   }
 
+  function setSide(side: Side, id: string) {
+    getForm(id);
+    orderFormCache[id].value.side = side;
+  }
+
   return {
     getOrders,
     getForm,
+    setSide,
   };
 });
