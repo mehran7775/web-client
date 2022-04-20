@@ -59,10 +59,12 @@ export enum ValidationType {
   SlidingValidity = 6,
 }
 
-export enum Flags {
-  Draft = 1,
-  Created = 2,
-  Sent = 4,
-  Canceled = 8,
-  Confirmed = 16,
+export enum OrderFlags {
+  Draft = 0x01,
+  Created = 0x02,
+  Sent = 0x04,
+  Cancelled = 0x08,
+  Confirmed = 0x10,
+  PreOpening = 0x20,    
 }
+
