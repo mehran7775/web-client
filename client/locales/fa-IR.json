@@ -283,7 +283,7 @@
         "Confirmed": "تایید شده",
         "PreOpening": "در حال انجام"
       },
-      "validity": "اعتبار"
+      "validity": "اعتبار",
       "sharePercent": "@:general.percent @:oms.share",
       "creditPercent": "@:general.percent @:accounting.account.credit"
     }
