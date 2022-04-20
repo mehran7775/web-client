@@ -212,7 +212,14 @@ instrumentManager
                 <numeric-field :value="1000" />
               </div>
             </v-col>
-            <v-col class="col-border" md="12"> </v-col>
+            <v-col class="col-border" md="12">
+              <percent
+                :label="$t('wealth.order.creditPercent')"
+                height="31px"
+                class="tw-flex tw-flex-grow"
+              >
+              </percent
+            ></v-col>
             <v-col cols="6" class="col-border">
               <v-checkbox
                 class="pa-0"
@@ -340,7 +347,12 @@ instrumentManager
               </div>
             </v-col>
             <v-col md="12" class="col-border">
-              <percent height="31px" class="tw-flex tw-flex-grow"> </percent>
+              <percent
+                :label="$t('wealth.order.sharePercent')"
+                height="31px"
+                class="tw-flex tw-flex-grow"
+              >
+              </percent>
             </v-col>
             <v-col cols="6" class="col-border"> </v-col>
             <v-col class="tw-flex-row ltr col-border">
