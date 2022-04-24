@@ -34,6 +34,7 @@ export default defineNuxtConfig({
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     //{ src: '~/plugins/hcaptcha', mode: 'client' },
+    { src: "~/plugins/clickOutside" },
     { src: "~/plugins/i18n" },
     { src: "~/plugins/store-initiator" },
   ],

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref, watch } from "#app";
-
+import { ref, watch } from "#app";
 interface selectProps {
   label: string;
   placeholder: string;
@@ -63,16 +62,6 @@ const getValue: (item: any) => any = eval(
     return " + props.keyPath.replace(/^\$/, "item") + ";\
   }"
 );
-// if (process.client) {
-//   function close(e: MouseEvent) {
-//     if (e.target != inp.value) active.value = false;
-//   }
-//   window.addEventListener("click", close);
-
-//   onBeforeUnmount(() => {
-//     window.removeEventListener("click", close);
-//   });
-// }
 </script>
 
 <template>
@@ -87,7 +76,7 @@ const getValue: (item: any) => any = eval(
     ]"
     :style="{ height: height }"
     @click="toggleActive"
-    v-click-outside="() => (active.value = false)"
+    v-ada-click-outside="() => (active = false)"
   >
     <slot name="prepend">
       {{ label }}
@@ -103,13 +92,13 @@ const getValue: (item: any) => any = eval(
     />
     <slot name="append">
       <i
-        @click.prevent="toggleActive"
+        @click="toggleActive"
         class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"
       ></i>
     </slot>
     <ol class="menu tw-m-0 tw-p-0 tw-shadow" v-show="active">
       <slot name="prepend-item"></slot>
-      <li v-for="item in items" :key="getValue(item)" @click.prevent="() => select(item)">
+      <li v-for="item in items" :key="getValue(item)" @click="() => select(item)">
         {{ getText(item) }}
       </li>
       <slot name="append-item"></slot>
