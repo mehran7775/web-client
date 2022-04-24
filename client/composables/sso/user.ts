@@ -11,7 +11,7 @@ import {
   User,
   WatchlistColumns,
 } from "~/types";
-import { UserState } from "~/types/stores";
+import { refreshKey, tokenKey, userKey, UserState } from "~/types/stores";
 import userManager from "@/repositories/sso/user_manager";
 import jwtManager from "~/repositories/sso/jwt_token";
 import {
@@ -20,10 +20,6 @@ import {
   SetClientCookie,
 } from "~/utils/cookie";
 import { useAxios } from "..";
-
-export const refreshKey: string = "jwtRefreshKey";
-export const tokenKey: string = "jwtKey";
-export const userKey: string = "userCache";
 
 export const useUser = defineStore("user", () => {
   const state = ref(new UserState());
@@ -242,7 +238,7 @@ export const useUser = defineStore("user", () => {
       if (resp.data.setting) {
         setSettings(resp.data.setting);
         if (process.client)
-          localStorage.setItem(userKey, JSON.stringify(state.value.user));
+          localStorage.setItem(userKey, state.value.user.userName);
       }
       settingsNotChanged(payload.path);
     } catch (e) {
@@ -256,7 +252,7 @@ export const useUser = defineStore("user", () => {
       if (resp.data.setting) {
         setSettings(resp.data.setting);
         if (process.client)
-          localStorage.setItem(userKey, JSON.stringify(state.value.user));
+          localStorage.setItem(userKey, state.value.user.userName);
       }
       settingsNotChanged(payload.path);
     } catch (e) {
