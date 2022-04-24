@@ -63,16 +63,16 @@ const getValue: (item: any) => any = eval(
     return " + props.keyPath.replace(/^\$/, "item") + ";\
   }"
 );
-if (process.client) {
-  function close(e: MouseEvent) {
-    if (e.target != inp.value) active.value = false;
-  }
-  window.addEventListener("click", close);
+// if (process.client) {
+//   function close(e: MouseEvent) {
+//     if (e.target != inp.value) active.value = false;
+//   }
+//   window.addEventListener("click", close);
 
-  onBeforeUnmount(() => {
-    window.removeEventListener("click", close);
-  });
-}
+//   onBeforeUnmount(() => {
+//     window.removeEventListener("click", close);
+//   });
+// }
 </script>
 
 <template>
@@ -87,6 +87,7 @@ if (process.client) {
     ]"
     :style="{ height: height }"
     @click="toggleActive"
+    v-click-outside="() => (active.value = false)"
   >
     <slot name="prepend">
       {{ label }}
