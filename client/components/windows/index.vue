@@ -1,7 +1,8 @@
 <script setup lang="ts"></script>
 <style scoped lang="postcss">
 .windows {
-  @apply tw-relative;
+  @apply tw-relative tw-flex tw-flex-grow;
+  max-width: 100%;
   display: flex;
   flex-direction: row;
 }

@@ -12,11 +12,10 @@ const props = withDefaults(
 
 <style scoped lang="postcss">
 .window {
-  @apply tw-hidden;
+  @apply tw-hidden tw-flex-grow;
   min-width: 0;
-  flex-grow: 1;
   &.active {
-    @apply tw-w-full tw-block;
+    @apply tw-flex;
     opacity: 1;
   }
 }

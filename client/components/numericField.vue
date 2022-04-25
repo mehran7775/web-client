@@ -13,6 +13,7 @@ defineExpose({
 <style lang="postcss" scoped>
 .value {
   font-size: var(--value-font-size);
+  font-weight: 500;
 }
 </style>
 

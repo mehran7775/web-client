@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from "#app";
-interface selectProps {
+export interface selectProps {
   label: string;
   placeholder: string;
   height: string;
@@ -66,14 +66,7 @@ const getValue: (item: any) => any = eval(
 
 <template>
   <label
-    :class="[
-      'ada-select',
-      'tw-flex',
-      'tw-min-w-0',
-      'tw-whitespace-nowrap',
-      active ? 'active' : 'inactive',
-      val == null ? '' : 'value',
-    ]"
+    :class="['ada-select', active ? 'active' : 'inactive', val == null ? '' : 'value']"
     :style="{ height: height }"
     @click="toggleActive"
     v-ada-click-outside="() => (active = false)"
@@ -108,6 +101,7 @@ const getValue: (item: any) => any = eval(
 
 <style lang="postcss" scoped>
 .ada-select {
+  @apply tw-flex tw-flex-grow tw-min-w-0 tw-whitespace-nowrap;
   position: relative;
   border-radius: var(--border-radius-input);
   background-color: rgba(var(--c-primary), 0.1);
@@ -132,6 +126,9 @@ const getValue: (item: any) => any = eval(
     font-size: 0.83334rem;
     border-radius: var(--border-radius-input);
     cursor: inherit;
+    &::placeholder {
+      color: var(--c-primary-rgb);
+    }
   }
 }
 .menu {

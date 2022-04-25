@@ -42,7 +42,7 @@ watch(
 </script>
 
 <template>
-  <label class="ada-input tw-flex tw-whitespace-nowrap tw-min-w-0">
+  <label class="ada-input tw-flex tw-flex-grow tw-whitespace-nowrap tw-min-w-0">
     <div class="label">
       {{ label }}
     </div>

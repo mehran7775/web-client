@@ -85,8 +85,17 @@ instrumentManager
     display: none;
   }
 }
-.col-border {
+.rw {
+  @apply tw-flex tw-flex-grow;
+  min-height: 32px;
+  height: 32px;
+  min-width: 50%;
   padding: 0 12px 0 12px !important;
+  position: relative;
+  &-border {
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
 }
 </style>
 
@@ -123,265 +132,259 @@ instrumentManager
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item value="1">
-        <v-form class="tw-m-0 tw-p-0">
-          <v-row align="center" dense>
-            <v-col cols="6" class="col-border">
-              <span>{{ $t("oms.countThreshold") }}: </span>
-              <numeric-field :value="1000" />
-              <bar />
-            </v-col>
-            <v-col cols="6" class="col-border">
-              <span>{{ $t("oms.priceThreshold") }}: </span>
-              <numeric-field :value="1000" />
-            </v-col>
-            <v-col cols="6" class="col-border">
-              <text-input
-                :label="$t('oms.count')"
-                type="number"
-                v-model="countVal"
-                class="tw-mt-1"
-                :min="!!active ? active.minQuantityPerOrder : 1"
-                :max="!!active ? active.maxQuantityPerOrder : null"
-              >
-                <template #append>
-                  <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
-                  <v-icon color="primary" class="tw-mx-1" x-small>isax-calculator</v-icon>
-                </template>
-              </text-input>
-              <bar />
-            </v-col>
-            <v-col cols="6" class="col-border">
-              <text-input
-                :label="$t('oms.price')"
-                type="number"
-                v-model="priceVal"
-                class="tw-mt-1"
-                :min="!!active ? active.minAllowedPrice : 1"
-                :max="!!active ? active.maxAllowedPrice : null"
-              >
-                <template #append>
-                  <v-icon color="primary" class="tw-mx-1 col-border" x-small
-                    >isax-lock-1</v-icon
-                  >
-                </template>
-              </text-input>
-            </v-col>
-            <v-col cols="6" class="col-border">
-              <account-type
-                :placeholder="$t('accounting.account.type')"
-                class="tw-my-1"
-                height="24px"
-              >
-              </account-type>
-              <bar />
-            </v-col>
-            <v-col cols="6" class="col-border">
-              <credit
-                height="24px"
-                class="tw-my-1"
-                :placeholder="$t('accounting.account.credit')"
-              >
-              </credit>
-            </v-col>
-            <v-col cols="6" class="col-border">
-              <show-percent :value="countVal"></show-percent>
-              <bar />
-            </v-col>
-            <v-col cols="6" class="col-border">
-              <v-checkbox
-                :label="$t('oms.splitOrders')"
-                dense
-                hide-details
-                class="tw-m-0 tw-p-0 tw-mt-1 pa-0"
-                :ripple="false"
-              />
-            </v-col>
-            <v-col class="tw-flex tw-justify-between col-border" md="12">
-              <div class="tw-flex tw-flex-grow tw-relative tw-justify-between">
-                <span>{{ $t("wealth.sharesCount") }}: </span>
-                <numeric-field :value="1000" class="tw-pl-2" />
-                <bar />
-              </div>
-              <div class="tw-flex tw-flex-grow tw-relative tw-px-3 tw-justify-between">
-                <span>{{ $t("oms.tradeWage") }}: </span>
-                <numeric-field :value="1000" />
-                <bar />
-              </div>
-              <div class="tw-flex tw-flex-grow tw-relative tw-px-3 tw-justify-between">
-                <span>{{ $t("oms.tradeValue") }}: </span>
-                <numeric-field :value="1000" />
-              </div>
-            </v-col>
-            <v-col class="col-border" md="12">
-              <percent
-                :label="$t('wealth.order.creditPercent')"
-                height="31px"
-                class="tw-flex tw-flex-grow"
-              >
-              </percent
-            ></v-col>
-            <v-col cols="6" class="col-border">
-              <v-checkbox
-                class="pa-0"
-                :label="$t('general.acceptPolicy')"
-                dense
-                :ripple="false"
-                hide-details
-              />
-            </v-col>
-            <v-col class="tw-flex-row ltr col-border">
-              <clock :format="$t('general.date.dt')" class="ltr" />
-            </v-col>
-            <v-col cols="12" class="tw-flex tw-justify-around col-border">
-              <v-btn
-                class="draft tw-mt-1"
-                height="24"
-                width="149"
-                @click="
-                  () => {
-                    buyCheck();
-                  }
-                "
-                depressed
-              >
-                {{ $t("general.draft") }}
-              </v-btn>
-              <v-btn
-                class="buy tw-mt-1"
-                height="24"
-                width="149"
-                :disabled="!active || (active.status & 3) != 3"
-                depressed
-                >{{ $t("oms.buy") }}</v-btn
-              >
-            </v-col>
-          </v-row>
+        <v-form class="tw-m-0 tw-p-0 tw-grid tw-grid-cols-2"
+          ><div class="rw rw-border tw-col-span-2 tw-justify-center">
+            <span class="tw-mx-3">{{ $t("wealth.sharesCount") }}: </span>
+            <numeric-field :value="1000" class="tw-pl-2" />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <span>{{ $t("oms.countThreshold") }}: </span>
+            <numeric-field :value="1000" />
+            <bar />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <span>{{ $t("oms.priceThreshold") }}: </span>
+            <numeric-field :value="1000" />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <text-input
+              :label="$t('oms.count')"
+              type="number"
+              v-model="countVal"
+              class="tw-mt-1"
+              :min="!!active ? active.minQuantityPerOrder : 1"
+              :max="!!active ? active.maxQuantityPerOrder : null"
+            >
+              <template #append>
+                <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
+                <v-icon color="primary" class="tw-mx-1" x-small>isax-calculator</v-icon>
+              </template>
+            </text-input>
+            <bar />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <text-input
+              :label="$t('oms.price')"
+              type="number"
+              v-model="priceVal"
+              class="tw-mt-1"
+              :min="!!active ? active.minAllowedPrice : 1"
+              :max="!!active ? active.maxAllowedPrice : null"
+            >
+              <template #append>
+                <v-icon color="primary" class="tw-mx-1 rw-borderborder" x-small
+                  >isax-lock-1</v-icon
+                >
+              </template>
+            </text-input>
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <account-type
+              :placeholder="$t('accounting.account.type')"
+              class="tw-my-1"
+              height="24px"
+            >
+            </account-type>
+            <bar />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <credit
+              height="24px"
+              class="tw-my-1"
+              :placeholder="$t('accounting.account.credit')"
+            >
+            </credit>
+          </div>
+          <div class="rw rw-border tw-justify-between tw-col-span-2">
+            <percent
+              :label="$t('oms.view-count')"
+              height="31px"
+              class="tw-flex tw-flex-grow"
+            >
+            </percent>
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <v-checkbox
+              :label="$t('oms.splitOrders')"
+              dense
+              hide-details
+              class="tw-m-0 tw-p-0 tw-mt-1 pa-0"
+              :ripple="false"
+            />
+            <bar />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <text-input
+              :label="$t('wealth.order.creditPercent')"
+              type="number"
+              v-model="countVal"
+              class="tw-mt-1"
+              :min="30"
+              :max="100"
+            >
+            </text-input>
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <span>{{ $t("oms.tradeWage") }}: </span>
+            <numeric-field :value="1000" />
+            <bar />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <span>{{ $t("oms.tradeValue") }}: </span> <numeric-field :value="1000" />
+          </div>
+          <div class="rw rw-border tw-justify-center">
+            <v-btn
+              class="draft tw-mt-1"
+              height="24"
+              width="149"
+              @click="
+                () => {
+                  buyCheck();
+                }
+              "
+              depressed
+            >
+              {{ $t("general.draft") }} </v-btn
+            ><bar />
+          </div>
+          <div class="rw rw-border tw-justify-center">
+            <v-btn
+              class="buy tw-mt-1"
+              height="24"
+              width="149"
+              :disabled="!active || (active.status & 3) != 3"
+              depressed
+              >{{ $t("oms.buy") }}</v-btn
+            >
+          </div>
         </v-form>
       </v-tab-item>
       <v-tab-item value="2">
-        <v-form class="tw-m-0 tw-p-0">
-          <v-row align="center" dense>
-            <v-col cols="6" class="col-border">
-              <span>{{ $t("oms.countThreshold") }}: </span>
-              <numeric-field :value="1000" />
-              <bar />
-            </v-col>
-            <v-col cols="6" class="col-border">
-              <span>{{ $t("oms.priceThreshold") }}: </span>
-              <numeric-field :value="1000" />
-            </v-col>
-            <v-col cols="6" class="col-border">
-              <text-input
-                :label="$t('oms.count')"
-                type="number"
-                v-model="countVal"
-                class="tw-mt-1"
-                :min="!!active ? active.minQuantityPerOrder : 1"
-                :max="!!active ? active.maxQuantityPerOrder : null"
-              >
-                <template #append>
-                  <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
-                  <v-icon color="primary" class="tw-mx-1" x-small>isax-calculator</v-icon>
-                </template>
-              </text-input>
-              <bar />
-            </v-col>
-            <v-col cols="6" class="col-border">
-              <text-input
-                :label="$t('oms.price')"
-                type="number"
-                v-model="priceVal"
-                class="tw-mt-1"
-                :min="!!active ? active.minAllowedPrice : 1"
-                :max="!!active ? active.maxAllowedPrice : null"
-              >
-                <template #append>
-                  <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
-                </template>
-              </text-input>
-            </v-col>
-            <v-col cols="6" class="col-border">
-              <account-type
-                :placeholder="$t('accounting.account.type')"
-                class="tw-my-1"
-                height="24px"
-              >
-              </account-type>
-              <bar />
-            </v-col>
-            <v-col cols="6" class="col-border">
-              <credit
-                height="24px"
-                class="tw-my-1"
-                :placeholder="$t('accounting.account.credit')"
-              >
-              </credit>
-            </v-col>
-            <v-col cols="6" class="col-border">
-              <show-percent :value="countVal"></show-percent>
-              <bar />
-            </v-col>
-            <v-col cols="6" class="col-border">
-              <v-checkbox
-                :label="$t('oms.splitOrders')"
-                dense
-                hide-details
-                class="tw-m-0 tw-p-0 tw-mt-1 pa-0"
-                :ripple="false"
-              />
-            </v-col>
-            <v-col class="tw-flex tw-justify-between col-border" md="12">
-              <div class="tw-flex tw-flex-grow tw-relative tw-justify-between">
-                <span>{{ $t("wealth.sharesCount") }}: </span>
-                <numeric-field :value="1000" class="tw-pl-2" />
-                <bar />
-              </div>
-              <div class="tw-flex tw-flex-grow tw-relative tw-px-3 tw-justify-between">
-                <span>{{ $t("oms.tradeWage") }}: </span>
-                <numeric-field :value="1000" />
-                <bar />
-              </div>
-              <div class="tw-flex tw-flex-grow tw-relative tw-px-3 tw-justify-between">
-                <span>{{ $t("oms.tradeValue") }}: </span>
-                <numeric-field :value="1000" />
-              </div>
-            </v-col>
-            <v-col md="12" class="col-border">
-              <percent
-                :label="$t('wealth.order.sharePercent')"
-                height="31px"
-                class="tw-flex tw-flex-grow"
-              >
-              </percent>
-            </v-col>
-            <v-col cols="6" class="col-border"> </v-col>
-            <v-col class="tw-flex-row ltr col-border">
-              <clock :format="$t('general.date.dt')" class="ltr" />
-            </v-col>
-            <v-col cols="12" class="tw-flex tw-justify-around col-border">
-              <v-btn
-                class="draft tw-mt-1"
-                height="24"
-                width="149"
-                @click="
-                  () => {
-                    buyCheck();
-                  }
-                "
-                depressed
-              >
-                {{ $t("general.draft") }}
-              </v-btn>
-              <v-btn
-                class="buy tw-mt-1"
-                height="24"
-                width="149"
-                :disabled="!active || (active.status & 3) != 3"
-                depressed
-                >{{ $t("oms.buy") }}</v-btn
-              >
-            </v-col>
-          </v-row>
+        <v-form class="tw-m-0 tw-p-0 tw-grid tw-grid-cols-2">
+          <div class="rw rw-border tw-col-span-2 tw-justify-center">
+            <span class="tw-mx-3">{{ $t("wealth.sharesCount") }}: </span>
+            <numeric-field :value="1000" class="tw-pl-2" />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <span>{{ $t("oms.countThreshold") }}: </span>
+            <numeric-field :value="1000" />
+            <bar />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <span>{{ $t("oms.priceThreshold") }}: </span>
+            <numeric-field :value="1000" />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <text-input
+              :label="$t('oms.count')"
+              type="number"
+              v-model="countVal"
+              class="tw-mt-1"
+              :min="!!active ? active.minQuantityPerOrder : 1"
+              :max="!!active ? active.maxQuantityPerOrder : null"
+            >
+              <template #append>
+                <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
+                <v-icon color="primary" class="tw-mx-1" x-small>isax-calculator</v-icon>
+              </template>
+            </text-input>
+            <bar />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <text-input
+              :label="$t('oms.price')"
+              type="number"
+              v-model="priceVal"
+              class="tw-mt-1"
+              :min="!!active ? active.minAllowedPrice : 1"
+              :max="!!active ? active.maxAllowedPrice : null"
+            >
+              <template #append>
+                <v-icon color="primary" class="tw-mx-1 rw-borderborder" x-small
+                  >isax-lock-1</v-icon
+                >
+              </template>
+            </text-input>
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <account-type
+              :placeholder="$t('accounting.account.type')"
+              class="tw-my-1"
+              height="24px"
+            >
+            </account-type>
+            <bar />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <credit
+              height="24px"
+              class="tw-my-1"
+              :placeholder="$t('accounting.account.credit')"
+            >
+            </credit>
+          </div>
+          <div class="rw rw-border tw-justify-between tw-col-span-2">
+            <percent
+              :label="$t('oms.view-count')"
+              height="31px"
+              class="tw-flex tw-flex-grow"
+            >
+            </percent>
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <v-checkbox
+              :label="$t('oms.splitOrders')"
+              dense
+              hide-details
+              class="tw-m-0 tw-p-0 tw-mt-1 pa-0"
+              :ripple="false"
+            />
+            <bar />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <text-input
+              :label="$t('wealth.order.creditPercent')"
+              type="number"
+              v-model="countVal"
+              class="tw-mt-1"
+              :min="30"
+              :max="100"
+            >
+            </text-input>
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <span>{{ $t("oms.tradeWage") }}: </span>
+            <numeric-field :value="1000" />
+            <bar />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <span>{{ $t("oms.tradeValue") }}: </span> <numeric-field :value="1000" />
+          </div>
+          <div class="rw rw-border tw-justify-center">
+            <v-btn
+              class="draft tw-mt-1"
+              height="24"
+              width="149"
+              @click="
+                () => {
+                  buyCheck();
+                }
+              "
+              depressed
+            >
+              {{ $t("general.draft") }} </v-btn
+            ><bar />
+          </div>
+          <div class="rw rw-border tw-justify-center">
+            <v-btn
+              class="buy tw-mt-1"
+              height="24"
+              width="149"
+              :disabled="!active || (active.status & 3) != 3"
+              depressed
+              >{{ $t("oms.buy") }}</v-btn
+            >
+          </div>
         </v-form>
       </v-tab-item>
     </v-tabs-items>
