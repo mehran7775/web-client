@@ -28,8 +28,8 @@ export const useAsrTrader = defineStore("app", () => {
   const percentFormatter = computed(() =>
     Intl.NumberFormat(state.value.locale, {
       style: "percent",
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 3,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 5,
     })
   );
   const currencyFormatter = computed(
@@ -38,7 +38,7 @@ export const useAsrTrader = defineStore("app", () => {
         Intl.NumberFormat(state.value.locale, {
           style: "currency",
           currency: currency,
-          minimumFractionDigits: 3,
+          minimumFractionDigits: 2,
           maximumFractionDigits: 3,
         })
   );

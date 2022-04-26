@@ -200,6 +200,8 @@ instrumentManager
               :label="$t('oms.view-count')"
               height="31px"
               class="tw-flex tw-flex-grow"
+              :min="30"
+              :total="countVal"
             >
             </percent>
           </div>
@@ -217,9 +219,8 @@ instrumentManager
             <text-input
               :label="$t('wealth.order.creditPercent')"
               type="number"
-              v-model="countVal"
               class="tw-mt-1"
-              :min="30"
+              :min="0"
               :max="100"
             >
             </text-input>
@@ -328,6 +329,8 @@ instrumentManager
               :label="$t('oms.view-count')"
               height="31px"
               class="tw-flex tw-flex-grow"
+              :min="30"
+              :total="countVal"
             >
             </percent>
           </div>
@@ -345,9 +348,8 @@ instrumentManager
             <text-input
               :label="$t('wealth.order.creditPercent')"
               type="number"
-              v-model="countVal"
               class="tw-mt-1"
-              :min="30"
+              :min="0"
               :max="100"
             >
             </text-input>

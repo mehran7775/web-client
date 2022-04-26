@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch, useNuxtApp } from "#app";
-import { useAsrTrader } from "@/composables";
+import { computed, ref, watch } from "#app";
 
 const props = withDefaults(
   defineProps<{
@@ -9,20 +8,30 @@ const props = withDefaults(
     min: number;
     max: number;
     label: string;
+    total: number;
   }>(),
   {
     value: 0,
     min: 0,
     max: 100,
     label: "Percent",
+    total: 0,
   }
 );
 
 const emit = defineEmits(["input"]);
 
-const formatter = useAsrTrader().percentFormatter;
-const width = computed(() => {
-  return (val.value * 203) / 100 + Math.floor(val.value / 10) * 2.5;
+const minCount = computed(() => {
+  if (props.total) return Math.floor((props.min / 100) * props.total);
+  else return props.min;
+});
+const maxCount = computed(() => {
+  if (props.total) return Math.floor((props.max / 100) * props.total);
+  else return props.max;
+});
+const result = computed(() => {
+  if (props.total) return Math.floor((val.value / 100) * props.total);
+  else return val.value;
 });
 
 const val = ref(props.value);
@@ -38,52 +47,31 @@ function setValue(update: number | string) {
   val.value = update > props.max ? props.max : update < props.min ? props.min : update;
   emit("input", val.value);
 }
-function setVal(value: number) {
-  val.value = value * 10;
+function toPercent(value: number) {
+  if (props.total) val.value = (value / props.total) * 100;
+  else val.value = value;
 }
 </script>
 
 <template>
   <div class="percent-container">
-    <div class="percent" :style="{ height: height }">
-      <span
-        v-for="(i, index) in 10"
-        :key="index"
-        @click="() => setVal(index + 1)"
-        class="point"
-      >
-      </span>
-      <div class="tooltip-container" :style="{ height: height, width: width + 'px' }">
-        <span class="tooltip">
-          {{ formatter.format(val / 100) }}
-        </span>
-      </div>
-      <div class="selected" :style="{ width: width + 'px' }">
-        <span
-          v-for="(i, index) in 10"
-          :key="index"
-          @click="() => setVal(index + 1)"
-          class="point"
-        >
-        </span>
-      </div>
-    </div>
+    <RangeSlider :min="min" :max="max" :value="val" @input="setValue" />
     <TextInput
       class="tw-flex-grow tw-mt-1"
       dir="rtl"
       type="number"
       :label="label"
-      :value="val"
-      @input="setValue"
-      :min="min"
-      :max="max"
+      :value="result"
+      @input="toPercent"
+      :min="minCount"
+      :max="maxCount"
     ></TextInput>
   </div>
 </template>
 
 <style scoped lang="postcss">
 .percent-container {
-  @apply tw-w-full tw-max-w-full;
+  @apply tw-grid tw-gap-7 tw-grid-cols-2;
   direction: ltr;
   .percent {
     @apply tw-relative;
