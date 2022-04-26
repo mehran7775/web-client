@@ -68,6 +68,7 @@ instrumentManager
 
 <style lang="postcss" scoped>
 .buy {
+  @apply tw-flex tw-flex-grow;
   &:hover {
     background-color: var(--c-success-rgb);
     color: white;
@@ -77,6 +78,7 @@ instrumentManager
   }
 }
 .draft {
+  @apply tw-flex tw-flex-grow;
   &:hover {
     background-color: var(--c-info-rgb);
     color: white;
@@ -206,16 +208,6 @@ instrumentManager
             </percent>
           </div>
           <div class="rw rw-border tw-justify-between">
-            <v-checkbox
-              :label="$t('oms.splitOrders')"
-              dense
-              hide-details
-              class="tw-m-0 tw-p-0 tw-mt-1 pa-0"
-              :ripple="false"
-            />
-            <bar />
-          </div>
-          <div class="rw rw-border tw-justify-between">
             <text-input
               :label="$t('wealth.order.creditPercent')"
               type="number"
@@ -224,6 +216,16 @@ instrumentManager
               :max="100"
             >
             </text-input>
+            <bar />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <v-checkbox
+              :label="$t('oms.splitOrders')"
+              dense
+              hide-details
+              class="tw-m-0 tw-p-0 tw-mt-1 pa-0"
+              :ripple="false"
+            />
           </div>
           <div class="rw rw-border tw-justify-between">
             <span>{{ $t("oms.tradeWage") }}: </span>
@@ -237,7 +239,6 @@ instrumentManager
             <v-btn
               class="draft tw-mt-1"
               height="24"
-              width="149"
               @click="
                 () => {
                   buyCheck();
@@ -252,7 +253,6 @@ instrumentManager
             <v-btn
               class="buy tw-mt-1"
               height="24"
-              width="149"
               :disabled="!active || (active.status & 3) != 3"
               depressed
               >{{ $t("oms.buy") }}</v-btn
@@ -335,16 +335,6 @@ instrumentManager
             </percent>
           </div>
           <div class="rw rw-border tw-justify-between">
-            <v-checkbox
-              :label="$t('oms.splitOrders')"
-              dense
-              hide-details
-              class="tw-m-0 tw-p-0 tw-mt-1 pa-0"
-              :ripple="false"
-            />
-            <bar />
-          </div>
-          <div class="rw rw-border tw-justify-between">
             <text-input
               :label="$t('wealth.order.creditPercent')"
               type="number"
@@ -353,6 +343,16 @@ instrumentManager
               :max="100"
             >
             </text-input>
+            <bar />
+          </div>
+          <div class="rw rw-border tw-justify-between">
+            <v-checkbox
+              :label="$t('oms.splitOrders')"
+              dense
+              hide-details
+              class="tw-m-0 tw-p-0 tw-mt-1 pa-0"
+              :ripple="false"
+            />
           </div>
           <div class="rw rw-border tw-justify-between">
             <span>{{ $t("oms.tradeWage") }}: </span>
@@ -366,7 +366,6 @@ instrumentManager
             <v-btn
               class="draft tw-mt-1"
               height="24"
-              width="149"
               @click="
                 () => {
                   buyCheck();
@@ -381,7 +380,6 @@ instrumentManager
             <v-btn
               class="buy tw-mt-1"
               height="24"
-              width="149"
               :disabled="!active || (active.status & 3) != 3"
               depressed
               >{{ $t("oms.buy") }}</v-btn

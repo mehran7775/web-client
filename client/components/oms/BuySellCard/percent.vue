@@ -71,7 +71,7 @@ function toPercent(value: number) {
 
 <style scoped lang="postcss">
 .percent-container {
-  @apply tw-grid tw-gap-7 tw-grid-cols-2;
+  @apply tw-grid tw-gap-8 tw-grid-cols-2;
   direction: ltr;
   .percent {
     @apply tw-relative;

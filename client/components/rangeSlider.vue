@@ -23,6 +23,9 @@ const val = ref(Math.max(props.min, props.value));
 const tooltipPos = computed(
   () => Math.floor((val.value - props.min) * 100) / (props.max - props.min + 8)
 );
+const process = computed(
+  () => Math.floor((val.value - props.min) * 100) / (props.max - props.min)
+);
 const dataChanged = ref(false);
 function setVal(data: Event) {
   emit("input", val.value);
@@ -70,6 +73,36 @@ watch(
   }
   .range {
     @apply tw-flex tw-flex-grow;
+    appearance: none;
+    background-color: rgba(var(--c-primary), 0.1);
+    cursor: pointer;
+    height: 6px;
+    border-radius: 3px;
+    margin: auto 0 auto 0;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      background-color: var(--c-primary-rgb);
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+    &::-moz-range-thumb {
+      appearance: none;
+      background-color: var(--c-primary-rgb);
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 0;
+    }
+  }
+  .process {
+    position: absolute;
+    height: 6px;
+    border-radius: 3px;
+    background-color: var(--c-primary-rgb);
+    top: calc(50% - 3px);
+    pointer-events: none;
   }
 }
 </style>
@@ -91,5 +124,6 @@ watch(
       :max="max"
       @input="setVal"
     />
+    <div class="process" :style="{ width: process + '%' }"></div>
   </div>
 </template>
