@@ -11,8 +11,8 @@ const props = withDefaults(
     total: number;
   }>(),
   {
-    value: 0,
-    min: 0,
+    value: 1,
+    min: 1,
     max: 100,
     label: "Percent",
     total: 0,
@@ -22,15 +22,15 @@ const props = withDefaults(
 const emit = defineEmits(["input"]);
 
 const minCount = computed(() => {
-  if (props.total) return Math.floor((props.min / 100) * props.total);
+  if (props.total) return Math.ceil((props.min / 100) * props.total);
   else return props.min;
 });
 const maxCount = computed(() => {
-  if (props.total) return Math.floor((props.max / 100) * props.total);
+  if (props.total) return Math.ceil((props.max / 100) * props.total);
   else return props.max;
 });
 const result = computed(() => {
-  if (props.total) return Math.floor((val.value / 100) * props.total);
+  if (props.total) return Math.round((val.value / 100) * props.total);
   else return val.value;
 });
 
