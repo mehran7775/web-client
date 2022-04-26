@@ -43,6 +43,26 @@ function parseOrderFlags(status: number) {
   }
 }
 
+function isPlayDisabled(status: number) {
+  return (status == OrderFlags.Cancelled) || 
+  (status == (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed)) ||
+  (status == (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed | OrderFlags.PreOpening)) ||
+  (status == OrderFlags.Created) || 
+  (status == (OrderFlags.Created | OrderFlags.Sent))
+}
+
+function isEditDisabled(status: number) {
+  return (status == OrderFlags.Cancelled) || 
+  (status == (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed)) ||
+  (status == (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed | OrderFlags.PreOpening))
+}
+
+function isDeleteDisabled(status: number) {
+  return (status == OrderFlags.Cancelled) || 
+  (status == (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed)) ||
+  (status == (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed | OrderFlags.PreOpening))
+}
+
 orderManager
   .getOrders(new OrderSearchModel())
   .then((res: PaginatedResult<Order> | undefined) => {
@@ -74,6 +94,43 @@ orderManager
       <span>{{ $t("wealth.order.side." + item.side) }}</span>
     </template>
     <template #item.flags="{ item }"> {{ $t(parseOrderFlags(item.flags)) }}</template>
-    <template #item.more="{ item }"></template>
+    <template #item.more="{ item }">
+    <v-btn
+        :color="menu ? 'primary' : 'transparent'"
+        class="ma-0 pa-0"
+        width="24"
+        height="24"
+        depressed
+        :disabled="isPlayDisabled(item.flags)"
+      >
+        <v-icon :color="menu ? 'white' : 'primary'" size="16">
+          mdi-play
+        </v-icon>
+      </v-btn>
+      <v-btn
+        :color="menu ? 'primary' : 'transparent'"
+        class="ma-0 pa-0"
+        width="24"
+        height="24"
+        depressed
+        :disabled="isEditDisabled(item.flags)"
+      >
+        <v-icon :color="menu ? 'white' : 'primary'" size="16">
+          mdi-pencil-outline
+        </v-icon>
+      </v-btn>
+      <v-btn
+        :color="menu ? 'primary' : 'transparent'"
+        class="ma-0 pa-0"
+        width="24"
+        height="24"
+        depressed
+        :disabled="isDeleteDisabled(item.flags)"
+      >
+        <v-icon :color="menu ? 'white' : 'primary'" size="16">
+          mdi-delete-forever
+        </v-icon>
+      </v-btn>
+    </template>
   </ada-data-table>
 </template>
