@@ -170,8 +170,5 @@ export default defineComponent({
     padding: 0;
     position: relative;
   }
-  .bar {
-    opacity: 0.3;
-  }
 }
 </style>

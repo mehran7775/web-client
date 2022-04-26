@@ -145,8 +145,5 @@ defineExpose({
     position: relative;
     line-height: 30px !important;
   }
-  .bar {
-    opacity: 0.3;
-  }
 }
 </style>
