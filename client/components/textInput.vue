@@ -24,9 +24,7 @@ const props = withDefaults(
 
 const emit = defineEmits(["input"]);
 
-const ltr = computed<boolean>(() => {
-  return props.type == "number";
-});
+const ltr = computed<string>(() => (props.type == "number" ? "ltr" : ""));
 const val = ref(props.value);
 
 function setValue(update: any) {
@@ -50,6 +48,7 @@ watch(
     <input
       :type="type"
       v-model="val"
+      :class="[ltr]"
       @input="() => emit('input', type == 'number' ? parseInt(val) : val)"
       v-bind="{ min, max, minlength, maxlength }"
     />

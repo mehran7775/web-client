@@ -103,6 +103,7 @@ instrumentManager
 
 <style lang="postcss">
 .buy-sell {
+  @apply tw-m-0 tw-p-0;
   .v-tab {
     color: black;
     background-color: #e0e0e0;
@@ -123,7 +124,7 @@ instrumentManager
 </style>
 
 <template>
-  <v-container class="ma-0 pa-0 buy-sell">
+  <div class="buy-sell">
     <v-tabs height="32" hide-slider v-model="tab" grow>
       <v-tab class="buy" :key="Side.Buy" :href="'#' + Side.Buy">
         {{ $t("oms.buy") }}
@@ -158,7 +159,7 @@ instrumentManager
               :max="!!active ? active.maxQuantityPerOrder : null"
             >
               <template #append>
-                <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
+                <ada-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</ada-icon>
                 <v-icon color="primary" class="tw-mx-1" x-small>isax-calculator</v-icon>
               </template>
             </text-input>
@@ -204,6 +205,7 @@ instrumentManager
               class="tw-flex tw-flex-grow"
               :min="30"
               :total="countVal"
+              :value="100"
             >
             </percent>
           </div>
@@ -250,12 +252,17 @@ instrumentManager
             ><bar />
           </div>
           <div class="rw rw-border tw-justify-center">
-            <v-btn
+            <ada-btn
               class="buy tw-mt-1"
-              height="24"
+              height="24px"
               :disabled="!active || (active.status & 3) != 3"
+              @click="
+                () => {
+                  buyCheck();
+                }
+              "
               depressed
-              >{{ $t("oms.buy") }}</v-btn
+              >{{ $t("oms.buy") }}</ada-btn
             >
           </div>
         </v-form>
@@ -331,6 +338,7 @@ instrumentManager
               class="tw-flex tw-flex-grow"
               :min="30"
               :total="countVal"
+              :value="100"
             >
             </percent>
           </div>
@@ -388,5 +396,5 @@ instrumentManager
         </v-form>
       </v-tab-item>
     </v-tabs-items>
-  </v-container>
+  </div>
 </template>
