@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "#app";
-import { max } from "jalali-moment";
 
 const props = withDefaults(
   defineProps<{

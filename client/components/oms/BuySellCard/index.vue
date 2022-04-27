@@ -205,6 +205,7 @@ instrumentManager
               class="tw-flex tw-flex-grow"
               :min="30"
               :total="countVal"
+              :value="100"
             >
             </percent>
           </div>
@@ -251,12 +252,17 @@ instrumentManager
             ><bar />
           </div>
           <div class="rw rw-border tw-justify-center">
-            <v-btn
+            <ada-btn
               class="buy tw-mt-1"
-              height="24"
+              height="24px"
               :disabled="!active || (active.status & 3) != 3"
+              @click="
+                () => {
+                  buyCheck();
+                }
+              "
               depressed
-              >{{ $t("oms.buy") }}</v-btn
+              >{{ $t("oms.buy") }}</ada-btn
             >
           </div>
         </v-form>
@@ -332,6 +338,7 @@ instrumentManager
               class="tw-flex tw-flex-grow"
               :min="30"
               :total="countVal"
+              :value="100"
             >
             </percent>
           </div>
