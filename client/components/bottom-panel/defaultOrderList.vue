@@ -43,24 +43,16 @@ function parseOrderFlags(status: number) {
   }
 }
 
-function isPlayDisabled(status: number) {
-  return (status == OrderFlags.Cancelled) || 
-  (status == (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed)) ||
-  (status == (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed | OrderFlags.PreOpening)) ||
-  (status == OrderFlags.Created) || 
-  (status == (OrderFlags.Created | OrderFlags.Sent))
+function isRunabled(status: number) {
+  return (status & OrderFlags.Draft) == OrderFlags.Draft
 }
 
 function isEditDisabled(status: number) {
-  return (status == OrderFlags.Cancelled) || 
-  (status == (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed)) ||
-  (status == (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed | OrderFlags.PreOpening))
+  return (status & OrderFlags.Editable) != 0;
 }
 
 function isDeleteDisabled(status: number) {
-  return (status == OrderFlags.Cancelled) || 
-  (status == (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed)) ||
-  (status == (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed | OrderFlags.PreOpening))
+   return (status & OrderFlags.Deleteable) != 0;
 }
 
 orderManager
@@ -96,39 +88,39 @@ orderManager
     <template #item.flags="{ item }"> {{ $t(parseOrderFlags(item.flags)) }}</template>
     <template #item.more="{ item }">
     <v-btn
-        :color="menu ? 'primary' : 'transparent'"
+        color="transparent"
         class="ma-0 pa-0"
         width="24"
         height="24"
         depressed
-        :disabled="isPlayDisabled(item.flags)"
+        :disabled="!isRunabled(item.flags)"
       >
-        <v-icon :color="menu ? 'white' : 'primary'" size="16">
-          mdi-play
+        <v-icon color="success" size="16">
+          isax-play
         </v-icon>
       </v-btn>
       <v-btn
-        :color="menu ? 'primary' : 'transparent'"
+        color="transparent"
         class="ma-0 pa-0"
         width="24"
         height="24"
         depressed
         :disabled="isEditDisabled(item.flags)"
       >
-        <v-icon :color="menu ? 'white' : 'primary'" size="16">
-          mdi-pencil-outline
+        <v-icon color="info" size="16">
+          isax-edit-2
         </v-icon>
       </v-btn>
       <v-btn
-        :color="menu ? 'primary' : 'transparent'"
+        color="transparent"
         class="ma-0 pa-0"
         width="24"
         height="24"
         depressed
         :disabled="isDeleteDisabled(item.flags)"
       >
-        <v-icon :color="menu ? 'white' : 'primary'" size="16">
-          mdi-delete-forever
+        <v-icon color="error" size="16">
+          isax-trash
         </v-icon>
       </v-btn>
     </template>

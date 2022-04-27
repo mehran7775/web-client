@@ -65,6 +65,8 @@ export enum OrderFlags {
   Sent = 0x04,
   Cancelled = 0x08,
   Confirmed = 0x10,
-  PreOpening = 0x20,    
+  PreOpening = 0x20,
+  Editable = OrderFlags.Cancelled | OrderFlags.Confirmed | OrderFlags.PreOpening,   
+  Deleteable = OrderFlags.Cancelled | OrderFlags.Confirmed | OrderFlags.PreOpening, 
 }
 
