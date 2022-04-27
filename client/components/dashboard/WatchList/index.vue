@@ -45,7 +45,7 @@ const canfocus = computed(() => {
   if (!process.client) return false;
   return focused.value.length < Math.floor(instrumentManager.width / 360);
 });
-const me = userManager.me;
+const me = computed(() => userManager.me);
 
 const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
   const res: Array<WatchlistColumns> = [];
@@ -53,7 +53,7 @@ const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
   actions.draggable = false;
   res.push(actions);
   res.push(
-    ...((me.settings.columns ?? DefaultCols()).map((col: WatchlistColumns) =>
+    ...((me.value.settings.columns ?? DefaultCols()).map((col: WatchlistColumns) =>
       Object.assign({}, col, {
         text: col.text == "" ? "" : i18n.t(col.text),
       })

@@ -1,15 +1,25 @@
 <script setup lang="ts">
+import { computed } from "#app";
 const props = withDefaults(
   defineProps<{
     width: number | string;
     height: number | string;
     type: "button" | "submit" | "reset";
+    icon: boolean;
   }>(),
   {
     width: "auto",
     height: "auto",
     type: "button",
+    icon: false,
   }
+);
+
+const widthVal = computed(() =>
+  typeof props.width === "string" ? props.width : props.width.toString() + "px"
+);
+const heightVal = computed(() =>
+  typeof props.height === "string" ? props.height : props.height.toString() + "px"
 );
 </script>
 
@@ -26,7 +36,16 @@ button {
 </style>
 
 <template>
-  <button :type="type" :style="{ width: width, height: height }">
+  <button
+    :type="type"
+    :style="{
+      minWidth: widthVal,
+      maxWidth: widthVal,
+      minHeight: heightVal,
+      maxHeight: heightVal,
+      lineHeight: icon ? '0.8334rem' : '',
+    }"
+  >
     <slot></slot>
   </button>
 </template>

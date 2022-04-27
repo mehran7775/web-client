@@ -8,6 +8,7 @@ import percent from "./percent.vue";
 import { object, number, AnyObjectSchema } from "yup";
 import TextInput from "~~/components/textInput.vue";
 import ShowPercent from "./showPercent.vue";
+import AdaBtn from "~~/components/adaBtn.vue";
 
 const props = defineProps<{
   count: number;
@@ -159,8 +160,12 @@ instrumentManager
               :max="!!active ? active.maxQuantityPerOrder : null"
             >
               <template #append>
-                <ada-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</ada-icon>
-                <v-icon color="primary" class="tw-mx-1" x-small>isax-calculator</v-icon>
+                <ada-btn class="tw-mx-1" :width="24" :height="24" icon>
+                  <ada-icon color="primary">isax-lock-1</ada-icon>
+                </ada-btn>
+                <ada-btn class="tw-mx-1" :width="24" :height="24" icon>
+                  <ada-icon color="primary">isax-calculator</ada-icon>
+                </ada-btn>
               </template>
             </text-input>
             <bar />
@@ -175,9 +180,9 @@ instrumentManager
               :max="!!active ? active.maxAllowedPrice : null"
             >
               <template #append>
-                <v-icon color="primary" class="tw-mx-1 rw-borderborder" x-small
-                  >isax-lock-1</v-icon
-                >
+                <ada-btn class="tw-mx-1" :width="24" :height="24" icon>
+                  <ada-icon color="primary">isax-lock-1</ada-icon>
+                </ada-btn>
               </template>
             </text-input>
           </div>
@@ -238,9 +243,9 @@ instrumentManager
             <span>{{ $t("oms.tradeValue") }}: </span> <numeric-field :value="1000" />
           </div>
           <div class="rw rw-border tw-justify-center">
-            <v-btn
+            <ada-btn
               class="draft tw-mt-1"
-              height="24"
+              height="24px"
               @click="
                 () => {
                   buyCheck();
@@ -248,8 +253,9 @@ instrumentManager
               "
               depressed
             >
-              {{ $t("general.draft") }} </v-btn
-            ><bar />
+              {{ $t("general.draft") }}
+            </ada-btn>
+            <bar />
           </div>
           <div class="rw rw-border tw-justify-center">
             <ada-btn
@@ -262,8 +268,9 @@ instrumentManager
                 }
               "
               depressed
-              >{{ $t("oms.buy") }}</ada-btn
             >
+              {{ $t("oms.buy") }}
+            </ada-btn>
           </div>
         </v-form>
       </v-tab-item>
@@ -292,8 +299,12 @@ instrumentManager
               :max="!!active ? active.maxQuantityPerOrder : null"
             >
               <template #append>
-                <v-icon color="primary" class="tw-mx-1" x-small>isax-lock-1</v-icon>
-                <v-icon color="primary" class="tw-mx-1" x-small>isax-calculator</v-icon>
+                <ada-btn class="tw-mx-1" :width="24" :height="24" icon>
+                  <ada-icon color="primary">isax-lock-1</ada-icon>
+                </ada-btn>
+                <ada-btn class="tw-mx-1" :width="24" :height="24" icon>
+                  <ada-icon color="primary">isax-calculator</ada-icon>
+                </ada-btn>
               </template>
             </text-input>
             <bar />
@@ -308,9 +319,9 @@ instrumentManager
               :max="!!active ? active.maxAllowedPrice : null"
             >
               <template #append>
-                <v-icon color="primary" class="tw-mx-1 rw-borderborder" x-small
-                  >isax-lock-1</v-icon
-                >
+                <ada-btn class="tw-mx-1" :width="24" :height="24" icon>
+                  <ada-icon color="primary">isax-lock-1</ada-icon>
+                </ada-btn>
               </template>
             </text-input>
           </div>
@@ -371,9 +382,9 @@ instrumentManager
             <span>{{ $t("oms.tradeValue") }}: </span> <numeric-field :value="1000" />
           </div>
           <div class="rw rw-border tw-justify-center">
-            <v-btn
+            <ada-btn
               class="draft tw-mt-1"
-              height="24"
+              height="24px"
               @click="
                 () => {
                   buyCheck();
@@ -381,17 +392,19 @@ instrumentManager
               "
               depressed
             >
-              {{ $t("general.draft") }} </v-btn
-            ><bar />
+              {{ $t("general.draft") }}
+            </ada-btn>
+            <bar />
           </div>
           <div class="rw rw-border tw-justify-center">
-            <v-btn
+            <ada-btn
               class="buy tw-mt-1"
-              height="24"
+              height="24px"
               :disabled="!active || (active.status & 3) != 3"
               depressed
-              >{{ $t("oms.buy") }}</v-btn
             >
+              {{ $t("oms.buy") }}
+            </ada-btn>
           </div>
         </v-form>
       </v-tab-item>
