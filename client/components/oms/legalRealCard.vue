@@ -1,3 +1,53 @@
+<script setup lang="ts">
+import { ref, Ref } from "#app";
+import { ClientDistribution } from "@/types";
+import { useInstrument } from "~/composables";
+
+const props = withDefaults(
+  defineProps<{
+    insId: number;
+    hideHeaders: boolean;
+    responsive: boolean;
+  }>(),
+  {
+    hideHeaders: true,
+    responsive: false,
+  }
+);
+const instrumentManager = useInstrument();
+const distribution: Ref<ClientDistribution> = ref(new ClientDistribution());
+const total = ref(1);
+instrumentManager.getClientDistribution(props.insId).then((result) => {
+  if (result) {
+    distribution.value = result;
+    total.value =
+      result.real.buy.count * result.real.buy.amount +
+      result.real.sell.count * result.real.sell.amount +
+      result.legal.buy.count * result.legal.buy.amount +
+      result.legal.sell.count * result.legal.sell.amount;
+    total.value = total.value == 0 ? 1 : total.value;
+  }
+});
+</script>
+
+<style lang="postcss">
+.legal-real {
+  .col {
+    background-color: rgba(var(--c-default), 0.05);
+  }
+}
+</style>
+<style lang="postcss" scoped>
+.real {
+  color: var(--c-info-rgb);
+  background-color: rgba(var(--c-info), 0.1);
+}
+.legal {
+  color: var(--c-info-rgb);
+  background-color: rgba(var(--c-info), 0.1);
+}
+</style>
+
 <template>
   <v-container class="text-center legal-real ma-0 pa-0" fluid>
     <v-row v-if="!hideHeaders" dense>
@@ -63,7 +113,7 @@
         <numeric-field :value="distribution.real.buy.amount" />
       </v-col>
       <v-col class="col-border">
-        <percent-field
+        <PercentField
           :value="(distribution.real.buy.count * distribution.real.buy.amount) / total"
         />
       </v-col>
@@ -92,7 +142,7 @@
           :value="(distribution.legal.buy.count * distribution.legal.buy.amount) / total"
         />
       </v-col>
-      <v-col class="col-border legal">{{ $t("user.personality.real") }}</v-col>
+      <v-col class="col-border legal">{{ $t("user.personality.legal") }}</v-col>
       <v-col class="col-border">
         <numeric-field :value="distribution.legal.sell.count" />
       </v-col>
@@ -109,58 +159,3 @@
     </v-row>
   </v-container>
 </template>
-
-<script lang="ts">
-import { defineComponent, ref, Ref } from "#app";
-import { ClientDistribution } from "@/types";
-import { useInstrument } from "~/composables";
-import numericField from "../numericField.vue";
-import PercentField from "../percentField.vue";
-
-export default defineComponent({
-  components: { numericField, PercentField },
-  name: "legal-real-card",
-  props: {
-    insId: { type: Number, required: true },
-    hideHeaders: Boolean,
-    responsive: Boolean,
-  },
-  setup(props) {
-    const instrumentManager = useInstrument();
-    const distribution: Ref<ClientDistribution> = ref(new ClientDistribution());
-    const total = ref(1);
-    instrumentManager.getClientDistribution(props.insId).then((result) => {
-      if (result) {
-        distribution.value = result;
-        total.value =
-          result.real.buy.count * result.real.buy.amount +
-          result.real.sell.count * result.real.sell.amount +
-          result.legal.buy.count * result.legal.buy.amount +
-          result.legal.sell.count * result.legal.sell.amount;
-        total.value = total.value == 0 ? 1 : total.value;
-      }
-    });
-    return {
-      distribution,
-      total,
-    };
-  },
-});
-</script>
-<style lang="postcss">
-.legal-real {
-  .col {
-    background-color: rgba(var(--c-default), 0.05);
-  }
-}
-</style>
-<style lang="postcss" scoped>
-.real {
-  color: var(--c-info-rgb);
-  background-color: rgba(var(--c-info), 0.1);
-}
-.legal {
-  color: var(--c-info-rgb);
-  background-color: rgba(var(--c-info), 0.1);
-}
-</style>

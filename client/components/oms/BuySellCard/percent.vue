@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "#app";
+import { max } from "jalali-moment";
 
 const props = withDefaults(
   defineProps<{
@@ -30,7 +31,11 @@ const maxCount = computed(() => {
   else return props.max;
 });
 const result = computed(() => {
-  if (props.total) return Math.round((val.value / 100) * props.total);
+  if (props.total)
+    return Math.min(
+      Math.max(Math.round((val.value / 100) * props.total), minCount.value),
+      maxCount.value
+    );
   else return val.value;
 });
 
