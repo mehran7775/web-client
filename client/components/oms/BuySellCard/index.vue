@@ -9,6 +9,7 @@ import { object, number, AnyObjectSchema } from "yup";
 import TextInput from "~~/components/textInput.vue";
 import ShowPercent from "./showPercent.vue";
 import AdaBtn from "~~/components/adaBtn.vue";
+import { count } from "console";
 
 const props = defineProps<{
   count: number;
@@ -22,8 +23,32 @@ const instrumentManager = useInstrument();
 const orderManager = useOrder();
 const active: Ref<InstrumentCache> = ref(new InstrumentCache());
 const order = computed(() => orderManager.getForm(props.insId.toString()));
-const countVal = ref(props.count);
-const priceVal = ref(props.price);
+const priceLock = ref(false);
+const countLock = ref(false);
+const countVal = computed({
+  get() {
+    return order.value.quantity;
+  },
+  set(quantity) {
+    if (countLock.value) return;
+    orderManager.updateForm({
+      instrumentId: order.value.instrumentId,
+      quantity,
+    });
+  },
+});
+const priceVal = computed({
+  get() {
+    return order.value.enteredPrice;
+  },
+  set(enteredPrice) {
+    if (priceLock.value) return;
+    orderManager.updateForm({
+      instrumentId: order.value.instrumentId,
+      enteredPrice,
+    });
+  },
+});
 const tab = computed({
   get() {
     return order.value.side.toString();
@@ -50,6 +75,13 @@ async function buyCheck() {
   }
 }
 
+function toggleCountLock() {
+  countLock.value = !countLock.value;
+}
+function togglePriceLock() {
+  priceLock.value = !priceLock.value;
+}
+
 instrumentManager
   .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
   .then((data: Array<InstrumentCache>) => {
@@ -59,15 +91,30 @@ instrumentManager
     buyForm.value = object({
       quantity: number()
         .min(active.value.minQuantityPerOrder, "oms.order.validation.minQuantity")
-        .max(active.value.maxQuantityPerOrder, "oms.order.validation.maxQuantity"),
+        .max(
+          active.value.maxQuantityPerOrder > 0
+            ? active.value.maxQuantityPerOrder
+            : Infinity,
+          "oms.order.validation.maxQuantity"
+        ),
       fee: number()
         .min(active.value.minAllowedPrice, "oms.order.validation.minPrice")
-        .max(active.value.maxAllowedPrice, "oms.order.validation.MaxPrice"),
+        .max(
+          active.value.maxAllowedPrice > 0 ? active.value.maxAllowedPrice : Infinity,
+          "oms.order.validation.MaxPrice"
+        ),
     });
   });
 </script>
 
 <style lang="postcss" scoped>
+.active {
+  background-color: var(--c-primary-rgb);
+  color: white !important;
+  i {
+    color: white !important;
+  }
+}
 .buy {
   @apply tw-flex tw-flex-grow;
   &:hover {
@@ -155,15 +202,22 @@ instrumentManager
               :label="$t('oms.count')"
               type="number"
               v-model="countVal"
+              :readonly="countLock"
               class="tw-mt-1"
               :min="!!active ? active.minQuantityPerOrder : 1"
-              :max="!!active ? active.maxQuantityPerOrder : null"
+              :max="!!active ? active.maxQuantityPerOrder || null : null"
             >
               <template #append>
-                <ada-btn class="tw-mx-1" :width="24" :height="24" icon>
+                <ada-btn
+                  :class="['tw-mx-1', countLock ? 'active' : '']"
+                  :width="24"
+                  :height="24"
+                  @click="toggleCountLock"
+                  icon
+                >
                   <ada-icon color="primary">isax-lock-1</ada-icon>
                 </ada-btn>
-                <ada-btn class="tw-mx-1" :width="24" :height="24" icon>
+                <ada-btn :width="24" :height="24" icon>
                   <ada-icon color="primary">isax-calculator</ada-icon>
                 </ada-btn>
               </template>
@@ -175,12 +229,19 @@ instrumentManager
               :label="$t('oms.price')"
               type="number"
               v-model="priceVal"
+              :readonly="priceLock"
               class="tw-mt-1"
               :min="!!active ? active.minAllowedPrice : 1"
-              :max="!!active ? active.maxAllowedPrice : null"
+              :max="!!active ? active.maxAllowedPrice || null : null"
             >
               <template #append>
-                <ada-btn class="tw-mx-1" :width="24" :height="24" icon>
+                <ada-btn
+                  :class="['tw-mx-1', priceLock ? 'active' : '']"
+                  :width="24"
+                  :height="24"
+                  @click="togglePriceLock"
+                  icon
+                >
                   <ada-icon color="primary">isax-lock-1</ada-icon>
                 </ada-btn>
               </template>
@@ -294,15 +355,22 @@ instrumentManager
               :label="$t('oms.count')"
               type="number"
               v-model="countVal"
+              :readonly="countLock"
               class="tw-mt-1"
               :min="!!active ? active.minQuantityPerOrder : 1"
-              :max="!!active ? active.maxQuantityPerOrder : null"
+              :max="!!active ? active.maxQuantityPerOrder || null : null"
             >
               <template #append>
-                <ada-btn class="tw-mx-1" :width="24" :height="24" icon>
+                <ada-btn
+                  :class="['tw-mx-1', countLock ? 'active' : '']"
+                  :width="24"
+                  :height="24"
+                  @click="toggleCountLock"
+                  icon
+                >
                   <ada-icon color="primary">isax-lock-1</ada-icon>
                 </ada-btn>
-                <ada-btn class="tw-mx-1" :width="24" :height="24" icon>
+                <ada-btn :width="24" :height="24" icon>
                   <ada-icon color="primary">isax-calculator</ada-icon>
                 </ada-btn>
               </template>
@@ -312,14 +380,21 @@ instrumentManager
           <div class="rw rw-border tw-justify-between">
             <text-input
               :label="$t('oms.price')"
+              class="tw-mt-1"
               type="number"
               v-model="priceVal"
-              class="tw-mt-1"
+              :readonly="priceLock"
               :min="!!active ? active.minAllowedPrice : 1"
-              :max="!!active ? active.maxAllowedPrice : null"
+              :max="!!active ? active.maxAllowedPrice || null : null"
             >
               <template #append>
-                <ada-btn class="tw-mx-1" :width="24" :height="24" icon>
+                <ada-btn
+                  @click="togglePriceLock"
+                  :class="['tw-mx-1', priceLock ? 'active' : '']"
+                  :width="24"
+                  :height="24"
+                  icon
+                >
                   <ada-icon color="primary">isax-lock-1</ada-icon>
                 </ada-btn>
               </template>

@@ -47,6 +47,10 @@ export const useOrder = defineStore("order", () => {
     return tmp.value;
   }
 
+  function updateForm(form: any) {
+    Object.assign(getForm(form.instrumentId.toString()), form);
+  }
+
   async function getOrders(
     payload: OrderSearchModel
   ): Promise<PaginatedResult<Order> | undefined> {
@@ -87,6 +91,7 @@ export const useOrder = defineStore("order", () => {
   return {
     getOrders,
     getForm,
+    updateForm,
     setSide,
   };
 });

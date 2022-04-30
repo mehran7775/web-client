@@ -40,7 +40,7 @@ watch(
 </script>
 
 <template>
-  <label class="ada-input">
+  <label :class="['ada-input', label == '' ? '' : 'has-label']">
     <div class="label">
       {{ label }}
     </div>
@@ -50,28 +50,40 @@ watch(
       v-model="val"
       :class="[ltr]"
       @input="() => emit('input', type == 'number' ? parseInt(val) : val)"
-      v-bind="{ min, max, minlength, maxlength }"
+      v-bind="{ min, max, minlength, maxlength, ...$attrs }"
     />
     <slot name="append"></slot>
   </label>
 </template>
-
 <style lang="postcss" scoped>
+.rtl {
+  .ada-input {
+    &.has-label {
+      input {
+        margin: auto 4px auto 0;
+      }
+    }
+  }
+}
 .ada-input {
   @apply tw-flex tw-flex-grow tw-justify-between tw-whitespace-nowrap tw-min-w-0;
   height: 24px;
+  &.has-label {
+    input {
+      margin: auto 0 auto 4px;
+    }
+  }
   input {
-    @apply tw-min-w-0 tw-inline;
+    @apply tw-min-w-0 tw-inline tw-flex-grow;
     outline-style: none;
     line-height: 0.83334rem !important;
     height: 24px;
     font-size: 0.83334rem;
     font-weight: bold;
-    margin: auto 4px auto 4px;
+    margin: auto 0 auto 0;
     padding: 0 6px 0 6px;
     background-color: rgba(var(--c-primary), 0.1);
     border-radius: var(--border-radius-root);
-    width: 60%;
     &:focus {
       background-color: white;
       border: solid 1px var(--c-primary-rgb);

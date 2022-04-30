@@ -26,7 +26,7 @@ const heightVal = computed(() =>
 <style lang="postcss" scoped>
 button {
   @apply tw-min-w-0 tw-justify-center;
-  background-color: var(--c-default-rgb);
+  background-color: rgba(var(--c-primary), 0.1);
   border-radius: var(--border-radius-root);
   font-size: 0.8334rem;
   font-weight: bold;
@@ -37,6 +37,8 @@ button {
 
 <template>
   <button
+    v-bind="$attrs"
+    v-on="$listeners"
     :type="type"
     :style="{
       minWidth: widthVal,
