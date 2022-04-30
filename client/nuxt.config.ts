@@ -92,7 +92,6 @@ export default defineNuxtConfig({
     transpile: [
       // necessary for nuxt bridge
       "pinia",
-      "@nuxt/bridge",
     ],
     postcss: {
       //postcssOptions: {
