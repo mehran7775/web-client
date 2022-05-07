@@ -7,10 +7,11 @@ import {
   WatchlistColumns,
   OrderFlags,
 } from "@/types";
-import { useOrder } from "~~/composables";
+import { useBottomPanel, useOrder } from "~~/composables";
 import DateTime from "../DateTime/dateTime.vue";
 import NumericField from "../numericField.vue";
 
+const bottomPanel = useBottomPanel();
 const orderManager = useOrder();
 const { $i18n: i18n } = useNuxtApp();
 const orders: Order[] = reactive([]);
@@ -32,19 +33,22 @@ function parseOrderFlags(status: number) {
     return "wealth.order.flags.Draft";
   } else if (status == OrderFlags.Cancelled) {
     return "wealth.order.flags.Cancelled";
-  }  else if (status == OrderFlags.Created) {
+  } else if (status == OrderFlags.Created) {
     return "wealth.order.flags.Created";
   } else if (status == (OrderFlags.Created | OrderFlags.Sent)) {
     return "wealth.order.flags.Sent";
   } else if (status == (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed)) {
     return "wealth.order.flags.Confirmed";
-  } else if (status == (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed | OrderFlags.PreOpening)) {
+  } else if (
+    status ==
+    (OrderFlags.Created | OrderFlags.Sent | OrderFlags.Confirmed | OrderFlags.PreOpening)
+  ) {
     return "wealth.order.flags.PreOpening";
   }
 }
 
 function isRunabled(status: number) {
-  return (status & OrderFlags.Draft) == OrderFlags.Draft
+  return (status & OrderFlags.Draft) == OrderFlags.Draft;
 }
 
 function isEditDisabled(status: number) {
@@ -52,14 +56,19 @@ function isEditDisabled(status: number) {
 }
 
 function isDeleteDisabled(status: number) {
-   return (status & OrderFlags.Deleteable) != 0;
+  return (status & OrderFlags.Deleteable) != 0;
 }
 
-orderManager
-  .getOrders(new OrderSearchModel())
-  .then((res: PaginatedResult<Order> | undefined) => {
-    if (res) orders.push(...res.data);
-  });
+function getOrders() {
+  bottomPanel.setLoading(true);
+  orderManager
+    .getOrders(new OrderSearchModel())
+    .then((res: PaginatedResult<Order> | undefined) => {
+      if (res) orders.push(...res.data);
+      bottomPanel.setLoading(false);
+    });
+}
+getOrders();
 </script>
 
 <template>
@@ -87,7 +96,7 @@ orderManager
     </template>
     <template #item.flags="{ item }"> {{ $t(parseOrderFlags(item.flags)) }}</template>
     <template #item.more="{ item }">
-    <v-btn
+      <v-btn
         color="transparent"
         class="ma-0 pa-0"
         width="24"
@@ -95,9 +104,7 @@ orderManager
         depressed
         :disabled="!isRunabled(item.flags)"
       >
-        <v-icon color="success" size="16">
-          isax-play
-        </v-icon>
+        <v-icon color="success" size="16"> isax-play </v-icon>
       </v-btn>
       <v-btn
         color="transparent"
@@ -107,9 +114,7 @@ orderManager
         depressed
         :disabled="isEditDisabled(item.flags)"
       >
-        <v-icon color="info" size="16">
-          isax-edit-2
-        </v-icon>
+        <v-icon color="info" size="16"> isax-edit-2 </v-icon>
       </v-btn>
       <v-btn
         color="transparent"
@@ -119,9 +124,7 @@ orderManager
         depressed
         :disabled="isDeleteDisabled(item.flags)"
       >
-        <v-icon color="error" size="16">
-          isax-trash
-        </v-icon>
+        <v-icon color="error" size="16"> isax-trash </v-icon>
       </v-btn>
     </template>
   </ada-data-table>

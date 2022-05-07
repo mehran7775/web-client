@@ -7,7 +7,6 @@ import DeepInformation from "./deepInformation/index.vue";
 import Bests from "./bests.vue";
 import { useBottomPanel } from "~/composables";
 
-const height = 32;
 const bottomPanel = useBottomPanel();
 const { $i18n: i18n } = useNuxtApp();
 const tabs = ["bottom-panel.orders", "bottom-panel.bests", "bottom-panel.depth"];
@@ -42,73 +41,77 @@ function close() {
 <template>
   <footer
     :class="{
-      'ma-0 pa-0': true,
+      footer: true,
       expanded: expanded,
       half: tab != -1 && !expanded,
       hiden: tab == -1,
     }"
   >
-    <v-card class="tw-h-full" width="100%">
-      <v-toolbar
-        :height="height"
-        color="primary"
-        v-if="tab != -1"
-        elevation="1"
-        dark
-        dense
-      >
-        <v-card-title>
-          {{ title }}
-        </v-card-title>
-        <v-spacer />
-        <v-btn icon @click="expand()">
-          <v-icon size="1em"> {{ icon }}</v-icon>
-        </v-btn>
-        <v-btn icon @click="close()">
-          <v-icon size="1em">mdi-minus</v-icon>
-        </v-btn>
-      </v-toolbar>
-      <v-card-text v-if="tab != -1" class="detail ma-0 pa-0">
-        <loading :loading="showLoading" />
-        <v-tabs-items v-model="tab" :class="{ expanded: expanded }">
-          <v-tab-item>
-            <default-order-list />
-          </v-tab-item>
-          <v-tab-item>
-            <bests />
-          </v-tab-item>
-          <v-tab-item>
-            <deep-information />
-          </v-tab-item>
-          <v-tab-item>
-            <further-information />
-          </v-tab-item>
-        </v-tabs-items>
-      </v-card-text>
-
-      <v-card-actions :height="height" class="ma-0 pa-0">
-        <v-tabs v-model="tab" :height="height" optional>
-          <v-tab v-for="t in tabs" :key="t">
-            {{ $t(t) }}
-          </v-tab>
-        </v-tabs>
-      </v-card-actions>
-    </v-card>
+    <header class="header" v-if="tab != -1">
+      <h4>
+        {{ title }}
+      </h4>
+      <v-spacer />
+      <v-btn icon @click="expand()">
+        <v-icon size="1em"> {{ icon }}</v-icon>
+      </v-btn>
+      <v-btn icon @click="close()">
+        <v-icon size="1em">mdi-minus</v-icon>
+      </v-btn>
+    </header>
+    <div v-if="tab != -1" class="detail">
+      <loading :loading="showLoading" />
+      <v-tabs-items v-model="tab" :class="{ expanded: expanded }">
+        <v-tab-item>
+          <default-order-list />
+        </v-tab-item>
+        <v-tab-item>
+          <bests />
+        </v-tab-item>
+        <v-tab-item>
+          <deep-information />
+        </v-tab-item>
+        <v-tab-item>
+          <further-information />
+        </v-tab-item>
+      </v-tabs-items>
+    </div>
+    <v-tabs v-model="tab" :height="32" optional>
+      <v-tab v-for="t in tabs" :key="t">
+        {{ $t(t) }}
+      </v-tab>
+    </v-tabs>
   </footer>
 </template>
 
 <style lang="postcss" scoped>
 .footer {
+  @apply tw-flex tw-flex-col tw-flex-grow;
+  width: calc(100% - 96px);
   position: fixed;
-  bottom: 0;
-  &.expanded {
-    top: 0;
-    position: absolute;
+  bottom: 32px;
+  background-color: var(--c-default-db-rgb);
+  .expanded {
+    transition: all 0.5s ease-in-out;
+    height: 100%;
   }
-}
-.expanded {
-  transition: all 0.5s ease-in-out;
-  height: 100%;
+  .header {
+    @apply tw-flex tw-flex-grow tw-w-full;
+    align-items: center;
+    position: relative;
+    height: 32px;
+    color: var(--c-primary-rgb);
+    background-color: rgba(var(--c-primary), 0.05);
+    padding: 0 12px;
+  }
+  .detail {
+    position: relative;
+    width: 100%;
+    font-size: 1rem;
+    line-height: 1.5;
+    height: calc(100% - 64px);
+    overflow-y: auto;
+  }
 }
 
 .half {
@@ -118,13 +121,5 @@ function close() {
 
 .hiden {
   height: 32px;
-}
-.detail {
-  position: relative;
-  width: 100%;
-  font-size: 1rem;
-  line-height: 1.5;
-  height: calc(100% - 64px);
-  overflow-y: auto;
 }
 </style>

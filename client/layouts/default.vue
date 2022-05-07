@@ -177,6 +177,9 @@ const rtl = computed(() => appManager.rtl);
   @apply tw-whitespace-nowrap tw-flex-nowrap tw-flex tw-flex-grow tw-justify-end;
   height: 32px;
   align-items: center;
+  position: fixed;
+  bottom: 0;
+  width: calc(100% - 96px);
   .summary {
     @apply tw-flex;
     align-self: center;
