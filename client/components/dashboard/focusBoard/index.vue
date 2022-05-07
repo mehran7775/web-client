@@ -67,6 +67,14 @@ if (process.client) {
 .focus-board {
   height: 320px;
 }
+.toolbar {
+  @apply tw-flex tw-flex-grow;
+  height: 42px;
+  padding: 0 8px 0 8px;
+  position: relative;
+  align-items: center;
+  background-color: var(--c-default-bg-rbg);
+}
 .bookmark {
   padding: 0 !important;
   position: relative;
@@ -116,8 +124,8 @@ if (process.client) {
 </style>
 
 <template>
-  <v-card class="ma-0 pa-0" flat tile>
-    <v-toolbar ref="toolbar" :height="42" color="defualt-bg" flat dense>
+  <div class="tw-m-0 tw-p-0">
+    <header ref="toolbar" class="toolbar">
       <slot name="toolbar"> </slot>
       <v-tooltip v-for="b in bookmarks" :key="b.to">
         <template #activator="{ on, attrs }">
@@ -172,7 +180,7 @@ if (process.client) {
           </v-icon>
         </v-btn>
       </v-btn-toggle>
-    </v-toolbar>
+    </header>
     <v-card-text class="ma-0 pa-0 focus-board" v-if="instruments.length > 0">
       <v-window v-model="viewMode">
         <v-window-item>
@@ -183,5 +191,5 @@ if (process.client) {
         </v-window-item>
       </v-window>
     </v-card-text>
-  </v-card>
+  </div>
 </template>

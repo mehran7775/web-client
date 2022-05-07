@@ -106,30 +106,28 @@ const rtl = computed(() => appManager.rtl);
         <nuxt />
       </div>
       <bottom-panel />
-      <v-footer class="text-no-wrap ma-0 pa-2" :height="32">
-        <div class="d-flex flex-grow-1 flex-row">
-          <div class="center">
-            <v-badge dot left class="ms-5" color="green" offset-y="75%" offset-x="-5"
-              >{{ $t("accounting.account.amount") }}0</v-badge
-            >
-            <v-badge dot left class="ms-5" color="red" offset-y="75%" offset-x="-5"
-              >{{ $t("accounting.account.blockedAmount") }}0</v-badge
-            >
-            <v-badge dot left class="ms-5" color="orange" offset-y="75%" offset-x="-5">
-              {{ $t("accounting.account.onlineBlockedAmount") }}0
-            </v-badge>
-            <v-badge dot left class="ms-5" color="blue" offset-y="75%" offset-x="-5"
-              >{{ $t("accounting.account.remaining") }}0</v-badge
-            >
-            <v-badge dot left class="ms-5" color="#89abcd" offset-y="75%" offset-x="-5"
-              >{{ $t("accounting.account.credit") }}0</v-badge
-            >
-          </div>
-          <div class="d-flex ms-auto cw">
-            &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
-          </div>
+      <footer class="footer">
+        <div class="summary center">
+          <v-badge dot left class="ms-5" color="green" offset-y="75%" offset-x="-5"
+            >{{ $t("accounting.account.amount") }}0</v-badge
+          >
+          <v-badge dot left class="ms-5" color="red" offset-y="75%" offset-x="-5"
+            >{{ $t("accounting.account.blockedAmount") }}0</v-badge
+          >
+          <v-badge dot left class="ms-5" color="orange" offset-y="75%" offset-x="-5">
+            {{ $t("accounting.account.onlineBlockedAmount") }}0
+          </v-badge>
+          <v-badge dot left class="ms-5" color="blue" offset-y="75%" offset-x="-5"
+            >{{ $t("accounting.account.remaining") }}0</v-badge
+          >
+          <v-badge dot left class="ms-5" color="#89abcd" offset-y="75%" offset-x="-5"
+            >{{ $t("accounting.account.credit") }}0</v-badge
+          >
         </div>
-      </v-footer>
+        <div class="cw">
+          &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
+        </div>
+      </footer>
     </v-main>
     <floating-button
       bottom="8px"
@@ -167,11 +165,6 @@ const rtl = computed(() => appManager.rtl);
 </style>
 
 <style lang="postcss" scoped>
-.drawer-activator {
-  &.open {
-    transform: rotate(-180deg);
-  }
-}
 .center {
   position: absolute;
   margin-left: auto;
@@ -179,6 +172,25 @@ const rtl = computed(() => appManager.rtl);
   left: 0;
   right: 0;
   width: fit-content;
+}
+.footer {
+  @apply tw-whitespace-nowrap tw-flex-nowrap tw-flex tw-flex-grow tw-justify-end;
+  height: 32px;
+  align-items: center;
+  .summary {
+    @apply tw-flex;
+    align-self: center;
+  }
+  .cw {
+    @apply tw-flex;
+    align-self: flex-end;
+    color: rgba(var(--c-default), 0.5);
+  }
+}
+.drawer-activator {
+  &.open {
+    transform: rotate(-180deg);
+  }
 }
 .dashboardmain-page {
   background-color: rgba(var(--c-primary), 0.05);
@@ -209,9 +221,6 @@ const rtl = computed(() => appManager.rtl);
 }
 
 .dashboardmain-nuxt.collaps {
-  height: calc(52vh);
-}
-.cw {
-  color: rgba(var(--c-default), 0.5);
+  height: 362px;
 }
 </style>

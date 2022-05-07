@@ -40,7 +40,7 @@ function close() {
 </script>
 
 <template>
-  <v-footer
+  <footer
     :class="{
       'ma-0 pa-0': true,
       expanded: expanded,
@@ -48,7 +48,7 @@ function close() {
       hiden: tab == -1,
     }"
   >
-    <v-card :class="{ expanded: true }" width="100%">
+    <v-card class="tw-h-full" width="100%">
       <v-toolbar
         :height="height"
         color="primary"
@@ -94,13 +94,17 @@ function close() {
         </v-tabs>
       </v-card-actions>
     </v-card>
-  </v-footer>
+  </footer>
 </template>
 
 <style lang="postcss" scoped>
 .footer {
   position: fixed;
   bottom: 0;
+  &.expanded {
+    top: 0;
+    position: absolute;
+  }
 }
 .expanded {
   transition: all 0.5s ease-in-out;
@@ -109,7 +113,7 @@ function close() {
 
 .half {
   transition: all 0.5s ease-in-out;
-  height: calc(50vh - 88px);
+  height: calc(100vh - 436px);
 }
 
 .hiden {

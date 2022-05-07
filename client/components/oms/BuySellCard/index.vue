@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { computed, Ref, ref } from "#app";
-import { useInstrument, useOrder } from "@/composables";
+import { useInstrument, useOrder, useAxios } from "@/composables";
 import { InstrumentCache, InstrumentSearchModel, Side } from "@/types";
 import accountType from "@/components/wealth/accountType.vue";
 import credit from "@/components/wealth/validity/index.vue";
 import percent from "./percent.vue";
 import { object, number, AnyObjectSchema } from "yup";
-import TextInput from "~~/components/textInput.vue";
+import TextInput from "@/components/textInput.vue";
 import ShowPercent from "./showPercent.vue";
-import AdaBtn from "~~/components/adaBtn.vue";
-import { count } from "console";
+import AdaBtn from "@/components/adaBtn.vue";
+import { getWage } from "@/repositories/wealth/wealth_manager";
 
 const props = defineProps<{
   count: number;
@@ -18,7 +18,7 @@ const props = defineProps<{
 }>();
 
 const buyForm = ref<AnyObjectSchema | null>(null);
-
+const axios = useAxios();
 const instrumentManager = useInstrument();
 const orderManager = useOrder();
 const active: Ref<InstrumentCache> = ref(new InstrumentCache());
@@ -104,6 +104,7 @@ instrumentManager
           "oms.order.validation.MaxPrice"
         ),
     });
+    getWage(props.insId.toString(), order.value.side, axios.createInstance());
   });
 </script>
 
