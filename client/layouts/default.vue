@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from "#app";
 import snackbar from "@/components/snacks.vue";
-import { useAsrTrader, useUser, useBottomPanel } from "~/composables";
+import { useAsrTrader, useUser, useBottomPanel, useWealth } from "~/composables";
 
 const appManager = useAsrTrader();
 const userManager = useUser();
 const bottomPanelManager = useBottomPanel();
+const wealthManager = useWealth();
+wealthManager.getActiveRestrictions();
 
 const rightMenu = ref({
   mini: true,

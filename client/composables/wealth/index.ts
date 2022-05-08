@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { UserState } from "@/types/stores";
 import { Wealth, WealthSearchModel } from "@/types";
 import { useInstrument, useAxios, useUser } from "..";
 import { doAsync } from "@/utils";
@@ -11,6 +10,10 @@ export const useWealth = defineStore("wealth", () => {
   const userState = useUser();
   const axios = useAxios();
   const instrumentManager = useInstrument();
+
+  async function getActiveRestrictions() {
+    console.log(await wealthManager.getRestrictions(axios.createInstance()));
+  }
 
   async function getWealth(
     payload: WealthSearchModel
@@ -32,5 +35,6 @@ export const useWealth = defineStore("wealth", () => {
 
   return {
     getWealth,
+    getActiveRestrictions,
   };
 });

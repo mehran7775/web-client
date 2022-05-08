@@ -22,7 +22,16 @@ export async function getWage(
   );
 }
 
+export async function getRestrictions(
+  axios: AxiosInstance
+): Promise<AxiosResponse<PaginatedResult<Wealth>>> {
+  return axios.get<PaginatedResult<Wealth>>(
+    "/wealth-manager/restriction/active-list"
+  );
+}
+
 export default {
   getWealth,
   getWage,
+  getRestrictions,
 };
