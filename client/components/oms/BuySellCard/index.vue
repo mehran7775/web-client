@@ -18,6 +18,7 @@ const props = defineProps<{
 }>();
 
 const buyForm = ref<AnyObjectSchema | null>(null);
+const sellForm = ref<AnyObjectSchema | null>(null);
 const axios = useAxios();
 const instrumentManager = useInstrument();
 const orderManager = useOrder();
@@ -62,7 +63,7 @@ const tab = computed({
   },
 });
 
-async function buyCheck() {
+async function check() {
   if (buyForm.value) {
     try {
       await buyForm.value.validate({
@@ -310,7 +311,7 @@ button.active {
               height="24px"
               @click="
                 () => {
-                  buyCheck();
+                  check();
                 }
               "
               depressed
@@ -326,7 +327,7 @@ button.active {
               :disabled="!active || (active.status & 3) != 3"
               @click="
                 () => {
-                  buyCheck();
+                  check();
                 }
               "
               depressed
@@ -463,7 +464,7 @@ button.active {
               height="24px"
               @click="
                 () => {
-                  buyCheck();
+                  check();
                 }
               "
               depressed
@@ -477,9 +478,14 @@ button.active {
               class="buy tw-mt-1"
               height="24px"
               :disabled="!active || (active.status & 3) != 3"
+              @click="
+                () => {
+                  check();
+                }
+              "
               depressed
             >
-              {{ $t("oms.buy") }}
+              {{ $t("oms.sell") }}
             </ada-btn>
           </div>
         </v-form>
