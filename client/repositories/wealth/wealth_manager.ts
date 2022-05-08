@@ -7,7 +7,7 @@ export async function getWealth(
   axios: AxiosInstance
 ): Promise<AxiosResponse<PaginatedResult<Wealth>>> {
   return axios.get<PaginatedResult<Wealth>>(
-    "/wealth-manager/user-instrument/" + userName + "/",
+    "/wealth-manager/" + userName + "/instruments/",
     { params: value }
   );
 }
