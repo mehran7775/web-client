@@ -107,6 +107,10 @@ const getValue: (item: any) => any = eval(
   background-color: rgba(var(--c-primary), 0.1);
   color: var(--c-primary-rgb);
   cursor: pointer;
+  li,
+  i {
+    color: var(--c-primary-rgb);
+  }
   &.value {
     background-color: var(--c-primary-rgb);
     input,

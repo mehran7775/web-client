@@ -109,7 +109,7 @@ instrumentManager
 </script>
 
 <style lang="postcss" scoped>
-.active {
+button.active {
   background-color: var(--c-primary-rgb);
   color: white !important;
   i {
