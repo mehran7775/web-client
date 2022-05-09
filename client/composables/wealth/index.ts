@@ -12,7 +12,7 @@ export const useWealth = defineStore("wealth", () => {
   const instrumentManager = useInstrument();
 
   async function getActiveRestrictions() {
-    console.log(await wealthManager.getRestrictions(axios.createInstance()));
+    await wealthManager.getRestrictions(axios.createInstance());
   }
 
   async function getWealth(

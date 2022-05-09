@@ -16,8 +16,8 @@ export async function getWage(
   id: string,
   side: Side,
   axios: AxiosInstance
-): Promise<AxiosResponse<PaginatedResult<Wealth>>> {
-  return axios.get<PaginatedResult<Wealth>>(
+): Promise<AxiosResponse<number>> {
+  return axios.get<number>(
     "/wealth-manager/order/wage/" + id + "/" + (side == 1 ? "BUY" : "SELL")
   );
 }

@@ -10,6 +10,7 @@ import TextInput from "@/components/textInput.vue";
 import ShowPercent from "./showPercent.vue";
 import AdaBtn from "@/components/adaBtn.vue";
 import { getWage } from "@/repositories/wealth/wealth_manager";
+import { reactive } from "@vue/reactivity";
 
 const props = defineProps<{
   count: number;
@@ -26,6 +27,7 @@ const active: Ref<InstrumentCache> = ref(new InstrumentCache());
 const order = computed(() => orderManager.getForm(props.insId.toString()));
 const priceLock = ref(false);
 const countLock = ref(false);
+const wage = ref({ buy: 0, sell: 0 });
 const countVal = computed({
   get() {
     return order.value.quantity;
@@ -50,6 +52,9 @@ const priceVal = computed({
     });
   },
 });
+const tradeValue = computed(() => order.value.quantity * order.value.enteredPrice);
+const buyWage = computed(() => tradeValue.value * wage.value.buy);
+const sellWage = computed(() => tradeValue.value * wage.value.sell);
 const tab = computed({
   get() {
     return order.value.side.toString();
@@ -105,7 +110,15 @@ instrumentManager
           "oms.order.validation.MaxPrice"
         ),
     });
-    getWage(props.insId.toString(), order.value.side, axios.createInstance());
+    getWage(props.insId.toString(), order.value.side, axios.createInstance()).then(
+      (res) => {
+        if (res.data)
+          wage.value = {
+            buy: res.data,
+            sell: res.data,
+          };
+      }
+    );
   });
 </script>
 
@@ -188,7 +201,7 @@ button.active {
         <v-form class="tw-m-0 tw-p-0 tw-grid tw-grid-cols-2"
           ><div class="rw rw-border tw-col-span-2 tw-justify-center">
             <span class="tw-mx-3">{{ $t("wealth.sharesCount") }}: </span>
-            <numeric-field :value="1000" class="tw-pl-2" />
+            <numeric-field :value="active.amount" class="tw-pl-2" />
           </div>
           <div class="rw rw-border tw-justify-between">
             <span>{{ $t("oms.countThreshold") }}: </span>
@@ -299,11 +312,12 @@ button.active {
           </div>
           <div class="rw rw-border tw-justify-between">
             <span>{{ $t("oms.tradeWage") }}: </span>
-            <numeric-field :value="1000" />
+            <numeric-field :value="buyWage" />
             <bar />
           </div>
           <div class="rw rw-border tw-justify-between">
-            <span>{{ $t("oms.tradeValue") }}: </span> <numeric-field :value="1000" />
+            <span>{{ $t("oms.tradeValue") }}: </span>
+            <numeric-field :value="tradeValue" />
           </div>
           <div class="rw rw-border tw-justify-center">
             <ada-btn
@@ -341,7 +355,7 @@ button.active {
         <v-form class="tw-m-0 tw-p-0 tw-grid tw-grid-cols-2">
           <div class="rw rw-border tw-col-span-2 tw-justify-center">
             <span class="tw-mx-3">{{ $t("wealth.sharesCount") }}: </span>
-            <numeric-field :value="1000" class="tw-pl-2" />
+            <numeric-field :value="active.amount" class="tw-pl-2" />
           </div>
           <div class="rw rw-border tw-justify-between">
             <span>{{ $t("oms.countThreshold") }}: </span>
@@ -452,11 +466,12 @@ button.active {
           </div>
           <div class="rw rw-border tw-justify-between">
             <span>{{ $t("oms.tradeWage") }}: </span>
-            <numeric-field :value="1000" />
+            <numeric-field :value="sellWage" />
             <bar />
           </div>
           <div class="rw rw-border tw-justify-between">
-            <span>{{ $t("oms.tradeValue") }}: </span> <numeric-field :value="1000" />
+            <span>{{ $t("oms.tradeValue") }}: </span>
+            <numeric-field :value="tradeValue" />
           </div>
           <div class="rw rw-border tw-justify-center">
             <ada-btn
