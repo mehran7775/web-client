@@ -75,10 +75,19 @@ async function check() {
         quantity: props.count,
         fee: props.price,
       });
+      return true;
     } catch (e) {
       console.log(e);
+      return false;
     }
   }
+  return false;
+}
+
+async function placeOrder(options: { draft: boolean }) {
+  const param = { ...order.value };
+  if (options.draft) param.flags = param.flags | 1;
+  orderManager.placeOrder(param);
 }
 
 function toggleCountLock() {
@@ -325,7 +334,7 @@ button.active {
               height="24px"
               @click="
                 () => {
-                  check();
+                  if (check()) placeOrder({ draft: true });
                 }
               "
               depressed
@@ -341,7 +350,7 @@ button.active {
               :disabled="!active || (active.status & 3) != 3"
               @click="
                 () => {
-                  check();
+                  if (check()) placeOrder();
                 }
               "
               depressed
@@ -479,7 +488,7 @@ button.active {
               height="24px"
               @click="
                 () => {
-                  check();
+                  if (check()) placeOrder({ draft: true });
                 }
               "
               depressed
@@ -495,7 +504,7 @@ button.active {
               :disabled="!active || (active.status & 3) != 3"
               @click="
                 () => {
-                  check();
+                  if (check()) placeOrder();
                 }
               "
               depressed

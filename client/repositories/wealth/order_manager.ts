@@ -12,6 +12,14 @@ export async function getOrders(
   );
 }
 
+export async function setOrder(
+  order: Order,
+  axios: AxiosInstance
+): Promise<AxiosResponse> {
+  return axios.post("/wealth-manager/order/", order);
+}
+
 export default {
   getOrders,
+  setOrder,
 };
