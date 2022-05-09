@@ -69,12 +69,12 @@ watch(
   @apply tw-flex tw-flex-grow tw-justify-between tw-whitespace-nowrap tw-min-w-0;
   height: 24px;
   &.has-label {
+    .label {
+      min-width: 65px;
+    }
     input {
       margin: auto 0 auto 4px;
     }
-  }
-  .label {
-    min-width: 65px;
   }
   input {
     @apply tw-min-w-0 tw-inline tw-flex-grow;

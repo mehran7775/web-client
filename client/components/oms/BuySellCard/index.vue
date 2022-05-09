@@ -273,7 +273,7 @@ button.active {
           </div>
           <div class="rw rw-border tw-justify-between">
             <account-type
-              :placeholder="$t('accounting.account.type')"
+              :label="$t('accounting.account.type')"
               class="tw-my-1"
               height="24px"
             >
@@ -284,7 +284,7 @@ button.active {
             <credit
               height="24px"
               class="tw-my-1"
-              :placeholder="$t('accounting.account.credit')"
+              :label="$t('accounting.account.credit')"
             >
             </credit>
           </div>
@@ -427,7 +427,7 @@ button.active {
           </div>
           <div class="rw rw-border tw-justify-between">
             <account-type
-              :placeholder="$t('accounting.account.type')"
+              :label="$t('accounting.account.type')"
               class="tw-my-1"
               height="24px"
             >
@@ -438,7 +438,7 @@ button.active {
             <credit
               height="24px"
               class="tw-my-1"
-              :placeholder="$t('accounting.account.credit')"
+              :label="$t('accounting.account.credit')"
             >
             </credit>
           </div>
