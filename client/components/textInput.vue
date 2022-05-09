@@ -73,6 +73,9 @@ watch(
       margin: auto 0 auto 4px;
     }
   }
+  .label {
+    min-width: 65px;
+  }
   input {
     @apply tw-min-w-0 tw-inline tw-flex-grow;
     outline-style: none;
