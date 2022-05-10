@@ -63,50 +63,6 @@ const getValue: (item: any) => any = eval(
   }"
 );
 </script>
-
-<template>
-  <label
-    :class="[
-      'ada-select',
-      active ? 'active' : 'inactive',
-      val == null ? '' : 'value',
-      label == '' ? '' : 'has-label',
-    ]"
-    :style="{ height: height }"
-    @click="toggleActive"
-    v-ada-click-outside="() => (active = false)"
-  >
-    <div class="label">
-      {{ label }}
-    </div>
-    <div class="input">
-      <slot name="prepend"> </slot>
-      <input
-        type="text"
-        class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
-        v-model="selectedText"
-        readonly
-        ref="inp"
-        :aria-readonly="readonly"
-        :placeholder="placeholder"
-      />
-      <slot name="append">
-        <i
-          @click="toggleActive"
-          class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"
-        ></i>
-      </slot>
-      <ol class="menu tw-m-0 tw-p-0 tw-shadow" v-show="active">
-        <slot name="prepend-item"></slot>
-        <li v-for="item in items" :key="getValue(item)" @click="() => select(item)">
-          {{ getText(item) }}
-        </li>
-        <slot name="append-item"></slot>
-      </ol>
-    </div>
-  </label>
-</template>
-
 <style lang="postcss" scoped>
 .rtl {
   .ada-select {
@@ -176,9 +132,54 @@ const getValue: (item: any) => any = eval(
     display: block;
     list-style: none;
     padding: 0 6px 0 6px;
+    height: var(--tabel-row-height);
+    line-height: var(--tabel-row-height);
     &:hover {
       background-color: rgba(var(--c-primary), 0.05);
     }
   }
 }
 </style>
+
+<template>
+  <label
+    :class="[
+      'ada-select',
+      active ? 'active' : 'inactive',
+      val == null ? '' : 'value',
+      label == '' ? '' : 'has-label',
+    ]"
+    :style="{ height: height }"
+    @click="toggleActive"
+    v-ada-click-outside="() => (active = false)"
+  >
+    <div class="label">
+      {{ label }}
+    </div>
+    <div class="input">
+      <slot name="prepend"> </slot>
+      <input
+        type="text"
+        class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
+        v-model="selectedText"
+        readonly
+        ref="inp"
+        :aria-readonly="readonly"
+        :placeholder="placeholder"
+      />
+      <slot name="append">
+        <i
+          @click="toggleActive"
+          class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"
+        ></i>
+      </slot>
+      <ol class="menu tw-m-0 tw-p-0 tw-shadow" v-show="active">
+        <slot name="prepend-item"></slot>
+        <li v-for="item in items" :key="getValue(item)" @click="() => select(item)">
+          {{ getText(item) }}
+        </li>
+        <slot name="append-item"></slot>
+      </ol>
+    </div>
+  </label>
+</template>
