@@ -156,6 +156,16 @@ instrumentManager
       display: none;
     }
   }
+  .sell {
+    @apply tw-flex tw-flex-grow;
+    &:hover {
+      background-color: var(--c-error-rgb);
+      color: white;
+    }
+    &:before {
+      display: none;
+    }
+  }
   .draft {
     @apply tw-flex tw-flex-grow;
     &:hover {
@@ -180,9 +190,14 @@ instrumentManager
 .buy-sell {
   @apply tw-m-0 tw-p-0;
   .v-tab {
-    color: black;
+    color: black !important;
     background-color: #e0e0e0;
+    font-weight: bold;
+    &:hover {
+      color: white !important;
+    }
     &--active {
+      color: white !important;
       &::before {
         background-color: rgba(0, 0, 0, 0);
         opacity: 0;
@@ -502,7 +517,7 @@ instrumentManager
           </div>
           <div class="tw-justify-center">
             <ada-btn
-              class="buy"
+              class="sell"
               height="24px"
               :disabled="!active || (active.status & 3) != 3"
               @click="
