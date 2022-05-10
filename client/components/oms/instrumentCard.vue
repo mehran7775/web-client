@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, Ref, computed, ComputedRef } from "#app";
+import { defineComponent, ref, Ref, useNuxtApp } from "#app";
 import { useAsrTrader, useInstrument } from "@/composables";
 import { Instrument, InstrumentSearchModel } from "@/types";
 import { DateTime } from "luxon";
@@ -15,7 +15,7 @@ export default defineComponent({
   setup(props, context) {
     const appManager = useAsrTrader();
     const instrumentManager = useInstrument();
-    const i18n = useI18n();
+    const { $i18n: i18n } = useNuxtApp();
     const locale = appManager.locale;
     const formatter = appManager.formatter;
     const fields: Array<field> = [
@@ -89,10 +89,6 @@ export default defineComponent({
       locale,
       instrument,
     };
-    //TODO remove in vue3
-    function useI18n() {
-      return context.root.$i18n;
-    }
   },
 });
 

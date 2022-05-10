@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, Ref, reactive, onMounted } from "#app";
+import { ref, Ref, reactive, onMounted, useNuxtApp } from "#app";
 import { AxiosError } from "axios";
 import { LoginModel, PasswordType } from "@/types";
 import { ErrorExtractor } from "~/utils/error";
@@ -24,6 +24,7 @@ const userManager = useUser();
 const router = useRouter();
 const keyboard = ref(useVirtualKeyBoard());
 const snack = useSnacks();
+const { $i18n: i18n } = useNuxtApp();
 
 const frm: Ref<any> = ref(null);
 const userref: Ref<any> = ref(null);
@@ -65,10 +66,9 @@ async function login(data: LoginModel) {
         snack.showMessage({ content: "errors." + error.code, color: "error" });
       else {
         let res = "";
-        //TODO i18n
-        // for (let e in error.detail) {
-        //   res += i18n.t(error.detail[e].type) + "\r\n";
-        // }
+        for (let e in error.detail) {
+          res += i18n.t(error.detail[e].type) + "\r\n";
+        }
         snack.showMessage({ content: res, color: "error" });
       }
     } finally {
@@ -92,6 +92,58 @@ onMounted(() => {
   userref.value?.focus();
 });
 </script>
+
+<style lang="postcss">
+.mar-t-6 {
+  margin-top: 6px !important;
+}
+.mar-b-6 {
+  margin-bottom: 6px !important;
+}
+.pad-t-6 {
+  padding-top: 6px !important;
+}
+.pad-b-6 {
+  padding-bottom: 6px !important;
+}
+a {
+  text-decoration: none;
+}
+
+.radio-ckeck {
+  border-radius: 5px;
+  width: calc(50% - 8px);
+  background-color: rgba(130, 130, 130, 0.1);
+  font-weight: bold;
+  display: inline-block !important;
+  justify-content: center;
+  text-align: center;
+  &.v-item--active {
+    font-size: 1.1667rem;
+    background-color: rgba(var(--c-primary), 0.05);
+    label {
+      width: auto;
+      color: var(--c-primary-rgb);
+    }
+  }
+  .v-input--selection-controls__input {
+    width: auto;
+    .v-icon {
+      font-size: inherit;
+    }
+  }
+}
+
+.pass-star.v-input.v-text-field {
+  input {
+    color: var(--v-default-lighten3);
+    vertical-align: middle;
+    padding-bottom: 16px;
+    font-size: 36px;
+    line-height: 36px;
+  }
+}
+</style>
 
 <template>
   <v-card
@@ -333,55 +385,3 @@ onMounted(() => {
     <div class="text-justify" v-html="$t('login.alerts')"></div>
   </v-card>
 </template>
-
-<style lang="postcss">
-.mar-t-6 {
-  margin-top: 6px !important;
-}
-.mar-b-6 {
-  margin-bottom: 6px !important;
-}
-.pad-t-6 {
-  padding-top: 6px !important;
-}
-.pad-b-6 {
-  padding-bottom: 6px !important;
-}
-a {
-  text-decoration: none;
-}
-
-.radio-ckeck {
-  border-radius: 5px;
-  width: calc(50% - 8px);
-  background-color: rgba(130, 130, 130, 0.1);
-  font-weight: bold;
-  display: inline-block !important;
-  justify-content: center;
-  text-align: center;
-  &.v-item--active {
-    font-size: 1.1667rem;
-    background-color: rgba(var(--c-primary), 0.05);
-    label {
-      width: auto;
-      color: var(--c-primary-rgb);
-    }
-  }
-  .v-input--selection-controls__input {
-    width: auto;
-    .v-icon {
-      font-size: inherit;
-    }
-  }
-}
-
-.pass-star.v-input.v-text-field {
-  input {
-    color: var(--v-default-lighten3);
-    vertical-align: middle;
-    padding-bottom: 16px;
-    font-size: 36px;
-    line-height: 36px;
-  }
-}
-</style>

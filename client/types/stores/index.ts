@@ -63,5 +63,5 @@ export interface MessageState {}
 export interface Snack {
   content: string;
   color: string;
-  show: boolean;
+  show?: boolean;
 }
