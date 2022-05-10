@@ -30,132 +30,74 @@ instrumentManager.getClientDistribution(props.insId).then((result) => {
 });
 </script>
 
-<style lang="postcss">
-.legal-real {
-  .col {
-    background-color: rgba(var(--c-default), 0.05);
-  }
-}
-</style>
 <style lang="postcss" scoped>
-.real {
-  color: var(--c-info-rgb);
-  background-color: rgba(var(--c-info), 0.1);
-}
-.legal {
-  color: var(--c-info-rgb);
-  background-color: rgba(var(--c-info), 0.1);
+.legal-real {
+  @apply tw-grid tw-grid-cols-7;
+  > div {
+    @apply tw-text-center;
+    background-color: rgba(var(--c-default), 0.05);
+    height: 32px;
+    line-height: 32px;
+  }
+  .real {
+    color: var(--c-info-rgb);
+    background-color: rgba(var(--c-info), 0.1);
+  }
+  .legal {
+    color: var(--c-info-rgb);
+    background-color: rgba(var(--c-info), 0.1);
+  }
 }
 </style>
 
 <template>
-  <v-container class="text-center legal-real ma-0 pa-0" fluid>
-    <v-row v-if="!hideHeaders" dense>
-      <v-col class="success--text">
-        {{ $t("oms.buy") }}
-      </v-col>
-      <v-col class="error--text">
-        {{ $t("oms.sell") }}
-      </v-col>
-    </v-row>
-    <v-row v-show="!hideHeaders" class="text-no-wrap" dense>
-      <v-col
-        :class="{
-          'd-none d-md-block': responsive,
-        }"
-        >{{ $t("oms.count") }}</v-col
-      >
-      <v-col
-        :class="{
-          'd-none d-md-block': responsive,
-        }"
-        >{{ $t("oms.amount") }}</v-col
-      >
-      <v-col
-        :class="{
-          'd-none d-md-block': responsive,
-        }"
-        >{{ $t("oms.percent") }}</v-col
-      >
-      <v-col v-if="responsive" class="d-md-none">{{ $t("oms.count-short") }}</v-col>
-      <v-col v-if="responsive" class="d-md-none">{{ $t("oms.amount-short") }}</v-col>
-      <v-col v-if="responsive" class="d-md-none">{{ $t("oms.percent-short") }}</v-col>
+  <div class="legal-real">
+    <div class="col-border">
+      <numeric-field :value="distribution.real.buy.count" />
+    </div>
+    <div class="col-border">
+      <numeric-field :value="distribution.real.buy.amount" />
+    </div>
+    <div class="col-border">
+      <PercentField
+        :value="(distribution.real.buy.count * distribution.real.buy.amount) / total"
+      />
+    </div>
+    <div class="col-border real">{{ $t("user.personality.real") }}</div>
+    <div class="col-border">
+      <numeric-field :value="distribution.real.sell.count" />
+    </div>
+    <div class="col-border">
+      <numeric-field :value="distribution.real.sell.amount" />
+    </div>
+    <div class="col-border">
+      <percent-field
+        :value="(distribution.real.sell.count / total) * distribution.real.sell.amount"
+      />
+    </div>
 
-      <v-col></v-col>
-
-      <v-col
-        :class="{
-          'd-none d-md-block': responsive,
-        }"
-        >{{ $t("oms.count") }}</v-col
-      >
-      <v-col
-        :class="{
-          'd-none d-md-block': responsive,
-        }"
-        >{{ $t("oms.amount") }}</v-col
-      >
-      <v-col
-        :class="{
-          'd-none d-md-block': responsive,
-        }"
-        >{{ $t("oms.percent") }}</v-col
-      >
-      <v-col v-if="responsive" class="d-md-none">{{ $t("oms.count-short") }}</v-col>
-      <v-col v-if="responsive" class="d-md-none">{{ $t("oms.amount-short") }}</v-col>
-      <v-col v-if="responsive" class="d-md-none">{{ $t("oms.percent-short") }}</v-col>
-    </v-row>
-    <v-row dense>
-      <v-col class="col-border">
-        <numeric-field :value="distribution.real.buy.count" />
-      </v-col>
-      <v-col class="col-border">
-        <numeric-field :value="distribution.real.buy.amount" />
-      </v-col>
-      <v-col class="col-border">
-        <PercentField
-          :value="(distribution.real.buy.count * distribution.real.buy.amount) / total"
-        />
-      </v-col>
-      <v-col class="col-border real">{{ $t("user.personality.real") }}</v-col>
-      <v-col class="col-border">
-        <numeric-field :value="distribution.real.sell.count" />
-      </v-col>
-      <v-col class="col-border">
-        <numeric-field :value="distribution.real.sell.amount" />
-      </v-col>
-      <v-col class="col-border">
-        <percent-field
-          :value="(distribution.real.sell.count / total) * distribution.real.sell.amount"
-        />
-      </v-col>
-    </v-row>
-    <v-row dense>
-      <v-col class="col-border">
-        <numeric-field :value="distribution.legal.buy.count" />
-      </v-col>
-      <v-col class="col-border">
-        <numeric-field :value="distribution.legal.buy.amount" />
-      </v-col>
-      <v-col class="col-border">
-        <percent-field
-          :value="(distribution.legal.buy.count * distribution.legal.buy.amount) / total"
-        />
-      </v-col>
-      <v-col class="col-border legal">{{ $t("user.personality.legal") }}</v-col>
-      <v-col class="col-border">
-        <numeric-field :value="distribution.legal.sell.count" />
-      </v-col>
-      <v-col class="col-border">
-        <numeric-field :value="distribution.legal.sell.amount" />
-      </v-col>
-      <v-col class="col-border">
-        <percent-field
-          :value="
-            (distribution.legal.sell.count / total) * distribution.legal.sell.amount
-          "
-        />
-      </v-col>
-    </v-row>
-  </v-container>
+    <div class="col-border">
+      <numeric-field :value="distribution.legal.buy.count" />
+    </div>
+    <div class="col-border">
+      <numeric-field :value="distribution.legal.buy.amount" />
+    </div>
+    <div class="col-border">
+      <percent-field
+        :value="(distribution.legal.buy.count * distribution.legal.buy.amount) / total"
+      />
+    </div>
+    <div class="col-border legal">{{ $t("user.personality.legal") }}</div>
+    <div class="col-border">
+      <numeric-field :value="distribution.legal.sell.count" />
+    </div>
+    <div class="col-border">
+      <numeric-field :value="distribution.legal.sell.amount" />
+    </div>
+    <div class="col-border">
+      <percent-field
+        :value="(distribution.legal.sell.count / total) * distribution.legal.sell.amount"
+      />
+    </div>
+  </div>
 </template>
