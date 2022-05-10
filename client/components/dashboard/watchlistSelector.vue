@@ -121,7 +121,7 @@ watch(selected, select);
         v-on="on"
       >
         <span v-if="!item.onEdit">{{ item.text }}</span>
-        <v-spacer v-if="!item.onEdit" />
+        <ada-spacer v-if="!item.onEdit" />
         <v-icon
           v-if="!item.onEdit"
           @click.stop="remove(item.id)"

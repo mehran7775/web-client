@@ -161,8 +161,8 @@ button.active {
 }
 .rw {
   @apply tw-flex tw-flex-grow;
-  min-height: 32px;
-  height: 32px;
+  min-height: var(--tabel-row-height);
+  height: var(--tabel-row-height);
   min-width: 50%;
   padding: 0 12px 0 12px !important;
   position: relative;

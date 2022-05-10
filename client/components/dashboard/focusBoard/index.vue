@@ -154,7 +154,7 @@ if (process.client) {
         </template>
         {{ b.text ? b.text : $t(b.title) }}
       </v-tooltip>
-      <v-spacer />
+      <ada-spacer />
       <!-- <v-btn
         @click="setHome"
         height="28"

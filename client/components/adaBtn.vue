@@ -6,12 +6,14 @@ const props = withDefaults(
     height: number | string;
     type: "button" | "submit" | "reset";
     icon: boolean;
+    dark: boolean;
   }>(),
   {
     width: "auto",
     height: "auto",
     type: "button",
     icon: false,
+    dark: false,
   }
 );
 
@@ -32,6 +34,9 @@ button {
   font-weight: bold;
   position: relative;
   overflow: hidden;
+  &.dark {
+    color: white;
+  }
 }
 </style>
 
@@ -39,13 +44,14 @@ button {
   <button
     v-bind="$attrs"
     v-on="$listeners"
+    :class="[dark ? 'dark' : '']"
     :type="type"
     :style="{
       minWidth: widthVal,
       maxWidth: widthVal,
       minHeight: heightVal,
       maxHeight: heightVal,
-      lineHeight: icon ? '0.8334rem' : '',
+      lineHeight: icon ? '0.8334rem' : heightVal,
     }"
   >
     <slot></slot>

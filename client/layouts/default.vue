@@ -93,7 +93,7 @@ const rtl = computed(() => appManager.rtl);
           {{ $t("oms.superBourseIndex") }}: {{ formatter.format(0.0) }}
         </v-badge>
       </div>
-      <v-spacer />
+      <ada-spacer />
       <user-menu />
     </v-app-bar>
     <v-main

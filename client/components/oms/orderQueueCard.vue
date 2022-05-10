@@ -201,7 +201,7 @@ export default defineComponent({
   .col {
     font-size: 0.75rem !important;
     font-weight: 700;
-    max-height: 32px;
+    max-height: var(--tabel-row-height);
   }
   .sell {
     background-color: #efeff1;
@@ -212,6 +212,6 @@ export default defineComponent({
 }
 .queue {
   position: relative;
-  max-height: 32px;
+  max-height: var(--tabel-row-height);
 }
 </style>

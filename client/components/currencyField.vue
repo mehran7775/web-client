@@ -1,23 +1,13 @@
-<template>
-  <span class="text-no-wrap value" dir="ltr">
-    {{ formatter.format(value) }}
-    <slot />
-  </span>
-</template>
-
-<script lang="ts">
-import { computed, defineComponent } from "#app";
+<script setup lang="ts">
+import { computed } from "#app";
 import { useAsrTrader } from "~/composables";
 
-export default defineComponent({
-  props: { value: Number },
-  setup() {
-    const appManager = useAsrTrader();
-    const formatter = computed(() => appManager.currencyFormatter);
-    return {
-      formatter,
-    };
-  },
+const props = defineProps<{ value: number }>();
+
+const appManager = useAsrTrader();
+const formatter = computed(() => appManager.currencyFormatter);
+defineExpose({
+  formatter,
 });
 </script>
 <style lang="postcss" scoped>
@@ -25,3 +15,10 @@ export default defineComponent({
   font-size: var(--value-font-size);
 }
 </style>
+
+<template>
+  <span class="text-no-wrap value" dir="ltr">
+    {{ formatter.format(value) }}
+    <slot />
+  </span>
+</template>

@@ -51,7 +51,7 @@ function close() {
       <h4>
         {{ title }}
       </h4>
-      <v-spacer />
+      <ada-spacer />
       <v-btn icon @click="expand()">
         <v-icon size="1em"> {{ icon }}</v-icon>
       </v-btn>
