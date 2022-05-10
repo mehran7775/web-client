@@ -14,6 +14,7 @@
     }
   },
   "general": {
+    "send": "ارسال",
     "percent": "درصد",
     "export": "خروجی",
     "excels": "اکسل",
@@ -221,6 +222,8 @@
     "count-short": "ت",
     "sell": "فروش",
     "buy": "خرید",
+    "sell-btn": "@:general.send @:oms.sell",
+    "buy-btn": "@:general.send @:oms.buy",
     "percent": "@general.percent",
     "percent-short": "%",
     "trade": "معامله",

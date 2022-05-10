@@ -373,7 +373,7 @@ instrumentManager
               "
               depressed
             >
-              {{ $t("oms.buy") }}
+              {{ $t("oms.buy-btn") }}
             </ada-btn>
           </div>
         </form>
@@ -527,7 +527,7 @@ instrumentManager
               "
               depressed
             >
-              {{ $t("oms.sell") }}
+              {{ $t("oms.sell-btn") }}
             </ada-btn>
           </div>
         </form>
