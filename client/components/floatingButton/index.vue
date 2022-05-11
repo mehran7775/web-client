@@ -1,52 +1,17 @@
-<template>
-  <v-fab-transition>
-    <v-btn class="floating-btn" :style="props" fab v-bind="$attrs">
-      <slot />
-    </v-btn>
-  </v-fab-transition>
-</template>
-
-<script lang="ts">
-import { defineComponent } from "#app";
-
-export default defineComponent({
-  props: {
-    left: {
-      type: String,
-      default: undefined,
-    },
-    top: {
-      type: String,
-      default: undefined,
-    },
-    right: {
-      type: String,
-      default: undefined,
-    },
-    bottom: {
-      type: String,
-      default: undefined,
-    },
-    position: {
-      type: String,
-      default: "absolute",
-    },
-    "z-index": {
-      type: [Number, String],
-      default: 1000,
-    },
-    width: {
-      type: String,
-      default: undefined,
-    },
-    height: {
-      type: String,
-      default: undefined,
-    },
-  },
-  inheritAttrs: false,
-  setup(props) {
-    return { props };
-  },
-});
+<script setup lang="ts">
+const props = withDefaults(defineProps<{}>(), {});
 </script>
+
+<style lang="postcss">
+.floating-btn {
+  border-radius: 50% !important;
+  z-index: 1000;
+  position: absolute !important;
+}
+</style>
+
+<template>
+  <ada-btn class="floating-btn" v-bind="$attrs" v-on="$listeners">
+    <slot />
+  </ada-btn>
+</template>

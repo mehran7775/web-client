@@ -7,16 +7,23 @@ const props = withDefaults(
     type: "button" | "submit" | "reset";
     icon: boolean;
     dark: boolean;
+    color: string;
   }>(),
   {
-    width: "auto",
-    height: "auto",
+    color: "primary",
+    width: "50px",
+    height: "32px",
     type: "button",
     icon: false,
     dark: false,
   }
 );
 
+const colorVal = computed(() => {
+  let tmp = props.color.split(" ");
+  if (tmp.length == 1) return "var(--c-" + tmp[0] + "-rgb)";
+  else return "rgba(var(--c-" + tmp[0] + "), " + tmp[1] + ")";
+});
 const widthVal = computed(() =>
   typeof props.width === "string" ? props.width : props.width.toString() + "px"
 );
@@ -47,6 +54,7 @@ button {
     :class="[dark ? 'dark' : '']"
     :type="type"
     :style="{
+      backgroundColor: colorVal,
       minWidth: widthVal,
       maxWidth: widthVal,
       minHeight: heightVal,

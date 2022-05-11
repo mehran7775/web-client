@@ -132,16 +132,15 @@ const rtl = computed(() => appManager.rtl);
       </footer>
     </v-main>
     <floating-button
-      bottom="8px"
-      right="8px"
+      :style="{
+        bottom: '8px',
+        right: '8px',
+      }"
       width="32px"
       height="32px"
-      z-index="1000"
-      small
-      color="primary lighten-1"
-      depressed
+      color="primary 0.9"
     >
-      <v-icon> isax-messages-2-bold </v-icon>
+      <ada-icon :size="24"> isax-messages-2-bold </ada-icon>
     </floating-button>
     <snackbar />
   </v-app>
