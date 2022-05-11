@@ -10,9 +10,9 @@ const props = withDefaults(
     color: string;
   }>(),
   {
-    color: "primary",
-    width: "50px",
-    height: "32px",
+    color: undefined,
+    width: undefined,
+    height: undefined,
     type: "button",
     icon: false,
     dark: false,
@@ -20,15 +20,18 @@ const props = withDefaults(
 );
 
 const colorVal = computed(() => {
-  let tmp = props.color.split(" ");
-  if (tmp.length == 1) return "var(--c-" + tmp[0] + "-rgb)";
-  else return "rgba(var(--c-" + tmp[0] + "), " + tmp[1] + ")";
+  if (props.color) {
+    let tmp = props.color.split(" ");
+    if (tmp.length == 1) return "var(--c-" + tmp[0] + "-rgb)";
+    else return "rgba(var(--c-" + tmp[0] + "), " + tmp[1] + ")";
+  }
+  return undefined;
 });
 const widthVal = computed(() =>
-  typeof props.width === "string" ? props.width : props.width.toString() + "px"
+  typeof props.width === "number" ? props.width.toString() + "px" : props.width
 );
 const heightVal = computed(() =>
-  typeof props.height === "string" ? props.height : props.height.toString() + "px"
+  typeof props.height === "number" ? props.height.toString() + "px" : props.height
 );
 </script>
 
