@@ -51,7 +51,7 @@ async function remove(name: string) {
 }
 async function rename(item: any) {
   const tmp: any = {};
-  Object.keys(wls).forEach((i) => {
+  Object.keys(wls.value).forEach((i) => {
     if (i == item.id) tmp[item.newName] = wls.value[item.id];
     else tmp[i] = wls.value[i];
   });
