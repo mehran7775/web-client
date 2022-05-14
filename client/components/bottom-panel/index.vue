@@ -6,6 +6,8 @@ import DefaultOrderList from "./defaultOrderList.vue";
 import DeepInformation from "./deepInformation/index.vue";
 import Bests from "./bests.vue";
 import { useBottomPanel } from "~/composables";
+import AdaToggle from "../adaToggle.vue";
+import AdaBtn from "../adaBtn.vue";
 
 const bottomPanel = useBottomPanel();
 const { $i18n: i18n } = useNuxtApp();
@@ -27,6 +29,7 @@ const title = computed(() => {
 });
 
 function expand() {
+  console.log("toggle");
   bottomPanel.toggleExpand();
 }
 function close() {
@@ -68,8 +71,14 @@ function close() {
     margin-top: 32px;
   }
   .tabs {
+    @apply tw-justify-start tw-w-full;
     background-color: rgba(var(--c-default), 0.2);
     box-shadow: 0 0 1px 0 #e2e2e2;
+    .tab {
+      @apply tw-px-2;
+      background-color: rgba(0, 0, 0, 0);
+      border-radius: 0 !important;
+    }
   }
   &.half {
     transition: all 0.5s ease-in-out;
@@ -120,10 +129,11 @@ function close() {
         <ada-icon :size="16">isax-minus</ada-icon>
       </ada-btn>
     </header>
-    <v-tabs class="tabs" v-model="tab" :height="32" optional>
-      <v-tab v-for="t in tabs" :key="t">
+    <ada-toggle class="tabs" v-model="tab" :height="32" optional>
+      <ada-btn class="tab" v-for="(t, i) in tabs" :key="t" :model="i">
         {{ $t(t) }}
-      </v-tab>
-    </v-tabs>
+        <bar v-if="i < tabs.length - 1" />
+      </ada-btn>
+    </ada-toggle>
   </footer>
 </template>

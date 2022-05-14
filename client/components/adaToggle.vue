@@ -8,6 +8,7 @@ const props = withDefaults(
     value: 0,
   }
 );
+const emit = defineEmits(["input"]);
 const val = ref(props.value);
 provide("toggle-ref", val);
 
@@ -17,6 +18,9 @@ watch(
     val.value = update;
   }
 );
+watch(val, (update) => {
+  emit("input", update);
+});
 </script>
 <style lang="postcss">
 .toggle {

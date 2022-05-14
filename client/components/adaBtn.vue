@@ -19,6 +19,7 @@ const props = withDefaults(
     dark: false,
   }
 );
+const emit = defineEmits(["click"]);
 
 const value: Ref<any> = inject("toggle-ref", ref(null));
 function click() {
@@ -53,6 +54,15 @@ button {
   &.dark {
     color: white;
   }
+  &.active::after {
+    content: "";
+    background-color: rgba(var(--c-primary), 0.2);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
 }
 </style>
 
@@ -61,8 +71,15 @@ button {
     v-ripple
     v-bind="$attrs"
     v-on="$listeners"
-    @click="() => {}"
-    :class="[dark ? 'dark' : '']"
+    @click="
+      () => {
+        click();
+      }
+    "
+    :class="[
+      dark ? 'dark' : '',
+      typeof props.model != 'undefined' && props.model == value ? 'active' : '',
+    ]"
     :type="type"
     :style="{
       backgroundColor: colorVal,
