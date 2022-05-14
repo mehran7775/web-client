@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAsrTrader, useContent } from "~/composables";
-import { ref, reactive } from "#app";
+import { ref, reactive, computed } from "#app";
 
 const params = defineProps<{
   src: string;
@@ -9,7 +9,7 @@ const params = defineProps<{
 
 const appManager = useAsrTrader();
 const cntManager = useContent();
-const locale = appManager.locale;
+const locale = computed(() => appManager.locale);
 const slide = ref(0);
 let timer: NodeJS.Timeout | null = null;
 
@@ -26,12 +26,14 @@ function stopTimer() {
 const docs = reactive<any[]>([]);
 if (process.client) {
   for (let i = 1; i < 3; i++) {
-    cntManager.getContent(params.src + locale + "/slide-" + i + ".md").then((res) => {
-      docs.push({
-        path: "slide-" + i,
-        ctx: res,
+    cntManager
+      .getContent(params.src + locale.value + "/slide-" + i + ".md")
+      .then((res) => {
+        docs.push({
+          path: "slide-" + i,
+          ctx: res,
+        });
       });
-    });
   }
 }
 </script>

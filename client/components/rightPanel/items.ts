@@ -78,7 +78,7 @@ export function getMenuItems(
         {
           icon: "lotfi-receipt-edit-3",
           title: "menu.depositReport",
-          to: "/accounting/depositReport",
+          to: "/accounting/deposit-report",
           bookmarkPosition: BookmarkPosition.RightPanel,
         },
         {
@@ -91,7 +91,7 @@ export function getMenuItems(
         {
           icon: "lotfi-receipt-edit",
           title: "menu.refundReport",
-          to: "/accounting/refundReport",
+          to: "/accounting/refund-report",
           bookmarkPosition: BookmarkPosition.RightPanel,
         },
         {
