@@ -52,6 +52,7 @@ button {
 
 <template>
   <button
+    v-ripple
     v-bind="$attrs"
     v-on="$listeners"
     :class="[dark ? 'dark' : '']"

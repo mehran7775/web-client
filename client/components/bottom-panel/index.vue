@@ -6,7 +6,6 @@ import DefaultOrderList from "./defaultOrderList.vue";
 import DeepInformation from "./deepInformation/index.vue";
 import Bests from "./bests.vue";
 import { useBottomPanel } from "~/composables";
-import AdaToggle from "../adaToggle.vue";
 
 const bottomPanel = useBottomPanel();
 const { $i18n: i18n } = useNuxtApp();
@@ -121,10 +120,10 @@ function close() {
         <ada-icon :size="16">isax-minus</ada-icon>
       </ada-btn>
     </header>
-    <ada-toggle class="tabs" v-model="tab" :height="32" optional>
+    <v-tabs class="tabs" v-model="tab" :height="32" optional>
       <v-tab v-for="t in tabs" :key="t">
         {{ $t(t) }}
       </v-tab>
-    </ada-toggle>
+    </v-tabs>
   </footer>
 </template>

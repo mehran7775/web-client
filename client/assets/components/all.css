@@ -4,4 +4,5 @@
 @import "./dotted.css";
 @import "./split-panes.css";
 @import "./grid.css";
-@import "./spacer.css"
+@import "./spacer.css";
+@import "./ripple.css";
