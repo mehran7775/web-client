@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed } from "#app";
+import { computed, inject, ref, Ref } from "#app";
 const props = withDefaults(
   defineProps<{
+    model?: any;
     width: number | string;
     height: number | string;
     type: "button" | "submit" | "reset";
@@ -18,6 +19,11 @@ const props = withDefaults(
     dark: false,
   }
 );
+
+const value: Ref<any> = inject("toggle-ref", ref(null));
+function click() {
+  value.value = props.model;
+}
 
 const colorVal = computed(() => {
   if (props.color) {
@@ -55,6 +61,7 @@ button {
     v-ripple
     v-bind="$attrs"
     v-on="$listeners"
+    @click="() => {}"
     :class="[dark ? 'dark' : '']"
     :type="type"
     :style="{

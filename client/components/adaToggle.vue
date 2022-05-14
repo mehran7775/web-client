@@ -1,12 +1,30 @@
 <script setup lang="ts">
-import { computed, useSlots, onBeforeMount } from "#app";
-const slots = useSlots();
-onBeforeMount(() => {
-  if (slots.default) console.log(slots.default());
-});
+import { provide, ref, watch } from "#app";
+const props = withDefaults(
+  defineProps<{
+    value: any;
+  }>(),
+  {
+    value: 0,
+  }
+);
+const val = ref(props.value);
+provide("toggle-ref", val);
+
+watch(
+  () => props.value,
+  (update) => {
+    val.value = update;
+  }
+);
 </script>
+<style lang="postcss">
+.toggle {
+  @apply tw-flex tw-flex-nowrap tw-flex-grow;
+}
+</style>
 <template>
-  <div>
+  <div class="toggle">
     <slot />
   </div>
 </template>
