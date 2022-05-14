@@ -23,3 +23,8 @@ export class field {
     this.click = click;
   }
 }
+
+export default {
+  fieldType,
+  field,
+};

@@ -38,28 +38,63 @@ function close() {
 }
 </script>
 
+<style lang="postcss" scoped>
+.footer {
+  @apply tw-flex tw-flex-col tw-flex-grow;
+  width: calc(100% - 96px);
+  position: fixed;
+  bottom: 32px;
+  background-color: white;
+  &.expanded {
+    transition: all 0.5s ease-in-out;
+    height: calc(100vh - 74px);
+  }
+  .header {
+    @apply tw-flex tw-flex-grow tw-w-full;
+    box-shadow: 0 0 12px 0 rgba(53, 84, 209, 0.05);
+    align-items: center;
+    position: absolute;
+    height: 32px;
+    color: var(--c-primary-rgb);
+    background-color: rgba(var(--c-primary), 0.05);
+    padding: 0 12px;
+    top: 0;
+    left: 0;
+  }
+  .detail {
+    position: relative;
+    width: 100%;
+    font-size: 1rem;
+    line-height: 1.5;
+    height: calc(100% - 64px);
+    overflow-y: auto;
+    margin-top: 32px;
+  }
+  .tabs {
+    background-color: rgba(var(--c-default), 0.2);
+    box-shadow: 0 0 1px 0 #e2e2e2;
+  }
+  &.half {
+    transition: all 0.5s ease-in-out;
+    height: calc(100vh - 436px);
+  }
+
+  &.hiden {
+    height: 32px;
+  }
+}
+</style>
+
 <template>
   <footer
     :class="{
       footer: true,
-      expanded: expanded,
+      expanded: expanded && tab != -1,
       half: tab != -1 && !expanded,
       hiden: tab == -1,
     }"
   >
-    <header class="header" v-if="tab != -1">
-      <h4>
-        {{ title }}
-      </h4>
-      <ada-spacer />
-      <v-btn icon @click="expand()">
-        <v-icon size="1em"> {{ icon }}</v-icon>
-      </v-btn>
-      <v-btn icon @click="close()">
-        <v-icon size="1em">mdi-minus</v-icon>
-      </v-btn>
-    </header>
-    <div v-if="tab != -1" class="detail">
+    <div v-show="tab != -1" class="detail">
       <loading :loading="showLoading" />
       <v-tabs-items v-model="tab" :class="{ expanded: expanded }">
         <v-tab-item>
@@ -76,50 +111,22 @@ function close() {
         </v-tab-item>
       </v-tabs-items>
     </div>
-    <v-tabs v-model="tab" :height="32" optional>
+    <header class="header" v-show="tab != -1">
+      <h4>
+        {{ title }}
+      </h4>
+      <ada-spacer />
+      <v-btn icon @click="expand()">
+        <v-icon size="1em"> {{ icon }}</v-icon>
+      </v-btn>
+      <v-btn icon @click="close()">
+        <v-icon size="1em">mdi-minus</v-icon>
+      </v-btn>
+    </header>
+    <v-tabs class="tabs" v-model="tab" :height="32" optional>
       <v-tab v-for="t in tabs" :key="t">
         {{ $t(t) }}
       </v-tab>
     </v-tabs>
   </footer>
 </template>
-
-<style lang="postcss" scoped>
-.footer {
-  @apply tw-flex tw-flex-col tw-flex-grow;
-  width: calc(100% - 96px);
-  position: fixed;
-  bottom: 32px;
-  background-color: var(--c-default-db-rgb);
-  .expanded {
-    transition: all 0.5s ease-in-out;
-    height: 100%;
-  }
-  .header {
-    @apply tw-flex tw-flex-grow tw-w-full;
-    align-items: center;
-    position: relative;
-    height: 32px;
-    color: var(--c-primary-rgb);
-    background-color: rgba(var(--c-primary), 0.05);
-    padding: 0 12px;
-  }
-  .detail {
-    position: relative;
-    width: 100%;
-    font-size: 1rem;
-    line-height: 1.5;
-    height: calc(100% - 64px);
-    overflow-y: auto;
-  }
-}
-
-.half {
-  transition: all 0.5s ease-in-out;
-  height: calc(100vh - 436px);
-}
-
-.hiden {
-  height: 32px;
-}
-</style>
