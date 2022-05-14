@@ -19,9 +19,6 @@ const tab = computed({
     else bottomPanel.setActiveTab(Tabs.none);
   },
 });
-const icon = computed(() =>
-  bottomPanel.expanded ? "mdi-arrow-collapse" : "mdi-arrow-expand"
-);
 const expanded = computed(() => bottomPanel.expanded);
 const showLoading = computed(() => bottomPanel.loading);
 const title = computed(() => {
@@ -116,12 +113,12 @@ function close() {
         {{ title }}
       </h4>
       <ada-spacer />
-      <v-btn icon @click="expand()">
-        <v-icon size="1em"> {{ icon }}</v-icon>
-      </v-btn>
-      <v-btn icon @click="close()">
-        <v-icon size="1em">mdi-minus</v-icon>
-      </v-btn>
+      <ada-btn class="tw-mx-[5px]" :width="24" :height="24" @click="expand()">
+        <ada-icon color="primary" :size="16"> isax-maximize-3 </ada-icon>
+      </ada-btn>
+      <ada-btn color="primary" :width="24" :height="24" @click="close()">
+        <ada-icon :size="16">isax-minus</ada-icon>
+      </ada-btn>
     </header>
     <v-tabs class="tabs" v-model="tab" :height="32" optional>
       <v-tab v-for="t in tabs" :key="t">
