@@ -33,6 +33,12 @@
     unicode-bidi: -moz-isolate;
     unicode-bidi: isolate;
   }
+  ol,
+  ul,
+  menu {
+    padding: 0 24px;
+    list-style: disc;
+  }
   li {
     margin: 0 24px;
   }
