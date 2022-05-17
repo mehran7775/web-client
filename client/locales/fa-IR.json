@@ -198,7 +198,9 @@
       "remaining": "مانده",
       "credit": "اعتبار",
       "type": "نوع حساب"
-    }
+    },
+    "deposit":"واریز",
+    "deposit-report": "@:general.report @:accounting.deposit"
   },
   "oms": {
     "openingTrade": "عرضه اولیه",

@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import ContentViewer from "~~/components/contentViewer.vue";
 import TextInput from "~~/components/textInput.vue";
+import AdaBtn from "~~/components/adaBtn.vue";
+import AdaToggle from "~~/components/adaToggle.vue";
+import { reactive, useRouter } from "#app"
+
+const banks = reactive([{ title: 'ملت' }, { title: 'ملت' }, { title: 'ملت' }, { title: 'ملت' }])
+const router = useRouter();
+function gotoReportDeposit() {
+  router.push('/accounting/deposit-report')
+}
+
 </script>
 <style lang="postcss" scoped>
 .tmp-ctr {
@@ -38,8 +48,59 @@ header {
     border-radius: var(--border-radius-panel);
     background-color: white;
     height: 100%;
+  }
 
-    &form {}
+  form {
+    &.card {
+      >* {
+        @apply tw-flex tw-h-[32px] tw-w-[308px] tw-items-center;
+        font-size: 1rem;
+      }
+
+      >.label {
+        @apply tw-mb-4 tw-mt-[16px] tw-h-[16px];
+        font-weight: bold;
+        color: var(--c-primary-rgb);
+      }
+
+      >.input {
+        @apply tw-mb-[16px] tw-h-[42px];
+        background-color: rgba(var(--c-primary), 0.05);
+        border-radius: 8px;
+        border: solid 1px var(--c-primary-rgb);
+
+
+        >span {
+          @apply tw-flex tw-items-center tw-justify-center;
+          font-weight: bold;
+          min-width: 42px;
+          height: 100%;
+          background-color: rgba(var(--c-primary), 0.1);
+          border-radius: 8px 0 0 8px;
+        }
+      }
+
+      >.banks {
+        @apply tw-flex tw-justify-between tw-mb-[16px] tw-h-[64px];
+
+        >button {
+          @apply tw-flex tw-justify-center tw-items-center;
+
+          &.active {
+            border-radius: 8px;
+            border: solid 1.5px var(--c-primary-rgb);
+
+            &::after {
+              background-color: rgba(0, 0, 0, 0);
+            }
+          }
+        }
+      }
+
+      >.actions {
+        @apply tw-h-12 tw-my-[16px] tw-justify-between;
+      }
+    }
   }
 }
 </style>
@@ -47,14 +108,28 @@ header {
   <div class="tmp-ctr">
     <header>{{ $t("menu.deposit") }}</header>
     <main class="deposit">
-      <form class="card tw-flex tw-basis-1/2 tw-justify-center">
-        <text-input style="flex-grow: 0;" label="مبلغ">
+      <form class="card tw-flex tw-flex-col tw-items-center">
+        <span class="label">مبلغ:</span>
+        <text-input type="number" class="input" style="flex-grow: 0;" rounded="0 8px 8px 0" bg="rgba(0,0,0,0)"
+          :active-border="false">
           <template #append>
-            <span class="tw-mx-1">
+            <span>
               ریال
             </span>
           </template>
         </text-input>
+        <span class="label">درگاه:</span>
+        <ada-toggle class="banks" style="flex-grow: 0;">
+          <ada-btn :height="64" :width="64" v-for="(bank, i) in banks" :model="i">
+            <img src="/logo.png" :alt="bank.title" />
+          </ada-btn>
+        </ada-toggle>
+        <div class="actions">
+          <ada-btn :height="36" :width="142" color="primary" @click="gotoReportDeposit" bordred>{{
+              $t('accounting.deposit-report')
+          }}</ada-btn>
+          <ada-btn :height="36" :width="142" color="primary" dark>{{ $t('accounting.deposit') }}</ada-btn>
+        </div>
       </form>
       <div class="card">
         <content-viewer src="/accounting/deposit"></content-viewer>

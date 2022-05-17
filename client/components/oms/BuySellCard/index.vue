@@ -135,7 +135,8 @@ instrumentManager
 .buy-sell {
   .frm {
     @apply tw-m-0 tw-p-0 tw-grid tw-grid-cols-2;
-    > div {
+
+    >div {
       @apply tw-flex tw-flex-grow tw-items-center;
       min-height: var(--tabel-row-height);
       height: var(--tabel-row-height);
@@ -144,41 +145,58 @@ instrumentManager
       position: relative;
       border: none;
       border-bottom: 1px solid #e0e0e0;
+      line-height: 0.83334rem !important;
+      font-size: 0.83334rem;
+
+      >label {
+        @apply tw-h-8;
+      }
     }
   }
+
   .buy {
     @apply tw-flex tw-flex-grow;
+
     &:hover {
       background-color: var(--c-success-rgb);
       color: white;
     }
+
     &:before {
       display: none;
     }
   }
+
   .sell {
     @apply tw-flex tw-flex-grow;
+
     &:hover {
       background-color: var(--c-error-rgb);
       color: white;
     }
+
     &:before {
       display: none;
     }
   }
+
   .draft {
     @apply tw-flex tw-flex-grow;
+
     &:hover {
       background-color: var(--c-info-rgb);
       color: white;
     }
+
     &:before {
       display: none;
     }
   }
+
   button.active {
     background-color: var(--c-primary-rgb);
     color: white !important;
+
     i {
       color: white !important;
     }
@@ -189,22 +207,28 @@ instrumentManager
 <style lang="postcss">
 .buy-sell {
   @apply tw-m-0 tw-p-0;
+
   .v-tab {
     color: black !important;
     background-color: #e0e0e0;
     font-weight: bold;
+
     &:hover {
       color: white !important;
     }
+
     &--active {
       color: white !important;
+
       &::before {
         background-color: rgba(0, 0, 0, 0);
         opacity: 0;
       }
+
       &.buy {
         background-color: rgba(var(--c-success), 0.7);
       }
+
       &.sell {
         background-color: rgba(var(--c-error), 0.7);
       }
@@ -240,23 +264,12 @@ instrumentManager
             <numeric-field :value="1000" />
           </div>
           <div class="tw-justify-between">
-            <text-input
-              :label="$t('oms.count')"
-              type="number"
-              v-model="countVal"
-              :readonly="countLock"
-              class="tw-mt-1"
+            <text-input :label="$t('oms.count')" type="number" v-model="countVal" :readonly="countLock" class="tw-mt-1"
               :min="!!active ? active.minQuantityPerOrder : 1"
-              :max="!!active ? active.maxQuantityPerOrder || null : null"
-            >
+              :max="!!active ? active.maxQuantityPerOrder || null : null">
               <template #append>
-                <ada-btn
-                  :class="['tw-mx-1', countLock ? 'active' : '']"
-                  :width="24"
-                  :height="24"
-                  @click="toggleCountLock"
-                  icon
-                >
+                <ada-btn :class="['tw-mx-1', countLock ? 'active' : '']" :width="24" :height="24"
+                  @click="toggleCountLock" icon>
                   <ada-icon color="primary">isax-lock-1</ada-icon>
                 </ada-btn>
                 <ada-btn :width="24" :height="24" icon>
@@ -267,75 +280,38 @@ instrumentManager
             <bar />
           </div>
           <div class="tw-justify-between">
-            <text-input
-              :label="$t('oms.price')"
-              type="number"
-              v-model="priceVal"
-              :readonly="priceLock"
-              class="tw-mt-1"
-              :min="!!active ? active.minAllowedPrice : 1"
-              :max="!!active ? active.maxAllowedPrice || null : null"
-            >
+            <text-input :label="$t('oms.price')" type="number" v-model="priceVal" :readonly="priceLock" class="tw-mt-1"
+              :min="!!active ? active.minAllowedPrice : 1" :max="!!active ? active.maxAllowedPrice || null : null">
               <template #append>
-                <ada-btn
-                  :class="['tw-mx-1', priceLock ? 'active' : '']"
-                  :width="24"
-                  :height="24"
-                  @click="togglePriceLock"
-                  icon
-                >
+                <ada-btn :class="['tw-mx-1', priceLock ? 'active' : '']" :width="24" :height="24"
+                  @click="togglePriceLock" icon>
                   <ada-icon color="primary">isax-lock-1</ada-icon>
                 </ada-btn>
               </template>
             </text-input>
           </div>
           <div class="tw-justify-between">
-            <account-type
-              :label="$t('accounting.account.type')"
-              class="tw-my-1"
-              height="24px"
-            >
+            <account-type :label="$t('accounting.account.type')" class="tw-my-1" height="24px">
             </account-type>
             <bar />
           </div>
           <div class="tw-justify-between">
-            <credit
-              height="24px"
-              class="tw-my-1"
-              :label="$t('accounting.account.credit')"
-            >
+            <credit height="24px" class="tw-my-1" :label="$t('accounting.account.credit')">
             </credit>
           </div>
           <div class="tw-justify-between tw-col-span-2">
-            <percent
-              :label="$t('oms.view-count')"
-              height="31px"
-              class="tw-flex tw-flex-grow"
-              :min="30"
-              :total="countVal"
-              :value="100"
-            >
+            <percent :label="$t('oms.view-count')" height="31px" class="tw-flex tw-flex-grow tw-h-[24px]" :min="30"
+              :total="countVal" :value="100">
             </percent>
           </div>
           <div class="tw-justify-between">
-            <text-input
-              :label="$t('wealth.order.creditPercent')"
-              type="number"
-              class="tw-mt-1"
-              :min="0"
-              :max="100"
-            >
+            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px]" :min="0" :max="100">
             </text-input>
             <bar />
           </div>
           <div class="tw-justify-between">
-            <v-checkbox
-              :label="$t('oms.splitOrders')"
-              dense
-              hide-details
-              class="tw-m-0 tw-p-0 tw-mt-1 pa-0"
-              :ripple="false"
-            />
+            <v-checkbox :label="$t('oms.splitOrders')" dense hide-details class="tw-m-0 tw-p-0 tw-mt-1 pa-0"
+              :ripple="false" />
           </div>
           <div class="tw-justify-between">
             <span>{{ $t("oms.tradeWage") }}: </span>
@@ -347,32 +323,21 @@ instrumentManager
             <numeric-field :value="tradeValue" />
           </div>
           <div class="tw-justify-center">
-            <ada-btn
-              class="draft"
-              height="24px"
-              @click="
-                () => {
-                  if (check()) placeOrder({ draft: true });
-                }
-              "
-              depressed
-            >
+            <ada-btn class="draft" height="24px" @click="
+              () => {
+                if (check()) placeOrder({ draft: true });
+              }
+            " depressed>
               {{ $t("general.draft") }}
             </ada-btn>
             <bar />
           </div>
           <div class="tw-justify-center">
-            <ada-btn
-              class="buy"
-              height="24px"
-              :disabled="!active || (active.status & 3) != 3"
-              @click="
-                () => {
-                  if (check()) placeOrder();
-                }
-              "
-              depressed
-            >
+            <ada-btn class="buy" height="24px" :disabled="!active || (active.status & 3) != 3" @click="
+              () => {
+                if (check()) placeOrder();
+              }
+            " depressed>
               {{ $t("oms.buy-btn") }}
             </ada-btn>
           </div>
@@ -394,23 +359,12 @@ instrumentManager
             <numeric-field :value="1000" />
           </div>
           <div class="tw-justify-between">
-            <text-input
-              :label="$t('oms.count')"
-              type="number"
-              v-model="countVal"
-              :readonly="countLock"
-              class="tw-mt-1"
+            <text-input :label="$t('oms.count')" type="number" v-model="countVal" :readonly="countLock" class="tw-mt-1"
               :min="!!active ? active.minQuantityPerOrder : 1"
-              :max="!!active ? active.maxQuantityPerOrder || null : null"
-            >
+              :max="!!active ? active.maxQuantityPerOrder || null : null">
               <template #append>
-                <ada-btn
-                  :class="['tw-mx-1', countLock ? 'active' : '']"
-                  :width="24"
-                  :height="24"
-                  @click="toggleCountLock"
-                  icon
-                >
+                <ada-btn :class="['tw-mx-1', countLock ? 'active' : '']" :width="24" :height="24"
+                  @click="toggleCountLock" icon>
                   <ada-icon color="primary">isax-lock-1</ada-icon>
                 </ada-btn>
                 <ada-btn :width="24" :height="24" icon>
@@ -421,75 +375,38 @@ instrumentManager
             <bar />
           </div>
           <div class="tw-justify-between">
-            <text-input
-              :label="$t('oms.price')"
-              class="tw-mt-1"
-              type="number"
-              v-model="priceVal"
-              :readonly="priceLock"
-              :min="!!active ? active.minAllowedPrice : 1"
-              :max="!!active ? active.maxAllowedPrice || null : null"
-            >
+            <text-input :label="$t('oms.price')" class="tw-mt-1" type="number" v-model="priceVal" :readonly="priceLock"
+              :min="!!active ? active.minAllowedPrice : 1" :max="!!active ? active.maxAllowedPrice || null : null">
               <template #append>
-                <ada-btn
-                  @click="togglePriceLock"
-                  :class="['tw-mx-1', priceLock ? 'active' : '']"
-                  :width="24"
-                  :height="24"
-                  icon
-                >
+                <ada-btn @click="togglePriceLock" :class="['tw-mx-1', priceLock ? 'active' : '']" :width="24"
+                  :height="24" icon>
                   <ada-icon color="primary">isax-lock-1</ada-icon>
                 </ada-btn>
               </template>
             </text-input>
           </div>
           <div class="tw-justify-between">
-            <account-type
-              :label="$t('accounting.account.type')"
-              class="tw-my-1"
-              height="24px"
-            >
+            <account-type :label="$t('accounting.account.type')" class="tw-my-1" height="24px">
             </account-type>
             <bar />
           </div>
           <div class="tw-justify-between">
-            <credit
-              height="24px"
-              class="tw-my-1"
-              :label="$t('accounting.account.credit')"
-            >
+            <credit height="24px" class="tw-my-1" :label="$t('accounting.account.credit')">
             </credit>
           </div>
           <div class="tw-justify-between tw-col-span-2">
-            <percent
-              :label="$t('oms.view-count')"
-              height="31px"
-              class="tw-flex tw-flex-grow"
-              :min="30"
-              :total="countVal"
-              :value="100"
-            >
+            <percent :label="$t('oms.view-count')" height="31px" class="tw-flex tw-flex-grow tw-h-[24px]" :min="30"
+              :total="countVal" :value="100">
             </percent>
           </div>
           <div class="tw-justify-between">
-            <text-input
-              :label="$t('wealth.order.creditPercent')"
-              type="number"
-              class="tw-mt-1"
-              :min="0"
-              :max="100"
-            >
+            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px]" :min="0" :max="100">
             </text-input>
             <bar />
           </div>
           <div class="tw-justify-between">
-            <v-checkbox
-              :label="$t('oms.splitOrders')"
-              dense
-              hide-details
-              class="tw-m-0 tw-p-0 tw-mt-1 pa-0"
-              :ripple="false"
-            />
+            <v-checkbox :label="$t('oms.splitOrders')" dense hide-details class="tw-m-0 tw-p-0 tw-mt-1 pa-0"
+              :ripple="false" />
           </div>
           <div class="tw-justify-between">
             <span>{{ $t("oms.tradeWage") }}: </span>
@@ -501,32 +418,21 @@ instrumentManager
             <numeric-field :value="tradeValue" />
           </div>
           <div class="tw-justify-center">
-            <ada-btn
-              class="draft"
-              height="24px"
-              @click="
-                () => {
-                  if (check()) placeOrder({ draft: true });
-                }
-              "
-              depressed
-            >
+            <ada-btn class="draft" height="24px" @click="
+              () => {
+                if (check()) placeOrder({ draft: true });
+              }
+            " depressed>
               {{ $t("general.draft") }}
             </ada-btn>
             <bar />
           </div>
           <div class="tw-justify-center">
-            <ada-btn
-              class="sell"
-              height="24px"
-              :disabled="!active || (active.status & 3) != 3"
-              @click="
-                () => {
-                  if (check()) placeOrder();
-                }
-              "
-              depressed
-            >
+            <ada-btn class="sell" height="24px" :disabled="!active || (active.status & 3) != 3" @click="
+              () => {
+                if (check()) placeOrder();
+              }
+            " depressed>
               {{ $t("oms.sell-btn") }}
             </ada-btn>
           </div>

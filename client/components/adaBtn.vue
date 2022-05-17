@@ -8,6 +8,7 @@ const props = withDefaults(
     type: "button" | "submit" | "reset";
     icon: boolean;
     dark: boolean;
+    bordred: boolean | string;
     color: string;
   }>(),
   {
@@ -17,6 +18,7 @@ const props = withDefaults(
     type: "button",
     icon: false,
     dark: false,
+    bordred: false,
   }
 );
 const emit = defineEmits(["click"]);
@@ -27,10 +29,26 @@ function click() {
 }
 
 const colorVal = computed(() => {
+  if (props.bordred) return "rgba(0,0,0,0)"
   if (props.color) {
     let tmp = props.color.split(" ");
     if (tmp.length == 1) return "var(--c-" + tmp[0] + "-rgb)";
     else return "rgba(var(--c-" + tmp[0] + "), " + tmp[1] + ")";
+  }
+  return undefined;
+});
+const borderVal = computed(() => {
+  if (typeof props.bordred === "string") return props.bordred;
+  const b = "solid var(--border-size-btn) ";
+  if (props.bordred) {
+    if (props.color) {
+      let tmp = props.color.split(" ");
+      if (tmp.length == 1) return b + "var(--c-" + tmp[0] + "-rgb)";
+      else return b + "rgba(var(--c-" + tmp[0] + "), " + tmp[1] + ")";
+    }
+    else {
+      return b + " var(--c-default-rgb)"
+    }
   }
   return undefined;
 });
@@ -51,9 +69,11 @@ button {
   font-weight: bold;
   position: relative;
   overflow: hidden;
+
   &.dark {
     color: white;
   }
+
   &.active::after {
     content: "";
     background-color: rgba(var(--c-primary), 0.2);
@@ -67,29 +87,22 @@ button {
 </style>
 
 <template>
-  <button
-    v-ripple
-    v-bind="$attrs"
-    v-on="$listeners"
-    @click="
-      () => {
-        click();
-      }
-    "
-    :class="[
-      dark ? 'dark' : '',
-      typeof props.model != 'undefined' && props.model == value ? 'active' : '',
-    ]"
-    :type="type"
-    :style="{
-      backgroundColor: colorVal,
-      minWidth: widthVal,
-      maxWidth: widthVal,
-      minHeight: heightVal,
-      maxHeight: heightVal,
-      lineHeight: icon ? '0.8334rem' : heightVal,
-    }"
-  >
+  <button v-ripple v-bind="$attrs" v-on="$listeners" @click="
+    () => {
+      click();
+    }
+  " :class="[
+  dark ? 'dark' : '',
+  typeof props.model != 'undefined' && props.model == value ? 'active' : '',
+]" :type="type" :style="{
+  border: borderVal,
+  backgroundColor: colorVal,
+  minWidth: widthVal,
+  maxWidth: widthVal,
+  minHeight: heightVal,
+  maxHeight: heightVal,
+  lineHeight: icon ? '0.8334rem' : heightVal,
+}">
     <slot></slot>
   </button>
 </template>
