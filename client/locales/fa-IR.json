@@ -200,7 +200,7 @@
       "type": "نوع حساب"
     },
     "deposit":"واریز",
-    "deposit-report": "@:general.report @:accounting.deposit"
+    "deposit-report": "@:general.report @:accounting.deposit وجه"
   },
   "oms": {
     "openingTrade": "عرضه اولیه",

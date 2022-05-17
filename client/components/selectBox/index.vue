@@ -14,8 +14,8 @@ export interface selectProps {
 const props = withDefaults(defineProps<selectProps>(), {
   placeholder: "",
   label: "",
-  height: "24px",
-  items: [],
+  height: "",
+  items: () => [],
   readonly: false,
   textPath: "$.name",
   keyPath: "$.id",

@@ -126,7 +126,7 @@ header {
         </ada-toggle>
         <div class="actions">
           <ada-btn :height="36" :width="142" color="primary" @click="gotoReportDeposit" bordred>{{
-              $t('accounting.deposit-report')
+              $t('menu.depositReport')
           }}</ada-btn>
           <ada-btn :height="36" :width="142" color="primary" dark>{{ $t('accounting.deposit') }}</ada-btn>
         </div>
