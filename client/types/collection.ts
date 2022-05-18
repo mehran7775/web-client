@@ -14,15 +14,6 @@ export class AutoCompleteItem {
   }
 }
 
-export class SectorAutoCompleteItem {
-  id: string;
-  name: string;
-  constructor(id: string, name: string) {
-    this.id = id;
-    this.name = name;
-  }
-}
-
 export interface Paginated {
   offset: number;
   length: number;

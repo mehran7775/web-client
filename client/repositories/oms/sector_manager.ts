@@ -8,7 +8,7 @@ export async function getSector(
   value: number,
   axios: AxiosInstance
 ): Promise<AxiosResponse<Sector>> {
-  return axios.get("oms/sub-sector/" + value);
+  return axios.get("oms/sector/" + value);
 }
 
 export async function getSectors(
@@ -16,6 +16,6 @@ export async function getSectors(
   axios: AxiosInstance
 ): Promise<AxiosResponse<Sector[]>> {
   return axios.get(
-    "oms/sub-sector/list?offset=" + value.offset + "&length=" + value.length
+    "oms/sector/list?offset=" + value.offset + "&length=" + value.length
   );
 }

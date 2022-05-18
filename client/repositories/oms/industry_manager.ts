@@ -1,6 +1,5 @@
 import { AxiosInstance, AxiosResponse } from "axios";
-import { PaginatedResult, AutoCompleteItem, SectorAutoCompleteItem, AutoCompleteSearchModel } from "@/types";
-import { NuxtAxiosInstance } from '@nuxtjs/axios';
+import { PaginatedResult, AutoCompleteItem, AutoCompleteSearchModel } from "@/types";
 
 
 export async function getIndustries(
@@ -10,8 +9,8 @@ export async function getIndustries(
   }
 
 export async function autoComplete(
-    value: AutoCompleteSearchModel, axios: NuxtAxiosInstance | AxiosInstance
-    ): Promise<AxiosResponse<PaginatedResult<SectorAutoCompleteItem>>> {
+    value: AutoCompleteSearchModel, axios: AxiosInstance
+    ): Promise<AxiosResponse<PaginatedResult<AutoCompleteItem>>> {
     return axios.get('oms/sector/autocomplete', { params: value })
   }
 

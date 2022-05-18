@@ -1,18 +1,40 @@
 <script setup lang="ts">
-import { ref, reactive, computed, useRouter, useRoute } from "#app";
+import { ref, reactive, useRouter, computed, useRoute } from "#app";
 import 
-{ SectorAutoCompleteItem,
-  AutoCompleteSearchModel
+{ AutoCompleteItem,
+  AutoCompleteSearchModel,
+  Sector
   } from "@/types";
-import { useAxios, useUser, useInstrument } from "~/composables";
+import { useAxios, useSectors } from "~/composables";
 import { autoComplete } from "@/repositories/oms/industry_manager";
+import items from "../rightPanel/items";
+
+const props = withDefaults(defineProps<{
+  secId: number
+}>(),{
+  secId:0,
+})
 
 const axios = useAxios().createInstance();
+const sectorManager = useSectors();
 const loading = ref(false);
-const entries: Array<SectorAutoCompleteItem> = reactive([]);
-const model = ref(null);
-const route = useRoute();
+const entries: Array<AutoCompleteItem> = reactive([]);
+const model = ref<Sector|null>(null);
+const val = ref<Sector|null>(null);
 const router = useRouter();
+
+
+sectorManager.getSector(props.secId).then((res)=>{
+  if(res != null){
+    entries.push({
+      id: res.id.toString(),
+      name: res.name,
+      fullName: res.name
+      })
+    val.value=res
+  }
+  
+})
 
 
 function generateAddress(id: string): void {
@@ -27,6 +49,7 @@ async function searchSectors(value: string) {
       const res = await autoComplete(new AutoCompleteSearchModel(value, 0, 10), axios);
       entries.push(
         ...res.data.data.map((item) => ({
+          fullName:item.name,
           name: item.name,
           id: item.id
         }))
@@ -46,6 +69,7 @@ async function searchSectors(value: string) {
     :placeholder="$t('oms.sectorAutoComplete')"
     :loading="loading"
     :items="entries"
+    :value="val"
     class="sector-search no-translate"
     return-object
     append-icon=""
