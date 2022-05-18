@@ -2,31 +2,39 @@
 import { ref, useNuxtApp, reactive, useRoute, useRouter } from "#app";
 import { AutoCompleteItem, InstrumentSearchModel } from "@/types";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
-import WatchList from "~/components/dashboard/WatchList/index.vue";
+import Watchlist from "@/components/dashboard/WatchList/index.vue";
+import IndustrySearch from "~~/components/oms/industrySearch.vue";
 
 const route = useRoute();
 const router = useRouter();
-const loading = ref(false);
+const load = ref(false);
 const searchModel = ref(new InstrumentSearchModel());
 searchModel.value.length = 15;
-const { $i18n: i18n } = useNuxtApp();
 const industry = ref(-1);
 const instruments: Array<string> = reactive([]);
 industry.value = parseInt((route.params["industry"] as string | null) ?? "-1");
 
-async function select(val: AutoCompleteItem) {
-  loading.value = true;
-    try {
-      router.push("/watchlist/industries/" + val.id);
-      searchModel.value.secIds = [parseInt(val.id)];
-    } finally {
-      loading.value = false;
-    }
-}
+
 
 </script>
 <template>
-
+    <v-container class="ma-0 pa-0" fluid>
+          <v-row class="ma-0 pa-0" dense>
+            <v-col class="ma-0 pa-0">
+            <focus-board>
+              <template #toolbar>
+                <IndustrySearch class="ms-1" style="max-width: 164px"/>
+              </template>
+            </focus-board>
+            </v-col>
+          </v-row>
+           <v-row class="ma-0 pa-0" dense>
+            <v-col class="ma-0 pa-0" style="position: relative">
+                <Watchlist :searchModel.sync="searchModel" paginated />
+            </v-col>
+          </v-row> 
+          <loading :loading="load" /> 
+    </v-container>
 </template>
 
 <style lang="postcss" scoped>
