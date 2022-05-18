@@ -1,17 +1,85 @@
+<script setup lang="ts">
+import { computed } from "#app";
+import { Side, InstrumentCache } from "@/types";
+import instrumentCard from "@/components/oms/instrumentCardCompact.vue";
+import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
+import card from "./card.vue";
+import { useInstrument, useOrder } from "~/composables";
+
+const instrumentManager = useInstrument();
+const orderManager = useOrder();
+const instruments = computed(() => instrumentManager.getFocus);
+const maxwidthVal = computed(
+  () => instrumentManager.width / Math.floor(instrumentManager.width / 360)
+);
+const cardStyle = computed(() => ({
+  "max-width": maxwidthVal,
+  width: maxwidthVal.value - 14,
+}));
+
+function close(item: InstrumentCache) {
+  instrumentManager.removeFocus(item.id);
+}
+function order(item: InstrumentCache, side: Side) {
+  orderManager.setSide(side, item.id.toString());
+  instrumentManager.select(item);
+  instrumentManager.setFocusMode(0);
+}
+function select(item: InstrumentCache) {
+  instrumentManager.selectById(item.id);
+}
+</script>
+
+<style lang="postcss" scoped>
+.card-row {
+  @apply tw-flex tw-flex-grow;
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-height: 320px;
+  max-height: 320px;
+  > .card-view {
+    margin: 0 7px;
+    background-color: white;
+    border-left: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    .toolbar {
+      @apply tw-flex tw-flex-grow tw-whitespace-nowrap tw-items-center;
+      padding: 0 8px;
+      background-color: rgba(var(--c-primary), 0.05) !important;
+      height: 32px;
+      line-height: 32px;
+      .title {
+        font-weight: 700;
+        font-size: 1rem !important;
+        color: var(--c-primary-rgb);
+        margin: 0 8px;
+      }
+      .buy {
+        background-color: rgba(var(--c-success), 0.7) !important;
+      }
+      .sell {
+        background-color: rgba(var(--c-error), 0.7) !important;
+      }
+      .close {
+        background-color: rgba(var(--c-primary), 0.1) !important;
+      }
+    }
+  }
+}
+</style>
+
 <template>
-  <div class="d-flex flex-row ma-0 pa-0 card-row">
-    <v-card
+  <div class="card-row">
+    <card
       @click="() => select(item)"
-      class="me-3 card-view"
-      min-width="346"
-      :width="maxwidth - 14"
-      :max-width="maxwidth"
+      class="card-view"
+      :min-width="346"
+      :width="maxwidthVal - 14"
+      :max-width="maxwidthVal"
       v-for="item in instruments"
       :key="item.id"
-      tile
-      elevation="0"
     >
-      <v-toolbar height="32" dense flat class="toolbar pa-0 ma-0">
+      <header class="toolbar">
         <v-badge
           left
           class="title"
@@ -29,8 +97,8 @@
           {{ item.name }}
         </v-badge>
         ({{ $t("instrument.state." + item.status) }})
-        <v-spacer />
-        <v-btn
+        <ada-spacer />
+        <ada-btn
           depressed
           height="24px"
           width="56px"
@@ -41,8 +109,8 @@
           @click.stop="() => order(item, Side.Buy)"
         >
           {{ $t("oms.buy") }}
-        </v-btn>
-        <v-btn
+        </ada-btn>
+        <ada-btn
           depressed
           height="24px"
           width="56px"
@@ -53,8 +121,8 @@
           @click.stop="() => order(item, Side.Sell)"
         >
           {{ $t("oms.sell") }}
-        </v-btn>
-        <v-btn
+        </ada-btn>
+        <ada-btn
           @click.stop="() => close(item)"
           height="24px"
           width="24px"
@@ -63,112 +131,15 @@
           small
         >
           <v-icon color="primary" x-small> mdi-close </v-icon>
-        </v-btn>
-      </v-toolbar>
+        </ada-btn>
+      </header>
       <div class="text-caption ma-0 px-0">
         <order-queue-card :insId="item.id" />
         <instrument-card :insId="item.id" hide-headers />
-        <v-row>
-          <v-col class="justify-center text-center">
-            <v-icon size="16"> isax-presention-chart </v-icon>
-          </v-col>
-        </v-row>
+        <ada-col class="col-border tw-justify-center tw-align-middle">
+          <v-icon size="16"> isax-presention-chart </v-icon>
+        </ada-col>
       </div>
-    </v-card>
+    </card>
   </div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent } from "#app";
-import { Side, InstrumentCache } from "@/types";
-import instrumentCard from "@/components/oms/instrumentCardCompact.vue";
-import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
-import LegalRealCard from "@/components/oms/legalRealCard.vue";
-import InstrumentFlag from "@/components/oms/instrumentFlag.vue";
-import { useInstrument, useOrder } from "~/composables";
-import { useNuxtApp } from "#app";
-
-export default defineComponent({
-  components: {
-    instrumentCard,
-    OrderQueueCard,
-    LegalRealCard,
-    InstrumentFlag,
-  },
-  setup() {
-    const instrumentManager = useInstrument();
-    const orderManager = useOrder();
-    const instruments = computed(() => instrumentManager.getFocus);
-    const maxwidth = computed(
-      () => instrumentManager.width / Math.floor(instrumentManager.width / 360)
-    );
-
-    function close(item: InstrumentCache) {
-      instrumentManager.removeFocus(item.id);
-    }
-    function order(item: InstrumentCache, side: Side) {
-      orderManager.setSide(side, item.id.toString());
-      instrumentManager.select(item);
-      instrumentManager.setFocusMode(0);
-    }
-    function select(item: InstrumentCache) {
-      instrumentManager.selectById(item.id);
-    }
-    return {
-      close,
-      order,
-      select,
-      maxwidth,
-      Side,
-      instruments,
-    };
-  },
-});
-</script>
-
-<style lang="postcss" scoped>
-.buy {
-  background-color: rgba(var(--c-success), 0.7) !important;
-}
-.sell {
-  background-color: rgba(var(--c-error), 0.7) !important;
-}
-.close {
-  background-color: rgba(var(--c-primary), 0.1) !important;
-}
-.toolbar {
-  background-color: rgba(var(--c-primary), 0.05) !important;
-  .title {
-    font-weight: 700;
-    font-size: 1rem !important;
-    color: var(--c-primary-rgb);
-    margin: 0 8px;
-  }
-}
-.card-view {
-  border-left: 1px solid #e0e0e0;
-  border-right: 1px solid #e0e0e0;
-}
-.card-row {
-  overflow-x: auto;
-  overflow-y: hidden;
-  height: 320px;
-}
-</style>
-
-<style lang="postcss">
-.card-view {
-  * {
-    font-size: 0.8334rem;
-    line-height: 31px !important;
-  }
-  .row {
-    padding: 0 !important;
-    background-color: white;
-  }
-  .col {
-    padding: 0;
-    position: relative;
-  }
-}
-</style>

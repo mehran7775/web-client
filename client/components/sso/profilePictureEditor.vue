@@ -1,3 +1,37 @@
+<script setup lang="ts">
+import { defineComponent, ref } from "#app";
+import { useUser } from "~/composables";
+
+const props = defineProps<{
+  address: string | null;
+  size: number;
+}>();
+
+const userManager = useUser();
+const img = ref("");
+const pic = ref(null);
+if (props.address) {
+  userManager
+    .getProfilePic(props.address)
+    .then((res) => {
+      img.value = res;
+    })
+    .catch();
+}
+defineExpose({
+  img,
+  pic,
+});
+</script>
+
+<style lang="postcss" scoped>
+.file {
+  position: absolute;
+  bottom: 1px;
+  width: 100%;
+}
+</style>
+
 <template>
   <v-avatar :size="size" rounded>
     <v-img :src="img" :max-width="size">
@@ -17,40 +51,3 @@
     </v-file-input>
   </v-avatar>
 </template>
-<script lang="ts">
-import { defineComponent, ref } from "#app";
-import { useUser } from "~/composables";
-
-export default defineComponent({
-  name: "profile-picture",
-  props: {
-    address: String,
-    size: Number,
-  },
-  setup(props) {
-    const userManager = useUser();
-    const img = ref("");
-    const pic = ref(null);
-    if (props.address) {
-      userManager
-        .getProfilePic(props.address)
-        .then((res) => {
-          img.value = res;
-        })
-        .catch();
-    }
-    return {
-      img,
-      pic,
-    };
-  },
-});
-</script>
-
-<style lang="postcss" scoped>
-.file {
-  position: absolute;
-  bottom: 1px;
-  width: 100%;
-}
-</style>

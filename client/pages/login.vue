@@ -1,70 +1,18 @@
 <script lang="ts">
-import { defineComponent } from "#app";
+import { defineComponent, computed } from "#app";
 import { useUser } from "@/composables";
 
 export default defineComponent({
   layout: "public",
   setup() {
     const userManager = useUser();
-    const loading = userManager.refreshingToken;
+    const isloading = computed(() => userManager.refreshingToken);
     return {
-      loading,
+      isloading,
     };
   },
 });
 </script>
-
-<template>
-  <v-row class="login ma-0 pa-0">
-    <v-col md="6" sm="12" class="login-col justify-center" style="position: relative">
-      <nuxt-link to="/about-us" class="logo"></nuxt-link>
-      <login :width="322" :input-height="42" />
-      <loading :loading="loading" />
-    </v-col>
-    <v-col md="6" sm="0" class="img-col d-none d-md-block">
-      <div class="pie pie-1"></div>
-      <div class="pie pie-2"></div>
-      <content-slider :interval="7.5" src="login-slider/" />
-      <floating-button
-        top="calc(50% - 110px)"
-        left="8px"
-        small
-        color="primary lighten-1"
-        depressed
-      >
-        <v-icon> isax-instagram </v-icon>
-      </floating-button>
-      <floating-button
-        top="calc(50% - 66px)"
-        left="8px"
-        small
-        color="primary lighten-1"
-        depressed
-      >
-        <v-icon> isax-whatsapp </v-icon>
-      </floating-button>
-      <floating-button
-        top="calc(50% - 22px)"
-        left="8px"
-        small
-        color="primary lighten-1"
-        depressed
-      >
-        <v-icon> isax-facebook </v-icon>
-      </floating-button>
-      <floating-button
-        top="calc(50% + 22px)"
-        left="8px"
-        small
-        color="primary lighten-1"
-        depressed
-      >
-        <v-icon> mdi-dots-horizontal </v-icon>
-      </floating-button>
-      <virtual-keyboard />
-    </v-col>
-  </v-row>
-</template>
 
 <style lang="postcss" scoped>
 .pie-1 {
@@ -104,3 +52,63 @@ export default defineComponent({
   overflow: hidden;
 }
 </style>
+
+<template>
+  <v-row class="login ma-0 pa-0">
+    <v-col md="6" sm="12" class="login-col justify-center" style="position: relative">
+      <nuxt-link to="/about-us" class="logo"></nuxt-link>
+      <login :width="322" :input-height="42" />
+      <loading :loading="isloading" />
+    </v-col>
+    <v-col md="6" sm="0" class="img-col d-none d-md-block">
+      <div class="pie pie-1"></div>
+      <div class="pie pie-2"></div>
+      <content-slider :interval="7.5" src="login-slider/" />
+      <floating-button
+        :style="{
+          top: 'calc(50% - 110px)',
+          left: '8px',
+        }"
+        :width="40"
+        :height="40"
+        color="default 0.25"
+      >
+        <ada-icon :size="24"> isax-instagram </ada-icon>
+      </floating-button>
+      <floating-button
+        :style="{
+          top: 'calc(50% - 66px)',
+          left: '8px',
+        }"
+        :width="40"
+        :height="40"
+        color="default 0.25"
+      >
+        <ada-icon :size="24"> isax-whatsapp </ada-icon>
+      </floating-button>
+      <floating-button
+        :style="{
+          top: 'calc(50% - 22px)',
+          left: '8px',
+        }"
+        :width="40"
+        :height="40"
+        color="default 0.25"
+      >
+        <ada-icon :size="24"> isax-facebook </ada-icon>
+      </floating-button>
+      <floating-button
+        :style="{
+          top: 'calc(50% + 22px)',
+          left: '8px',
+        }"
+        :width="40"
+        :height="40"
+        color="default 0.25"
+      >
+        <ada-icon :size="24"> mdi-dots-horizontal </ada-icon>
+      </floating-button>
+      <virtual-keyboard />
+    </v-col>
+  </v-row>
+</template>

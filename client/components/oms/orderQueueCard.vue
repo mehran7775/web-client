@@ -1,70 +1,134 @@
+<script setup lang="ts">
+import { reactive, ref, computed, Ref } from "#app";
+import { InstrumentCache, InstrumentSearchModel, OrderQueueItem } from "@/types";
+import { useAsrTrader, useInstrument } from "~/composables";
+import doubleBarChart from "../doubleBarChart.vue";
+
+const emit = defineEmits(["count", "price"]);
+const props = withDefaults(
+  defineProps<{
+    insId: number;
+    copy: boolean;
+    responsive: boolean;
+    "extra-col": boolean;
+  }>(),
+  {
+    copy: false,
+    responsive: false,
+    "extra-col": false,
+  }
+);
+
+const appManager = useAsrTrader();
+const instrumentManager = useInstrument();
+const formatter = appManager.formatter;
+const instrument: Ref<InstrumentCache | null> = ref(null);
+const change = computed(() => (price: number) => {
+  if (instrument.value && price) {
+    return ((price - instrument.value.last) / price) * 100;
+  }
+  return 0;
+});
+const totalBuy = ref(0);
+const totalSell = ref(0);
+const totalQueue = computed(() => totalBuy.value + totalSell.value);
+const queue: Array<OrderQueueItem> = reactive([
+  new OrderQueueItem(),
+  new OrderQueueItem(),
+  new OrderQueueItem(),
+  new OrderQueueItem(),
+  new OrderQueueItem(),
+]);
+instrumentManager
+  .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
+  .then((res) => {
+    instrument.value = res[0];
+  });
+instrumentManager.getOrderQueue(props.insId).then((result) => {
+  if (result.queue) {
+    queue.splice(0, queue.length);
+    result.queue.forEach((item) => {
+      queue.push(item);
+      totalBuy.value += item.buy.count * item.buy.amount;
+      totalSell.value += item.sell.count * item.sell.amount;
+    });
+    for (let i = 5 - queue.length; i > 0; i--) {
+      queue.push(new OrderQueueItem());
+    }
+  }
+});
+
+defineExpose({
+  formatter,
+  change,
+  queue,
+  totalBuy,
+  totalSell,
+  totalQueue,
+});
+</script>
+
+<style lang="postcss" scoped>
+.order-queue {
+  > header {
+    @apply tw-grid tw-grid-cols-6 tw-text-center;
+    height: var(--tabel-row-height);
+    line-height: var(--tabel-row-height);
+    > div {
+      font-size: 0.75rem !important;
+      font-weight: 700;
+      max-height: var(--tabel-row-height);
+    }
+    .sell {
+      background-color: #efeff1;
+    }
+    .buy {
+      background-color: #e0e0e0;
+    }
+  }
+  .queue {
+    @apply tw-grid tw-grid-cols-6;
+    position: relative;
+    > div {
+      height: 31px;
+      line-height: var(--tabel-row-height);
+    }
+    > .field {
+      @apply tw-text-center;
+      position: relative;
+    }
+  }
+}
+</style>
 <template>
-  <v-container class="text-center ma-0 pa-0" fluid>
-    <v-row dense v-if="responsive" class="d-md-none headers">
-      <v-col class="success--text">
+  <div class="order-queue" fluid>
+    <header>
+      <div class="buy">
+        {{ $t("oms.count") }}
+      </div>
+      <div class="buy">
+        {{ $t("oms.amount") }}
+      </div>
+      <div class="buy">
         {{ $t("oms.buy") }}
-      </v-col>
-      <v-col class="error--text">
+      </div>
+      <div class="sell">
         {{ $t("oms.sell") }}
-      </v-col>
-    </v-row>
-    <v-row class="text-no-wrap headers" dense>
-      <v-col
-        :class="{
-          'd-none d-md-block': responsive,
-          buy: true,
-        }"
-        >{{ $t("oms.count") }}</v-col
-      >
-      <v-col
-        :class="{
-          'd-none d-md-block': responsive,
-          buy: true,
-        }"
-        >{{ $t("oms.amount") }}</v-col
-      >
-      <v-col
-        :class="{
-          'd-none d-md-block': responsive,
-          buy: true,
-        }"
-        >{{ $t("oms.buy") }}</v-col
-      >
-      <v-col v-if="responsive" class="d-md-none buy">{{ $t("oms.count-short") }}</v-col>
-      <v-col v-if="responsive" class="d-md-none buy">{{ $t("oms.amount-short") }}</v-col>
-      <v-col v-if="responsive" class="d-md-none buy">{{ $t("oms.price-short") }}</v-col>
-      <v-col
-        :class="{
-          'd-none d-md-block': responsive,
-          sell: true,
-        }"
-        >{{ $t("oms.sell") }}</v-col
-      >
-      <v-col
-        :class="{
-          'd-none d-md-block': responsive,
-          sell: true,
-        }"
-        >{{ $t("oms.amount") }}</v-col
-      >
-      <v-col
-        :class="{
-          'd-none d-md-block': responsive,
-          sell: true,
-        }"
-        >{{ $t("oms.count") }}</v-col
-      >
-      <v-col v-if="responsive" class="d-md-none sell">{{ $t("oms.price-short") }}</v-col>
-      <v-col v-if="responsive" class="d-md-none sell">{{ $t("oms.amount-short") }}</v-col>
-      <v-col v-if="responsive" class="d-md-none sell">{{ $t("oms.count-short") }}</v-col>
-    </v-row>
-    <v-row class="queue" v-for="(item, index) in queue" :key="index" dense>
+      </div>
+      <div class="sell">
+        {{ $t("oms.amount") }}
+      </div>
+      <div class="sell">
+        {{ $t("oms.count") }}
+      </div>
+    </header>
+    <div class="queue col-border" v-for="(item, index) in queue" :key="index" dense>
       <double-bar-chart
         :left="totalSell ? (item.sell.count * item.sell.amount * 100) / totalSell : 0"
         :right="totalBuy ? (item.buy.count * item.buy.amount * 100) / totalBuy : 0"
       />
-      <v-col
-        :class="{ 'copy-cursor': copy, 'col-border': true }"
+      <div
+        class="copy-cursor field"
         @click="
           () => {
             $emit('count', item.buy.count);
@@ -72,12 +136,12 @@
         "
       >
         <numeric-field v-model="item.buy.count"></numeric-field>
-      </v-col>
-      <v-col class="col-border">
+      </div>
+      <div class="field">
         <numeric-field v-model="item.buy.amount"></numeric-field>
-      </v-col>
-      <v-col
-        :class="{ 'copy-cursor': copy, 'col-border': true }"
+      </div>
+      <div
+        class="copy-cursor field"
         @click="
           () => {
             $emit('price', item.buy.price);
@@ -93,9 +157,9 @@
           </span> -->
         </numeric-field>
         <bar />
-      </v-col>
-      <v-col
-        :class="{ 'copy-cursor': copy, 'col-border': true }"
+      </div>
+      <div
+        class="copy-cursor field"
         @click="
           () => {
             $emit('price', item.sell.price);
@@ -110,12 +174,12 @@
             (%{{ formatter.format(change(item.buy.price)) }})
           </span> -->
         </numeric-field>
-      </v-col>
-      <v-col class="col-border">
+      </div>
+      <div class="field">
         <numeric-field v-model="item.sell.amount"></numeric-field>
-      </v-col>
-      <v-col
-        :class="{ 'copy-cursor': copy, 'col-border': true }"
+      </div>
+      <div
+        class="copy-cursor field"
         @click="
           () => {
             $emit('count', item.sell.count);
@@ -123,95 +187,7 @@
         "
       >
         <numeric-field v-model="item.sell.count"></numeric-field>
-      </v-col>
-    </v-row>
-  </v-container>
+      </div>
+    </div>
+  </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, reactive, ref, computed, Ref } from "#app";
-import { InstrumentCache, InstrumentSearchModel, OrderQueueItem } from "@/types";
-import { useAsrTrader, useInstrument } from "~/composables";
-import doubleBarChart from "../doubleBarChart.vue";
-
-export default defineComponent({
-  components: { doubleBarChart },
-  name: "order-queue-card",
-  emits: ["count", "price"],
-  props: {
-    insId: { type: Number, required: true },
-    copy: Boolean,
-    responsive: Boolean,
-    "extra-col": Boolean,
-  },
-  setup(props) {
-    const appManager = useAsrTrader();
-    const instrumentManager = useInstrument();
-    const formatter = appManager.formatter;
-    const instrument: Ref<InstrumentCache | null> = ref(null);
-    const change = computed(() => (price: number) => {
-      if (instrument.value && price) {
-        return ((price - instrument.value.last) / price) * 100;
-      }
-      return 0;
-    });
-    const totalBuy = ref(0);
-    const totalSell = ref(0);
-    const totalQueue = computed(() => totalBuy.value + totalSell.value);
-    const queue: Array<OrderQueueItem> = reactive([
-      new OrderQueueItem(),
-      new OrderQueueItem(),
-      new OrderQueueItem(),
-      new OrderQueueItem(),
-      new OrderQueueItem(),
-    ]);
-    instrumentManager
-      .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
-      .then((res) => {
-        instrument.value = res[0];
-      });
-    instrumentManager.getOrderQueue(props.insId).then((result) => {
-      if (result.queue) {
-        queue.splice(0, queue.length);
-        result.queue.forEach((item) => {
-          queue.push(item);
-          totalBuy.value += item.buy.count * item.buy.amount;
-          totalSell.value += item.sell.count * item.sell.amount;
-        });
-        for (let i = 5 - queue.length; i > 0; i--) {
-          queue.push(new OrderQueueItem());
-        }
-      }
-    });
-
-    return {
-      formatter,
-      change,
-      queue,
-      totalBuy,
-      totalSell,
-      totalQueue,
-    };
-  },
-});
-</script>
-
-<style lang="postcss" scoped>
-.headers {
-  .col {
-    font-size: 0.75rem !important;
-    font-weight: 700;
-    max-height: 32px;
-  }
-  .sell {
-    background-color: #efeff1;
-  }
-  .buy {
-    background-color: #e0e0e0;
-  }
-}
-.queue {
-  position: relative;
-  max-height: 32px;
-}
-</style>

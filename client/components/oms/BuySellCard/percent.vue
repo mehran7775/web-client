@@ -61,7 +61,7 @@ function toPercent(value: number) {
   <div class="percent-container">
     <RangeSlider :min="min" :max="max" :value="val" @input="setValue" />
     <TextInput
-      class="tw-flex-grow tw-mt-1"
+      class="tw-flex-grow tw-h-[24px]"
       dir="rtl"
       type="number"
       :label="label"

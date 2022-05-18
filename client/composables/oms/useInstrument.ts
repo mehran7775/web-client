@@ -100,7 +100,7 @@ export const useInstrument = defineStore("instrument", () => {
     state.value.width = width;
   }
 
-  //TODO Move Actions Buisiness here
+  //Move Actions Buisiness here
   async function getInstrumentsDetail(
     searchModel: InstrumentSearchModel
   ): Promise<Array<InstrumentCache>> {

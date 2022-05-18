@@ -45,76 +45,55 @@ watch(
 );
 </script>
 
+<style lang="postcss" scoped>
+.ada-input {
+  @apply tw-flex tw-flex-grow tw-whitespace-nowrap tw-min-w-0;
+  border-radius: var(--border-radius-input);
+
+  .input-container {
+    @apply tw-p-[4px] tw-min-w-0 tw-flex;
+    background-color: rgba(var(--c-primary), 0.1);
+    border-radius: var(--border-radius-input);
+
+    &:dir(rtl) {
+      padding: 0 0 0 6px;
+    }
+
+    input {
+      @apply tw-min-w-0 tw-inline;
+      outline-style: none;
+      line-height: inherit;
+      font-size: inherit;
+      padding: 0 3px 0 3px;
+      background-color: white;
+      border-radius: var(--border-radius-input);
+      direction: ltr;
+
+      &:nth-child(odd) {
+        margin: 0 3px;
+      }
+
+      &:nth-child(2) {
+        margin: 0;
+      }
+    }
+  }
+
+}
+</style>
+
+
 <template>
-  <label class="ada-input tw-flex tw-whitespace-nowrap tw-min-w-0">
+  <label class="ada-input">
     <div class="label">
       {{ label }}
     </div>
-    <div class="input-container tw-min-w-0 tw-flex">
+    <div class="input-container">
       <slot name="prepend"> </slot>
-      <input
-        type="number"
-        class="tw-min-w-0 tw-inline ltr"
-        v-model="day"
-        @input="change"
-        :min="1"
-        :max="31"
-      />
-      <input
-        type="number"
-        class="tw-min-w-0 tw-inline ltr"
-        v-model="month"
-        @input="change"
-        :min="1"
-        :max="12"
-      />
-      <input
-        type="number"
-        class="tw-min-w-0 tw-inline ltr"
-        v-model="year"
-        @input="change"
-        :min="1400"
-        :max="9999"
-      />
+      <input type="number" v-model="day" @input="change" :min="1" :max="31" />
+      <input type="number" v-model="month" @input="change" :min="1" :max="12" />
+      <input type="number" v-model="year" @input="change" :min="1400" :max="9999" />
       <slot name="append"></slot>
     </div>
   </label>
 </template>
-
-<style lang="postcss" scoped>
-.ada-input {
-  height: 24px;
-  border-radius: var(--border-radius-input);
-  .input-container {
-    background-color: rgba(var(--c-primary), 0.1);
-    border-radius: var(--border-radius-input);
-    padding: 0 4px 0 4px;
-    &:dir(rtl) {
-      padding: 0 0 0 6px;
-    }
-  }
-  input {
-    outline-style: none;
-    line-height: 0.83334rem !important;
-    height: 16px;
-    font-size: 0.83334rem;
-    padding: 0 3px 0 3px;
-    background-color: white;
-    border-radius: var(--border-radius-input);
-  }
-  input:nth-child(odd) {
-    margin: auto 3px auto 3px;
-  }
-  input:nth-child(2) {
-    margin: auto 0 auto 0;
-  }
-}
-
-.rtl {
-  .ada-input {
-    .input-container {
-      padding: 0 0 0 6px;
-    }
-  }
-}
-</style>

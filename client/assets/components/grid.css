@@ -1,0 +1,10 @@
+.ada-row {
+  @apply tw-flex tw-flex-grow;
+  height: 32px;
+}
+.ada-col {
+  @apply tw-flex tw-flex-grow;
+  position: relative;
+  height: 32px;
+  line-height: 32px;
+}

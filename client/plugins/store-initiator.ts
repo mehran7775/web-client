@@ -6,7 +6,7 @@ import { needLogin } from "@/middleware/auth";
 import { useUser, useWealth } from "~/composables";
 
 export default <Plugin>async function ({ $pinia, req, redirect, route }) {
-  //TODO Replace storage by cookie
+  //Replace storage by cookie
 
   const userManager = useUser($pinia);
   const wealthManager = useWealth($pinia);

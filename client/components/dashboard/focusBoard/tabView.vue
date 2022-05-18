@@ -54,6 +54,19 @@ defineExpose({
 });
 </script>
 
+<style lang="postcss" scoped>
+.tab-view {
+  .detail {
+    @apply tw-flex tw-flex-grow tw-justify-between;
+    .panel {
+      border-left: 1px solid #e0e0e0;
+      border-right: 1px solid #e0e0e0;
+      width: calc(33% - 2px);
+    }
+  }
+}
+</style>
+
 <template>
   <div class="tab-view">
     <v-tabs :height="32" color="primary" v-model="tab" align-with-title>
@@ -66,14 +79,14 @@ defineExpose({
         <v-badge color="success" dot left offset-y="75%" offset-x="-5">
           {{ item.name }}
         </v-badge>
-        <v-spacer />
+        <ada-spacer />
         <v-icon @click="() => close(item.id)" small> mdi-close </v-icon>
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item v-for="item in instruments" :key="item.id" :value="item.id.toString()">
-        <v-row dense>
-          <v-col class="ma-0 pa-0 panel">
+        <div class="detail">
+          <div class="panel">
             <order-queue-card
               :insId="item.id"
               @count="
@@ -90,13 +103,11 @@ defineExpose({
               responsive
             />
             <legal-real-card :insId="item.id" hide-headers responsive />
-            <v-row>
-              <v-col class="justify-center text-center">
-                <v-icon size="16"> isax-presention-chart </v-icon>
-              </v-col>
-            </v-row>
-          </v-col>
-          <v-col class="ma-0 pa-0 mx-3 panel">
+            <ada-col class="col-border tw-align-middle tw-justify-center">
+              <v-icon size="16"> isax-presention-chart </v-icon>
+            </ada-col>
+          </div>
+          <div class="panel">
             <instrument-card
               :insId="item.id"
               @count="
@@ -111,39 +122,12 @@ defineExpose({
               "
               responsive
             />
-          </v-col>
-          <v-col class="ma-0 pa-0 panel">
+          </div>
+          <div class="panel">
             <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" />
-          </v-col>
-        </v-row>
+          </div>
+        </div>
       </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
-
-<style lang="postcss" scoped>
-.panel {
-  border-left: 1px solid #e0e0e0;
-  border-right: 1px solid #e0e0e0;
-  max-width: calc(33% - 2px);
-}
-</style>
-
-<style lang="postcss">
-.tab-view {
-  * {
-    font-size: 0.8334rem;
-  }
-  .row {
-    padding: 0;
-    margin: 0;
-    line-height: 30px !important;
-  }
-  .col {
-    padding: 0;
-    margin: 0;
-    position: relative;
-    line-height: 30px !important;
-  }
-}
-</style>

@@ -10,6 +10,9 @@ const props = withDefaults(
     max: number | null;
     minlength: number | null;
     maxlength: number | null;
+    rounded: string;
+    bg: string;
+    activeBorder: boolean;
   }>(),
   {
     label: "",
@@ -19,6 +22,9 @@ const props = withDefaults(
     max: null,
     minlength: null,
     maxlength: null,
+    rounded: "var(--border-radius-root)",
+    bg: "rgba(var(--c-primary), 0.1)",
+    activeBorder: true,
   }
 );
 
@@ -26,6 +32,7 @@ const emit = defineEmits(["input"]);
 
 const ltr = computed<string>(() => (props.type == "number" ? "ltr" : ""));
 const val = ref(props.value);
+const active = ref(false)
 
 function setValue(update: any) {
   val.value = update;
@@ -39,22 +46,6 @@ watch(
 );
 </script>
 
-<template>
-  <label :class="['ada-input', label == '' ? '' : 'has-label']">
-    <div class="label">
-      {{ label }}
-    </div>
-    <slot name="prepend"> </slot>
-    <input
-      :type="type"
-      v-model="val"
-      :class="[ltr]"
-      @input="() => emit('input', type == 'number' ? parseInt(val) : val)"
-      v-bind="{ min, max, minlength, maxlength, ...$attrs }"
-    />
-    <slot name="append"></slot>
-  </label>
-</template>
 <style lang="postcss" scoped>
 .rtl {
   .ada-input {
@@ -65,30 +56,52 @@ watch(
     }
   }
 }
+
 .ada-input {
-  @apply tw-flex tw-flex-grow tw-justify-between tw-whitespace-nowrap tw-min-w-0;
-  height: 24px;
+  @apply tw-flex tw-flex-grow tw-items-center tw-justify-between tw-whitespace-nowrap tw-min-w-0;
+
   &.has-label {
+    .label {
+      @apply tw-flex tw-items-center;
+      min-width: 65px;
+    }
+
     input {
       margin: auto 0 auto 4px;
     }
   }
+
   input {
-    @apply tw-min-w-0 tw-inline tw-flex-grow;
+    @apply tw-min-w-0 tw-inline tw-flex-grow tw-min-h-0;
+    height: 100%;
     outline-style: none;
-    line-height: 0.83334rem !important;
-    height: 24px;
-    font-size: 0.83334rem;
+    line-height: inherit;
+    font-size: inherit;
     font-weight: bold;
-    margin: auto 0 auto 0;
     padding: 0 6px 0 6px;
-    background-color: rgba(var(--c-primary), 0.1);
-    border-radius: var(--border-radius-root);
-    &:focus {
+
+    &.active-border:focus {
       background-color: white;
       border: solid 1px var(--c-primary-rgb);
       color: var(--c-primary-rgb);
     }
+
   }
 }
 </style>
+
+<template>
+  <label :class="['ada-input', active ? 'active' : '', label == '' ? '' : 'has-label']">
+    <div class="label">
+      {{ label }}
+    </div>
+    <slot name="prepend"> </slot>
+    <input :type="type" @focus="() => { active = true }" @blur="() => { active = false }" :style="{
+      backgroundColor: bg,
+      borderRadius: rounded
+    }" v-model="val" :class="[ltr, activeBorder ? 'active-border' : '']"
+      @input="() => emit('input', type == 'number' ? parseInt(val) : val)"
+      v-bind="{ min, max, minlength, maxlength, ...$attrs }" />
+    <slot name="append"></slot>
+  </label>
+</template>

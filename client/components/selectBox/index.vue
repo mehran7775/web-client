@@ -14,8 +14,8 @@ export interface selectProps {
 const props = withDefaults(defineProps<selectProps>(), {
   placeholder: "",
   label: "",
-  height: "24px",
-  items: [],
+  height: "",
+  items: () => [],
   readonly: false,
   textPath: "$.name",
   keyPath: "$.id",
@@ -63,78 +63,75 @@ const getValue: (item: any) => any = eval(
   }"
 );
 </script>
-
-<template>
-  <label
-    :class="['ada-select', active ? 'active' : 'inactive', val == null ? '' : 'value']"
-    :style="{ height: height }"
-    @click="toggleActive"
-    v-ada-click-outside="() => (active = false)"
-  >
-    <slot name="prepend">
-      {{ label }}
-    </slot>
-    <input
-      type="text"
-      class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
-      v-model="selectedText"
-      readonly
-      ref="inp"
-      :aria-readonly="readonly"
-      :placeholder="placeholder"
-    />
-    <slot name="append">
-      <i
-        @click="toggleActive"
-        class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"
-      ></i>
-    </slot>
-    <ol class="menu tw-m-0 tw-p-0 tw-shadow" v-show="active">
-      <slot name="prepend-item"></slot>
-      <li v-for="item in items" :key="getValue(item)" @click="() => select(item)">
-        {{ getText(item) }}
-      </li>
-      <slot name="append-item"></slot>
-    </ol>
-  </label>
-</template>
-
 <style lang="postcss" scoped>
+.rtl {
+  .ada-select {
+    &.has-label {
+      .input {
+        margin: 0 4px 0 0;
+      }
+    }
+  }
+}
+
 .ada-select {
   @apply tw-flex tw-flex-grow tw-min-w-0 tw-whitespace-nowrap;
   position: relative;
-  border-radius: var(--border-radius-input);
-  background-color: rgba(var(--c-primary), 0.1);
-  color: var(--c-primary-rgb);
-  cursor: pointer;
+
+  &.has-label {
+    .label {
+      @apply tw-flex tw-items-center;
+      min-width: 65px;
+    }
+
+    .input {
+      margin: 0 0 0 4px;
+    }
+  }
+
   li,
   i {
     color: var(--c-primary-rgb);
   }
-  &.value {
-    background-color: var(--c-primary-rgb);
-    input,
-    i {
-      color: white;
-    }
-  }
+
   &.active {
     i {
       transform: rotate(-180deg);
     }
   }
-  input {
-    background-color: transparent;
-    outline-style: none;
-    line-height: 0.83334rem !important;
-    font-size: 0.83334rem;
+
+  .input {
+    @apply tw-flex tw-flex-grow tw-min-w-0 tw-whitespace-nowrap;
+    position: relative;
     border-radius: var(--border-radius-input);
-    cursor: inherit;
-    &::placeholder {
-      color: var(--c-primary-rgb);
+    background-color: rgba(var(--c-primary), 0.1);
+    color: var(--c-primary-rgb);
+    cursor: pointer;
+
+    &.value {
+      background-color: var(--c-primary-rgb);
+
+      input,
+      i {
+        color: white;
+      }
+    }
+
+    input {
+      background-color: transparent;
+      outline-style: none;
+      line-height: 0.83334rem !important;
+      font-size: 0.83334rem;
+      border-radius: var(--border-radius-input);
+      cursor: inherit;
+
+      &::placeholder {
+        color: var(--c-primary-rgb);
+      }
     }
   }
 }
+
 .menu {
   position: absolute;
   top: 100%;
@@ -143,13 +140,45 @@ const getValue: (item: any) => any = eval(
   min-width: 100%;
   background-color: white;
   padding: 0 !important;
+
   li {
     display: block;
     list-style: none;
     padding: 0 6px 0 6px;
+    height: var(--tabel-row-height);
+    line-height: var(--tabel-row-height);
+
     &:hover {
       background-color: rgba(var(--c-primary), 0.05);
     }
   }
 }
 </style>
+
+<template>
+  <label :class="[
+    'ada-select',
+    active ? 'active' : 'inactive',
+    val == null ? '' : 'value',
+    label == '' ? '' : 'has-label',
+  ]" :style="{ height: height }" @click="toggleActive" v-ada-click-outside="() => (active = false)">
+    <div class="label">
+      {{ label }}
+    </div>
+    <div class="input">
+      <slot name="prepend"> </slot>
+      <input type="text" class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
+        v-model="selectedText" readonly ref="inp" :aria-readonly="readonly" :placeholder="placeholder" />
+      <slot name="append">
+        <i @click="toggleActive" class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"></i>
+      </slot>
+      <ol class="menu tw-m-0 tw-p-0 tw-shadow" v-show="active">
+        <slot name="prepend-item"></slot>
+        <li v-for="item in items" :key="getValue(item)" @click="() => select(item)">
+          {{ getText(item) }}
+        </li>
+        <slot name="append-item"></slot>
+      </ol>
+    </div>
+  </label>
+</template>

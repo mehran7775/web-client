@@ -16,13 +16,22 @@ export async function getWage(
   id: string,
   side: Side,
   axios: AxiosInstance
+): Promise<AxiosResponse<number>> {
+  return axios.get<number>(
+    "/wealth-manager/order/wage/" + id + "/" + (side == 1 ? "BUY" : "SELL")
+  );
+}
+
+export async function getRestrictions(
+  axios: AxiosInstance
 ): Promise<AxiosResponse<PaginatedResult<Wealth>>> {
   return axios.get<PaginatedResult<Wealth>>(
-    "/wealth-manager/order/wage/" + id + "/" + (side == 1 ? "BUY" : "SELL")
+    "/wealth-manager/restriction/active-list"
   );
 }
 
 export default {
   getWealth,
   getWage,
+  getRestrictions,
 };

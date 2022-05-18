@@ -1,27 +1,29 @@
 :root {
   --c-primary: 53, 84, 209;
-  --c-primary-rgb: rgb(53, 84, 209);
+  --c-primary-rgb: rgb(var(--c-primary));
   --c-default: 224, 224, 224;
-  --c-default-rgb: rgb(224, 224, 224);
+  --c-default-rgb: rgb(var(--c-default));
   --c-secondary: 239, 57, 78;
-  --c-secondary-rgb: rgb(239, 57, 78);
+  --c-secondary-rgb: rgb(var(--c-secondary));
   --c-accent: 130, 177, 255;
-  --c-accent-rgb: rgb(130, 177, 255);
+  --c-accent-rgb: rgb(var(--c-accent));
   --c-error: 255, 59, 48;
-  --c-error-rgb: rgb(255, 59, 48);
+  --c-error-rgb: rgb(var(--c-error));
   --c-info: 0, 156, 242;
-  --c-info-rgb: rgb(0, 156, 242);
+  --c-info-rgb: rgb(var(--c-info));
   --c-success: 0, 189, 121;
-  --c-success-rgb: rgb(0, 189, 121);
+  --c-success-rgb: rgb(var(--c-success));
   --c-warning: 255, 187, 70;
-  --c-warning-rgb: rgb(255, 187, 70);
+  --c-warning-rgb: rgb(var(--c-warning));
   --c-defualt-bg: 249, 250, 254;
-  --c-defualt-bg-rgb: rgb(249, 250, 254);
+  --c-defualt-bg-rgb: rgb(var(--c-default-bg));
   --c-gray4: 189, 189, 189;
-  --c-gray4-rgb: rgb(189, 189, 189);
+  --c-gray4-rgb: rgb(var(--c-gra-4));
 
   --border-radius-root: 6px;
+  --border-radius-panel: 20px;
   --border-radius-input: 4px;
+  --border-size-btn: 1px;
 
   --font-size-root: 12px;
   --value-font-size: 1rem;
