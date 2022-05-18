@@ -3,9 +3,13 @@ import ContentViewer from "~~/components/contentViewer.vue";
 import TextInput from "~~/components/textInput.vue";
 import AdaBtn from "~~/components/adaBtn.vue";
 import AdaToggle from "~~/components/adaToggle.vue";
-import { reactive, useRouter } from "#app"
+import { computed, ref, useRouter } from "#app"
+import { usePayment } from "@/composables"
 
-const banks = reactive([{ title: 'ملت' }, { title: 'ملت' }, { title: 'ملت' }, { title: 'ملت' }])
+const paymentManager = usePayment();
+
+const banks = computed(() => paymentManager.paymentMethods)
+const paymentMethod = ref(null);
 const router = useRouter();
 function gotoReportDeposit() {
   router.push('/accounting/deposit-report')
@@ -85,9 +89,10 @@ header {
 
         >button {
           @apply tw-flex tw-justify-center tw-items-center;
+          border-radius: 8px;
+          border: 1px solid var(--c-default-rgb);
 
           &.active {
-            border-radius: 8px;
             border: solid 1.5px var(--c-primary-rgb);
 
             &::after {
@@ -120,8 +125,8 @@ header {
         </text-input>
         <span class="label">درگاه:</span>
         <ada-toggle class="banks" style="flex-grow: 0;">
-          <ada-btn :height="64" :width="64" v-for="(bank, i) in banks" :model="i">
-            <img src="/logo.png" :alt="bank.title" />
+          <ada-btn color="white" :height="64" :width="64" v-for="(bank, i) in banks" :key="bank.name" :model="i">
+            <img :src="'/banks/' + bank.name + '.png'" :alt="bank.name" />
           </ada-btn>
         </ada-toggle>
         <div class="actions">
