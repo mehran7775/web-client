@@ -1,5 +1,6 @@
 export * from "./sector"
 export * from "./instrument"
+export * from "./restrictions"
 
 
 export class SameSectorQuery {
