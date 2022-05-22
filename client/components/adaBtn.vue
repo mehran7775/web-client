@@ -87,7 +87,7 @@ button {
 </style>
 
 <template>
-  <button v-ripple v-bind="$attrs" v-on="$listeners" @click="
+  <button v-ada-ripple v-bind="$attrs" v-on="$listeners" @click="
     () => {
       click();
     }

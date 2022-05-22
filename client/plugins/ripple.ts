@@ -326,5 +326,5 @@ export const Ripple = {
 };
 
 export default <Plugin>function () {
-  Vue.directive("ada-click-outside", Ripple);
+  Vue.directive("ada-ripple", Ripple);
 };
