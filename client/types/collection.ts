@@ -28,10 +28,10 @@ export class AutoCompleteSearchModel implements SearchModel {
   offset: number;
   length: number;
   echo: any;
-  constructor(value: string) {
+  constructor(value: string, offset: number, length: number) {
     this.name = value;
-    this.offset = 0
-    this.length = 1
+    this.offset = offset || 0;
+    this.length = length || 1;
   }
 }
 

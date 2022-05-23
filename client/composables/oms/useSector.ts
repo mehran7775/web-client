@@ -4,12 +4,14 @@ import { getSector as GetSector } from "@/repositories/oms/sector_manager";
 import { useAxios } from "../useAxios";
 import { ref } from "#app";
 
-export class SectortState {
-  cache: Map<number, Sector> = new Map<number, Sector>();
+export interface SectortState {
+  cache: Map<number, Sector>;
 }
 
 export const useSectors = defineStore("sectors", () => {
-  const state = ref(new SectortState());
+  const state = ref({
+    cache:new Map<number, Sector>()
+  });
   const axios = useAxios().createInstance();
   async function getSector(payload: number): Promise<Sector | undefined> {
     if (state.value.cache.has(payload)) return state.value.cache.get(payload);

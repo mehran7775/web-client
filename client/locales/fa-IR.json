@@ -224,6 +224,7 @@
     "count-short": "ت",
     "sell": "فروش",
     "buy": "خرید",
+    "sectorAutoComplete": "جستجوی صنعت",
     "sell-btn": "@:general.send @:oms.sell",
     "buy-btn": "@:general.send @:oms.buy",
     "percent": "@general.percent",
