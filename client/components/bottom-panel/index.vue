@@ -80,6 +80,7 @@ function close() {
       @apply tw-px-2;
       background-color: rgba(0, 0, 0, 0);
       border-radius: 0 !important;
+      min-width: 99px;
     }
   }
 

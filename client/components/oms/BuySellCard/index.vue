@@ -28,6 +28,9 @@ const order = computed(() => orderManager.getForm(props.insId.toString()));
 const priceLock = ref(false);
 const countLock = ref(false);
 const wage = ref({ buy: 0, sell: 0 });
+const agreement = ref(true);
+const orderDivision = ref(false);
+const accountTypefield = ref(0);
 const countVal = computed({
   get() {
     return order.value.quantity;
@@ -85,8 +88,12 @@ async function check() {
 }
 
 async function placeOrder(options: { draft: boolean }) {
-  const param = { ...order.value };
+  const param: any = { ...order.value };
   if (options.draft) param.flags = param.flags | 1;
+  param.termsAndConditions = agreement.value;
+  param.orderDivision = orderDivision.value;
+  param.draft = options.draft;
+  param.accountType = accountTypefield.value;
   orderManager.placeOrder(param);
 }
 
@@ -291,7 +298,8 @@ instrumentManager
             </text-input>
           </div>
           <div class="tw-justify-between">
-            <account-type :label="$t('accounting.account.type')" class="tw-my-1" height="24px">
+            <account-type v-model="accountTypefield" :label="$t('accounting.account.type')" class="tw-my-1"
+              height="24px">
             </account-type>
             <bar />
           </div>
@@ -310,8 +318,8 @@ instrumentManager
             <bar />
           </div>
           <div class="tw-justify-between">
-            <v-checkbox :label="$t('oms.splitOrders')" dense hide-details class="tw-m-0 tw-p-0 tw-mt-1 pa-0"
-              :ripple="false" />
+            <v-checkbox :label="$t('oms.splitOrders')" v-model="orderDivision" dense hide-details
+              class="tw-m-0 tw-p-0 tw-mt-1 pa-0" :ripple="false" />
           </div>
           <div class="tw-justify-between">
             <span>{{ $t("oms.tradeWage") }}: </span>
@@ -325,7 +333,7 @@ instrumentManager
           <div class="tw-justify-center">
             <ada-btn class="draft" height="24px" @click="
               () => {
-                if (check()) placeOrder({ draft: true });
+                placeOrder({ draft: true });
               }
             " depressed>
               {{ $t("general.draft") }}
@@ -335,7 +343,7 @@ instrumentManager
           <div class="tw-justify-center">
             <ada-btn class="buy" height="24px" :disabled="!active || (active.status & 3) != 3" @click="
               () => {
-                if (check()) placeOrder();
+                placeOrder({ draft: false });
               }
             " depressed>
               {{ $t("oms.buy-btn") }}
@@ -405,8 +413,8 @@ instrumentManager
             <bar />
           </div>
           <div class="tw-justify-between">
-            <v-checkbox :label="$t('oms.splitOrders')" dense hide-details class="tw-m-0 tw-p-0 tw-mt-1 pa-0"
-              :ripple="false" />
+            <v-checkbox :label="$t('oms.splitOrders')" v-model="orderDivision" dense hide-details
+              class="tw-m-0 tw-p-0 tw-mt-1 pa-0" :ripple="false" />
           </div>
           <div class="tw-justify-between">
             <span>{{ $t("oms.tradeWage") }}: </span>
@@ -420,7 +428,7 @@ instrumentManager
           <div class="tw-justify-center">
             <ada-btn class="draft" height="24px" @click="
               () => {
-                if (check()) placeOrder({ draft: true });
+                placeOrder({ draft: true });
               }
             " depressed>
               {{ $t("general.draft") }}
@@ -430,7 +438,7 @@ instrumentManager
           <div class="tw-justify-center">
             <ada-btn class="sell" height="24px" :disabled="!active || (active.status & 3) != 3" @click="
               () => {
-                if (check()) placeOrder();
+                placeOrder({ draft: false });
               }
             " depressed>
               {{ $t("oms.sell-btn") }}

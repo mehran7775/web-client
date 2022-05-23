@@ -7,6 +7,7 @@ import DateInput from "../../DateTime/dateInput.vue";
 
 const items = [
   new AutoCompleteItem("1", "روز"),
+  new AutoCompleteItem("2", "انجام و حذف"),
   new AutoCompleteItem("3", "تا لغو"),
   new AutoCompleteItem("4", "تا تاریخ"),
 ];

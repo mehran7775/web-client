@@ -21,7 +21,7 @@
   --c-gray4-rgb: rgb(var(--c-gra-4));
 
   --border-radius-root: 6px;
-  --border-radius-panel: 20px;
+  --border-radius-panel: 0px;
   --border-radius-input: 4px;
   --border-size-btn: 1px;
 
