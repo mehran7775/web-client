@@ -75,8 +75,8 @@ async function check() {
   if (buyForm.value) {
     try {
       await buyForm.value.validate({
-        quantity: props.count,
-        fee: props.price,
+        quantity: countVal.value,
+        fee: priceVal.value,
       });
       return true;
     } catch (e) {
@@ -88,13 +88,16 @@ async function check() {
 }
 
 async function placeOrder(options: { draft: boolean }) {
-  const param: any = { ...order.value };
-  if (options.draft) param.flags = param.flags | 1;
-  param.termsAndConditions = agreement.value;
-  param.orderDivision = orderDivision.value;
-  param.draft = options.draft;
-  param.accountType = accountTypefield.value;
-  orderManager.placeOrder(param);
+  if (
+    await check()) {
+    const param: any = { ...order.value };
+    if (options.draft) param.flags = param.flags | 1;
+    param.termsAndConditions = agreement.value;
+    param.orderDivision = orderDivision.value;
+    param.draft = options.draft;
+    param.accountType = accountTypefield.value;
+    orderManager.placeOrder(param);
+  }
 }
 
 function toggleCountLock() {
@@ -112,7 +115,7 @@ instrumentManager
     priceVal.value = active.value.minAllowedPrice;
     buyForm.value = object({
       quantity: number()
-        .min(active.value.minQuantityPerOrder, "oms.order.validation.minQuantity")
+        .min(active.value.minQuantityPerOrder, "oms.order.validation.minQuantity: " + active.value.minQuantityPerOrder)
         .max(
           active.value.maxQuantityPerOrder > 0
             ? active.value.maxQuantityPerOrder

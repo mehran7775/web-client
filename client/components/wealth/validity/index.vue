@@ -7,9 +7,9 @@ import DateInput from "../../DateTime/dateInput.vue";
 
 const items = [
   new AutoCompleteItem("1", "روز"),
-  new AutoCompleteItem("2", "انجام و حذف"),
+  new AutoCompleteItem("4", "انجام و حذف"),
   new AutoCompleteItem("3", "تا لغو"),
-  new AutoCompleteItem("4", "تا تاریخ"),
+  new AutoCompleteItem("2", "تا تاریخ"),
 ];
 
 const window = computed(() => (value.value?.id == "4" ? "date" : "select"));
