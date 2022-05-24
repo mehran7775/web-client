@@ -311,8 +311,8 @@ instrumentManager
             </credit>
           </div>
           <div class="tw-justify-between tw-col-span-2">
-            <percent :label="$t('oms.view-count')" height="31px" class="tw-flex tw-flex-grow tw-h-[24px]" :min="30"
-              :total="countVal" :value="100">
+            <percent v-model="order.discloseQuantity" :label="$t('oms.view-count')" height="31px"
+              class="tw-flex tw-flex-grow tw-h-[24px]" :min="30" :total="countVal" :value="100">
             </percent>
           </div>
           <div class="tw-justify-between">
@@ -406,8 +406,8 @@ instrumentManager
             </credit>
           </div>
           <div class="tw-justify-between tw-col-span-2">
-            <percent :label="$t('oms.view-count')" height="31px" class="tw-flex tw-flex-grow tw-h-[24px]" :min="30"
-              :total="countVal" :value="100">
+            <percent v-model="order.discloseQuantity" :label="$t('oms.view-count')" height="31px"
+              class="tw-flex tw-flex-grow tw-h-[24px]" :min="30" :total="countVal" :value="100">
             </percent>
           </div>
           <div class="tw-justify-between">

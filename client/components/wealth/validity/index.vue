@@ -12,7 +12,7 @@ const items = [
   new AutoCompleteItem("2", "تا تاریخ"),
 ];
 
-const window = computed(() => (value.value?.id == "4" ? "date" : "select"));
+const window = computed(() => (value.value?.id == "2" ? "date" : "select"));
 const value = ref<AutoCompleteItem | null>();
 //TODO emit update
 </script>

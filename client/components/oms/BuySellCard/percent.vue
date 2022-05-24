@@ -19,7 +19,7 @@ const props = withDefaults(
   }
 );
 
-const emit = defineEmits(["input"]);
+const emit = defineEmits(["input","count"]);
 
 const minCount = computed(() => {
   if (props.total) return Math.ceil((props.min / 100) * props.total);
