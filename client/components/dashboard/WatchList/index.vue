@@ -53,11 +53,16 @@ const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
   actions.draggable = false;
   res.push(actions);
   res.push(
-    ...((me.value.settings.columns ?? DefaultCols()).map((col: WatchlistColumns) =>
-      Object.assign({}, col, {
+    ...((me.value.settings.columns ?? DefaultCols()).map((col: WatchlistColumns) => {
+      if (col == null)
+        return {
+          text: "",
+          value: ""
+        }
+      return Object.assign({}, col, {
         text: col.text == "" ? "" : i18n.t(col.text),
       })
-    ) as WatchlistColumns[])
+    }) as WatchlistColumns[])
   );
   const more = new WatchlistColumns("", "more");
   more.draggable = false;
@@ -156,7 +161,7 @@ watch(
     props.searchModel.offset,
     props.searchModel.length,
   ],
-  ([smodel,ids, boards, sectors, offset, len]) => {
+  ([smodel, ids, boards, sectors, offset, len]) => {
     getData(props.searchModel);
   }
 );
@@ -196,16 +201,8 @@ getData(props.searchModel);
 
 <template>
   <div class="pb-1">
-    <v-data-table
-      :headers="headers"
-      :items="instruments"
-      item-key="id"
-      class="watchlist"
-      hide-default-header
-      hide-default-footer
-      disable-pagination
-      dense
-    >
+    <v-data-table :headers="headers" :items="instruments" item-key="id" class="watchlist" hide-default-header
+      hide-default-footer disable-pagination dense>
       <template #header="{ on, props, attrs }">
         <header-handler :headers="headers" v-on="on" v-bind="attrs" :props="props">
           <template #header.more>
@@ -214,71 +211,42 @@ getData(props.searchModel);
         </header-handler>
       </template>
       <template #item="{ headers, item }">
-        <row-handler
-          draggable="true"
-          @dragstart="(ev) => drag(item)"
-          @dragover="
-            (ev) => {
-              ev.preventDefault();
-              if (ev.dataTransfer) {
-                ev.dataTransfer.dropEffect = 'move';
-              }
+        <row-handler draggable="true" @dragstart="(ev) => drag(item)" @dragover="
+          (ev) => {
+            ev.preventDefault();
+            if (ev.dataTransfer) {
+              ev.dataTransfer.dropEffect = 'move';
             }
-          "
-          dropzone="true"
-          @drop="
-            (ev) => {
-              ev.preventDefault();
-              drop(item);
-            }
-          "
-          :model="{ headers, item }"
-        >
+          }
+        " dropzone="true" @drop="
+  (ev) => {
+    ev.preventDefault();
+    drop(item);
+  }
+" :model="{ headers, item }">
           <template #item.actions="{ item }">
             <div class="text-no-wrap">
-              <v-icon
-                class="ma-0 pa-0 mx-2"
-                color="info"
-                @click="() => focus(item)"
-                :disabled="!canfocus"
-                small
-              >
+              <v-icon class="ma-0 pa-0 mx-2" color="info" @click="() => focus(item)" :disabled="!canfocus" small>
                 isax-eye
               </v-icon>
-              <v-icon
-                class="ma-0 pa-0 mx-1"
-                color="success"
-                @click="() => order(item, Side.Buy)"
-                :disabled="(item.status & 3) != 3"
-                small
-              >
+              <v-icon class="ma-0 pa-0 mx-1" color="success" @click="() => order(item, Side.Buy)"
+                :disabled="(item.status & 3) != 3" small>
                 isax-bag-tick-2
               </v-icon>
-              <v-icon
-                class="ma-0 pa-0 ms-2 me-4"
-                color="error"
-                @click="() => order(item, Side.Sell)"
-                :disabled="(item.status & 3) != 3"
-                small
-              >
+              <v-icon class="ma-0 pa-0 ms-2 me-4" color="error" @click="() => order(item, Side.Sell)"
+                :disabled="(item.status & 3) != 3" small>
                 isax-bag-cross-1
               </v-icon>
             </div>
           </template>
           <template #item.name="{ item }">
-            <v-badge
-              left
-              offset-y="65%"
-              offset-x="-4px"
-              :color="
-                (item.status & 1) != 1
-                  ? 'error'
-                  : (item.status & 6) != 6
+            <v-badge left offset-y="65%" offset-x="-4px" :color="
+              (item.status & 1) != 1
+                ? 'error'
+                : (item.status & 6) != 6
                   ? 'warning'
                   : 'success'
-              "
-              dot
-            >
+            " dot>
               <v-tooltip right>
                 <template #activator="{ on }">
                   <span style="line-height: 2.5" v-on="on" class="d-block">
@@ -322,16 +290,12 @@ getData(props.searchModel);
             </span>
           </template>
           <template #item.more="{ item }">
-            <v-icon
-              color="error"
-              @click="
-                () => {
-                  itemToDelete = item;
-                  confirmInstrumentRemoval = true;
-                }
-              "
-              small
-            >
+            <v-icon color="error" @click="
+              () => {
+                itemToDelete = item;
+                confirmInstrumentRemoval = true;
+              }
+            " small>
               isax-trash
             </v-icon>
           </template>
@@ -345,28 +309,20 @@ getData(props.searchModel);
           {{ $t("instrument.remove") }}
         </v-card-text>
         <v-card-actions>
-          <v-btn
-            width="65"
-            color="primary"
-            @click="
-              () => {
-                remove(itemToDelete);
-                confirmInstrumentRemoval = false;
-              }
-            "
-          >
+          <v-btn width="65" color="primary" @click="
+            () => {
+              remove(itemToDelete);
+              confirmInstrumentRemoval = false;
+            }
+          ">
             {{ $t("general.yes") }}
           </v-btn>
-          <v-btn
-            width="65"
-            color="error"
-            @click="
-              () => {
-                itemToDelete = null;
-                confirmInstrumentRemoval = false;
-              }
-            "
-          >
+          <v-btn width="65" color="error" @click="
+            () => {
+              itemToDelete = null;
+              confirmInstrumentRemoval = false;
+            }
+          ">
             {{ $t("general.no") }}
           </v-btn>
         </v-card-actions>
