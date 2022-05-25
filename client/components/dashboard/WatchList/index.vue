@@ -149,13 +149,14 @@ watch(focused, (val) => {
 });
 watch(
   () => [
+    props.searchModel,
     props.searchModel.ids,
     props.searchModel.boardIds,
     props.searchModel.secIds,
     props.searchModel.offset,
     props.searchModel.length,
   ],
-  ([ids, boards, sectors, offset, len]) => {
+  ([smodel,ids, boards, sectors, offset, len]) => {
     getData(props.searchModel);
   }
 );
