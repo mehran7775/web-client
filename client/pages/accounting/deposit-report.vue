@@ -116,7 +116,7 @@ header {
           <select-box placeholder="شماره حساب کارگزار"></select-box>
           <select-box placeholder="علت واریز وجه"></select-box>
         </div>
-        <div>file</div>
+        <div v-ada-dropzone>file</div>
         <div>
           <ada-btn :height="36" color="primary" @click="goToDeposit" bordred>{{
               $t('menu.deposit')

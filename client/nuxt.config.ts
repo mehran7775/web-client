@@ -35,6 +35,7 @@ export default defineNuxtConfig({
   plugins: [
     //{ src: '~/plugins/hcaptcha', mode: 'client' },
     { src: "~/plugins/ripple" },
+    { src: "~/plugins/dropzone" },
     { src: "~/plugins/clickOutside" },
     { src: "~/plugins/i18n" },
     { src: "~/plugins/store-initiator" },
