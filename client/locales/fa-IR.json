@@ -14,6 +14,8 @@
     }
   },
   "general": {
+    "save": "ثبت",
+    "download": "دانلود",
     "send": "ارسال",
     "percent": "درصد",
     "export": "خروجی",
@@ -199,7 +201,7 @@
       "credit": "اعتبار",
       "type": "نوع حساب"
     },
-    "deposit":"واریز",
+    "deposit": "واریز",
     "deposit-report": "@:general.report @:accounting.deposit وجه"
   },
   "oms": {
@@ -344,7 +346,8 @@
     "switchBrokerage": "@:general.switch @:oms.brokerage",
     "switchBrokerageReport": "@:general.report @:general.switch @:oms.brokerage",
     "brokerage": "@:oms.brokerage",
-    "conditional": "@:general.conditional"
+    "conditional": "@:general.conditional",
+    "saveSettings": "@:general.download @:general.settings"
   },
   "bottom-panel": {
     "bests": "برترین‌ها",
