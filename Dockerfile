@@ -3,7 +3,6 @@ FROM artifactory.asredanesh.com/docker/node:lts-stretch-slim
 WORKDIR /usr/src/app
 COPY ./client/package.json ./
 COPY ./client/yarn.lock ./
-RUN echo "127.0.0.1	bourse.asr24.com" >> /etc/hosts
 RUN yarn install
 # Copy application source
 WORKDIR /usr/src
@@ -15,6 +14,6 @@ ENV HOST=0.0.0.0
 # Deploy
 #CMD [ "yarn", "start" ]
 # Temporary dev
-CMD [ "yarn", "dev" ]
+CMD [ "yarn", "dev","--host","bourse.asr24.com" ]
 #####
 
