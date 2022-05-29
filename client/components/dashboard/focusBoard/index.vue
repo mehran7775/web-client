@@ -6,6 +6,7 @@ import TabView from "./tabView.vue";
 import { Bookmark } from "~/types";
 import { useInstrument, useUser } from "~/composables";
 import { useRoute } from "#app";
+import AdaToggle from "@/components/adaToggle.vue"
 
 const instrumentManager = useInstrument();
 const userManager = useUser();
@@ -66,6 +67,7 @@ if (process.client) {
 .focus-board {
   height: 320px;
 }
+
 .toolbar {
   @apply tw-flex tw-flex-grow;
   height: 42px;
@@ -74,18 +76,21 @@ if (process.client) {
   align-items: center;
   background-color: var(--c-default-bg-rbg);
 }
+
 .bookmark {
   padding: 0 !important;
   position: relative;
   width: 75px;
   min-width: 75px;
   max-width: 75px;
+
   .label {
     max-width: calc(75px - 8px);
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
   }
+
   .removeMark {
     position: absolute;
     top: -10px;
@@ -93,6 +98,7 @@ if (process.client) {
     z-index: 1000;
     display: none;
   }
+
   &:hover {
     .removeMark {
       display: block;
@@ -104,21 +110,22 @@ if (process.client) {
 <style lang="postcss">
 .focus-board {
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.15);
+
   .row {
     margin: 0;
     padding: 0;
     min-height: 32px;
+
     .col {
       min-height: 32px;
     }
   }
 }
+
 .mode {
-  &.v-btn-toggle {
-    > .v-btn.v-btn {
-      border-radius: var(--border-radius-root);
-      border: none !important;
-    }
+  >button {
+    border-radius: var(--border-radius-root);
+    border: none !important;
   }
 }
 </style>
@@ -129,26 +136,13 @@ if (process.client) {
       <slot name="toolbar"> </slot>
       <v-tooltip v-for="b in bookmarks" :key="b.to">
         <template #activator="{ on, attrs }">
-          <v-btn
-            color="primary"
-            :to="b.to"
-            v-on="on"
-            v-bind="attrs"
-            height="28"
-            class="ms-1 me-1 bookmark"
-            depressed
-          >
-            <v-btn
-              @click.stop.prevent="() => unmark(b)"
-              width="14"
-              height="14"
-              class="removeMark pa-0 ma-0"
-              color="error"
-            >
-              <v-icon class="pa-0 ma-0" x-small>mdi-close</v-icon>
+          <v-btn color="primary" :to="b.to" v-on="on" v-bind="attrs" height="28" class="ms-1 me-1 bookmark" depressed>
+            <v-btn @click.stop.prevent="() => unmark(b)" width="14" height="14" class="removeMark pa-0 ma-0"
+              color="error">
+              <ada-icon class="tw-p-0 tw-m-0" :size="12">mdi-close</ada-icon>
             </v-btn>
             <span class="label">
-              <v-icon v-if="b.icon" x-small> {{ b.icon }} </v-icon>
+              <ada-icon v-if="b.icon" :size="12"> {{ b.icon }} </ada-icon>
               {{ b.text ? b.text : $t(b.title) }}
             </span>
           </v-btn>
@@ -156,32 +150,20 @@ if (process.client) {
         {{ b.text ? b.text : $t(b.title) }}
       </v-tooltip>
       <ada-spacer />
-      <!-- <v-btn
-        @click="setHome"
-        height="28"
-        width="28"
-        depressed
-        class="ma-0"
-        small
-      >
-        <v-icon :color="home == path ? 'primary' : 'default'" small>
-          isax-home-hashtag
-        </v-icon>
-      </v-btn> -->
-      <v-btn-toggle class="mode" color="primary" v-model="viewMode" mandatory>
-        <v-btn height="28" width="28" depressed class="ma-0" small>
-          <v-icon :color="viewMode == 0 ? 'primary' : 'default'" small>
+      <ada-toggle class="mode tw-justify-end" color="primary" v-model="viewMode">
+        <ada-btn :height="28" :width="28" :model="0">
+          <ada-icon :color="viewMode == 0 ? 'primary' : 'gray'" :size="16">
             isax-menu
-          </v-icon>
-        </v-btn>
-        <v-btn height="28" width="28" depressed class="ma-0" small>
-          <v-icon :color="viewMode == 1 ? 'primary' : 'default'" small>
+          </ada-icon>
+        </ada-btn>
+        <ada-btn :height="28" :width="28" :model="1">
+          <ada-icon :color="viewMode == 1 ? 'primary' : 'gray'" :size="16">
             isax-element-3-bold
-          </v-icon>
-        </v-btn>
-      </v-btn-toggle>
+          </ada-icon>
+        </ada-btn>
+      </ada-toggle>
     </header>
-    <v-card-text class="ma-0 pa-0 focus-board" v-if="instruments.length > 0">
+    <div class="tw-m-0 tw-p-0 focus-board" v-if="instruments.length > 0">
       <v-window v-model="viewMode">
         <v-window-item>
           <tab-view />
@@ -190,6 +172,6 @@ if (process.client) {
           <card-view />
         </v-window-item>
       </v-window>
-    </v-card-text>
+    </div>
   </div>
 </template>

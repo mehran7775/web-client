@@ -80,7 +80,7 @@ defineExpose({
           {{ item.name }}
         </v-badge>
         <ada-spacer />
-        <v-icon @click="() => close(item.id)" small> mdi-close </v-icon>
+        <ada-icon @click="() => close(item.id)" :size="12"> mdi-close </ada-icon>
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">

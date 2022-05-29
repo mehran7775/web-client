@@ -41,5 +41,5 @@ const fontSize = computed(() =>
 </style>
 
 <template>
-  <i :class="['icon', group, icon]" :style="{ color: colorVar, fontSize }" />
+  <i :class="['icon', group, icon]" :style="{ color: colorVar, fontSize }" v-bind="$attrs" v-on="$listeners" />
 </template>
