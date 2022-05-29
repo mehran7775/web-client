@@ -18,7 +18,7 @@
   --c-defualt-bg: 249, 250, 254;
   --c-defualt-bg-rgb: rgb(var(--c-default-bg));
   --c-gray4: 189, 189, 189;
-  --c-gray4-rgb: rgb(var(--c-gra-4));
+  --c-gray4-rgb: rgb(var(--c-gray4));
 
   --border-radius-root: 6px;
   --border-radius-panel: 0px;
