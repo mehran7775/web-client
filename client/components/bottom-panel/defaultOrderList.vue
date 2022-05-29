@@ -104,7 +104,7 @@ getOrders();
         depressed
         :disabled="!isRunabled(item.flags)"
       >
-        <v-icon color="success" size="16"> isax-play </v-icon>
+        <ada-icon color="success" size="16"> isax-play </ada-icon>
       </v-btn>
       <v-btn
         color="transparent"
@@ -114,7 +114,7 @@ getOrders();
         depressed
         :disabled="isEditDisabled(item.flags)"
       >
-        <v-icon color="info" size="16"> isax-edit-2 </v-icon>
+        <ada-icon color="info" size="16"> isax-edit-2 </ada-icon>
       </v-btn>
       <v-btn
         color="transparent"
@@ -124,7 +124,7 @@ getOrders();
         depressed
         :disabled="isDeleteDisabled(item.flags)"
       >
-        <v-icon color="error" size="16"> isax-trash </v-icon>
+        <ada-icon color="error" size="16"> isax-trash </ada-icon>
       </v-btn>
     </template>
   </ada-data-table>

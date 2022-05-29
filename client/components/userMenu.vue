@@ -5,6 +5,7 @@ import { MenuItem } from "~/types";
 import { useUser } from "~/composables";
 import { useRouter } from "#app";
 import { DateTime } from "luxon"
+import AdaIcon from "./adaIcon.vue";
 
 
 const router = useRouter();
@@ -89,7 +90,7 @@ defineExpose({
           if (item.click) item.click();
         }
       ">
-        <v-icon :color="item.color">{{ item.icon }}</v-icon>
+        <ada-icon :color="item.color" :size="16">{{ item.icon }}</ada-icon>
         <v-list-item-title :class="item.color + '--text'">
           {{ $t(item.title) }}
         </v-list-item-title>

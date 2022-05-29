@@ -228,7 +228,7 @@ const rtl = computed(() => appManager.rtl);
       bottom: '8px',
       right: '8px',
     }" width="32px" height="32px" color="primary 0.9">
-      <ada-icon :size="24"> isax-messages-2-bold </ada-icon>
+      <ada-icon color="white" :size="24"> isax-messages-2-bold </ada-icon>
     </floating-button>
     <snackbar />
   </v-app>

@@ -1,0 +1,4 @@
+:root {
+  --c-white: 255, 255, 255;
+  --c-white-rgb: rgb(var(--c-white));
+}

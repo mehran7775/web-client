@@ -34,6 +34,7 @@ async function drop(item: WatchlistColumns) {
 .headers {
   background-color: rgba(var(--c-primary), 0.1);
 }
+
 .header {
   position: relative;
   border: none !important;
@@ -45,40 +46,28 @@ async function drop(item: WatchlistColumns) {
 <template>
   <thead>
     <tr v-bind="$attrs" class="headers">
-      <th
-        :draggable="header.draggable"
-        @dragstart="() => drag(header)"
-        @dragover="
-          (ev) => {
-            ev.preventDefault();
-            if (ev.dataTransfer) ev.dataTransfer.dropEffect = 'move';
-          }
-        "
-        dropzone="true"
-        @drop="
-          (ev) => {
-            ev.preventDefault();
-            drop(header);
-          }
-        "
-        v-for="(header, index) in props.headers"
-        :key="header.value"
-        :aria-label="header.text"
-        role="columnheader"
-        scope="col"
-        :style="{
+      <th :draggable="header.draggable" @dragstart="() => drag(header)" @dragover="
+        (ev) => {
+          ev.preventDefault();
+          if (ev.dataTransfer) ev.dataTransfer.dropEffect = 'move';
+        }
+      " dropzone="true" @drop="
+  (ev) => {
+    ev.preventDefault();
+    drop(header);
+  }
+" v-for="(header, index) in props.headers" :key="header.value" :aria-label="header.text" role="columnheader"
+        scope="col" :style="{
           width: header.width ? header.width : '',
           'min-width': header.width ? header.width : '',
-        }"
-        :class="['header', header.class]"
-      >
+        }" :class="['header', header.class]">
         <slot :header="header" :name="'header.' + header.value">
           <h5>
             {{ header.text }}
           </h5>
-          <v-icon color="primary" v-if="header.icon" small>
+          <ada-icon color="primary" v-if="header.icon" :size="16">
             {{ header.icon }}
-          </v-icon>
+          </ada-icon>
           <bar v-if="header.divider && index != headers.length - 1" />
         </slot>
       </th>
