@@ -111,7 +111,7 @@ function close() {
           <ada-icon color="primary" :size="16"> isax-maximize-3 </ada-icon>
         </ada-btn>
         <ada-btn color="primary" :width="24" :height="24" @click="close()">
-          <ada-icon :size="16">isax-minus</ada-icon>
+          <ada-icon color="white" :size="16">isax-minus</ada-icon>
         </ada-btn>
       </header>
       <v-tabs-items v-model="tab" :class="{ expanded: expanded }">
