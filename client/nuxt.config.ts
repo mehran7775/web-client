@@ -1,4 +1,5 @@
 import { defineNuxtConfig } from "@nuxt/bridge";
+import GlobalsPolyfills from "@esbuild-plugins/node-globals-polyfill";
 //import postcss from "./postcss.config.js";
 
 export default defineNuxtConfig({
@@ -87,6 +88,29 @@ export default defineNuxtConfig({
   server: {
     host: "0.0.0.0",
     port: 3000,
+  },
+  vite: {
+    resolve: {
+      alias: {
+        /** browserify for @jbrowse/react-linear-genome-view */
+        stream: "stream-browserify",
+      },
+    },
+    optimizeDeps: {
+      esbuildOptions: {
+        // Node.js global to browser globalThis
+        define: {
+          global: "globalThis",
+        },
+        // Enable esbuild polyfill plugins
+        plugins: [
+          GlobalsPolyfills({
+            process: true,
+            buffer: true,
+          }),
+        ],
+      },
+    },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

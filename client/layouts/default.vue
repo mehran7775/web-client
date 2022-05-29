@@ -24,7 +24,6 @@ const collaps = computed(() => {
   const tab = bottomPanelManager.activeTab;
   return tab != null && tab != -1;
 });
-
 const home = computed(() => userManager.me.settings.home);
 const clipped = ref(true);
 const rtl = computed(() => appManager.rtl);

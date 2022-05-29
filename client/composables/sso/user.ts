@@ -1,6 +1,7 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { computed, ref, reactive } from "#app";
 import { defineStore } from "pinia";
+import { Buffer } from "buffer";
 import {
   AnonymousUser,
   Log,

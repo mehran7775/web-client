@@ -8,7 +8,7 @@ export class RootState {
   menu: string | number | null;
 
   constructor() {
-    this.locale = process.env.VUE_APP_I18N_LOCALE ?? "";
+    this.locale = process.env.VUE_APP_I18N_LOCALE ?? "en-US";
     this.menu = null;
   }
   toJSON() {
