@@ -72,55 +72,6 @@ function drag(ev: DragEvent) { }
 watch(selected, select);
 </script>
 
-<template>
-  <v-select height="28" :menu-props="{
-    bottom: true,
-    'offset-y': true,
-    'content-class': 'watchlist-select__content',
-  }" :placeholder="$t('watchList.title')" :items="watchList" class="watchlist-select" item-text="text" item-value="id"
-    v-model="selected" flat no-filter hide-details return-object single-line dense>
-    <template #append>
-      <ada-icon class="ma-2 arrow" color="white" :size="12"> isax-arrow-down </ada-icon>
-    </template>
-    <template #append-item>
-      <v-list-item style="width: 164px" class="px-2">
-        <v-text-field style="width: 116px" class="ma-0 pa-0" height="28" v-model="newName" @keyup.enter.stop="create"
-          dense hide-details />
-        <v-btn @click.stop="create" class="ms-1" color="primary" height="28" width="28">
-          <ada-icon :size="16"> mdi-plus </ada-icon>
-        </v-btn>
-      </v-list-item>
-    </template>
-    <template #item="{ item, on }">
-      <v-list-item draggable="true" @dragstart="drag" :style="{ height: '28px', width: '164px' }" class="item px-2"
-        v-on="on">
-        <span v-if="!item.onEdit">{{ item.text }}</span>
-        <ada-spacer v-if="!item.onEdit" />
-        <ada-btn color="transparent" v-if="!item.onEdit" @click.stop="remove(item.id)" class="px-1">
-          <ada-icon color="error">
-            isax-trash
-          </ada-icon>
-        </ada-btn>
-        <ada-btn color="transparent" class="tw-px-1" v-if="!item.onEdit" @click.stop="
-          () => {
-            item.onEdit = true;
-          }
-        ">
-          <ada-icon color="gray">
-            isax-edit-2
-          </ada-icon>
-        </ada-btn>
-
-        <v-text-field v-if="item.onEdit" style="width: 116px" class="ma-0 pa-0" height="28" v-model="item.newName"
-          @click.stop="" @keyup.enter.stop="() => rename(item)" dense hide-details />
-        <v-btn v-if="item.onEdit" @click.stop="() => rename(item)" class="ms-1" color="success" height="28" width="28">
-          <ada-icon :size="16"> mdi-check </ada-icon>
-        </v-btn>
-      </v-list-item>
-    </template>
-  </v-select>
-</template>
-
 <style lang="postcss" scoped>
 .watchlist-select {
   background-color: var(--c-primary-rgb) !important;
@@ -179,3 +130,54 @@ watch(selected, select);
   }
 }
 </style>
+
+
+<template>
+  <v-select height="28" :menu-props="{
+    bottom: true,
+    'offset-y': true,
+    'content-class': 'watchlist-select__content',
+  }" :placeholder="$t('watchList.title')" :items="watchList" class="watchlist-select" item-text="text" item-value="id"
+    v-model="selected" flat no-filter hide-details return-object single-line dense>
+    <template #append>
+      <ada-icon class="ma-2 arrow" color="white" :size="12"> isax-arrow-down </ada-icon>
+    </template>
+    <template #append-item>
+      <v-list-item style="width: 164px" class="px-2">
+        <v-text-field style="width: 116px" class="ma-0 pa-0" height="28" v-model="newName" @keyup.enter.stop="create"
+          dense hide-details />
+        <v-btn @click.stop="create" class="ms-1" color="primary" height="28" width="28">
+          <ada-icon :size="16"> mdi-plus </ada-icon>
+        </v-btn>
+      </v-list-item>
+    </template>
+    <template #item="{ item, on }">
+      <v-list-item draggable="true" @dragstart="drag" :style="{ height: '28px', width: '164px' }" class="item px-2"
+        v-on="on">
+        <span v-if="!item.onEdit">{{ item.text }}</span>
+        <ada-spacer v-if="!item.onEdit" />
+        <ada-btn color="transparent" v-if="!item.onEdit" @click.stop="remove(item.id)" class="px-1">
+          <ada-icon color="error">
+            isax-trash
+          </ada-icon>
+        </ada-btn>
+        <ada-btn color="transparent" class="tw-px-1" v-if="!item.onEdit" @click.stop="
+          () => {
+            item.onEdit = true;
+          }
+        ">
+          <ada-icon color="gray">
+            isax-edit-2
+          </ada-icon>
+        </ada-btn>
+
+        <v-text-field v-if="item.onEdit" style="width: 116px" class="ma-0 pa-0" height="28" v-model="item.newName"
+          @click.stop="" @keyup.enter.stop="() => rename(item)" dense hide-details />
+        <v-btn v-if="item.onEdit" @click.stop="() => rename(item)" class="ms-1" color="success" height="28" width="28">
+          <ada-icon :size="16"> mdi-check </ada-icon>
+        </v-btn>
+      </v-list-item>
+    </template>
+  </v-select>
+</template>
+

@@ -1,6 +1,6 @@
 :root {
-  --c-transparent: rgba(0,0,0,0)
-  --c-transparent-rgb: var(--c-transparent)
+  --c-transparent: rgba(0, 0, 0, 0);
+  --c-transparent-rgb: var(--c-transparent);
   --c-white: 255, 255, 255;
   --c-white-rgb: rgb(var(--c-white));
   --c-gray: 130, 130, 130;
