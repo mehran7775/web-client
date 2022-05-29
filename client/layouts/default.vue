@@ -153,7 +153,7 @@ const rtl = computed(() => appManager.rtl);
           {{ $t("general.proxyCompany") }}
         </span>
       </nuxt-link>
-      <v-icon @click.stop="
+      <ada-icon @click.stop="
         () => {
           if (rightMenu.drawer) {
             rightMenu.mini = !rightMenu.mini;
@@ -162,15 +162,10 @@ const rtl = computed(() => appManager.rtl);
             rightMenu.mini = false;
           }
         }
-      " :class="[
-  'ma-0',
-  'pa-0',
-  'me-5',
-  'drawer-activator',
-  !rightMenu.mini && rightMenu.drawer ? 'open' : '',
-]" size="18">
+      " :class="['tw-m-0', 'tw-p-0', 'te-mx-[5px]', 'drawer-activator'
+, !rightMenu.mini && rightMenu.drawer ? 'open' : '']" :size="18">
         mdi-menu-open
-      </v-icon>
+      </ada-icon>
 
       <clock :format="$t('general.date.longdt')" width="240px" />
       <div class="center">

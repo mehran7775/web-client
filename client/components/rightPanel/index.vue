@@ -277,11 +277,11 @@ if (process.client) {
         ">
           <v-tooltip left>
             <template #activator="{ on, attrs }">
-              <v-btn width="32" height="32" color="transparent" depressed>
-                <v-icon size="18" :color="item.color" v-bind="attrs" v-on="on">
+              <ada-btn :width="32" :height="32" color="transparent">
+                <ada-icon :size="18" :color="item.color" v-bind="attrs" v-on="on">
                   {{ item.icon }}
-                </v-icon>
-              </v-btn>
+                </ada-icon>
+              </ada-btn>
             </template>
             <span>{{ item.text ? item.text : $t(item.title) }}</span>
           </v-tooltip>
@@ -294,11 +294,11 @@ if (process.client) {
         ">
           <v-tooltip left>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn width="32" height="32" color="transparent" depressed>
-                <v-icon size="18" :color="item.color" v-bind="attrs" v-on="on">
+              <ada-btn :width="32" :height="32" color="transparent">
+                <ada-icon :size="18" :color="item.color" v-bind="attrs" v-on="on">
                   {{ item.icon }}
-                </v-icon>
-              </v-btn>
+                </ada-icon>
+              </ada-btn>
             </template>
             <span>{{ item.text ? item.text : $t(item.title) }}</span>
           </v-tooltip>
@@ -317,7 +317,7 @@ if (process.client) {
               <div v-for="child in item.children ? item.children : []" :key="child.title">
                 <v-list-group class="item mx-1 group" v-if="child.children" append-icon.size="12">
                   <template #appendIcon>
-                    <v-icon x-small> isax-arrow-down </v-icon>
+                    <ada-icon :size="12"> isax-arrow-down </ada-icon>
                   </template>
                   <v-list-item-title slot="activator">
                     {{ child.text ? child.text : $t(child.title) }}
@@ -336,25 +336,25 @@ if (process.client) {
                             {{ sub.text ? sub.text : $t(sub.title) }}
                           </v-list-item-title>
                           <div class="d-flex flex-row my-0">
-                            <v-btn @click.prevent="
+                            <ada-btn @click.prevent="
                               (ev) => {
                                 if (isMarked(sub)) unmark(sub);
                                 else mark(sub);
                               }
                             " v-if="sub.bookmarkPosition" icon x-small>
-                              <v-icon :color="isMarked(sub) ? 'primary' : 'default'" x-small>
+                              <ada-icon :color="isMarked(sub) ? 'primary' : 'default'" :size="12">
                                 isax-frame-4
-                              </v-icon>
-                            </v-btn>
-                            <v-btn @click.prevent="
+                              </ada-icon>
+                            </ada-btn>
+                            <ada-btn @click.prevent="
                               (ev) => {
                                 setHome(sub);
                               }
                             " v-if="sub.bookmarkPosition" icon x-small>
-                              <v-icon :color="sub.to == home ? 'info' : 'default'" x-small>
+                              <ada-icon :color="sub.to == home ? 'info' : 'default'" :size="12">
                                 isax-star-1-bold
-                              </v-icon>
-                            </v-btn>
+                              </ada-icon>
+                            </ada-btn>
                           </div>
                         </v-list-item>
                       </div>
@@ -369,25 +369,25 @@ if (process.client) {
                         {{ child.text ? child.text : $t(child.title) }}
                       </v-list-item-title>
                       <div v-if="child.to && child.to != ''" class="d-flex flex-row my-0">
-                        <v-btn @click.prevent="
+                        <ada-btn @click.prevent="
                           (ev) => {
                             if (isMarked(child)) unmark(child);
                             else mark(child);
                           }
                         " v-if="child.bookmarkPosition" icon x-small>
-                          <v-icon :color="isMarked(child) ? 'primary' : 'default'" x-small>
+                          <ada-icon :color="isMarked(child) ? 'primary' : 'default'" :size="12">
                             isax-frame-4
-                          </v-icon>
-                        </v-btn>
-                        <v-btn @click.prevent="
+                          </ada-icon>
+                        </ada-btn>
+                        <ada-btn @click.prevent="
                           (ev) => {
                             setHome(child);
                           }
                         " v-if="child.bookmarkPosition" icon x-small>
-                          <v-icon :color="child.to == home ? 'info' : 'default'" x-small>
+                          <ada-icon :color="child.to == home ? 'info' : 'default'" :size="12">
                             isax-star-1-bold
-                          </v-icon>
-                        </v-btn>
+                          </ada-icon>
+                        </ada-btn>
                       </div>
                     </v-list-item>
                   </template>

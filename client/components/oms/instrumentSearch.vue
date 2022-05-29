@@ -86,41 +86,23 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-autocomplete
-    height="28"
-    v-model="model"
-    :placeholder="$t('instrument.search')"
-    :loading="loading"
-    :items="entries"
-    class="instrument-search no-translate"
-    append-icon=""
-    item-text="name"
-    item-value="id"
-    @input="
+  <v-autocomplete height="28" v-model="model" :placeholder="$t('instrument.search')" :loading="loading" :items="entries"
+    class="instrument-search no-translate" append-icon="" item-text="name" item-value="id" @input="
       (val) => {
         if (focusResult) select(val);
         else $emit('input', val);
       }
-    "
-    @update:search-input="
-      (val) => {
-        search(val);
-      }
-    "
-    :menu-props="{
-      bottom: true,
-      'offset-y': true,
-      'content-class': 'instrument-search__content',
-    }"
-    flat
-    no-filter
-    rounded
-    hide-details
-    return-object
-    dense
-  >
+    " @update:search-input="
+  (val) => {
+    search(val);
+  }
+" :menu-props="{
+  bottom: true,
+  'offset-y': true,
+  'content-class': 'instrument-search__content',
+}" flat no-filter rounded hide-details return-object dense>
     <template #prepend-inner>
-      <v-icon color="primary" class="mt-2" size="14"> isax-search-normal-1 </v-icon>
+      <ada-icon color="primary" class="mt-2" :size="14"> isax-search-normal-1 </ada-icon>
     </template>
     <template #item="{ item, on, attrs }">
       <v-list-item v-bind="attrs" v-on="on">
@@ -143,9 +125,11 @@ export default defineComponent({
     color: var(--c-primary-rgb);
   }
 }
+
 .instrument-search {
   input {
     color: var(--c-primary-rgb) !important;
+
     &::placeholder {
       color: var(--c-primary-rgb) !important;
     }

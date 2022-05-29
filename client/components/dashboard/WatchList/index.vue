@@ -226,17 +226,18 @@ getData(props.searchModel);
 " :model="{ headers, item }">
           <template #item.actions="{ item }">
             <div class="text-no-wrap">
-              <v-icon class="ma-0 pa-0 mx-2" color="info" @click="() => focus(item)" :disabled="!canfocus" small>
+              <ada-icon class="tw-m-0 tw-p-0 tw-mx-2" color="info" @click="() => focus(item)" :disabled="!canfocus"
+                :size="16">
                 isax-eye
-              </v-icon>
-              <v-icon class="ma-0 pa-0 mx-1" color="success" @click="() => order(item, Side.Buy)"
-                :disabled="(item.status & 3) != 3" small>
+              </ada-icon>
+              <ada-icon class="tw-m-0 tw-p-0" color="success" @click="() => order(item, Side.Buy)"
+                :disabled="(item.status & 3) != 3" :size="16">
                 isax-bag-tick-2
-              </v-icon>
-              <v-icon class="ma-0 pa-0 ms-2 me-4" color="error" @click="() => order(item, Side.Sell)"
-                :disabled="(item.status & 3) != 3" small>
+              </ada-icon>
+              <ada-icon class="tw-m-0 tw-p-0 tw-mx-2" color="error" @click="() => order(item, Side.Sell)"
+                :disabled="(item.status & 3) != 3" :size="16">
                 isax-bag-cross-1
-              </v-icon>
+              </ada-icon>
             </div>
           </template>
           <template #item.name="{ item }">
@@ -290,14 +291,14 @@ getData(props.searchModel);
             </span>
           </template>
           <template #item.more="{ item }">
-            <v-icon color="error" @click="
+            <ada-icon color="error" @click="
               () => {
                 itemToDelete = item;
                 confirmInstrumentRemoval = true;
               }
-            " small>
+            " :size="16">
               isax-trash
-            </v-icon>
+            </ada-icon>
           </template>
         </row-handler>
       </template>

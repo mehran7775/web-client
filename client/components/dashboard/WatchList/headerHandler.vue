@@ -32,9 +32,9 @@
           <h5>
             {{ header.text }}
           </h5>
-          <v-icon color="primary" v-if="header.icon" small>
+          <ada-icon color="primary" v-if="header.icon" :size="16">
             {{ header.icon }}
-          </v-icon>
+          </ada-icon>
           <bar v-if="header.value != 'actions' && header.value != 'more'" />
         </slot>
       </th>

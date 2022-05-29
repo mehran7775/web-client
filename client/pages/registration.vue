@@ -53,7 +53,7 @@ function requestOtp() {
 
     <v-card class="dotted reg-crd">
       <div class="ma-0 pa-0 justify-center text-center">
-        <v-icon size="24" class="back" @click="back"> mdi-arrow-right </v-icon>
+        <ada-icon :size="24" class="back" @click="back"> mdi-arrow-right </ada-icon>
         <nuxt-link to="/about-us" class="logo" />
         <h3>
           {{ $t("login.registration") }}
@@ -61,29 +61,17 @@ function requestOtp() {
       </div>
       <v-stepper v-model="step" class="ma-0 pa-0 step" flat alt-labels>
         <v-stepper-header>
-          <v-stepper-step
-            step="1"
-            :complete="step > 1"
-            :rules="[() => forms.form0 == null || forms.form0]"
-            class="justify-start"
-          >
+          <v-stepper-step step="1" :complete="step > 1" :rules="[() => forms.form0 == null || forms.form0]"
+            class="justify-start">
             {{ $t("user.profile.id") }}
           </v-stepper-step>
           <v-divider :color="step > 1 ? 'primary' : 'default'" />
-          <v-stepper-step
-            step="2"
-            :complete="step > 2"
-            :rules="[() => forms.form1 == null || forms.form1]"
-          >
+          <v-stepper-step step="2" :complete="step > 2" :rules="[() => forms.form1 == null || forms.form1]">
             {{ $t("user.profile.confirm") }}
           </v-stepper-step>
           <v-divider :color="step > 2 ? 'primary' : 'default'" />
-          <v-stepper-step
-            step="3"
-            :complete="step > 3"
-            :rules="[() => forms.form2 == null || forms.form2]"
-            class="justify-end"
-          >
+          <v-stepper-step step="3" :complete="step > 3" :rules="[() => forms.form2 == null || forms.form2]"
+            class="justify-end">
             {{ $t("user.profile.sajam") }}
           </v-stepper-step>
         </v-stepper-header>
@@ -91,22 +79,10 @@ function requestOtp() {
           <v-stepper-content class="ma-0 my-2 pa-0" step="1">
             <v-form v-model="forms.form0" ref="rform0" lazy-validation>
               <h4>{{ $t("user.profile.nid") }}</h4>
-              <v-text-field
-                class="my-2"
-                prepend-inner-icon="isax-user"
-                outlined
-                hide-details
-                dense
-              >
+              <v-text-field class="my-2" prepend-inner-icon="isax-user" outlined hide-details dense>
               </v-text-field>
               <h4>{{ $t("user.profile.contact.mobile") }}</h4>
-              <v-text-field
-                class="my-2"
-                prepend-inner-icon="isax-mobile"
-                outlined
-                hide-details
-                dense
-              >
+              <v-text-field class="my-2" prepend-inner-icon="isax-mobile" outlined hide-details dense>
               </v-text-field>
             </v-form>
           </v-stepper-content>
@@ -120,16 +96,8 @@ function requestOtp() {
                 <h4>
                   {{ $t("login.otp") }}
                 </h4>
-                <otp
-                  ref="otpref"
-                  timer="90"
-                  :height="42"
-                  tabindex="2"
-                  @request="requestOtp"
-                  @keyup.enter="validate"
-                  outlined
-                  dense
-                />
+                <otp ref="otpref" timer="90" :height="42" tabindex="2" @request="requestOtp" @keyup.enter="validate"
+                  outlined dense />
               </div>
             </v-form>
           </v-stepper-content>
@@ -147,11 +115,7 @@ function requestOtp() {
                   <v-col cols="6"> محل تولد: آذرشهر </v-col>
                   <v-col cols="6"> تاریخ تولد: 1377/08/20 </v-col>
                 </v-row>
-                <v-checkbox
-                  :ripple="false"
-                  :label="$t('general.confirm-information')"
-                  color="success"
-                >
+                <v-checkbox :ripple="false" :label="$t('general.confirm-information')" color="success">
                 </v-checkbox>
               </v-card>
             </v-form>
@@ -173,6 +137,7 @@ function requestOtp() {
       &__append-inner {
         margin-top: 0 !important;
       }
+
       &__slot {
         padding: 4px 12px 4px 4px !important;
       }
@@ -186,37 +151,45 @@ function requestOtp() {
   &.v-btn {
     &--disabled {
       color: var(--c-primary-rgb) !important;
+
       .v-icon {
         color: var(--c-primary-rgb) !important;
       }
     }
   }
 }
+
 .next {
   width: 100%;
 }
+
 .back {
   position: absolute;
   top: 72px;
   left: 39px;
 }
+
 .v-application--is-rtl {
   .back {
     right: 39px;
   }
 }
+
 .v-stepper {
   &__header {
     box-shadow: none;
   }
+
   &__step {
     padding: 20px 0;
     flex-basis: auto !important;
   }
+
   .v-divider {
     max-width: 32%;
   }
 }
+
 .reg-ct {
   position: relative;
   height: 100%;
@@ -226,6 +199,7 @@ function requestOtp() {
   justify-content: center;
   padding: 0 calc(50% - 257px) !important;
 }
+
 .reg-crd {
   border-radius: 24px;
   padding: 41px 96px;
@@ -233,10 +207,12 @@ function requestOtp() {
   min-width: 514px;
   height: 658px;
 }
+
 .pie-1 {
   top: -290px;
   right: -100px;
 }
+
 .pie-2 {
   bottom: -290px;
   left: -210px;

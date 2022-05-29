@@ -58,6 +58,7 @@ defineExpose({
 .tab-view {
   .detail {
     @apply tw-flex tw-flex-grow tw-justify-between;
+
     .panel {
       border-left: 1px solid #e0e0e0;
       border-right: 1px solid #e0e0e0;
@@ -70,12 +71,7 @@ defineExpose({
 <template>
   <div class="tab-view">
     <v-tabs :height="32" color="primary" v-model="tab" align-with-title>
-      <v-tab
-        v-for="item in instruments"
-        :key="item.id"
-        :href="'#' + item.id"
-        class="pe-1 ps-5"
-      >
+      <v-tab v-for="item in instruments" :key="item.id" :href="'#' + item.id" class="pe-1 ps-5">
         <v-badge color="success" dot left offset-y="75%" offset-x="-5">
           {{ item.name }}
         </v-badge>
@@ -87,41 +83,30 @@ defineExpose({
       <v-tab-item v-for="item in instruments" :key="item.id" :value="item.id.toString()">
         <div class="detail">
           <div class="panel">
-            <order-queue-card
-              :insId="item.id"
-              @count="
-                (val) => {
-                  count = val;
-                }
-              "
-              @price="
-                (val) => {
-                  price = val;
-                }
-              "
-              copy
-              responsive
-            />
+            <order-queue-card :insId="item.id" @count="
+              (val) => {
+                count = val;
+              }
+            " @price="
+  (val) => {
+    price = val;
+  }
+" copy responsive />
             <legal-real-card :insId="item.id" hide-headers responsive />
             <ada-col class="col-border tw-align-middle tw-justify-center">
-              <v-icon size="16"> isax-presention-chart </v-icon>
+              <ada-icon size="16"> isax-presention-chart </ada-icon>
             </ada-col>
           </div>
           <div class="panel">
-            <instrument-card
-              :insId="item.id"
-              @count="
-                (val) => {
-                  count = val;
-                }
-              "
-              @price="
-                (val) => {
-                  price = val;
-                }
-              "
-              responsive
-            />
+            <instrument-card :insId="item.id" @count="
+              (val) => {
+                count = val;
+              }
+            " @price="
+  (val) => {
+    price = val;
+  }
+" responsive />
           </div>
           <div class="panel">
             <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" />

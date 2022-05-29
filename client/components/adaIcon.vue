@@ -5,11 +5,13 @@ const props = withDefaults(
     ico: string;
     color: string | null;
     size: string | number;
+    clicPointer: string;
   }>(),
   {
     ico: "mdi-icon",
     color: null,
     size: "1rem",
+    clicPointer: 'pointer'
   }
 );
 
@@ -41,5 +43,7 @@ const fontSize = computed(() =>
 </style>
 
 <template>
-  <i :class="['icon', group, icon]" :style="{ color: colorVar, fontSize }" v-bind="$attrs" v-on="$listeners" />
+  <i :class="['icon', group, icon]"
+    :style="{ color: colorVar, fontSize, cursor: ($listeners && $listeners['click']) ? clicPointer : 'unset' }"
+    v-bind="$attrs" v-on="$listeners" />
 </template>

@@ -7,4 +7,6 @@
   --c-gray-rgb: rgb(var(--c-gray));
   --c-black: 0, 0, 0;
   --c-black-rgb: rgb(var(--c-black));
+  --c-green: 76, 175, 80;
+  --c-green-rgb: rgb(var(--c-green));
 }

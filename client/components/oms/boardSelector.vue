@@ -65,70 +65,39 @@ getBoards(axios).then((resp) => {
 </script>
 
 <template>
-  <v-select
-    :items="items"
-    item-value="id"
-    item-text="name"
-    :value="value"
-    v-bind="$attrs"
-    class="board-search"
+  <v-select :items="items" item-value="id" item-text="name" :value="value" v-bind="$attrs" class="board-search"
     :menu-props="{
       bottom: true,
       'offset-y': true,
-    }"
-    height="28"
-    :placeholder="$t('menu.boards')"
-    @input="
-      (val) => {
-        $emit('input', val);
-      }
-    "
-    flat
-    no-filter
-    rounded
-    hide-details
-    return-object
-    dense
-  >
+    }" height="28" :placeholder="$t('menu.boards')" @input="
+  (val) => {
+    $emit('input', val);
+  }
+" flat no-filter rounded hide-details return-object dense>
     <template #append>
-      <v-icon class="ma-2 arrow" x-small> isax-arrow-down </v-icon>
+      <ada-icon class="tw-m-2 arrow" :size="12"> isax-arrow-down </ada-icon>
     </template>
     <template #item="{ item, on, attrs }">
       <v-list-item v-on="on" v-bind="attrs">
         <v-list-item-title>
           {{ item.name }}
         </v-list-item-title>
-        <div class="d-flex flex-row justify-end my-0">
-          <v-btn
-            @click.stop.prevent="
-              (ev) => {
-                if (isMarked(item)) unmark(item);
-                else mark(item);
-              }
-            "
-            icon
-            x-small
-          >
-            <v-icon :color="isMarked(item) ? 'secondary' : 'default'" x-small>
-              isax-frame-4
-            </v-icon>
-          </v-btn>
-          <v-btn
-            @click.stop.prevent="
-              (ev) => {
-                setHome(item);
-              }
-            "
-            icon
-            x-small
-          >
-            <v-icon
-              :color="generateAddress(item.id) == home ? 'info' : 'default'"
-              x-small
-            >
-              isax-star-1-bold
-            </v-icon>
-          </v-btn>
+        <div class="tw-flex tw-flex-row tw-justify-end tw-my-0">
+          <ada-icon @click.stop.prevent="
+            (ev) => {
+              if (isMarked(item)) unmark(item);
+              else mark(item);
+            }
+          " :color="isMarked(item) ? 'secondary' : 'default'" :size="12">
+            isax-frame-4
+          </ada-icon>
+          <ada-icon @click.stop.prevent="
+            (ev) => {
+              setHome(item);
+            }
+          " :color="generateAddress(item.id) == home ? 'info' : 'default'" x-small>
+            isax-star-1-bold
+          </ada-icon>
         </div>
       </v-list-item>
     </template>
@@ -141,6 +110,7 @@ getBoards(axios).then((resp) => {
   border-radius: var(--border-radius-root);
   font-size: 0.75rem;
   max-width: 164px;
+
   &.v-select {
     &--is-menu-active {
       .arrow {
@@ -157,8 +127,10 @@ getBoards(axios).then((resp) => {
       color: var(--c-primary-rgb) !important;
     }
   }
+
   input {
     color: var(--c-primary-rgb) !important;
+
     &::placeholder {
       color: var(--c-primary-rgb) !important;
     }

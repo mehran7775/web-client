@@ -1,30 +1,19 @@
 <template>
   <div class="msgs">
     <div class="scroll">
-      <v-list-item
-        v-for="item in value"
-        :key="item.id"
-        @click="() => $emit('select', item.id)"
-        dense
-      >
-        <v-icon> {{ icons[item.origin] }} </v-icon>
+      <v-list-item v-for="item in value" :key="item.id" @click="() => $emit('select', item.id)" dense>
+        <ada-icon> {{ icons[item.origin] }} </ada-icon>
         <v-list-item-title class="ma-0 pa-0 ps-1">
-          <v-icon v-if="!item.seenDate" color="warning" x-small>
+          <ada-icon v-if="!item.seenDate" color="warning" :size="12">
             mdi-alert-circle
-          </v-icon>
+          </ada-icon>
           {{ item.title }}
         </v-list-item-title>
       </v-list-item>
     </div>
-    <v-btn
-      @click="$emit('load', $event)"
-      color="primary"
-      :height="32"
-      depressed
-      class="more"
-    >
+    <v-btn @click="$emit('load', $event)" color="primary" :height="32" depressed class="more">
       <v-progress-circular size="26" indeterminate v-show="loading" />
-      <v-icon v-show="!loading"> mdi-dots-horizontal </v-icon>
+      <ada-icon v-show="!loading"> mdi-dots-horizontal </ada-icon>
     </v-btn>
   </div>
 </template>
@@ -72,9 +61,11 @@ export default defineComponent({
   height: calc(100% - 32px);
   overflow-y: auto;
 }
+
 .scroll::-webkit-scrollbar {
   display: block;
 }
+
 .more {
   overflow: hidden;
   width: 100%;
