@@ -91,10 +91,6 @@ export default defineNuxtConfig({
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: [
-      // necessary for nuxt bridge
-      "pinia",
-    ],
     postcss: {
       //postcssOptions: {
       plugins: {
