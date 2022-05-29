@@ -10,8 +10,8 @@ import { useRouter } from "#app";
 const router = useRouter();
 const userName = ref("");
 const loading = ref(false);
-function otp() {}
-function captchaResult() {}
+function otp() { }
+function captchaResult() { }
 function back() {
   router.push("/login");
 }
@@ -23,21 +23,14 @@ function back() {
     <div class="pie pie-2"></div>
     <v-card elevation="0" class="dotted res-crd" :loading="loading">
       <div class="ma-0 pa-0 justify-center text-center">
-        <v-icon size="24" class="back" @click="back"> mdi-arrow-right </v-icon>
+        <ada-icon :size="24" class="back" @click="back"> mdi-arrow-right </ada-icon>
         <nuxt-link to="/about-us" class="logo" />
         <h3>{{ $t("login.forget-password") }}</h3>
       </div>
       <v-card-text class="text-center">
         <v-form>
-          <v-text-field
-            v-model="userName"
-            :placeholder="$t('user.username')"
-            prepend-inner-icon="mdi-account"
-            class="my-2"
-            outlined
-            hide-details
-            dense
-          >
+          <v-text-field v-model="userName" :placeholder="$t('user.username')" prepend-inner-icon="mdi-account"
+            class="my-2" outlined hide-details dense>
           </v-text-field>
           <simple-captcha tabindex="1" :height="42" outlined dense />
         </v-form>
@@ -64,6 +57,7 @@ function back() {
     right: 39px;
   }
 }
+
 .res-ct {
   position: relative;
   height: 100%;
@@ -73,6 +67,7 @@ function back() {
   justify-content: center;
   padding: 0 calc(50% - 257px) !important;
 }
+
 .res-crd {
   border-radius: 24px;
   padding: 41px 96px;
@@ -80,10 +75,12 @@ function back() {
   min-width: 514px;
   height: 658px;
 }
+
 .pie-1 {
   top: -290px;
   right: -100px;
 }
+
 .pie-2 {
   bottom: -290px;
   left: -210px;

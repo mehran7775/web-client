@@ -152,7 +152,7 @@ function requestOtp() {
     &--disabled {
       color: var(--c-primary-rgb) !important;
 
-      .v-icon {
+      i.icon {
         color: var(--c-primary-rgb) !important;
       }
     }

@@ -24,7 +24,7 @@
             {{ $t("login.send-sms") }}
           </span>
           <span v-else>
-            <v-icon size="17"> mdi-clock </v-icon>
+            <ada-icon :size="17"> mdi-clock </ada-icon>
             {{ formatter.format(Math.floor(counter / 60)) }}:{{
               formatter.format(counter % 60)
             }}
@@ -34,7 +34,7 @@
     </v-text-field>
     <div v-if="otpref && !otpref.valid" class="error--text" style="font-size: 10px">
       <div v-for="item in otpref.validations" :key="item" class="pt-2">
-        <v-icon color="error" size="17"> mdi-alert-circle-outline</v-icon>
+        <ada-icon color="error" :size="17"> mdi-alert-circle-outline</ada-icon>
         <span style="display: inline-block">
           {{ $t(item) }}
         </span>
@@ -107,7 +107,7 @@ export default defineComponent({
     background-color: rgba(0, 0, 0, 0.12) !important;
     &--disabled {
       color: var(--c-primary-rgb) !important;
-      .v-icon {
+      i.icon {
         color: var(--c-primary-rgb) !important;
       }
     }
