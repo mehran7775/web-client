@@ -3,12 +3,12 @@ import { computed, useSlots } from "#app";
 const props = withDefaults(
   defineProps<{
     ico: string;
-    color: string;
+    color: string | null;
     size: string | number;
   }>(),
   {
     ico: "mdi-icon",
-    color: "default",
+    color: null,
     size: "1rem",
   }
 );
@@ -19,7 +19,7 @@ var icon = computed(() => {
   return props.ico;
 });
 const group = computed(() => icon.value.split("-")[0]);
-const colorVar = computed(() => "var(--c-" + props.color + "-rgb)");
+const colorVar = computed(() => props.color ? "var(--c-" + props.color + "-rgb)" : "inherit");
 const fontSize = computed(() =>
   typeof props.size === "string" ? props.size : props.size + "px"
 );
