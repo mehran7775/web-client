@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "#app";
+import { computed, ref, watch } from "#app";
 import snackbar from "@/components/snacks.vue";
 import { useAsrTrader, useUser, useBottomPanel, useWealth } from "~/composables";
 
@@ -28,6 +28,29 @@ const collaps = computed(() => {
 const home = computed(() => userManager.me.settings.home);
 const clipped = ref(true);
 const rtl = computed(() => appManager.rtl);
+// const unitPanel = computed(() => {
+//   if(rightMenu.value.mini)
+// });
+
+// watch( [rightMenu, leftMenu] , ()=> {
+//   console.log(rightMenu.value.mini)
+//   console.log(leftMenu.value.mini)
+//   if(!rightMenu.value.mini) {
+//     leftMenu.value.mini= true
+//     return
+//   }
+//   if(!leftMenu.value.mini) {
+//     rightMenu.value.mini= true
+//     return
+//   }
+//   // if(!rightMenu.value.mini) {
+//   //   leftMenu.value.mini= true
+//   //   return
+//   // }
+//   // if(!leftMenu.value.mini) rightMenu.value.mini= true
+// }, {deep:true})
+
+
 </script>
 
 <style lang="postcss">
@@ -145,7 +168,7 @@ const rtl = computed(() => appManager.rtl);
 <template>
   <v-app :class="locale">
     <right-panel :mini.sync="rightMenu.mini" :clipped="clipped" v-model="rightMenu.drawer" class="shadow left" />
-    <left-panel :mini.sync="leftMenu.mini" :clipped="clipped" v-model="leftMenu.drawer" class="shadow right" />
+    <left-panel :mini.sync="leftMenu.mini" :clipped="clipped" v-model="leftMenu.drawer" class="shadow right" @closeRightPanel="rightMenu.mini= true" />
     <v-app-bar id="app-bar" :clipped-left="clipped" :clipped-right="clipped" :height="42" color="defualt-bg"
       class="text-no-wrap shadow bottom pe-2" fixed app dense>
       <nuxt-link class="d-flex flex-row px-2" :to="home">
@@ -158,6 +181,7 @@ const rtl = computed(() => appManager.rtl);
         () => {
           if (rightMenu.drawer) {
             rightMenu.mini = !rightMenu.mini;
+            if(!rightMenu.mini) leftMenu.mini= true
           } else {
             rightMenu.drawer = true;
             rightMenu.mini = false;

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Ref, ref, computed, reactive, watch, useNuxtApp } from "#app";
+import { Ref, ref, computed, reactive, watch, useNuxtApp, } from "#app";
 import filterAutoComplete from "./filterAutoComplete.vue";
 import { AxiosResponse } from "axios";
 import { PaginatedResult, Message, MessageFilter, MessageQuery, Tabs } from "@/types";
 import MessageList from "./messageList.vue";
 import { useAsrTrader, useBottomPanel, useMessages } from "~/composables";
 
-const emit = defineEmits(["openWatchList", "input", "update:mini"]);
+const emit = defineEmits(["openWatchList", "input", "update:mini", "closeRightPanel"]);
 const props = defineProps<{ value: boolean; mini: boolean; clipped: boolean }>();
 const messageManager = useMessages();
 const appManager = useAsrTrader();
@@ -46,6 +46,8 @@ const items = [
   { title: "oms.openingTrade" },
 ];
 
+
+
 function loadMyMessages() {
   load(myMessageQuery).then((res) => {
     myMessages.push(...res);
@@ -84,6 +86,9 @@ async function selectMessage(id: number) {
   } finally {
     bottomPanel.setLoading(false);
   }
+}
+function triggerCloseRgihtPanel() {
+  emit('closeRightPanel')
 }
 
 loadMessages();
@@ -160,6 +165,7 @@ loadMyMessages();
           'tab-item': true,
           active: 0 == activeTab,
         }"
+        @click="triggerCloseRgihtPanel()"
       >
       </message-list>
       <message-list
@@ -170,6 +176,7 @@ loadMyMessages();
           'tab-item': true,
           active: 1 == activeTab,
         }"
+        @click="triggerCloseRgihtPanel()"
       >
       </message-list>
     </div>
@@ -179,6 +186,7 @@ loadMyMessages();
         :key="item.title"
         @click="
           () => {
+            triggerCloseRgihtPanel()
             $emit('update:mini', !mini);
           }
         "
