@@ -87,6 +87,11 @@ export const useOrder = defineStore("order", () => {
     await orderManager.setOrder(order, axios.createInstance());
   }
 
+  async function editOrder(order: Order) {
+    await orderManager.editOrder(order, axios.createInstance());
+  }
+
+
   function setSide(side: Side, id: string) {
     getForm(id);
     orderFormCache[id].value.side = side;
@@ -98,5 +103,6 @@ export const useOrder = defineStore("order", () => {
     getForm,
     updateForm,
     setSide,
+    editOrder,
   };
 });
