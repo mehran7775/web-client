@@ -10,6 +10,7 @@ import { useBottomPanel, useInstrument } from "~/composables";
 const bottomPanel = useBottomPanel();
 const instrumentManager = useInstrument();
 const instruments = instrumentManager.getFocus;
+console.log(instrumentManager)
 
 const count = ref(0);
 const price = ref(0);
@@ -110,6 +111,7 @@ defineExpose({
           <div class="panel">
             <instrument-card
               :insId="item.id"
+              :insName="item.name"
               @count="
                 (val) => {
                   count = val;
@@ -124,7 +126,7 @@ defineExpose({
             />
           </div>
           <div class="panel">
-            <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" />
+            <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" :insName="item.name" />
           </div>
         </div>
       </v-tab-item>

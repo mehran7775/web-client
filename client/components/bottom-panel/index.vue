@@ -29,7 +29,6 @@ const title = computed(() => {
 });
 
 function expand() {
-  console.log("toggle");
   bottomPanel.toggleExpand();
 }
 function close() {

@@ -16,6 +16,7 @@ const props = defineProps<{
   count: number;
   price: number;
   insId: number;
+  insName: string
 }>();
 
 const buyForm = ref<AnyObjectSchema | null>(null);
@@ -261,7 +262,7 @@ instrumentManager
       <v-tab-item value="1">
         <form class="frm">
           <div class="tw-col-span-2 tw-justify-center">
-            <span class="tw-mx-3">{{ $t("wealth.sharesCount") }}: </span>
+            <span class="tw-mx-3">{{ $t("wealth.sharesCount") }} (و {{insName}}):</span>
             <numeric-field :value="active.amount" class="tw-pl-2" />
           </div>
           <div class="tw-justify-between">

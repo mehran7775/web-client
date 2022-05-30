@@ -11,6 +11,7 @@ const props = withDefaults(
     responsive: boolean;
     compact: boolean;
     insId: number;
+    insName: string,
     hideHeaders: boolean;
   }>(),
   {
@@ -23,6 +24,7 @@ const props = withDefaults(
 const emit = defineEmits(["count", "price"]);
 
 const instrumentManager = useInstrument();
+// console.log(instrumentManager)
 const fields: Array<field> = [
   new field("yesterdayPrice", fieldType.price, null, getClickEvent(fieldType.price)),
   new field("totalTrades", fieldType.count, "oms.tradeCount"),
@@ -90,7 +92,7 @@ instrumentManager
 <template>
   <div class="instrument">
     <header v-show="!hideHeaders">
-      {{ $t("instrument.detail") }}
+      {{ $t("instrument.detail") }} (و {{insName}})
     </header>
     <div
       v-for="(field, index) in fields"

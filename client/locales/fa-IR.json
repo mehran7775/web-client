@@ -263,7 +263,7 @@
   "wealth": {
     "wealth": "دارایی",
     "shares": "سهام",
-    "sharesCount": "@:oms.count @:wealth.shares",
+    "sharesCount": "@:oms.count @:wealth.wealth @:wealth.shares",
     "order": {
       "lastTransaction": "زمان آخرین معامله",
       "creationDate": "تاریخ سفارش",

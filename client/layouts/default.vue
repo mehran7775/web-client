@@ -32,23 +32,6 @@ const rtl = computed(() => appManager.rtl);
 //   if(rightMenu.value.mini)
 // });
 
-// watch( [rightMenu, leftMenu] , ()=> {
-//   console.log(rightMenu.value.mini)
-//   console.log(leftMenu.value.mini)
-//   if(!rightMenu.value.mini) {
-//     leftMenu.value.mini= true
-//     return
-//   }
-//   if(!leftMenu.value.mini) {
-//     rightMenu.value.mini= true
-//     return
-//   }
-//   // if(!rightMenu.value.mini) {
-//   //   leftMenu.value.mini= true
-//   //   return
-//   // }
-//   // if(!leftMenu.value.mini) rightMenu.value.mini= true
-// }, {deep:true})
 
 
 </script>
