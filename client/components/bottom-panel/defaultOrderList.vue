@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useNuxtApp, reactive } from "#app";
+import { useNuxtApp, reactive, ref } from "#app";
 import {
   Order,
   OrderSearchModel,
@@ -27,6 +27,8 @@ const cols = [
   new WatchlistColumns(i18n.t("wealth.order.validity").toString(), "validity"),
   new WatchlistColumns("", "more"),
 ];
+const agreement = ref(true);
+
 
 function parseOrderFlags(status: number) {
   if (status == OrderFlags.Draft) {
@@ -60,8 +62,10 @@ function isDeleteDisabled(status: number) {
 }
 
 function executeDraftOrder(draftOrder: Order) {
-  draftOrder.flags = OrderFlags.Created;
-  orderManager.editOrder(draftOrder);
+  const param: any = { ...draftOrder};
+  param.flags = OrderFlags.Created;
+  param.termsAndConditions = agreement.value;
+  orderManager.editOrder(param);
 }
 
 function getOrders() {
