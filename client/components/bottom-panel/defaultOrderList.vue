@@ -59,6 +59,11 @@ function isDeleteDisabled(status: number) {
   return (status & OrderFlags.Deleteable) != 0;
 }
 
+function executeDraftOrder(draftOrder: Order) {
+  draftOrder.flags = OrderFlags.Created;
+  orderManager.editOrder(draftOrder);
+}
+
 function getOrders() {
   bottomPanel.setLoading(true);
   orderManager
@@ -103,6 +108,7 @@ getOrders();
         height="24"
         depressed
         :disabled="!isRunabled(item.flags)"
+        @click="executeDraftOrder(item)"
       >
         <ada-icon color="success" :size="16"> isax-play </ada-icon>
       </v-btn>
