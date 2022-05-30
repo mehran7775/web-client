@@ -10,6 +10,7 @@ const props = withDefaults(
     dark: boolean;
     bordred: boolean | string;
     color: string;
+    repple: boolean
   }>(),
   {
     color: undefined,
@@ -19,6 +20,7 @@ const props = withDefaults(
     icon: false,
     dark: false,
     bordred: false,
+    repple: true
   }
 );
 const emit = defineEmits(["click"]);
@@ -83,11 +85,12 @@ button {
     top: 0;
     left: 0;
   }
+  
 }
 </style>
 
 <template>
-  <button v-ada-ripple v-bind="$attrs" v-on="$listeners" @click="
+  <button :v-ada-ripple="repple" v-bind="$attrs" v-on="$listeners" @click="
     () => {
       click();
     }
