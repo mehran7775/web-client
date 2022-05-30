@@ -8,7 +8,7 @@ const props = withDefaults(
     type: "button" | "submit" | "reset";
     icon: boolean;
     dark: boolean;
-    bordred: boolean | string;
+    bordered: boolean | string;
     color: string;
   }>(),
   {
@@ -18,7 +18,7 @@ const props = withDefaults(
     type: "button",
     icon: false,
     dark: false,
-    bordred: false,
+    bordered: false,
   }
 );
 const emit = defineEmits(["click"]);
@@ -29,7 +29,7 @@ function click() {
 }
 
 const colorVal = computed(() => {
-  if (props.bordred) return "rgba(0,0,0,0)"
+  if (props.bordered) return "rgba(0,0,0,0)"
   if (props.color) {
     let tmp = props.color.split(" ");
     if (tmp.length == 1) return "var(--c-" + tmp[0] + "-rgb)";
@@ -38,9 +38,9 @@ const colorVal = computed(() => {
   return undefined;
 });
 const borderVal = computed(() => {
-  if (typeof props.bordred === "string") return props.bordred;
+  if (typeof props.bordered === "string") return props.bordered;
   const b = "solid var(--border-size-btn) ";
-  if (props.bordred) {
+  if (props.bordered) {
     if (props.color) {
       let tmp = props.color.split(" ");
       if (tmp.length == 1) return b + "var(--c-" + tmp[0] + "-rgb)";
@@ -65,7 +65,6 @@ button {
   @apply tw-min-w-0 tw-justify-center;
   background-color: rgba(var(--c-primary), 0.1);
   border-radius: var(--border-radius-root);
-  font-size: 0.8334rem;
   font-weight: bold;
   position: relative;
   overflow: hidden;

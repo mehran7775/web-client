@@ -118,7 +118,7 @@ header {
         </div>
         <div v-ada-dropzone>file</div>
         <div>
-          <ada-btn :height="36" color="primary" @click="goToDeposit" bordred>{{
+          <ada-btn :height="36" color="primary" @click="goToDeposit" bordered>{{
               $t('menu.deposit')
           }}</ada-btn>
           <ada-btn :height="36" color="primary" dark>{{ $t('accounting.deposit-report') }}</ada-btn>

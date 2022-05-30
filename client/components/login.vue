@@ -94,27 +94,28 @@ onMounted(() => {
 </script>
 
 <style lang="postcss">
-.mar-t-6 {
-  margin-top: 6px !important;
-}
+fieldset.login-cmp {
+  position: relative;
+  color: black;
 
-.mar-b-6 {
-  margin-bottom: 6px !important;
-}
-
-.pad-t-6 {
-  padding-top: 6px !important;
-}
-
-.pad-b-6 {
-  padding-bottom: 6px !important;
+  >.legend {
+    @apply tw-text-xl tw-m-0 tw-mt-[8px] tw-p-0 tw-justify-start tw-font-bold;
+    display: block;
+  }
+  >button {
+    color: var(--c-primary-rgb);
+  }
 }
 
 a {
   text-decoration: none;
 }
 
-.radio-ckeck {
+button {
+  color: var(--c-primary-rgb);
+}
+
+.radio-check {
   border-radius: 5px;
   width: calc(50% - 8px);
   background-color: rgba(130, 130, 130, 0.1);
@@ -154,12 +155,13 @@ a {
 </style>
 
 <template>
-  <v-card class="ma-0 pa-0" :max-width="width" :min-width="width" elevation="0" color="transparent" :loading="loading">
-    <v-card-title class="ma-0 mt-2 pa-0 justify-start font-weight-bold">{{
+  <fieldset class="login-cmp tw-m-0 tw-p-0" :max-width="width" :min-width="width" elevation="0" color="transparent"
+    :loading="loading">
+    <div class="legend">{{
         $t("login.title")
-    }}</v-card-title>
+    }}</div>
     <v-form ref="frm">
-      <p class="mt-4 mar-b-6">{{ $t("user.username") }}</p>
+      <p class="tw-mt-[16px] tw-mb-2">{{ $t("user.username") }}</p>
       <v-text-field aria-label="username" aria-required="true" tabindex="1" ref="userref" :height="inputHeight"
         v-model="data.userName" prepend-inner-icon="isax-user" :rules="[rules.required]" @input="checkTries"
         @keyup.enter="
@@ -197,10 +199,10 @@ a {
           </span>
         </div>
       </div>
-      <p v-if="data.passwordType == 2" class="mt-3 mar-b-6">
+      <p v-if="data.passwordType == 2" class="tw-mt-4 tw-mb-2">
         {{ $t("login.otp") }}
       </p>
-      <p v-else class="mt-3 mar-b-6">{{ $t("user.password") }}</p>
+      <p v-else class="tw-mt-4 tw-mb-2">{{ $t("user.password") }}</p>
       <otp v-if="data.passwordType == 2" timer="90" :height="inputHeight" tabindex="4" ref="otpref"
         @request="requestOtp" @keyup.enter="
           () => {
@@ -223,7 +225,7 @@ a {
   }
 " :class="{ 'pass-star': !showPassword }" :rules="[rules.required]" hide-details outlined dense validate-on-blur>
         <template #append>
-          <ada-icon :size="24" class="me-3" :color="showPassword ? 'primary' : null"
+          <ada-icon :size="24" class="tw-mx-1" :color="showPassword ? 'primary' : null"
             @click="showPassword = !showPassword">
             isax-eye
           </ada-icon>
@@ -240,10 +242,10 @@ a {
           </ada-icon>
         </template>
       </v-text-field>
-      <v-row class="ma-0 mt-1 pa-0" style="font-size: 10px">
-        <v-col cols="6" class="ma-0 pa-0">
+      <v-row class="tw-m-0 tw-mt-[4px] tw-p-0" style="font-size: 10px">
+        <v-col cols="6" class="tw-m-0 tw-p-0">
           <div v-if="passref" class="error--text">
-            <div v-for="item in passref.validations" :key="item" class="mb-1">
+            <div v-for="item in passref.validations" :key="item" class="tw-mb-1">
               <ada-icon color="error" :size="17"> mdi-alert-circle-outline</ada-icon>
               <span style="display: inline-block">
                 {{ $t(item) }}
@@ -251,7 +253,7 @@ a {
             </div>
           </div>
         </v-col>
-        <v-col cols="6" class="ma-0 pa-0 justify-end" :style="{
+        <v-col cols="6" class="tw-m-0 tw-p-0 tw-justify-end" :style="{
           'text-align': rtl ? 'left' : 'right',
         }">
           <nuxt-link to="/reset-password">
@@ -259,8 +261,8 @@ a {
           </nuxt-link>
         </v-col>
       </v-row>
-      <div v-if="true" class="ma-0 pa-0 mt-1 mb-4">
-        <p class="mar-b-6">{{ $t("login.captcha") }}</p>
+      <div v-if="true" class="tw-m-0 tw-p-0 tw-mt-1 tw-mb-4">
+        <p class="tw-mb-2">{{ $t("login.captcha") }}</p>
         <simple-captcha v-model="data.captcha" tabindex="3" ref="captcharef" class="captcha" :height="inputHeight"
           @keyup.enter="
             () => {
@@ -276,26 +278,26 @@ a {
   }
 " outlined dense />
       </div>
-      <v-radio-group v-model="data.passwordType" class="ma-0 pa-0" hide-details row>
+      <v-radio-group v-model="data.passwordType" class="tw-m-0 tw-p-0" hide-details row>
         <v-radio v-for="(item, index) in [
           { value: 1, text: $t('login.static') },
           { value: 2, text: $t('login.otp') },
         ]" tabindex="5" :ripple="false" :key="item.value" :label="item.text" :value="item.value"
           on-icon="mdi-check-circle" off-icon="mdi-check-circle-outline" :class="{
-            'radio-ckeck ma-0 pa-2': true,
+            'radio-check ma-0 pa-2': true,
             'me-4': index != 1, //last index
           }" style="width: calc(50% - 8px)" />
       </v-radio-group>
-      <v-btn tabindex="6" class="my-4" depressed color="primary" @click="login(data)" width="100%" :height="inputHeight"
-        x-large>
+      <ada-btn tabindex="6" class="dark tw-my-[16px] tw-text-xl" depressed color="primary" @click="login(data)"
+        width="100%" :height="inputHeight">
         {{ $t("login.login") }}
-      </v-btn>
+      </ada-btn>
     </v-form>
-    <v-btn tabindex="7" class="mb-6" depressed color="primary" to="/registration" width="100%" :height="inputHeight"
-      outlined x-large>
+    <ada-btn tabindex="7" class="tw-mb-8 tw-text-xl" depressed color="primary" to="/registration" width="100%"
+      :height="inputHeight" bordered>
       {{ $t("login.registration") }}
-    </v-btn>
+    </ada-btn>
 
     <div class="text-justify" v-html="$t('login.alerts')"></div>
-  </v-card>
+  </fieldset>
 </template>

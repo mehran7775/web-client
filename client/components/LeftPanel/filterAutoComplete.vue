@@ -1,6 +1,6 @@
 <template>
   <v-autocomplete
-    class="ma-0 mt-3 pa-0 px-2 bordred no-translate"
+    class="ma-0 mt-3 pa-0 px-2 bordered no-translate"
     v-model="values"
     :loading="loading"
     :items="items"
