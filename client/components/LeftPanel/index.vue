@@ -87,10 +87,6 @@ async function selectMessage(id: number) {
     bottomPanel.setLoading(false);
   }
 }
-function triggerCloseRgihtPanel() {
-  emit('closeRightPanel')
-}
-
 loadMessages();
 loadMyMessages();
 </script>
@@ -165,7 +161,7 @@ loadMyMessages();
           'tab-item': true,
           active: 0 == activeTab,
         }"
-        @click="triggerCloseRgihtPanel()"
+        @click="emit('closeRightPanel')"
       >
       </message-list>
       <message-list
@@ -176,7 +172,7 @@ loadMyMessages();
           'tab-item': true,
           active: 1 == activeTab,
         }"
-        @click="triggerCloseRgihtPanel()"
+        @click="emit('closeRightPanel')"
       >
       </message-list>
     </div>
@@ -186,7 +182,7 @@ loadMyMessages();
         :key="item.title"
         @click="
           () => {
-            triggerCloseRgihtPanel()
+            $emit('closeRightPanel')
             $emit('update:mini', !mini);
           }
         "
