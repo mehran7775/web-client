@@ -182,7 +182,7 @@ if (process.client) {
 }
 
 .tab-items {
-  background-color: rgba(var(--c-primary), 0.05);
+  background-color: rgba(var(--c-primary), 0.01);
 }
 
 .details {
@@ -319,7 +319,7 @@ if (process.client) {
                   <template #appendIcon>
                     <ada-icon :size="12"> isax-arrow-down </ada-icon>
                   </template>
-                  <v-list-item-title slot="activator">
+                  <v-list-item-title slot="activator" class="tw-text-">
                     {{ child.text ? child.text : $t(child.title) }}
                   </v-list-item-title>
                   <v-tooltip v-for="sub in child.children
@@ -331,30 +331,30 @@ if (process.client) {
                       <div v-on="on" v-bind="attrs" class="sub-item ps-4">
                         <div class="path ms-n2"></div>
                         <v-list-item :to="sub.to ? sub.to : '#'">
-                          <v-list-item-title>
+                          <v-list-item-title class="tw-text-xs">
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             {{ sub.text ? sub.text : $t(sub.title) }}
                           </v-list-item-title>
                           <div class="d-flex flex-row my-0">
-                            <ada-btn @click.prevent="
-                              (ev) => {
-                                if (isMarked(sub)) unmark(sub);
-                                else mark(sub);
-                              }
-                            " v-if="sub.bookmarkPosition" icon x-small>
-                              <ada-icon :color="isMarked(sub) ? 'primary' : 'default'" :size="12">
-                                isax-frame-4
-                              </ada-icon>
+                            <ada-btn width="14px" height="16px" color="transparent" :ripple="false" @click="
+                            (ev) => {
+                              if (isMarked(sub)) unmark(sub);
+                              else mark(sub);
+                            }
+                            " v-if="sub.bookmarkPosition">
+                                <svg width="14px" height="14px" viewBox="0 0 10 11" xmlns="http://www.w3.org/2000/svg" class="tw-mt-1">
+                                <path d="M7.41016 0H2.59016C1.52516 0 0.660156 0.87 0.660156 1.93V8.975C0.660156 9.875 1.30516 10.255 2.09516 9.82L4.53516 8.465C4.79516 8.32 5.21516 8.32 5.47016 8.465L7.91016 9.82C8.70016 10.26 9.34516 9.88 9.34516 8.975V1.93C9.34016 0.87 8.47516 0 7.41016 0Z" :fill="isMarked(sub) ? '#3554D1' : '#E5E9FA'"/>
+                                </svg>
                             </ada-btn>
-                            <ada-btn @click.prevent="
+                             <ada-btn width="14px" height="16px" color="transparent" :ripple="false" @click.prevent="
                               (ev) => {
                                 setHome(sub);
                               }
-                            " v-if="sub.bookmarkPosition" icon x-small>
-                              <ada-icon :color="sub.to == home ? 'info' : 'default'" :size="12">
-                                isax-star-1-bold
-                              </ada-icon>
-                            </ada-btn>
+                            " v-if="sub.bookmarkPosition">
+                                <svg width="14px" height="14px" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7.00887 1.04754L8.03554 3.10087C8.17554 3.38671 8.54887 3.66087 8.86387 3.71337L10.7247 4.02254C11.9147 4.22087 12.1947 5.0842 11.3372 5.93587L9.89054 7.38254C9.64554 7.62754 9.51137 8.10004 9.5872 8.43837L10.0014 10.2292C10.328 11.6467 9.57554 12.195 8.32137 11.4542L6.5772 10.4217C6.2622 10.235 5.74304 10.235 5.4222 10.4217L3.67804 11.4542C2.4297 12.195 1.67137 11.6409 1.99804 10.2292L2.4122 8.43837C2.48804 8.10004 2.35387 7.62754 2.10887 7.38254L0.662203 5.93587C-0.189464 5.0842 0.0847029 4.22087 1.2747 4.02254L3.13554 3.71337C3.4447 3.66087 3.81804 3.38671 3.95804 3.10087L4.9847 1.04754C5.5447 -0.0666275 6.4547 -0.0666275 7.00887 1.04754Z" :fill="sub.to == home ? '#3554D1' : '#E5E9FA'"/>
+                                </svg>
+                             </ada-btn>
                           </div>
                         </v-list-item>
                       </div>
@@ -369,24 +369,24 @@ if (process.client) {
                         {{ child.text ? child.text : $t(child.title) }}
                       </v-list-item-title>
                       <div v-if="child.to && child.to != ''" class="d-flex flex-row my-0">
-                        <ada-btn @click.prevent="
+                      <ada-btn width="14px" height="16px" color="transparent" :ripple="false" @click="
                           (ev) => {
                             if (isMarked(child)) unmark(child);
                             else mark(child);
                           }
                         " v-if="child.bookmarkPosition" icon x-small>
-                          <ada-icon :color="isMarked(child) ? 'primary' : 'default'" :size="12">
-                            isax-frame-4
-                          </ada-icon>
+                          <svg width="14px" height="14px" viewBox="0 0 10 11" xmlns="http://www.w3.org/2000/svg" class="tw-mt-1">
+                          <path d="M7.41016 0H2.59016C1.52516 0 0.660156 0.87 0.660156 1.93V8.975C0.660156 9.875 1.30516 10.255 2.09516 9.82L4.53516 8.465C4.79516 8.32 5.21516 8.32 5.47016 8.465L7.91016 9.82C8.70016 10.26 9.34516 9.88 9.34516 8.975V1.93C9.34016 0.87 8.47516 0 7.41016 0Z" :fill="isMarked(child) ? '#3554D1' : '#E5E9FA'"/>
+                          </svg>
                         </ada-btn>
-                        <ada-btn @click.prevent="
+                        <ada-btn width="14px" height="16px" color="transparent" :ripple="false"  @click=" 
                           (ev) => {
                             setHome(child);
                           }
                         " v-if="child.bookmarkPosition" icon x-small>
-                          <ada-icon :color="child.to == home ? 'info' : 'default'" :size="12">
-                            isax-star-1-bold
-                          </ada-icon>
+                          <svg width="14px" height="14px" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M7.00887 1.04754L8.03554 3.10087C8.17554 3.38671 8.54887 3.66087 8.86387 3.71337L10.7247 4.02254C11.9147 4.22087 12.1947 5.0842 11.3372 5.93587L9.89054 7.38254C9.64554 7.62754 9.51137 8.10004 9.5872 8.43837L10.0014 10.2292C10.328 11.6467 9.57554 12.195 8.32137 11.4542L6.5772 10.4217C6.2622 10.235 5.74304 10.235 5.4222 10.4217L3.67804 11.4542C2.4297 12.195 1.67137 11.6409 1.99804 10.2292L2.4122 8.43837C2.48804 8.10004 2.35387 7.62754 2.10887 7.38254L0.662203 5.93587C-0.189464 5.0842 0.0847029 4.22087 1.2747 4.02254L3.13554 3.71337C3.4447 3.66087 3.81804 3.38671 3.95804 3.10087L4.9847 1.04754C5.5447 -0.0666275 6.4547 -0.0666275 7.00887 1.04754Z" :fill="child.to == home ? '#3554D1' : '#E5E9FA'"/>
+                          </svg>
                         </ada-btn>
                       </div>
                     </v-list-item>

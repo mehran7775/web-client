@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Ref, ref, computed, reactive, watch, useNuxtApp } from "#app";
+import { Ref, ref, computed, reactive, watch, useNuxtApp, } from "#app";
 import filterAutoComplete from "./filterAutoComplete.vue";
 import { AxiosResponse } from "axios";
 import { PaginatedResult, Message, MessageFilter, MessageQuery, Tabs } from "@/types";
 import MessageList from "./messageList.vue";
 import { useAsrTrader, useBottomPanel, useMessages } from "~/composables";
 
-const emit = defineEmits(["openWatchList", "input", "update:mini"]);
+const emit = defineEmits(["openWatchList", "input", "update:mini", "closeRightPanel"]);
 const props = defineProps<{ value: boolean; mini: boolean; clipped: boolean }>();
 const messageManager = useMessages();
 const appManager = useAsrTrader();
@@ -45,6 +45,8 @@ const items = [
   { title: "general.all" },
   { title: "oms.openingTrade" },
 ];
+
+
 
 function loadMyMessages() {
   load(myMessageQuery).then((res) => {
@@ -85,7 +87,6 @@ async function selectMessage(id: number) {
     bottomPanel.setLoading(false);
   }
 }
-
 loadMessages();
 loadMyMessages();
 </script>
@@ -160,6 +161,7 @@ loadMyMessages();
           'tab-item': true,
           active: 0 == activeTab,
         }"
+        @click="emit('closeRightPanel')"
       >
       </message-list>
       <message-list
@@ -170,6 +172,7 @@ loadMyMessages();
           'tab-item': true,
           active: 1 == activeTab,
         }"
+        @click="emit('closeRightPanel')"
       >
       </message-list>
     </div>
@@ -179,6 +182,7 @@ loadMyMessages();
         :key="item.title"
         @click="
           () => {
+            $emit('closeRightPanel')
             $emit('update:mini', !mini);
           }
         "
