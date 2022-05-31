@@ -52,19 +52,19 @@ function parseOrderFlags(status: number) {
 
 function parseValidityType(status: number) {
     if (status == ValidationType.Day) { 
-         return "wealth.order.validationType.Day";  
-         } else if (status == ValidationType.FillAndKill) {
-               return "wealth.order.validationType.FillAndKill";
-                 } else if (status == ValidationType.GoodTillCancel) {
-                       return "wealth.order.validationType.GoodTillCancel";  
-                       } else if (status == ValidationType.GoodTillDate) {
-                             return "wealth.order.validationType.GoodTillDate";  
-                             } else if (status == ValidationType.Session) {
-                                   return "wealth.order.validationType.Session"; 
-                                    } else if (status == ValidationType.SlidingValidity) {
-                                         return "wealth.order.validationType.SlidingValidity";  
-                                         }
-                                         }
+      return "wealth.order.validationType.Day";  
+    } else if (status == ValidationType.FillAndKill) {
+      return "wealth.order.validationType.FillAndKill";
+    } else if (status == ValidationType.GoodTillCancel) {
+      return "wealth.order.validationType.GoodTillCancel";  
+    } else if (status == ValidationType.GoodTillDate) {
+      return "wealth.order.validationType.GoodTillDate";  
+    } else if (status == ValidationType.Session) {
+      return "wealth.order.validationType.Session"; 
+    } else if (status == ValidationType.SlidingValidity) {
+      return "wealth.order.validationType.SlidingValidity";  
+    }
+}
 
 function isRunabled(status: number) {
   return (status & OrderFlags.Draft) == OrderFlags.Draft;
