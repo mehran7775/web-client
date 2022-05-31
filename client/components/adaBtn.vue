@@ -85,6 +85,7 @@ const heightVal = computed(() =>
   &.active::after {
     content: "";
     background-color: rgba(var(--c-primary), 0.2);
+    border-radius: var(--border-radius-root);
     position: absolute;
     height: 100%;
     width: 100%;

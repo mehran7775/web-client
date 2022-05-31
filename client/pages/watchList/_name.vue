@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref,reactive, computed, watch } from "#app";
+import { ref, reactive, computed, watch } from "#app";
 import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";
 import WatchlistSelector from "@/components/dashboard/watchlistSelector.vue";
@@ -71,13 +71,15 @@ defineExpose({
           <template #toolbar>
             <watchlist-selector style="max-width: 164px" auto-route />
             <instrument-search class="ms-1" style="max-width: 164px" focus-result />
-            <v-btn v-if="edited" @click="apply" color="success" class="ma-0 ms-1 pa-0" height="28" width="56" depressed>
+            <ada-btn dark v-if="edited" @click="apply" color="success" class="tw-m-0 tw-mx-1 tw-p-0 tw-text-sm" :height="28"
+              :width="56">
               {{ $t("general.apply") }}
-            </v-btn>
-            <v-btn v-if="edited" @click="reset" color="error" class="ma-0 ms-1 pa-0" height="28" width="56" depressed>
+            </ada-btn>
+            <ada-btn dark v-if="edited" @click="reset" color="error" class="tw-m-0 tw-mx-1 tw-p-0  tw-text-sm" :height="28"
+              :width="56">
               {{ $t("general.cancel") }}
-            </v-btn>
-            <bar v-if="edited" class="ms-1" />
+            </ada-btn>
+            <bar v-if="edited" class="tw-mx-1 tw-static" />
           </template>
         </focus-board>
       </v-col>

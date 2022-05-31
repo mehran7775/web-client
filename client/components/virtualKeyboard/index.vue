@@ -1,48 +1,26 @@
 <template>
-  <div
-    dir="ltr"
-    v-if="keyboard.active"
-    class="en keyboard d-flex flex-column justify-center"
-  >
+  <div dir="ltr" v-if="keyboard.active" class="en keyboard d-flex flex-column justify-center">
     <div v-if="shift" class="d-flex flex-row flex-wrap justify-center">
-      <v-btn
-        v-for="key in alternate"
-        :key="key.name"
-        :class="{
-          'ma-1': true,
-          'default lighten-3': !key.active,
-          'primary lighten-3': key.active,
-        }"
-        @click="
-          () => {
-            keyboard.call(key.name);
-          }
-        "
-        width="42"
-        height="42"
-        large
-        >{{ key.name }}</v-btn
-      >
+      <ada-btn v-for="key in alternate" :key="key.name" :class="{
+        'ma-1': true,
+        'default lighten-3': !key.active,
+        'primary lighten-3': key.active,
+      }" @click="
+  () => {
+    keyboard.call(key.name);
+  }
+" :width="42" :height="42" large>{{ key.name }}</ada-btn>
     </div>
     <div v-else class="d-flex flex-row flex-wrap justify-center">
-      <v-btn
-        v-for="key in normal"
-        :key="key.name"
-        :class="{
-          'ma-1': true,
-          'default lighten-3': !key.active,
-          'primary lighten-3': key.active,
-        }"
-        @click="
-          () => {
-            keyboard.call(key.name);
-          }
-        "
-        width="42"
-        height="42"
-        large
-        >{{ key.name }}</v-btn
-      >
+      <ada-btn v-for="key in normal" :key="key.name" :class="{
+        'ma-1': true,
+        'default lighten-3': !key.active,
+        'primary lighten-3': key.active,
+      }" @click="
+  () => {
+    keyboard.call(key.name);
+  }
+" :width="42" :height="42" large>{{ key.name }}</ada-btn>
     </div>
   </div>
 </template>
