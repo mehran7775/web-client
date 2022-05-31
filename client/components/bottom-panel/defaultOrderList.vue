@@ -6,6 +6,7 @@ import {
   PaginatedResult,
   WatchlistColumns,
   OrderFlags,
+  ValidationType,
 } from "@/types";
 import { useBottomPanel, useOrder } from "~~/composables";
 import DateTime from "../DateTime/dateTime.vue";
@@ -49,6 +50,22 @@ function parseOrderFlags(status: number) {
   }
 }
 
+function parseValidityType(status: number) {
+    if (status == ValidationType.Day) { 
+         return "wealth.order.validationType.Day";  
+         } else if (status == ValidationType.FillAndKill) {
+               return "wealth.order.validationType.FillAndKill";
+                 } else if (status == ValidationType.GoodTillCancel) {
+                       return "wealth.order.validationType.GoodTillCancel";  
+                       } else if (status == ValidationType.GoodTillDate) {
+                             return "wealth.order.validationType.GoodTillDate";  
+                             } else if (status == ValidationType.Session) {
+                                   return "wealth.order.validationType.Session"; 
+                                    } else if (status == ValidationType.SlidingValidity) {
+                                         return "wealth.order.validationType.SlidingValidity";  
+                                         }
+                                         }
+
 function isRunabled(status: number) {
   return (status & OrderFlags.Draft) == OrderFlags.Draft;
 }
@@ -66,6 +83,11 @@ function executeDraftOrder(draftOrder: Order) {
   param.flags = OrderFlags.Created;
   param.termsAndConditions = agreement.value;
   orderManager.editOrder(param);
+}
+
+function hasValidityDate(order: Order) 
+{  return (order.validityType == ValidationType.GoodTillDate) 
+          && (order.validityDate != null ) 
 }
 
 function getOrders() {
@@ -89,7 +111,12 @@ getOrders();
       <DateTime :value="item.creationDate" :format="$t('general.date.dt')" class="ltr" />
     </template>
     <template #item.validity="{ item }">
-      <DateTime :value="item.validityDate" :format="$t('general.date.dt')" class="ltr" />
+    <span v-if="!hasValidityDate(item)">
+      {{ $t(parseValidityType(item.validity)) }}
+    </span>
+      <DateTime v-else 
+      :value="item.validityDate" :format="$t('general.date.dt')" class="ltr" 
+      />
     </template>
     <template #item.quantity="{ item }">
       <NumericField :value="item.quantity" />
