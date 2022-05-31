@@ -281,7 +281,9 @@
       "side": {
         "title": "خرید/فروش",
         "SELL": "فروش",
-        "BUY": "خرید"
+        "BUY": "خرید",
+        "1":"@:wealth.order.side.BUY",
+        "2":"@:wealth.order.side.SELL"
       },
       "flags": {
         "Draft": "پیش نویس",
@@ -290,6 +292,14 @@
         "Cancelled": "لغو شده",
         "Confirmed": "تایید شده",
         "PreOpening": "در حال انجام"
+      },
+      "validationType": {
+        "Day": "روزانه",
+        "GoodTillDate": "معتبر تا تاریخ",
+        "GoodTillCancel": "معتبر تا لغو",
+        "FillAndKill": "اجرا و حذف",
+        "Session": "جلسه معاملاتی",
+        "SlidingValidity": "سفارش زمانی"
       },
       "validity": "اعتبار",
       "sharePercent": "@:general.percent @:oms.share",
