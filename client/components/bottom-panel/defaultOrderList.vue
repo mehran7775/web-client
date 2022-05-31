@@ -132,37 +132,18 @@ getOrders();
     </template>
     <template #item.flags="{ item }"> {{ $t(parseOrderFlags(item.flags)) }}</template>
     <template #item.more="{ item }">
-      <v-btn
-        color="transparent"
-        class="ma-0 pa-0"
-        width="24"
-        height="24"
-        depressed
-        :disabled="!isRunabled(item.flags)"
-        @click="executeDraftOrder(item)"
-      >
-        <ada-icon color="success" :size="16"> isax-play </ada-icon>
-      </v-btn>
-      <v-btn
-        color="transparent"
-        class="ma-0 pa-0"
-        width="24"
-        height="24"
-        depressed
-        :disabled="isEditDisabled(item.flags)"
-      >
-        <ada-icon color="info" :size="16"> isax-edit-2 </ada-icon>
-      </v-btn>
-      <v-btn
-        color="transparent"
-        class="ma-0 pa-0"
-        width="24"
-        height="24"
-        depressed
-        :disabled="isDeleteDisabled(item.flags)"
-      >
-        <ada-icon color="error" :size="16"> isax-trash </ada-icon>
-      </v-btn>
+      <ada-btn color="transparent" class="tw-m-0 tw-p-0" :width="24" :height="24" depressed
+        :disabled="!isRunabled(item.flags)" @click="executeDraftOrder(item)">
+        <ada-icon color="success" :disabled="!isRunabled(item.flags)" :size="16"> isax-play </ada-icon>
+      </ada-btn>
+      <ada-btn color="transparent" class="tw-m-0 tw-p-0" :width="24" :height="24" depressed
+        :disabled="isEditDisabled(item.flags)">
+        <ada-icon color="info" :disabled="isEditDisabled(item.flags)" :size="16"> isax-edit-2 </ada-icon>
+      </ada-btn>
+      <ada-btn color="transparent" class="tw-m-0 tw-p-0" :width="24" :height="24" depressed
+        :disabled="isDeleteDisabled(item.flags)">
+        <ada-icon color="error" :disabled="isDeleteDisabled(item.flags)" :size="16"> isax-trash </ada-icon>
+      </ada-btn>
     </template>
   </ada-data-table>
 </template>

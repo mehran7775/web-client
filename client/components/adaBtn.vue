@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, ref, Ref } from "#app";
+import { computed, inject, ref, Ref, useRouter } from "#app";
 const props = withDefaults(
   defineProps<{
     model?: any;
@@ -10,6 +10,7 @@ const props = withDefaults(
     dark: boolean;
     bordered: boolean | string;
     color: string;
+    to?: string;
   }>(),
   {
     color: undefined,
@@ -22,10 +23,13 @@ const props = withDefaults(
   }
 );
 const emit = defineEmits(["click"]);
+const router = useRouter();
 
 const value: Ref<any> = inject("toggle-ref", ref(null));
 function click() {
   value.value = props.model;
+  if (props.to)
+    router.push(props.to)
 }
 
 const colorVal = computed(() => {
@@ -71,6 +75,11 @@ button {
 
   &.dark {
     color: white;
+  }
+
+  &:disabled {
+    background-color: rgba(var(--c-gray), 0.2) !important;
+    color: var(--c-gray-rgb) !important;
   }
 
   &.active::after {

@@ -49,31 +49,50 @@ function close() {
     height: calc(100vh - 74px);
   }
 
-  .header {
-    @apply tw-flex tw-flex-grow tw-w-full;
-    box-shadow: 0 0 12px 0 rgba(53, 84, 209, 0.05);
-    align-items: center;
-    height: 32px;
-    color: var(--c-primary-rgb);
-    background-color: rgba(var(--c-primary), 0.05);
-    padding: 0 12px;
-    top: 0;
-    left: 0;
+  &.half {
+    transition: height 0.5s ease-in-out;
+    height: calc(100vh - 436px);
+    min-height: 30vh;
   }
 
-  .detail {
+  &.hiden {
+    height: 32px;
+  }
+
+  >.detail {
     position: relative;
     width: 100%;
     font-size: 1rem;
     line-height: 1.5;
     height: calc(100% - 32px);
-    overflow-y: auto;
+
+    >.header {
+      @apply tw-flex tw-flex-grow tw-w-full;
+      position: absolute;
+      top: 0;
+      left: 0;
+      box-shadow: 0 0 12px 0 rgba(53, 84, 209, 0.05);
+      align-items: center;
+      height: 32px;
+      color: var(--c-primary-rgb);
+      background-color: rgba(var(--c-primary), 0.05);
+      padding: 0 12px;
+      top: 0;
+      left: 0;
+    }
+
+    >.contents {
+      @apply tw-mt-[32px];
+      overflow-y: auto;
+      height: calc(100% - 32px);
+    }
   }
 
-  .tabs {
+  >.tabs {
     @apply tw-justify-start tw-w-full;
     background-color: rgba(var(--c-default), 0.2);
     box-shadow: 0 0 1px 0 #e2e2e2;
+    min-height: 32px;
 
     .tab {
       @apply tw-px-2;
@@ -83,14 +102,6 @@ function close() {
     }
   }
 
-  &.half {
-    transition: height 0.5s ease-in-out;
-    height: calc(100vh - 436px);
-  }
-
-  &.hiden {
-    height: 32px;
-  }
 }
 </style>
 
@@ -102,6 +113,23 @@ function close() {
     hiden: tab == -1,
   }">
     <div v-show="tab != -1" class="detail">
+      <div class="contents">
+        <v-tabs-items v-model="tab" :class="{ expanded: expanded }">
+          <v-tab-item>
+            <default-order-list />
+          </v-tab-item>
+          <v-tab-item>
+            <bests />
+          </v-tab-item>
+          <v-tab-item>
+            <deep-information />
+          </v-tab-item>
+          <v-tab-item>
+            <further-information />
+          </v-tab-item>
+        </v-tabs-items>
+        <loading :loading="showLoading" />
+      </div>
       <header class="header" v-show="tab != -1">
         <h4>
           {{ title }}
@@ -114,21 +142,6 @@ function close() {
           <ada-icon color="white" :size="16">isax-minus</ada-icon>
         </ada-btn>
       </header>
-      <v-tabs-items v-model="tab" :class="{ expanded: expanded }">
-        <v-tab-item>
-          <default-order-list />
-        </v-tab-item>
-        <v-tab-item>
-          <bests />
-        </v-tab-item>
-        <v-tab-item>
-          <deep-information />
-        </v-tab-item>
-        <v-tab-item>
-          <further-information />
-        </v-tab-item>
-      </v-tabs-items>
-      <loading :loading="showLoading" />
     </div>
     <ada-toggle class="tabs" v-model="tab" :height="32" optional>
       <ada-btn class="tab" v-for="(t, i) in tabs" :key="t" :model="i">
