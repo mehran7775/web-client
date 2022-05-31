@@ -283,14 +283,6 @@
         "SELL": "فروش",
         "BUY": "خرید"
       },
-      "validationType": {
-        "Day": "روزانه",
-        "GoodTillDate": "معتبر تا تاریخ",
-        "GoodTillCancel": "معتبر تا لغو",
-        "FillAndKill": "انجام و حذف",
-        "Session": "جلسه معاملاتی",
-        "SlidingValidity": "سفارش سازمانی"
-      },
       "flags": {
         "Draft": "پیش نویس",
         "Created": "ایجاد شده",
