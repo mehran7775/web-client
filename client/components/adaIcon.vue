@@ -50,5 +50,6 @@ const fontSize = computed(() =>
 <template>
   <i class="icon" :class="[group, icon]"
     :style="{ color: colorVar, fontSize, cursor: ($listeners && $listeners['click']) ? clicPointer : 'unset' }"
-    v-bind="$attrs" v-on="$listeners" />
+    v-bind="$attrs" v-on="$listeners"
+    :key="icon" />
 </template>

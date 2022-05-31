@@ -65,13 +65,13 @@ const heightVal = computed(() =>
 </script>
 
 <style lang="postcss" scoped>
-button {
+.button {
   @apply tw-min-w-0 tw-justify-center;
   background-color: rgba(var(--c-primary), 0.1);
   border-radius: var(--border-radius-root);
   font-weight: bold;
   position: relative;
-  overflow: hidden;
+  text-overflow: ellipsis;
 
   &.dark {
     color: white;
@@ -95,7 +95,25 @@ button {
 </style>
 
 <template>
-  <button v-ada-ripple v-bind="$attrs" v-on="$listeners" @click="
+  <a v-if="to" class="button" v-ada-ripple v-bind="$attrs" v-on="$listeners" @click="
+    () => {
+      click();
+    }
+  " :class="[
+  dark ? 'dark' : '',
+  typeof props.model != 'undefined' && props.model == value ? 'active' : '',
+]" :type="type" :style="{
+  border: borderVal,
+  backgroundColor: colorVal,
+  minWidth: widthVal,
+  maxWidth: widthVal,
+  minHeight: heightVal,
+  maxHeight: heightVal,
+  lineHeight: icon ? '0.8334rem' : heightVal,
+}">
+    <slot></slot>
+  </a>
+  <button v-else class="button" v-ada-ripple v-bind="$attrs" v-on="$listeners" @click="
     () => {
       click();
     }

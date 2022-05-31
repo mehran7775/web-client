@@ -78,14 +78,16 @@ if (process.client) {
 }
 
 .bookmark {
-  padding: 0 !important;
+  @apply tw-mx-[4px] tw-px-[4px];
   position: relative;
   width: 75px;
   min-width: 75px;
   max-width: 75px;
 
-  .label {
-    max-width: calc(75px - 8px);
+  >.label {
+    font-size: 0.8334rem;
+    display: inline-block;
+    max-width: 67px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -136,16 +138,16 @@ if (process.client) {
       <slot name="toolbar"> </slot>
       <v-tooltip v-for="b in bookmarks" :key="b.to">
         <template #activator="{ on, attrs }">
-          <v-btn color="primary" :to="b.to" v-on="on" v-bind="attrs" height="28" class="ms-1 me-1 bookmark" depressed>
-            <v-btn @click.stop.prevent="() => unmark(b)" width="14" height="14" class="removeMark pa-0 ma-0"
+          <ada-btn dark color="primary" :to="b.to" v-on="on" v-bind="attrs" :height="28" class="bookmark">
+            <ada-btn @click.stop.prevent="() => unmark(b)" :width="14" :height="14" class="removeMark pa-0 ma-0"
               color="error">
               <ada-icon class="tw-p-0 tw-m-0" :size="12">mdi-close</ada-icon>
-            </v-btn>
+            </ada-btn>
             <span class="label">
               <ada-icon v-if="b.icon" :size="12"> {{ b.icon }} </ada-icon>
               {{ b.text ? b.text : $t(b.title) }}
             </span>
-          </v-btn>
+          </ada-btn>
         </template>
         {{ b.text ? b.text : $t(b.title) }}
       </v-tooltip>
