@@ -73,6 +73,11 @@ button {
     color: white;
   }
 
+  &:disabled {
+    background-color: rgba(var(--c-gray), 0.2) !important;
+    color: var(--c-gray-rgb) !important;
+  }
+
   &.active::after {
     content: "";
     background-color: rgba(var(--c-primary), 0.2);
