@@ -291,14 +291,6 @@
         "Confirmed": "تایید شده",
         "PreOpening": "در حال انجام"
       },
-      "validationType": {
-        "Day": "روزانه",
-        "GoodTillDate": "معتبر تا تاریخ",
-        "GoodTillCancel": "معتبر تا لغو",
-        "FillAndKill": "",
-        "Session": "جلسه معاملاتی",
-        "SlidingValidity": ""
-      },
       "validity": "اعتبار",
       "sharePercent": "@:general.percent @:oms.share",
       "creditPercent": "@:general.percent @:accounting.account.credit"
