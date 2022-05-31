@@ -19,9 +19,9 @@ const timeout = ref(5000);
   <v-snackbar v-model="show" :top="true" :color="color" :timeout="timeout">
     <h4>{{ $t(message) }}</h4>
     <template v-slot:action="{ attrs }">
-      <v-btn color="primary" v-bind="attrs" @click="show = false">
+      <ada-btn color="primary" v-bind="attrs" @click="show = false">
         {{ $t("general.ok") }}
-      </v-btn>
+      </ada-btn>
     </template>
   </v-snackbar>
 </template>
