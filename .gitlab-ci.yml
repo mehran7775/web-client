@@ -125,7 +125,7 @@ Development:
   script:
       - docker pull $repository/docker/bourse/$CONTAINER_NAME:TestStage
       - docker-compose --compatibility  up -d
-#  when : manual
+  when : manual
   only:
     - development
    
