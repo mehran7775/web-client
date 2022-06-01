@@ -9,6 +9,7 @@ const props = withDefaults(
     format: string;
   }>(),
   {
+    value: DateTime.now().toISO(),
     format: "yyyy-MM-dd HH:mm:ss",
   }
 );

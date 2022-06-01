@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { useNuxtApp, reactive } from "#app";
+import { useNuxtApp, reactive, ref } from "#app";
 import {
   Order,
   OrderSearchModel,
   PaginatedResult,
   WatchlistColumns,
   OrderFlags,
+  ValidationType,
 } from "@/types";
 import { useBottomPanel, useOrder } from "~~/composables";
 import DateTime from "../DateTime/dateTime.vue";
@@ -27,6 +28,8 @@ const cols = [
   new WatchlistColumns(i18n.t("wealth.order.validity").toString(), "validity"),
   new WatchlistColumns("", "more"),
 ];
+const agreement = ref(true);
+
 
 function parseOrderFlags(status: number) {
   if (status == OrderFlags.Draft) {
@@ -47,6 +50,22 @@ function parseOrderFlags(status: number) {
   }
 }
 
+function parseValidityType(status: number) {
+    if (status == ValidationType.Day) { 
+      return "wealth.order.validationType.Day";  
+    } else if (status == ValidationType.FillAndKill) {
+      return "wealth.order.validationType.FillAndKill";
+    } else if (status == ValidationType.GoodTillCancel) {
+      return "wealth.order.validationType.GoodTillCancel";  
+    } else if (status == ValidationType.GoodTillDate) {
+      return "wealth.order.validationType.GoodTillDate";  
+    } else if (status == ValidationType.Session) {
+      return "wealth.order.validationType.Session"; 
+    } else if (status == ValidationType.SlidingValidity) {
+      return "wealth.order.validationType.SlidingValidity";  
+    }
+}
+
 function isRunabled(status: number) {
   return (status & OrderFlags.Draft) == OrderFlags.Draft;
 }
@@ -60,8 +79,15 @@ function isDeleteDisabled(status: number) {
 }
 
 function executeDraftOrder(draftOrder: Order) {
-  draftOrder.flags = OrderFlags.Created;
-  orderManager.editOrder(draftOrder);
+  const param: any = { ...draftOrder};
+  param.flags = OrderFlags.Created;
+  param.termsAndConditions = agreement.value;
+  orderManager.editOrder(param);
+}
+
+function hasValidityDate(order: Order) 
+{  return (order.validityType == ValidationType.GoodTillDate) 
+          && (order.validityDate != null ) 
 }
 
 function getOrders() {
@@ -85,7 +111,12 @@ getOrders();
       <DateTime :value="item.creationDate" :format="$t('general.date.dt')" class="ltr" />
     </template>
     <template #item.validity="{ item }">
-      <DateTime :value="item.validityDate" :format="$t('general.date.dt')" class="ltr" />
+    <span v-if="!hasValidityDate(item)">
+      {{ $t(parseValidityType(item.validity)) }}
+    </span>
+      <DateTime v-else 
+      :value="item.validityDate" :format="$t('general.date.dt')" class="ltr" 
+      />
     </template>
     <template #item.quantity="{ item }">
       <NumericField :value="item.quantity" />
@@ -101,37 +132,18 @@ getOrders();
     </template>
     <template #item.flags="{ item }"> {{ $t(parseOrderFlags(item.flags)) }}</template>
     <template #item.more="{ item }">
-      <v-btn
-        color="transparent"
-        class="ma-0 pa-0"
-        width="24"
-        height="24"
-        depressed
-        :disabled="!isRunabled(item.flags)"
-        @click="executeDraftOrder(item)"
-      >
-        <ada-icon color="success" :size="16"> isax-play </ada-icon>
-      </v-btn>
-      <v-btn
-        color="transparent"
-        class="ma-0 pa-0"
-        width="24"
-        height="24"
-        depressed
-        :disabled="isEditDisabled(item.flags)"
-      >
-        <ada-icon color="info" :size="16"> isax-edit-2 </ada-icon>
-      </v-btn>
-      <v-btn
-        color="transparent"
-        class="ma-0 pa-0"
-        width="24"
-        height="24"
-        depressed
-        :disabled="isDeleteDisabled(item.flags)"
-      >
-        <ada-icon color="error" :size="16"> isax-trash </ada-icon>
-      </v-btn>
+      <ada-btn color="transparent" class="tw-m-0 tw-p-0" :width="24" :height="24" depressed
+        :disabled="!isRunabled(item.flags)" @click="executeDraftOrder(item)">
+        <ada-icon color="success" :disabled="!isRunabled(item.flags)" :size="16"> isax-play </ada-icon>
+      </ada-btn>
+      <ada-btn color="transparent" class="tw-m-0 tw-p-0" :width="24" :height="24" depressed
+        :disabled="isEditDisabled(item.flags)">
+        <ada-icon color="info" :disabled="isEditDisabled(item.flags)" :size="16"> isax-edit-2 </ada-icon>
+      </ada-btn>
+      <ada-btn color="transparent" class="tw-m-0 tw-p-0" :width="24" :height="24" depressed
+        :disabled="isDeleteDisabled(item.flags)">
+        <ada-icon color="error" :disabled="isDeleteDisabled(item.flags)" :size="16"> isax-trash </ada-icon>
+      </ada-btn>
     </template>
   </ada-data-table>
 </template>

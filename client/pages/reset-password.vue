@@ -36,9 +36,9 @@ function back() {
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn depressed color="primary" @click="otp" width="100%" large dark>
+        <ada-btn depressed color="primary" @click="otp" width="100%" large dark>
           {{ $t("login.send-sms") }}
-        </v-btn>
+        </ada-btn>
       </v-card-actions>
       <div v-html="$t('login.alerts')" class="mt-3 text-justify"></div>
     </v-card>

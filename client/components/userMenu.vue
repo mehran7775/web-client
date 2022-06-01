@@ -65,6 +65,8 @@ defineExpose({
 
 <style lang="postcss" scoped>
 .user-menu-activator {
+  @apply tw-m-0 tw-p-0 tw-px-3 tw-justify-start;
+  
   &::before {
     background-color: var(--c-primary-rgb) !important;
   }
@@ -74,15 +76,15 @@ defineExpose({
 <template>
   <v-menu v-model="userMenu" class="user-menu" offset-y>
     <template #activator="{ on, attrs }">
-      <v-btn height="28" min-width="184px" v-bind="attrs" v-on="on"
-        class="ma-0 pa-0 px-3 justify-start user-menu-activator" color="transparent" depressed>
+      <ada-btn :height="28" min-width="184px" v-bind="attrs" v-on="on"
+        class="user-menu-activator" color="transparent" depressed>
         <profile-picture :address="currentUser.profile && currentUser.profile.profilePic" />
         <span class=".d-none .d-sm-flex">{{
             currentUser.profile.nickname
               ? currentUser.profile.nickname
               : currentUser.userName
         }}</span>
-      </v-btn>
+      </ada-btn>
     </template>
     <v-list dense>
       <v-list-item v-for="item in userMenuItems" :key="item.title" :to="item.to" @click="

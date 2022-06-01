@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, ref, Ref } from "#app";
+import { computed, inject, ref, Ref, useRouter } from "#app";
 const props = withDefaults(
   defineProps<{
     model?: any;
@@ -8,9 +8,10 @@ const props = withDefaults(
     type: "button" | "submit" | "reset";
     icon: boolean;
     dark: boolean;
-    bordred: boolean | string;
+    bordered: boolean | string;
     color: string;
     repple: boolean
+    to?: string;
   }>(),
   {
     color: undefined,
@@ -24,14 +25,17 @@ const props = withDefaults(
   }
 );
 const emit = defineEmits(["click"]);
+const router = useRouter();
 
 const value: Ref<any> = inject("toggle-ref", ref(null));
 function click() {
   value.value = props.model;
+  if (props.to)
+    router.push(props.to)
 }
 
 const colorVal = computed(() => {
-  if (props.bordred) return "rgba(0,0,0,0)"
+  if (props.bordered) return "rgba(0,0,0,0)"
   if (props.color) {
     let tmp = props.color.split(" ");
     if (tmp.length == 1) return "var(--c-" + tmp[0] + "-rgb)";
@@ -40,9 +44,9 @@ const colorVal = computed(() => {
   return undefined;
 });
 const borderVal = computed(() => {
-  if (typeof props.bordred === "string") return props.bordred;
+  if (typeof props.bordered === "string") return props.bordered;
   const b = "solid var(--border-size-btn) ";
-  if (props.bordred) {
+  if (props.bordered) {
     if (props.color) {
       let tmp = props.color.split(" ");
       if (tmp.length == 1) return b + "var(--c-" + tmp[0] + "-rgb)";
@@ -63,22 +67,27 @@ const heightVal = computed(() =>
 </script>
 
 <style lang="postcss" scoped>
-button {
+.button {
   @apply tw-min-w-0 tw-justify-center;
   background-color: rgba(var(--c-primary), 0.1);
   border-radius: var(--border-radius-root);
-  font-size: 0.8334rem;
   font-weight: bold;
   position: relative;
-  overflow: hidden;
+  text-overflow: ellipsis;
 
   &.dark {
     color: white;
   }
 
+  &:disabled {
+    background-color: rgba(var(--c-gray), 0.2) !important;
+    color: var(--c-gray-rgb) !important;
+  }
+
   &.active::after {
     content: "";
     background-color: rgba(var(--c-primary), 0.2);
+    border-radius: var(--border-radius-root);
     position: absolute;
     height: 100%;
     width: 100%;
@@ -90,7 +99,25 @@ button {
 </style>
 
 <template>
-  <button :v-ada-ripple="repple" v-bind="$attrs" v-on="$listeners" @click="
+  <a v-if="to" class="button" :v-ada-ripple="ripple" v-bind="$attrs" v-on="$listeners" @click="
+    () => {
+      click();
+    }
+  " :class="[
+  dark ? 'dark' : '',
+  typeof props.model != 'undefined' && props.model == value ? 'active' : '',
+]" :type="type" :style="{
+  border: borderVal,
+  backgroundColor: colorVal,
+  minWidth: widthVal,
+  maxWidth: widthVal,
+  minHeight: heightVal,
+  maxHeight: heightVal,
+  lineHeight: icon ? '0.8334rem' : heightVal,
+}">
+    <slot></slot>
+  </a>
+  <button v-else class="button" :v-ada-ripple="ripple" v-bind="$attrs" v-on="$listeners" @click="
     () => {
       click();
     }

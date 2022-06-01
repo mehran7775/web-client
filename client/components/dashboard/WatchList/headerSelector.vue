@@ -2,12 +2,12 @@
   <v-menu content-class="mt-1 ml-n6" v-model="menu" min-width="164" max-width="164" offset-y bottom offset-x right
     max-height="50vh">
     <template #activator="{ on, attrs }">
-      <v-btn :color="menu ? 'primary' : 'transparent'" class="ma-0 pa-0" v-on="on" v-bind="attrs" width="24" height="24"
-        depressed>
+      <ada-btn :color="menu ? 'primary' : 'transparent'" class="ma-0 pa-0" v-on="on" v-bind="attrs" :width="24"
+        :height="24">
         <ada-icon :color="menu ? 'white' : 'primary'" :size="16">
           mdi-dots-horizontal-circle-outline
         </ada-icon>
-      </v-btn>
+      </ada-btn>
     </template>
     <v-list class="pt-0" min-height="256" dense>
       <v-list-item class="px-2 item" @click.stop="" dense>

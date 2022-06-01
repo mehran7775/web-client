@@ -306,27 +306,27 @@ getData(props.searchModel);
     <v-dialog max-width="50%" v-model="confirmInstrumentRemoval">
       <v-card>
         <v-card-title> {{ $t("general.alert") }} </v-card-title>
-        <v-card-text>
+        <p>
           {{ $t("instrument.remove") }}
-        </v-card-text>
-        <v-card-actions>
-          <v-btn width="65" color="primary" @click="
+        </p>
+        <div>
+          <ada-btn dark :width="65" color="primary" @click="
             () => {
               remove(itemToDelete);
               confirmInstrumentRemoval = false;
             }
           ">
             {{ $t("general.yes") }}
-          </v-btn>
-          <v-btn width="65" color="error" @click="
+          </ada-btn>
+          <ada-btn dark :width="65" color="error" @click="
             () => {
               itemToDelete = null;
               confirmInstrumentRemoval = false;
             }
           ">
             {{ $t("general.no") }}
-          </v-btn>
-        </v-card-actions>
+          </ada-btn>
+        </div>
       </v-card>
     </v-dialog>
   </div>

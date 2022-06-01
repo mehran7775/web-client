@@ -45,40 +45,17 @@ if (process.client) {
         <div class="doc-md" v-html="doc.ctx"></div>
       </v-window-item>
     </v-window>
-    <v-item-group class="controll" v-model="slide" mandatory>
+    <v-item-group class="control" v-model="slide" mandatory>
       <v-item v-for="doc in docs" :key="doc.path" v-slot="{ active, toggle }">
-        <v-btn
-          height="24"
-          width="24"
-          class="mx-2 pa-0"
-          :input-value="active"
-          @click="toggle"
-          aria-hidden
-          icon
-          dark
-        >
-          <div
-            class="item"
-            :style="{ height: '8px', width: active ? '28px' : '8px' }"
-          ></div>
-        </v-btn>
+        <ada-btn :height="24" :width="24" class="btn tw-mx-2 tw-p-0" :input-value="active" @click="toggle" aria-hidden
+          icon dark>
+          <div class="item" :style="{ height: '8px', width: active ? '24px' : '8px' }"></div>
+        </ada-btn>
       </v-item>
     </v-item-group>
     <div></div>
   </div>
 </template>
-
-<style lang="postcss">
-.controll {
-  .v-btn {
-    &--active {
-      &::before {
-        display: none;
-      }
-    }
-  }
-}
-</style>
 
 <style lang="postcss" scoped>
 .hover {
@@ -88,26 +65,37 @@ if (process.client) {
   width: 100%;
   height: calc(100% - 24px);
 }
+
 .slider {
   position: relative;
   height: 100%;
 }
+
 .slide {
   height: calc(100% - 24px);
   overflow: auto;
 }
-.controll {
-  text-align: center;
-  justify-content: center;
-  height: 24px;
-  .v-btn {
+
+.control {
+  >.btn {
     border: none !important;
+
     .item {
       transition: all 0.2s ease-in-out;
       display: inline-block;
       background-color: white;
       border-radius: 4px;
     }
+
+    &--active {
+      &::before {
+        display: none;
+      }
+    }
   }
+
+  text-align: center;
+  justify-content: center;
+  height: 24px;
 }
 </style>

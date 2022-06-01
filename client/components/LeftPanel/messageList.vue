@@ -11,10 +11,10 @@
         </v-list-item-title>
       </v-list-item>
     </div>
-    <v-btn @click="$emit('load', $event)" color="primary" :height="32" depressed class="more">
+    <ada-btn @click="$emit('load', $event)" color="primary" :height="32" depressed class="more">
       <v-progress-circular size="26" indeterminate v-show="loading" />
       <ada-icon v-show="!loading"> mdi-dots-horizontal </ada-icon>
-    </v-btn>
+    </ada-btn>
   </div>
 </template>
 <script lang="ts">

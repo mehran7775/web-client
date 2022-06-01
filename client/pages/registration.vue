@@ -122,9 +122,9 @@ function requestOtp() {
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
-      <v-btn color="primary" @click="validate" class="next" height="42" large>
+      <ada-btn color="primary" @click="validate" class="next" :height="42" large>
         {{ $t("general.next") }}
-      </v-btn>
+      </ada-btn>
       <div v-html="$t('login.alerts')" class="mt-3 text-justify"></div>
     </v-card>
   </div>

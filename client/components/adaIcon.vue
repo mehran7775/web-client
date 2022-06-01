@@ -28,6 +28,10 @@ const fontSize = computed(() =>
 </script>
 
 <style lang="postcss" scoped>
+:disabled .icon {
+  color: var(--c-gray-rgb) !important;
+}
+
 .icon {
   align-items: center;
   display: inline-flex;
@@ -39,11 +43,13 @@ const fontSize = computed(() =>
   text-indent: 0;
   vertical-align: middle;
   user-select: none;
+
 }
 </style>
 
 <template>
-  <i :class="['icon', group, icon]"
+  <i class="icon" :class="[group, icon]"
     :style="{ color: colorVar, fontSize, cursor: ($listeners && $listeners['click']) ? clicPointer : 'unset' }"
-    v-bind="$attrs" v-on="$listeners" />
+    v-bind="$attrs" v-on="$listeners"
+    :key="icon" />
 </template>
