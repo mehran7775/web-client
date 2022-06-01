@@ -10,7 +10,6 @@ const props = withDefaults(
     dark: boolean;
     bordered: boolean | string;
     color: string;
-    repple: boolean
     to?: string;
   }>(),
   {
@@ -20,8 +19,7 @@ const props = withDefaults(
     type: "button",
     icon: false,
     dark: false,
-    bordred: false,
-    repple: true
+    bordred: false
   }
 );
 const emit = defineEmits(["click"]);
@@ -99,7 +97,7 @@ const heightVal = computed(() =>
 </style>
 
 <template>
-  <a v-if="to" class="button" :v-ada-ripple="ripple" v-bind="$attrs" v-on="$listeners" @click="
+  <a v-if="to" class="button" v-ada-ripple v-bind="$attrs" v-on="$listeners" @click="
     () => {
       click();
     }
@@ -117,7 +115,7 @@ const heightVal = computed(() =>
 }">
     <slot></slot>
   </a>
-  <button v-else class="button" :v-ada-ripple="ripple" v-bind="$attrs" v-on="$listeners" @click="
+  <button v-else class="button" v-ada-ripple v-bind="$attrs" v-on="$listeners" @click="
     () => {
       click();
     }
