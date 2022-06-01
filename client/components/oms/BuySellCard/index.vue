@@ -262,7 +262,7 @@ instrumentManager
       <v-tab-item value="1">
         <form class="frm">
           <div class="tw-col-span-2 tw-justify-center">
-            <span class="tw-mx-3">{{ $t("wealth.sharesCount") }} (و {{insName}}): </span>
+            <span class="tw-mx-3">{{ $t("wealth.sharesCount") }} ({{insName}}): </span>
             <numeric-field :value="active.amount" class="tw-pl-2" />
           </div>
           <div class="tw-justify-between">
@@ -358,7 +358,7 @@ instrumentManager
       <v-tab-item value="2">
         <form class="frm">
           <div class="tw-col-span-2 tw-justify-center">
-            <span class="tw-mx-3">{{ $t("wealth.sharesCount") }} (و {{insName}}): </span>
+            <span class="tw-mx-3">{{ $t("wealth.sharesCount") }} ({{insName}}): </span>
             <numeric-field :value="active.amount" class="tw-pl-2" />
           </div>
           <div class="tw-justify-between">
