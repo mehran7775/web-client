@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, Ref, computed, ComputedRef } from "#app";
-import { TabItem } from "@/types";
+import { OrderFlags, OrderSearchModel, TabItem } from "@/types";
 import furtherInformation from "./furtherInformation/index.vue";
 import DefaultOrderList from "./defaultOrderList.vue";
 import DeepInformation from "./deepInformation/index.vue";
@@ -32,6 +32,12 @@ const tab = computed({
     }
   },
 });
+
+const searchModels = {
+  draftOrders: new OrderSearchModel(0, 10, OrderFlags.Draft),
+  actives: new OrderSearchModel(0, 10, OrderFlags.Confirmed | OrderFlags.PreOpening | OrderFlags.Created | OrderFlags.Sent),
+  canceledOrders: new OrderSearchModel(0, 10, OrderFlags.Cancelled),
+}
 
 const expanded = computed(() => bottomPanel.expanded);
 const showLoading = computed(() => bottomPanel.loading);
@@ -149,6 +155,15 @@ function close() {
         <ada-tabs v-model="active" name-key="$.title" class="tw-h-full" :class="{ expanded: expanded }">
           <ada-tab name="bottom-panel.orders.all">
             <default-order-list />
+          </ada-tab>
+          <ada-tab name="bottom-panel.orders.drafts">
+            <default-order-list v-model="searchModels.draftOrders" />
+          </ada-tab>
+          <ada-tab name="bottom-panel.orders.actives">
+            <default-order-list v-model="searchModels.actives" />
+          </ada-tab>
+          <ada-tab name="bottom-panel.orders.canceled">
+            <default-order-list v-model="searchModels.canceledOrders" />
           </ada-tab>
           <ada-tab name="bottom-panel.bests">
             <bests />
