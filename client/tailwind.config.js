@@ -18,7 +18,7 @@ module.exports = {
   prefix: "tw-",
   safelist: [
     {
-      pattern: /^tw-text-\w+|^tw-m[-xytblr]-?[\d\w]+/,
+      pattern: /^tw-text-\w+|^tw-m[-xytblr]-?[\d\w]+|^tw-[\w\d]+--active$/,
     },
   ],
 };

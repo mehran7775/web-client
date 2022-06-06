@@ -19,7 +19,7 @@ const props = withDefaults(
     type: "button",
     icon: false,
     dark: false,
-    bordred: false
+    bordered: false
   }
 );
 const emit = defineEmits(["click"]);

@@ -6,8 +6,10 @@ import DefaultOrderList from "./defaultOrderList.vue";
 import DeepInformation from "./deepInformation/index.vue";
 import Bests from "./bests.vue";
 import { useBottomPanel } from "~/composables";
-import AdaToggle from "../adaToggle.vue";
-import AdaBtn from "../adaBtn.vue";
+import AdaToggle from "@/components/adaToggle.vue";
+import AdaBtn from "@/components/adaBtn.vue";
+import AdaTabs from "@/components/adaTabs/index.vue"
+import AdaTab from "@/components/adaTabs/adaTab.vue"
 
 const bottomPanel = useBottomPanel();
 const { $i18n: i18n } = useNuxtApp();
@@ -114,20 +116,20 @@ function close() {
   }">
     <div v-show="tab != -1" class="detail">
       <div class="contents">
-        <v-tabs-items v-model="tab" :class="{ expanded: expanded }">
-          <v-tab-item>
+        <ada-tabs v-model="tab" class="tw-h-full" :class="{ expanded: expanded }">
+          <ada-tab :model="0">
             <default-order-list />
-          </v-tab-item>
-          <v-tab-item>
+          </ada-tab>
+          <ada-tab :model="1">
             <bests />
-          </v-tab-item>
-          <v-tab-item>
+          </ada-tab>
+          <ada-tab :model="2">
             <deep-information />
-          </v-tab-item>
-          <v-tab-item>
+          </ada-tab>
+          <ada-tab :model="3">
             <further-information />
-          </v-tab-item>
-        </v-tabs-items>
+          </ada-tab>
+        </ada-tabs>
         <loading :loading="showLoading" />
       </div>
       <header class="header" v-show="tab != -1">
