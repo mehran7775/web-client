@@ -12,6 +12,7 @@ const instrumentManager = useInstrument();
 const userManager = useUser();
 const sh = useShortcut();
 const route = useRoute();
+const toolbar = ref(null)
 
 const me = userManager.me;
 const bookmarks = computed(() => userManager.getBookmarks);
@@ -52,7 +53,7 @@ if (process.client) {
     },
   });
   function resize() {
-    instrumentManager.setWidth(screen.width - 96);
+    instrumentManager.setWidth(toolbar.value.offsetWidth);
   }
   onMounted(() => {
     window.addEventListener("mousemove", resize);
@@ -134,7 +135,7 @@ if (process.client) {
 
 <template>
   <div class="tw-m-0 tw-p-0">
-    <header class="toolbar">
+    <header ref="toolbar" class="toolbar">
       <slot name="toolbar"> </slot>
       <v-tooltip v-for="b in bookmarks" :key="b.to">
         <template #activator="{ on, attrs }">

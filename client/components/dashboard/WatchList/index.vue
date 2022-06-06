@@ -43,7 +43,7 @@ const watchlists = computed(() => userManager.watchList);
 const focused = computed(() => instrumentManager.getFocus);
 const canfocus = computed(() => {
   if (!process.client) return false;
-  return focused.value.length < Math.floor(instrumentManager.width / 360);
+  return instrumentManager.getFocus.length < Math.floor(instrumentManager.width / 360);
 });
 const me = computed(() => userManager.me);
 
