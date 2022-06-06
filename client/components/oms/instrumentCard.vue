@@ -92,7 +92,7 @@ instrumentManager
 <template>
   <div class="instrument">
     <header v-show="!hideHeaders">
-      {{ $t("instrument.detail") }} (و {{insName}})
+      {{ $t("instrument.detail") }} ({{insName}})
     </header>
     <div
       v-for="(field, index) in fields"
