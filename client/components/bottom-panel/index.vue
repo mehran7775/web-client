@@ -140,9 +140,9 @@ function close() {
 <template>
   <footer :class="{
     footer: true,
-    expanded: expanded && tab.title != '',
-    half: tab.title != '' && !expanded,
-    hiden: tab.title != '',
+    expanded: expanded && tab != defaultItem,
+    half: tab != defaultItem && !expanded,
+    hiden: tab == defaultItem,
   }">
     <div v-show="tab.title != ''" class="detail">
       <div class="contents">

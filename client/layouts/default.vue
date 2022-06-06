@@ -22,7 +22,7 @@ const locale = appManager.locale;
 const formatter = appManager.formatter;
 const collaps = computed(() => {
   const tab = bottomPanelManager.activeTab;
-  return tab != null && tab != -1;
+  return tab != null;
 });
 const home = computed(() => userManager.me.settings.home);
 const clipped = ref(true);
@@ -149,8 +149,10 @@ const rtl = computed(() => appManager.rtl);
 
 <template>
   <v-app :class="locale">
-    <right-panel :mini.sync="rightMenu.mini" :clipped="clipped" v-model="rightMenu.drawer" @closeLeftPanel="leftMenu.mini= true" class="shadow left" />
-    <left-panel :mini.sync="leftMenu.mini" :clipped="clipped" v-model="leftMenu.drawer" class="shadow right" @closeRightPanel="rightMenu.mini= true" />
+    <right-panel :mini.sync="rightMenu.mini" :clipped="clipped" v-model="rightMenu.drawer"
+      @closeLeftPanel="leftMenu.mini = true" class="shadow left" />
+    <left-panel :mini.sync="leftMenu.mini" :clipped="clipped" v-model="leftMenu.drawer" class="shadow right"
+      @closeRightPanel="rightMenu.mini = true" />
     <v-app-bar id="app-bar" :clipped-left="clipped" :clipped-right="clipped" :height="42" color="defualt-bg"
       class="text-no-wrap shadow bottom pe-2" fixed app dense>
       <nuxt-link class="d-flex flex-row px-2" :to="home">
@@ -163,7 +165,7 @@ const rtl = computed(() => appManager.rtl);
         () => {
           if (rightMenu.drawer) {
             rightMenu.mini = !rightMenu.mini;
-            if(!rightMenu.mini) leftMenu.mini= true
+            if (!rightMenu.mini) leftMenu.mini = true
           } else {
             rightMenu.drawer = true;
             rightMenu.mini = false;
