@@ -12,7 +12,7 @@ const props = defineProps<{
   clipped: boolean;
 }>();
 
-const emit = defineEmits(["input", "update:mini"]);
+const emit = defineEmits(["input", "update:mini", "closeLeftPanel"]);
 
 const userManager = useUser();
 const appManager = useAsrTrader();
@@ -272,6 +272,7 @@ if (process.client) {
       <div class="tabs pt-1">
         <v-tab v-for="item in items" :key="item.title" @click="
           () => {
+            $emit('closeLeftPanel')
             $emit('update:mini', !mini);
           }
         ">

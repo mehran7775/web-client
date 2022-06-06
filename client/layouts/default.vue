@@ -149,7 +149,7 @@ const rtl = computed(() => appManager.rtl);
 
 <template>
   <v-app :class="locale">
-    <right-panel :mini.sync="rightMenu.mini" :clipped="clipped" v-model="rightMenu.drawer" class="shadow left" />
+    <right-panel :mini.sync="rightMenu.mini" :clipped="clipped" v-model="rightMenu.drawer" @closeLeftPanel="leftMenu.mini= true" class="shadow left" />
     <left-panel :mini.sync="leftMenu.mini" :clipped="clipped" v-model="leftMenu.drawer" class="shadow right" @closeRightPanel="rightMenu.mini= true" />
     <v-app-bar id="app-bar" :clipped-left="clipped" :clipped-right="clipped" :height="42" color="defualt-bg"
       class="text-no-wrap shadow bottom pe-2" fixed app dense>
