@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useNuxtApp, computed } from "#app";
-import { Tabs } from "@/types";
+import { ref, Ref, computed, ComputedRef } from "#app";
+import { TabItem } from "@/types";
 import furtherInformation from "./furtherInformation/index.vue";
 import DefaultOrderList from "./defaultOrderList.vue";
 import DeepInformation from "./deepInformation/index.vue";
@@ -11,31 +11,39 @@ import AdaBtn from "@/components/adaBtn.vue";
 import AdaTabs from "@/components/adaTabs/index.vue"
 import AdaTab from "@/components/adaTabs/adaTab.vue"
 
+const defaultItem = { title: "", params: [] };
 const bottomPanel = useBottomPanel();
-const { $i18n: i18n } = useNuxtApp();
-const tabs = ["bottom-panel.orders", "bottom-panel.bests", "bottom-panel.depth"];
+const active: Ref<TabItem> = ref(defaultItem)
+const tabs = computed(() => bottomPanel.tabs);
 const tab = computed({
-  get(): Tabs {
-    return bottomPanel.activeTab;
+  get(): TabItem {
+    return bottomPanel.activeTab ?? defaultItem;
   },
-  set(value: Tabs) {
-    if (value != null) bottomPanel.setActiveTab(value);
-    else bottomPanel.setActiveTab(Tabs.none);
+  set(value: TabItem) {
+    bottomPanel.setActiveTab(value);
+    if (value) {
+      if (value.default && value.children) {
+        active.value = value.children.find((item) => item.title == value.default) || defaultItem;
+      } else {
+        active.value = value
+      }
+    } else {
+      active.value = defaultItem
+    }
   },
 });
+
 const expanded = computed(() => bottomPanel.expanded);
 const showLoading = computed(() => bottomPanel.loading);
-const title = computed(() => {
-  const tab = bottomPanel.title;
-  return tab ? i18n.t(tab.title, tab.params) : "";
-});
+const headers: ComputedRef<TabItem[]> = computed(() =>
+  typeof tab.value?.children != 'undefined' ? tab.value.children : [{ title: '', params: [] }]);
 
 function expand() {
   bottomPanel.toggleExpand();
 }
 function close() {
   if (expanded.value) bottomPanel.toggleExpand();
-  bottomPanel.setActiveTab(Tabs.none);
+  bottomPanel.setActiveTab(null);
 }
 </script>
 
@@ -81,6 +89,28 @@ function close() {
       padding: 0 12px;
       top: 0;
       left: 0;
+
+      >.tabs {
+        @apply tw-justify-start tw-w-full tw-items-end;
+        color: rgb(0, 0, 0);
+        background-color: rgba(var(--c-default), 0.2);
+        box-shadow: 0 0 1px 0 #e2e2e2;
+        height: 31px;
+        border-bottom: 1px solid rgba(var(--c-primary), 0.2);
+
+        .tab {
+          @apply tw-px-2;
+          background-color: rgba(0, 0, 0, 0);
+          min-width: 99px;
+          height: 24px;
+          border-radius: var(--border-radius-root) var(--border-radius-root) 0 0;
+
+          &::after {
+            border-radius: var(--border-radius-root) var(--border-radius-root) 0 0;
+          }
+        }
+      }
+
     }
 
     >.contents {
@@ -110,32 +140,34 @@ function close() {
 <template>
   <footer :class="{
     footer: true,
-    expanded: expanded && tab != -1,
-    half: tab != -1 && !expanded,
-    hiden: tab == -1,
+    expanded: expanded && tab.title != '',
+    half: tab.title != '' && !expanded,
+    hiden: tab.title != '',
   }">
-    <div v-show="tab != -1" class="detail">
+    <div v-show="tab.title != ''" class="detail">
       <div class="contents">
-        <ada-tabs v-model="tab" class="tw-h-full" :class="{ expanded: expanded }">
-          <ada-tab :model="0">
+        <ada-tabs v-model="active" name-key="$.title" class="tw-h-full" :class="{ expanded: expanded }">
+          <ada-tab name="bottom-panel.orders.all">
             <default-order-list />
           </ada-tab>
-          <ada-tab :model="1">
+          <ada-tab name="bottom-panel.bests">
             <bests />
           </ada-tab>
-          <ada-tab :model="2">
+          <ada-tab name="bottom-panel.depth">
             <deep-information />
           </ada-tab>
-          <ada-tab :model="3">
+          <ada-tab name="bottom-panel.more">
             <further-information />
           </ada-tab>
         </ada-tabs>
         <loading :loading="showLoading" />
       </div>
-      <header class="header" v-show="tab != -1">
-        <h4>
-          {{ title }}
-        </h4>
+      <header class="header" v-show="tab.title != ''">
+        <ada-toggle v-model="active" class="tabs">
+          <ada-btn class="tab" v-for="t in headers" :key="t.title" :model="t">
+            {{ $t(t.title) }}
+          </ada-btn>
+        </ada-toggle>
         <ada-spacer />
         <ada-btn class="tw-mx-[5px]" :width="24" :height="24" @click="expand()">
           <ada-icon color="primary" :size="16"> isax-maximize-3 </ada-icon>
@@ -145,9 +177,9 @@ function close() {
         </ada-btn>
       </header>
     </div>
-    <ada-toggle class="tabs" v-model="tab" :height="32" optional>
-      <ada-btn class="tab" v-for="(t, i) in tabs" :key="t" :model="i">
-        {{ $t(t) }}
+    <ada-toggle class="tabs" v-model="tab">
+      <ada-btn class="tab" v-for="(t, i) in tabs" :key="t.title" :model="t">
+        {{ $t(t.title) }}
         <bar v-if="i < tabs.length - 1" />
       </ada-btn>
     </ada-toggle>

@@ -3,18 +3,22 @@ import { provide, ref, watch } from "#app";
 const props = withDefaults(
     defineProps<{
         value: any;
+        nameKey: string;
     }>(),
     {
         value: 0,
+        nameKey: '$'
     }
 );
 const val = ref(props.value);
+const name = ref(eval(props.nameKey.replace('$', 'props.value')))
 provide("tab-ref", val);
+provide("tab-name", name);
 watch(
     () => props.value,
     (update) => {
-        console.log(update);
         val.value = update;
+        name.value = eval(props.nameKey.replace('$', 'update'));
     }
 );
 </script>

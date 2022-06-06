@@ -44,12 +44,63 @@ export enum Tabs {
   furtherInfo = 3,
 }
 
-export function TabNames(): TabTitle[] {
+export interface TabItem {
+  tab?: Tabs;
+  title: string;
+  params: Array<any>;
+  children?: Array<TabItem>;
+  default?: string;
+}
+
+export function TabNames(): TabItem[] {
   return [
-    { tab: Tabs.activeOrders, title: "bottom-panel.orders", params: [] },
-    { tab: Tabs.bests, title: "bottom-panel.bests", params: [] },
-    { tab: Tabs.depth, title: "bottom-panel.depth", params: [] },
-    { tab: Tabs.furtherInfo, title: "bottom-panel.more", params: [] },
+    {
+      tab: Tabs.activeOrders,
+      title: "bottom-panel.orders.all",
+      params: [],
+      children: [
+        {
+          title: "bottom-panel.orders.all",
+          params: [],
+        },
+        {
+          title: "bottom-panel.orders.drafts",
+          params: [],
+        },
+        {
+          title: "bottom-panel.orders.actives",
+          params: [],
+        },
+        {
+          title: "bottom-panel.orders.canceled",
+          params: [],
+        },
+      ],
+      default: "bottom-panel.orders.all",
+    },
+    {
+      tab: Tabs.bests,
+      title: "bottom-panel.bests",
+      params: [],
+      children: [{ tab: Tabs.bests, title: "bottom-panel.bests", params: [] }],
+      default: "bottom-panel.bests",
+    },
+    {
+      tab: Tabs.depth,
+      title: "bottom-panel.depth",
+      params: [],
+      children: [{ tab: Tabs.depth, title: "bottom-panel.depth", params: [] }],
+      default: "bottom-panel.depth",
+    },
+    {
+      tab: Tabs.furtherInfo,
+      title: "bottom-panel.more",
+      params: [],
+      children: [
+        { tab: Tabs.furtherInfo, title: "bottom-panel.more", params: [] },
+      ],
+      default: "bottom-panel.more",
+    },
   ];
 }
 
@@ -59,10 +110,4 @@ export enum DeepOptions {
   shareTypes = "shareTypes",
   holders = "holders",
   tradeHistory = "tradeHistory",
-}
-
-export interface TabTitle {
-  tab: Tabs;
-  title: string;
-  params: string[];
 }

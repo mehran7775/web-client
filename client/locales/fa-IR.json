@@ -282,8 +282,8 @@
         "title": "خرید/فروش",
         "SELL": "فروش",
         "BUY": "خرید",
-        "1":"@:wealth.order.side.BUY",
-        "2":"@:wealth.order.side.SELL"
+        "1": "@:wealth.order.side.BUY",
+        "2": "@:wealth.order.side.SELL"
       },
       "flags": {
         "Draft": "پیش نویس",
@@ -361,7 +361,12 @@
   },
   "bottom-panel": {
     "bests": "برترین‌ها",
-    "orders": "سفارشات",
+    "orders": {
+      "all": "سفارشات",
+      "drafts": "پیش‌نویست‌ها",
+      "actives": "سفارشات‌فعال",
+      "canceled": "لغوشده/خطاها"
+    },
     "depth": "اطلاعات تکمیلی بازار",
     "more": "جزئیات",
     "teammates": "همگروه‌ها ({0})"

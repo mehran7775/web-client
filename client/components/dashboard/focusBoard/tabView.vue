@@ -10,7 +10,6 @@ import { useBottomPanel, useInstrument } from "~/composables";
 const bottomPanel = useBottomPanel();
 const instrumentManager = useInstrument();
 const instruments = instrumentManager.getFocus;
-console.log(instrumentManager)
 
 const count = ref(0);
 const price = ref(0);
