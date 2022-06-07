@@ -99,7 +99,6 @@ function close() {
       >.tabs {
         @apply tw-justify-start tw-w-full tw-items-end;
         color: rgb(0, 0, 0);
-        background-color: rgba(var(--c-default), 0.2);
         box-shadow: 0 0 1px 0 #e2e2e2;
         height: 31px;
         border-bottom: 1px solid rgba(var(--c-primary), 0.2);
@@ -184,8 +183,10 @@ function close() {
           </ada-btn>
         </ada-toggle>
         <ada-spacer />
-        <ada-btn class="tw-mx-[5px]" :width="24" :height="24" @click="expand()">
-          <ada-icon color="primary" :size="16"> isax-maximize-3 </ada-icon>
+        <ada-btn class="tw-mx-[5px]" :color="expanded && tab != defaultItem ? 'primary' : 'transparent'" :width="24"
+          :height="24" @click="expand()">
+          <ada-icon :color="expanded && tab != defaultItem ? 'white' : 'primary'" :size="16"> isax-maximize-3
+          </ada-icon>
         </ada-btn>
         <ada-btn color="primary" :width="24" :height="24" @click="close()">
           <ada-icon color="white" :size="16">isax-minus</ada-icon>
