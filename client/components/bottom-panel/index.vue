@@ -136,6 +136,10 @@ function close() {
       background-color: rgba(0, 0, 0, 0);
       border-radius: 0 !important;
       min-width: 99px;
+
+      &::after {
+        border-radius: 0 !important;
+      }
     }
   }
 
