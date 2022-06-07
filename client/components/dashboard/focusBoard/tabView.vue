@@ -83,6 +83,17 @@ defineExpose({
       <v-tab-item v-for="item in instruments" :key="item.id" :value="item.id.toString()">
         <div class="detail">
           <div class="panel">
+            <instrument-card :insId="item.id" :insName="item.name" @count="
+              (val) => {
+                count = val;
+              }
+            " @price="
+  (val) => {
+    price = val;
+  }
+" responsive />
+          </div>
+          <div class="panel">
             <order-queue-card :insId="item.id" @count="
               (val) => {
                 count = val;
@@ -96,23 +107,6 @@ defineExpose({
             <ada-col class="col-border tw-align-middle tw-justify-center">
               <ada-icon size="16"> isax-presention-chart </ada-icon>
             </ada-col>
-          </div>
-          <div class="panel">
-            <instrument-card
-              :insId="item.id"
-              :insName="item.name"
-              @count="
-                (val) => {
-                  count = val;
-                }
-              "
-              @price="
-                (val) => {
-                  price = val;
-                }
-              "
-              responsive
-            />
           </div>
           <div class="panel">
             <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" :insName="item.name" />
