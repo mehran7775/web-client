@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, Ref, computed, ComputedRef } from "#app";
-import { OrderFlags, OrderSearchModel, TabItem } from "@/types";
+import { OrderFlags, OrderSearchModel, TabItem, defaultItem } from "@/types";
 import furtherInformation from "./furtherInformation/index.vue";
 import DefaultOrderList from "./defaultOrderList.vue";
 import DeepInformation from "./deepInformation/index.vue";
@@ -11,7 +11,7 @@ import AdaBtn from "@/components/adaBtn.vue";
 import AdaTabs from "@/components/adaTabs/index.vue"
 import AdaTab from "@/components/adaTabs/adaTab.vue"
 
-const defaultItem = { title: "", params: [] };
+
 const bottomPanel = useBottomPanel();
 const active: Ref<TabItem> = ref(defaultItem)
 const tabs = computed(() => bottomPanel.tabs);

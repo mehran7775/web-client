@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { defaultItem } from "@/types"
 import { computed, ref, watch } from "#app";
 import snackbar from "@/components/snacks.vue";
 import { useAsrTrader, useUser, useBottomPanel, useWealth } from "~/composables";
@@ -22,7 +23,7 @@ const locale = appManager.locale;
 const formatter = appManager.formatter;
 const collaps = computed(() => {
   const tab = bottomPanelManager.activeTab;
-  return tab != null;
+  return tab && tab != defaultItem;
 });
 const home = computed(() => userManager.me.settings.home);
 const clipped = ref(true);
@@ -95,6 +96,20 @@ const rtl = computed(() => appManager.rtl);
 .dashboardmain-page {
   background-color: rgba(var(--c-primary), 0.05);
   overflow: auto;
+}
+
+.mainBackground {
+  background-color: rgba(var(--c-default), 0.05);
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    content: '';
+  }
 }
 
 @media (min-width: 960px) {
@@ -201,7 +216,7 @@ const rtl = computed(() => appManager.rtl);
         right: !rightMenu.mini,
         left: !leftMenu.mini,
       }" />
-      <footer :class="{
+      <footer class="mainBackground" :class="{
         footer: true,
         right: !rightMenu.mini,
         left: !leftMenu.mini,

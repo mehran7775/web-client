@@ -52,6 +52,8 @@ export interface TabItem {
   default?: string;
 }
 
+export const defaultItem = { title: "", params: [] };
+
 export function TabNames(): TabItem[] {
   return [
     {
