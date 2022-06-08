@@ -27,6 +27,7 @@ const viewMode = computed({
   },
   set(val: number) {
     instrumentManager.setFocusMode(val);
+    console.log(instrumentManager.focusMode)
   },
 });
 
@@ -66,7 +67,7 @@ if (process.client) {
 
 <style lang="postcss" scoped>
 .focus-board {
-  height: 320px;
+  @apply tw-h-[320px] tw-w-full;
 }
 
 .toolbar {
@@ -166,15 +167,14 @@ if (process.client) {
         </ada-btn>
       </ada-toggle>
     </header>
-    <div class="tw-m-0 tw-p-0 focus-board" v-if="instruments.length > 0">
-      <v-window v-model="viewMode">
-        <v-window-item>
-          <tab-view />
-        </v-window-item>
-        <v-window-item>
-          <card-view />
-        </v-window-item>
-      </v-window>
-    </div>
+    <ada-tabs class="focus-board" v-if="instruments.length > 0" v-model="viewMode">
+      <ada-tab :model="0">
+        <tab-view />
+      </ada-tab>
+      <ada-tab :model="1">
+        <card-view />
+      </ada-tab>
+    </ada-tabs>
+
   </div>
 </template>

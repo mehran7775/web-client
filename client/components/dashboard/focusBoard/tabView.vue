@@ -15,10 +15,10 @@ const count = ref(0);
 const price = ref(0);
 const tab = computed({
   get: () => {
-    return instrumentManager.selectedId;
+    return instrumentManager.getSelected;
   },
   set: (val) => {
-    instrumentManager.selectById(parseInt(val));
+    instrumentManager.select(val);
   },
 });
 function close(id: number) {
@@ -38,10 +38,12 @@ async function deep(option: DeepOptions, instrument: Instrument) {
       }
       break;
     default:
-      bottomPanel.setTitle({ tab: Tabs.depth, title: "oms." + option, params: [] });
+      //TODO
+      //bottomPanel.setTitle({ tab: Tabs.depth, title: "oms." + option, params: [] });
       break;
   }
-  bottomPanel.setActiveTab(Tabs.depth);
+  //TODO
+  //bottomPanel.setActiveTab(Tabs.depth);
 }
 defineExpose({
   close,
@@ -56,63 +58,95 @@ defineExpose({
 
 <style lang="postcss" scoped>
 .tab-view {
-  .detail {
-    @apply tw-flex tw-flex-grow tw-justify-between;
+  >.toggle {
+    @apply tw-justify-start tw-w-full;
+    background-color: rgba(var(--c-default), 0.2);
+    box-shadow: 0 0 1px 0 #e2e2e2;
+    min-height: 32px;
 
-    .panel {
-      border-left: 1px solid #e0e0e0;
-      border-right: 1px solid #e0e0e0;
-      width: calc(33% - 2px);
+
+    .tab {
+      @apply tw-px-2 tw-flex tw-items-center tw-justify-between;
+      background-color: rgba(0, 0, 0, 0);
+      border-radius: 0 !important;
+      min-width: 99px;
+
+      &::after {
+        border-radius: 0 !important;
+      }
+    }
+  }
+
+  >.tabs {
+    min-height: calc(320px - 32px);
+
+    .detail {
+      @apply tw-flex tw-flex-grow tw-justify-between;
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background-color: white;
+        z-index: -1;
+      }
+
+      .panel {
+        border-left: 1px solid #e0e0e0;
+        border-right: 1px solid #e0e0e0;
+        width: calc(33% - 2px);
+      }
     }
   }
 }
 </style>
 
 <template>
-  <div class="tab-view">
-    <v-tabs :height="32" color="primary" v-model="tab" align-with-title>
-      <v-tab v-for="item in instruments" :key="item.id" :href="'#' + item.id" class="pe-1 ps-5">
-        <v-badge color="success" dot left offset-y="75%" offset-x="-5">
+  <div class="tab-view tw-w-full">
+    <ada-toggle :height="32" color="primary" v-model="tab" align-with-title>
+      <ada-btn v-for="(item, i) in instruments" :key="item.id" :model="item" name-key="$.id" class="tab">
+        <ada-badge color="success" dot left offset-y="75%" offset-x="-5">
           {{ item.name }}
-        </v-badge>
-        <ada-spacer />
-        <ada-icon @click="() => close(item.id)" :size="12"> mdi-close </ada-icon>
-      </v-tab>
-    </v-tabs>
-    <v-tabs-items v-model="tab">
-      <v-tab-item v-for="item in instruments" :key="item.id" :value="item.id.toString()">
-        <div class="detail">
-          <div class="panel">
-            <instrument-card :insId="item.id" :insName="item.name" @count="
-              (val) => {
-                count = val;
-              }
-            " @price="
+        </ada-badge>
+        <ada-icon @click.stop="() => close(item.id)" :size="12"> mdi-close </ada-icon>
+        <bar v-if="i < instruments.length - 1" />
+      </ada-btn>
+    </ada-toggle>
+    <ada-tabs v-model="tab">
+      <ada-tab class="detail" v-for="item in instruments" :key="item.id" :model="item">
+        <div class="panel">
+          <instrument-card :insId="item.id" :insName="item.name" @count="
+            (val) => {
+              count = val;
+            }
+          " @price="
   (val) => {
     price = val;
   }
 " responsive />
-          </div>
-          <div class="panel">
-            <order-queue-card :insId="item.id" @count="
-              (val) => {
-                count = val;
-              }
-            " @price="
+        </div>
+        <div class="panel">
+          <order-queue-card :insId="item.id" @count="
+            (val) => {
+              count = val;
+            }
+          " @price="
   (val) => {
     price = val;
   }
 " copy responsive />
-            <legal-real-card :insId="item.id" hide-headers responsive />
-            <ada-col class="col-border tw-align-middle tw-justify-center">
-              <ada-icon size="16"> isax-presention-chart </ada-icon>
-            </ada-col>
-          </div>
-          <div class="panel">
-            <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" :insName="item.name" />
-          </div>
+          <legal-real-card :insId="item.id" hide-headers responsive />
+          <ada-col class="col-border tw-align-middle tw-justify-center">
+            <ada-icon size="16"> isax-presention-chart </ada-icon>
+          </ada-col>
         </div>
-      </v-tab-item>
-    </v-tabs-items>
+        <div class="panel">
+          <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" :insName="item.name" />
+        </div>
+      </ada-tab>
+    </ada-tabs>
   </div>
 </template>

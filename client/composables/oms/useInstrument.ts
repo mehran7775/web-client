@@ -38,9 +38,6 @@ export const useInstrument = defineStore("instrument", () => {
     },
   });
   const focusMode = computed(() => state.value.focusViewMode);
-  const selectedId = computed(() =>
-    (state.value.selected?.id ?? -1).toString()
-  );
   const getByKey = computed(
     () =>
       (key: number): InstrumentCache | null =>
@@ -56,12 +53,7 @@ export const useInstrument = defineStore("instrument", () => {
 
   // Mutations
   function updateInstrument(
-    data:
-      | InstrumentCache
-      | Instrument
-      | DailyPrice
-      | MarketHistory
-      | Wealth
+    data: InstrumentCache | Instrument | DailyPrice | MarketHistory | Wealth
   ) {
     const inst = state.value.cache.get(data.id.toString());
     if (inst) Object.assign(inst, data);
@@ -82,12 +74,16 @@ export const useInstrument = defineStore("instrument", () => {
     state.value.focusViewMode = data;
   }
   function removeFocus(data: number) {
-    state.value.focus.splice(
-      state.value.focus.findIndex((element: Instrument) => element.id == data),
-      1
+    const index = state.value.focus.findIndex(
+      (element: Instrument) => element.id == data
     );
+    state.value.focus.splice(index, 1);
+    state.value.selected =
+      index > state.value.focus.length
+        ? state.value.focus[index - 1]
+        : state.value.focus[index];
   }
-  function select(active: InstrumentCache) {
+  function select(active: InstrumentCache | null) {
     state.value.selected = active;
   }
   function selectByIndex(index: number) {
@@ -200,7 +196,6 @@ export const useInstrument = defineStore("instrument", () => {
     // Getters
     width,
     focusMode,
-    selectedId,
     getByKey,
     getFocus,
     getSelected,
