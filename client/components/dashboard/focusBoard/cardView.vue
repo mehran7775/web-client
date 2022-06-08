@@ -79,7 +79,7 @@ function select(item: InstrumentCache) {
     <card @click="() => select(item)" class="card-view" :min-width="346" :width="maxwidthVal - 14"
       :max-width="maxwidthVal" v-for="item in instruments" :key="item.id">
       <header class="toolbar">
-        <v-badge left class="title" offset-y="65%" offset-x="-4px" :color="
+        <ada-badge class="title" :color="
           (item.status & 1) != 1
             ? 'error'
             : (item.status & 6) != 6
@@ -87,7 +87,7 @@ function select(item: InstrumentCache) {
               : 'success'
         " dot>
           {{ item.name }}
-        </v-badge>
+        </ada-badge>
         ({{ $t("instrument.state." + item.status) }})
         <ada-spacer />
         <ada-btn depressed height="24px" width="56px" color="success" dark small class="ma-0 me-2 pa-0 buy"

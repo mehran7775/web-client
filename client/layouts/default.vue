@@ -192,13 +192,13 @@ const rtl = computed(() => appManager.rtl);
       </ada-icon>
 
       <clock :format="$t('general.date.longdt')" width="240px" />
-      <div class="center">
-        <v-badge dot left color="green" class="mx-5" offset-y="75%" offset-x="-5">
+      <div class="center tw-flex rtl">
+        <ada-badge class="tw-mx-5" color="green">
           {{ $t("oms.bourseIndex") }}: {{ formatter.format(0.0) }}
-        </v-badge>
-        <v-badge dot left color="orange" class="mx-5" offset-y="75%" offset-x="-5">
+        </ada-badge>
+        <ada-badge color="orange">
           {{ $t("oms.superBourseIndex") }}: {{ formatter.format(0.0) }}
-        </v-badge>
+        </ada-badge>
       </div>
       <ada-spacer />
       <user-menu />
@@ -222,20 +222,20 @@ const rtl = computed(() => appManager.rtl);
         left: !leftMenu.mini,
       }">
         <div class="summary center">
-          <v-badge dot left class="ms-5" color="green" offset-y="75%" offset-x="-5">{{ $t("accounting.account.amount")
-          }}0</v-badge>
-          <v-badge dot left class="ms-5" color="red" offset-y="75%" offset-x="-5">{{
+          <ada-badge color="green">{{ $t("accounting.account.amount")
+          }}0</ada-badge>
+          <ada-badge color="red">{{
               $t("accounting.account.blockedAmount")
-          }}0</v-badge>
-          <v-badge dot left class="ms-5" color="orange" offset-y="75%" offset-x="-5">
+          }}0</ada-badge>
+          <ada-badge color="orange">
             {{ $t("accounting.account.onlineBlockedAmount") }}0
-          </v-badge>
-          <v-badge dot left class="ms-5" color="blue" offset-y="75%" offset-x="-5">{{
+          </ada-badge>
+          <ada-badge color="blue">{{
               $t("accounting.account.remaining")
-          }}0</v-badge>
-          <v-badge dot left class="ms-5" color="#89abcd" offset-y="75%" offset-x="-5">{{
+          }}0</ada-badge>
+          <ada-badge color="skyblue">{{
               $t("accounting.account.credit")
-          }}0</v-badge>
+          }}0</ada-badge>
         </div>
         <div class="cw">
           &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}

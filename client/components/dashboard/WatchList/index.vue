@@ -241,7 +241,7 @@ getData(props.searchModel);
             </div>
           </template>
           <template #item.name="{ item }">
-            <v-badge left offset-y="65%" offset-x="-4px" :color="
+            <ada-badge :color="
               (item.status & 1) != 1
                 ? 'error'
                 : (item.status & 6) != 6
@@ -256,7 +256,7 @@ getData(props.searchModel);
                 </template>
                 {{ $t(parseStatus(item.status)) }}
               </v-tooltip>
-            </v-badge>
+            </ada-badge>
           </template>
           <template #item.opening="{ item }">
             <numeric-field :value="item.wealth" />

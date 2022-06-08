@@ -17,9 +17,11 @@ const colorVal = computed(() => {
 </script>
 <style lang="postcss">
 .ada-badge {
+    @apply tw-flex tw-items-center;
     margin-left: calc(0.6334rem + 2.5px);
     margin-right: 0;
     position: relative;
+    white-space: nowrap;
 
     .badge {
         position: absolute;
