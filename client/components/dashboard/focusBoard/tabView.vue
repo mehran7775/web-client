@@ -6,6 +6,7 @@ import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
 import BuySellCard from "@/components/oms/BuySellCard/index.vue";
 import { useBottomPanel, useInstrument } from "~/composables";
+import NumericField from "~~/components/numericField.vue";
 
 const bottomPanel = useBottomPanel();
 const instrumentManager = useInstrument();
@@ -111,6 +112,8 @@ defineExpose({
         <ada-badge color="success" dot left offset-y="75%" offset-x="-5">
           {{ item.name }}
         </ada-badge>
+        (
+        <NumericField v-model="item.last" class="tw-text-xs" />)
         <ada-icon @click.stop="() => close(item.id)" :size="12"> mdi-close </ada-icon>
         <bar v-if="i < instruments.length - 1" />
       </ada-btn>
