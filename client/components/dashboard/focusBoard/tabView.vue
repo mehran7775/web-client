@@ -6,7 +6,7 @@ import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
 import BuySellCard from "@/components/oms/BuySellCard/index.vue";
 import { useBottomPanel, useInstrument } from "~/composables";
-import NumericField from "~~/components/numericField.vue";
+import LastPrice from "@/components/oms/lastPrice.vue"
 
 const bottomPanel = useBottomPanel();
 const instrumentManager = useInstrument();
@@ -49,6 +49,7 @@ async function deep(option: DeepOptions, instrument: Instrument) {
 defineExpose({
   close,
   deep,
+  LastPrice,
   price,
   count,
   tab,
@@ -70,7 +71,7 @@ defineExpose({
       @apply tw-px-2 tw-flex tw-items-center tw-justify-between;
       background-color: rgba(0, 0, 0, 0);
       border-radius: 0 !important;
-      min-width: 99px;
+      min-width: 168px;
 
       &::after {
         border-radius: 0 !important;
@@ -111,9 +112,8 @@ defineExpose({
       <ada-btn v-for="(item, i) in instruments" :key="item.id" :model="item" name-key="$.id" class="tab">
         <ada-badge color="success" dot left offset-y="75%" offset-x="-5">
           {{ item.name }}
+          <last-price :value="item" />
         </ada-badge>
-        (
-        <NumericField v-model="item.last" class="tw-text-xs" />)
         <ada-icon @click.stop="() => close(item.id)" :size="12"> mdi-close </ada-icon>
         <bar v-if="i < instruments.length - 1" />
       </ada-btn>
