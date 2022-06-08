@@ -79,7 +79,7 @@ export const useInstrument = defineStore("instrument", () => {
     );
     state.value.focus.splice(index, 1);
     state.value.selected =
-      index > state.value.focus.length
+      index >= state.value.focus.length
         ? state.value.focus[index - 1]
         : state.value.focus[index];
   }
