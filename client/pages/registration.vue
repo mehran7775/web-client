@@ -147,18 +147,6 @@ function requestOtp() {
 </style>
 
 <style lang="postcss" scoped>
-.primary {
-  &.v-btn {
-    &--disabled {
-      color: var(--c-primary-rgb) !important;
-
-      i.icon {
-        color: var(--c-primary-rgb) !important;
-      }
-    }
-  }
-}
-
 .next {
   width: 100%;
 }

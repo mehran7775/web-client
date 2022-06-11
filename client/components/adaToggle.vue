@@ -3,9 +3,11 @@ import { provide, ref, watch } from "#app";
 const props = withDefaults(
   defineProps<{
     value: any;
+    vertical: boolean;
   }>(),
   {
     value: 0,
+    vertical: false,
   }
 );
 const emit = defineEmits(["input"]);
@@ -25,10 +27,14 @@ watch(val, (update) => {
 <style lang="postcss">
 .toggle {
   @apply tw-flex tw-flex-nowrap tw-flex-grow;
+
+  &.vertical {
+    @apply tw-flex-col;
+  }
 }
 </style>
 <template>
-  <div class="toggle">
+  <div class="toggle" :class="[vertical ? 'vertical' : '']">
     <slot />
   </div>
 </template>

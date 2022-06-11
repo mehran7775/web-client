@@ -96,6 +96,7 @@ const rtl = computed(() => appManager.rtl);
 .dashboardmain-page {
   background-color: rgba(var(--c-primary), 0.05);
   overflow: auto;
+  @apply tw-transition-all tw-ease-in-out tw-duration-700;
 }
 
 .mainBackground {
@@ -163,7 +164,7 @@ const rtl = computed(() => appManager.rtl);
 
 
 <template>
-  <v-app :class="locale">
+  <v-app :class="[locale, rtl ? 'rtl' : 'ltr']">
     <right-panel :mini.sync="rightMenu.mini" :clipped="clipped" v-model="rightMenu.drawer"
       @closeLeftPanel="leftMenu.mini = true" class="shadow left" />
     <left-panel :mini.sync="leftMenu.mini" :clipped="clipped" v-model="leftMenu.drawer" class="shadow right"
@@ -192,7 +193,7 @@ const rtl = computed(() => appManager.rtl);
       </ada-icon>
 
       <clock :format="$t('general.date.longdt')" width="240px" />
-      <div class="center tw-flex rtl">
+      <div class="center tw-flex">
         <ada-badge class="tw-mx-5" color="green">
           {{ $t("oms.bourseIndex") }}: {{ formatter.format(0.0) }}
         </ada-badge>
@@ -207,7 +208,6 @@ const rtl = computed(() => appManager.rtl);
       'dashboardmain-page': true,
       right: !rightMenu.mini,
       left: !leftMenu.mini,
-      rtl: rtl,
     }">
       <div :class="['dashboardmain-nuxt', collaps ? 'collaps' : '']">
         <nuxt />
