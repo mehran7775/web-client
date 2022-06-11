@@ -95,13 +95,18 @@ export const useInstrument = defineStore("instrument", () => {
   function setWidth(width: number) {
     state.value.width = width;
   }
-
   //Move Actions Buisiness here
   async function getInstrumentsDetail(
     searchModel: InstrumentSearchModel
   ): Promise<Array<InstrumentCache>> {
     const res: Array<InstrumentCache> = [];
     const missing: Array<number> = [];
+    
+    if(searchModel.ids.length > 0) searchModel.ids.sort(( a: number, b: number ) => {
+      if( a > b ) return 1
+      else if( a < b )  return -1
+      else return 0
+    });
 
     if (
       searchModel.boardIds.length == 0 &&
@@ -109,6 +114,7 @@ export const useInstrument = defineStore("instrument", () => {
       searchModel.ids.length != 0
     ) {
       let tmp = null;
+
       for (let i in searchModel.ids) {
         tmp = state.value.cache.get(searchModel.ids[i].toString());
         if (tmp?.name) res.push(tmp);
@@ -127,6 +133,7 @@ export const useInstrument = defineStore("instrument", () => {
         Object.assign({}, searchModel, { ids: missing }),
         axios
       );
+      console.log(data)
       data.forEach((item) => {
         updateInstrument(item);
         res.push(state.value.cache.get(item.id.toString()) as InstrumentCache);
