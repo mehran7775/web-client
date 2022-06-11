@@ -174,7 +174,9 @@ if (process.client) {
 }
 
 .tabs {
-  background-color: rgba(var(--c-primary), 0.05);
+  /* background-color: rgba(var(--c-primary), 0.05); */
+  background-color: rgba(var(--c-primary), 0.01);
+  /* background-color: red; */
   overflow-y: auto;
   height: 100vh;
   padding-bottom: 54px;
@@ -336,8 +338,15 @@ if (process.client) {
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             {{ sub.text ? sub.text : $t(sub.title) }}
                           </v-list-item-title>
-                          <div class="d-flex flex-row my-0">
-                              <svg width="14px" height="14px" viewBox="0 0 10 11" xmlns="http://www.w3.org/2000/svg" class="tw-mt-1">
+                          <div class="d-flex flex-row my-0 tw-items-center">
+                              <svg width="14px" height="14px" viewBox="0 0 10 11" xmlns="http://www.w3.org/2000/svg" class="tw-mt-1 tw-ml-1"
+                              @click.prevent="
+                              (ev) => {
+                                if (isMarked(sub)) unmark(sub);
+                                else mark(sub);
+                                }
+                              "
+                              >
                               <path d="M7.41016 0H2.59016C1.52516 0 0.660156 0.87 0.660156 1.93V8.975C0.660156 9.875 1.30516 10.255 2.09516 9.82L4.53516 8.465C4.79516 8.32 5.21516 8.32 5.47016 8.465L7.91016 9.82C8.70016 10.26 9.34516 9.88 9.34516 8.975V1.93C9.34016 0.87 8.47516 0 7.41016 0Z" :fill="isMarked(sub) ? '#3554D1' : '#E5E9FA'"/>
                               </svg>
                               <svg @click.prevent="
@@ -360,13 +369,13 @@ if (process.client) {
                       <v-list-item-title>
                         {{ child.text ? child.text : $t(child.title) }}
                       </v-list-item-title>
-                      <div v-if="child.to && child.to != ''" class="d-flex flex-row my-0">
+                      <div v-if="child.to && child.to != ''" class="d-flex flex-row my-0 tw-items-center">
                         <svg @click="
                           (ev) => {
                             if (isMarked(child)) unmark(child);
                             else mark(child);
                           }
-                        " v-if="child.bookmarkPosition" width="14px" height="14px" viewBox="0 0 10 11" xmlns="http://www.w3.org/2000/svg" class="tw-mt-1">
+                        " v-if="child.bookmarkPosition" width="14px" height="14px" viewBox="0 0 10 11" xmlns="http://www.w3.org/2000/svg" class="tw-mt-1 tw-ml-1">
                         <path d="M7.41016 0H2.59016C1.52516 0 0.660156 0.87 0.660156 1.93V8.975C0.660156 9.875 1.30516 10.255 2.09516 9.82L4.53516 8.465C4.79516 8.32 5.21516 8.32 5.47016 8.465L7.91016 9.82C8.70016 10.26 9.34516 9.88 9.34516 8.975V1.93C9.34016 0.87 8.47516 0 7.41016 0Z" :fill="isMarked(child) ? '#3554D1' : '#E5E9FA'"/>
                         </svg>
                         <svg @click=" 
