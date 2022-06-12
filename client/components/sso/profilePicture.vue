@@ -1,6 +1,6 @@
 <template>
-  <v-avatar class="tw-m-0 tw-p-0" size="32" rounded>
-    <v-img class="tw-m-0 tw-p-0" :src="img" max-width="32">
+  <v-avatar class="tw-m-0 tw-p-0 tw-bg-red-300 tw-border tw-rounded-full tw-border-gray" size="32">
+    <v-img class="tw-m-0 tw-p-0" src="/404.jpeg" max-width="32">
       <ada-icon class="tw-m-0 tw-p-0" slot="placeholder" :size="24"> mdi-account </ada-icon>
     </v-img>
   </v-avatar>

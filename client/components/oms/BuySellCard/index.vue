@@ -349,7 +349,7 @@ instrumentManager
               () => {
                 placeOrder({ draft: false });
               }
-            " depressed>
+            " depressed v-bind:style="countVal > 1 && priceVal ? 'background-color: var(--c-success-rgb)' : null">
               {{ $t("oms.buy-btn") }}
             </ada-btn>
           </div>
@@ -396,7 +396,7 @@ instrumentManager
                 </ada-btn>
               </template>
             </text-input>
-          </div>
+          </div>gh
           <div class="tw-justify-between">
             <account-type :label="$t('accounting.account.type')" class="tw-my-1" height="24px">
             </account-type>
