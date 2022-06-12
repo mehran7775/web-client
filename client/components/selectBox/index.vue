@@ -145,8 +145,8 @@ const getValue: (item: any) => any = eval(
     display: block;
     list-style: none;
     padding: 0 6px 0 6px;
-    height: var(--tabel-row-height);
-    line-height: var(--tabel-row-height);
+    height: var(--row-height);
+    line-height: var(--row-height);
 
     &:hover {
       background-color: rgba(var(--c-primary), 0.05);

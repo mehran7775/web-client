@@ -149,8 +149,8 @@ instrumentManager
 
     >div {
       @apply tw-flex tw-flex-grow tw-items-center;
-      min-height: var(--tabel-row-height);
-      height: var(--tabel-row-height);
+      min-height: var(--row-height);
+      height: var(--row-height);
       min-width: 50%;
       padding: 0 12px !important;
       position: relative;

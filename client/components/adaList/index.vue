@@ -5,9 +5,16 @@ const props = withDefaults(defineProps<{
     tag: 'ol'
 });
 </script>
+//TODO list pading remove after removing vuetify
 <style lang="postcss" scoped>
-.ada-list{
+.ada-list {
     @apply tw-flex tw-flex-col;
+
+    ol,
+    ul,
+    dl {
+        padding: 0 !important;
+    }
 }
 </style>
 <template>

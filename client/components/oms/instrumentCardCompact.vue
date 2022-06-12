@@ -30,8 +30,8 @@ defineExpose({
   > div {
     @apply tw-whitespace-nowrap tw-flex tw-justify-between tw-px-4;
     position: relative;
-    height: var(--tabel-row-height);
-    line-height: var(--tabel-row-height);
+    height: var(--row-height);
+    line-height: var(--row-height);
     background-color: rgba(var(--c-primary), 0.05);
   }
   .header {

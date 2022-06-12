@@ -72,12 +72,12 @@ defineExpose({
 .order-queue {
   > header {
     @apply tw-grid tw-grid-cols-6 tw-text-center;
-    height: var(--tabel-row-height);
-    line-height: var(--tabel-row-height);
+    height: var(--row-height);
+    line-height: var(--row-height);
     > div {
       font-size: 0.75rem !important;
       font-weight: 700;
-      max-height: var(--tabel-row-height);
+      max-height: var(--row-height);
     }
     .sell {
       background-color: #efeff1;
@@ -91,7 +91,7 @@ defineExpose({
     position: relative;
     > div {
       height: 31px;
-      line-height: var(--tabel-row-height);
+      line-height: var(--row-height);
     }
     > .field {
       @apply tw-text-center;

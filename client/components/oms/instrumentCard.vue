@@ -76,15 +76,15 @@ instrumentManager
   > header {
     @apply tw-flex tw-justify-center tw-col-span-2;
     background-color: #e0e0e0;
-    line-height: var(--tabel-row-height);
-    height: var(--tabel-row-height);
+    line-height: var(--row-height);
+    height: var(--row-height);
     font-weight: bold;
   }
   > div {
     @apply tw-flex tw-justify-between tw-px-4;
     position: relative;
-    line-height: var(--tabel-row-height);
-    height: var(--tabel-row-height);
+    line-height: var(--row-height);
+    height: var(--row-height);
   }
 }
 </style>

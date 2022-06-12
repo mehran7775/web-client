@@ -3,12 +3,11 @@ import { MenuItem } from '@/types';
 import { computed } from "#app";
 
 const props = withDefaults(defineProps<{
-    tag: 'li' | 'dt' | 'ds';
+    tag: 'li' | 'dd';
     value?: MenuItem
 }>(), {
     tag: 'li',
 });
-const cmp = computed(() => props.value?.children ? 'adaList' : props.tag)
 </script>
 <style lang="postcss" scoped>
 .ada-list-item {
@@ -16,8 +15,11 @@ const cmp = computed(() => props.value?.children ? 'adaList' : props.tag)
     min-height: var(--row-height);
 }
 </style>
+//TODO multiple root element in vue 3
 <template>
-    <component :is="cmp" class="ada-list-item">
-        <slot />
+    <component :is="tag" class="ada-list-item">
+        <slot>
+            <h4>{{ $t(value.title) }}</h4>
+        </slot>
     </component>
 </template>
