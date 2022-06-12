@@ -255,13 +255,13 @@ if (process.client) {
 
     <ada-tabs class="tab-items" v-model="selected">
       <ada-tab v-for="item in items" :key="item.title" :name="item.title">
-        <h4 class="text-center mt-1">
+        <h4 class="tw-flex tw-flex-shrink-0 tw-h-[42px] tw-justify-center tw-items-center">
           {{ $t(item.title) }}
         </h4>
         <ada-list class="tw-p-0">
           <ada-list-item v-for="child in item.children ? item.children : []" :key="child.title">
-            <ada-list class="item mx-1 group" v-if="child.children" append-icon.size="12">
-              <ada-list-item slot="activator" class="tw-text-">
+            <ada-list class="tw-p-0 tw-w-full tw-mx-1 item group" v-if="child.children" append-icon.size="12">
+              <ada-list-item slot="activator">
                 {{ child.text ? child.text : $t(child.title) }}
                 <ada-spacer />
                 <ada-icon> isax-arrow-down </ada-icon>
@@ -305,10 +305,10 @@ if (process.client) {
             </ada-list>
             <v-tooltip v-else left>
               <template #activator="{ on, attrs }">
-                <v-list-item v-on="on" v-bind="attrs" class="item mx-1" :to="child.to ? child.to : '#'">
-                  <v-list-item-title>
+                <ada-list-item v-on="on" v-bind="attrs" class="item mx-1" :to="child.to ? child.to : '#'">
+                  <h4>
                     {{ child.text ? child.text : $t(child.title) }}
-                  </v-list-item-title>
+                  </h4>
                   <div v-if="child.to && child.to != ''" class="d-flex flex-row my-0">
                     <svg @click="
                       (ev) => {
@@ -332,7 +332,7 @@ if (process.client) {
                         :fill="child.to == home ? '#3554D1' : '#E5E9FA'" />
                     </svg>
                   </div>
-                </v-list-item>
+                </ada-list-item>
               </template>
               {{ child.text ? child.text : $t(child.title) }}
             </v-tooltip>

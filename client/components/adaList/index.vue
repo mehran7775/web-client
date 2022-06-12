@@ -6,6 +6,9 @@ const props = withDefaults(defineProps<{
 });
 </script>
 <style lang="postcss" scoped>
+.ada-list{
+    @apply tw-flex tw-flex-col;
+}
 </style>
 <template>
     <component :is="tag" class="ada-list">
