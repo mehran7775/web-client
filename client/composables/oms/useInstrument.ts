@@ -102,12 +102,6 @@ export const useInstrument = defineStore("instrument", () => {
     const res: Array<InstrumentCache> = [];
     const missing: Array<number> = [];
     
-    if(searchModel.ids.length > 0) searchModel.ids.sort(( a: number, b: number ) => {
-      if( a > b ) return 1
-      else if( a < b )  return -1
-      else return 0
-    });
-
     if (
       searchModel.boardIds.length == 0 &&
       searchModel.secIds.length == 0 &&
@@ -133,18 +127,23 @@ export const useInstrument = defineStore("instrument", () => {
         Object.assign({}, searchModel, { ids: missing }),
         axios
       );
-      console.log(data)
       data.forEach((item) => {
         updateInstrument(item);
         res.push(state.value.cache.get(item.id.toString()) as InstrumentCache);
       });
     }
+    
+    res.sort(( a, b ) => {
+      return searchModel.ids.indexOf(a.id) - searchModel.ids.indexOf(b.id)
+    })
 
     const ids = res.map((item) => item.id);
     if (ids.length > 0) {
       getInstrumentPrices(ids);
       getMarketHistory(ids);
     }
+  
+
     return res;
   }
   async function getInstrumentPrices(
