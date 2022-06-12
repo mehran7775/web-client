@@ -166,7 +166,7 @@ if (process.client) {
 
   .toggle.tabs {
     @apply tw-items-center tw-overflow-y-auto tw-px-2;
-    height: calc(100vh - 54px);
+    height: calc(100vh - 42px);
     padding-bottom: 54px;
     min-width: 48px;
     width: 48px;
@@ -180,14 +180,8 @@ if (process.client) {
     }
   }
 
-  .sub-item:first-child {
-    .path {
-      height: 28px;
-      top: -12px;
-    }
-  }
-
   .tabs.tab-items {
+    min-width: 208px;
     background-color: rgba(var(--c-primary), 0.01);
     width: calc(100% - 48px);
 
@@ -195,21 +189,6 @@ if (process.client) {
       @apply tw-flex tw-flex-col tw-flex-grow;
       flex-basis: 32px;
       overflow-y: auto;
-
-      .sub-item {
-        position: relative;
-
-        .path {
-          content: "";
-          top: -20px;
-          height: 37px;
-          width: 12px;
-          border-right: 1px solid rgba(0, 0, 0, 0.05);
-          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-          border-radius: 0 0 var(--border-radius-root) 0;
-          position: absolute;
-        }
-      }
     }
   }
 }
@@ -258,7 +237,7 @@ if (process.client) {
         <h4 class="tw-flex tw-flex-shrink-0 tw-h-[42px] tw-justify-center tw-items-center">
           {{ $t(item.title) }}
         </h4>
-        <ada-list class="tw-p-0">
+        <ada-list>
           <ada-list-item v-for="child in item.children ? item.children : []" :key="child.title" :value="child">
           </ada-list-item>
         </ada-list>

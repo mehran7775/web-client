@@ -59,6 +59,9 @@ const rtl = computed(() => appManager.rtl);
 </style>
 
 <style lang="postcss" scoped>
+#app-bar {
+  z-index: 1000;
+}
 .center {
   position: absolute;
   margin-left: auto;

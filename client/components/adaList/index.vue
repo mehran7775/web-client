@@ -9,6 +9,7 @@ const props = withDefaults(defineProps<{
 <style lang="postcss" scoped>
 .ada-list {
     @apply tw-flex tw-flex-col;
+    @apply tw-px-[4px];
 
     ol,
     ul,

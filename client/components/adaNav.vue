@@ -16,6 +16,8 @@ const props = withDefaults(defineProps<{
 .ada-nav {
     @apply tw-flex;
     @apply tw-transition-all tw-ease-in-out tw-duration-700;
+    z-index: 1000;
+    overflow: hidden;
 }
 </style>
 <template>
