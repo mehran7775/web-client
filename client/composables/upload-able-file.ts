@@ -1,22 +1,20 @@
 import { ref } from '#app'
 import UploadableFile from '~~/types/UploadableFile'
+import imageTypes from '~~/types/imageTypes'
 
 export default function () {
     let files = ref<UploadableFile[]>([])
-
     function addFiles(newFiles: File[]): void {
         let newUploadableFiles = [...newFiles]
+            .filter(( file ) => validateType(file.type))
             .map((file) => new UploadableFile(file))
             .filter((file) => !fileExists(file.id))
         files.value = files.value.concat(newUploadableFiles)
-        // let reader = new FileReader()
-        // reader.onload = function (e) {
-
-        // }
+        // files.value.push(newUploadableFiles)
     }
 
     function fileExists(otherId: string) {
-        return files.value.some(({ id }) => id === otherId)
+        return files.value.some((file: UploadableFile) => file.id === otherId)
     }
 
     function removeFile(file: UploadableFile): void {
@@ -25,23 +23,10 @@ export default function () {
         if (index > -1) files.value.splice(index, 1)
     }
 
-    // function readmultifiles(files: []): string[] {
-    //     var reader = new FileReader()
-    //     let results = [] as string[] 
-    //     function readFile(index: number) {
-    //         if (index >= files.length) return;
-    //         var file = files[index];
-    //         reader.onload = function (e) {
-    //             // get file content  
-    //             results[index] = reader.result 
-    //             // do sth with bin
-    //             readFile(index + 1)
-    //         }
-    //         reader.readAsBinaryString(file)
-    //     }
-    //     readFile(0)
-    //     return results
-    // }
+    function validateType(type: imageTypes) {
+        const acceptedImageTypes = ['image/png', 'image/jpeg', 'image/webp']
+        return acceptedImageTypes.includes(type)
+    }
 
     return { files, addFiles, removeFile }
 }

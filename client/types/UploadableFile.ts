@@ -1,4 +1,11 @@
-class UploadableFile {
+interface UploadFile {
+    file: File
+    id: string
+    url: string
+    status: null
+}
+
+class UploadableFile implements UploadFile{
     file: File
     id: string
     url: string
