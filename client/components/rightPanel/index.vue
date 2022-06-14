@@ -152,6 +152,7 @@ if (process.client) {
 
 <style lang="postcss" scoped>
 .r-panel {
+  font-size: 0.875rem;
   padding-top: 42px;
   background-color: rgba(var(--c-primary), 0.01);
 
@@ -166,6 +167,7 @@ if (process.client) {
 
   .toggle.tabs {
     @apply tw-items-center tw-overflow-y-auto tw-px-2;
+    padding-top: 8px;
     height: calc(100vh - 42px);
     padding-bottom: 54px;
     min-width: 48px;
@@ -173,7 +175,6 @@ if (process.client) {
     max-width: 48px;
     flex-basis: 48px;
     box-shadow: -2px 1px 2px 0 rgba(var(--c-primary), 0.2);
-
 
     .icon {
       font-size: 1.5rem;

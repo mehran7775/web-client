@@ -396,7 +396,7 @@ instrumentManager
                 </ada-btn>
               </template>
             </text-input>
-          </div>gh
+          </div>
           <div class="tw-justify-between">
             <account-type :label="$t('accounting.account.type')" class="tw-my-1" height="24px">
             </account-type>
