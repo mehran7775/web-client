@@ -5,7 +5,7 @@ const instance = axios.create({
 })
 
 interface uploadFilesservice {
-    upload(file: File, onUploadProgress: any): Promise<AxiosResponse> 
+    upload(file: File): Promise<AxiosResponse> 
 }
 
 
