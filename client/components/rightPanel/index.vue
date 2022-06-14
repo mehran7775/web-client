@@ -205,7 +205,7 @@ if (process.client) {
         <template #activator="{ on, attrs }">
           <ada-btn :width="32" :height="32" color="transparent" :to="home" :model="null">
             <ada-icon size="18" color="primary" v-bind="attrs" v-on="on">
-              mdi-home
+              isax-home-hashtag
             </ada-icon>
           </ada-btn>
         </template>
