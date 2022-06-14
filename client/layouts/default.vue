@@ -19,6 +19,22 @@ const leftMenu = ref({
   drawer: true,
 });
 
+const rmini = computed({
+  get: () => rightMenu.value.mini,
+  set(val) {
+    rightMenu.value.mini = val;
+    leftMenu.value.mini = !val;
+  }
+})
+
+const lmini = computed({
+  get: ()=> leftMenu.value.mini,
+  set(val) {
+    leftMenu.value.mini = val
+    rightMenu.value.mini = !val
+  }
+})
+
 const locale = appManager.locale;
 const formatter = appManager.formatter;
 const collaps = computed(() => {
@@ -62,6 +78,7 @@ const rtl = computed(() => appManager.rtl);
 #app-bar {
   z-index: 1000;
 }
+
 .center {
   position: absolute;
   margin-left: auto;
@@ -168,10 +185,8 @@ const rtl = computed(() => appManager.rtl);
 
 <template>
   <v-app :class="[locale, rtl ? 'rtl' : 'ltr']">
-    <right-panel :mini.sync="rightMenu.mini" :clipped="clipped" v-model="rightMenu.drawer"
-      @closeLeftPanel="leftMenu.mini = true" class="shadow left" />
-    <left-panel :mini.sync="leftMenu.mini" :clipped="clipped" v-model="leftMenu.drawer" class="shadow right"
-      @closeRightPanel="rightMenu.mini = true" />
+    <right-panel :mini.sync="rmini" :clipped="clipped" v-model="rightMenu.drawer" class="shadow left" />
+    <left-panel :mini.sync="lmini" :clipped="clipped" v-model="leftMenu.drawer" class="shadow right" />
     <v-app-bar id="app-bar" :clipped-left="clipped" :clipped-right="clipped" :height="42" color="defualt-bg"
       class="text-no-wrap shadow bottom pe-2" fixed app dense>
       <nuxt-link class="d-flex flex-row px-2" :to="home">

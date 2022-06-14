@@ -12,7 +12,7 @@ const props = defineProps<{
   clipped: boolean;
 }>();
 
-const emit = defineEmits(["input", "update:mini", "closeLeftPanel"]);
+const emit = defineEmits(["input", "update:mini"]);
 
 const userManager = useUser();
 const appManager = useAsrTrader();
@@ -29,14 +29,6 @@ const selected = computed({
 const rtl = computed(() => appManager.rtl);
 const bookmarks = computed(() => userManager.getBookmarks);
 const shourtcuts = computed(() => userManager.getShourtcuts);
-const isMarked = computed(() => (data: MenuItem) => {
-  switch (data.bookmarkPosition) {
-    case BookmarkPosition.ToolBar:
-      return bookmarks.value.findIndex((val) => val.title == data.title) > -1;
-    case BookmarkPosition.RightPanel:
-      return shourtcuts.value.findIndex((val) => val.title == data.title) > -1;
-  }
-});
 const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
   const lists = computed(() => userManager.watchList);
   const res = [];
@@ -61,7 +53,6 @@ const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
   return res;
 });
 const items = getMenuItems(watchList);
-const home = computed(() => userManager.me.settings.home);
 
 const drawer = computed({
   get() {
@@ -78,59 +69,7 @@ function setHome(item: MenuItem) {
       value: item.to,
     });
 }
-function mark(data: MenuItem) {
-  const bk = CreateBookmark(data);
-  switch (data.bookmarkPosition) {
-    case BookmarkPosition.ToolBar:
-      {
-        const tmp = [...bookmarks.value, bk];
-        userManager.update_settings({
-          path: "/bookmarks",
-          value: tmp,
-        });
-      }
-      break;
-    case BookmarkPosition.RightPanel:
-      {
-        const tmp = [...shourtcuts.value, bk];
-        userManager.update_settings({
-          path: "/shourtcuts",
-          value: tmp,
-        });
-      }
-      break;
-  }
-}
-function unmark(data: MenuItem) {
-  switch (data.bookmarkPosition) {
-    case BookmarkPosition.ToolBar:
-      {
-        let tmp = [...bookmarks.value];
-        tmp.splice(
-          tmp.findIndex((item) => item.to == data.to),
-          1
-        );
-        userManager.update_settings({
-          path: "/bookmarks",
-          value: tmp,
-        });
-      }
-      break;
-    case BookmarkPosition.RightPanel:
-      {
-        let tmp = [...shourtcuts.value];
-        tmp.splice(
-          tmp.findIndex((item) => item.to == data.to),
-          1
-        );
-        userManager.update_settings({
-          path: "/shourtcuts",
-          value: tmp,
-        });
-      }
-      break;
-  }
-}
+
 watch(selected, (n, o) => {
   if (typeof n == "string" || typeof n != null) {
     emit("update:mini", false);
@@ -203,7 +142,6 @@ if (process.client) {
         <template #activator="{ on, attrs }">
           <ada-btn :width="32" :height="32" color="transparent" :model="item.title" @click="
             () => {
-              $emit('closeLeftPanel')
               $emit('update:mini', !mini);
             }
           ">
