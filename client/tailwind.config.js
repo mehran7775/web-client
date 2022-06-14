@@ -17,10 +17,10 @@ module.exports = {
       transparent: 'transparent',
       'white': '#ffffff',
       'gray' : '#828282',
-      'blck' : '#000000',
+      'black' : '#000000',
       'green' : '#4CAF50',
       'orange' : '#FFA500',
-      'skyblue' : '#89ABCD',
+      'sky-blue' : '#89ABCD',
       'blue' : '#2547FF',
       'red' : '#FF3B30',
     }
