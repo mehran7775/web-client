@@ -95,20 +95,20 @@ export const useInstrument = defineStore("instrument", () => {
   function setWidth(width: number) {
     state.value.width = width;
   }
-
   //Move Actions Buisiness here
   async function getInstrumentsDetail(
     searchModel: InstrumentSearchModel
   ): Promise<Array<InstrumentCache>> {
     const res: Array<InstrumentCache> = [];
     const missing: Array<number> = [];
-
+    
     if (
       searchModel.boardIds.length == 0 &&
       searchModel.secIds.length == 0 &&
       searchModel.ids.length != 0
     ) {
       let tmp = null;
+
       for (let i in searchModel.ids) {
         tmp = state.value.cache.get(searchModel.ids[i].toString());
         if (tmp?.name) res.push(tmp);
@@ -132,12 +132,18 @@ export const useInstrument = defineStore("instrument", () => {
         res.push(state.value.cache.get(item.id.toString()) as InstrumentCache);
       });
     }
+    
+    res.sort(( a, b ) => {
+      return searchModel.ids.indexOf(a.id) - searchModel.ids.indexOf(b.id)
+    })
 
     const ids = res.map((item) => item.id);
     if (ids.length > 0) {
       getInstrumentPrices(ids);
       getMarketHistory(ids);
     }
+  
+
     return res;
   }
   async function getInstrumentPrices(

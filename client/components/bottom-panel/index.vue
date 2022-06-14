@@ -193,7 +193,7 @@ function close() {
           </ada-icon>
         </ada-btn>
         <ada-btn color="primary" :width="24" :height="24" @click="close()">
-          <ada-icon color="white" :size="16">isax-minus</ada-icon>
+          <ada-icon color="white" :size="16">mdi-window-close</ada-icon>
         </ada-btn>
       </header>
     </div>

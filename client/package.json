@@ -20,6 +20,7 @@
     "jalali-moment": "^3.3.11",
     "luxon": "latest",
     "marked": "^4.0.16",
+    "mock-file-server": "^0.1.17",
     "nuxt-edge": "latest",
     "pinia": "^2.0.14",
     "vue-i18n": "8",
