@@ -27,7 +27,6 @@ const viewMode = computed({
   },
   set(val: number) {
     instrumentManager.setFocusMode(val);
-    console.log(instrumentManager.focusMode)
   },
 });
 

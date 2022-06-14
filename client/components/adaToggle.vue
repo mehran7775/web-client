@@ -6,7 +6,7 @@ const props = withDefaults(
     vertical: boolean;
   }>(),
   {
-    value: 0,
+    value: null,
     vertical: false,
   }
 );

@@ -19,7 +19,7 @@ export const useAsrTrader = defineStore("app", () => {
   );
   const menu = computed({
     get() {
-      return state.value.menu ?? 0;
+      return state.value.menu;
     },
     set(menu: string | number | null) {
       setMenu(menu);

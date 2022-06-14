@@ -132,7 +132,9 @@ function unmark(data: MenuItem) {
   }
 }
 watch(selected, (n, o) => {
-  if (typeof n == "string" || typeof n != null) {
+  if (typeof n == 'undefined' || n == null) {
+    emit("update:mini", true);
+  } else {
     emit("update:mini", false);
   }
 });
@@ -199,6 +201,16 @@ if (process.client) {
   <ada-nav v-model="drawer" min-width="48px" max-width="256px" :right="rtl" :mini="mini" class="r-panel"
     mobile-breakpoint="960" fixed>
     <ada-toggle class="tabs" v-model="selected" vertical>
+      <v-tooltip left>
+        <template #activator="{ on, attrs }">
+          <ada-btn :width="32" :height="32" color="transparent" :to="home" :model="null">
+            <ada-icon size="18" color="primary" v-bind="attrs" v-on="on">
+              mdi-home
+            </ada-icon>
+          </ada-btn>
+        </template>
+        <span>{{ $t('menu.home') }}</span>
+      </v-tooltip>
       <v-tooltip v-for="item in items" :key="item.title" left>
         <template #activator="{ on, attrs }">
           <ada-btn :width="32" :height="32" color="transparent" :model="item.title" @click="
@@ -215,22 +227,20 @@ if (process.client) {
         <span>{{ item.text ? item.text : $t(item.title) }}</span>
       </v-tooltip>
       <hr class="divider" />
-      <ada-btn v-for="item in shourtcuts" :key="item.title" :to="item.to" @click="
-        () => {
-          $emit('update:mini', true);
-        }
-      ">
-        <v-tooltip left>
-          <template v-slot:activator="{ on, attrs }">
-            <ada-btn width="32" height="32" color="transparent" depressed>
-              <ada-icon size="18" :color="item.color" v-bind="attrs" v-on="on">
-                {{ item.icon }}
-              </ada-icon>
-            </ada-btn>
-          </template>
-          <span>{{ item.text ? item.text : $t(item.title) }}</span>
-        </v-tooltip>
-      </ada-btn>
+      <v-tooltip v-for="item in shourtcuts" :key="item.title" left>
+        <template v-slot:activator="{ on, attrs }">
+          <ada-btn :width="32" :height="32" color="transparent" :to="item.to" @click="
+            () => {
+              $emit('update:mini', true);
+            }
+          " depressed>
+            <ada-icon size="18" :color="item.color" v-bind="attrs" v-on="on">
+              {{ item.icon }}
+            </ada-icon>
+          </ada-btn>
+        </template>
+        <span>{{ item.text ? item.text : $t(item.title) }}</span>
+      </v-tooltip>
     </ada-toggle>
 
     <ada-tabs class="tab-items" v-model="selected">
