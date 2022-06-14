@@ -36,7 +36,7 @@ const onDrop = (e: DragEvent, el: HTMLElement, binding: VNodeDirective, vnode: V
   if (vnode.componentInstance) {
     vnode.componentInstance.$emit('uploaded_files', { detail: files })
   } else {
-    vnode.elm.dispatchEvent(new CustomEvent('uploaded_files', { detail: files }));
+    el.dispatchEvent(new CustomEvent('uploaded_files', { detail: files }));
   }
   
 }

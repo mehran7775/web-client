@@ -25,32 +25,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from '@vue/reactivity';
-import UploadableFile from '~~/types/UploadableFile'
-import uploadedFile from '@/repositories/uploadFile/index'
+import { ref, reactive } from '#app';
+import UploadableFile from '~~/classes/UploadableFile';
+import UploadFileService from '~~/repositories/uploadFiles/index'
 
-let files = ref<UploadableFile[]>([])
+const files = ref<UploadableFile[]>([])
 
 function receive_files_uploaded(e: any) {
      files.value = e.detail.value
 }
-
 function send_files() {
-     let form = new FormData()
      files.value.forEach((file, index) => {
-          form.append(`files[${index}]`, file.file)
+          upload(index, file.file)
      })
-     try {
-          const res = uploadedFile.send_files('/f', form, {
-               headers: {
-                    'content-type': 'multipart/form-data'
-               }
-          })
-          console.log(res)
-     } catch (e) {
-          console.log(e)
-     }
-
 }
-
+async function upload(index: number, file: File) {
+     UploadFileService.upload(file)
+          .then((response) => {
+               console.log(response)
+          }).catch((e) => {
+               console.log(e)
+          })
+}
 </script>

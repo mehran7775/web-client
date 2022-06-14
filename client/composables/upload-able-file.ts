@@ -1,5 +1,5 @@
 import { ref } from '#app'
-import UploadableFile from '~~/types/UploadableFile'
+import UploadableFile from '~~/classes/UploadableFile'
 import imageTypes from '~~/types/imageTypes'
 
 export default function () {
