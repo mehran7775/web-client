@@ -55,7 +55,7 @@ const open = ref(false)
         >.ada-title {
             @apply tw-flex tw-w-full tw-justify-between;
 
-            .icon {
+            >.icon {
                 @apply tw-transition-all tw-ease-in-out tw-duration-300;
             }
 
@@ -67,8 +67,10 @@ const open = ref(false)
         &.group {
             max-height: 100%;
 
-            .icon {
-                @apply tw-rotate-180;
+            >.ada-title {
+                >.icon.arrow-control {
+                    @apply tw-rotate-180;
+                }
             }
 
             .ada-list-item::before {
@@ -99,7 +101,7 @@ const open = ref(false)
             <component @click="() => value.children ? toggleGroup() : null" :is="value.to ? 'router-link' : 'span'"
                 :to="value.to" v-ada-ripple class="ada-title">
                 {{ value.text ? value.text : $t(value.title) }}{{ value.expand }}
-                <ada-icon v-if="value.children">
+                <ada-icon class="arrow-control" v-if="value.children">
                     isax-arrow-down
                 </ada-icon>
             </component>
