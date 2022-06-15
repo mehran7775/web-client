@@ -70,16 +70,13 @@ defineExpose({
 
     .tab {
       @apply tw-px-2 tw-flex tw-items-center tw-justify-between;
-      font-size: 0.875rem;
       background-color: rgba(0, 0, 0, 0);
-      height: 24px;
       min-width: 168px;
-      border-radius: var(--border-radius-root) var(--border-radius-root) 0 0;
-      border-top: solid 1pt rgba(var(--c-primary), 0.1);
-      border-left: solid 1pt rgba(var(--c-primary), 0.1);
+      border-radius: 0 !important;
+
 
       &::after {
-        border-radius: var(--border-radius-root) var(--border-radius-root) 0 0;
+        border-radius: 0 !important;
       }
     }
   }
@@ -114,12 +111,13 @@ defineExpose({
 <template>
   <div class="tab-view tw-w-full">
     <ada-toggle :height="32" color="primary" v-model="tab" align-with-title>
-      <ada-btn v-for="(item, i) in instruments" :key="item.id" :model="item" name-key="$.id" class="tab">
+      <ada-btn v-for="(item, i) in instruments" :key="item.id" :model="item" name-key="$.id" :height="32" class="tab">
         <ada-badge color="success" dot left offset-y="75%" offset-x="-5">
           {{ item.name }}
           <last-price :value="item" />
         </ada-badge>
         <ada-icon @click.stop="() => close(item.id)" :size="12"> mdi-close </ada-icon>
+        <bar v-if="i != instruments.length - 1" />
       </ada-btn>
     </ada-toggle>
     <ada-tabs v-model="tab">
