@@ -56,22 +56,21 @@ function close() {
 <style lang="postcss" scoped>
 .footer {
   @apply tw-flex tw-flex-col tw-flex-grow;
+  @apply tw-transition-all tw-ease-in-out tw-duration-700;
   position: fixed;
   bottom: 32px;
   background-color: white;
 
   &.expanded {
-    transition: height 0.5s ease-in-out;
     height: calc(100vh - 74px);
   }
 
   &.half {
-    transition: height 0.5s ease-in-out;
     height: calc(100vh - 436px);
     min-height: 30vh;
   }
 
-  &.hiden {
+  &.hidden {
     height: 32px;
   }
 
@@ -92,6 +91,7 @@ function close() {
       height: 32px;
       color: var(--c-primary-rgb);
       background-color: rgba(var(--c-primary), 0.05);
+      border-bottom: 1px solid rgba(var(--c-primary), 0.2);
       padding: 0 12px;
       top: 0;
       left: 0;
@@ -101,10 +101,9 @@ function close() {
         color: rgb(0, 0, 0);
         box-shadow: 0 0 1px 0 #e2e2e2;
         height: 31px;
-        border-bottom: 1px solid rgba(var(--c-primary), 0.2);
 
         .tab {
-          @apply tw-px-2;
+          @apply tw-px-1;
           background-color: rgba(0, 0, 0, 0);
           min-width: 99px;
           height: 24px;
@@ -126,20 +125,23 @@ function close() {
   }
 
   >.tabs {
-    @apply tw-justify-start tw-w-full;
-    background-color: rgba(var(--c-default), 0.2);
+    @apply tw-justify-start tw-w-full tw-relative;
+    background-color: rgba(var(--c-primary), 0.2);
     box-shadow: 0 0 1px 0 #e2e2e2;
     min-height: 32px;
+    max-height: 32px;
 
     .tab {
-      @apply tw-px-2;
       background-color: rgba(0, 0, 0, 0);
-      border-radius: 0 !important;
-      min-width: 99px;
-
-      &::after {
-        border-radius: 0 !important;
-      }
+      border: solid 1pt rgba(var(--c-primary), 0.3);
+      min-width: 156px;
+      margin-inline-start: 3px;
+    }
+    &::before{
+      @apply tw-absolute tw-inset-0 tw-w-full tw-h-full;
+      content: '';
+      pointer-events: none;
+      background-color: white;
     }
   }
 
@@ -151,9 +153,9 @@ function close() {
     footer: true,
     expanded: expanded && tab != defaultItem,
     half: tab != defaultItem && !expanded,
-    hiden: tab == defaultItem,
+    hidden: tab == defaultItem,
   }">
-    <div v-show="tab.title != ''" class="detail">
+    <div class="detail">
       <div class="contents">
         <ada-tabs v-model="active" name-key="$.title" class="tw-h-full" :class="{ expanded: expanded }">
           <ada-tab name="bottom-panel.orders.all">
@@ -200,7 +202,6 @@ function close() {
     <ada-toggle class="tabs" v-model="tab">
       <ada-btn class="tab" v-for="(t, i) in tabs" :key="t.title" :model="t">
         {{ $t(t.title) }}
-        <bar v-if="i < tabs.length - 1" />
       </ada-btn>
     </ada-toggle>
   </footer>
