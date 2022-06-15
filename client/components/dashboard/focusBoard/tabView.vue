@@ -61,20 +61,25 @@ defineExpose({
 <style lang="postcss" scoped>
 .tab-view {
   >.toggle {
-    @apply tw-justify-start tw-w-full;
+    @apply tw-justify-start tw-w-full tw-items-end;
     background-color: rgba(var(--c-default), 0.2);
+    border-bottom: 1px solid rgba(var(--c-primary), 0.2);
     box-shadow: 0 0 1px 0 #e2e2e2;
     min-height: 32px;
 
 
     .tab {
       @apply tw-px-2 tw-flex tw-items-center tw-justify-between;
+      font-size: 0.875rem;
       background-color: rgba(0, 0, 0, 0);
-      border-radius: 0 !important;
+      height: 24px;
       min-width: 168px;
+      border-radius: var(--border-radius-root) var(--border-radius-root) 0 0;
+      border-top: solid 1pt rgba(var(--c-primary), 0.1);
+      border-left: solid 1pt rgba(var(--c-primary), 0.1);
 
       &::after {
-        border-radius: 0 !important;
+        border-radius: var(--border-radius-root) var(--border-radius-root) 0 0;
       }
     }
   }
@@ -115,7 +120,6 @@ defineExpose({
           <last-price :value="item" />
         </ada-badge>
         <ada-icon @click.stop="() => close(item.id)" :size="12"> mdi-close </ada-icon>
-        <bar v-if="i < instruments.length - 1" />
       </ada-btn>
     </ada-toggle>
     <ada-tabs v-model="tab">

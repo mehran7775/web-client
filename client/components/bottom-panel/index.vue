@@ -92,7 +92,7 @@ function close() {
       color: var(--c-primary-rgb);
       background-color: rgba(var(--c-primary), 0.05);
       border-bottom: 1px solid rgba(var(--c-primary), 0.2);
-      padding: 0 12px;
+      padding: 0 0 0 12px;
       top: 0;
       left: 0;
 
@@ -105,8 +105,10 @@ function close() {
         .tab {
           @apply tw-px-1;
           background-color: rgba(0, 0, 0, 0);
-          min-width: 99px;
+          min-width: 168px;
           height: 24px;
+          border-top: solid 1pt rgba(var(--c-primary), 0.1);
+          border-left: solid 1pt rgba(var(--c-primary), 0.1);
           border-radius: var(--border-radius-root) var(--border-radius-root) 0 0;
 
           &::after {
@@ -133,8 +135,9 @@ function close() {
 
     .tab {
       background-color: rgba(0, 0, 0, 0);
-      border: solid 1pt rgba(var(--c-primary), 0.3);
-      min-width: 156px;
+      border: solid 1pt rgba(var(--c-primary), 0.1);
+      border-right: none;
+      min-width: 168px;
       margin-inline-start: 3px;
     }
     &::before{
