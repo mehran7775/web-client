@@ -9,11 +9,11 @@ WORKDIR /usr/src
 COPY ./client ./app
 WORKDIR /usr/src/app
 # Build App
-#RUN yarn build
+RUN yarn build
 ENV HOST=0.0.0.0
 # Deploy
-#CMD [ "yarn", "start" ]
+CMD [ "yarn", "start" ]
 # Temporary dev
-CMD [ "yarn", "dev","--host","0.0.0.0","--host","bourse-ui" ]
+#CMD [ "yarn", "dev","--host","0.0.0.0","--host","bourse-ui" ]
 #####
 

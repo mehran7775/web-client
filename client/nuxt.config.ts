@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { defineNuxtConfig } from "@nuxt/bridge";
 import GlobalsPolyfills from "@esbuild-plugins/node-globals-polyfill";
 //import postcss from "./postcss.config.js";
@@ -110,6 +112,20 @@ export default defineNuxtConfig({
           }),
         ],
       },
+    },
+  },
+  hooks: {
+    "build:done": (builder: any) => {
+      // const indexFilePath = path.join(
+      //   builder.nuxt.options.buildDir + "/dist/server",
+      //   "index.mjs"
+      // );
+      // fs.writeFileSync(indexFilePath, "export './server.mjs';");
+      const serverFilePath = path.join(
+        builder.nuxt.options.buildDir + "/dist/server",
+        "server.mjs"
+      );
+      fs.writeFileSync(serverFilePath, "export {};");
     },
   },
 
