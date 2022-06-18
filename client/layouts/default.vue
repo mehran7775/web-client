@@ -27,6 +27,7 @@ const collaps = computed(() => {
 });
 const home = computed(() => userManager.me.settings.home);
 const clipped = ref(true);
+const invisibleFinInfo = ref(false);
 const rtl = computed(() => appManager.rtl);
 // const unitPanel = computed(() => {
 //   if(rightMenu.value.mini)
@@ -219,12 +220,12 @@ const rtl = computed(() => appManager.rtl);
         right: !rightMenu.mini,
         left: !leftMenu.mini,
       }" />
-      <footer class="mainBackground" :class="{
+      <footer v-if="!invisibleFinInfo" class="mainBackground" :class="{
         footer: true,
         right: !rightMenu.mini,
         left: !leftMenu.mini,
       }">
-        <div class="summary center">
+        <div class="summary center" >
           <ada-badge color="green">{{ $t("accounting.account.amount")
           }}0</ada-badge>
           <ada-badge color="red">{{
@@ -245,6 +246,14 @@ const rtl = computed(() => appManager.rtl);
         </div>
       </footer>
     </v-main>
+    <floating-button :style="{
+      bottom: '8px',
+      left: '8px',
+    }" width="32px" height="32px" color="primary 0.9">
+      <ada-icon color="white" :size="24" @click="invisibleFinInfo = !invisibleFinInfo">     
+        mdi-arrow-collapse-right
+      </ada-icon>
+    </floating-button>
     <floating-button :style="{
       bottom: '8px',
       right: '8px',
