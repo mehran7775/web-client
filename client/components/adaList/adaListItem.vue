@@ -58,7 +58,7 @@ function toggleGroup() {
         >.ada-title {
             @apply tw-flex tw-w-full tw-justify-between;
 
-            .icon {
+            >.icon {
                 @apply tw-transition-all tw-ease-in-out tw-duration-300;
             }
 
@@ -70,8 +70,10 @@ function toggleGroup() {
         &.group {
             max-height: 100%;
 
-            .isax-arrow-down {
-                @apply tw-rotate-180;
+            >.ada-title {
+                >.icon.arrow-control {
+                    @apply tw-rotate-180;
+                }
             }
 
             .ada-list-item::before {
@@ -102,7 +104,7 @@ function toggleGroup() {
             <component @click="() => value.children ? toggleGroup() : null" :is="value.to ? 'router-link' : 'span'"
                 :to="value.to" v-ada-ripple class="ada-title">
                 <slot name="item" :value="value"></slot>
-                <ada-icon v-if="value.children">
+                <ada-icon class="arrow-control" v-if="value.children">
                     isax-arrow-down
                 </ada-icon>
             </component>

@@ -24,7 +24,7 @@ const props = withDefaults(
 const emit = defineEmits(["count", "price"]);
 
 const instrumentManager = useInstrument();
-// console.log(instrumentManager)
+
 const fields: Array<field> = [
   new field("yesterdayPrice", fieldType.price, null, getClickEvent(fieldType.price)),
   new field("totalTrades", fieldType.count, "oms.tradeCount"),

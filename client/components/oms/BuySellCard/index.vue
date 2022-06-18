@@ -56,9 +56,11 @@ const priceVal = computed({
     });
   },
 });
-const tradeValue = computed(() => order.value.quantity * order.value.enteredPrice);
-const buyWage = computed(() => tradeValue.value * wage.value.buy);
-const sellWage = computed(() => tradeValue.value * wage.value.sell);
+const baseTradeValue = computed(() => order.value.quantity * order.value.enteredPrice)
+const buyWage = computed(() => baseTradeValue.value * wage.value.buy);
+const sellWage = computed(() => baseTradeValue.value * wage.value.sell);
+const buyTradeValue = computed(() => baseTradeValue.value + buyWage.value);
+const sellTradeValue = computed(() => baseTradeValue.value + sellWage.value);
 const tab = computed({
   get() {
     return order.value.side.toString();
@@ -262,7 +264,7 @@ instrumentManager
       <v-tab-item value="1">
         <form class="frm">
           <div class="tw-col-span-2 tw-justify-center">
-            <span class="tw-mx-3">{{ $t("wealth.sharesCount") }} ({{insName}}): </span>
+            <span class="tw-mx-3">{{ $t("wealth.sharesCount") }} ({{ insName }}): </span>
             <numeric-field :value="active.amount" class="tw-pl-2" />
           </div>
           <div class="tw-justify-between">
@@ -332,7 +334,7 @@ instrumentManager
           </div>
           <div class="tw-justify-between">
             <span>{{ $t("oms.tradeValue") }}: </span>
-            <numeric-field :value="tradeValue" />
+            <numeric-field :value="buyTradeValue" />
           </div>
           <div class="tw-justify-center">
             <ada-btn class="draft" height="24px" @click="
@@ -358,7 +360,7 @@ instrumentManager
       <v-tab-item value="2">
         <form class="frm">
           <div class="tw-col-span-2 tw-justify-center">
-            <span class="tw-mx-3">{{ $t("wealth.sharesCount") }} ({{insName}}): </span>
+            <span class="tw-mx-3">{{ $t("wealth.sharesCount") }} ({{ insName }}): </span>
             <numeric-field :value="active.amount" class="tw-pl-2" />
           </div>
           <div class="tw-justify-between">
@@ -427,7 +429,7 @@ instrumentManager
           </div>
           <div class="tw-justify-between">
             <span>{{ $t("oms.tradeValue") }}: </span>
-            <numeric-field :value="tradeValue" />
+            <currency-field :value="sellTradeValue" />
           </div>
           <div class="tw-justify-center">
             <ada-btn class="draft" height="24px" @click="

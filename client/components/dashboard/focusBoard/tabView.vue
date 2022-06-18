@@ -61,8 +61,9 @@ defineExpose({
 <style lang="postcss" scoped>
 .tab-view {
   >.toggle {
-    @apply tw-justify-start tw-w-full;
+    @apply tw-justify-start tw-w-full tw-items-end;
     background-color: rgba(var(--c-default), 0.2);
+    border-bottom: 1px solid rgba(var(--c-primary), 0.2);
     box-shadow: 0 0 1px 0 #e2e2e2;
     min-height: 32px;
 
@@ -70,8 +71,9 @@ defineExpose({
     .tab {
       @apply tw-px-2 tw-flex tw-items-center tw-justify-between;
       background-color: rgba(0, 0, 0, 0);
-      border-radius: 0 !important;
       min-width: 168px;
+      border-radius: 0 !important;
+
 
       &::after {
         border-radius: 0 !important;
@@ -109,28 +111,17 @@ defineExpose({
 <template>
   <div class="tab-view tw-w-full">
     <ada-toggle :height="32" color="primary" v-model="tab" align-with-title>
-      <ada-btn v-for="(item, i) in instruments" :key="item.id" :model="item" name-key="$.id" class="tab">
+      <ada-btn v-for="(item, i) in instruments" :key="item.id" :model="item" name-key="$.id" :height="32" class="tab">
         <ada-badge color="success" dot left offset-y="75%" offset-x="-5">
           {{ item.name }}
           <last-price :value="item" />
         </ada-badge>
         <ada-icon @click.stop="() => close(item.id)" :size="12"> mdi-close </ada-icon>
-        <bar v-if="i < instruments.length - 1" />
+        <bar v-if="i != instruments.length - 1" />
       </ada-btn>
     </ada-toggle>
     <ada-tabs v-model="tab">
       <ada-tab class="detail" v-for="item in instruments" :key="item.id" :model="item">
-        <div class="panel">
-          <instrument-card :insId="item.id" :insName="item.name" @count="
-            (val) => {
-              count = val;
-            }
-          " @price="
-  (val) => {
-    price = val;
-  }
-" responsive />
-        </div>
         <div class="panel">
           <order-queue-card :insId="item.id" @count="
             (val) => {
@@ -148,6 +139,12 @@ defineExpose({
         </div>
         <div class="panel">
           <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" :insName="item.name" />
+        </div>
+        <div class="panel">
+          <instrument-card :insId="item.id" :insName="item.name" @count="(val) => {
+            count = val;
+          }
+          " @price="(val) => { price = val; }" responsive />
         </div>
       </ada-tab>
     </ada-tabs>
