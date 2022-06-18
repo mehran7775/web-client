@@ -255,55 +255,23 @@ if (process.client) {
           <ada-list-item v-for="child in item.children ? item.children : []" :key="child.title" :value="child">
             <template #item="{ value }">
               <div class="tw-w-full tw-flex tw-justify-between tw-items-center">
-<<<<<<< HEAD
-                <div>{{ value.text ? value.text : $t(value.title) }}{{ value.expand }}</div>
-                <div v-if="value.children" class="tw-flex tw-items-center">
-                  <ada-icon v-if="value.bookmarkPosition" size="1.5rem" :color="isMarked(value) ? 'gray6' : 'blue'">
-                    mdi-bookmark
-                  </ada-icon>
-                  <ada-icon @click.prevent="
-                    () => {
-                      setHome(value);
-                    }
-                  " size="1.5rem" :color="value.to == home ? 'blue' : 'gray6'">mdi-star</ada-icon>
-
-                </div>
-                <div v-else class="tw-flex tw-items-center">
-                  <template v-if="value.to && value.to != ''">
-                    <ada-icon v-if="value.bookmarkPosition" size="1.5rem" :color="isMarked(value) ? 'blue' : 'gray6'"
-                      @click="() => {
-                        if (isMarked(value)) unmark(value);
-                        else mark(value);
-                      
-                      }">mdi-bookmark
-                    </ada-icon>
-                    <ada-icon @click.prevent="
-                      () => {
-                        setHome(value);s
-                      }
-                    " size="1.5rem" :color="value.to == home ? 'blue' : 'gray6'">mdi-star</ada-icon>
-
-                  </template>
-                </div>
-=======
                 <span>{{ value.text ? value.text : $t(value.title) }}{{ value.expand }}</span>
                 <span v-if="value.to && value.to != ''" class="tw-flex tw-items-center">
-                  <ada-icon @click.prevent.stop="
-                    () => {
-                      setHome(value);
-                    }
-                  " size="1.5rem" :color="value.to == home ? 'blue' : 'gray4'"
-                    :ico="value.to == home ? 'isax-star-1-bold' : 'isax-star-1'">
-                  </ada-icon>
                   <ada-icon v-if="value.bookmarkPosition" size="1.5rem" :color="isMarked(value) ? 'blue' : 'gray4'"
                     @click.stop.prevent="() => {
                       if (isMarked(value)) unmark(value);
                       else mark(value);
                     
                     }" :ico="isMarked(value) ? 'mdi-bookmark' : 'mdi-bookmark-outline'" />
+                       <ada-icon @click.prevent.stop="
+                    () => {
+                      setHome(value);
+                    }
+                  " size="1.5rem" :color="value.to == home ? 'blue' : 'gray4'"
+                    :ico="value.to == home ? 'isax-star-1-bold' : 'isax-star-1'">
+                  </ada-icon>
 
                 </span>
->>>>>>> 7e029e48c6d36b05089264a5cb38143382679db2
               </div>
             </template>
           </ada-list-item>
