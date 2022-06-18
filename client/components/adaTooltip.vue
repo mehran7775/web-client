@@ -21,7 +21,7 @@ export default defineComponent({
             const tooltipChildren = [];
             if (slots.default) tooltipChildren.push(...slots.default())
             const tooltip = h('span', tooltipChildren, )
-            tooltip.data?.class= {}
+            
             const activator = h('div', children)
             return activator;
         }
