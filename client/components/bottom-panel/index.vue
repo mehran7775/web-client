@@ -15,6 +15,14 @@ import AdaTab from "@/components/adaTabs/adaTab.vue"
 const bottomPanel = useBottomPanel();
 const active: Ref<TabItem> = ref(defaultItem)
 const tabs = computed(() => bottomPanel.tabs);
+const props = withDefaults(
+  defineProps<{
+    slideToBottom: boolean
+  }>(),
+  {
+  slideToBottom: false
+  }
+);
 const tab = computed({
   get(): TabItem {
     return bottomPanel.activeTab ?? defaultItem;
@@ -157,6 +165,9 @@ function close() {
     expanded: expanded && tab != defaultItem,
     half: tab != defaultItem && !expanded,
     hidden: tab == defaultItem,
+  }"
+  :style="{
+    bottom: props.slideToBottom ? 0 : 'auto',
   }">
     <div class="detail">
       <div class="contents">
