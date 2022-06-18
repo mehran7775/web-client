@@ -257,19 +257,19 @@ if (process.client) {
               <div class="tw-w-full tw-flex tw-justify-between tw-items-center">
                 <div>{{ value.text ? value.text : $t(value.title) }}{{ value.expand }}</div>
                 <div v-if="value.children" class="tw-flex tw-items-center">
-                  <ada-icon v-if="value.bookmarkPosition" size="1.5rem" :color="isMarked(value) ? 'gray4' : 'blue'">
+                  <ada-icon v-if="value.bookmarkPosition" size="1.5rem" :color="isMarked(value) ? 'gray6' : 'blue'">
                     mdi-bookmark
                   </ada-icon>
                   <ada-icon @click.prevent="
                     () => {
                       setHome(value);
                     }
-                  " size="1.5rem" :color="value.to == home ? 'blue' : 'gray4'">mdi-star</ada-icon>
+                  " size="1.5rem" :color="value.to == home ? 'blue' : 'gray6'">mdi-star</ada-icon>
 
                 </div>
                 <div v-else class="tw-flex tw-items-center">
                   <template v-if="value.to && value.to != ''">
-                    <ada-icon v-if="value.bookmarkPosition" size="1.5rem" :color="isMarked(value) ? 'blue' : 'gray4'"
+                    <ada-icon v-if="value.bookmarkPosition" size="1.5rem" :color="isMarked(value) ? 'blue' : 'gray6'"
                       @click="() => {
                         if (isMarked(value)) unmark(value);
                         else mark(value);
@@ -278,9 +278,9 @@ if (process.client) {
                     </ada-icon>
                     <ada-icon @click.prevent="
                       () => {
-                        setHome(value);
+                        setHome(value);s
                       }
-                    " size="1.5rem" :color="value.to == home ? 'blue' : 'gray4'">mdi-star</ada-icon>
+                    " size="1.5rem" :color="value.to == home ? 'blue' : 'gray6'">mdi-star</ada-icon>
 
                   </template>
                 </div>

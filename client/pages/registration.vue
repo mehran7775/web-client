@@ -47,13 +47,13 @@ function requestOtp() {
 </script>
 
 <template>
-  <div class="ma-0 pa-0 reg-ct">
+  <div class="reg-ct">
     <div class="pie-1 pie"></div>
     <div class="pie-2 pie"></div>
 
     <v-card class="dotted reg-crd">
-      <div class="ma-0 pa-0 justify-center text-center">
-        <ada-icon :size="24" class="back" @click="back"> mdi-arrow-right </ada-icon>
+      <ada-icon color="gray" :size="24" class="back" @click="back"> mdi-arrow-right </ada-icon>
+      <div class="justify-center text-center">
         <nuxt-link to="/about-us" class="logo" />
         <h3>
           {{ $t("login.registration") }}
@@ -122,7 +122,7 @@ function requestOtp() {
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
-      <ada-btn color="primary" @click="validate" class="next" :height="42" large>
+      <ada-btn color="primary" @click="validate" class="next" :height="42" large dark>
         {{ $t("general.next") }}
       </ada-btn>
       <div v-html="$t('login.alerts')" class="mt-3 text-justify"></div>
@@ -155,11 +155,14 @@ function requestOtp() {
   position: absolute;
   top: 72px;
   left: 39px;
+  transform: rotate(180deg);
 }
 
 .v-application--is-rtl {
   .back {
+    transform: rotate(0);
     right: 39px;
+    left: auto;
   }
 }
 

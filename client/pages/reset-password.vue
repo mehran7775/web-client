@@ -4,12 +4,14 @@ export default {
 };
 </script>
 <script setup lang="ts">
+import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
 import { ref } from "#app";
 import { useRouter } from "#app";
 
 const router = useRouter();
 const userName = ref("");
 const loading = ref(false);
+const keyboard = ref(useVirtualKeyBoard());
 function otp() { }
 function captchaResult() { }
 function back() {
@@ -18,25 +20,50 @@ function back() {
 </script>
 
 <template>
-  <div class="ma-0 pa-0 res-ct">
+  <div class="res-ct">
     <div class="pie pie-1"></div>
     <div class="pie pie-2"></div>
     <v-card elevation="0" class="dotted res-crd" :loading="loading">
-      <div class="ma-0 pa-0 justify-center text-center">
-        <ada-icon :size="24" class="back" @click="back"> mdi-arrow-right </ada-icon>
+     <ada-icon color="gray" :size="24" class="back" @click="back"> mdi-arrow-right </ada-icon>
+      <div class="justify-center text-center">
         <nuxt-link to="/about-us" class="logo" />
         <h3>{{ $t("login.forget-password") }}</h3>
       </div>
-      <v-card-text class="text-center">
+      <v-card-text class="text-center tw-px-3">
         <v-form>
-          <v-text-field v-model="userName" :placeholder="$t('user.username')" prepend-inner-icon="mdi-account"
-            class="my-2" outlined hide-details dense>
+          <p class="tw-mt-[16px] tw-mb-2 tw-text-right tw-text-base">{{ $t("user.username") }}</p>
+          <v-text-field v-model="userName" :placeholder="$t('user.username')" prepend-inner-icon="isax-user"
+            class="my-2" outlined hide-details dense aria-lable="username"
+            @focus="
+              () => {
+                if (keyboard.active)
+                  keyboard.setListener((key) => {
+                    userName = userName + key;
+                  });
+              }
+            "
+            >
+            <template #append>
+              <ada-icon :size="24" @click="
+                () => {
+                  keyboard.active = !keyboard.active;
+                  if (keyboard.active)
+                    keyboard.setListener((key) => {
+                      userName = userName + key;
+                    });
+                }
+              " :color="keyboard.active ? 'primary' : null">
+                isax-keyboard
+              </ada-icon>
+            </template>
           </v-text-field>
-          <simple-captcha tabindex="1" :height="42" outlined dense />
+          <simple-captcha tabindex="1" :height="42" outlined dense 
+          @focus="() => keyboard.active = false "
+          />
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <ada-btn depressed color="primary" @click="otp" width="100%" large dark>
+        <ada-btn depressed color="primary" @click="otp" width="100%" large dark class="tw-py-3">
           {{ $t("login.send-sms") }}
         </ada-btn>
       </v-card-actions>
@@ -50,11 +77,14 @@ function back() {
   position: absolute;
   top: 72px;
   left: 39px;
+  transform: rotate(180deg);
 }
 
 .v-application--is-rtl {
   .back {
+    transform: rotate(0);
     right: 39px;
+    left: auto;
   }
 }
 
