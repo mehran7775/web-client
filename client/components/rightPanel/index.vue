@@ -269,8 +269,8 @@ if (process.client) {
                       if (isMarked(value)) unmark(value);
                       else mark(value);
                     
-                    }">mdi-bookmark
-                  </ada-icon>
+                    }" :ico="isMarked(value) ? 'mdi-bookmark' : 'mdi-bookmark-outline'" />
+
                 </span>
               </div>
             </template>

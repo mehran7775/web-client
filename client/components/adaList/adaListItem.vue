@@ -8,6 +8,7 @@ const props = withDefaults(defineProps<{
     value: MenuItem
 }>(), {
     tag: 'li',
+    listTag: 'ol'
 });
 
 const open = ref(false)
