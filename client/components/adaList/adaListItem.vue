@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { BookmarkPosition, MenuItem, CreateBookmark } from '@/types';
-import { computed, ref } from "#app";
-import { useUser } from "~/composables";
-const shourtcuts = computed(() => userManager.getShourtcuts);
-
-
+import { ref } from "#app";
 
 const props = withDefaults(defineProps<{
     tag: 'li' | 'dd';
@@ -12,84 +8,11 @@ const props = withDefaults(defineProps<{
 }>(), {
     tag: 'li',
 });
-const bookmarks = computed(() => userManager.getBookmarks);
-const userManager = useUser();
-const isMarked = computed(() => (data: MenuItem) => {
-    switch (data.bookmarkPosition) {
-        case BookmarkPosition.ToolBar:
-            return bookmarks.value.findIndex((val) => val.title == data.title) > -1;
-        case BookmarkPosition.RightPanel:
-            return shourtcuts.value.findIndex((val) => val.title == data.title) > -1;
-    }
-});
-const home = computed(() => userManager.me.settings.home);
+
+const open = ref(false)
 
 function toggleGroup() {
     open.value = !open.value
-}
-const open = ref(false)
-
-function setHome(item: MenuItem) {
-    if (item.to)
-        userManager.update_settings({
-            path: "/home",
-            value: item.to,
-        });
-}
-
-function mark(data: MenuItem) {
-  const bk = CreateBookmark(data);
-  switch (data.bookmarkPosition) {
-    case BookmarkPosition.ToolBar:
-      {
-        const tmp = [...bookmarks.value, bk];
-        userManager.update_settings({
-          path: "/bookmarks",
-          value: tmp,
-        });
-      }
-      break;
-    case BookmarkPosition.RightPanel:
-      {
-        const tmp = [...shourtcuts.value, bk];
-        userManager.update_settings({
-          path: "/shourtcuts",
-          value: tmp,
-        });
-      }
-      break;
-  }
-}
-
-function unmark(data: MenuItem) {
-  switch (data.bookmarkPosition) {
-    case BookmarkPosition.ToolBar:
-      {
-        let tmp = [...bookmarks.value];
-        tmp.splice(
-          tmp.findIndex((item) => item.to == data.to),
-          1
-        );
-        userManager.update_settings({
-          path: "/bookmarks",
-          value: tmp,
-        });
-      }
-      break;
-    case BookmarkPosition.RightPanel:
-      {
-        let tmp = [...shourtcuts.value];
-        tmp.splice(
-          tmp.findIndex((item) => item.to == data.to),
-          1
-        );
-        userManager.update_settings({
-          path: "/shourtcuts",
-          value: tmp,
-        });
-      }
-      break;
-  }
 }
 
 
@@ -147,7 +70,7 @@ function unmark(data: MenuItem) {
         &.group {
             max-height: 100%;
 
-            .icon {
+            .isax-arrow-down {
                 @apply tw-rotate-180;
             }
 
@@ -178,37 +101,7 @@ function unmark(data: MenuItem) {
         <slot>
             <component @click="() => value.children ? toggleGroup() : null" :is="value.to ? 'router-link' : 'span'"
                 :to="value.to" v-ada-ripple class="ada-title">
-                <div class="tw-w-full tw-flex tw-justify-between tw-items-center">
-                    <div>{{ value.text ? value.text : $t(value.title) }}{{ value.expand }}</div>
-                    <div v-if="value.children" class="tw-flex tw-items-center">
-                        <ada-icon v-if="value.bookmarkPosition" size="1.5rem"
-                            :color="isMarked(value) ? 'gray' : 'blue'">mdi-bookmark-outline
-                        </ada-icon>
-                        <ada-icon @click.prevent="
-                            () => {
-                                setHome(value);
-                            }
-                        " size="1.5rem" :color="value.to == home ? ' blue' : 'gray'">mdi-star-outline</ada-icon>
-
-                    </div>
-                    <div v-else class="tw-flex tw-items-center">
-                        <template v-if="value.to && value.to != ''">
-                            <ada-icon v-if="value.bookmarkPosition" size="1.5rem"
-                                :color="isMarked(value) ? 'blue' : 'gray'" @click="() => {
-                                    if (isMarked(value)) unmark(value);
-                                    else mark(value);
-                                
-                                }">mdi-bookmark-outline
-                            </ada-icon>
-                            <ada-icon @click.prevent="
-                                () => {
-                                    setHome(value);
-                                }
-                            " size="1.5rem" :color="value.to == home ? ' blue' : 'gray'">mdi-star-outline</ada-icon>
-
-                        </template>
-                    </div>
-                </div>
+                <slot name="item" :value="value"></slot>
                 <ada-icon v-if="value.children">
                     isax-arrow-down
                 </ada-icon>
@@ -216,6 +109,7 @@ function unmark(data: MenuItem) {
         </slot>
         <ada-list v-if="value.children">
             <ada-list-item v-for="child in value.children.value" :key="child.title" :value="child">
+               <slot name="item" :value="child"></slot>
             </ada-list-item>
         </ada-list>
     </component>
