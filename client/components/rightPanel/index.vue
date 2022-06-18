@@ -12,7 +12,7 @@ const props = defineProps<{
   clipped: boolean;
 }>();
 
-const emit = defineEmits(["input", "update:mini", "closeLeftPanel"]);
+const emit = defineEmits(["input", "update:mini"]);
 
 const userManager = useUser();
 const appManager = useAsrTrader();
@@ -29,6 +29,7 @@ const selected = computed({
 const rtl = computed(() => appManager.rtl);
 const bookmarks = computed(() => userManager.getBookmarks);
 const shourtcuts = computed(() => userManager.getShourtcuts);
+const home = computed(() => userManager.me.settings.home);
 const isMarked = computed(() => (data: MenuItem) => {
   switch (data.bookmarkPosition) {
     case BookmarkPosition.ToolBar:
@@ -61,7 +62,6 @@ const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
   return res;
 });
 const items = getMenuItems(watchList);
-const home = computed(() => userManager.me.settings.home);
 
 const drawer = computed({
   get() {
@@ -78,6 +78,7 @@ function setHome(item: MenuItem) {
       value: item.to,
     });
 }
+
 function mark(data: MenuItem) {
   const bk = CreateBookmark(data);
   switch (data.bookmarkPosition) {
@@ -101,6 +102,7 @@ function mark(data: MenuItem) {
       break;
   }
 }
+
 function unmark(data: MenuItem) {
   switch (data.bookmarkPosition) {
     case BookmarkPosition.ToolBar:
@@ -131,6 +133,8 @@ function unmark(data: MenuItem) {
       break;
   }
 }
+
+
 watch(selected, (n, o) => {
   if (typeof n == 'undefined' || n == null) {
     emit("update:mini", true);
@@ -201,21 +205,20 @@ if (process.client) {
   <ada-nav v-model="drawer" min-width="48px" max-width="256px" :right="rtl" :mini="mini" class="r-panel"
     mobile-breakpoint="960" fixed>
     <ada-toggle class="tabs" v-model="selected" vertical>
-      <v-tooltip left>
+      <ada-tooltip left>
         <template #activator="{ on, attrs }">
           <ada-btn :width="32" :height="32" color="transparent" :to="home" :model="null">
             <ada-icon size="18" color="primary" v-bind="attrs" v-on="on">
-              isax-home-hashtag
+              isax-home-2
             </ada-icon>
           </ada-btn>
         </template>
         <span>{{ $t('menu.home') }}</span>
-      </v-tooltip>
+      </ada-tooltip>
       <v-tooltip v-for="item in items" :key="item.title" left>
         <template #activator="{ on, attrs }">
           <ada-btn :width="32" :height="32" color="transparent" :model="item.title" @click="
             () => {
-              $emit('closeLeftPanel')
               $emit('update:mini', !mini);
             }
           ">
@@ -250,6 +253,27 @@ if (process.client) {
         </h4>
         <ada-list>
           <ada-list-item v-for="child in item.children ? item.children : []" :key="child.title" :value="child">
+            <template #item="{ value }">
+              <div class="tw-w-full tw-flex tw-justify-between tw-items-center">
+                <span>{{ value.text ? value.text : $t(value.title) }}{{ value.expand }}</span>
+                <span v-if="value.to && value.to != ''" class="tw-flex tw-items-center">
+                  <ada-icon @click.prevent.stop="
+                    () => {
+                      setHome(value);
+                    }
+                  " size="1.5rem" :color="value.to == home ? 'blue' : 'gray4'"
+                    :ico="value.to == home ? 'isax-star-1-bold' : 'isax-star-1'">
+                  </ada-icon>
+                  <ada-icon v-if="value.bookmarkPosition" size="1.5rem" :color="isMarked(value) ? 'blue' : 'gray4'"
+                    @click.stop.prevent="() => {
+                      if (isMarked(value)) unmark(value);
+                      else mark(value);
+                    
+                    }">mdi-bookmark
+                  </ada-icon>
+                </span>
+              </div>
+            </template>
           </ada-list-item>
         </ada-list>
       </ada-tab>

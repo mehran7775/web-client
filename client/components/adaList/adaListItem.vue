@@ -1,18 +1,22 @@
 <script setup lang="ts">
-import { MenuItem } from '@/types';
-import { computed, ref } from "#app";
-import AdaIcon from '../adaIcon.vue';
+import { BookmarkPosition, MenuItem, CreateBookmark } from '@/types';
+import { ref } from "#app";
 
 const props = withDefaults(defineProps<{
+    listTag: 'menu' | 'ul' | 'ol' | 'dl',
     tag: 'li' | 'dd';
     value: MenuItem
 }>(), {
     tag: 'li',
 });
+
+const open = ref(false)
+
 function toggleGroup() {
     open.value = !open.value
 }
-const open = ref(false)
+
+
 </script>
 <style lang="postcss" scoped>
 .ada-list-item {
@@ -91,7 +95,7 @@ const open = ref(false)
     }
 }
 </style>
-//TODO multiple root element in vue 3
+//TODO multiple root element in vue 3 (dt | dd)
 <template>
     <component :is="tag" class="ada-list-item" :class="[
         open ? 'ada-list-item-open' : 'ada-list-item-close',
@@ -99,15 +103,18 @@ const open = ref(false)
     ]">
         <slot>
             <component @click="() => value.children ? toggleGroup() : null" :is="value.to ? 'router-link' : 'span'"
-                :to="value.to" v-ada-ripple class="ada-title">
-                {{ value.text ? value.text : $t(value.title) }}{{ value.expand }}
+                :to="value.to" v-ada-ripple.self class="ada-title">
+                <slot name="item" :value="value"></slot>
                 <ada-icon class="arrow-control" v-if="value.children">
                     isax-arrow-down
                 </ada-icon>
             </component>
         </slot>
-        <ada-list v-if="value.children">
+        <ada-list :tag="listTag" v-if="value.children">
             <ada-list-item v-for="child in value.children.value" :key="child.title" :value="child">
+                <template #item>
+                    <slot name="item" :value="child"></slot>
+                </template>
             </ada-list-item>
         </ada-list>
     </component>
