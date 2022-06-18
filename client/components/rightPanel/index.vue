@@ -31,12 +31,12 @@ const bookmarks = computed(() => userManager.getBookmarks);
 const shourtcuts = computed(() => userManager.getShourtcuts);
 const home = computed(() => userManager.me.settings.home);
 const isMarked = computed(() => (data: MenuItem) => {
-    switch (data.bookmarkPosition) {
-        case BookmarkPosition.ToolBar:
-            return bookmarks.value.findIndex((val) => val.title == data.title) > -1;
-        case BookmarkPosition.RightPanel:
-            return shourtcuts.value.findIndex((val) => val.title == data.title) > -1;
-    }
+  switch (data.bookmarkPosition) {
+    case BookmarkPosition.ToolBar:
+      return bookmarks.value.findIndex((val) => val.title == data.title) > -1;
+    case BookmarkPosition.RightPanel:
+      return shourtcuts.value.findIndex((val) => val.title == data.title) > -1;
+  }
 });
 const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
   const lists = computed(() => userManager.watchList);
@@ -72,11 +72,11 @@ const drawer = computed({
   },
 });
 function setHome(item: MenuItem) {
-    if (item.to)
-        userManager.update_settings({
-            path: "/home",
-            value: item.to,
-        });
+  if (item.to)
+    userManager.update_settings({
+      path: "/home",
+      value: item.to,
+    });
 }
 
 function mark(data: MenuItem) {
@@ -205,7 +205,7 @@ if (process.client) {
   <ada-nav v-model="drawer" min-width="48px" max-width="256px" :right="rtl" :mini="mini" class="r-panel"
     mobile-breakpoint="960" fixed>
     <ada-toggle class="tabs" v-model="selected" vertical>
-      <v-tooltip left>
+      <ada-tooltip left>
         <template #activator="{ on, attrs }">
           <ada-btn :width="32" :height="32" color="transparent" :to="home" :model="null">
             <ada-icon size="18" color="primary" v-bind="attrs" v-on="on">
@@ -214,7 +214,7 @@ if (process.client) {
           </ada-btn>
         </template>
         <span>{{ $t('menu.home') }}</span>
-      </v-tooltip>
+      </ada-tooltip>
       <v-tooltip v-for="item in items" :key="item.title" left>
         <template #activator="{ on, attrs }">
           <ada-btn :width="32" :height="32" color="transparent" :model="item.title" @click="
@@ -255,6 +255,7 @@ if (process.client) {
           <ada-list-item v-for="child in item.children ? item.children : []" :key="child.title" :value="child">
             <template #item="{ value }">
               <div class="tw-w-full tw-flex tw-justify-between tw-items-center">
+<<<<<<< HEAD
                 <div>{{ value.text ? value.text : $t(value.title) }}{{ value.expand }}</div>
                 <div v-if="value.children" class="tw-flex tw-items-center">
                   <ada-icon v-if="value.bookmarkPosition" size="1.5rem" :color="isMarked(value) ? 'gray6' : 'blue'">
@@ -284,6 +285,25 @@ if (process.client) {
 
                   </template>
                 </div>
+=======
+                <span>{{ value.text ? value.text : $t(value.title) }}{{ value.expand }}</span>
+                <span v-if="value.to && value.to != ''" class="tw-flex tw-items-center">
+                  <ada-icon @click.prevent.stop="
+                    () => {
+                      setHome(value);
+                    }
+                  " size="1.5rem" :color="value.to == home ? 'blue' : 'gray4'"
+                    :ico="value.to == home ? 'isax-star-1-bold' : 'isax-star-1'">
+                  </ada-icon>
+                  <ada-icon v-if="value.bookmarkPosition" size="1.5rem" :color="isMarked(value) ? 'blue' : 'gray4'"
+                    @click.stop.prevent="() => {
+                      if (isMarked(value)) unmark(value);
+                      else mark(value);
+                    
+                    }" :ico="isMarked(value) ? 'mdi-bookmark' : 'mdi-bookmark-outline'" />
+
+                </span>
+>>>>>>> 7e029e48c6d36b05089264a5cb38143382679db2
               </div>
             </template>
           </ada-list-item>
