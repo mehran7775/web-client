@@ -23,7 +23,7 @@ const rmini = computed({
   get: () => rightMenu.value.mini,
   set(val) {
     rightMenu.value.mini = val;
-    leftMenu.value.mini = !val;
+    if(!leftMenu.value.mini) leftMenu.value.mini = true
   }
 })
 
@@ -31,7 +31,7 @@ const lmini = computed({
   get: ()=> leftMenu.value.mini,
   set(val) {
     leftMenu.value.mini = val
-    rightMenu.value.mini = !val
+    if(!rightMenu.value.mini) rightMenu.value.mini = true
   }
 })
 
