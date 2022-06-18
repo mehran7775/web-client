@@ -201,7 +201,7 @@ if (process.client) {
   <ada-nav v-model="drawer" min-width="48px" max-width="256px" :right="rtl" :mini="mini" class="r-panel"
     mobile-breakpoint="960" fixed>
     <ada-toggle class="tabs" v-model="selected" vertical>
-      <v-tooltip left>
+      <ada-tooltip left>
         <template #activator="{ on, attrs }">
           <ada-btn :width="32" :height="32" color="transparent" :to="home" :model="null">
             <ada-icon size="18" color="primary" v-bind="attrs" v-on="on">
@@ -210,7 +210,7 @@ if (process.client) {
           </ada-btn>
         </template>
         <span>{{ $t('menu.home') }}</span>
-      </v-tooltip>
+      </ada-tooltip>
       <v-tooltip v-for="item in items" :key="item.title" left>
         <template #activator="{ on, attrs }">
           <ada-btn :width="32" :height="32" color="transparent" :model="item.title" @click="
