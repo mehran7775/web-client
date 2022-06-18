@@ -234,7 +234,9 @@ const rtl = computed(() => appManager.rtl);
       <bottom-panel :class="{
         right: !rightMenu.mini,
         left: !leftMenu.mini,
-      }" />
+      }" 
+      :slideToBottom="invisibleFinInfo"
+      />
       <footer v-if="!invisibleFinInfo" class="mainBackground" :class="{
         footer: true,
         right: !rightMenu.mini,
