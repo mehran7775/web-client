@@ -6,7 +6,7 @@ import { PaginatedResult, Message, MessageFilter, MessageQuery, Tabs } from "@/t
 import MessageList from "./messageList.vue";
 import { useAsrTrader, useBottomPanel, useMessages } from "~/composables";
 
-const emit = defineEmits(["openWatchList", "input", "update:mini", "closeRightPanel"]);
+const emit = defineEmits(["openWatchList", "input", "update:mini"]);
 const props = defineProps<{ value: boolean; mini: boolean; clipped: boolean }>();
 const messageManager = useMessages();
 const appManager = useAsrTrader();
@@ -161,7 +161,6 @@ loadMyMessages();
           'tab-item': true,
           active: 0 == activeTab,
         }"
-        @click="emit('closeRightPanel')"
       >
       </message-list>
       <message-list
@@ -172,7 +171,6 @@ loadMyMessages();
           'tab-item': true,
           active: 1 == activeTab,
         }"
-        @click="emit('closeRightPanel')"
       >
       </message-list>
     </div>

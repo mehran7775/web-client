@@ -12,7 +12,7 @@ const props = defineProps<{
   clipped: boolean;
 }>();
 
-const emit = defineEmits(["input", "update:mini", "closeLeftPanel"]);
+const emit = defineEmits(["input", "update:mini"]);
 
 const userManager = useUser();
 const appManager = useAsrTrader();
@@ -29,13 +29,14 @@ const selected = computed({
 const rtl = computed(() => appManager.rtl);
 const bookmarks = computed(() => userManager.getBookmarks);
 const shourtcuts = computed(() => userManager.getShourtcuts);
+const home = computed(() => userManager.me.settings.home);
 const isMarked = computed(() => (data: MenuItem) => {
-  switch (data.bookmarkPosition) {
-    case BookmarkPosition.ToolBar:
-      return bookmarks.value.findIndex((val) => val.title == data.title) > -1;
-    case BookmarkPosition.RightPanel:
-      return shourtcuts.value.findIndex((val) => val.title == data.title) > -1;
-  }
+    switch (data.bookmarkPosition) {
+        case BookmarkPosition.ToolBar:
+            return bookmarks.value.findIndex((val) => val.title == data.title) > -1;
+        case BookmarkPosition.RightPanel:
+            return shourtcuts.value.findIndex((val) => val.title == data.title) > -1;
+    }
 });
 const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
   const lists = computed(() => userManager.watchList);
@@ -61,7 +62,6 @@ const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
   return res;
 });
 const items = getMenuItems(watchList);
-const home = computed(() => userManager.me.settings.home);
 
 const drawer = computed({
   get() {
@@ -72,12 +72,13 @@ const drawer = computed({
   },
 });
 function setHome(item: MenuItem) {
-  if (item.to)
-    userManager.update_settings({
-      path: "/home",
-      value: item.to,
-    });
+    if (item.to)
+        userManager.update_settings({
+            path: "/home",
+            value: item.to,
+        });
 }
+
 function mark(data: MenuItem) {
   const bk = CreateBookmark(data);
   switch (data.bookmarkPosition) {
@@ -101,6 +102,7 @@ function mark(data: MenuItem) {
       break;
   }
 }
+
 function unmark(data: MenuItem) {
   switch (data.bookmarkPosition) {
     case BookmarkPosition.ToolBar:
@@ -131,6 +133,8 @@ function unmark(data: MenuItem) {
       break;
   }
 }
+
+
 watch(selected, (n, o) => {
   if (typeof n == 'undefined' || n == null) {
     emit("update:mini", true);
@@ -215,7 +219,6 @@ if (process.client) {
         <template #activator="{ on, attrs }">
           <ada-btn :width="32" :height="32" color="transparent" :model="item.title" @click="
             () => {
-              $emit('closeLeftPanel')
               $emit('update:mini', !mini);
             }
           ">
@@ -250,6 +253,39 @@ if (process.client) {
         </h4>
         <ada-list>
           <ada-list-item v-for="child in item.children ? item.children : []" :key="child.title" :value="child">
+            <template #item="{ value }">
+              <div class="tw-w-full tw-flex tw-justify-between tw-items-center">
+                <div>{{ value.text ? value.text : $t(value.title) }}{{ value.expand }}</div>
+                <div v-if="value.children" class="tw-flex tw-items-center">
+                  <ada-icon v-if="value.bookmarkPosition" size="1.5rem" :color="isMarked(value) ? 'gray4' : 'blue'">
+                    mdi-bookmark
+                  </ada-icon>
+                  <ada-icon @click.prevent="
+                    () => {
+                      setHome(value);
+                    }
+                  " size="1.5rem" :color="value.to == home ? 'blue' : 'gray4'">mdi-star</ada-icon>
+
+                </div>
+                <div v-else class="tw-flex tw-items-center">
+                  <template v-if="value.to && value.to != ''">
+                    <ada-icon v-if="value.bookmarkPosition" size="1.5rem" :color="isMarked(value) ? 'blue' : 'gray4'"
+                      @click="() => {
+                        if (isMarked(value)) unmark(value);
+                        else mark(value);
+                      
+                      }">mdi-bookmark
+                    </ada-icon>
+                    <ada-icon @click.prevent="
+                      () => {
+                        setHome(value);
+                      }
+                    " size="1.5rem" :color="value.to == home ? 'blue' : 'gray4'">mdi-star</ada-icon>
+
+                  </template>
+                </div>
+              </div>
+            </template>
           </ada-list-item>
         </ada-list>
       </ada-tab>
