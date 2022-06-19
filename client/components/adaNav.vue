@@ -15,9 +15,24 @@ const props = withDefaults(defineProps<{
 <style lang="postcss" scoped>
 .ada-nav {
     @apply tw-flex;
-    @apply tw-transition-all tw-ease-in-out tw-duration-700;
+    @apply tw-transition-all tw-ease-in-out tw-duration-500;
     z-index: 1000;
-    overflow: hidden;
+
+    >:nth-child(2) {
+        @apply tw-transition-all tw-ease-in-out tw-duration-500;
+    }
+
+    &-mini {
+        >:nth-child(2) {
+            max-width: 0;
+            width: 0 !important;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            touch-action: none;
+        }
+    }
+
 }
 </style>
 <template>
@@ -25,7 +40,7 @@ const props = withDefaults(defineProps<{
         minWidth: !mini ? maxWidth : minWidth,
         maxWidth: !mini ? maxWidth : minWidth,
         position: fixed ? 'fixed' : 'relative'
-    }">
+    }" :class="[mini ? 'ada-nav-mini' : '']">
         <slot />
     </div>
 </template>

@@ -137,9 +137,9 @@ if (process.client) {
   <div class="tw-m-0 tw-p-0">
     <header ref="toolbar" class="toolbar">
       <slot name="toolbar"> </slot>
-      <v-tooltip v-for="b in bookmarks" :key="b.to">
-        <template #activator="{ on, attrs }">
-          <ada-btn dark color="primary" :to="b.to" v-on="on" v-bind="attrs" :height="28" class="bookmark">
+      <ada-tooltip v-for="b in bookmarks" :key="b.to" position="under">
+        <template #activator>
+          <ada-btn dark color="primary" :to="b.to" :height="28" class="bookmark">
             <ada-btn @click.stop.prevent="() => unmark(b)" :width="14" :height="14" class="removeMark pa-0 ma-0"
               color="error">
               <ada-icon class="tw-p-0 tw-m-0" :size="12">mdi-close</ada-icon>
@@ -151,7 +151,7 @@ if (process.client) {
           </ada-btn>
         </template>
         {{ b.text ? b.text : $t(b.title) }}
-      </v-tooltip>
+      </ada-tooltip>
       <ada-spacer />
       <ada-toggle class="mode tw-justify-end" color="primary" v-model="viewMode">
         <ada-btn :height="28" :width="28" :model="0">
