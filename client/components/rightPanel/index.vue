@@ -172,7 +172,7 @@ if (process.client) {
   }
 
   .toggle.tabs {
-    @apply tw-items-center tw-overflow-y-auto tw-px-2;
+    @apply tw-items-center tw-px-2;
     padding-top: 8px;
     height: calc(100vh - 42px);
     padding-bottom: 54px;
@@ -202,48 +202,48 @@ if (process.client) {
 </style>
 
 <template>
-  <ada-nav v-model="drawer" min-width="48px" max-width="256px" :right="rtl" :mini="mini" class="r-panel"
-    mobile-breakpoint="960" fixed>
+  <ada-nav v-model="drawer" min-width="48px" max-width="256px" :mini="mini" class="r-panel" mobile-breakpoint="960"
+    fixed>
     <ada-toggle class="tabs" v-model="selected" vertical>
-      <ada-tooltip left>
-        <template #activator="{ on, attrs }">
+      <ada-tooltip position="left">
+        <template #activator>
           <ada-btn :width="32" :height="32" color="transparent" :to="home" :model="null">
-            <ada-icon size="18" color="primary" v-bind="attrs" v-on="on">
+            <ada-icon size="18" color="primary">
               isax-home-2
             </ada-icon>
           </ada-btn>
         </template>
         <span>{{ $t('menu.home') }}</span>
       </ada-tooltip>
-      <v-tooltip v-for="item in items" :key="item.title" left>
-        <template #activator="{ on, attrs }">
+      <ada-tooltip v-for="item in items" :key="item.title" position='left'>
+        <template #activator>
           <ada-btn :width="32" :height="32" color="transparent" :model="item.title" @click="
             () => {
               $emit('update:mini', !mini);
             }
           ">
-            <ada-icon size="18" :color="item.color" v-bind="attrs" v-on="on">
+            <ada-icon size="18" :color="item.color">
               {{ item.icon }}
             </ada-icon>
           </ada-btn>
         </template>
         <span>{{ item.text ? item.text : $t(item.title) }}</span>
-      </v-tooltip>
+      </ada-tooltip>
       <hr class="divider" />
-      <v-tooltip v-for="item in shourtcuts" :key="item.title" left>
-        <template v-slot:activator="{ on, attrs }">
+      <ada-tooltip v-for="item in shourtcuts" :key="item.title" position="left">
+        <template activator>
           <ada-btn :width="32" :height="32" color="transparent" :to="item.to" @click="
             () => {
               $emit('update:mini', true);
             }
           " depressed>
-            <ada-icon size="18" :color="item.color" v-bind="attrs" v-on="on">
+            <ada-icon size="18" :color="item.color">
               {{ item.icon }}
             </ada-icon>
           </ada-btn>
         </template>
         <span>{{ item.text ? item.text : $t(item.title) }}</span>
-      </v-tooltip>
+      </ada-tooltip>
     </ada-toggle>
 
     <ada-tabs class="tab-items" v-model="selected">
@@ -263,7 +263,7 @@ if (process.client) {
                       else mark(value);
                     
                     }" :ico="isMarked(value) ? 'mdi-bookmark' : 'mdi-bookmark-outline'" />
-                       <ada-icon @click.prevent.stop="
+                  <ada-icon @click.prevent.stop="
                     () => {
                       setHome(value);
                     }
