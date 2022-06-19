@@ -91,7 +91,7 @@ loadMessages();
 loadMyMessages();
 </script>
 
-<style lang="postcss">
+<!-- <style lang="postcss">
 .msg-panel {
   padding: 0 !important;
   margin: 0 !important;
@@ -138,9 +138,10 @@ loadMyMessages();
     }
   }
 }
-</style>
+</style> -->
 
 <template>
+  <!-- 
   <v-navigation-drawer
     v-model="drawer"
     :mini-variant="mini"
@@ -156,7 +157,7 @@ loadMyMessages();
       <message-list
         @load="loadMyMessages"
         @select="selectMessage"
-        v-model="myMessages"
+        v-model="v"
         :class="{
           'tab-item': true,
           active: 0 == activeTab,
@@ -185,8 +186,65 @@ loadMyMessages();
           }
         "
       >
-        {{ $t(item.title) }}
+        {{ $t(item.title) }}v
       </v-tab>
     </v-tabs>
-  </v-navigation-drawer>
+  </v-navigation-drawer> -->
+
+  <ada-nav v-model="drawer" min-width="48px" max-width="152px" :mini="mini" mobile-breakpoint="960" fixed
+    class="l-panel tw-left-0">
+    <ada-toggle class="tabs" vertical>
+      <ada-list>
+        <ada-list-item v-for="item in items" :key="item.title" :value="item">
+          <template #item="{ value }">
+            <div class="tw-w-full tw-flex tw-justify-between tw-items-center" 
+              @click="
+              () => {
+                $emit('update:mini', !mini);
+              }"
+            >
+              <span v-text="$t(value.title)"></span>
+            </div>
+          </template>
+        </ada-list-item>
+      </ada-list>
+    </ada-toggle>
+
+  </ada-nav>
+
 </template>
+
+
+<style lang="postcss" scoped>
+.l-panel {
+  font-size: 0.875rem;
+  padding-top: 42px;
+  background-color: rgba(var(--c-primary), 0.01);
+  background-color: aqua;
+
+  &::after {
+    @apply tw-inset-0 tw-absolute tw-w-full tw-h-full;
+    z-index: -1;
+    background-color: #fff;
+    content: '';
+    touch-action: none;
+    pointer-events: none;
+  }
+
+  .toggle.tabs {
+    @apply tw-items-center tw-px-2;
+    padding-top: 8px;
+    height: calc(100vh - 42px);
+    padding-bottom: 54px;
+    min-width: 48px;
+    width: 48px;
+    max-width: 48px;
+    flex-basis: 48px;
+    box-shadow: -2px 1px 2px 0 rgba(var(--c-primary), 0.2);
+
+    .icon {
+      font-size: 1.5rem;
+    }
+  }
+}
+</style>
