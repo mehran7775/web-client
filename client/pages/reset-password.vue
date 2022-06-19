@@ -25,13 +25,13 @@ function back() {
     <div class="pie pie-2"></div>
     <v-card elevation="0" class="dotted res-crd" :loading="loading">
      <ada-icon color="gray" :size="24" class="back" @click="back"> mdi-arrow-right </ada-icon>
-      <div class="justify-center text-center">
+      <div class="text-center">
         <nuxt-link to="/about-us" class="logo" />
         <h3>{{ $t("login.forget-password") }}</h3>
       </div>
-      <v-card-text class="text-center tw-px-3">
+      <v-card-text class="tw-px-3">
         <v-form>
-          <p class="tw-mt-[16px] tw-mb-2 tw-text-right tw-text-base">{{ $t("user.username") }}</p>
+          <p class="tw-mt-[16px] tw-mb-2 tw-text-base">{{ $t("user.username") }}</p>
           <v-text-field v-model="userName" :placeholder="$t('user.username')" prepend-inner-icon="isax-user"
             class="my-2" outlined hide-details dense aria-lable="username"
             @focus="
@@ -57,7 +57,8 @@ function back() {
               </ada-icon>
             </template>
           </v-text-field>
-          <simple-captcha tabindex="1" :height="42" outlined dense 
+          <label for="captcha" class="tw-block tw-mb-2 tw-text-base">{{ $t("login.captcha") }}</label>
+          <simple-captcha tabindex="1" :height="42" outlined dense id="captcha"
           @focus="() => keyboard.active = false "
           />
         </v-form>
@@ -68,7 +69,10 @@ function back() {
         </ada-btn>
       </v-card-actions>
       <div v-html="$t('login.alerts')" class="mt-3 text-justify"></div>
-    </v-card>
+      </v-card>
+      
+        <virtual-keyboard class="tw-absolute tw-bottom-0 tw-left-0 tw-h-1/2 md:tw-h-full tw-w-full md:tw-w-2/6 tw-m-auto tw-z-10 tw-border tw-rounded"/>
+      
   </div>
 </template>
 
@@ -86,6 +90,10 @@ function back() {
     right: 39px;
     left: auto;
   }
+
+  .res-ct{
+    text-align: right;
+  }
 }
 
 .res-ct {
@@ -96,6 +104,7 @@ function back() {
   flex-direction: column;
   justify-content: center;
   padding: 0 calc(50% - 257px) !important;
+  text-align: left;
 }
 
 .res-crd {

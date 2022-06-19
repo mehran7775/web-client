@@ -256,7 +256,7 @@ if (process.client) {
             <template #item="{ value }">
               <div class="tw-w-full tw-flex tw-justify-between tw-items-center">
                 <span>{{ value.text ? value.text : $t(value.title) }}{{ value.expand }}</span>
-                <span v-if="value.to && value.to != ''" class="tw-flex tw-items-center">
+                <span v-if="value.to && value.to != ''" class="tw-flex tw-items-baseline">
                   <ada-icon v-if="value.bookmarkPosition" size="1.5rem" :color="isMarked(value) ? 'blue' : 'gray4'"
                     @click.stop.prevent="() => {
                       if (isMarked(value)) unmark(value);
