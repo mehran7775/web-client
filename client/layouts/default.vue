@@ -268,7 +268,7 @@ const rtl = computed(() => appManager.rtl);
       left: '8px',
     }" width="32px" height="32px" color="primary 0.9">
       <ada-icon color="white" :size="24" @click="invisibleFinInfo = !invisibleFinInfo">     
-        mdi-arrow-collapse-right
+        mdi-chevron-triple-right
       </ada-icon>
     </floating-button>
     <floating-button :style="{
