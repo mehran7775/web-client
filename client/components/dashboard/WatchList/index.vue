@@ -248,14 +248,14 @@ getData(props.searchModel);
                   ? 'warning'
                   : 'success'
             " dot>
-              <v-tooltip right>
-                <template #activator="{ on }">
-                  <span style="line-height: 2.5" v-on="on" class="d-block">
+              <ada-tooltip position="right">
+                <template #activator>
+                  <span style="line-height: 2.5" class="tw-block">
                     {{ item.name }}
                   </span>
                 </template>
                 {{ $t(parseStatus(item.status)) }}
-              </v-tooltip>
+              </ada-tooltip>
             </ada-badge>
           </template>
           <template #item.opening="{ item }">

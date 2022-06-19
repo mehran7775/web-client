@@ -17,13 +17,16 @@ function mouseleave() {
 </script>
 <style lang="postcss" scoped>
 .ada-tooltip-container {
+    @apply tw-relative tw-flex tw-flex-shrink tw-justify-center tw-items-center;
     position: relative;
 
     .ada-tooltip {
         @apply tw-absolute tw-flex tw-justify-center tw-items-center;
         @apply tw-transition-all tw-ease-in-out tw-duration-500;
         min-height: calc(var(--row-height) - 8px);
-        min-width: 75px;
+        min-width: 65px;
+        width: fit-content;
+        padding: 0 var(--border-radius-root);
         background-color: var(--tooltip-color);
         border-radius: var(--border-radius-root);
         z-index: 1000;
@@ -35,14 +38,14 @@ function mouseleave() {
 
         &.above {
             top: calc(0px - var(--row-height) + 4px);
-            left: -50%;
-            right: -50%;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         &.under {
             bottom: calc(0px - var(--row-height) + 4px);
-            left: -50%;
-            right: -50%;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         &.left {

@@ -31,5 +31,5 @@
 
   --row-height: 32px;
 
-  --tooltip-color: rgba(var(--c-success), 0.85);
+  --tooltip-color: rgba(0, 0, 0, 0.85);
 }
