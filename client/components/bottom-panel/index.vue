@@ -20,7 +20,7 @@ const props = withDefaults(
     slideToBottom: boolean
   }>(),
   {
-  slideToBottom: false
+    slideToBottom: false
   }
 );
 const tab = computed({
@@ -69,13 +69,25 @@ function close() {
   bottom: 32px;
   background-color: white;
 
+  &.slideToBottom {
+    bottom: 0;
+  }
+
   &.expanded {
     height: calc(100vh - 74px);
+
+    &.slideToBottom {
+      height: calc(100vh - 42px);
+    }
   }
 
   &.half {
     height: calc(100vh - 436px);
     min-height: 30vh;
+
+    &.slideToBottom {
+      height: calc(100vh - 404px);
+    }
   }
 
   &.hidden {
@@ -165,9 +177,7 @@ function close() {
     expanded: expanded && tab != defaultItem,
     half: tab != defaultItem && !expanded,
     hidden: tab == defaultItem,
-  }"
-  :style="{
-    bottom: props.slideToBottom ? 0 : 'auto',
+    slideToBottom: props.slideToBottom
   }">
     <div class="detail">
       <div class="contents">
