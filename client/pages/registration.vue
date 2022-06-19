@@ -7,6 +7,7 @@ export default {
 import { ref, Ref } from "#app";
 import simpleCaptcha from "~/components/simpleCaptcha.vue";
 import { useRouter } from "#app";
+import { useAsrTrader } from "~~/composables/useAsrTrader";
 
 const otpref: Ref<any> = ref(null);
 
@@ -19,6 +20,10 @@ const forms: Ref<any> = ref({
 const rform1: Ref<any> = ref(null),
   rform2: Ref<any> = ref(null),
   rform0: Ref<any> = ref(null);
+const appManager = useAsrTrader();
+const rtl = appManager.rtl
+
+
 
 function back() {
   if (step.value == 1) {
@@ -52,7 +57,7 @@ function requestOtp() {
     <div class="pie-2 pie"></div>
 
     <v-card class="dotted reg-crd">
-      <ada-icon color="gray" :size="24" class="back" @click="back"> mdi-arrow-right </ada-icon>
+      <ada-icon color="gray" :size="24" :class="['tw-absolute tw-top-20', !rtl ? 'tw-left-10 tw-rotate-180' : 'tw-left-auto tw-right-10']" @click="back"> mdi-arrow-right </ada-icon>
       <div class="justify-center text-center">
         <nuxt-link to="/about-us" class="logo" />
         <h3>
