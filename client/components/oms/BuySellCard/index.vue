@@ -145,6 +145,9 @@ instrumentManager
 </script>
 
 <style lang="postcss" scoped>
+.inputColor{
+  color: #3554d1!important;
+}
 .buy-sell {
   .frm {
     @apply tw-m-0 tw-p-0 tw-grid tw-grid-cols-2;
@@ -277,7 +280,8 @@ instrumentManager
             <numeric-field :value="1000" />
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('oms.count')" type="number" v-model="countVal" :readonly="countLock" class="tw-mt-1"
+            <text-input :label="$t('oms.count')" type="number" v-model="countVal" 
+              :readonly="countLock" class="tw-mt-1 inputColor" 
               :min="!!active ? active.minQuantityPerOrder : 1"
               :max="!!active ? active.maxQuantityPerOrder || null : null">
               <template #append>
@@ -293,8 +297,10 @@ instrumentManager
             <bar />
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('oms.price')" type="number" v-model="priceVal" :readonly="priceLock" class="tw-mt-1"
-              :min="!!active ? active.minAllowedPrice : 1" :max="!!active ? active.maxAllowedPrice || null : null">
+            <text-input :label="$t('oms.price')" type="number" v-model="priceVal" 
+            :readonly="priceLock" class="tw-mt-1 inputColor"
+              :min="!!active ? active.minAllowedPrice : 1" 
+              :max="!!active ? active.maxAllowedPrice || null : null">
               <template #append>
                 <ada-btn :class="['tw-mx-1', priceLock ? 'active' : '']" :width="24" :height="24"
                   @click="togglePriceLock" icon>
@@ -304,28 +310,30 @@ instrumentManager
             </text-input>
           </div>
           <div class="tw-justify-between">
-            <account-type v-model="accountTypefield" :label="$t('accounting.account.type')" class="tw-my-1"
-              height="24px">
+            <account-type v-model="accountTypefield" :label="$t('accounting.account.type')" 
+            class="tw-my-1 inputColor" height="24px">
             </account-type>
             <bar />
           </div>
           <div class="tw-justify-between">
-            <credit height="24px" class="tw-my-1" :label="$t('accounting.account.credit')">
+            <credit height="24px" class="tw-my-1 inputColor" :label="$t('accounting.account.credit')">
             </credit>
           </div>
           <div class="tw-justify-between tw-col-span-2">
             <percent v-model="order.discloseQuantity" :label="$t('oms.view-count')" height="31px"
-              class="tw-flex tw-flex-grow tw-h-[24px]" :min="30" :total="countVal" :value="100">
+              class="tw-flex tw-flex-grow tw-h-[24px] inputColor" :min="30" :total="countVal" :value="100">
             </percent>
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px]" :min="0" :max="100">
+            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100">
             </text-input>
             <bar />
           </div>
           <div class="tw-justify-between">
-            <v-checkbox :label="$t('oms.splitOrders')" v-model="orderDivision" dense hide-details
-              class="tw-m-0 tw-p-0 tw-mt-1 pa-0" :ripple="false" />
+            <label class="tw-flex tw-items-center inputColor"> 
+              <input type="checkbox" v-model="orderDivision" class="tw-mx-2"/>
+              {{$t('oms.splitOrders')}}
+            </label>
           </div>
           <div class="tw-justify-between">
             <span>{{ $t("oms.tradeWage") }}: </span>
