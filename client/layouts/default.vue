@@ -156,7 +156,7 @@ const rtl = computed(() => appManager.rtl);
     padding-right: 48px !important;
 
     &.left {
-      padding-left: 152px !important;
+      padding-left: 256px !important;
     }
 
     &.right {

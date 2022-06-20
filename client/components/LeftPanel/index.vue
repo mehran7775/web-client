@@ -12,7 +12,7 @@ const messageManager = useMessages();
 const appManager = useAsrTrader();
 const bottomPanel = useBottomPanel();
 const rtl = appManager.rtl;
-const activeTab: Ref<number | null> = ref(null);
+// const activeTab: Ref<number | null> = ref(null);
 
 const toggleMenu = ref(null)
 
@@ -25,7 +25,7 @@ const drawer = computed({
   },
 });
 watch(toggleMenu, (newVal, oldVal) => {
-   if (typeof newVal == 'undefined' || newVal == null) {
+  if (typeof newVal == 'undefined' || newVal == null) {
     emit("update:mini", true);
   } else {
     emit("update:mini", false);
@@ -43,16 +43,16 @@ const myMessageQuery: Ref<MessageQuery> = ref(
 const messageQuery: Ref<MessageQuery> = ref(
   new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00"))
 );
- 
-watch(activeTab, (n, o) => {
-  if (typeof n != typeof undefined) emit("update:mini", false);
-  else emit("update:mini", true);
-});
+
+// watch(activeTab, (n, o) => {
+//   if (typeof n != typeof undefined) emit("update:mini", false);
+//   else emit("update:mini", true);
+// });
 
 const items = [
   { title: "general.me" },
   { title: "general.all" },
-  { title: "oms.openingTrade" },
+  // { title: "oms.openingTrade" },
 ];
 
 
@@ -101,18 +101,30 @@ loadMyMessages();
 </script>
 
 <template>
-  <ada-nav v-model="drawer" min-width="48px" max-width="152px" :mini="mini" mobile-breakpoint="960" fixed
+  <ada-nav v-model="drawer" min-width="48px" max-width="256px" :mini="mini" mobile-breakpoint="960" fixed
     class="l-panel tw-left-0 tw-flex-row-reverse">
     <ada-toggle class="tabs" vertical v-model="toggleMenu">
-        <ada-list>
-          <ada-list-item v-for="item in items" :key="item.title" :value="item">
-            <template #item="{ value }">
-              <div class="tw-cursor-pointer" @click="$emit('update:mini', !mini)">
-                <span v-text="$t(value.title)"></span>
-              </div>
-            </template>
-          </ada-list-item>
-        </ada-list>
+      <ada-list class="tw-pb-1">
+        <ada-list-item v-for="(item, index) in items" :key="item.title" :value="item">
+          <template #item="{ value }">
+            <ada-btn :width="32" :height="32" color="transparent" :model="item.title"
+              @click="$emit('update:mini', !mini)">
+              <span v-text="$t(value.title)"></span>
+            </ada-btn>
+          </template>
+        </ada-list-item>
+        <ada-list-item value="" class="tw-mt-1">
+          <template #item>
+            <div>
+              <hr class="divider" />
+              <ada-btn :width="32" :height="32" color="transparent" :model="$t('oms.openingTrade')"
+                @click="$emit('update:mini', !mini)" class="tw-mt-1">
+                <span v-text="$t('oms.openingTrade')"></span>
+              </ada-btn>
+            </div>
+          </template>
+        </ada-list-item>
+      </ada-list>
     </ada-toggle>
     <ada-tabs class="tab-items" v-model="activeTab">
 
@@ -148,8 +160,9 @@ loadMyMessages();
     flex-basis: 48px;
     box-shadow: 2px 1px 6px 0 rgba(var(--c-primary), 0.2);
   }
+
   .tabs.tab-items {
-    /* min-width: 208px; */
+    min-width: 208px;
     background-color: rgba(var(--c-primary), 0.01);
     width: calc(100% - 48px);
 
