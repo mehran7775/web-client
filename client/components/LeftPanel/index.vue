@@ -14,6 +14,8 @@ const bottomPanel = useBottomPanel();
 const rtl = appManager.rtl;
 const activeTab: Ref<number | null> = ref(null);
 
+const toggleMenu = ref(null)
+
 const drawer = computed({
   get() {
     return props.value;
@@ -22,6 +24,13 @@ const drawer = computed({
     emit("input", value);
   },
 });
+watch(toggleMenu, (newVal, oldVal) => {
+   if (typeof newVal == 'undefined' || newVal == null) {
+    emit("update:mini", true);
+  } else {
+    emit("update:mini", false);
+  }
+})
 
 const loading = ref(false);
 const myMessages: Message[] = reactive([]);
@@ -34,7 +43,7 @@ const myMessageQuery: Ref<MessageQuery> = ref(
 const messageQuery: Ref<MessageQuery> = ref(
   new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00"))
 );
-
+ 
 watch(activeTab, (n, o) => {
   if (typeof n != typeof undefined) emit("update:mini", false);
   else emit("update:mini", true);
@@ -74,142 +83,40 @@ async function load(query: Ref<MessageQuery>) {
   }
 }
 
-async function selectMessage(id: number) {
-  try {
-    bottomPanel.setLoading(true);
-    bottomPanel.setActiveTab(Tabs.furtherInfo);
-    const message: Message = (await messageManager.getMessage(id)).data;
-    bottomPanel.setMessage(message);
-    bottomPanel.setTitle({ tab: Tabs.furtherInfo, title: message.title, params: [] });
-  } catch {
-    //TODO Snack for error
-  } finally {
-    bottomPanel.setLoading(false);
-  }
-}
+// async function selectMessage(id: number) {
+//   try {
+//     bottomPanel.setLoading(true);
+//     bottomPanel.setActiveTab(Tabs.furtherInfo);
+//     const message: Message = (await messageManager.getMessage(id)).data;
+//     bottomPanel.setMessage(message);
+//     bottomPanel.setTitle({ tab: Tabs.furtherInfo, title: message.title, params: [] });
+//   } catch {
+//     //TODO Snack for error
+//   } finally {
+//     bottomPanel.setLoading(false);
+//   }
+// }
 loadMessages();
 loadMyMessages();
 </script>
 
-<!-- <style lang="postcss">
-.msg-panel {
-  padding: 0 !important;
-  margin: 0 !important;
-  overflow: hidden;
-  &.v-navigation-drawer--mini-variant {
-    width: 48px !important;
-  }
-  .v-navigation-drawer__content {
-    display: flex;
-    flex-direction: row;
-  }
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  .v-tabs-items {
-    background-color: #eeeeee !important;
-    height: 100%;
-    overflow-y: auto;
-    width: calc(100% - 48px);
-    display: block;
-    .tab-item {
-      width: 100%;
-      white-space: nowrap;
-      transform: translateX(100%);
-      height: 0;
-      &.active {
-        transition: transform 0.5s ease-in-out;
-        animation: slide-in 0.5s forwards;
-        transform: translateX(0%);
-        height: 100%;
-      }
-    }
-  }
-  .v-tabs {
-    vertical-align: top;
-    max-width: 48px;
-    .v-tab {
-      margin: 0;
-      padding: 0;
-      max-width: 48px;
-      min-width: 48px;
-      justify-content: center !important;
-      white-space: normal;
-    }
-  }
-}
-</style> -->
-
 <template>
-  <!-- 
-  <v-navigation-drawer
-    v-model="drawer"
-    :mini-variant="mini"
-    :clipped="clipped"
-    :right="!rtl"
-    class="ps-0 msg-panel"
-    width="152"
-    mobile-breakpoint="960"
-    fixed
-    app
-  >
-    <div class="v-tabs-items">
-      <message-list
-        @load="loadMyMessages"
-        @select="selectMessage"
-        v-model="v"
-        :class="{
-          'tab-item': true,
-          active: 0 == activeTab,
-        }"
-      >
-      </message-list>
-      <message-list
-        @load="loadMessages"
-        @select="selectMessage"
-        v-model="messages"
-        :class="{
-          'tab-item': true,
-          active: 1 == activeTab,
-        }"
-      >
-      </message-list>
-    </div>
-    <v-tabs v-model="activeTab" hide-slider optional vertical>
-      <v-tab
-        v-for="item in items"
-        :key="item.title"
-        @click="
-          () => {
-            $emit('closeRightPanel')
-            $emit('update:mini', !mini);
-          }
-        "
-      >
-        {{ $t(item.title) }}v
-      </v-tab>
-    </v-tabs>
-  </v-navigation-drawer> -->
-
   <ada-nav v-model="drawer" min-width="48px" max-width="152px" :mini="mini" mobile-breakpoint="960" fixed
-    class="l-panel tw-left-0">
-    <ada-toggle class="tabs" vertical>
-      <ada-list>
-        <ada-list-item v-for="item in items" :key="item.title" :value="item">
-          <template #item="{ value }">
-            <div class="tw-w-full tw-flex tw-justify-between tw-items-center" 
-              @click="
-              () => {
-                $emit('update:mini', !mini);
-              }"
-            >
-              <span v-text="$t(value.title)"></span>
-            </div>
-          </template>
-        </ada-list-item>
-      </ada-list>
+    class="l-panel tw-left-0 tw-flex-row-reverse">
+    <ada-toggle class="tabs" vertical v-model="toggleMenu">
+        <ada-list>
+          <ada-list-item v-for="item in items" :key="item.title" :value="item">
+            <template #item="{ value }">
+              <div class="tw-cursor-pointer" @click="$emit('update:mini', !mini)">
+                <span v-text="$t(value.title)"></span>
+              </div>
+            </template>
+          </ada-list-item>
+        </ada-list>
     </ada-toggle>
+    <ada-tabs class="tab-items" v-model="activeTab">
 
+    </ada-tabs>
   </ada-nav>
 
 </template>
@@ -220,7 +127,6 @@ loadMyMessages();
   font-size: 0.875rem;
   padding-top: 42px;
   background-color: rgba(var(--c-primary), 0.01);
-  background-color: aqua;
 
   &::after {
     @apply tw-inset-0 tw-absolute tw-w-full tw-h-full;
@@ -240,11 +146,18 @@ loadMyMessages();
     width: 48px;
     max-width: 48px;
     flex-basis: 48px;
-    box-shadow: -2px 1px 2px 0 rgba(var(--c-primary), 0.2);
+    box-shadow: 2px 1px 6px 0 rgba(var(--c-primary), 0.2);
+  }
+  .tabs.tab-items {
+    /* min-width: 208px; */
+    background-color: rgba(var(--c-primary), 0.01);
+    width: calc(100% - 48px);
 
-    .icon {
-      font-size: 1.5rem;
-    }
+    /* .tab {
+      @apply tw-flex tw-flex-col tw-flex-grow;
+      flex-basis: 32px;
+      overflow-y: auto;
+    } */
   }
 }
 </style>
