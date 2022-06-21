@@ -231,7 +231,7 @@ if (process.client) {
       </ada-tooltip>
       <hr class="divider" />
       <ada-tooltip v-for="item in shourtcuts" :key="item.title" position="left">
-        <template activator>
+        <template #activator>
           <ada-btn :width="32" :height="32" color="transparent" :to="item.to" @click="
             () => {
               $emit('update:mini', true);

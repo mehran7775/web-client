@@ -12,7 +12,7 @@ const messageManager = useMessages();
 const appManager = useAsrTrader();
 const bottomPanel = useBottomPanel();
 const rtl = appManager.rtl;
-// const activeTab: Ref<number | null> = ref(null);
+const activeTab: Ref<number | null> = ref(null);
 
 const toggleMenu = ref(null)
 
@@ -44,10 +44,10 @@ const messageQuery: Ref<MessageQuery> = ref(
   new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00"))
 );
 
-// watch(activeTab, (n, o) => {
-//   if (typeof n != typeof undefined) emit("update:mini", false);
-//   else emit("update:mini", true);
-// });
+watch(activeTab, (n, o) => {
+  if (typeof n != typeof undefined) emit("update:mini", false);
+  else emit("update:mini", true);
+});
 
 const items = [
   { title: "general.me" },
@@ -83,19 +83,19 @@ async function load(query: Ref<MessageQuery>) {
   }
 }
 
-// async function selectMessage(id: number) {
-//   try {
-//     bottomPanel.setLoading(true);
-//     bottomPanel.setActiveTab(Tabs.furtherInfo);
-//     const message: Message = (await messageManager.getMessage(id)).data;
-//     bottomPanel.setMessage(message);
-//     bottomPanel.setTitle({ tab: Tabs.furtherInfo, title: message.title, params: [] });
-//   } catch {
-//     //TODO Snack for error
-//   } finally {
-//     bottomPanel.setLoading(false);
-//   }
-// }
+async function selectMessage(id: number) {
+  try {
+    bottomPanel.setLoading(true);
+    bottomPanel.setActiveTab(Tabs.furtherInfo);
+    const message: Message = (await messageManager.getMessage(id)).data;
+    bottomPanel.setMessage(message);
+    bottomPanel.setTitle({ tab: Tabs.furtherInfo, title: message.title, params: [] });
+  } catch {
+    //TODO Snack for error
+  } finally {
+    bottomPanel.setLoading(false);
+  }
+}
 loadMessages();
 loadMyMessages();
 </script>
@@ -104,7 +104,7 @@ loadMyMessages();
   <ada-nav v-model="drawer" min-width="48px" max-width="256px" :mini="mini" mobile-breakpoint="960" fixed
     class="l-panel tw-left-0 tw-flex-row-reverse">
     <ada-toggle class="tabs" vertical v-model="toggleMenu">
-      <ada-list class="tw-pb-1">
+      <ada-list class="tw-pb-1 tw-overflow-visible">
         <ada-list-item v-for="(item, index) in items" :key="item.title" :value="item">
           <template #item="{ value }">
             <ada-btn :width="32" :height="32" color="transparent" :model="item.title"
@@ -117,10 +117,16 @@ loadMyMessages();
           <template #item>
             <div>
               <hr class="divider" />
-              <ada-btn :width="32" :height="32" color="transparent" :model="$t('oms.openingTrade')"
-                @click="$emit('update:mini', !mini)" class="tw-mt-1">
+              <ada-tooltip position="right">
+                <template #activator>
+                    <ada-btn :width="32" :height="32" color="transparent" :model="$t('oms.openingTrade')"
+                    @click="$emit('update:mini', !mini)" class="tw-mt-1">
+                      <!-- <span v-text="$t('oms.openingTrade')"></span> -->
+                      <ada-icon :size="24">lotfi-calendar-search-1</ada-icon>
+                    </ada-btn>
+                </template>
                 <span v-text="$t('oms.openingTrade')"></span>
-              </ada-btn>
+              </ada-tooltip>
             </div>
           </template>
         </ada-list-item>
