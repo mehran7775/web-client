@@ -105,9 +105,9 @@ loadMyMessages();
     class="l-panel tw-left-0 tw-flex-row-reverse">
     <ada-toggle class="tabs" vertical v-model="toggleMenu">
       <ada-list class="tw-pb-1 tw-overflow-visible">
-        <ada-list-item v-for="(item, index) in items" :key="item.title" :value="item">
+        <ada-list-item v-for="item in items" :key="item.title" :value="item">
           <template #item="{ value }">
-            <ada-btn :width="32" :height="32" color="transparent" :model="item.title"
+            <ada-btn :width="32" :height="32" color="transparent" :model="item.text"
               @click="$emit('update:mini', !mini)">
               <span v-text="$t(value.title)"></span>
             </ada-btn>
@@ -122,7 +122,7 @@ loadMyMessages();
                     <ada-btn :width="32" :height="32" color="transparent" :model="$t('oms.openingTrade')"
                     @click="$emit('update:mini', !mini)" class="tw-mt-1">
                       <!-- <span v-text="$t('oms.openingTrade')"></span> -->
-                      <ada-icon :size="24">lotfi-calendar-search-1</ada-icon>
+                      <ada-icon size="1.5rem">lotfi-calendar-search-1</ada-icon>
                     </ada-btn>
                 </template>
                 <span v-text="$t('oms.openingTrade')"></span>

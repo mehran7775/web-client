@@ -63,8 +63,6 @@ function toggleGroup() {
             >.icon {
                 @apply tw-transition-all tw-ease-in-out tw-duration-300;
             }
-
-            background-color: rgba(var(--c-primary), 0.1);
         }
     }
 
@@ -80,9 +78,9 @@ function toggleGroup() {
 
             .ada-list-item::before {
                 @apply tw-absolute tw-h-[34px] tw-w-[8px];
-                content: '';
-                border-right: solid 1px rgba(0, 0, 0, 0.1);
-                border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+                content: ''; 
+                border-right: solid 1px  rgba(var(--c-primary), 0.5);
+                border-bottom: solid 1px  rgba(var(--c-primary), 0.5);
                 margin-top: -16px;
                 margin-inline-start: 8px;
                 border-radius: 0 0 6px 0;
@@ -93,6 +91,9 @@ function toggleGroup() {
 
     .ada-list {
         @apply tw-mx-5;
+    }
+    .nuxt-link-exact-active, .nuxt-link-active {
+      background-color: rgba(var(--c-primary), 0.1);
     }
 }
 </style>

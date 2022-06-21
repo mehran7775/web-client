@@ -254,10 +254,10 @@ if (process.client) {
         <ada-list>
           <ada-list-item v-for="child in item.children ? item.children : []" :key="child.title" :value="child">
             <template #item="{ value }">
-              <div class="tw-w-full tw-flex tw-justify-between tw-items-center">
+              <div class="tw-w-full tw-h-full tw-flex tw-justify-between tw-items-center">
                 <span>{{ value.text ? value.text : $t(value.title) }}{{ value.expand }}</span>
                 <span v-if="value.to && value.to != ''" class="tw-flex tw-items-baseline">
-                  <ada-icon v-if="value.bookmarkPosition" size="1.5rem" :color="isMarked(value) ? 'blue' : 'gray4'"
+                  <ada-icon v-if="value.bookmarkPosition" size="1.34rem" :color="isMarked(value) ? 'blue' : 'gray4'"
                     @click.stop.prevent="() => {
                       if (isMarked(value)) unmark(value);
                       else mark(value);
@@ -267,7 +267,7 @@ if (process.client) {
                     () => {
                       setHome(value);
                     }
-                  " size="1.5rem" :color="value.to == home ? 'blue' : 'gray4'"
+                  " size="1.34rem" :color="value.to == home ? 'blue' : 'gray4'"
                     :ico="value.to == home ? 'isax-star-1-bold' : 'isax-star-1'">
                   </ada-icon>
 

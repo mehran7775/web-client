@@ -118,7 +118,7 @@ watch(selected, select);
       &>.v-input__slot {
         .v-select__selections {
           color: white !important;
-          font-size: 0.75rem !important;
+          font-size: 1rem !important;
         }
 
         &::after,

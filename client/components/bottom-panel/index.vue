@@ -12,6 +12,7 @@ import AdaTabs from "@/components/adaTabs/index.vue"
 import AdaTab from "@/components/adaTabs/adaTab.vue"
 
 
+
 const bottomPanel = useBottomPanel();
 const active: Ref<TabItem> = ref(defaultItem)
 const tabs = computed(() => bottomPanel.tabs);
@@ -40,7 +41,6 @@ const tab = computed({
     }
   },
 });
-
 const searchModels = {
   draftOrders: new OrderSearchModel(0, 10, OrderFlags.Draft),
   actives: new OrderSearchModel(0, 10, OrderFlags.Confirmed | OrderFlags.PreOpening | OrderFlags.Created | OrderFlags.Sent),
@@ -70,7 +70,7 @@ function close() {
   background-color: white;
 
   &.slideToBottom {
-    bottom: 0;
+    /* bottom: 0; */
   }
 
   &.expanded {
@@ -92,6 +92,7 @@ function close() {
 
   &.hidden {
     height: 32px;
+    /* background-color: red; */
   }
 
   >.detail {
@@ -167,6 +168,9 @@ function close() {
       background-color: white;
     }
   }
+  .active {
+    color: var(--c-blue-rgb);
+  }
 
 }
 </style>
@@ -226,7 +230,7 @@ function close() {
     </div>
     <ada-toggle class="tabs" v-model="tab">
       <ada-btn class="tab" v-for="(t, i) in tabs" :key="t.title" :model="t">
-        {{ $t(t.title) }}
+          <span v-text="$t(t.title)" :class="{ 'active' : tab.title == t.title}"></span>
         <bar v-if="i != tabs.length - 1" />
       </ada-btn>
     </ada-toggle>
