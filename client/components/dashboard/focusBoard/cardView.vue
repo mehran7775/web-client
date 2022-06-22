@@ -32,14 +32,12 @@ function select(item: InstrumentCache) {
 
 <style lang="postcss" scoped>
 .card-row {
-  @apply tw-flex tw-flex-grow;
+  @apply tw-w-full tw-grid tw-gap-y-0 tw-gap-x-2 tw-grid-rows-none tw-grid-flow-col;
+  grid-template-columns: repeat( auto-fit, 346px);
   overflow-x: auto;
   overflow-y: hidden;
-  min-height: 320px;
-  max-height: 320px;
-
+  height: 320px;
   >.card-view {
-    margin: 0 7px;
     background-color: white;
     border-left: 1px solid #e0e0e0;
     border-right: 1px solid #e0e0e0;

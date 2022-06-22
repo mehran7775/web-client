@@ -1,6 +1,6 @@
 import { Plugin } from "@nuxt/types";
 import Vue, { DirectiveOptions,  VNodeDirective, VNode} from "vue";
-import uploadAbleFile from "~~/composables/upload-able-file";
+import uploadAbleFile from "~~/composables/upload/upload-able-file";
 
 const DropZoneDirective: DirectiveOptions = {
   bind(el: HTMLElement, binding: VNodeDirective, vnode: VNode) {

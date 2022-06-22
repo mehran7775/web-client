@@ -1,4 +1,4 @@
-import UploadFile from "~~/types/interfaces/UploadFile"
+import UploadFile from "./UploadFile"
 class UploadableFile implements UploadFile{
     file: File
     id: string

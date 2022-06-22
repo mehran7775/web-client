@@ -18,7 +18,6 @@ const props = defineProps<{
   insId: number;
   insName: string
 }>();
-
 const buyForm = ref<AnyObjectSchema | null>(null);
 const sellForm = ref<AnyObjectSchema | null>(null);
 const axios = useAxios();

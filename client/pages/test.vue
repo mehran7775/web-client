@@ -25,8 +25,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from '#app';
-import UploadableFile from '~~/classes/UploadableFile';
+import { ref } from '#app';
+import UploadableFile from '~~/types/upload/UploadableFile';
 import UploadFileService from '~~/repositories/uploadFiles/index'
 
 const files = ref<UploadableFile[]>([])
