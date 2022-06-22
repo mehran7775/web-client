@@ -36,7 +36,7 @@ function back() {
       <v-card-text class="tw-px-3">
         <v-form>
           <!-- <p class="tw-mt-[16px] tw-mb-2 tw-text-base">{{ $t("user.username") }}</p> -->
-          <!-- <text-input v-model:value="userName" @input="(val) => user = val" :placeholder="$t('user.username')" :label="$t('user.username')"
+          <!-- <text-input v-model:value="userName" :placeholder="$t('user.username')" :label="$t('user.username')"
             :focus="() =>{
                 if (keyboard.active)
                   keyboard.setListener((key) => {

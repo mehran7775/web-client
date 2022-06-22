@@ -28,7 +28,7 @@ const props = withDefaults(
   }
 );
 
-const emit = defineEmits(["input"]);
+const emit = defineEmits(["input", "keyup"]);
 
 const ltr = computed<string>(() => (props.type == "number" ? "ltr" : ""));
 const val = ref(props.value);
@@ -96,7 +96,7 @@ watch(
       {{ label }}
     </div>
     <slot name="prepend"> </slot>
-    <input :type="type" @focus="() => { active = true }" @blur="() => { active = false }" :style="{
+    <input :type="type" @focus="() => { active = true }" @blur="() => { active = false }" @keyup.enter="$emit('keyup')" :style="{
       backgroundColor: bg,
       borderRadius: rounded
     }" v-model="val" :class="[ltr, activeBorder ? 'active-border' : '']"

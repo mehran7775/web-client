@@ -168,6 +168,16 @@ instrumentManager
         @apply tw-h-8;
       }
     }
+    /*the class must define globaly */
+    .input-checkbox{
+      @apply tw-relative tw-w-5 tw-h-5 tw-border tw-border-solid  tw-rounded tw-cursor-pointer tw-transition-all tw-duration-150 tw-ml-1;
+      border-color: var(--c-primary-rgb);
+      appearance: none;
+      outline: 0;
+      &:checked {
+        background: var(--c-blue-rgb);
+      }
+    }
   }
 
   .buy {
@@ -330,10 +340,14 @@ instrumentManager
             <bar />
           </div>
           <div class="tw-justify-between">
-            <label class="tw-flex tw-items-center inputColor"> 
-              <input type="checkbox" v-model="orderDivision" class="tw-mx-2"/>
+            <!-- <label class="tw-flex tw-items-center inputColor"> 
+              <input type="checkbox" v-model="orderDivision" class="tw-mx-2 tw-rounded-md tw-border-gray-300"/>
               {{$t('oms.splitOrders')}}
-            </label>
+            </label> -->
+           <div class="tw-w-max tw-flex tw-items-center">
+              <input type="checkbox" v-model="orderDivision" class="input-checkbox">
+              <label for="checked-checkbox" class="inputColor" v-text="$t('oms.splitOrders')"></label>
+           </div>
           </div>
           <div class="tw-justify-between">
             <span>{{ $t("oms.tradeWage") }}: </span>

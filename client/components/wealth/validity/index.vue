@@ -13,7 +13,7 @@ const items = [
 ];
 
 const window = computed(() => (value.value?.id == "2" ? "date" : "select"));
-const value = ref<AutoCompleteItem | null>();
+const value = ref<AutoCompleteItem | null>(items[0]);
 //TODO emit update
 </script>
 <template>
