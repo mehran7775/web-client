@@ -32,9 +32,9 @@ function select(item: InstrumentCache) {
 
 <style lang="postcss" scoped>
 .card-row {
-  @apply tw-w-full tw-grid tw-gap-y-0 tw-gap-x-3 tw-grid-rows-none tw-grid-flow-col;
-  grid-template-columns: repeat( auto-fit, 33.3٪);
-  justify-content: space-between;
+  @apply tw-w-full tw-grid tw-gap-y-0 tw-grid-rows-none tw-gap-x-4 tw-grid-flow-col;
+  grid-template-columns: repeat(auto-fit, 24.37%);
+  justify-content: flex-start;
   overflow-x: auto;
   overflow-y: hidden;
   height: 320px;
@@ -75,8 +75,8 @@ function select(item: InstrumentCache) {
 
 <template>
   <div class="card-row">
-    <card @click="() => select(item)" class="card-view" :min-width="346" :width="maxwidthVal - 14"
-      :max-width="maxwidthVal" v-for="item in instruments" :key="item.id">
+    <card @click="() => select(item)" class="card-view" :minWidth="null"
+      v-for="item in instruments" :key="item.id">
       <header class="toolbar">
         <ada-badge class="title" :color="
           (item.status & 1) != 1
