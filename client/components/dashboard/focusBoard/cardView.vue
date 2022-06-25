@@ -32,8 +32,9 @@ function select(item: InstrumentCache) {
 
 <style lang="postcss" scoped>
 .card-row {
-  @apply tw-w-full tw-grid tw-gap-y-0 tw-gap-x-2 tw-grid-rows-none tw-grid-flow-col;
-  grid-template-columns: repeat( auto-fit, 346px);
+  @apply tw-w-full tw-grid tw-gap-y-0 tw-gap-x-3 tw-grid-rows-none tw-grid-flow-col;
+  grid-template-columns: repeat( auto-fit, 33.3٪);
+  justify-content: space-between;
   overflow-x: auto;
   overflow-y: hidden;
   height: 320px;

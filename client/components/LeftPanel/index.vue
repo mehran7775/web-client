@@ -107,7 +107,7 @@ loadMyMessages();
       <ada-list class="tw-pb-1 tw-overflow-visible">
         <ada-list-item v-for="item in items" :key="item.title" :value="item">
           <template #item="{ value }">
-            <ada-btn :width="32" :height="32" color="transparent" :model="item.text"
+            <ada-btn :width="32" :height="32" color="transparent" :model="value.title"
               @click="$emit('update:mini', !mini)">
               <span v-text="$t(value.title)"></span>
             </ada-btn>
