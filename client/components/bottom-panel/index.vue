@@ -3,8 +3,9 @@ import { ref, Ref, computed, ComputedRef } from "#app";
 import { OrderFlags, OrderSearchModel, TabItem, defaultItem } from "@/types";
 import furtherInformation from "./furtherInformation/index.vue";
 import DefaultOrderList from "./defaultOrderList.vue";
-import DeepInformation from "./deepInformation/index.vue";
-import Bests from "./bests.vue";
+import DateInfo from "./DateInfo.vue";
+import CompleteInfo from "./CompleteInfo.vue";
+import StatisticsKeys from "./StatisticsKeys.vue"
 import { useBottomPanel } from "~/composables";
 import AdaToggle from "@/components/adaToggle.vue";
 import AdaBtn from "@/components/adaBtn.vue";
@@ -198,14 +199,17 @@ function close() {
           <ada-tab name="bottom-panel.orders.canceled">
             <default-order-list v-model="searchModels.canceledOrders" />
           </ada-tab>
-          <ada-tab name="bottom-panel.bests">
-            <bests />
+          <ada-tab name="bottom-panel.completeInfo">
+            <complete-info />
           </ada-tab>
-          <ada-tab name="bottom-panel.depth">
-            <deep-information />
+          <ada-tab name="bottom-panel.dateInfo">
+            <date-info />
           </ada-tab>
           <ada-tab name="bottom-panel.more">
             <further-information />
+          </ada-tab>
+          <ada-tab name="bottom-panel.statisticsKeys">
+            <statistics-keys />
           </ada-tab>
         </ada-tabs>
         <loading :loading="showLoading" />

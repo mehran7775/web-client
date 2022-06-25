@@ -39,9 +39,10 @@ export function CreateBookmark(item: MenuItem): Bookmark {
 export enum Tabs {
   none = -1,
   activeOrders = 0,
-  bests = 1,
-  depth = 2,
+  completeInfo = 1,
+  dateInfo = 2,
   furtherInfo = 3,
+  statisticsKeys = 4
 }
 
 export interface TabItem {
@@ -81,27 +82,81 @@ export function TabNames(): TabItem[] {
       default: "bottom-panel.orders.all",
     },
     {
-      tab: Tabs.bests,
-      title: "bottom-panel.bests",
+      tab: Tabs.completeInfo,
+      title: "bottom-panel.completeInfo.index",
       params: [],
-      children: [{ tab: Tabs.bests, title: "bottom-panel.bests", params: [] }],
-      default: "bottom-panel.bests",
+      children: [
+        {
+          title: "bottom-panel.completeInfo.depth",
+          params: [],
+        },
+        {
+          title: "bottom-panel.completeInfo.myGroups",
+          params: [],
+        },
+        {
+          title: "bottom-panel.completeInfo.holdersCombination",
+          params: [],
+        },
+        {
+          title: "bottom-panel.completeInfo.type",
+          params: [],
+        },
+      
+      ],
+      default: "bottom-panel.completeInfo.depth",
     },
     {
-      tab: Tabs.depth,
-      title: "bottom-panel.depth",
+      tab: Tabs.dateInfo,
+      title: "bottom-panel.dateInfo.index",
       params: [],
-      children: [{ tab: Tabs.depth, title: "bottom-panel.depth", params: [] }],
-      default: "bottom-panel.depth",
+      children: [
+        {
+          title: "bottom-panel.dateInfo.tradesHistory",
+          params: [],
+        },
+        {
+          title: "bottom-panel.dateInfo.holdersCompition",
+          params: [],
+        },
+        {
+          title: "bottom-panel.dateInfo.type",
+          params: [],
+        },
+      ],
+      default: "bottom-panel.dateInfo.tradesHistory",
     },
     {
       tab: Tabs.furtherInfo,
-      title: "bottom-panel.more",
+      title: "bottom-panel.more.index",
       params: [],
       children: [
-        { tab: Tabs.furtherInfo, title: "bottom-panel.more", params: [] },
+        {
+          title: "bottom-panel.more.presentation",
+          params: [],
+        },
+        {
+          title: "bottom-panel.more.directorate",
+          params: [],
+        },
       ],
-      default: "bottom-panel.more",
+      default: "bottom-panel.more.presentation",
+    },
+    {
+      tab: Tabs.statisticsKeys,
+      title: "bottom-panel.statisticsKeys.index",
+      params: [],
+      children: [
+        {
+          title: "bottom-panel.statisticsKeys.fiveDay",
+          params: [],
+        },
+        {
+          title: "bottom-panel.statisticsKeys.threeDay",
+          params: [],
+        },
+      ],
+      default: "bottom-panel.statisticsKeys.fiveDay",
     },
   ];
 }

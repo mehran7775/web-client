@@ -361,15 +361,36 @@
     "saveSettings": "@:general.download @:general.settings"
   },
   "bottom-panel": {
-    "bests": "برترین‌ها",
+    "completeInfo": {
+      "index": "اطلاعات تکمیلی",
+      "depth": "عمق بازار",
+      "myGroups" : "همگروه ها",
+      "holdersCombination" : "ترکیب سهامداران",
+      "type" : "حقیقی و حقوقی"
+    },
     "orders": {
       "all": "سفارشات",
       "drafts": "پیش‌نویس ها",
-      "actives": "سفارشات‌فعال",
+      "actives": "سفارشات‌ فعال",
       "canceled": "لغوشده/خطاها"
     },
-    "depth": "اطلاعات تکمیلی بازار",
-    "more": "جزئیات",
+    "dateInfo": {
+      "index": "اطلاعات تاریخی",
+      "tradesHistory": "سابقه معاملات",
+      "holdersCompition": "ترکیب سهامداران",
+      "type": "حقیقی و حقوقی"
+    },
+    "more": {
+      "presentation" : "@:oms.presentation",
+      "directorate": "هیئت مدیره",
+      "index": "مشخصات"
+
+    },
+    "statisticsKeys": {
+      "index": "آمار کلیدی",
+      "fiveDay": "پنج روز مثبت و منفی",
+      "threeDay": "سه روز مثبت و منفی"
+    },
     "teammates": "همگروه‌ها ({0})"
   },
   "log": {
