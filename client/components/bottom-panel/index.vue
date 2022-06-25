@@ -71,7 +71,7 @@ function close() {
   background-color: white;
 
   &.slideToBottom {
-    /* bottom: 0; */
+    bottom: 0;
   }
 
   &.expanded {

@@ -108,6 +108,9 @@ function toggleCountLock() {
 function togglePriceLock() {
   priceLock.value = !priceLock.value;
 }
+// function setFocusOnCountInputText() {
+//   this.
+// }
 
 instrumentManager
   .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
@@ -408,8 +411,10 @@ instrumentManager
             <bar />
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('oms.price')" class="tw-mt-1 inputColor" type="number" v-model="priceVal" :readonly="priceLock"
-              :min="!!active ? active.minAllowedPrice : 1" :max="!!active ? active.maxAllowedPrice || null : null">
+            <text-input :label="$t('oms.price')" type="number" v-model="priceVal" 
+              :readonly="priceLock" class="tw-mt-1 inputColor"
+              :min="!!active ? active.minAllowedPrice : 1" 
+              :max="!!active ? active.maxAllowedPrice || null : null">
               <template #append>
                 <ada-btn @click="togglePriceLock" :class="['tw-mx-1', priceLock ? 'active' : '']" :width="24"
                   :height="24" icon>
@@ -450,7 +455,7 @@ instrumentManager
           </div>
           <div class="tw-justify-between">
             <span>{{ $t("oms.tradeValue") }}: </span>
-            <currency-field :value="sellTradeValue" />
+            <numeric-field :value="sellTradeValue" />
           </div>
           <div class="tw-justify-center">
             <ada-btn class="draft" height="24px" @click="
