@@ -127,22 +127,6 @@ export function TabNames(): TabItem[] {
       default: "bottom-panel.dateInfo.tradesHistory",
     },
     {
-      tab: Tabs.furtherInfo,
-      title: "bottom-panel.more.index",
-      params: [],
-      children: [
-        {
-          title: "bottom-panel.more.presentation",
-          params: [],
-        },
-        {
-          title: "bottom-panel.more.directorate",
-          params: [],
-        },
-      ],
-      default: "bottom-panel.more.presentation",
-    },
-    {
       tab: Tabs.statisticsKeys,
       title: "bottom-panel.statisticsKeys.index",
       params: [],
@@ -157,6 +141,22 @@ export function TabNames(): TabItem[] {
         },
       ],
       default: "bottom-panel.statisticsKeys.fiveDay",
+    },
+    {
+      tab: Tabs.furtherInfo,
+      title: "bottom-panel.more.index",
+      params: [],
+      children: [
+        {
+          title: "bottom-panel.more.presentation",
+          params: [],
+        },
+        {
+          title: "bottom-panel.more.directorate",
+          params: [],
+        },
+      ],
+      default: "bottom-panel.more.presentation",
     },
   ];
 }

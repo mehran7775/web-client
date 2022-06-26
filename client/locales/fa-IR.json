@@ -397,5 +397,11 @@
   "log": {
     "enter": "ورود",
     "exit": "خروج"
+  },
+  "categories" : {
+    "marketModerator" : "ناظر بازار",
+    "codal" : "کدال",
+    "tedan" : "تدان",
+    "news": "خبر"
   }
 }

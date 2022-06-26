@@ -5,6 +5,9 @@ import { AxiosResponse } from "axios";
 import { PaginatedResult, Message, MessageFilter, MessageQuery, Tabs } from "@/types";
 import MessageList from "./messageList.vue";
 import { useAsrTrader, useBottomPanel, useMessages } from "~/composables";
+import Search from "@/components/search/Search.vue"
+import MessageItem from './MessageItem.vue'
+
 
 const emit = defineEmits(["openWatchList", "input", "update:mini"]);
 const props = defineProps<{ value: boolean; mini: boolean; clipped: boolean }>();
@@ -12,9 +15,10 @@ const messageManager = useMessages();
 const appManager = useAsrTrader();
 const bottomPanel = useBottomPanel();
 const rtl = appManager.rtl;
-const activeTab: Ref<number | null> = ref(null);
 
-const toggleMenu = ref(null)
+const toggleMenu = ref<null | string>(null)
+
+const searchItem = ref<string>('')
 
 const drawer = computed({
   get() {
@@ -44,16 +48,38 @@ const messageQuery: Ref<MessageQuery> = ref(
   new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00"))
 );
 
-watch(activeTab, (n, o) => {
-  if (typeof n != typeof undefined) emit("update:mini", false);
-  else emit("update:mini", true);
-});
-
 const items = [
   { title: "general.me" },
   { title: "general.all" },
   // { title: "oms.openingTrade" },
 ];
+
+const categories = ref<{ title: string, bg: string, color: string, active: boolean }[]>([
+  {
+    title: 'categories.marketModerator',
+    bg: 'tw-bg-primary-100',
+    color: 'tw-text-primary',
+    active: true
+  },
+  {
+    title: 'categories.codal',
+    bg: 'tw-bg-green-100',
+    color: 'tw-text-green',
+    active: false
+  },
+  {
+    title: 'categories.tedan',
+    bg: 'tw-bg-red-100',
+    color: 'tw-text-red',
+    active: false
+  },
+  {
+    title: 'categories.news',
+    bg: 'tw-bg-orange-100',
+    color: 'tw-text-orange',
+    active: false
+  },
+])
 
 
 
@@ -86,7 +112,7 @@ async function load(query: Ref<MessageQuery>) {
 async function selectMessage(id: number) {
   try {
     bottomPanel.setLoading(true);
-    bottomPanel.setActiveTab(Tabs.furtherInfo);
+    // bottomPanel.setActiveTab(Tabs.furtherInfo);
     const message: Message = (await messageManager.getMessage(id)).data;
     bottomPanel.setMessage(message);
     bottomPanel.setTitle({ tab: Tabs.furtherInfo, title: message.title, params: [] });
@@ -95,6 +121,9 @@ async function selectMessage(id: number) {
   } finally {
     bottomPanel.setLoading(false);
   }
+}
+function updateSearchItem(val) {
+  console.log(val)
 }
 loadMessages();
 loadMyMessages();
@@ -119,11 +148,11 @@ loadMyMessages();
               <hr class="divider" />
               <ada-tooltip position="right">
                 <template #activator>
-                    <ada-btn :width="32" :height="32" color="transparent" :model="$t('oms.openingTrade')"
+                  <ada-btn :width="32" :height="32" color="transparent" :model="$t('oms.openingTrade')"
                     @click="$emit('update:mini', !mini)" class="tw-mt-1">
-                      <!-- <span v-text="$t('oms.openingTrade')"></span> -->
-                      <ada-icon size="1.5rem">lotfi-calendar-search-1</ada-icon>
-                    </ada-btn>
+                    <!-- <span v-text="$t('oms.openingTrade')"></span> -->
+                    <ada-icon size="1.5rem">lotfi-calendar-search-1</ada-icon>
+                  </ada-btn>
                 </template>
                 <span v-text="$t('oms.openingTrade')"></span>
               </ada-tooltip>
@@ -132,8 +161,25 @@ loadMyMessages();
         </ada-list-item>
       </ada-list>
     </ada-toggle>
-    <ada-tabs class="tab-items" v-model="activeTab">
-
+    <ada-tabs class="tab-items" v-model="toggleMenu">
+      <search v-model="searchItem" @update="(val) => searchItem = val" placeholder="جستوجو..."
+        class="tw-text-base tw-px-4 tw-py-3">
+        <template #prepend>
+          <ada-icon color="primary" class="" :size="14"> isax-search-normal-1 </ada-icon>
+        </template>
+      </search>
+      <div id="categories">
+        <span v-for="category in categories" :key="category.title"
+          :class="[`${category.active ? category.bg + ' ' + category.color : ''}`]" v-text="$t(category.title)"
+          @click="category.active = !category.active"></span>
+      </div>
+      <div class="tw-overflow-y-auto tw-h-screen">
+        <div v-for="i in 12" :key="i">
+          <hr class="line">
+          <MessageItem id="1" dateTime="d" title="jkdhg" preview="dgh" origin="5" type="5"
+            flags="5" message="gdg" seenDate="g" style="height: 58.9px;"/>
+        </div>
+      </div>
     </ada-tabs>
   </ada-nav>
 
@@ -171,6 +217,21 @@ loadMyMessages();
     min-width: 208px;
     background-color: rgba(var(--c-primary), 0.01);
     width: calc(100% - 48px);
+
+
+    #categories {
+      @apply tw-px-3 tw-mt-1 tw-select-none tw-flex tw-justify-between tw-items-center;
+
+      span {
+        @apply tw-px-3 tw-py-2 tw-mx-1 tw-rounded-2xl tw-cursor-pointer tw-font-bold
+      }
+    }
+
+    .line {
+      @apply tw-w-5/6 tw-border-y-gray-200 tw-mx-auto;
+       border-top-width: .5px;
+       margin-top: 5px;
+    }
 
     /* .tab {
       @apply tw-flex tw-flex-col tw-flex-grow;
