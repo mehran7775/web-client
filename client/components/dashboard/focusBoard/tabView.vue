@@ -123,7 +123,7 @@ defineExpose({
     <ada-tabs v-model="tab">
       <ada-tab class="detail" v-for="item in instruments" :key="item.id" :model="item">
         <div class="panel">
-          <order-queue-card :insId="item.id" @count="
+          <order-queue-card :inst="item" @count="
             (val) => {
               count = val;
             }
