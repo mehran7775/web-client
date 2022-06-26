@@ -4,16 +4,18 @@ import FocusBoard from "@/components/dashboard/focusBoard/index.vue";
 import WatchList from "~/components/dashboard/WatchList/index.vue";
 import WatchlistSelector from "@/components/dashboard/watchlistSelector.vue";
 import InstrumentSearch from "@/components/oms/instrumentSearch.vue";
-import { InstrumentSearchModel } from "~/types";
+import { InstrumentCache, InstrumentSearchModel, SearchModel } from "~/types";
 import Bar from "~/components/bar.vue";
 import { useUser } from "~/composables";
-import { useRoute } from "#app";
+import { useRoute, onMounted } from "#app";
 
 const route = useRoute();
 const userManager = useUser();
 const loadingRef = ref(false);
 const name = route.params.name ?? "new";
 const watchlists = userManager.watchList;
+
+
 const edited = computed(
   () =>
     userManager.settingsChanged.findIndex(
@@ -26,12 +28,14 @@ const searchModel = reactive(
 );
 
 watch(
-  () => userManager.watchList[name],
+  () => userManager.watchList[name]
+  ,
   (wls) => {
     searchModel.ids.splice(0, searchModel.ids.length);
     searchModel.ids.push(...(wls?.map((item) => parseInt(item)) ?? []));
   }
 );
+
 async function reset() {
   loadingRef.value = true;
   try {
@@ -71,12 +75,12 @@ defineExpose({
           <template #toolbar>
             <watchlist-selector style="max-width: 164px" auto-route />
             <instrument-search class="ms-1" style="max-width: 164px" focus-result />
-            <ada-btn dark v-if="edited" @click="apply" color="success" class="tw-m-0 tw-mx-1 tw-p-0 tw-text-sm" :height="28"
-              :width="56">
+            <ada-btn dark v-if="edited" @click="apply" color="success" class="tw-m-0 tw-mx-1 tw-p-0 tw-text-sm"
+              :height="28" :width="56">
               {{ $t("general.apply") }}
             </ada-btn>
-            <ada-btn dark v-if="edited" @click="reset" color="error" class="tw-m-0 tw-mx-1 tw-p-0  tw-text-sm" :height="28"
-              :width="56">
+            <ada-btn dark v-if="edited" @click="reset" color="error" class="tw-m-0 tw-mx-1 tw-p-0  tw-text-sm"
+              :height="28" :width="56">
               {{ $t("general.cancel") }}
             </ada-btn>
             <bar v-if="edited" class="tw-mx-1 tw-static" />

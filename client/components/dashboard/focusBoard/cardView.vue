@@ -102,7 +102,7 @@ function select(item: InstrumentCache) {
         </ada-btn>
       </header>
       <div class="text-caption ma-0 px-0">
-        <order-queue-card :insId="item.id" />
+        <order-queue-card :inst="item" />
         <instrument-card :insId="item.id" hide-headers />
         <ada-col class="col-border tw-justify-center tw-align-middle">
           <ada-icon :size="16"> isax-presention-chart </ada-icon>

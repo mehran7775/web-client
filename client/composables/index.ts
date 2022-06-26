@@ -7,4 +7,4 @@ export * from "./useSnacks";
 export * from "./useBottomPanel";
 export * from "./useContent";
 export * from "./accounting";
-export * from "./websocket";
+export * from "./useWebsocket";
