@@ -32,26 +32,15 @@ const change = computed(() => (price: number) => {
 const totalBuy = ref(0);
 const totalSell = ref(0);
 const totalQueue = computed(() => totalBuy.value + totalSell.value);
-const queue: Array<OrderQueueItem> = reactive([
-  new OrderQueueItem(),
-  new OrderQueueItem(),
-  new OrderQueueItem(),
-  new OrderQueueItem(),
-  new OrderQueueItem(),
-]);
-instrumentManager.getOrderQueue(props.inst).then((result) => {
-  if (result.queue) {
-    queue.splice(0, queue.length);
-    result.queue.forEach((item) => {
-      queue.push(item);
-      totalBuy.value += item.buy.count * item.buy.amount;
-      totalSell.value += item.sell.count * item.sell.amount;
-    });
-    for (let i = 5 - queue.length; i > 0; i--) {
-      queue.push(new OrderQueueItem());
-    }
-  }
-});
+
+const queue = computed(() => {
+  const res = instrumentManager.getOrderQueue(props.inst);
+  res.forEach((item) => {
+    totalBuy.value += item.buy.count * item.buy.amount;
+    totalSell.value += item.sell.count * item.sell.amount;
+  });
+  return res;
+})
 
 defineExpose({
   formatter,
