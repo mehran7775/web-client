@@ -10,7 +10,9 @@ export const useWebSocket = defineStore("webSocket", () => {
 
   const toSend: Array<any> = [];
   function connect() {
-    connection = new WebSocket("wss://localhost:7122/instrument/ws");
+    connection = new WebSocket(
+      process.env.VUE_WSS_Host ?? "wss://localhost:7122/instrument/ws"
+    );
     connection.binaryType = "arraybuffer";
     connection.onmessage = (msg) => {
       if (typeof msg.data == "object") {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, Ref, ref } from "#app";
+import { computed, Ref, ref, onMounted } from "#app";
 import { useInstrument, useOrder, useAxios } from "@/composables";
 import { InstrumentCache, InstrumentSearchModel, Side } from "@/types";
 import accountType from "@/components/wealth/accountType.vue";
@@ -73,6 +73,16 @@ const tab = computed({
   },
 });
 
+onMounted(()=> {
+  document.getElementById("buyCountInputText")!.focus()
+  // var value = active.value.id.toString();
+  // value == "1" ? 
+  // document.getElementById("buyCountInputText")!.focus() : 
+  // document.getElementById("sellCountInputText")!.focus()
+})
+
+
+
 async function check() {
   if (buyForm.value) {
     try {
@@ -108,9 +118,6 @@ function toggleCountLock() {
 function togglePriceLock() {
   priceLock.value = !priceLock.value;
 }
-// function setFocusOnCountInputText() {
-//   this.
-// }
 
 instrumentManager
   .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
@@ -292,11 +299,10 @@ instrumentManager
             <numeric-field :value="1000" />
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('oms.count')" type="number" v-model="countVal" 
+            <text-input :label="$t('oms.count')" type="number" v-model="countVal" id="buyCountInputText"
               :readonly="countLock" class="tw-mt-1 inputColor" 
               :min="!!active ? active.minQuantityPerOrder : 1"
-              :max="!!active ? active.maxQuantityPerOrder || null : null"
-              id="countTextInput">
+              :max="!!active ? active.maxQuantityPerOrder || null : null">
               <template #append>
                 <ada-btn :class="['tw-mx-1', countLock ? 'active' : '']" :width="24" :height="24"
                   @click="toggleCountLock" icon>
@@ -394,7 +400,7 @@ instrumentManager
             <numeric-field :value="1000" />
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('oms.count')" type="number" v-model="countVal" 
+            <text-input :label="$t('oms.count')" type="number" v-model="countVal" id="sellCountInputText"
               :readonly="countLock" class="tw-mt-1 inputColor"
               :min="!!active ? active.minQuantityPerOrder : 1"
               :max="!!active ? active.maxQuantityPerOrder || null : null">
