@@ -100,8 +100,10 @@ function focus(item: InstrumentCache) {
   instrumentManager.select(item);
 }
 async function getData(val: InstrumentSearchModel) {
-  _instruments.splice(0, _instruments.length);
-  _instruments.push(...(await instrumentManager.getInstrumentsDetail(val)));
+  if (val) {
+    _instruments.splice(0, _instruments.length);
+    _instruments.push(...(await instrumentManager.getInstrumentsDetail(val)));
+  }
 }
 function refresh() {
   instruments.splice(0, instruments.length);

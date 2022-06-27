@@ -2,12 +2,15 @@
 import { defaultItem } from "@/types"
 import { computed, ref, watch } from "#app";
 import snackbar from "@/components/snacks.vue";
-import { useAsrTrader, useUser, useBottomPanel, useWealth } from "~/composables";
+import { useAsrTrader, useUser, useBottomPanel, useWealth, useWebSocket } from "~/composables";
 
 const appManager = useAsrTrader();
 const userManager = useUser();
 const bottomPanelManager = useBottomPanel();
 const wealthManager = useWealth();
+const wbsocket = useWebSocket();
+
+wbsocket.connect();
 wealthManager.getActiveRestrictions();
 
 const rightMenu = ref({

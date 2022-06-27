@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { reactive, ref, computed, Ref } from "#app";
-import { InstrumentCache, InstrumentSearchModel, OrderQueueItem } from "@/types";
+import { Instrument, InstrumentCache, InstrumentSearchModel, OrderQueueItem } from "@/types";
 import { useAsrTrader, useInstrument } from "~/composables";
 import doubleBarChart from "../doubleBarChart.vue";
 
 const emit = defineEmits(["count", "price"]);
 const props = withDefaults(
   defineProps<{
-    insId: number;
+    inst: Instrument | InstrumentCache;
     copy: boolean;
     responsive: boolean;
     "extra-col": boolean;
@@ -39,12 +39,7 @@ const queue: Array<OrderQueueItem> = reactive([
   new OrderQueueItem(),
   new OrderQueueItem(),
 ]);
-instrumentManager
-  .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
-  .then((res) => {
-    instrument.value = res[0];
-  });
-instrumentManager.getOrderQueue(props.insId).then((result) => {
+instrumentManager.getOrderQueue(props.inst).then((result) => {
   if (result.queue) {
     queue.splice(0, queue.length);
     result.queue.forEach((item) => {
@@ -70,30 +65,36 @@ defineExpose({
 
 <style lang="postcss" scoped>
 .order-queue {
-  > header {
+  >header {
     @apply tw-grid tw-grid-cols-6 tw-text-center;
     height: var(--row-height);
     line-height: var(--row-height);
-    > div {
+
+    >div {
       font-size: 0.75rem !important;
       font-weight: 700;
       max-height: var(--row-height);
     }
+
     .sell {
       background-color: #efeff1;
     }
+
     .buy {
       background-color: #e0e0e0;
     }
   }
+
   .queue {
     @apply tw-grid tw-grid-cols-6;
     position: relative;
-    > div {
+
+    >div {
       height: 31px;
       line-height: var(--row-height);
     }
-    > .field {
+
+    >.field {
       @apply tw-text-center;
       position: relative;
     }
@@ -123,31 +124,23 @@ defineExpose({
       </div>
     </header>
     <div class="queue col-border" v-for="(item, index) in queue" :key="index" dense>
-      <double-bar-chart
-        :left="totalSell ? (item.sell.count * item.sell.amount * 100) / totalSell : 0"
-        :right="totalBuy ? (item.buy.count * item.buy.amount * 100) / totalBuy : 0"
-      />
-      <div
-        class="copy-cursor field"
-        @click="
-          () => {
-            $emit('count', item.buy.count);
-          }
-        "
-      >
+      <double-bar-chart :left="totalSell ? (item.sell.count * item.sell.amount * 100) / totalSell : 0"
+        :right="totalBuy ? (item.buy.count * item.buy.amount * 100) / totalBuy : 0" />
+      <div class="copy-cursor field" @click="
+        () => {
+          $emit('count', item.buy.count);
+        }
+      ">
         <numeric-field v-model="item.buy.count"></numeric-field>
       </div>
       <div class="field">
         <numeric-field v-model="item.buy.amount"></numeric-field>
       </div>
-      <div
-        class="copy-cursor field"
-        @click="
-          () => {
-            $emit('price', item.buy.price);
-          }
-        "
-      >
+      <div class="copy-cursor field" @click="
+        () => {
+          $emit('price', item.buy.price);
+        }
+      ">
         <numeric-field v-model="item.buy.price">
           <!-- <span
             :class="[change(item.sell.price) < 0 ? 'error--text' : 'success--text']"
@@ -158,14 +151,11 @@ defineExpose({
         </numeric-field>
         <bar />
       </div>
-      <div
-        class="copy-cursor field"
-        @click="
-          () => {
-            $emit('price', item.sell.price);
-          }
-        "
-      >
+      <div class="copy-cursor field" @click="
+        () => {
+          $emit('price', item.sell.price);
+        }
+      ">
         <numeric-field v-model="item.sell.price">
           <!-- <span
             :class="[change(item.sell.price) < 0 ? 'error--text' : 'success--text']"
@@ -178,14 +168,11 @@ defineExpose({
       <div class="field">
         <numeric-field v-model="item.sell.amount"></numeric-field>
       </div>
-      <div
-        class="copy-cursor field"
-        @click="
-          () => {
-            $emit('count', item.sell.count);
-          }
-        "
-      >
+      <div class="copy-cursor field" @click="
+        () => {
+          $emit('count', item.sell.count);
+        }
+      ">
         <numeric-field v-model="item.sell.count"></numeric-field>
       </div>
     </div>

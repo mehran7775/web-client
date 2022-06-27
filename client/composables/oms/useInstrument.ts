@@ -14,6 +14,8 @@ import {
 } from "~/types";
 import manager from "@/repositories/oms/instruments_manager";
 import { useAxios } from "../useAxios";
+import { useWebSocket } from "../useWebsocket";
+import { object } from "yup";
 
 export const useInstrument = defineStore("instrument", () => {
   const state = ref<InstrumentState>({
@@ -27,6 +29,12 @@ export const useInstrument = defineStore("instrument", () => {
   });
   const axiosManager = useAxios();
   const axios = axiosManager.createInstance();
+
+  const websocket = useWebSocket();
+
+  websocket.registerHandler("TSE_UPDATE", (data) => {
+    state.value.orderQueueCache.set(data.obj.id, data.obj.queue);
+  });
 
   // Getters
   const width = computed({
@@ -95,20 +103,19 @@ export const useInstrument = defineStore("instrument", () => {
   function setWidth(width: number) {
     state.value.width = width;
   }
-  //Move Actions Buisiness here
+
   async function getInstrumentsDetail(
     searchModel: InstrumentSearchModel
   ): Promise<Array<InstrumentCache>> {
     const res: Array<InstrumentCache> = [];
     const missing: Array<number> = [];
-    
+
     if (
       searchModel.boardIds.length == 0 &&
       searchModel.secIds.length == 0 &&
       searchModel.ids.length != 0
     ) {
       let tmp = null;
-
       for (let i in searchModel.ids) {
         tmp = state.value.cache.get(searchModel.ids[i].toString());
         if (tmp?.name) res.push(tmp);
@@ -129,20 +136,20 @@ export const useInstrument = defineStore("instrument", () => {
       );
       data.forEach((item) => {
         updateInstrument(item);
+        websocket.addInstrumentToWatch(item);
         res.push(state.value.cache.get(item.id.toString()) as InstrumentCache);
       });
     }
-    
-    res.sort(( a, b ) => {
-      return searchModel.ids.indexOf(a.id) - searchModel.ids.indexOf(b.id)
-    })
 
+    res.sort((a, b) => {
+      return searchModel.ids.indexOf(a.id) - searchModel.ids.indexOf(b.id);
+    });
+    websocket.watchInstruments(null);
     const ids = res.map((item) => item.id);
     if (ids.length > 0) {
       getInstrumentPrices(ids);
       getMarketHistory(ids);
     }
-  
 
     return res;
   }
@@ -171,11 +178,12 @@ export const useInstrument = defineStore("instrument", () => {
     return data;
   }
   async function getOrderQueue(
-    id: number
+    inst: Instrument | InstrumentCache
   ): Promise<{ queue: Array<OrderQueueItem> }> {
-    let queue = state.value.orderQueueCache.get(id.toString());
+    let queue = state.value.orderQueueCache.get(inst.instrumentCode);
     if (queue) return { queue };
-    const { data } = await manager.getOrderQueue(id, axios);
+    const { data } = await manager.getOrderQueue(inst.id, axios);
+    state.value.orderQueueCache.set(inst.instrumentCode, data.queue);
     return data;
   }
   async function getClientDistribution(
