@@ -23,7 +23,7 @@ export const useInstrument = defineStore("instrument", () => {
     focus: [],
     focusViewMode: 0,
     selected: null,
-    orderQueueCache: new Map<string, Array<OrderQueueItem>>(),
+    orderQueueCache: {},
     clientDistributionCache: new Map<string, ClientDistribution>(),
     width: process.client ? window.screen.availWidth : 800,
   });
@@ -33,7 +33,15 @@ export const useInstrument = defineStore("instrument", () => {
   const websocket = useWebSocket();
 
   websocket.registerHandler("TSE_UPDATE", (data) => {
-    state.value.orderQueueCache.set(data.obj.id, data.obj.queue);
+    if (data.obj.queue) {
+      if (state.value.orderQueueCache[data.obj.id]) {
+        state.value.orderQueueCache[data.obj.id].splice(
+          0,
+          data.obj.queue.length,
+          ...data.obj.queue
+        );
+      } else state.value.orderQueueCache[data.obj.id] = data.obj.queue;
+    }
   });
 
   // Getters
@@ -177,14 +185,29 @@ export const useInstrument = defineStore("instrument", () => {
     });
     return data;
   }
-  async function getOrderQueue(
+  function getOrderQueue(
     inst: Instrument | InstrumentCache
-  ): Promise<{ queue: Array<OrderQueueItem> }> {
-    let queue = state.value.orderQueueCache.get(inst.instrumentCode);
-    if (queue) return { queue };
-    const { data } = await manager.getOrderQueue(inst.id, axios);
-    state.value.orderQueueCache.set(inst.instrumentCode, data.queue);
-    return data;
+  ): Array<OrderQueueItem> {
+    let queue = state.value.orderQueueCache[inst.instrumentCode];
+    if (queue) return queue;
+    else {
+      state.value.orderQueueCache[inst.instrumentCode] = [
+        new OrderQueueItem(),
+        new OrderQueueItem(),
+        new OrderQueueItem(),
+        new OrderQueueItem(),
+        new OrderQueueItem(),
+      ];
+      manager.getOrderQueue(inst.id, axios).then((resp) => {
+        if (resp.data.queue)
+          state.value.orderQueueCache[inst.instrumentCode].splice(
+            0,
+            resp.data.queue.length,
+            ...resp.data.queue
+          );
+      });
+    }
+    return state.value.orderQueueCache[inst.instrumentCode];
   }
   async function getClientDistribution(
     id: number

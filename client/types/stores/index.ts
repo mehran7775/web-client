@@ -51,7 +51,7 @@ export interface InstrumentState {
   focus: Array<InstrumentCache>;
   focusViewMode: number;
   selected: InstrumentCache | null;
-  orderQueueCache: Map<string, Array<OrderQueueItem>>;
+  orderQueueCache: { [key: string]: Array<OrderQueueItem> };
   clientDistributionCache: Map<string, ClientDistribution>;
   width: number;
 }
