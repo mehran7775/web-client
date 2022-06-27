@@ -63,7 +63,6 @@ export default defineNuxtConfig({
     VUE_APP_NAME: process.env.VUE_APP_NAME,
     VUE_APP_Host: process.env.VUE_APP_Host,
     VUE_WSS_Host: process.env.VUE_WSS_Host,
-    WS_SERVER: process.env.WS_SERVER,
   },
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
