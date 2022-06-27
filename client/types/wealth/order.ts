@@ -60,6 +60,7 @@ export enum ValidationType {
 }
 
 export enum OrderFlags {
+  ClientRequest = 0x00,
   Draft = 0x01,
   Created = 0x02,
   Sent = 0x04,

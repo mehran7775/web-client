@@ -42,6 +42,8 @@ const agreement = ref(true);
 function parseOrderFlags(status: number) {
   if (status == OrderFlags.Draft) {
     return "wealth.order.flags.Draft";
+  } else if (status == OrderFlags.ClientRequest) {
+    return "wealth.order.flags.ClientRequest";
   } else if (status == OrderFlags.Cancelled) {
     return "wealth.order.flags.Cancelled";
   } else if (status == OrderFlags.Created) {

@@ -286,6 +286,7 @@
         "2": "@:wealth.order.side.SELL"
       },
       "flags": {
+        "ClientRequest": "درخواست شده",
         "Draft": "پیش نویس",
         "Created": "ایجاد شده",
         "Sent": "ارسال شده",
