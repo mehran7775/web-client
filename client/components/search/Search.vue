@@ -34,9 +34,9 @@ div {
 
     >input {
         
-        @apply tw-bg-transparent tw-text-blue tw-outline-hidden tw-border-none;
+        @apply tw-bg-transparent tw-text-primary tw-outline-hidden tw-border-none;
         &::placeholder {
-            color: var(--c-primary-rgb);
+            @apply tw-text-primary
         }
 
         &:focus{

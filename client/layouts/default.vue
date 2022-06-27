@@ -142,7 +142,7 @@ const rtl = computed(() => appManager.rtl);
     max-width: calc(100% - 96px);
 
     &.left {
-      max-width: calc(100% - 200px);
+      max-width: calc(100% - 304px);
 
       &.right {
         max-width: calc(100% - 408px);

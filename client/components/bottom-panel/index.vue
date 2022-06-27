@@ -105,6 +105,7 @@ function close() {
 
     >.header {
       @apply tw-flex tw-flex-grow tw-w-full;
+      
       position: absolute;
       top: 0;
       left: 0;
@@ -112,7 +113,7 @@ function close() {
       align-items: center;
       height: 32px;
       color: var(--c-primary-rgb);
-      background-color: rgba(var(--c-primary), 0.05);
+      background-color: rgba(var(--c-primary), 0.08);
       padding: 0 0 0 12px;
       top: 0;
       left: 0;
@@ -146,7 +147,7 @@ function close() {
 
   >.tabs {
     @apply tw-justify-start tw-w-full tw-relative;
-    background-color: rgba(var(--c-primary), 0.2);
+    background-color: rgba(var(--c-primary), 0.1);
     box-shadow: 0 0 1px 0 #e2e2e2;
     min-height: 32px;
     max-height: 32px;
@@ -166,7 +167,7 @@ function close() {
       @apply tw-absolute tw-inset-0 tw-w-full tw-h-full;
       content: '';
       pointer-events: none;
-      background-color: white;
+
     }
   }
   .active {
