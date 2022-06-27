@@ -1,5 +1,5 @@
 <template>
-    <div class="message" v-bind="$attrs">
+    <div class="message" v-bind="$attrs" @click="trigger_show_message">
         <ada-btn color="transparent" class="template">
             <!-- <div class="template"> -->
             <ada-icon :size="26" v-if="type == 1" class="tw-text-primary">lotfi-sms</ada-icon>
@@ -34,6 +34,17 @@ const props = defineProps<{
     message: string,
     seenDate: string,
 }>()
+
+const trigger_show_message  = ():void => {
+    const item = {
+        title: props.title,
+        params: []
+    }
+    useBottomPanel()._titles.push(item)
+    useBottomPanel()._activeTab = item
+}
+
+
 
 </script>
 

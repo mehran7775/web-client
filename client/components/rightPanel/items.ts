@@ -1,4 +1,4 @@
-import { ComputedRef } from "#app";
+import { ComputedRef, Ref } from "#app";
 import { BookmarkPosition, MenuItem } from "~/types";
 
 export default {
@@ -6,7 +6,7 @@ export default {
 };
 
 export function getMenuItems(
-  watchList: ComputedRef<Array<MenuItem>>
+  watchList: ComputedRef<Array<MenuItem>>, secondWatchList: Ref<MenuItem[]>
 ): Array<MenuItem> {
   return [
     {
@@ -27,7 +27,7 @@ export function getMenuItems(
         {
           icon: "lotfi-task-square",
           title: "menu.bests",
-          children: [] 
+          children: secondWatchList
         },
         {
           icon: "lotfi-task-square",
