@@ -197,7 +197,7 @@ loadMyMessages();
       </ada-list>
     </ada-toggle>
     <ada-tabs class="tab-items" v-model="toggleMenu">
-      <search v-model="searchItem" @update="(val) => searchItem = val" placeholder="جستوجو..."
+      <search v-model="searchItem" @update="(val) => searchItem = val" :placeholder="`${$t('user.search')}...`"
         class="tw-text-base tw-px-4 tw-py-3">
         <template #prepend>
           <ada-icon color="primary" class="" :size="14"> isax-search-normal-1 </ada-icon>
@@ -211,7 +211,7 @@ loadMyMessages();
       <div class="tw-overflow-y-auto tw-h-screen">
         <div v-for="item in messageItems" :key="item.id">
           <hr class="line">
-          <MessageItem id="1" dateTime="d" title="jkdhg" preview="dgh" origin="5" :type="item.type"
+          <MessageItem :id="item.id" dateTime="d" title="jkdhg" preview="dgh" origin="5" :type="item.type"
             flags="5" message="gdg" seenDate="g" style="height: 58.9px;"/>
         </div>
       </div>
@@ -258,7 +258,7 @@ loadMyMessages();
       @apply tw-px-3 tw-mt-1 tw-select-none tw-flex tw-justify-between tw-items-center;
 
       span {
-        @apply tw-px-3 tw-py-2 tw-mx-1 tw-rounded-2xl tw-cursor-pointer tw-font-bold
+        @apply tw-px-3 tw-py-2 tw-mx-1 tw-rounded-2xl tw-cursor-pointer tw-font-semibold;
       }
     }
 

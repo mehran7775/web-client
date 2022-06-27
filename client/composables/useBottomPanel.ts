@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import {
   Tabs,
-  TabNames,
   DeepOptions,
   TabItem,
   SameSectorQuery,
@@ -9,11 +8,116 @@ import {
 } from "@/types";
 import { useSectors } from ".";
 
+const TabNames =[
+  {
+    tab: Tabs.activeOrders,
+    title: "bottom-panel.orders.all",
+    params: [],
+    children: [
+      {
+        title: "bottom-panel.orders.all",
+        params: [],
+      },
+      {
+        title: "bottom-panel.orders.drafts",
+        params: [],
+      },
+      {
+        title: "bottom-panel.orders.actives",
+        params: [],
+      },
+      {
+        title: "bottom-panel.orders.canceled",
+        params: [],
+      },
+    ],
+    default: "bottom-panel.orders.all",
+  },
+  {
+    tab: Tabs.completeInfo,
+    title: "bottom-panel.completeInfo.index",
+    params: [],
+    children: [
+      {
+        title: "bottom-panel.completeInfo.depth",
+        params: [],
+      },
+      {
+        title: "bottom-panel.completeInfo.myGroups",
+        params: [],
+      },
+      {
+        title: "bottom-panel.completeInfo.holdersCombination",
+        params: [],
+      },
+      {
+        title: "bottom-panel.completeInfo.type",
+        params: [],
+      },
+    
+    ],
+    default: "bottom-panel.completeInfo.depth",
+  },
+  {
+    tab: Tabs.dateInfo,
+    title: "bottom-panel.dateInfo.index",
+    params: [],
+    children: [
+      {
+        title: "bottom-panel.dateInfo.tradesHistory",
+        params: [],
+      },
+      {
+        title: "bottom-panel.dateInfo.holdersCompition",
+        params: [],
+      },
+      {
+        title: "bottom-panel.dateInfo.type",
+        params: [],
+      },
+    ],
+    default: "bottom-panel.dateInfo.tradesHistory",
+  },
+  {
+    tab: Tabs.statisticsKeys,
+    title: "bottom-panel.statisticsKeys.index",
+    params: [],
+    children: [
+      {
+        title: "bottom-panel.statisticsKeys.fiveDay",
+        params: [],
+      },
+      {
+        title: "bottom-panel.statisticsKeys.threeDay",
+        params: [],
+      },
+    ],
+    default: "bottom-panel.statisticsKeys.fiveDay",
+  },
+  {
+    tab: Tabs.furtherInfo,
+    title: "bottom-panel.more.index",
+    params: [],
+    children: [
+      {
+        title: "bottom-panel.more.presentation",
+        params: [],
+      },
+      {
+        title: "bottom-panel.more.directorate",
+        params: [],
+      },
+    ],
+    default: "bottom-panel.more.presentation",
+  },
+];
+
+
 export const useBottomPanel = defineStore("bottom-panel", {
   state: () => ({
     _activeTab: <TabItem | null>null,
     _expanded: false,
-    _titles: <TabItem[]>TabNames(),
+    _titles: <TabItem[]>TabNames,
     _further_information: <Message>{
       flags: 0,
       title: "",
@@ -68,5 +172,6 @@ export const useBottomPanel = defineStore("bottom-panel", {
     setLoading(payload: boolean) {
       this._loading = payload;
     },
+    
   },
 });
