@@ -202,6 +202,7 @@
     "error": "An unexpected error happen's during login!"
   },
   "menu": {
+    "home": "Home",
     "profile": "Profile",
     "edit-dashboard": "Edit Dashboard",
     "watchList": "Watch-Lists",

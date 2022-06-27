@@ -2,6 +2,8 @@ import { SearchModel } from "..";
 
 export class Instrument {
   id: number;
+  instrumentId: number;
+  instrumentCode: string;
   code: string;
   name: string;
   fullName: string;
@@ -28,6 +30,8 @@ export class Instrument {
 
   constructor() {
     this.id = 0;
+    this.instrumentId = 0;
+    this.instrumentCode = this.instrumentId.toString();
     this.baseVol = 0;
     this.categoryName = "";
     this.code = "";
@@ -54,7 +58,7 @@ export class Instrument {
   }
 }
 
-export class DailyPrice {
+export interface DailyPrice {
   id: number;
   instrumentCode: string;
   instrumentId: number;
@@ -66,22 +70,9 @@ export class DailyPrice {
   last: number;
   priceChange: number;
   yesterdayPrice: number;
-  constructor() {
-    this.instrumentCode = "";
-    this.instrumentId = 0;
-    this.id = this.instrumentId;
-    this.opening = 0;
-    this.lowest = 0;
-    this.highest = 0;
-    this.dateTime = "";
-    this.closing = 0;
-    this.last = 0;
-    this.priceChange = 0;
-    this.yesterdayPrice = 0;
-  }
 }
 
-export class MarketHistory {
+export interface MarketHistory {
   id: number;
   instrumentId: number;
   instrumentCode: string;
@@ -89,15 +80,6 @@ export class MarketHistory {
   totalShares: number;
   totalTrades: number;
   totalTradesValue: number;
-  constructor(instrumentId: number, instrumentCode: string, dateTime: string) {
-    this.instrumentId = instrumentId;
-    this.id = instrumentId;
-    this.instrumentCode = instrumentCode;
-    this.dateTime = dateTime;
-    this.totalTrades = 0;
-    this.totalTradesValue = 0;
-    this.totalShares = 0;
-  }
 }
 
 export class InstrumentSearchModel implements SearchModel {
@@ -117,7 +99,7 @@ export class InstrumentSearchModel implements SearchModel {
     this.ids = ids;
     this.boardIds = boards;
     this.secIds = secids;
-    this.offset = offset
+    this.offset = offset;
     this.length = ids.length > 0 ? ids.length : length;
   }
 }

@@ -50,6 +50,7 @@ const failedCount = userManager.tryCount;
 const rtl = appManager.rtl;
 
 async function login(data: LoginModel) {
+  captcharef.value.validate()
   if (frm.value?.validate()) {
     loading.value = true;
     try {
@@ -59,7 +60,7 @@ async function login(data: LoginModel) {
         router.push(user.settings?.home ?? "/watchlist/wealth");
         snack.showMessage({ content: "login.successful", color: "success" });
       }
-    } catch (err) {
+    } catch (err : any) {
       captcharef.value.refreshCaptcha();
       const error = ErrorExtractor(err as AxiosError);
       if (error.detail.length == 0)
@@ -71,6 +72,7 @@ async function login(data: LoginModel) {
         }
         snack.showMessage({ content: res, color: "error" });
       }
+      if(err.response.status === 401) data.captcha = ""
     } finally {
       loading.value = false;
     }

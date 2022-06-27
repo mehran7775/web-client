@@ -19,7 +19,8 @@
   --c-defualt-bg-rgb: rgb(var(--c-default-bg));
   --c-gray4: 189, 189, 189;
   --c-gray4-rgb: rgb(var(--c-gray4));
-
+  --c-gray6: 229, 233, 250;
+  --c-gray6-rgb: rgb(var(--c-gray6));
   --border-radius-root: 6px;
   --border-radius-panel: 0px;
   --border-radius-input: 4px;
@@ -28,5 +29,7 @@
   --font-size-root: 12px;
   --value-font-size: 1rem;
 
-  --tabel-row-height: 32px;
+  --row-height: 32px;
+
+  --tooltip-color: rgba(0, 0, 0, 0.85);
 }

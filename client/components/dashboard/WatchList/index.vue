@@ -43,7 +43,7 @@ const watchlists = computed(() => userManager.watchList);
 const focused = computed(() => instrumentManager.getFocus);
 const canfocus = computed(() => {
   if (!process.client) return false;
-  return focused.value.length < Math.floor(instrumentManager.width / 360);
+  return instrumentManager.getFocus.length < Math.floor(instrumentManager.width / 360);
 });
 const me = computed(() => userManager.me);
 
@@ -100,8 +100,10 @@ function focus(item: InstrumentCache) {
   instrumentManager.select(item);
 }
 async function getData(val: InstrumentSearchModel) {
-  _instruments.splice(0, _instruments.length);
-  _instruments.push(...(await instrumentManager.getInstrumentsDetail(val)));
+  if (val) {
+    _instruments.splice(0, _instruments.length);
+    _instruments.push(...(await instrumentManager.getInstrumentsDetail(val)));
+  }
 }
 function refresh() {
   instruments.splice(0, instruments.length);
@@ -241,22 +243,22 @@ getData(props.searchModel);
             </div>
           </template>
           <template #item.name="{ item }">
-            <v-badge left offset-y="65%" offset-x="-4px" :color="
+            <ada-badge :color="
               (item.status & 1) != 1
                 ? 'error'
                 : (item.status & 6) != 6
                   ? 'warning'
                   : 'success'
             " dot>
-              <v-tooltip right>
-                <template #activator="{ on }">
-                  <span style="line-height: 2.5" v-on="on" class="d-block">
+              <ada-tooltip position="right">
+                <template #activator>
+                  <span style="line-height: 2.5" class="tw-block">
                     {{ item.name }}
                   </span>
                 </template>
                 {{ $t(parseStatus(item.status)) }}
-              </v-tooltip>
-            </v-badge>
+              </ada-tooltip>
+            </ada-badge>
           </template>
           <template #item.opening="{ item }">
             <numeric-field :value="item.wealth" />
@@ -306,27 +308,27 @@ getData(props.searchModel);
     <v-dialog max-width="50%" v-model="confirmInstrumentRemoval">
       <v-card>
         <v-card-title> {{ $t("general.alert") }} </v-card-title>
-        <v-card-text>
+        <p>
           {{ $t("instrument.remove") }}
-        </v-card-text>
-        <v-card-actions>
-          <v-btn width="65" color="primary" @click="
+        </p>
+        <div>
+          <ada-btn dark :width="65" color="primary" @click="
             () => {
               remove(itemToDelete);
               confirmInstrumentRemoval = false;
             }
           ">
             {{ $t("general.yes") }}
-          </v-btn>
-          <v-btn width="65" color="error" @click="
+          </ada-btn>
+          <ada-btn dark :width="65" color="error" @click="
             () => {
               itemToDelete = null;
               confirmInstrumentRemoval = false;
             }
           ">
             {{ $t("general.no") }}
-          </v-btn>
-        </v-card-actions>
+          </ada-btn>
+        </div>
       </v-card>
     </v-dialog>
   </div>

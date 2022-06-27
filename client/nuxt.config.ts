@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { defineNuxtConfig } from "@nuxt/bridge";
 import GlobalsPolyfills from "@esbuild-plugins/node-globals-polyfill";
 //import postcss from "./postcss.config.js";
@@ -60,7 +62,7 @@ export default defineNuxtConfig({
     VUE_APP_BASE_ROUTE: process.env.VUE_APP_BASE_ROUTE,
     VUE_APP_NAME: process.env.VUE_APP_NAME,
     VUE_APP_Host: process.env.VUE_APP_Host,
-    WS_SERVER: process.env.WS_SERVER,
+    VUE_WSS_Host: process.env.VUE_WSS_Host,
   },
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
@@ -110,6 +112,20 @@ export default defineNuxtConfig({
           }),
         ],
       },
+    },
+  },
+  hooks: {
+    "build:done": (builder: any) => {
+      // const indexFilePath = path.join(
+      //   builder.nuxt.options.buildDir + "/dist/server",
+      //   "index.mjs"
+      // );
+      // fs.writeFileSync(indexFilePath, "export './server.mjs';");
+      const serverFilePath = path.join(
+        builder.nuxt.options.buildDir + "/dist/server",
+        "server.mjs"
+      );
+      fs.writeFileSync(serverFilePath, "export {};");
     },
   },
 

@@ -51,10 +51,10 @@ watch(
   border-radius: var(--border-radius-input);
 
   .input-container {
-    @apply tw-p-[4px] tw-min-w-0 tw-flex;
+    @apply tw-p-[4px] tw-min-w-0 tw-flex tw-flex-grow tw-justify-between;
     background-color: rgba(var(--c-primary), 0.1);
     border-radius: var(--border-radius-input);
-
+  
     &:dir(rtl) {
       padding: 0 0 0 6px;
     }

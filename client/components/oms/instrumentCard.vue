@@ -11,6 +11,7 @@ const props = withDefaults(
     responsive: boolean;
     compact: boolean;
     insId: number;
+    insName: string,
     hideHeaders: boolean;
   }>(),
   {
@@ -23,6 +24,7 @@ const props = withDefaults(
 const emit = defineEmits(["count", "price"]);
 
 const instrumentManager = useInstrument();
+
 const fields: Array<field> = [
   new field("yesterdayPrice", fieldType.price, null, getClickEvent(fieldType.price)),
   new field("totalTrades", fieldType.count, "oms.tradeCount"),
@@ -74,15 +76,15 @@ instrumentManager
   > header {
     @apply tw-flex tw-justify-center tw-col-span-2;
     background-color: #e0e0e0;
-    line-height: var(--tabel-row-height);
-    height: var(--tabel-row-height);
+    line-height: var(--row-height);
+    height: var(--row-height);
     font-weight: bold;
   }
   > div {
     @apply tw-flex tw-justify-between tw-px-4;
     position: relative;
-    line-height: var(--tabel-row-height);
-    height: var(--tabel-row-height);
+    line-height: var(--row-height);
+    height: var(--row-height);
   }
 }
 </style>
@@ -90,7 +92,7 @@ instrumentManager
 <template>
   <div class="instrument">
     <header v-show="!hideHeaders">
-      {{ $t("instrument.detail") }}
+      {{ $t("instrument.detail") }} ({{insName}})
     </header>
     <div
       v-for="(field, index) in fields"

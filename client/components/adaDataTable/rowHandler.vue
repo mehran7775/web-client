@@ -12,23 +12,20 @@ const props = defineProps<{
 <style lang="postcss" scoped>
 .row-border {
   border: none;
-  height: var(--tabel-row-height);
-}
-td {
-  height: var(--tabel-row-height);
-  border: none;
-  border-bottom: 1px solid #e0e0e0;
+  height: var(--row-height);
+
+  td {
+    height: var(--row-height);
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
 }
 </style>
 
 <template>
   <tr v-bind="$attrs" class="row-border">
-    <td
-      v-for="header in model.headers"
-      :key="header.value"
-      scope="col"
-      :class="['tw-text-' + header.align, header.class]"
-    >
+    <td v-for="header in model.headers" :key="header.value" scope="col"
+      :class="['tw-text-' + header.align, header.class]">
       <slot :item="model.item" :name="'item.' + header.value">
         {{ model.item[header.value] }}
       </slot>

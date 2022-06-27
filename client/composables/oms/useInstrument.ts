@@ -14,6 +14,8 @@ import {
 } from "~/types";
 import manager from "@/repositories/oms/instruments_manager";
 import { useAxios } from "../useAxios";
+import { useWebSocket } from "../useWebsocket";
+import { object } from "yup";
 
 export const useInstrument = defineStore("instrument", () => {
   const state = ref<InstrumentState>({
@@ -28,6 +30,12 @@ export const useInstrument = defineStore("instrument", () => {
   const axiosManager = useAxios();
   const axios = axiosManager.createInstance();
 
+  const websocket = useWebSocket();
+
+  websocket.registerHandler("TSE_UPDATE", (data) => {
+    state.value.orderQueueCache.set(data.obj.id, data.obj.queue);
+  });
+
   // Getters
   const width = computed({
     get(): number {
@@ -38,9 +46,6 @@ export const useInstrument = defineStore("instrument", () => {
     },
   });
   const focusMode = computed(() => state.value.focusViewMode);
-  const selectedId = computed(() =>
-    (state.value.selected?.id ?? -1).toString()
-  );
   const getByKey = computed(
     () =>
       (key: number): InstrumentCache | null =>
@@ -56,12 +61,7 @@ export const useInstrument = defineStore("instrument", () => {
 
   // Mutations
   function updateInstrument(
-    data:
-      | InstrumentCache
-      | Instrument
-      | DailyPrice
-      | MarketHistory
-      | Wealth
+    data: InstrumentCache | Instrument | DailyPrice | MarketHistory | Wealth
   ) {
     const inst = state.value.cache.get(data.id.toString());
     if (inst) Object.assign(inst, data);
@@ -82,12 +82,16 @@ export const useInstrument = defineStore("instrument", () => {
     state.value.focusViewMode = data;
   }
   function removeFocus(data: number) {
-    state.value.focus.splice(
-      state.value.focus.findIndex((element: Instrument) => element.id == data),
-      1
+    const index = state.value.focus.findIndex(
+      (element: Instrument) => element.id == data
     );
+    state.value.focus.splice(index, 1);
+    state.value.selected =
+      index >= state.value.focus.length
+        ? state.value.focus[index - 1]
+        : state.value.focus[index];
   }
-  function select(active: InstrumentCache) {
+  function select(active: InstrumentCache | null) {
     state.value.selected = active;
   }
   function selectByIndex(index: number) {
@@ -100,7 +104,6 @@ export const useInstrument = defineStore("instrument", () => {
     state.value.width = width;
   }
 
-  //Move Actions Buisiness here
   async function getInstrumentsDetail(
     searchModel: InstrumentSearchModel
   ): Promise<Array<InstrumentCache>> {
@@ -133,15 +136,21 @@ export const useInstrument = defineStore("instrument", () => {
       );
       data.forEach((item) => {
         updateInstrument(item);
+        websocket.addInstrumentToWatch(item);
         res.push(state.value.cache.get(item.id.toString()) as InstrumentCache);
       });
     }
 
+    res.sort((a, b) => {
+      return searchModel.ids.indexOf(a.id) - searchModel.ids.indexOf(b.id);
+    });
+    websocket.watchInstruments(null);
     const ids = res.map((item) => item.id);
     if (ids.length > 0) {
       getInstrumentPrices(ids);
       getMarketHistory(ids);
     }
+
     return res;
   }
   async function getInstrumentPrices(
@@ -169,11 +178,12 @@ export const useInstrument = defineStore("instrument", () => {
     return data;
   }
   async function getOrderQueue(
-    id: number
+    inst: Instrument | InstrumentCache
   ): Promise<{ queue: Array<OrderQueueItem> }> {
-    let queue = state.value.orderQueueCache.get(id.toString());
+    let queue = state.value.orderQueueCache.get(inst.instrumentCode);
     if (queue) return { queue };
-    const { data } = await manager.getOrderQueue(id, axios);
+    const { data } = await manager.getOrderQueue(inst.id, axios);
+    state.value.orderQueueCache.set(inst.instrumentCode, data.queue);
     return data;
   }
   async function getClientDistribution(
@@ -200,7 +210,6 @@ export const useInstrument = defineStore("instrument", () => {
     // Getters
     width,
     focusMode,
-    selectedId,
     getByKey,
     getFocus,
     getSelected,

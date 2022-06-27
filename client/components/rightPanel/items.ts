@@ -26,6 +26,11 @@ export function getMenuItems(
         },
         {
           icon: "lotfi-task-square",
+          title: "menu.bests",
+          children: [] 
+        },
+        {
+          icon: "lotfi-task-square",
           title: "menu.industries",
           to: "/watchlist/industries",
         },

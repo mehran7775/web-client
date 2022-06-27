@@ -77,7 +77,7 @@ defineExpose({
   <v-menu v-model="userMenu" class="user-menu" offset-y>
     <template #activator="{ on, attrs }">
       <ada-btn :height="28" min-width="184px" v-bind="attrs" v-on="on"
-        class="user-menu-activator" color="transparent" depressed>
+        class="user-menu-activator tw-py-0" color="transparent" depressed>
         <profile-picture :address="currentUser.profile && currentUser.profile.profilePic" />
         <span class=".d-none .d-sm-flex">{{
             currentUser.profile.nickname

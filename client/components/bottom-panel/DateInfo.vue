@@ -1,4 +1,4 @@
 <script setup lang="ts"></script>
 <template>
-  <h1>bests</h1>
+  <h1>Date info</h1>
 </template>

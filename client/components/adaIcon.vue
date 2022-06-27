@@ -5,15 +5,24 @@ const props = withDefaults(
     ico: string;
     color: string | null;
     size: string | number;
-    clicPointer: string;
+    clickPointer: string;
+    disabled: string | boolean;
   }>(),
   {
     ico: "mdi-icon",
     color: null,
     size: "1rem",
-    clicPointer: 'pointer'
+    clickPointer: 'pointer',
+    disabled: false
   }
 );
+
+const emit = defineEmits(['click'])
+
+function click(ev: Event) {
+  if (!props.disabled)
+    emit('click', ev)
+}
 
 const slots = useSlots();
 var icon = computed(() => {
@@ -28,7 +37,8 @@ const fontSize = computed(() =>
 </script>
 
 <style lang="postcss" scoped>
-:disabled .icon {
+:disabled .icon,
+[disabled] {
   color: var(--c-gray-rgb) !important;
 }
 
@@ -49,6 +59,6 @@ const fontSize = computed(() =>
 
 <template>
   <i class="icon" :class="[group, icon]"
-    :style="{ color: colorVar, fontSize, cursor: ($listeners && $listeners['click']) ? clicPointer : 'unset' }"
-    v-bind="$attrs" v-on="$listeners" />
+    :style="{ color: colorVar, fontSize, cursor: ($listeners && $listeners['click'] && !disabled) ? clickPointer : 'unset' }"
+    :disabled="disabled" v-bind="$attrs" @click="click" :key="icon" />
 </template>

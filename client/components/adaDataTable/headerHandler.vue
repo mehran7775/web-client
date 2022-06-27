@@ -38,7 +38,7 @@ async function drop(item: WatchlistColumns) {
 .header {
   position: relative;
   border: none !important;
-  height: var(--tabel-row-height);
+  height: var(--row-height);
   white-space: nowrap;
 }
 </style>

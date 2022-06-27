@@ -7,6 +7,7 @@ export default {
 import { ref, Ref } from "#app";
 import simpleCaptcha from "~/components/simpleCaptcha.vue";
 import { useRouter } from "#app";
+import { useAsrTrader } from "~~/composables/useAsrTrader";
 
 const otpref: Ref<any> = ref(null);
 
@@ -19,6 +20,10 @@ const forms: Ref<any> = ref({
 const rform1: Ref<any> = ref(null),
   rform2: Ref<any> = ref(null),
   rform0: Ref<any> = ref(null);
+const appManager = useAsrTrader();
+const rtl = appManager.rtl
+
+
 
 function back() {
   if (step.value == 1) {
@@ -47,13 +52,13 @@ function requestOtp() {
 </script>
 
 <template>
-  <div class="ma-0 pa-0 reg-ct">
+  <div class="reg-ct">
     <div class="pie-1 pie"></div>
     <div class="pie-2 pie"></div>
 
     <v-card class="dotted reg-crd">
-      <div class="ma-0 pa-0 justify-center text-center">
-        <ada-icon :size="24" class="back" @click="back"> mdi-arrow-right </ada-icon>
+      <ada-icon color="gray" :size="24" :class="['tw-absolute tw-top-20', !rtl ? 'tw-left-10 tw-rotate-180' : 'tw-left-auto tw-right-10']" @click="back"> mdi-arrow-right </ada-icon>
+      <div class="justify-center text-center">
         <nuxt-link to="/about-us" class="logo" />
         <h3>
           {{ $t("login.registration") }}
@@ -122,9 +127,9 @@ function requestOtp() {
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
-      <v-btn color="primary" @click="validate" class="next" height="42" large>
+      <ada-btn color="primary" @click="validate" class="next" :height="42" large dark>
         {{ $t("general.next") }}
-      </v-btn>
+      </ada-btn>
       <div v-html="$t('login.alerts')" class="mt-3 text-justify"></div>
     </v-card>
   </div>
@@ -147,18 +152,6 @@ function requestOtp() {
 </style>
 
 <style lang="postcss" scoped>
-.primary {
-  &.v-btn {
-    &--disabled {
-      color: var(--c-primary-rgb) !important;
-
-      i.icon {
-        color: var(--c-primary-rgb) !important;
-      }
-    }
-  }
-}
-
 .next {
   width: 100%;
 }
@@ -167,11 +160,14 @@ function requestOtp() {
   position: absolute;
   top: 72px;
   left: 39px;
+  transform: rotate(180deg);
 }
 
 .v-application--is-rtl {
   .back {
+    transform: rotate(0);
     right: 39px;
+    left: auto;
   }
 }
 

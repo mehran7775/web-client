@@ -31,7 +31,7 @@ export class AutoCompleteSearchModel implements SearchModel {
   constructor(value: string, offset: number, length: number) {
     this.name = value;
     this.offset = offset || 0;
-    this.length = length || 1;
+    this.length = length || 5;
   }
 }
 

@@ -19,7 +19,7 @@ const props = withDefaults(
     type: "button",
     icon: false,
     dark: false,
-    bordered: false,
+    bordered: false
   }
 );
 const emit = defineEmits(["click"]);
@@ -65,13 +65,13 @@ const heightVal = computed(() =>
 </script>
 
 <style lang="postcss" scoped>
-button {
+.button {
   @apply tw-min-w-0 tw-justify-center;
   background-color: rgba(var(--c-primary), 0.1);
   border-radius: var(--border-radius-root);
   font-weight: bold;
   position: relative;
-  overflow: hidden;
+  text-overflow: ellipsis;
 
   &.dark {
     color: white;
@@ -85,17 +85,21 @@ button {
   &.active::after {
     content: "";
     background-color: rgba(var(--c-primary), 0.2);
+    border-radius: var(--border-radius-root);
     position: absolute;
     height: 100%;
     width: 100%;
     top: 0;
     left: 0;
+    user-select: none;
+    pointer-events: none;
   }
+
 }
 </style>
 
 <template>
-  <button v-ada-ripple v-bind="$attrs" v-on="$listeners" @click="
+  <button class="button" v-ada-ripple v-bind="$attrs" v-on="$listeners" @click="
     () => {
       click();
     }

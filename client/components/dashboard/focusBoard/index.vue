@@ -12,6 +12,7 @@ const instrumentManager = useInstrument();
 const userManager = useUser();
 const sh = useShortcut();
 const route = useRoute();
+const toolbar = ref(null)
 
 const me = userManager.me;
 const bookmarks = computed(() => userManager.getBookmarks);
@@ -52,7 +53,7 @@ if (process.client) {
     },
   });
   function resize() {
-    instrumentManager.setWidth(screen.width - 96);
+    instrumentManager.setWidth(toolbar.value.offsetWidth);
   }
   onMounted(() => {
     window.addEventListener("mousemove", resize);
@@ -65,7 +66,7 @@ if (process.client) {
 
 <style lang="postcss" scoped>
 .focus-board {
-  height: 320px;
+  @apply tw-h-[320px] tw-w-full;
 }
 
 .toolbar {
@@ -78,14 +79,16 @@ if (process.client) {
 }
 
 .bookmark {
-  padding: 0 !important;
+  @apply tw-mx-[4px] tw-px-[4px];
   position: relative;
   width: 75px;
   min-width: 75px;
   max-width: 75px;
 
-  .label {
-    max-width: calc(75px - 8px);
+  >.label {
+    font-size: 0.8334rem;
+    display: inline-block;
+    max-width: 67px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -132,23 +135,23 @@ if (process.client) {
 
 <template>
   <div class="tw-m-0 tw-p-0">
-    <header class="toolbar">
+    <header ref="toolbar" class="toolbar">
       <slot name="toolbar"> </slot>
-      <v-tooltip v-for="b in bookmarks" :key="b.to">
-        <template #activator="{ on, attrs }">
-          <v-btn color="primary" :to="b.to" v-on="on" v-bind="attrs" height="28" class="ms-1 me-1 bookmark" depressed>
-            <v-btn @click.stop.prevent="() => unmark(b)" width="14" height="14" class="removeMark pa-0 ma-0"
+      <ada-tooltip v-for="b in bookmarks" :key="b.to" position="under">
+        <template #activator>
+          <ada-btn dark color="primary" :to="b.to" :height="28" class="bookmark">
+            <ada-btn @click.stop.prevent="() => unmark(b)" :width="14" :height="14" class="removeMark pa-0 ma-0"
               color="error">
               <ada-icon class="tw-p-0 tw-m-0" :size="12">mdi-close</ada-icon>
-            </v-btn>
+            </ada-btn>
             <span class="label">
               <ada-icon v-if="b.icon" :size="12"> {{ b.icon }} </ada-icon>
               {{ b.text ? b.text : $t(b.title) }}
             </span>
-          </v-btn>
+          </ada-btn>
         </template>
         {{ b.text ? b.text : $t(b.title) }}
-      </v-tooltip>
+      </ada-tooltip>
       <ada-spacer />
       <ada-toggle class="mode tw-justify-end" color="primary" v-model="viewMode">
         <ada-btn :height="28" :width="28" :model="0">
@@ -163,15 +166,14 @@ if (process.client) {
         </ada-btn>
       </ada-toggle>
     </header>
-    <div class="tw-m-0 tw-p-0 focus-board" v-if="instruments.length > 0">
-      <v-window v-model="viewMode">
-        <v-window-item>
-          <tab-view />
-        </v-window-item>
-        <v-window-item>
-          <card-view />
-        </v-window-item>
-      </v-window>
-    </div>
+    <ada-tabs class="focus-board" v-if="instruments.length > 0" v-model="viewMode">
+      <ada-tab :model="0">
+        <tab-view />
+      </ada-tab>
+      <ada-tab :model="1">
+        <card-view />
+      </ada-tab>
+    </ada-tabs>
+
   </div>
 </template>

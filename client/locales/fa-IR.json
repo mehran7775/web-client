@@ -263,7 +263,7 @@
   "wealth": {
     "wealth": "دارایی",
     "shares": "سهام",
-    "sharesCount": "@:oms.count @:wealth.shares",
+    "sharesCount": "@:oms.count @:wealth.wealth @:wealth.shares",
     "order": {
       "lastTransaction": "زمان آخرین معامله",
       "creationDate": "تاریخ سفارش",
@@ -282,8 +282,8 @@
         "title": "خرید/فروش",
         "SELL": "فروش",
         "BUY": "خرید",
-        "1":"@:wealth.order.side.BUY",
-        "2":"@:wealth.order.side.SELL"
+        "1": "@:wealth.order.side.BUY",
+        "2": "@:wealth.order.side.SELL"
       },
       "flags": {
         "ClientRequest": "درخواست شده",
@@ -325,10 +325,12 @@
     "error": "متاسفانه در عملیات ورود خطایی رخ داده است."
   },
   "menu": {
+    "home": "خانه",
     "profile": "مشخصات کاربر",
     "edit-dashboard": "ویرایش محیط کاربری",
     "watchList": "دیدبان",
     "basket": "سبد",
+    "bests": "برترین ها",
     "industries": "صنایع",
     "boards": "تابلوها",
     "instrumentTypes": "انواع اوراق",
@@ -361,14 +363,46 @@
     "saveSettings": "@:general.download @:general.settings"
   },
   "bottom-panel": {
-    "bests": "برترین‌ها",
-    "orders": "سفارشات",
-    "depth": "اطلاعات تکمیلی بازار",
-    "more": "جزئیات",
+    "completeInfo": {
+      "index": "اطلاعات تکمیلی",
+      "depth": "عمق بازار",
+      "myGroups" : "همگروه ها",
+      "holdersCombination" : "ترکیب سهامداران",
+      "type" : "حقیقی و حقوقی"
+    },
+    "orders": {
+      "all": "سفارشات",
+      "drafts": "پیش‌نویس ها",
+      "actives": "سفارشات‌ فعال",
+      "canceled": "لغوشده/خطاها"
+    },
+    "dateInfo": {
+      "index": "اطلاعات تاریخی",
+      "tradesHistory": "سابقه معاملات",
+      "holdersCompition": "ترکیب سهامداران",
+      "type": "حقیقی و حقوقی"
+    },
+    "more": {
+      "presentation" : "@:oms.presentation",
+      "directorate": "هیئت مدیره",
+      "index": "مشخصات"
+
+    },
+    "statisticsKeys": {
+      "index": "آمار کلیدی",
+      "fiveDay": "پنج روز مثبت و منفی",
+      "threeDay": "سه روز مثبت و منفی"
+    },
     "teammates": "همگروه‌ها ({0})"
   },
   "log": {
     "enter": "ورود",
     "exit": "خروج"
+  },
+  "categories" : {
+    "marketModerator" : "ناظر بازار",
+    "codal" : "کدال",
+    "tedan" : "تدان",
+    "news": "خبر"
   }
 }

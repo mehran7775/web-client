@@ -3,7 +3,7 @@ import {
   Tabs,
   TabNames,
   DeepOptions,
-  TabTitle,
+  TabItem,
   SameSectorQuery,
   Message,
 } from "@/types";
@@ -11,15 +11,15 @@ import { useSectors } from ".";
 
 export const useBottomPanel = defineStore("bottom-panel", {
   state: () => ({
-    _activeTab: <Tabs>Tabs.none,
+    _activeTab: <TabItem | null>null,
     _expanded: false,
-    _titles: <TabTitle[]>TabNames(),
+    _titles: <TabItem[]>TabNames(),
     _further_information: <Message>{
       flags: 0,
       title: "",
       message: {},
       origin: 1,
-      type:1
+      type: 1,
     },
     _market_depth: <null | { tab: DeepOptions; data: any }>null,
     _the_bests: {},
@@ -27,11 +27,11 @@ export const useBottomPanel = defineStore("bottom-panel", {
     _loading: false,
   }),
   getters: {
-    activeTab: (state): Tabs => state._activeTab,
+    tabs: (state): Array<TabItem> => state._titles,
+    activeTab: (state): TabItem | null => state._activeTab,
     expanded: (state) => state._expanded,
     loading: (state) => state._loading,
     further_information: (state): Message => state._further_information,
-    title: (state): TabTitle => state._titles[state._activeTab],
     market_depth: (state) => state._market_depth,
   },
   actions: {
@@ -49,10 +49,11 @@ export const useBottomPanel = defineStore("bottom-panel", {
           tab: DeepOptions.teammates,
           data: data,
         });
-        this.setActiveTab(Tabs.depth);
+        //TODO go to team mates
+        //this.setActiveTab(Tabs.depth);
       }
     },
-    setActiveTab(payload: Tabs) {
+    setActiveTab(payload: TabItem | null) {
       this._activeTab = payload;
     },
     toggleExpand() {
@@ -60,9 +61,6 @@ export const useBottomPanel = defineStore("bottom-panel", {
     },
     setMessage(payload: Message) {
       this._further_information = payload;
-    },
-    setTitle(payload: TabTitle) {
-      Object.assign(this._titles[payload.tab], payload);
     },
     setDepthData(payload: null | { tab: DeepOptions; data: any }) {
       this._market_depth = payload;

@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { computed, ref } from "#app";
+import { defaultItem } from "@/types"
+import { computed, ref, watch } from "#app";
 import snackbar from "@/components/snacks.vue";
-import { useAsrTrader, useUser, useBottomPanel, useWealth } from "~/composables";
+import { useAsrTrader, useUser, useBottomPanel, useWealth, useWebSocket } from "~/composables";
 
 const appManager = useAsrTrader();
 const userManager = useUser();
 const bottomPanelManager = useBottomPanel();
 const wealthManager = useWealth();
+const wbsocket = useWebSocket();
+
+wbsocket.connect();
 wealthManager.getActiveRestrictions();
 
 const rightMenu = ref({
@@ -18,15 +22,38 @@ const leftMenu = ref({
   drawer: true,
 });
 
+const rmini = computed({
+  get: () => rightMenu.value.mini,
+  set(val) {
+    rightMenu.value.mini = val;
+    if(!leftMenu.value.mini) leftMenu.value.mini = true
+  }
+})
+
+const lmini = computed({
+  get: ()=> leftMenu.value.mini,
+  set(val) {
+    leftMenu.value.mini = val
+    if(!rightMenu.value.mini) rightMenu.value.mini = true
+  }
+})
+
 const locale = appManager.locale;
 const formatter = appManager.formatter;
 const collaps = computed(() => {
   const tab = bottomPanelManager.activeTab;
-  return tab != null && tab != -1;
+  return tab && tab != defaultItem;
 });
 const home = computed(() => userManager.me.settings.home);
 const clipped = ref(true);
+const invisibleFinInfo = ref(false);
 const rtl = computed(() => appManager.rtl);
+// const unitPanel = computed(() => {
+//   if(rightMenu.value.mini)
+// });
+
+
+
 </script>
 
 <style lang="postcss">
@@ -52,6 +79,10 @@ const rtl = computed(() => appManager.rtl);
 </style>
 
 <style lang="postcss" scoped>
+#app-bar {
+  z-index: 1000;
+}
+
 .center {
   position: absolute;
   margin-left: auto;
@@ -89,6 +120,21 @@ const rtl = computed(() => appManager.rtl);
 .dashboardmain-page {
   background-color: rgba(var(--c-primary), 0.05);
   overflow: auto;
+  @apply tw-transition-all tw-ease-in-out tw-duration-700;
+}
+
+.mainBackground {
+  background-color: rgba(var(--c-default), 0.05);
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    content: '';
+  }
 }
 
 @media (min-width: 960px) {
@@ -96,7 +142,7 @@ const rtl = computed(() => appManager.rtl);
     max-width: calc(100% - 96px);
 
     &.left {
-      max-width: calc(100% - 200px);
+      max-width: calc(100% - 304px);
 
       &.right {
         max-width: calc(100% - 408px);
@@ -113,7 +159,7 @@ const rtl = computed(() => appManager.rtl);
     padding-right: 48px !important;
 
     &.left {
-      padding-left: 152px !important;
+      padding-left: 256px !important;
     }
 
     &.right {
@@ -142,9 +188,9 @@ const rtl = computed(() => appManager.rtl);
 
 
 <template>
-  <v-app :class="locale">
-    <right-panel :mini.sync="rightMenu.mini" :clipped="clipped" v-model="rightMenu.drawer" class="shadow left" />
-    <left-panel :mini.sync="leftMenu.mini" :clipped="clipped" v-model="leftMenu.drawer" class="shadow right" />
+  <v-app :class="[locale, rtl ? 'rtl' : 'ltr']">
+    <right-panel :mini.sync="rmini" :clipped="clipped" v-model="rightMenu.drawer" class="shadow left" />
+    <left-panel :mini.sync="lmini" :clipped="clipped" v-model="leftMenu.drawer" class="shadow right" />
     <v-app-bar id="app-bar" :clipped-left="clipped" :clipped-right="clipped" :height="42" color="defualt-bg"
       class="text-no-wrap shadow bottom pe-2" fixed app dense>
       <nuxt-link class="d-flex flex-row px-2" :to="home">
@@ -157,6 +203,7 @@ const rtl = computed(() => appManager.rtl);
         () => {
           if (rightMenu.drawer) {
             rightMenu.mini = !rightMenu.mini;
+            if (!rightMenu.mini) leftMenu.mini = true
           } else {
             rightMenu.drawer = true;
             rightMenu.mini = false;
@@ -168,13 +215,13 @@ const rtl = computed(() => appManager.rtl);
       </ada-icon>
 
       <clock :format="$t('general.date.longdt')" width="240px" />
-      <div class="center">
-        <v-badge dot left color="green" class="mx-5" offset-y="75%" offset-x="-5">
+      <div class="center tw-flex">
+        <ada-badge class="tw-mx-5" color="green">
           {{ $t("oms.bourseIndex") }}: {{ formatter.format(0.0) }}
-        </v-badge>
-        <v-badge dot left color="orange" class="mx-5" offset-y="75%" offset-x="-5">
+        </ada-badge>
+        <ada-badge color="orange">
           {{ $t("oms.superBourseIndex") }}: {{ formatter.format(0.0) }}
-        </v-badge>
+        </ada-badge>
       </div>
       <ada-spacer />
       <user-menu />
@@ -183,7 +230,6 @@ const rtl = computed(() => appManager.rtl);
       'dashboardmain-page': true,
       right: !rightMenu.mini,
       left: !leftMenu.mini,
-      rtl: rtl,
     }">
       <div :class="['dashboardmain-nuxt', collaps ? 'collaps' : '']">
         <nuxt />
@@ -191,33 +237,43 @@ const rtl = computed(() => appManager.rtl);
       <bottom-panel :class="{
         right: !rightMenu.mini,
         left: !leftMenu.mini,
-      }" />
-      <footer :class="{
+      }" 
+      :slideToBottom="invisibleFinInfo"
+      />
+      <footer v-if="!invisibleFinInfo" class="mainBackground" :class="{
         footer: true,
         right: !rightMenu.mini,
         left: !leftMenu.mini,
       }">
-        <div class="summary center">
-          <v-badge dot left class="ms-5" color="green" offset-y="75%" offset-x="-5">{{ $t("accounting.account.amount")
-          }}0</v-badge>
-          <v-badge dot left class="ms-5" color="red" offset-y="75%" offset-x="-5">{{
+        <div class="summary center" >
+          <ada-badge color="green">{{ $t("accounting.account.amount")
+          }}0</ada-badge>
+          <ada-badge color="red">{{
               $t("accounting.account.blockedAmount")
-          }}0</v-badge>
-          <v-badge dot left class="ms-5" color="orange" offset-y="75%" offset-x="-5">
+          }}0</ada-badge>
+          <ada-badge color="orange">
             {{ $t("accounting.account.onlineBlockedAmount") }}0
-          </v-badge>
-          <v-badge dot left class="ms-5" color="blue" offset-y="75%" offset-x="-5">{{
+          </ada-badge>
+          <ada-badge color="blue">{{
               $t("accounting.account.remaining")
-          }}0</v-badge>
-          <v-badge dot left class="ms-5" color="#89abcd" offset-y="75%" offset-x="-5">{{
+          }}0</ada-badge>
+          <ada-badge color="skyblue">{{
               $t("accounting.account.credit")
-          }}0</v-badge>
+          }}0</ada-badge>
         </div>
         <div class="cw">
           &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
         </div>
       </footer>
     </v-main>
+    <floating-button :style="{
+      bottom: '8px',
+      left: '8px',
+    }" width="32px" height="32px" color="primary 0.9">
+      <ada-icon color="white" :size="24" @click="invisibleFinInfo = !invisibleFinInfo">     
+        mdi-chevron-triple-right
+      </ada-icon>
+    </floating-button>
     <floating-button :style="{
       bottom: '8px',
       right: '8px',

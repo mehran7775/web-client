@@ -1,4 +1,4 @@
-const ws_address: string = process.env.WS_SERVER || "ws://127.0.0.1:8003";
+const ws_address: string = process.env.VUE_WSS_Host || "ws://127.0.0.1:8003";
 
 class Subscrib {
   token: string;

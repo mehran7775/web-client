@@ -29,6 +29,7 @@ const selected = computed({
 const rtl = computed(() => appManager.rtl);
 const bookmarks = computed(() => userManager.getBookmarks);
 const shourtcuts = computed(() => userManager.getShourtcuts);
+const home = computed(() => userManager.me.settings.home);
 const isMarked = computed(() => (data: MenuItem) => {
   switch (data.bookmarkPosition) {
     case BookmarkPosition.ToolBar:
@@ -61,7 +62,6 @@ const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
   return res;
 });
 const items = getMenuItems(watchList);
-const home = computed(() => userManager.me.settings.home);
 
 const drawer = computed({
   get() {
@@ -78,6 +78,7 @@ function setHome(item: MenuItem) {
       value: item.to,
     });
 }
+
 function mark(data: MenuItem) {
   const bk = CreateBookmark(data);
   switch (data.bookmarkPosition) {
@@ -101,6 +102,7 @@ function mark(data: MenuItem) {
       break;
   }
 }
+
 function unmark(data: MenuItem) {
   switch (data.bookmarkPosition) {
     case BookmarkPosition.ToolBar:
@@ -131,8 +133,12 @@ function unmark(data: MenuItem) {
       break;
   }
 }
+
+
 watch(selected, (n, o) => {
-  if (typeof n == "string" || typeof n != null) {
+  if (typeof n == 'undefined' || n == null) {
+    emit("update:mini", true);
+  } else {
     emit("update:mini", false);
   }
 });
@@ -151,253 +157,126 @@ if (process.client) {
 </script>
 
 <style lang="postcss" scoped>
-.sub-item:first-child {
-  .path {
-    height: 28px;
-    top: -12px;
-  }
-}
-
-.sub-item {
-  position: relative;
-
-  .path {
-    content: "";
-    top: -20px;
-    height: 37px;
-    width: 12px;
-    border-right: 1px solid rgba(0, 0, 0, 0.05);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 0 0 var(--border-radius-root) 0;
-    position: absolute;
-  }
-}
-
-.tabs {
-  background-color: rgba(var(--c-primary), 0.05);
-  overflow-y: auto;
-  height: 100vh;
-  padding-bottom: 54px;
-  width: 48px;
-}
-
-.tab-items {
-  background-color: rgba(var(--c-primary), 0.05);
-}
-
-.details {
-  overflow-y: auto;
-}
-</style>
-
-<style lang="postcss">
 .r-panel {
-  .tabs {
-    &::-webkit-scrollbar {
-      display: block;
-    }
+  font-size: 0.875rem;
+  padding-top: 42px;
+  background-color: rgba(var(--c-primary), 0.01);
+
+  &::before {
+    @apply tw-inset-0 tw-absolute tw-w-full tw-h-full;
+    z-index: -1;
+    background-color: white;
+    content: '';
+    touch-action: none;
+    pointer-events: none;
   }
 
-  &.v-navigation-drawer--mini-variant {
-    width: 48px !important;
-  }
-
-  .v-navigation-drawer__content {
-    display: flex;
-    flex-direction: row;
-  }
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-
-  .v-tabs-items {
-    height: 100%;
-    width: calc(100% - 42px);
-    display: block;
-
-    .v-list-item {
-      border-radius: var(--border-radius-root);
-    }
-
-    .v-item--active {
-      color: var(--c-primary-rgb);
-
-      &::before {
-        border-radius: var(--border-radius-root);
-      }
-    }
-  }
-
-  .v-tabs {
+  .toggle.tabs {
+    @apply tw-items-center tw-px-2;
+    padding-top: 8px;
+    height: calc(100vh - 42px);
+    padding-bottom: 54px;
+    min-width: 48px;
     width: 48px;
-    vertical-align: top;
-    box-shadow: -4px 0 4px rgba(0, 0, 0, 0.05);
+    max-width: 48px;
+    flex-basis: 48px;
+    box-shadow: -2px 1px 2px 0 rgba(var(--c-primary), 0.2);
 
-    &--vertical {
-      >.v-tabs-bar {
-        .v-tabs-bar__content {
-          display: block;
-        }
+    .icon {
+      font-size: 1.5rem;
+    }
+  }
 
-        .v-tab {
-          padding: 0;
-          display: block;
-          vertical-align: middle;
-          justify-content: center !important;
-          min-width: 48px;
-          height: 32px !important;
+  .tabs.tab-items {
+    min-width: 208px;
+    background-color: rgba(var(--c-primary), 0.01);
+    width: calc(100% - 48px);
 
-          &--active {
-            &::before {
-              background-color: rgba(0, 0, 0, 0) !important;
-            }
-
-            .v-btn {
-              color: var(--c-primary-rgb);
-              background-color: rgba(var(--c-primary), 0.1) !important;
-            }
-          }
-        }
-      }
+    .tab {
+      @apply tw-flex tw-flex-col tw-flex-grow;
+      flex-basis: 32px;
+      overflow-y: auto;
     }
   }
 }
 </style>
 
 <template>
-  <v-navigation-drawer v-model="drawer" :mini-variant="mini" :clipped="clipped" :right="rtl" class="r-panel ps-0"
-    width="256" mobile-breakpoint="960" fixed app>
-    <v-tabs class="ma-0 pa-0" v-model="selected" vertical hide-slider center-active>
-      <div class="tabs pt-1">
-        <v-tab v-for="item in items" :key="item.title" @click="
-          () => {
-            $emit('update:mini', !mini);
-          }
-        ">
-          <v-tooltip left>
-            <template #activator="{ on, attrs }">
-              <ada-btn :width="32" :height="32" color="transparent">
-                <ada-icon :size="18" :color="item.color" v-bind="attrs" v-on="on">
-                  {{ item.icon }}
-                </ada-icon>
-              </ada-btn>
-            </template>
-            <span>{{ item.text ? item.text : $t(item.title) }}</span>
-          </v-tooltip>
-        </v-tab>
-        <v-divider />
-        <v-tab v-for="item in shourtcuts" :key="item.title" :to="item.to" @click="
-          () => {
-            $emit('update:mini', true);
-          }
-        ">
-          <v-tooltip left>
-            <template v-slot:activator="{ on, attrs }">
-              <ada-btn :width="32" :height="32" color="transparent">
-                <ada-icon :size="18" :color="item.color" v-bind="attrs" v-on="on">
-                  {{ item.icon }}
-                </ada-icon>
-              </ada-btn>
-            </template>
-            <span>{{ item.text ? item.text : $t(item.title) }}</span>
-          </v-tooltip>
-        </v-tab>
-      </div>
-    </v-tabs>
+  <ada-nav v-model="drawer" min-width="48px" max-width="256px" :mini="mini" class="r-panel" mobile-breakpoint="960"
+    fixed>
+    <ada-toggle class="tabs" v-model="selected" vertical>
+      <ada-tooltip position="left">
+        <template #activator>
+          <ada-btn :width="32" :height="32" color="transparent" :to="home" :model="null">
+            <ada-icon size="18" color="primary">
+              isax-home-2
+            </ada-icon>
+          </ada-btn>
+        </template>
+        <span>{{ $t('menu.home') }}</span>
+      </ada-tooltip>
+      <ada-tooltip v-for="item in items" :key="item.title" position='left'>
+        <template #activator>
+          <ada-btn :width="32" :height="32" color="transparent" :model="item.title" @click="
+            () => {
+              $emit('update:mini', !mini);
+            }
+          ">
+            <ada-icon size="18" :color="item.color">
+              {{ item.icon }}
+            </ada-icon>
+          </ada-btn>
+        </template>
+        <span>{{ item.text ? item.text : $t(item.title) }}</span>
+      </ada-tooltip>
+      <hr class="divider" />
+      <ada-tooltip v-for="item in shourtcuts" :key="item.title" position="left">
+        <template #activator>
+          <ada-btn :width="32" :height="32" color="transparent" :to="item.to" @click="
+            () => {
+              $emit('update:mini', true);
+            }
+          " depressed>
+            <ada-icon size="18" :color="item.color">
+              {{ item.icon }}
+            </ada-icon>
+          </ada-btn>
+        </template>
+        <span>{{ item.text ? item.text : $t(item.title) }}</span>
+      </ada-tooltip>
+    </ada-toggle>
 
-    <v-tabs-items class="tab-items" v-model="selected">
-      <v-tab-item v-for="item in items" :key="item.title">
-        <div class="details">
-          <h4 class="text-center mt-1">
-            {{ $t(item.title) }}
-          </h4>
-          <v-list dense>
-            <v-list-item-group>
-              <div v-for="child in item.children ? item.children : []" :key="child.title">
-                <v-list-group class="item mx-1 group" v-if="child.children" append-icon.size="12">
-                  <template #appendIcon>
-                    <ada-icon :size="12"> isax-arrow-down </ada-icon>
-                  </template>
-                  <v-list-item-title slot="activator">
-                    {{ child.text ? child.text : $t(child.title) }}
-                  </v-list-item-title>
-                  <v-tooltip v-for="sub in child.children
-                  ? child.children.value
-                    ? child.children.value
-                    : child.children
-                  : []" :key="sub.title" left>
-                    <template #activator="{ on, attrs }">
-                      <div v-on="on" v-bind="attrs" class="sub-item ps-4">
-                        <div class="path ms-n2"></div>
-                        <v-list-item :to="sub.to ? sub.to : '#'">
-                          <v-list-item-title>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            {{ sub.text ? sub.text : $t(sub.title) }}
-                          </v-list-item-title>
-                          <div class="d-flex flex-row my-0">
-                            <ada-btn @click.prevent="
-                              (ev) => {
-                                if (isMarked(sub)) unmark(sub);
-                                else mark(sub);
-                              }
-                            " v-if="sub.bookmarkPosition" icon x-small>
-                              <ada-icon :color="isMarked(sub) ? 'primary' : 'default'" :size="12">
-                                isax-frame-4
-                              </ada-icon>
-                            </ada-btn>
-                            <ada-btn @click.prevent="
-                              (ev) => {
-                                setHome(sub);
-                              }
-                            " v-if="sub.bookmarkPosition" icon x-small>
-                              <ada-icon :color="sub.to == home ? 'info' : 'default'" :size="12">
-                                isax-star-1-bold
-                              </ada-icon>
-                            </ada-btn>
-                          </div>
-                        </v-list-item>
-                      </div>
-                    </template>
-                    {{ sub.text ? sub.text : $t(sub.title) }}
-                  </v-tooltip>
-                </v-list-group>
-                <v-tooltip v-else left>
-                  <template #activator="{ on, attrs }">
-                    <v-list-item v-on="on" v-bind="attrs" class="item mx-1" :to="child.to ? child.to : '#'">
-                      <v-list-item-title>
-                        {{ child.text ? child.text : $t(child.title) }}
-                      </v-list-item-title>
-                      <div v-if="child.to && child.to != ''" class="d-flex flex-row my-0">
-                        <ada-btn @click.prevent="
-                          (ev) => {
-                            if (isMarked(child)) unmark(child);
-                            else mark(child);
-                          }
-                        " v-if="child.bookmarkPosition" icon x-small>
-                          <ada-icon :color="isMarked(child) ? 'primary' : 'default'" :size="12">
-                            isax-frame-4
-                          </ada-icon>
-                        </ada-btn>
-                        <ada-btn @click.prevent="
-                          (ev) => {
-                            setHome(child);
-                          }
-                        " v-if="child.bookmarkPosition" icon x-small>
-                          <ada-icon :color="child.to == home ? 'info' : 'default'" :size="12">
-                            isax-star-1-bold
-                          </ada-icon>
-                        </ada-btn>
-                      </div>
-                    </v-list-item>
-                  </template>
-                  {{ child.text ? child.text : $t(child.title) }}
-                </v-tooltip>
+    <ada-tabs class="tab-items" v-model="selected">
+      <ada-tab v-for="item in items" :key="item.title" :name="item.title">
+        <h4 class="tw-flex tw-flex-shrink-0 tw-h-[42px] tw-justify-center tw-items-center">
+          {{ $t(item.title) }}
+        </h4>
+        <ada-list>
+          <ada-list-item v-for="child in item.children ? item.children : []" :key="child.title" :value="child">
+            <template #item="{ value }">
+              <div class="tw-w-full tw-h-full tw-flex tw-justify-between tw-items-center">
+                <span>{{ value.text ? value.text : $t(value.title) }}{{ value.expand }}</span>
+                <span v-if="value.to && value.to != ''" class="tw-flex tw-items-baseline">
+                  <ada-icon v-if="value.bookmarkPosition" size="1.34rem" :color="isMarked(value) ? 'blue' : 'gray4'"
+                    @click.stop.prevent="() => {
+                      if (isMarked(value)) unmark(value);
+                      else mark(value);
+                    
+                    }" :ico="isMarked(value) ? 'mdi-bookmark' : 'mdi-bookmark-outline'" />
+                  <ada-icon @click.prevent.stop="
+                    () => {
+                      setHome(value);
+                    }
+                  " size="1.34rem" :color="value.to == home ? 'blue' : 'gray4'"
+                    :ico="value.to == home ? 'isax-star-1-bold' : 'isax-star-1'">
+                  </ada-icon>
+
+                </span>
               </div>
-            </v-list-item-group>
-          </v-list>
-        </div>
-      </v-tab-item>
-    </v-tabs-items>
-  </v-navigation-drawer>
+            </template>
+          </ada-list-item>
+        </ada-list>
+      </ada-tab>
+    </ada-tabs>
+  </ada-nav>
 </template>

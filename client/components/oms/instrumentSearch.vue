@@ -87,7 +87,7 @@ export default defineComponent({
 
 <template>
   <v-autocomplete height="28" v-model="model" :placeholder="$t('instrument.search')" :loading="loading" :items="entries"
-    class="instrument-search no-translate" append-icon="" item-text="name" item-value="id" @input="
+    class="instrument-search no-translate tw-text-base" append-icon="" item-text="name" item-value="id" @input="
       (val) => {
         if (focusResult) select(val);
         else $emit('input', val);
@@ -116,7 +116,6 @@ export default defineComponent({
 .instrument-search {
   background-color: rgba(var(--c-primary), 0.05);
   border-radius: var(--border-radius-root);
-  font-size: 0.75rem;
 }
 </style>
 <style lang="postcss">

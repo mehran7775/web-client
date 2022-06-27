@@ -1,7 +1,7 @@
 <template>
-  <v-avatar class="tw-m-0 tw-p-0" size="32" rounded>
-    <v-img class="tw-m-0 tw-p-0" :src="img" max-width="32">
-      <ada-icon class="tw-m-0 tw-p-0" slot="placeholder" :size="24"> mdi-account </ada-icon>
+  <v-avatar class="tw-m-0 tw-p-tw-bg-red-300 tw-border tw-rounded-full tw-border-gray tw-shadow-md" size="32">
+    <v-img class="tw-m-0 tw-p-0 tw-bg-contain " :src="img " max-width="32" width="24" aspect-ratio="2">
+      <ada-icon class="tw-m-0 tw-p-0" slot="placeholder" :size="24"> isax-user </ada-icon>
     </v-img>
   </v-avatar>
 </template>

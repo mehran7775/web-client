@@ -21,14 +21,12 @@ const props = withDefaults(defineProps<selectProps>(), {
   keyPath: "$.id",
   value: null,
 });
-
 const emit = defineEmits(["input"]);
 
 const active = ref(false);
 const selectedText = ref("");
 const val = ref<string | null>(props.value);
 const inp = ref<HTMLInputElement | null>(null);
-
 watch(
   () => props.value,
   (update) => {
@@ -37,18 +35,11 @@ watch(
       selectedText.value = "";
       val.value = null;
     }
-  }
+  },
 );
 
 function toggleActive() {
   active.value = !active.value;
-}
-
-function select(item: any) {
-  val.value = item;
-  emit("input", item);
-  selectedText.value = getText(item);
-  active.value = false;
 }
 
 const getText: (item: any) => string = eval(
@@ -62,6 +53,15 @@ const getValue: (item: any) => any = eval(
     return " + props.keyPath.replace(/^\$/, "item") + ";\
   }"
 );
+
+function select(item: any) {
+  val.value = item;
+  emit("input", item);
+  selectedText.value = getText(item);
+  active.value = false;
+}
+props.value ? select(props.value) : null
+
 </script>
 <style lang="postcss" scoped>
 .rtl {
@@ -145,8 +145,8 @@ const getValue: (item: any) => any = eval(
     display: block;
     list-style: none;
     padding: 0 6px 0 6px;
-    height: var(--tabel-row-height);
-    line-height: var(--tabel-row-height);
+    height: var(--row-height);
+    line-height: var(--row-height);
 
     &:hover {
       background-color: rgba(var(--c-primary), 0.05);

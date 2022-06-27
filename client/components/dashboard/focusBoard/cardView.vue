@@ -32,14 +32,13 @@ function select(item: InstrumentCache) {
 
 <style lang="postcss" scoped>
 .card-row {
-  @apply tw-flex tw-flex-grow;
+  @apply tw-w-full tw-grid tw-gap-y-0 tw-grid-rows-none tw-gap-x-4 tw-grid-flow-col;
+  grid-template-columns: repeat(auto-fit, 24.37%);
+  justify-content: flex-start;
   overflow-x: auto;
   overflow-y: hidden;
-  min-height: 320px;
-  max-height: 320px;
-
+  height: 320px;
   >.card-view {
-    margin: 0 7px;
     background-color: white;
     border-left: 1px solid #e0e0e0;
     border-right: 1px solid #e0e0e0;
@@ -76,10 +75,10 @@ function select(item: InstrumentCache) {
 
 <template>
   <div class="card-row">
-    <card @click="() => select(item)" class="card-view" :min-width="346" :width="maxwidthVal - 14"
-      :max-width="maxwidthVal" v-for="item in instruments" :key="item.id">
+    <card @click="() => select(item)" class="card-view" :minWidth="null"
+      v-for="item in instruments" :key="item.id">
       <header class="toolbar">
-        <v-badge left class="title" offset-y="65%" offset-x="-4px" :color="
+        <ada-badge class="title" :color="
           (item.status & 1) != 1
             ? 'error'
             : (item.status & 6) != 6
@@ -87,7 +86,7 @@ function select(item: InstrumentCache) {
               : 'success'
         " dot>
           {{ item.name }}
-        </v-badge>
+        </ada-badge>
         ({{ $t("instrument.state." + item.status) }})
         <ada-spacer />
         <ada-btn depressed height="24px" width="56px" color="success" dark small class="ma-0 me-2 pa-0 buy"
@@ -103,7 +102,7 @@ function select(item: InstrumentCache) {
         </ada-btn>
       </header>
       <div class="text-caption ma-0 px-0">
-        <order-queue-card :insId="item.id" />
+        <order-queue-card :inst="item" />
         <instrument-card :insId="item.id" hide-headers />
         <ada-col class="col-border tw-justify-center tw-align-middle">
           <ada-icon :size="16"> isax-presention-chart </ada-icon>

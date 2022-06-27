@@ -20,17 +20,19 @@
     "jalali-moment": "^3.3.11",
     "luxon": "latest",
     "marked": "^4.0.16",
+    "mock-file-server": "^0.1.17",
     "nuxt-edge": "latest",
     "pinia": "^2.0.14",
     "vue-i18n": "8",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "ufo": "^0.8.4"
   },
   "devDependencies": {
-    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
-    "@mdi/font": "latest",
     "@nuxt/bridge": "npm:@nuxt/bridge-edge",
-    "@nuxt/types": "latest",
+    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "@nuxtjs/vuetify": "1.12.3",
+    "@mdi/font": "latest",
+    "@nuxt/types": "latest",
     "@types/cookie": "latest",
     "@types/luxon": "latest",
     "@types/marked": "^4.0.3",
