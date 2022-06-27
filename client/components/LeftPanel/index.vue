@@ -75,12 +75,49 @@ const categories = ref<{ title: string, bg: string, color: string, active: boole
   },
   {
     title: 'categories.news',
-    bg: 'tw-bg-orange-100',
-    color: 'tw-text-orange',
+    bg: 'tw-bg-blue-100',
+    color: 'tw-text-blue',
     active: false
   },
 ])
-
+const messageItems = [ 
+  {
+    id: 1,
+    type:1
+  },
+  {
+    id: 2,
+    type:2
+  },
+  {
+    id: 3,
+    type:3
+  },
+  {
+    id: 4,
+    type:4
+  },
+  {
+    id: 5,
+    type:1
+  },
+   {
+    id: 6,
+    type:3
+  },
+   {
+    id: 7,
+    type:4
+  },
+   {
+    id: 8,
+    type:2
+  },
+   {
+    id: 9,
+    type:1
+  },
+]
 
 
 function loadMyMessages() {
@@ -109,6 +146,7 @@ async function load(query: Ref<MessageQuery>) {
   }
 }
 
+
 async function selectMessage(id: number) {
   try {
     bottomPanel.setLoading(true);
@@ -121,9 +159,6 @@ async function selectMessage(id: number) {
   } finally {
     bottomPanel.setLoading(false);
   }
-}
-function updateSearchItem(val) {
-  console.log(val)
 }
 loadMessages();
 loadMyMessages();
@@ -174,9 +209,9 @@ loadMyMessages();
           @click="category.active = !category.active"></span>
       </div>
       <div class="tw-overflow-y-auto tw-h-screen">
-        <div v-for="i in 12" :key="i">
+        <div v-for="item in messageItems" :key="item.id">
           <hr class="line">
-          <MessageItem id="1" dateTime="d" title="jkdhg" preview="dgh" origin="5" type="5"
+          <MessageItem id="1" dateTime="d" title="jkdhg" preview="dgh" origin="5" :type="item.type"
             flags="5" message="gdg" seenDate="g" style="height: 58.9px;"/>
         </div>
       </div>
@@ -228,7 +263,7 @@ loadMyMessages();
     }
 
     .line {
-      @apply tw-w-5/6 tw-border-y-gray-200 tw-mx-auto;
+      @apply tw-w-11/12 tw-border-y-gray-200 tw-mx-auto;
        border-top-width: .5px;
        margin-top: 5px;
     }
