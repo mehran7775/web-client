@@ -211,8 +211,8 @@ loadMyMessages();
       <div class="tw-overflow-y-auto tw-h-screen">
         <div v-for="item in messageItems" :key="item.id">
           <hr class="line">
-          <MessageItem :id="item.id" dateTime="d" title="jkdhg" preview="dgh" origin="5" :type="item.type"
-            flags="5" message="gdg" seenDate="g" style="height: 58.9px;"/>
+          <MessageItem :id="item.id" dateTime="d" title="jkdhg" preview="dgh" :origin="5" :type="item.type"
+            :flags="5" message="gdg" seenDate="g" style="height: 58.9px;"/>
         </div>
       </div>
     </ada-tabs>
