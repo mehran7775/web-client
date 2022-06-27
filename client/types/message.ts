@@ -39,7 +39,7 @@ export interface Message {
   origin: number;
   type: number;
   flags: number;
-  message: MessageTemplate;
+  message: string;
   seenDate: string;
 }
 
