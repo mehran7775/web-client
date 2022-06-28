@@ -8,7 +8,7 @@ import {
 } from "@/types";
 import { useSectors } from ".";
 
-const TabNames =[
+let TabNames =[
   {
     tab: Tabs.activeOrders,
     title: "bottom-panel.orders.all",

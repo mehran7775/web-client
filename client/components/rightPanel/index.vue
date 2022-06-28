@@ -61,7 +61,40 @@ const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
   }
   return res;
 });
-const items = getMenuItems(watchList);
+
+
+const secondWatchList = ref<MenuItem[]>([
+  {
+    bookmarkPosition: 1,
+    icon: "isax-eye",
+    text: "تابلوخوانی",
+    title: "تابلوخوانی",
+    to: "/watchList/تابلوخوانی"
+  },
+   {
+    bookmarkPosition: 1,
+    icon: "isax-eye",
+    text: "توصیفی",
+    title: "توصیفی",
+    to: "/watchList/توصیفی"
+  },
+   {
+    bookmarkPosition: 1,
+    icon: "isax-eye",
+    text: "تکنیکال",
+    title: "تکنیکال",
+    to: "/watchList/تکنیکال"
+  },
+   {
+    bookmarkPosition: 1,
+    icon: "isax-eye",
+    text: "بنیادی",
+    title: "بنیادی",
+    to: "/watchList/بنیادی"
+  },
+])
+
+const items = getMenuItems(watchList, secondWatchList);
 
 const drawer = computed({
   get() {

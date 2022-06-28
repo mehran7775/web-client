@@ -80,6 +80,7 @@ const categories = ref<{ title: string, bg: string, color: string, active: boole
     active: false
   },
 ])
+
 const messageItems = [ 
   {
     id: 1,
@@ -208,10 +209,10 @@ loadMyMessages();
           :class="[`${category.active ? category.bg + ' ' + category.color : ''}`]" v-text="$t(category.title)"
           @click="category.active = !category.active"></span>
       </div>
-      <div class="tw-overflow-y-auto tw-h-screen">
+      <div class="tw-overflow-y-auto tw-h-screen tw-pb-36">
         <div v-for="item in messageItems" :key="item.id">
           <hr class="line">
-          <MessageItem :id="item.id" dateTime="d" title="jkdhg" preview="dgh" :origin="5" :type="item.type"
+          <MessageItem :id="item.id" dateTime="d" title="فرآور" preview="dgh" :origin="5" :type="item.type"
             :flags="5" message="gdg" seenDate="g" style="height: 58.9px;"/>
         </div>
       </div>
