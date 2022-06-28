@@ -188,16 +188,16 @@ function close() {
     <div class="detail">
       <div class="contents">
         <ada-tabs v-model="active" name-key="$.title" class="tw-h-full" :class="{ expanded: expanded }">
-          <ada-tab name="bottom-panel.orders.all">
+          <ada-tab name="bottom-panel.orders.all" class="tw-overflow-y-auto">
             <default-order-list />
           </ada-tab>
-          <ada-tab name="bottom-panel.orders.drafts">
+          <ada-tab name="bottom-panel.orders.drafts" class="tw-overflow-y-auto">
             <default-order-list v-model="searchModels.draftOrders" />
           </ada-tab>
-          <ada-tab name="bottom-panel.orders.actives">
+          <ada-tab name="bottom-panel.orders.actives" class="tw-overflow-y-auto">
             <default-order-list v-model="searchModels.actives" />
           </ada-tab>
-          <ada-tab name="bottom-panel.orders.canceled">
+          <ada-tab name="bottom-panel.orders.canceled" class="tw-overflow-y-auto">
             <default-order-list v-model="searchModels.canceledOrders" />
           </ada-tab>
           <ada-tab name="bottom-panel.completeInfo">
