@@ -1,6 +1,5 @@
 
 <script lang="ts" setup>
-import { ref } from '#app';
 
 const props = withDefaults(
     defineProps<{

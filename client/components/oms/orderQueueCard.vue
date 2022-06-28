@@ -29,18 +29,24 @@ const change = computed(() => (price: number) => {
   }
   return 0;
 });
-const totalBuy = ref(0);
-const totalSell = ref(0);
+const totalBuy = computed(() => {
+  let tmp = 0;
+  queue.value.forEach((item) => {
+    tmp += item.buy.count * item.buy.amount;
+  });
+  return tmp;
+});
+const totalSell = computed(() => {
+  let tmp = 0;
+  queue.value.forEach((item) => {
+    tmp += item.sell.count * item.sell.amount;
+  });
+  return tmp;
+});
 const totalQueue = computed(() => totalBuy.value + totalSell.value);
 
-const queue = computed(() => {
-  const res = instrumentManager.getOrderQueue(props.inst);
-  res.forEach((item) => {
-    totalBuy.value += item.buy.count * item.buy.amount;
-    totalSell.value += item.sell.count * item.sell.amount;
-  });
-  return res;
-})
+//TODO Replace in vue 3
+const queue = ref<OrderQueueItem[]>(instrumentManager.getOrderQueue(props.inst));// computed(() => instrumentManager.getOrderQueue(props.inst));
 
 defineExpose({
   formatter,
@@ -112,7 +118,8 @@ defineExpose({
         {{ $t("oms.count") }}
       </div>
     </header>
-    <div class="queue col-border" v-for="(item, index) in queue" :key="index" dense>
+    <div class="queue col-border" v-for="(item, index) in queue"
+      :key="item.sell.price + '-' + item.buy.price + '-' + index">
       <double-bar-chart :left="totalSell ? (item.sell.count * item.sell.amount * 100) / totalSell : 0"
         :right="totalBuy ? (item.buy.count * item.buy.amount * 100) / totalBuy : 0" />
       <div class="copy-cursor field" @click="
