@@ -28,13 +28,6 @@ const drawer = computed({
     emit("input", value);
   },
 });
-watch(toggleMenu, (newVal, oldVal) => {
-  if (typeof newVal == 'undefined' || newVal == null) {
-    emit("update:mini", true);
-  } else {
-    emit("update:mini", false);
-  }
-})
 
 const loading = ref(false);
 const myMessages: Message[] = reactive([]);
@@ -81,45 +74,24 @@ const categories = ref<{ title: string, bg: string, color: string, active: boole
   },
 ])
 
-const messageItems = [ 
-  {
-    id: 1,
-    type:1
-  },
-  {
-    id: 2,
-    type:2
-  },
-  {
-    id: 3,
-    type:3
-  },
-  {
-    id: 4,
-    type:4
-  },
-  {
-    id: 5,
-    type:1
-  },
-   {
-    id: 6,
-    type:3
-  },
-   {
-    id: 7,
-    type:4
-  },
-   {
-    id: 8,
-    type:2
-  },
-   {
-    id: 9,
-    type:1
-  },
-]
 
+/////
+
+watch(toggleMenu, (newVal, oldVal) => {
+  if (typeof newVal == 'undefined' || newVal == null) {
+    emit("update:mini", true);
+  } else {
+    emit("update:mini", false);
+  }
+})
+
+
+
+
+
+
+
+//////////////////
 
 function loadMyMessages() {
   load(myMessageQuery).then((res) => {
@@ -148,21 +120,65 @@ async function load(query: Ref<MessageQuery>) {
 }
 
 
-async function selectMessage(id: number) {
-  try {
-    bottomPanel.setLoading(true);
-    // bottomPanel.setActiveTab(Tabs.furtherInfo);
-    const message: Message = (await messageManager.getMessage(id)).data;
-    bottomPanel.setMessage(message);
-    bottomPanel.setTitle({ tab: Tabs.furtherInfo, title: message.title, params: [] });
-  } catch {
-    //TODO Snack for error
-  } finally {
-    bottomPanel.setLoading(false);
+// async function selectMessage(id: number) {
+//   try {
+//     bottomPanel.setLoading(true);
+
+//     const message: Message = (await messageManager.getMessage(id)).data;
+//     bottomPanel.setMessage(message);
+//     bottomPanel.setTitle({ tab: Tabs.furtherInfo, title: message.title, params: [] });
+//   } catch {
+//     //TODO Snack for error
+//   } finally {
+//     bottomPanel.setLoading(false);
+//   }
+// }
+const trigger_show_message = async (message: any) => {
+  const tab = useBottomPanel()._titles.find(item => {
+    return item.title == getTitle(message.type)
+  })
+  if (tab) {
+    const res =useBottomPanel()._titles.filter(item => {
+      return item.title != tab.title
+    })
+    useBottomPanel()._titles = res
+  }
+  const item = {
+    title: getTitle(message.type),
+    body: message.message,
+    params: [],
+    children: [
+      {
+        title: getTitle(message.type),
+        title2: message.title,
+        params: [],
+      },
+
+    ],
+    default: `${getTitle(message.type)}`,
+    deleteAble: true
+  }
+  useBottomPanel()._titles.push(item)
+  useBottomPanel()._activeTab = item
+
+}
+
+const getTitle = (type: number) => {
+  if (type === 1) {
+    return 'categories.marketModerator'
+  } else if (type === 4) {
+    return 'categories.tedan'
+  } else if (type === 5) {
+    return 'categories.codal'
+  } else {
+    return 'categories.news'
   }
 }
+
 loadMessages();
 loadMyMessages();
+
+
 </script>
 
 <template>
@@ -209,16 +225,16 @@ loadMyMessages();
           :class="[`${category.active ? category.bg + ' ' + category.color : ''}`]" v-text="$t(category.title)"
           @click="category.active = !category.active"></span>
       </div>
-      <div class="tw-overflow-y-auto tw-h-screen tw-pb-36">
-        <div v-for="item in messageItems" :key="item.id">
+      <div id="messages">
+        <div v-for="message in  toggleMenu == 'general.all' ? messages : myMessages" :key="message.id">
           <hr class="line">
-          <MessageItem :id="item.id" dateTime="d" title="فرآور" preview="dgh" :origin="5" :type="item.type"
-            :flags="5" message="gdg" seenDate="g" style="height: 58.9px;"/>
+          <MessageItem :id="message.id" :dateTime="message.dateTime" :title="message.title" :preview="message.preview"
+            :origin="message.origin" :type="message.type" :flags="message.flags" :message="message.message.body"
+            :seenDate="message.seenDate" style="height: 58.9px;" @click="trigger_show_message" />
         </div>
       </div>
     </ada-tabs>
   </ada-nav>
-
 </template>
 
 
@@ -265,15 +281,16 @@ loadMyMessages();
 
     .line {
       @apply tw-w-11/12 tw-border-y-gray-200 tw-mx-auto;
-       border-top-width: .5px;
-       margin-top: 5px;
+      border-top-width: .5px;
+      margin-top: 5px;
     }
 
-    /* .tab {
-      @apply tw-flex tw-flex-col tw-flex-grow;
-      flex-basis: 32px;
-      overflow-y: auto;
-    } */
+    #messages {
+      @apply tw-overflow-x-hidden tw-overflow-y-auto tw-border-b-orange-300;
+      height: calc(100vh - 109px);
+    }
+
+
   }
 }
 </style>

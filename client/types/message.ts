@@ -31,16 +31,22 @@ export class MessageTag {
   }
 }
 
+enum types {
+  rlc = 1,
+  tedan = 4,
+  codal = 5,
+}
+
 export interface Message {
-  id: number;
-  dateTime: string | null;
-  title: string;
-  preview: string;
-  origin: number;
-  type: number;
-  flags: number;
-  message: string;
-  seenDate: string;
+  id: number,
+  dateTime: string | null,
+  title: string,
+  preview: string,
+  origin: number,
+  type: types,
+  flags: number,
+  message: string,
+  seenDate: string
 }
 
 export interface MessageTemplate {

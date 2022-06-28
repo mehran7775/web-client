@@ -48,9 +48,12 @@ export enum Tabs {
 export interface TabItem {
   tab?: Tabs;
   title: string;
+  title2?: string;
   params: Array<any>;
   children?: Array<TabItem>;
   default?: string;
+  body?: string
+  deleteAble?: boolean
 }
 
 export const defaultItem = { title: "", params: [] };
