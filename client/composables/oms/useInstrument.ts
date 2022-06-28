@@ -1,4 +1,4 @@
-import { computed, ref } from "#app";
+import { computed, reactive, ref } from "#app";
 import { defineStore } from "pinia";
 import { InstrumentState } from "@/types/stores";
 import {
@@ -20,7 +20,7 @@ import { object } from "yup";
 export const useInstrument = defineStore("instrument", () => {
   const state = ref<InstrumentState>({
     cache: new Map<string, InstrumentCache>(),
-    focus: [],
+    focus: reactive([]),
     focusViewMode: 0,
     selected: null,
     orderQueueCache: {},
@@ -191,13 +191,13 @@ export const useInstrument = defineStore("instrument", () => {
     let queue = state.value.orderQueueCache[inst.instrumentCode];
     if (queue) return queue;
     else {
-      state.value.orderQueueCache[inst.instrumentCode] = [
+      state.value.orderQueueCache[inst.instrumentCode] =reactive([
         new OrderQueueItem(),
         new OrderQueueItem(),
         new OrderQueueItem(),
         new OrderQueueItem(),
         new OrderQueueItem(),
-      ];
+      ]);
       manager.getOrderQueue(inst.id, axios).then((resp) => {
         if (resp.data.queue)
           state.value.orderQueueCache[inst.instrumentCode].splice(
