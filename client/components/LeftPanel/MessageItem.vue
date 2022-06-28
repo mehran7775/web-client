@@ -10,7 +10,7 @@
             <div class="tw-mr-2 tw-pt-3 tw-w-5/6">
                 <div class="tw-flex tw-items-center tw-justify-between">
                     <h4 class="tw-text-primary tw-text-lg" v-text="title"></h4>
-                    <span v-text="date"></span>
+                    <span v-text="date()"></span>
                 </div>
                 <p class="tw-mt-[5px] tw-text-sm" v-text="message"></p>
             </div>
@@ -19,8 +19,6 @@
 </template>
 
 <script lang="ts" setup>
-import getDate from '@/composables/getDate';
-import { toRaw } from '#app';
 import { useAsrTrader } from "~/composables";
 import { Message } from '~/types/message';
 
@@ -52,7 +50,9 @@ const emits = defineEmits(['click'])
 
 const appManager = useAsrTrader();
 const locale = appManager.locale;
-const date = getDate(props.dateTime!.split('T')[0], locale)
+const date = () => {
+    return new Date(props.dateTime!.split('T')[0]).toLocaleDateString(locale)
+}
 
 
 //////
