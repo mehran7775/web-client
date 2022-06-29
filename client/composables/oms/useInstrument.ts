@@ -40,8 +40,18 @@ export const useInstrument = defineStore("instrument", () => {
         state.value.clientDistributionCache[data.obj.tid] = data.obj.legalReal;
       }
       if (data.obj.price) {
+        inst.last = data.obj.price.last;
+        inst.opening = data.obj.price.opening;
+        inst.closing = data.obj.price.closing;
+        inst.lowest = data.obj.price.lowest;
+        inst.highest = data.obj.price.highest;
+        inst.yesterdayPrice = data.obj.price.yesterdayPrice;
       }
       if (data.obj.market) {
+        console.log(data.obj.market);
+        inst.totalShares = data.obj.market.totalShares;
+        inst.totalTrades = data.obj.market.totalTrades;
+        inst.totalTradesValue = data.obj.market.totalTradesValue;
       }
     }
     if (data.obj.queue) {
