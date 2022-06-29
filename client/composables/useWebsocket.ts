@@ -37,7 +37,7 @@ export const useWebSocket = defineStore("webSocket", () => {
 
   function addInstrumentToWatch(instrument: InstrumentCache | Instrument) {
     watch_list.push({
-      id: instrument.instrumentCode,
+      id: instrument.instrumentId,
       name: instrument.name,
       tid: instrument.id,
     });
