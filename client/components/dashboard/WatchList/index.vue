@@ -96,8 +96,8 @@ function order(item: InstrumentCache, side: Side) {
   instrumentManager.setFocusMode(0);
 }
 function focus(item: InstrumentCache) {
-  instrumentManager.addFocus(item);
   instrumentManager.select(item);
+  instrumentManager.addFocus(item);
 }
 async function getData(val: InstrumentSearchModel) {
   if (val) {

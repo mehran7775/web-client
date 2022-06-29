@@ -79,11 +79,11 @@ if (process.client) {
 }
 
 .bookmark {
-  @apply tw-mx-[4px] tw-px-[4px];
-  position: relative;
-  width: 75px;
-  min-width: 75px;
-  max-width: 75px;
+  @apply tw-mx-[4px] tw-px-[4px]  tw-rounded-md tw-bg-primary-100 tw-w-[110px] tw-h-[28px] tw-text-primary;
+  @apply tw-flex tw-items-center tw-justify-between tw-text-ellipsis tw-overflow-hidden tw-whitespace-nowrap;
+  &.nuxt-link-exact-active{
+    @apply tw-border tw-border-primary;
+  }
 
   >.label {
     font-size: 0.8334rem;
@@ -137,21 +137,10 @@ if (process.client) {
   <div class="tw-m-0 tw-p-0">
     <header ref="toolbar" class="toolbar">
       <slot name="toolbar"> </slot>
-      <ada-tooltip v-for="b in bookmarks" :key="b.to" position="under">
-        <template #activator>
-          <ada-btn dark color="primary" :to="b.to" :height="28" class="bookmark">
-            <ada-btn @click.stop.prevent="() => unmark(b)" :width="14" :height="14" class="removeMark pa-0 ma-0"
-              color="error">
-              <ada-icon class="tw-p-0 tw-m-0" :size="12">mdi-close</ada-icon>
-            </ada-btn>
-            <span class="label">
-              <ada-icon v-if="b.icon" :size="12"> {{ b.icon }} </ada-icon>
-              {{ b.text ? b.text : $t(b.title) }}
-            </span>
-          </ada-btn>
-        </template>
-        {{ b.text ? b.text : $t(b.title) }}
-      </ada-tooltip>
+      <nuxt-link v-for="b in bookmarks" :key="b.to" :to="b.to" class="bookmark">
+        <span v-text="b.text ? b.text : $t(b.title)"></span>
+        <ada-icon :size="14" class="tw-w-8 tw-h-full" @click="unmark(b)">mdi-close</ada-icon>
+      </nuxt-link>
       <ada-spacer />
       <ada-toggle class="mode tw-justify-end" color="primary" v-model="viewMode">
         <ada-btn :height="28" :width="28" :model="0">

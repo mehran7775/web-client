@@ -6,17 +6,15 @@ import DefaultOrderList from "./defaultOrderList.vue";
 import DateInfo from "./DateInfo.vue";
 import CompleteInfo from "./CompleteInfo.vue";
 import StatisticsKeys from "./StatisticsKeys.vue"
-import { useBottomPanel } from "~/composables";
+import { useBottomPanel, useInstrument } from "~/composables";
 import AdaToggle from "@/components/adaToggle.vue";
 import AdaBtn from "@/components/adaBtn.vue";
 import AdaTabs from "@/components/adaTabs/index.vue"
 import AdaTab from "@/components/adaTabs/adaTab.vue"
 
 
+////
 
-const bottomPanel = useBottomPanel();
-const active: Ref<TabItem> = ref(defaultItem)
-const tabs = computed(() => bottomPanel.tabs);
 const props = withDefaults(
   defineProps<{
     slideToBottom: boolean
@@ -25,6 +23,26 @@ const props = withDefaults(
     slideToBottom: false
   }
 );
+
+
+
+////////
+
+const bottomPanel = useBottomPanel();
+const active: Ref<TabItem> = ref(defaultItem)
+const tabs = computed(() => bottomPanel.tabs);
+const searchModels = {
+  draftOrders: new OrderSearchModel(0, 10, OrderFlags.Draft),
+  actives: new OrderSearchModel(0, 10, OrderFlags.Confirmed | OrderFlags.PreOpening | OrderFlags.Created | OrderFlags.Sent),
+  canceledOrders: new OrderSearchModel(0, 10, OrderFlags.Cancelled),
+}
+const instrument = useInstrument()
+
+
+
+
+///////
+
 const tab = computed({
   get(): TabItem {
     return bottomPanel.activeTab ?? defaultItem;
@@ -42,17 +60,23 @@ const tab = computed({
     }
   },
 });
-const searchModels = {
-  draftOrders: new OrderSearchModel(0, 10, OrderFlags.Draft),
-  actives: new OrderSearchModel(0, 10, OrderFlags.Confirmed | OrderFlags.PreOpening | OrderFlags.Created | OrderFlags.Sent),
-  canceledOrders: new OrderSearchModel(0, 10, OrderFlags.Cancelled),
-}
-
 const expanded = computed(() => bottomPanel.expanded);
 const showLoading = computed(() => bottomPanel.loading);
 const headers: ComputedRef<TabItem[]> = computed(() =>
   typeof tab.value?.children != 'undefined' ? tab.value.children : [{ title: '', params: [] }]);
 
+
+
+
+
+//////////////
+
+// watch(instrument.state, (val)=> {
+//   console.log(val.selected)
+// },{deep: true})
+
+
+////////////////////
 
 function expand() {
   bottomPanel.toggleExpand();
@@ -234,6 +258,7 @@ function close() {
         <ada-toggle v-model="active" class="tabs">
           <ada-btn :height="32" class="tab" v-for="(t, i) in headers" :key="t.title" :model="t">
             {{ $t(t.title) }}<span v-if="t.title2" v-text="`-${t.title2}`"></span>
+             <span v-text="useInstrument().state.selected ? '-' + useInstrument().state.selected.name: ''"></span>
             <bar v-if="i != headers.length - 1" />
           </ada-btn>
         </ada-toggle>
@@ -250,7 +275,10 @@ function close() {
     </div>
     <ada-toggle class="tabs" v-model="tab">
       <ada-btn class="tab" v-for="(t, i) in tabs" :key="t.title" :model="t">
-        <span v-text="$t(t.title)" :class="{ 'active': tab.title == t.title }"></span>
+        <span :class="{ 'active': tab.title == t.title }">
+          {{$t(t.title) }}
+          <span v-text="useInstrument().state.selected ? '-' + useInstrument().state.selected.name: ''"></span>
+        </span>
         <bar v-if="i != tabs.length - 1" />
       </ada-btn>
     </ada-toggle>

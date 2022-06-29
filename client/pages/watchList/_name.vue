@@ -15,7 +15,6 @@ const loadingRef = ref(false);
 const name = route.params.name ?? "new";
 const watchlists = userManager.watchList;
 
-
 const edited = computed(
   () =>
     userManager.settingsChanged.findIndex(
@@ -73,8 +72,8 @@ defineExpose({
       <v-col class="ma-0 pa-0">
         <focus-board>
           <template #toolbar>
-            <watchlist-selector style="max-width: 164px" auto-route />
-            <instrument-search class="ms-1" style="max-width: 164px" focus-result />
+            <watchlist-selector auto-route class="tw-mt-0 tw tw-max-w-[164px]"/>
+            <instrument-search class="tw-mt-0 tw-mr-2 tw-max-w-[164px]" focus-result/>
             <ada-btn dark v-if="edited" @click="apply" color="success" class="tw-m-0 tw-mx-1 tw-p-0 tw-text-sm"
               :height="28" :width="56">
               {{ $t("general.apply") }}
