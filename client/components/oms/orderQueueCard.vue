@@ -47,6 +47,10 @@ const totalQueue = computed(() => totalBuy.value + totalSell.value);
 
 //TODO Replace in vue 3
 const queue = ref<OrderQueueItem[]>(instrumentManager.getOrderQueue(props.inst));// computed(() => instrumentManager.getOrderQueue(props.inst));
+setInterval(() => {
+  queue.value = instrumentManager.getOrderQueue(props.inst)
+}, 700)
+
 
 defineExpose({
   formatter,

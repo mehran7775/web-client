@@ -1,4 +1,4 @@
-import { computed, reactive, ref } from "#app";
+import { computed, reactive, ref, Ref } from "#app";
 import { defineStore } from "pinia";
 import { InstrumentState } from "@/types/stores";
 import {
@@ -24,7 +24,7 @@ export const useInstrument = defineStore("instrument", () => {
     focusViewMode: 0,
     selected: null,
     orderQueueCache: {},
-    clientDistributionCache: new Map<string, ClientDistribution>(),
+    clientDistributionCache: {},
     width: process.client ? window.screen.availWidth : 800,
   });
   const axiosManager = useAxios();
@@ -33,11 +33,11 @@ export const useInstrument = defineStore("instrument", () => {
   const websocket = useWebSocket();
 
   websocket.registerHandler("TSE_UPDATE", (data) => {
-    const inst = state.value.cache.get(data.obj.tid);
+    const inst = state.value.cache.get(data.obj.tid.toString());
     if (inst) {
-      console.log(inst.name);
       inst.lastTradeDate = data.obj.lastTradeDate;
       if (data.obj.legalReal) {
+        state.value.clientDistributionCache[data.obj.tid] = data.obj.legalReal;
       }
       if (data.obj.price) {
       }
@@ -220,13 +220,17 @@ export const useInstrument = defineStore("instrument", () => {
     }
     return state.value.orderQueueCache[inst.instrumentCode];
   }
-  async function getClientDistribution(
-    id: number
-  ): Promise<ClientDistribution> {
-    let clients = state.value.clientDistributionCache.get(id.toString());
+  function getClientDistribution(id: number): ClientDistribution {
+    let clients = state.value.clientDistributionCache[id.toString()];
     if (clients) return clients;
-    const { data } = await manager.getClientDistribution(id, axios);
-    return data.clients;
+    else {
+      state.value.clientDistributionCache[id.toString()] =
+        new ClientDistribution();
+      manager.getClientDistribution(id, axios).then((resp) => {
+        state.value.clientDistributionCache[id.toString()] = resp.data.clients;
+      });
+    }
+    return state.value.clientDistributionCache[id.toString()];
   }
   async function getTeammates(
     searchModel: SameSectorQuery

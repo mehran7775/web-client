@@ -1,5 +1,5 @@
 import { User, AnonymousUser, InstrumentCache } from "@/types/";
-import { reactive } from "#app";
+import { reactive, Ref, ref } from "#app";
 import { KeyValuePairs } from "../collection";
 import { ClientDistribution, OrderQueueItem } from "../wealth";
 
@@ -52,7 +52,7 @@ export interface InstrumentState {
   focusViewMode: number;
   selected: InstrumentCache | null;
   orderQueueCache: { [key: string]: Array<OrderQueueItem> };
-  clientDistributionCache: Map<string, ClientDistribution>;
+  clientDistributionCache: { [key: string]: ClientDistribution };
   width: number;
 }
 
