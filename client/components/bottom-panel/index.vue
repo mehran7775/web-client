@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, Ref, computed, ComputedRef } from "#app";
+import { ref, Ref, computed, ComputedRef, watch } from "#app";
 import { OrderFlags, OrderSearchModel, TabItem, defaultItem } from "@/types";
 import furtherInformation from "./furtherInformation/index.vue";
 import DefaultOrderList from "./defaultOrderList.vue";
@@ -53,11 +53,18 @@ const showLoading = computed(() => bottomPanel.loading);
 const headers: ComputedRef<TabItem[]> = computed(() =>
   typeof tab.value?.children != 'undefined' ? tab.value.children : [{ title: '', params: [] }]);
 
+
 function expand() {
   bottomPanel.toggleExpand();
 }
 function close() {
   if (expanded.value) bottomPanel.toggleExpand();
+  if (useBottomPanel()._activeTab?.deleteAble) {
+    const res = useBottomPanel()._titles.filter(item => {
+      return item.title !== active.value.title
+    })
+    useBottomPanel()._titles = res
+  }
   bottomPanel.setActiveTab(null);
 }
 </script>
@@ -105,7 +112,7 @@ function close() {
 
     >.header {
       @apply tw-flex tw-flex-grow tw-w-full;
-      
+
       position: absolute;
       top: 0;
       left: 0;
@@ -142,6 +149,10 @@ function close() {
       @apply tw-mt-[32px];
       overflow-y: auto;
       height: calc(100% - 32px);
+
+      p {
+        @apply tw-p-5 tw-break-words tw-whitespace-normal tw-font-normal tw-overflow-auto;
+      }
     }
   }
 
@@ -170,6 +181,7 @@ function close() {
 
     }
   }
+
   .active {
     color: var(--c-blue-rgb);
   }
@@ -188,16 +200,16 @@ function close() {
     <div class="detail">
       <div class="contents">
         <ada-tabs v-model="active" name-key="$.title" class="tw-h-full" :class="{ expanded: expanded }">
-          <ada-tab name="bottom-panel.orders.all">
+          <ada-tab name="bottom-panel.orders.all" class="tw-overflow-y-auto">
             <default-order-list />
           </ada-tab>
-          <ada-tab name="bottom-panel.orders.drafts">
+          <ada-tab name="bottom-panel.orders.drafts" class="tw-overflow-y-auto">
             <default-order-list v-model="searchModels.draftOrders" />
           </ada-tab>
-          <ada-tab name="bottom-panel.orders.actives">
+          <ada-tab name="bottom-panel.orders.actives" class="tw-overflow-y-auto">
             <default-order-list v-model="searchModels.actives" />
           </ada-tab>
-          <ada-tab name="bottom-panel.orders.canceled">
+          <ada-tab name="bottom-panel.orders.canceled" class="tw-overflow-y-auto">
             <default-order-list v-model="searchModels.canceledOrders" />
           </ada-tab>
           <ada-tab name="bottom-panel.completeInfo">
@@ -212,13 +224,16 @@ function close() {
           <ada-tab name="bottom-panel.statisticsKeys">
             <statistics-keys />
           </ada-tab>
+          <ada-tab v-if="useBottomPanel()._activeTab" :name="active.title">
+            <p v-text="useBottomPanel()._activeTab.body"></p>
+          </ada-tab>
         </ada-tabs>
         <loading :loading="showLoading" />
       </div>
       <header class="header" v-show="tab.title != ''">
         <ada-toggle v-model="active" class="tabs">
           <ada-btn :height="32" class="tab" v-for="(t, i) in headers" :key="t.title" :model="t">
-            {{ $t(t.title) }}
+            {{ $t(t.title) }}<span v-if="t.title2" v-text="`-${t.title2}`"></span>
             <bar v-if="i != headers.length - 1" />
           </ada-btn>
         </ada-toggle>
@@ -235,7 +250,7 @@ function close() {
     </div>
     <ada-toggle class="tabs" v-model="tab">
       <ada-btn class="tab" v-for="(t, i) in tabs" :key="t.title" :model="t">
-          <span v-text="$t(t.title)" :class="{ 'active' : tab.title == t.title}"></span>
+        <span v-text="$t(t.title)" :class="{ 'active': tab.title == t.title }"></span>
         <bar v-if="i != tabs.length - 1" />
       </ada-btn>
     </ada-toggle>
