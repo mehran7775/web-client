@@ -28,7 +28,7 @@ function refresh() {
       newName: k,
       text: k,
       id: k,
-      to: "/watchList/" + k,
+      to: "/watchList/" + decodeURIComponent(k),
     });
   });
   selected.value = watchList.find((item) => item.id == route.params.name) ?? watchList[0];
@@ -64,7 +64,7 @@ async function rename(item: any) {
 }
 
 function select(val: any) {
-  if (props.autoRoute) router.push(encodeURIComponent(val.to));
+  if (props.autoRoute) router.push(val.to);
 }
 refresh();
 function drag(ev: DragEvent) { }

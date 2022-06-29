@@ -138,7 +138,7 @@ if (process.client) {
     <header ref="toolbar" class="toolbar">
       <slot name="toolbar"> </slot>
       <span v-if="bookmarks.length > 0" class="tw-h-7 tw-border-r-2 tw-rounded-md tw-border-primary-200 tw-mr-3 tw-ml-2"></span>
-      <nuxt-link v-for="b in bookmarks" :key="b.to" :to="encodeURIComponent(b.to)" class="bookmark">
+      <nuxt-link v-for="b in bookmarks" :key="b.to" :to="b.to" class="bookmark">
         <span v-text="b.text ? b.text : $t(b.title)"></span>
         <ada-icon :size="14" class="tw-w-8 tw-h-full" @click="unmark(b)">mdi-close</ada-icon>
       </nuxt-link>
