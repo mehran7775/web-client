@@ -16,6 +16,7 @@ export default defineComponent({
   setup() {
     const userManager = useUser();
     const instrumentManager = useInstrument();
+
     const axios = useAxios().createInstance();
     const route = useRoute();
     const model = ref(null);
@@ -30,7 +31,7 @@ export default defineComponent({
         loading.value = true;
         entries.splice(0, entries.length);
         try {
-          const res = await autoComplete(new AutoCompleteSearchModel(value), axios);
+          const res = await autoComplete(new AutoCompleteSearchModel(value, 0, 7), axios);
           entries.push(
             ...res.data.data.map((item) => ({
               name: item.name,
@@ -46,7 +47,7 @@ export default defineComponent({
         }
       }
     }
-    async function select(val: InstrumentCache) {
+    async function select(val: AutoCompleteItem) {
       const name = route.params.name;
       loading.value = true;
       if (

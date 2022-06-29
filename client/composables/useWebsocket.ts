@@ -5,7 +5,7 @@ import { Instrument, InstrumentCache, ISharedObject } from "@/types";
 
 export const useWebSocket = defineStore("webSocket", () => {
   let connection: WebSocket | null = null;
-  const watch_list: { id: string; name: string }[] = [];
+  const watch_list: { id: string; name: string; tid: number }[] = [];
   const handlers: { [key: string]: (obj: ISharedObject) => any } = {};
 
   const toSend: Array<any> = [];
@@ -36,10 +36,16 @@ export const useWebSocket = defineStore("webSocket", () => {
   }
 
   function addInstrumentToWatch(instrument: InstrumentCache | Instrument) {
-    watch_list.push({ id: instrument.instrumentId, name: instrument.name });
+    watch_list.push({
+      id: instrument.instrumentCode,
+      name: instrument.name,
+      tid: instrument.id,
+    });
   }
 
-  function watchInstruments(list: { id: string; name: string }[] | null) {
+  function watchInstruments(
+    list: { id: string; name: string; tid: number }[] | null
+  ) {
     send({
       typ: "TSE_WATCHER",
       time: 0,

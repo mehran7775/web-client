@@ -33,6 +33,17 @@ export const useInstrument = defineStore("instrument", () => {
   const websocket = useWebSocket();
 
   websocket.registerHandler("TSE_UPDATE", (data) => {
+    const inst = state.value.cache.get(data.obj.tid);
+    if (inst) {
+      console.log(inst.name);
+      inst.lastTradeDate = data.obj.lastTradeDate;
+      if (data.obj.legalReal) {
+      }
+      if (data.obj.price) {
+      }
+      if (data.obj.market) {
+      }
+    }
     if (data.obj.queue) {
       if (state.value.orderQueueCache[data.obj.id]) {
         state.value.orderQueueCache[data.obj.id].splice(
@@ -191,7 +202,7 @@ export const useInstrument = defineStore("instrument", () => {
     let queue = state.value.orderQueueCache[inst.instrumentCode];
     if (queue) return queue;
     else {
-      state.value.orderQueueCache[inst.instrumentCode] =reactive([
+      state.value.orderQueueCache[inst.instrumentCode] = reactive([
         new OrderQueueItem(),
         new OrderQueueItem(),
         new OrderQueueItem(),
