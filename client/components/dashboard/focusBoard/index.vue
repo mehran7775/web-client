@@ -81,7 +81,7 @@ if (process.client) {
 .bookmark {
   @apply tw-mx-[4px] tw-px-[4px]  tw-rounded-md tw-bg-primary-100 tw-w-[110px] tw-h-[28px] tw-text-primary;
   @apply tw-flex tw-items-center tw-justify-between tw-text-ellipsis tw-overflow-hidden tw-whitespace-nowrap;
-  &.nuxt-link-exact-active{
+  &.nuxt-link-exact-active, &.nuxt-link-active{
     @apply tw-border tw-border-primary;
   }
 
@@ -137,7 +137,8 @@ if (process.client) {
   <div class="tw-m-0 tw-p-0">
     <header ref="toolbar" class="toolbar">
       <slot name="toolbar"> </slot>
-      <nuxt-link v-for="b in bookmarks" :key="b.to" :to="b.to" class="bookmark">
+      <span v-if="bookmarks.length > 0" class="tw-h-7 tw-border-r-2 tw-rounded-md tw-border-primary-200 tw-mr-3 tw-ml-2"></span>
+      <nuxt-link v-for="b in bookmarks" :key="b.to" :to="encodeURIComponent(b.to)" class="bookmark">
         <span v-text="b.text ? b.text : $t(b.title)"></span>
         <ada-icon :size="14" class="tw-w-8 tw-h-full" @click="unmark(b)">mdi-close</ada-icon>
       </nuxt-link>

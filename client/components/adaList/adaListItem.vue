@@ -105,7 +105,7 @@ function toggleGroup() {
     ]">
         <slot>
             <component @click="() => value.children ? toggleGroup() : null" :is="value.to ? 'router-link' : 'span'"
-                :to="value.to" v-ada-ripple.self class="ada-title">
+                :to="encodeURIComponent(value.to)" v-ada-ripple.self class="ada-title">
                 <slot name="item" :value="value"></slot>
                 <ada-icon class="arrow-control" v-if="value.children">
                     isax-arrow-down

@@ -64,7 +64,7 @@ async function rename(item: any) {
 }
 
 function select(val: any) {
-  if (props.autoRoute) router.push(val.to);
+  if (props.autoRoute) router.push(encodeURIComponent(val.to));
 }
 refresh();
 function drag(ev: DragEvent) { }
