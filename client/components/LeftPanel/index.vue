@@ -34,11 +34,11 @@ const myMessages: Message[] = reactive([]);
 const messages: Message[] = reactive([]);
 
 const myMessageQuery: Ref<MessageQuery> = ref(
-  new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00"))
+  new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00", null))
 );
 
 const messageQuery: Ref<MessageQuery> = ref(
-  new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00"))
+  new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00", null))
 );
 
 const items = [

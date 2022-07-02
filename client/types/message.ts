@@ -16,9 +16,11 @@ export class MessageFilter {
   //TODO Change name to from
   dateTime: string | null;
   tags: MessageTag[];
-  constructor(tags: MessageTag[], dateTime: string | null = null) {
+  title: string | null;
+  constructor(tags: MessageTag[], dateTime: string | null = null, title: string | null = null) {
     this.tags = tags;
     this.dateTime = dateTime;
+    this.title = title;
   }
 }
 
