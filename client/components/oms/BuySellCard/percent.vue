@@ -38,7 +38,8 @@ const result = computed(() => {
   else return val.value;
 });
 
-const val = ref(props.value);
+const val = ref(100);
+const beforeTriggerRange = ref(true)
 
 watch(
   () => props.value,
@@ -47,6 +48,7 @@ watch(
   }
 );
 function setValue(update: number | string) {
+  beforeTriggerRange.value = false
   if (typeof update == "string") update = parseInt(update);
   val.value = update > props.max ? props.max : update < props.min ? props.min : update;
   emit("input", val.value);
@@ -61,11 +63,11 @@ function toPercent(value: number) {
   <div class="percent-container">
     <RangeSlider :min="min" :max="max" :value="val" @input="setValue" />
     <TextInput
-      class="tw-flex-grow tw-h-[24px]"
+      class="tw-flex-grow tw-h-[24px] tw-w-1/2 tw-ml-[13px]"
       dir="rtl"
       type="number"
       :label="label"
-      :value="result"
+      :value="beforeTriggerRange ? total : result"
       @input="toPercent"
       :min="minCount"
       :max="maxCount"
@@ -75,7 +77,7 @@ function toPercent(value: number) {
 
 <style scoped lang="postcss">
 .percent-container {
-  @apply tw-grid tw-gap-8 tw-grid-cols-2;
+  @apply tw-justify-between;
   direction: ltr;
   .percent {
     @apply tw-relative;

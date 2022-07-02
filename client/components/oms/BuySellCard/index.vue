@@ -7,10 +7,9 @@ import credit from "@/components/wealth/validity/index.vue";
 import percent from "./percent.vue";
 import { object, number, AnyObjectSchema } from "yup";
 import TextInput from "@/components/textInput.vue";
-import ShowPercent from "./showPercent.vue";
 import AdaBtn from "@/components/adaBtn.vue";
 import { getWage } from "@/repositories/wealth/wealth_manager";
-import { reactive } from "@vue/reactivity";
+import { nextTick } from "process";
 
 const props = defineProps<{
   count: number;
@@ -67,7 +66,7 @@ const tab = computed({
   set(value: string) {
     if (active.value)
       orderManager.setSide(
-        value == "2" ? Side.Sell : Side.Buy,
+        trigger_tab(value),
         active.value.id.toString()
       );
   },
@@ -75,10 +74,6 @@ const tab = computed({
 
 onMounted(()=> {
   document.getElementById("buyCountInputText")!.focus()
-  // var value = active.value.id.toString();
-  // value == "1" ? 
-  // document.getElementById("buyCountInputText")!.focus() : 
-  // document.getElementById("sellCountInputText")!.focus()
 })
 
 
@@ -119,11 +114,29 @@ function togglePriceLock() {
   priceLock.value = !priceLock.value;
 }
 
+function trigger_tab(value: string | number) {
+  if(value == "2"){
+    setTimeout(() => {
+      document.getElementById("sellCountInputText")!.focus()
+    },500)
+    // nextTick(()=> {
+    //  document.getElementById("sellCountInputText")!.focus()
+    // })
+    return Side.Sell
+  }else {
+      setTimeout(() => {
+      document.getElementById("buyCountInputText")!.focus()
+    },500)
+    return Side.Buy
+  }
+}
+
 instrumentManager
   .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
   .then((data: Array<InstrumentCache>) => {
+    console.log(data)
     active.value = data[0];
-    countVal.value = active.value.minQuantityPerOrder;
+    countVal.value = 0;
     priceVal.value = active.value.minAllowedPrice;
     buyForm.value = object({
       quantity: number()
@@ -151,6 +164,7 @@ instrumentManager
       }
     );
   });
+
 </script>
 
 <style lang="postcss" scoped>
@@ -340,11 +354,11 @@ instrumentManager
           </div>
           <div class="tw-justify-between tw-col-span-2">
             <percent v-model="order.discloseQuantity" :label="$t('oms.view-count')" height="31px"
-              class="tw-flex tw-flex-grow tw-h-[24px] inputColor" :min="30" :total="countVal" :value="100">
+              class="tw-flex tw-flex-grow tw-h-[24px] inputColor" :min="30" :max="100" :total="countVal" :value="100">
             </percent>
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100">
+            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100" value="0">
             </text-input>
             <bar />
           </div>
