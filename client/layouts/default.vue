@@ -102,6 +102,11 @@ const rtl = computed(() => appManager.rtl);
   .summary {
     @apply tw-flex;
     align-self: center;
+
+    .badge-content {
+      min-width: 60px;
+      @apply tw-mr-1;
+    }
   }
 
   .cw {
@@ -217,10 +222,10 @@ const rtl = computed(() => appManager.rtl);
       <clock :format="$t('general.date.longdt')" width="240px" />
       <div class="center tw-flex">
         <ada-badge class="tw-mx-5" color="green">
-          <span v-text="$t('oms.bourseIndex')" class="tw-text-primary"></span>: <span class="tw-text-sm tw-mr-1">{{ formatter.format(151371577) }}</span>
+          <span v-text="$t('oms.bourseIndex')" class="tw-text-primary"></span>: <span class="tw-text-sm badge-content">{{ formatter.format(151371577) }}</span>
         </ada-badge>
         <ada-badge color="orange">
-          <span v-text="$t('oms.superBourseIndex')" class="tw-text-primary"></span>: <span class="tw-text-sm tw-mr-1">{{ formatter.format(20411.30) }}</span>
+          <span v-text="$t('oms.superBourseIndex')" class="tw-text-primary"></span>: <span class="tw-text-sm badge-content">{{ formatter.format(20411.30) }}</span>
         </ada-badge>
       </div>
       <ada-spacer />
@@ -248,21 +253,21 @@ const rtl = computed(() => appManager.rtl);
         <div class="summary center" >
           <ada-badge color="green" class="tw-ml-3">{{ $t("accounting.account.amount")
           }}
-          
-          ۲٬۰۰۰٬۰۰۰
+          <span class="badge-content"> ۲٬۰۰۰٬۰۰۰</span>
           </ada-badge>
           <ada-badge color="red" class="tw-ml-3">{{
               $t("accounting.account.blockedAmount")
-          }}0</ada-badge>
+          }}<span class="badge-content">0</span></ada-badge>
           <ada-badge color="orange" class="tw-ml-3">
-            {{ $t("accounting.account.onlineBlockedAmount") }}0
+            {{ $t("accounting.account.onlineBlockedAmount") }}
+            <span class="badge-content">0</span>
           </ada-badge>
           <ada-badge color="blue" class="tw-ml-3">{{
               $t("accounting.account.remaining")
-          }}0</ada-badge>
+          }}<span class="badge-content">0</span></ada-badge>
           <ada-badge color="skyblue" class="tw-ml-3">{{
               $t("accounting.account.credit")
-          }}0</ada-badge>
+          }}<span class="badge-content">0</span></ada-badge>
         </div>
         <div class="cw">
           &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
