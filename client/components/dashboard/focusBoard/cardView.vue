@@ -10,12 +10,11 @@ const instrumentManager = useInstrument();
 const orderManager = useOrder();
 const instruments = computed(() => instrumentManager.getFocus);
 const maxwidthVal = computed(
-  () => instrumentManager.width / Math.floor(instrumentManager.width / 360)
+  () => {
+    const cnt = Math.floor(instrumentManager.width / 362);
+    return (instrumentManager.width - ((cnt - 1) * 12)) / cnt
+  }
 );
-const cardStyle = computed(() => ({
-  "max-width": maxwidthVal,
-  width: maxwidthVal.value - 14,
-}));
 
 function close(item: InstrumentCache) {
   instrumentManager.removeFocus(item.id);
@@ -33,11 +32,11 @@ function select(item: InstrumentCache) {
 <style lang="postcss" scoped>
 .card-row {
   @apply tw-w-full tw-grid tw-gap-y-0 tw-grid-rows-none tw-gap-x-4 tw-grid-flow-col;
-  grid-template-columns: repeat(auto-fit, 24.37%);
   justify-content: flex-start;
   overflow-x: auto;
   overflow-y: hidden;
   height: 320px;
+
   >.card-view {
     background-color: white;
     border-left: 1px solid #e0e0e0;
@@ -75,8 +74,8 @@ function select(item: InstrumentCache) {
 
 <template>
   <div class="card-row">
-    <card @click="() => select(item)" class="card-view" :minWidth="null"
-      v-for="item in instruments" :key="item.id">
+    <card @click="() => select(item)" class="card-view" :minWidth="maxwidthVal" v-for="item in instruments"
+      :key="item.id">
       <header class="toolbar">
         <ada-badge class="title" :color="
           (item.status & 1) != 1

@@ -48,7 +48,6 @@ export const useInstrument = defineStore("instrument", () => {
         inst.yesterdayPrice = data.obj.price.yesterdayPrice;
       }
       if (data.obj.market) {
-        console.log(data.obj.market);
         inst.totalShares = data.obj.market.totalShares;
         inst.totalTrades = data.obj.market.totalTrades;
         inst.totalTradesValue = data.obj.market.totalTradesValue;
