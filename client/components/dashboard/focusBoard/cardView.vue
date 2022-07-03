@@ -8,6 +8,7 @@ import { useInstrument, useOrder } from "~/composables";
 
 const instrumentManager = useInstrument();
 const orderManager = useOrder();
+
 const instruments = computed(() => instrumentManager.getFocus);
 const maxwidthVal = computed(
   () => {
@@ -15,6 +16,8 @@ const maxwidthVal = computed(
     return (instrumentManager.width - ((cnt - 1) * 12)) / cnt
   }
 );
+
+const selected = computed(() => instrumentManager.getSelected)
 
 function close(item: InstrumentCache) {
   instrumentManager.removeFocus(item.id);
@@ -25,8 +28,18 @@ function order(item: InstrumentCache, side: Side) {
   instrumentManager.setFocusMode(0);
 }
 function select(item: InstrumentCache) {
-  instrumentManager.selectById(item.id);
+  instrumentManager.select(item);
 }
+
+defineExpose({
+  instruments,
+  maxwidthVal,
+  selected,
+  select,
+  close,
+  order
+})
+
 </script>
 
 <style lang="postcss" scoped>
@@ -41,6 +54,13 @@ function select(item: InstrumentCache) {
     background-color: white;
     border-left: 1px solid #e0e0e0;
     border-right: 1px solid #e0e0e0;
+    cursor: pointer;
+
+    &.active {
+      border-left: 1px solid rgba(var(--c-primary), 0.5);
+      border-right: 1px solid rgba(var(--c-primary), 0.5);
+      background-color: rgba(var(--c-primary), 0.01);
+    }
 
     .toolbar {
       @apply tw-flex tw-flex-grow tw-whitespace-nowrap tw-items-center;
@@ -74,8 +94,8 @@ function select(item: InstrumentCache) {
 
 <template>
   <div class="card-row">
-    <card @click="() => select(item)" class="card-view" :minWidth="maxwidthVal" v-for="item in instruments"
-      :key="item.id">
+    <card @click="() => select(item)" class="card-view" :class="{ 'active': selected && selected.id == item.id }"
+      :minWidth="maxwidthVal" v-for="item in instruments" :key="item.id">
       <header class="toolbar">
         <ada-badge class="title" :color="
           (item.status & 1) != 1
