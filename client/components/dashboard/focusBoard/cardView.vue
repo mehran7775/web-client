@@ -24,14 +24,8 @@ function order(item: InstrumentCache, side: Side) {
   orderManager.setSide(side, item.id.toString());
   instrumentManager.select(item);
   instrumentManager.setFocusMode(0);
-  setTimeout(()=> {
-    if(side == 1) {
-
-    }
-    if(side == 2) {
-      
-    }
-  })
+  instrumentManager.focusOnCount(side)
+ 
 }
 function select(item: InstrumentCache) {
   instrumentManager.selectById(item.id);

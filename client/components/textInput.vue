@@ -105,6 +105,7 @@ watch(
       @input="() => emit('input', type == 'number' ? parseInt(val) : val)"
       v-bind="{ min, max, minlength, maxlength, ...$attrs }"
       :readonly="readonly"
+      :pattern="`.{${min}, ${max}}`"
       />
     <slot name="append"></slot>
   </label>

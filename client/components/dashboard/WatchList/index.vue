@@ -94,6 +94,7 @@ function order(item: InstrumentCache, side: Side) {
   instrumentManager.addFocus(item);
   instrumentManager.select(item);
   instrumentManager.setFocusMode(0);
+  instrumentManager.focusOnCount(side)
 }
 function focus(item: InstrumentCache) {
   instrumentManager.select(item);

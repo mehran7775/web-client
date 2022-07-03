@@ -11,7 +11,6 @@ import LastPrice from "@/components/oms/lastPrice.vue"
 const bottomPanel = useBottomPanel();
 const instrumentManager = useInstrument();
 const instruments = instrumentManager.getFocus;
-
 const count = ref(0);
 const price = ref(0);
 const tab = computed({
@@ -138,7 +137,7 @@ defineExpose({
           </ada-col>
         </div>
         <div class="panel">
-          <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" :insName="item.name" />
+          <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" :insName="item.name"/>
         </div>
         <div class="panel">
           <instrument-card :insId="item.id" :insName="item.name" @count="(val) => {

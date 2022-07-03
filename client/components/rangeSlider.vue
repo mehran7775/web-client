@@ -123,6 +123,7 @@ watch(
       :min="min"
       :max="max"
       @input="setVal"
+      v-bind="$attrs"
     />
     <div class="process" :style="{ width: process + '%' }"></div>
   </div>

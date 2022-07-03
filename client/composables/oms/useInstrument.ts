@@ -1,4 +1,4 @@
-import { computed, reactive, ref, Ref } from "#app";
+import { computed, nextTick, reactive, ref, Ref } from "#app";
 import { defineStore } from "pinia";
 import { InstrumentState } from "@/types/stores";
 import {
@@ -16,6 +16,7 @@ import manager from "@/repositories/oms/instruments_manager";
 import { useAxios } from "../useAxios";
 import { useWebSocket } from "../useWebsocket";
 import { object } from "yup";
+import { Side } from "@/types";
 
 export const useInstrument = defineStore("instrument", () => {
   const state = ref<InstrumentState>({
@@ -105,7 +106,7 @@ export const useInstrument = defineStore("instrument", () => {
   }
   function addFocus(data: InstrumentCache) {
     if (state.value.focus.findIndex((item) => item.id == data.id) == -1)
-      state.value.focus.splice(0, 0, data);
+    state.value.focus.splice(0, 0, data);
   }
   function setFocusMode(data: number) {
     state.value.focusViewMode = data;
@@ -253,6 +254,20 @@ export const useInstrument = defineStore("instrument", () => {
     return data;
   }
 
+  function focusOnCount( id: number  ) {
+    nextTick(() => {
+      setTimeout(()=> {
+        if(id == Side.Sell) {
+          document.getElementById("sellCountInputText")!.focus()
+        }
+        if(id == Side.Buy) {
+          document.getElementById("buyCountInputText")!.focus()
+        }
+      },500)
+    })  
+ 
+  }
+
   return {
     state,
     // Getters
@@ -279,5 +294,6 @@ export const useInstrument = defineStore("instrument", () => {
     getOrderQueue,
     getClientDistribution,
     getTeammates,
+    focusOnCount
   };
 });
