@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useNuxtApp, reactive, ref } from "#app";
+import { useNuxtApp, reactive, ref, watch } from "#app";
 import {
   Order,
   OrderSearchModel,
@@ -13,9 +13,9 @@ import DateTime from "../DateTime/dateTime.vue";
 import NumericField from "../numericField.vue";
 
 const props = withDefaults(defineProps<{
-  value: OrderSearchModel
+  value: OrderSearchModel,
 }>(), {
-  value: () => new OrderSearchModel()
+  value: () => new OrderSearchModel(),
 })
 
 const searchModel = ref(props.value)
@@ -110,6 +110,7 @@ function getOrders() {
     });
 }
 getOrders();
+
 </script>
 
 <template>

@@ -84,7 +84,7 @@ export const useOrder = defineStore("order", () => {
   }
 
   async function placeOrder(order: Order) {
-    await orderManager.setOrder(order, axios.createInstance());
+    return await orderManager.setOrder(order, axios.createInstance());
   }
 
   async function editOrder(order: Order) {

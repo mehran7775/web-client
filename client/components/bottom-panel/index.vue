@@ -32,6 +32,7 @@ const bottomPanel = useBottomPanel();
 const active: Ref<TabItem> = ref(defaultItem)
 const tabs = computed(() => bottomPanel.tabs);
 const searchModels = {
+
   draftOrders: new OrderSearchModel(0, 10, OrderFlags.Draft),
   actives: new OrderSearchModel(0, 10, OrderFlags.Confirmed | OrderFlags.PreOpening | OrderFlags.Created | OrderFlags.Sent),
   canceledOrders: new OrderSearchModel(0, 10, OrderFlags.Cancelled),
@@ -224,8 +225,8 @@ function close() {
     <div class="detail">
       <div class="contents">
         <ada-tabs v-model="active" name-key="$.title" class="tw-h-full" :class="{ expanded: expanded }">
-          <ada-tab name="bottom-panel.orders.all" class="tw-overflow-y-auto">
-            <default-order-list />
+          <ada-tab name="bottom-panel.orders.all" class="tw-overflow-y-auto" >
+            <default-order-list/>
           </ada-tab>
           <ada-tab name="bottom-panel.orders.drafts" class="tw-overflow-y-auto">
             <default-order-list v-model="searchModels.draftOrders" />
