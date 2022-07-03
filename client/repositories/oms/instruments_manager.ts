@@ -1,6 +1,8 @@
 import { NuxtAxiosInstance } from '@nuxtjs/axios';
 import { AxiosResponse, AxiosInstance } from "axios"
-import { PaginatedResult, AutoCompleteItem, OrderQueueItem, MarketHistory, Instrument, DailyPrice, ClientDistributionResponse, AutoCompleteSearchModel, InstrumentSearchModel } from "@/types";
+import { PaginatedResult, AutoCompleteItem, OrderQueueItem, MarketHistory, 
+  Instrument, DailyPrice, ClientDistributionResponse, AutoCompleteSearchModel, 
+  InstrumentSearchModel, TradesHistory } from "@/types";
 
 export async function getInstruments(searchModel: InstrumentSearchModel, axios: NuxtAxiosInstance | AxiosInstance): Promise<AxiosResponse<PaginatedResult<Instrument>>> {
   return axios.get('/oms/instruments/filter?ids=' + searchModel.ids
@@ -34,6 +36,10 @@ export async function getTeammates(instrumentId: number, sectorId: number, axios
   return axios.get('oms/instruments/same-sub-sectors/' + instrumentId + "/" + sectorId)
 }
 
+export async function getTradeHistories(ofste: number, length: number, axios: NuxtAxiosInstance | AxiosInstance): Promise<AxiosResponse<PaginatedResult<TradesHistory>>> {
+  return axios.get('oms/market-history?offset='+ ofste + '&length=' + length)
+}
+
 export default {
   getInstruments,
   getDailyPrice,
@@ -41,5 +47,6 @@ export default {
   autoComplete,
   getOrderQueue,
   getClientDistribution,
-  getTeammates
+  getTeammates,
+  getTradeHistories
 }

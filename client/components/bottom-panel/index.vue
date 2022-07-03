@@ -11,6 +11,7 @@ import AdaToggle from "@/components/adaToggle.vue";
 import AdaBtn from "@/components/adaBtn.vue";
 import AdaTabs from "@/components/adaTabs/index.vue"
 import AdaTab from "@/components/adaTabs/adaTab.vue"
+import TradeHistoryTransactions from "./TradeHistoryTransactions.vue"
 
 
 ////
@@ -24,10 +25,6 @@ const props = withDefaults(
   }
 );
 
-
-
-////////
-
 const bottomPanel = useBottomPanel();
 const active: Ref<TabItem> = ref(defaultItem)
 const tabs = computed(() => bottomPanel.tabs);
@@ -37,11 +34,6 @@ const searchModels = {
   canceledOrders: new OrderSearchModel(0, 10, OrderFlags.Cancelled),
 }
 const instrument = useInstrument()
-
-
-
-
-///////
 
 const tab = computed({
   get(): TabItem {
@@ -65,18 +57,9 @@ const showLoading = computed(() => bottomPanel.loading);
 const headers: ComputedRef<TabItem[]> = computed(() =>
   typeof tab.value?.children != 'undefined' ? tab.value.children : [{ title: '', params: [] }]);
 
-
-
-
-
-//////////////
-
 // watch(instrument.state, (val)=> {
 //   console.log(val.selected)
 // },{deep: true})
-
-
-////////////////////
 
 function expand() {
   bottomPanel.toggleExpand();
@@ -250,6 +233,9 @@ function close() {
           </ada-tab>
           <ada-tab v-if="useBottomPanel()._activeTab" :name="active.title">
             <p v-text="useBottomPanel()._activeTab.body"></p>
+          </ada-tab>
+          <ada-tab name="bottom-panel.dateInfo.tradesHistory">
+            <trade-history-tran />
           </ada-tab>
         </ada-tabs>
         <loading :loading="showLoading" />
