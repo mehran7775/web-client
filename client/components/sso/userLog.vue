@@ -21,7 +21,7 @@ function printDate(date: string) {
     .toFormat(i18n.t("general.date.longdt").toString());
 }
 function printType(typ: string) {
-  return i18n.t("log." + typ.toLowerCase());
+  return i18n.t("log." + typ);
 }
 userManager.getLogs(searchParam).then((resp) => {
   res.push(...resp.data.data);
@@ -35,12 +35,12 @@ defineExpose({
 </script>
 
 <template>
-  <v-data-table :items="res" :headers="headers" dense>
+  <ada-data-table :items="res" :headers="headers" dense>
     <template #item.dateTime="{ item }">
       {{ printDate(item.dateTime) }}
     </template>
     <template #item.type="{ item }">
       {{ printType(item.type) }}
     </template>
-  </v-data-table>
+  </ada-data-table>
 </template>

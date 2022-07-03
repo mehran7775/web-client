@@ -12,12 +12,13 @@ const instrumentManager = useInstrument();
 const userManager = useUser();
 const sh = useShortcut();
 const route = useRoute();
-const toolbar = ref(null)
+const toolbar = ref<HTMLElement | null>(null)
 
 const me = userManager.me;
 const bookmarks = computed(() => userManager.getBookmarks);
 const home = computed(() => me.settings.home);
 const path = computed(() => route.fullPath);
+const filter = computed(() => instrumentManager.state.selected);
 
 const instruments = computed(() => instrumentManager.getFocus);
 
@@ -45,6 +46,10 @@ async function unmark(bookmark: Bookmark) {
   });
 }
 
+function deselect() {
+  instrumentManager.select(null);
+}
+
 if (process.client) {
   sh.addShortcut({
     key: "alt+q",
@@ -53,7 +58,7 @@ if (process.client) {
     },
   });
   function resize() {
-    instrumentManager.setWidth(toolbar.value.offsetWidth);
+    instrumentManager.setWidth(toolbar.value?.offsetWidth || 800);
   }
   onMounted(() => {
     window.addEventListener("mousemove", resize);
@@ -79,9 +84,11 @@ if (process.client) {
 }
 
 .bookmark {
-  @apply tw-mx-[4px] tw-px-[4px]  tw-rounded-md tw-bg-primary-100 tw-w-[110px] tw-h-[28px] tw-text-primary;
+  @apply tw-mx-[4px] tw-px-[4px] tw-rounded-md tw-bg-primary-100 tw-w-[110px] tw-h-[28px] tw-text-primary;
   @apply tw-flex tw-items-center tw-justify-between tw-text-ellipsis tw-overflow-hidden tw-whitespace-nowrap;
-  &.nuxt-link-exact-active, &.nuxt-link-active{
+
+  &.nuxt-link-exact-active,
+  &.nuxt-link-active {
     @apply tw-border tw-border-primary;
   }
 
@@ -108,6 +115,33 @@ if (process.client) {
     }
   }
 }
+
+.mode {
+  >.filter {
+    @apply tw-flex tw-flex-row tw-items-center tw-justify-items-stretch tw-px-2 tw-mx-3;
+    min-width: 110px;
+    background-color: rgba(var(--c-primary), 0.05);
+    border-radius: var(--border-radius-root);
+    border: solid 1px rgba(var(--c-primary), 0.5);
+
+    >.filter {
+      @apply tw-flex tw-mx-2;
+    }
+
+    >.txt {
+      @apply tw-flex tw-flex-grow;
+    }
+
+    >.close {
+      @apply tw-flex tw-justify-self-end tw-mx-2;
+    }
+  }
+
+  >button {
+    border-radius: var(--border-radius-root);
+    border: none !important;
+  }
+}
 </style>
 
 <style lang="postcss">
@@ -124,26 +158,26 @@ if (process.client) {
     }
   }
 }
-
-.mode {
-  >button {
-    border-radius: var(--border-radius-root);
-    border: none !important;
-  }
-}
 </style>
 
 <template>
   <div class="tw-m-0 tw-p-0">
     <header ref="toolbar" class="toolbar">
       <slot name="toolbar"> </slot>
-      <span v-if="bookmarks.length > 0" class="tw-h-7 tw-border-r-2 tw-rounded-md tw-border-primary-200 tw-mr-3 tw-ml-2"></span>
+      <span v-if="bookmarks.length > 0"
+        class="tw-h-7 tw-border-r-2 tw-rounded-md tw-border-primary-200 tw-mr-3 tw-ml-2"></span>
       <nuxt-link v-for="b in bookmarks" :key="b.to" :to="b.to" class="bookmark">
         <span v-text="b.text ? b.text : $t(b.title)"></span>
         <ada-icon :size="14" class="tw-w-8 tw-h-full" @click="unmark(b)">mdi-close</ada-icon>
       </nuxt-link>
-      <ada-spacer />
       <ada-toggle class="mode tw-justify-end" color="primary" v-model="viewMode">
+        <div v-if="filter" class="filter">
+          <ada-icon class="filter" :size="14" color="primary">isax-search-normal-1</ada-icon>
+          <span class="txt">
+            {{ filter.name }}
+          </span>
+          <ada-icon class="close" @click="deselect" :size="14" color="primary">mdi-close</ada-icon>
+        </div>
         <ada-btn :height="28" :width="28" :model="0">
           <ada-icon :color="viewMode == 0 ? 'primary' : 'gray'" :size="16">
             isax-menu

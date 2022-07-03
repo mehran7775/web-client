@@ -8,14 +8,16 @@ import { useInstrument, useOrder } from "~/composables";
 
 const instrumentManager = useInstrument();
 const orderManager = useOrder();
+
 const instruments = computed(() => instrumentManager.getFocus);
 const maxwidthVal = computed(
-  () => instrumentManager.width / Math.floor(instrumentManager.width / 360)
+  () => {
+    const cnt = Math.floor(instrumentManager.width / 362);
+    return (instrumentManager.width - ((cnt - 1) * 12)) / cnt
+  }
 );
-const cardStyle = computed(() => ({
-  "max-width": maxwidthVal,
-  width: maxwidthVal.value - 14,
-}));
+
+const selected = computed(() => instrumentManager.getSelected)
 
 function close(item: InstrumentCache) {
   instrumentManager.removeFocus(item.id);
@@ -28,22 +30,39 @@ function order(item: InstrumentCache, side: Side) {
  
 }
 function select(item: InstrumentCache) {
-  instrumentManager.selectById(item.id);
+  instrumentManager.select(item);
 }
+
+defineExpose({
+  instruments,
+  maxwidthVal,
+  selected,
+  select,
+  close,
+  order
+})
+
 </script>
 
 <style lang="postcss" scoped>
 .card-row {
   @apply tw-w-full tw-grid tw-gap-y-0 tw-grid-rows-none tw-gap-x-4 tw-grid-flow-col;
-  grid-template-columns: repeat(auto-fit, 24.37%);
   justify-content: flex-start;
   overflow-x: auto;
   overflow-y: hidden;
   height: 320px;
+
   >.card-view {
     background-color: white;
     border-left: 1px solid #e0e0e0;
     border-right: 1px solid #e0e0e0;
+    cursor: pointer;
+
+    &.active {
+      border-left: 1px solid rgba(var(--c-primary), 0.5);
+      border-right: 1px solid rgba(var(--c-primary), 0.5);
+      background-color: rgba(var(--c-primary), 0.01);
+    }
 
     .toolbar {
       @apply tw-flex tw-flex-grow tw-whitespace-nowrap tw-items-center;
@@ -77,8 +96,8 @@ function select(item: InstrumentCache) {
 
 <template>
   <div class="card-row">
-    <card @click="() => select(item)" class="card-view" :minWidth="null"
-      v-for="item in instruments" :key="item.id">
+    <card @click="() => select(item)" class="card-view" :class="{ 'active': selected && selected.id == item.id }"
+      :minWidth="maxwidthVal" v-for="item in instruments" :key="item.id">
       <header class="toolbar">
         <ada-badge class="title" :color="
           (item.status & 1) != 1

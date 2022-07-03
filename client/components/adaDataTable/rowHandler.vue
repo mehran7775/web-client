@@ -23,7 +23,7 @@ const props = defineProps<{
 </style>
 
 <template>
-  <tr v-bind="$attrs" class="row-border">
+  <tr v-on="$listeners" v-bind="$attrs" class="row-border">
     <td v-for="header in model.headers" :key="header.value" scope="col"
       :class="['tw-text-' + header.align, header.class]">
       <slot :item="model.item" :name="'item.' + header.value">
