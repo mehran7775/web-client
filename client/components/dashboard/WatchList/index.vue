@@ -11,9 +11,8 @@ import {
 } from "@/types";
 import { useInstrument, useOrder, useUser } from "@/composables";
 import { useShortcut } from "@/utils/shortcutManager";
-import HeaderHandler from "./headerHandler.vue";
-import RowHandler from "./rowHandler.vue";
 import HeaderSelector from "./headerSelector.vue";
+import RowHandler from "@/components/adaDataTable/rowHandler.vue"
 import { useRoute, useNuxtApp } from "#app";
 
 const props = withDefaults(
@@ -39,7 +38,7 @@ const instruments: Array<InstrumentCache> = reactive([]);
 const confirmInstrumentRemoval = ref(false);
 
 const watchlists = computed(() => userManager.watchList);
-
+const selected = computed(() => instrumentManager.state.selected)
 const focused = computed(() => instrumentManager.getFocus);
 const canfocus = computed(() => {
   if (!process.client) return false;
@@ -51,6 +50,7 @@ const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
   const res: Array<WatchlistColumns> = [];
   const actions = new WatchlistColumns("", "actions", "center", "100px");
   actions.draggable = false;
+  actions.divider = false;
   res.push(actions);
   res.push(
     ...((me.value.settings.columns ?? DefaultCols()).map((col: WatchlistColumns) => {
@@ -66,6 +66,7 @@ const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
   );
   const more = new WatchlistColumns("", "more");
   more.draggable = false;
+  more.divider = false;
   res.push(more);
   return res;
 });
@@ -88,7 +89,9 @@ function parseStatus(state: number) {
       return "instrument.state.preActive";
   }
 }
-
+function select(item: InstrumentCache) {
+  instrumentManager.select(item);
+}
 function order(item: InstrumentCache, side: Side) {
   orderManager.setSide(side, item.id.toString());
   instrumentManager.addFocus(item);
@@ -201,110 +204,117 @@ if (process.client) {
 getData(props.searchModel);
 </script>
 
+<style lang="postcss">
+.watchlist {
+  background-color: white;
+
+  .header {
+    padding: 0 4px;
+    font-size: .8334rem;
+  }
+
+  .inst {
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(var(--c-primary), .07);
+    }
+
+    &.active {
+      background-color: rgba(var(--c-primary), .1);
+    }
+  }
+}
+</style>
+
 <template>
   <div class="pb-1">
-    <v-data-table :headers="headers" :items="instruments" item-key="id" class="watchlist" hide-default-header
+    <ada-data-table :headers="headers" :items="instruments" item-key="id" class="watchlist" hide-default-header
       hide-default-footer disable-pagination dense>
-      <template #header="{ on, props, attrs }">
-        <header-handler :headers="headers" v-on="on" v-bind="attrs" :props="props">
-          <template #header.more>
-            <header-selector />
-          </template>
-        </header-handler>
+      <template #header.more>
+        <header-selector />
       </template>
-      <template #item="{ headers, item }">
-        <row-handler draggable="true" @dragstart="(ev) => drag(item)" @dragover="
-          (ev) => {
-            ev.preventDefault();
-            if (ev.dataTransfer) {
-              ev.dataTransfer.dropEffect = 'move';
-            }
-          }
-        " dropzone="true" @drop="
-  (ev) => {
-    ev.preventDefault();
-    drop(item);
-  }
-" :model="{ headers, item }">
-          <template #item.actions="{ item }">
-            <div class="text-no-wrap">
-              <ada-icon class="tw-m-0 tw-p-0 tw-mx-2" color="info" @click="() => focus(item)" :disabled="!canfocus"
-                :size="16">
-                isax-eye
-              </ada-icon>
-              <ada-icon class="tw-m-0 tw-p-0" color="success" @click="() => order(item, Side.Buy)"
-                :disabled="(item.status & 3) != 3" :size="16">
-                isax-bag-tick-2
-              </ada-icon>
-              <ada-icon class="tw-m-0 tw-p-0 tw-mx-2" color="error" @click="() => order(item, Side.Sell)"
-                :disabled="(item.status & 3) != 3" :size="16">
-                isax-bag-cross-1
-              </ada-icon>
-            </div>
-          </template>
-          <template #item.name="{ item }">
-            <ada-badge :color="
-              (item.status & 1) != 1
-                ? 'error'
-                : (item.status & 6) != 6
-                  ? 'warning'
-                  : 'success'
-            " dot>
-              <ada-tooltip position="right">
-                <template #activator>
-                  <span style="line-height: 2.5" class="tw-block">
-                    {{ item.name }}
-                  </span>
-                </template>
-                {{ $t(parseStatus(item.status)) }}
-              </ada-tooltip>
-            </ada-badge>
-          </template>
-          <template #item.opening="{ item }">
-            <numeric-field :value="item.wealth" />
-          </template>
-          <template #item.opening="{ item }">
-            <numeric-field :value="item.opening" />
-          </template>
-          <template #item.closing="{ item }">
-            <numeric-field :value="item.closing" />
-          </template>
-          <template #item.yesterdayPrice="{ item }">
-            <numeric-field :value="item.yesterdayPrice" />
-          </template>
-          <template #item.lowest="{ item }">
-            <numeric-field class="success--text" :value="item.lowest" />
-          </template>
-          <template #item.highest="{ item }">
-            <numeric-field class="error--text" :value="item.highest" />
-          </template>
-          <template #item.totalTrades="{ item }">
-            <numeric-field :value="item.totalTrades" />
-          </template>
-          <template #item.totalShares="{ item }">
-            <numeric-field class="info--text" :value="item.totalShares" />
-          </template>
-          <template #item.totalTradesValue="{ item }">
-            <numeric-field :value="item.totalTradesValue" />
-          </template>
-          <template #item.status="{ item }">
-            <span>
-              {{ $t("instrument.state." + item.status) }}
-            </span>
-          </template>
-          <template #item.more="{ item }">
-            <ada-icon color="error" @click="
-              () => {
-                itemToDelete = item;
-                confirmInstrumentRemoval = true;
-              }
-            " :size="16">
-              isax-trash
+
+      <RowHandler v-ada-ripple @click="() => select(item)" class="inst" :class="{ 'active': selected && selected.id == item.id }"
+        v-for="item in instruments" :key="item.id" :model="{ headers, item }">
+        <template #item.actions="{ item }">
+          <div class="text-no-wrap">
+            <ada-icon class="tw-m-0 tw-p-0 tw-mx-2" color="info" @click="() => focus(item)" :disabled="!canfocus"
+              :size="16">
+              isax-eye
             </ada-icon>
-          </template>
-        </row-handler>
-      </template>
-    </v-data-table>
+            <ada-icon class="tw-m-0 tw-p-0" color="success" @click="() => order(item, Side.Buy)"
+              :disabled="(item.status & 3) != 3" :size="16">
+              isax-bag-tick-2
+            </ada-icon>
+            <ada-icon class="tw-m-0 tw-p-0 tw-mx-2" color="error" @click="() => order(item, Side.Sell)"
+              :disabled="(item.status & 3) != 3" :size="16">
+              isax-bag-cross-1
+            </ada-icon>
+          </div>
+        </template>
+        <template #item.name="{ item }">
+          <ada-badge :color="
+            (item.status & 1) != 1
+              ? 'error'
+              : (item.status & 6) != 6
+                ? 'warning'
+                : 'success'
+          " dot>
+            <ada-tooltip position="right">
+              <template #activator>
+                <span style="line-height: 2.5" class="tw-block">
+                  {{ item.name }}
+                </span>
+              </template>
+              {{ $t(parseStatus(item.status)) }}
+            </ada-tooltip>
+          </ada-badge>
+        </template>
+        <template #item.opening="{ item }">
+          <numeric-field :value="item.wealth" />
+        </template>
+        <template #item.opening="{ item }">
+          <numeric-field :value="item.opening" />
+        </template>
+        <template #item.closing="{ item }">
+          <numeric-field :value="item.closing" />
+        </template>
+        <template #item.yesterdayPrice="{ item }">
+          <numeric-field :value="item.yesterdayPrice" />
+        </template>
+        <template #item.lowest="{ item }">
+          <numeric-field class="success--text" :value="item.lowest" />
+        </template>
+        <template #item.highest="{ item }">
+          <numeric-field class="error--text" :value="item.highest" />
+        </template>
+        <template #item.totalTrades="{ item }">
+          <numeric-field :value="item.totalTrades" />
+        </template>
+        <template #item.totalShares="{ item }">
+          <numeric-field class="info--text" :value="item.totalShares" />
+        </template>
+        <template #item.totalTradesValue="{ item }">
+          <numeric-field :value="item.totalTradesValue" />
+        </template>
+        <template #item.status="{ item }">
+          <span>
+            {{ $t("instrument.state." + item.status) }}
+          </span>
+        </template>
+        <template #item.more="{ item }">
+          <ada-icon color="error" @click="
+            () => {
+              itemToDelete = item;
+              confirmInstrumentRemoval = true;
+            }
+          " :size="16">
+            isax-trash
+          </ada-icon>
+        </template>
+      </RowHandler>
+    </ada-data-table>
     <v-dialog max-width="50%" v-model="confirmInstrumentRemoval">
       <v-card>
         <v-card-title> {{ $t("general.alert") }} </v-card-title>

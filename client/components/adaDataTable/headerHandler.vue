@@ -28,24 +28,30 @@ async function drop(item: WatchlistColumns) {
   }
   draggingCol = null;
 }
+defineExpose({
+  drag,
+  drop
+})
 </script>
 
 <style lang="postcss" scoped>
-.headers {
-  background-color: rgba(var(--c-primary), 0.1);
-}
+thead {
+  >.headers {
+    background-color: rgba(var(--c-primary), 0.1);
 
-.header {
-  position: relative;
-  border: none !important;
-  height: var(--row-height);
-  white-space: nowrap;
+    >.header {
+      position: relative;
+      border: none !important;
+      height: var(--row-height);
+      white-space: nowrap;
+    }
+  }
 }
 </style>
 
 <template>
   <thead>
-    <tr v-bind="$attrs" class="headers">
+    <tr v-on="$listeners" v-bind="$attrs" class="headers">
       <th :draggable="header.draggable" @dragstart="() => drag(header)" @dragover="
         (ev) => {
           ev.preventDefault();
@@ -60,7 +66,7 @@ async function drop(item: WatchlistColumns) {
         scope="col" :style="{
           width: header.width ? header.width : '',
           'min-width': header.width ? header.width : '',
-        }" :class="['header', header.class]">
+        }" :class="['tw-text-' + header.align, header.class]" class="header">
         <slot :header="header" :name="'header.' + header.value">
           <h5>
             {{ header.text }}
