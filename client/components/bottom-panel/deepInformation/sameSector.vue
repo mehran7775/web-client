@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :items="value.data" :headers="headers" dense> </v-data-table>
+  <ada-data-table :items="value.data" :headers="headers" dense> </ada-data-table>
 </template>
 
 <script lang="ts">

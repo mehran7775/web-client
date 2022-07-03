@@ -113,7 +113,7 @@ getOrders();
 </script>
 
 <template>
-  <ada-data-table :items="orders" :headers="cols" id="id" class="tw-w-full">
+  <ada-data-table :items="orders" :headers="cols" item-key="id" class="tw-w-full">
     <template #item.creationDate="{ item }">
       <DateTime :value="item.creationDate" :format="$t('general.date.dt')" class="ltr" />
     </template>
