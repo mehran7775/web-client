@@ -86,7 +86,7 @@ const tab = computed({
     if (active.value){
       orderManager.setSide(
        value,
-        active.value.id.toString()
+        active.value.id.toString()  
       );
       instrumentManager.focusOnCount(value)
       updateData()
@@ -102,9 +102,9 @@ const tab = computed({
 
 ///////////////////
 
-onMounted(()=> {
-  document.getElementById("buyCountInputText")!.focus()
-})
+// onMounted(()=> {
+//   document.getElementById("buyCountInputText")!.focus()
+// })
 
 
 
@@ -113,6 +113,9 @@ onMounted(()=> {
 
 
 
+
+
+instrumentManager.focusOnCount(Side.Buy)
 
 
 
@@ -447,7 +450,7 @@ instrumentManager
             <numeric-field :value="1000" />
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('oms.count')" type="number" v-model="countVal" id="sellCountInputText" tabindex="0"
+            <text-input :label="$t('oms.count')" type="number" v-model="countVal" id="sellCountInputText"
               :readonly="countLock" class="tw-mt-1 inputColor"
               :min="!!active ? active.minQuantityPerOrder : 1"
               :max="!!active ? active.maxQuantityPerOrder || null : null">
