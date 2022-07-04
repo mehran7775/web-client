@@ -39,6 +39,20 @@ const cols = [
 const agreement = ref(true);
 
 
+//////////////////////
+
+watch(()=> orderManager.last_update, ()=> {
+  console.log('5')
+  getOrders()
+})
+
+
+
+
+
+
+/////////////////////
+
 function parseOrderFlags(status: number) {
   if (status == OrderFlags.Draft) {
     return "wealth.order.flags.Draft";
@@ -109,6 +123,7 @@ function getOrders() {
       bottomPanel.setLoading(false);
     });
 }
+
 getOrders();
 
 </script>

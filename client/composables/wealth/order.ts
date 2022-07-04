@@ -20,8 +20,12 @@ export const useOrder = defineStore("order", () => {
   const axios = useAxios();
   const instrumentManager = useInstrument();
   const wealthManager = useWealth();
-
+  const all_orders = ref<PaginatedResult<Order>[] | undefined>([])
   const orderFormCache: { [key: string]: Ref<Order> } = {};
+  const last_update: string = new Date().toISOString()
+
+  
+/////////////////
 
   function getForm(id: string) {
     let tmp = orderFormCache[id]; 
@@ -78,6 +82,7 @@ export const useOrder = defineStore("order", () => {
           ord
         );
       });
+      all_orders.value.push(orders.data)
       return orders;
     }
     return undefined;
@@ -104,5 +109,6 @@ export const useOrder = defineStore("order", () => {
     updateForm,
     setSide,
     editOrder,
+    last_update
   };
 });

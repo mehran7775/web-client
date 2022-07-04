@@ -137,6 +137,7 @@ async function check() {
   return false;
 }
 
+
 async function placeOrder(options: { draft: boolean }) {
   if ( await check()) {
     const param: any = { ...order.value };
@@ -149,6 +150,7 @@ async function placeOrder(options: { draft: boolean }) {
     .then((res)=> {
       if(res.status === 201) {
         useBottomPanel()._activeTab = useBottomPanel().$state._titles[0]
+         orderManager.last_update = new Date().toISOString()
       }
     })
     .catch((e)=> {
