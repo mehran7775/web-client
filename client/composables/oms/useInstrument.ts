@@ -1,4 +1,4 @@
-import { computed, reactive, ref, Ref } from "#app";
+import { computed, nextTick, reactive, ref, Ref } from "#app";
 import { defineStore } from "pinia";
 import { InstrumentState } from "@/types/stores";
 import {
@@ -13,7 +13,8 @@ import {
   TradesHistory,
   TradesHistorySerachModel,
   Wealth,
-  PaginatedResult
+  PaginatedResult,
+  Side
 } from "~/types";
 import manager from "@/repositories/oms/instruments_manager";
 import { useAxios } from "../useAxios";
@@ -266,6 +267,22 @@ export const useInstrument = defineStore("instrument", () => {
     return data;
   }
 
+  function focusOnCount( id: number  ) {
+    nextTick(() => {
+      setTimeout(()=> {
+        if(id == Side.Sell) {
+          document.getElementById("sellCountInputText")!.focus()
+        }
+        if(id == Side.Buy) {
+          document.getElementById("buyCountInputText")!.focus()
+        }
+      },500)
+    })  
+ 
+  }
+
+
+
   return {
     state,
     // Getters
@@ -292,6 +309,7 @@ export const useInstrument = defineStore("instrument", () => {
     getOrderQueue,
     getClientDistribution,
     getTeammates,
-    getTradeHistories
+    getTradeHistories,
+    focusOnCount
   };
 });
