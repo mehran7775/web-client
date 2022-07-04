@@ -3,7 +3,7 @@ import { useNuxtApp, reactive, ref } from "#app";
 import { useBottomPanel, useInstrument} from "~~/composables";
 import DateTime from "../DateTime/dateTime.vue";
 import NumericField from "../numericField.vue";
-import { TradesHistory,WatchlistColumns, PaginatedResult, TradesHistorySerachModel } from "@/types";
+import { TradesHistory, WatchlistColumns, PaginatedResult, TradesHistorySerachModel } from "@/types";
 
 const props = defineProps<{
   value: TradesHistorySerachModel
