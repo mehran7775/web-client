@@ -9,7 +9,7 @@ import { object, number, AnyObjectSchema } from "yup";
 import TextInput from "@/components/textInput.vue";
 import AdaBtn from "@/components/adaBtn.vue";
 import { getWage } from "@/repositories/wealth/wealth_manager";
-import { nextTick } from "process";
+import { useBottomPanel } from "~/composables";
 
 
 ////////////////
@@ -138,15 +138,24 @@ async function check() {
 }
 
 async function placeOrder(options: { draft: boolean }) {
-  if (
-    await check()) {
+  if (await check()) {
     const param: any = { ...order.value };
     if (options.draft) param.flags = param.flags | 1;
     param.termsAndConditions = agreement.value;
     param.orderDivision = orderDivision.value;
     param.draft = options.draft;
     param.accountType = accountTypefield.value;
-    orderManager.placeOrder(param);
+    orderManager.placeOrder(param)
+    .then((res)=> {
+      if(res.status === 201) {
+        useBottomPanel()._activeTab = useBottomPanel().$state._titles[0]
+         orderManager.last_update = new Date().toISOString()
+      }
+    })
+    .catch((e)=> {
+      console.log(e)
+    })
+
   }
 }
 

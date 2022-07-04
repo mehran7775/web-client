@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useNuxtApp, reactive, ref } from "#app";
+import { useNuxtApp, reactive, ref, watch } from "#app";
 import {
   Order,
   OrderSearchModel,
@@ -37,6 +37,14 @@ const cols = [
   new WatchlistColumns("", "more"),
 ];
 const agreement = ref(true);
+
+
+
+
+watch(()=> orderManager.last_update, ()=> {
+  getOrders()
+})
+
 
 
 function parseOrderFlags(status: number) {

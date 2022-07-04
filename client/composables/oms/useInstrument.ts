@@ -15,7 +15,6 @@ import {
 import manager from "@/repositories/oms/instruments_manager";
 import { useAxios } from "../useAxios";
 import { useWebSocket } from "../useWebsocket";
-import { object } from "yup";
 import { Side } from "@/types";
 
 export const useInstrument = defineStore("instrument", () => {
