@@ -5,6 +5,7 @@ import {
   TabItem,
   SameSectorQuery,
   Message,
+  Order
 } from "@/types";
 import { useSectors } from ".";
 
@@ -128,6 +129,7 @@ export const useBottomPanel = defineStore("bottom-panel", {
     _market_depth: <null | { tab: DeepOptions; data: any }>null,
     _the_bests: {},
     _orders: {},
+    _orderItems: <Order[]>[],
     _loading: false,
   }),
   getters: {

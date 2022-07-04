@@ -20,8 +20,11 @@ export const useOrder = defineStore("order", () => {
   const axios = useAxios();
   const instrumentManager = useInstrument();
   const wealthManager = useWealth();
-
   const orderFormCache: { [key: string]: Ref<Order> } = {};
+  const last_update: string = new Date().toISOString()
+
+  
+/////////////////
 
   function getForm(id: string) {
     let tmp = orderFormCache[id]; 
@@ -84,7 +87,7 @@ export const useOrder = defineStore("order", () => {
   }
 
   async function placeOrder(order: Order) {
-    await orderManager.setOrder(order, axios.createInstance());
+    return await orderManager.setOrder(order, axios.createInstance());
   }
 
   async function editOrder(order: Order) {
@@ -104,5 +107,6 @@ export const useOrder = defineStore("order", () => {
     updateForm,
     setSide,
     editOrder,
+    last_update
   };
 });

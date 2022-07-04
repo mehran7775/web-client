@@ -263,15 +263,15 @@ getData(props.searchModel);
         :model="{ headers, item }">
         <template #item.actions="{ item }">
           <div class="text-no-wrap">
-            <ada-icon class="tw-m-0 tw-p-0 tw-mx-2" color="info" @click="() => focus(item)" :disabled="!canfocus"
+            <ada-icon class="tw-m-0 tw-p-0 tw-mx-2" color="info" @click.stop="() => focus(item)" :disabled="!canfocus"
               :size="16">
               isax-eye
             </ada-icon>
-            <ada-icon class="tw-m-0 tw-p-0" color="success" @click="() => order(item, Side.Buy)"
+            <ada-icon class="tw-m-0 tw-p-0" color="success" @click.stop="() => order(item, Side.Buy)"
               :disabled="(item.status & 3) != 3" :size="16">
               isax-bag-tick-2
             </ada-icon>
-            <ada-icon class="tw-m-0 tw-p-0 tw-mx-2" color="error" @click="() => order(item, Side.Sell)"
+            <ada-icon class="tw-m-0 tw-p-0 tw-mx-2" color="error" @click.stop="() => order(item, Side.Sell)"
               :disabled="(item.status & 3) != 3" :size="16">
               isax-bag-cross-1
             </ada-icon>

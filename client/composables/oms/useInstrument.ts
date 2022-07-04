@@ -10,6 +10,9 @@ import {
   MarketHistory,
   OrderQueueItem,
   SameSectorQuery,
+  TradesHistory,
+  TradesHistorySerachModel,
+  PaginatedResult,
   Wealth,
 } from "~/types";
 import manager from "@/repositories/oms/instruments_manager";
@@ -264,6 +267,16 @@ export const useInstrument = defineStore("instrument", () => {
     });
   }
 
+  async function getTradeHistories(
+    searchModel: TradesHistorySerachModel
+    ): Promise<PaginatedResult<TradesHistory>> {
+    const { data } = await manager.getTradeHistories(
+      searchModel,
+      axios
+    );
+    return data;
+  }
+
   return {
     state,
     // Getters
@@ -290,5 +303,6 @@ export const useInstrument = defineStore("instrument", () => {
     getClientDistribution,
     getTeammates,
     focusOnCount,
+    getTradeHistories
   };
 });

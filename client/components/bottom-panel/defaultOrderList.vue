@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useNuxtApp, reactive, ref } from "#app";
+import { useNuxtApp, reactive, ref, watch } from "#app";
 import {
   Order,
   OrderSearchModel,
@@ -13,9 +13,9 @@ import DateTime from "../DateTime/dateTime.vue";
 import NumericField from "../numericField.vue";
 
 const props = withDefaults(defineProps<{
-  value: OrderSearchModel
+  value: OrderSearchModel,
 }>(), {
-  value: () => new OrderSearchModel()
+  value: () => new OrderSearchModel(),
 })
 
 const searchModel = ref(props.value)
@@ -37,6 +37,14 @@ const cols = [
   new WatchlistColumns("", "more"),
 ];
 const agreement = ref(true);
+
+
+
+
+watch(()=> orderManager.last_update, ()=> {
+  getOrders()
+})
+
 
 
 function parseOrderFlags(status: number) {
@@ -109,7 +117,9 @@ function getOrders() {
       bottomPanel.setLoading(false);
     });
 }
+
 getOrders();
+
 </script>
 
 <template>
