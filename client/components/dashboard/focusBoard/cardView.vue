@@ -68,14 +68,8 @@ defineExpose({
       border-left: 1px solid rgba(var(--c-selected-inst), 0.5);
       border-right: 1px solid rgba(var(--c-selected-inst), 0.5);
 
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(var(--c-selected-inst), .2);
+      .toolbar {
+        background-color: rgba(var(--c-selected-inst), .4) !important;
       }
     }
 
