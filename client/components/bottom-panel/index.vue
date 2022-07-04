@@ -240,7 +240,7 @@ function close() {
             <p v-text="useBottomPanel()._activeTab.body"></p>
           </ada-tab>
           <ada-tab name="bottom-panel.dateInfo.tradesHistory">
-            <trade-history-transactions :value="searchModels.tradeHistories"/>
+            <!-- <trade-history-transactions :value="searchModels.tradeHistories"/> -->
           </ada-tab>
         </ada-tabs>
         <loading :loading="showLoading" />
