@@ -3,15 +3,17 @@ import { useNuxtApp, reactive, ref } from "#app";
 import { useBottomPanel, useInstrument} from "~~/composables";
 import DateTime from "../DateTime/dateTime.vue";
 import NumericField from "../numericField.vue";
-import { TradesHistory,WatchlistColumns, PaginatedResult } from "@/types";
+import { TradesHistory,WatchlistColumns, PaginatedResult, TradesHistorySerachModel } from "@/types";
 
-const props = withDefaults(defineProps<{
-  value: TradesHistory
-}>(), {
-  value: () => new TradesHistory()
-});
+const props = defineProps<{
+  value: TradesHistorySerachModel
+}>()
+
 const { $i18n: i18n } = useNuxtApp();
-
+const bottomPanelManager = useBottomPanel();
+const instrumentManager = useInstrument();
+const model = ref(props.value)
+const tradeHistories: TradesHistory[] = reactive([]);
 const cols = [
   new WatchlistColumns(i18n.t("instrument.name").toString(), "name"),
   new WatchlistColumns(i18n.t("instrument.tradeCount").toString(), "totalTrades"),
@@ -20,25 +22,21 @@ const cols = [
   new WatchlistColumns(i18n.t("instrument.dateTime").toString(), "dateTime"),
 ];
 
-const bottomPanelManager = useBottomPanel();
-const instrumentManager = useInstrument();
-const model = ref(props.value)
-const tradeHistories: TradesHistory[] = reactive([]);
-
-// function getTradeHistories() {
-//   bottomPanelManager.setLoading(true);
-//   instrumentManager
-//     .getTradeHistories(model.value)
-//     .then((res: PaginatedResult<TradesHistory> | undefined) => {
-//       if (res) tradeHistories.push(...res.data);
-//       bottomPanelManager.setLoading(false);
-//     });
-// }
-// getTradeHistories();
+function getTradeHistories() {
+    console.log("trade history")
+  bottomPanelManager.setLoading(true);
+  instrumentManager
+    .getTradeHistories(props.value)
+    .then((res: PaginatedResult<TradesHistory> | undefined) => {
+      if (res) tradeHistories.push(...res.data);
+      bottomPanelManager.setLoading(false);
+    });
+}
+ getTradeHistories();
 </script>
 
 <template>
-    <ada-data-table :items="tradeHistories" :headers="cols" id="id" class="tw-w-full">
+    <ada-data-table :items="tradeHistories" :headers="cols" item-key="id" class="tw-w-full">
     <template #item.name="{ item }">
       <span>item.validity</span>
     </template>

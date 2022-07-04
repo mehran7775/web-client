@@ -82,21 +82,6 @@ export interface MarketHistory {
   totalTradesValue: number;
 }
 
-export class TradesHistory {
-  name: string;
-  dateTime: string;
-  totalTrades: number;
-  totalShares: number;
-  totalTradeValue: number;
-  constructor() {
-    this.name = "";
-    this.dateTime = "";
-    this.totalTrades = 0;
-    this.totalShares = 0;
-    this.totalTradeValue = 0;
-  }
-}
-
 export class InstrumentSearchModel implements SearchModel {
   ids: Array<number>;
   boardIds: Array<number>;

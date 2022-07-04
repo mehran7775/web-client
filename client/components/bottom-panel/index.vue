@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, Ref, computed, ComputedRef, watch } from "#app";
-import { OrderFlags, OrderSearchModel, TabItem, defaultItem } from "@/types";
+import { OrderFlags, OrderSearchModel, TabItem, defaultItem, TradesHistorySerachModel } from "@/types";
 import furtherInformation from "./furtherInformation/index.vue";
 import DefaultOrderList from "./defaultOrderList.vue";
 import DateInfo from "./DateInfo.vue";
@@ -32,6 +32,10 @@ const searchModels = {
   draftOrders: new OrderSearchModel(0, 10, OrderFlags.Draft),
   actives: new OrderSearchModel(0, 10, OrderFlags.Confirmed | OrderFlags.PreOpening | OrderFlags.Created | OrderFlags.Sent),
   canceledOrders: new OrderSearchModel(0, 10, OrderFlags.Cancelled),
+  tradeHistories:<TradesHistorySerachModel> {
+    offset:0,
+    length:10,
+  },
 }
 const instrument = useInstrument()
 
@@ -235,7 +239,7 @@ function close() {
             <p v-text="useBottomPanel()._activeTab.body"></p>
           </ada-tab>
           <ada-tab name="bottom-panel.dateInfo.tradesHistory">
-            <trade-history-tran />
+            <trade-history-transactions :value="searchModels.tradeHistories"/>
           </ada-tab>
         </ada-tabs>
         <loading :loading="showLoading" />
