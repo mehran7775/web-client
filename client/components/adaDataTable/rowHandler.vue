@@ -11,8 +11,10 @@ const props = defineProps<{
 
 <style lang="postcss" scoped>
 .row-border {
+  position: relative;
   border: none;
   height: var(--row-height);
+  -webkit-user-drag: element;
 
   td {
     height: var(--row-height);

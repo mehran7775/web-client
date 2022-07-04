@@ -244,9 +244,11 @@ getData(props.searchModel);
         <header-selector />
       </template>
 
-      <RowHandler v-ada-ripple @click="() => select(item)" class="inst"
-        :class="{ 'active': selected && selected.id == item.id }" v-for="item in instruments" :key="item.id"
-        :model="{ headers, item }">
+      <RowHandler draggable="true" @dragstart="(ev) => drag(item)"
+        @dragover="(ev) => { ev.preventDefault(); if (ev.dataTransfer) { ev.dataTransfer.dropEffect = 'move'; } }"
+        dropzone="true" @drop="(ev) => { ev.preventDefault(); drop(item); }"
+        @click="() => select(item)" class="inst" :class="{ 'active': selected && selected.id == item.id }"
+        v-for="item in instruments" :key="item.id" :model="{ headers, item }">
         <template #item.actions="{ item }">
           <div class="text-no-wrap">
             <ada-icon class="tw-m-0 tw-p-0 tw-mx-2" color="info" @click="() => focus(item)" :disabled="!canfocus"
