@@ -10,20 +10,13 @@ import {
   MarketHistory,
   OrderQueueItem,
   SameSectorQuery,
-  TradesHistory,
-  TradesHistorySerachModel,
   Wealth,
-  PaginatedResult,
-  Side
 } from "~/types";
 import manager from "@/repositories/oms/instruments_manager";
 import { useAxios } from "../useAxios";
 import { useWebSocket } from "../useWebsocket";
-<<<<<<< HEAD
 import { object } from "yup";
-=======
 import { Side } from "@/types";
->>>>>>> resolve
 
 export const useInstrument = defineStore("instrument", () => {
   const state = ref<InstrumentState>({
@@ -89,8 +82,8 @@ export const useInstrument = defineStore("instrument", () => {
         state.value.cache.get(key.toString()) || null
   );
   const getFocus = computed((): Array<InstrumentCache> => state.value.focus);
-  const getSelected = computed(
-    (): InstrumentCache | null => state.value.selected
+  const getActive = computed(
+    (): InstrumentCache | null => state.value.activeTab
   );
   const getSelectedIndex = computed((): number =>
     state.value.focus.findIndex((item) => item.id == state.value.selected?.id)
@@ -123,7 +116,7 @@ export const useInstrument = defineStore("instrument", () => {
       (element: Instrument) => element.id == data
     );
     state.value.focus.splice(index, 1);
-    state.value.selected =
+    state.value.activeTab =
       index >= state.value.focus.length
         ? state.value.focus[index - 1]
         : state.value.focus[index];
@@ -131,11 +124,8 @@ export const useInstrument = defineStore("instrument", () => {
   function select(active: InstrumentCache | null) {
     state.value.selected = active;
   }
-  function selectByIndex(index: number) {
-    state.value.selected = state.value.focus[index];
-  }
-  function selectById(id: number) {
-    state.value.selected = state.value.cache.get(id.toString()) ?? null;
+  function activateTab(inst: InstrumentCache | null) {
+    state.value.activeTab = inst;
   }
   function setWidth(width: number) {
     state.value.width = width;
@@ -261,28 +251,17 @@ export const useInstrument = defineStore("instrument", () => {
     return data;
   }
 
-  async function getTradeHistories(
-    searchModel: TradesHistorySerachModel
-    ): Promise<PaginatedResult<TradesHistory>> {
-    const { data } = await manager.getTradeHistories(
-      searchModel,
-      axios
-    );
-    return data;
-  }
-
-  function focusOnCount( id: number  ) {
+  function focusOnCount(id: number) {
     nextTick(() => {
-      setTimeout(()=> {
-        if(id == Side.Sell) {
-          document.getElementById("sellCountInputText")!.focus()
+      setTimeout(() => {
+        if (id == Side.Sell) {
+          document.getElementById("sellCountInputText")!.focus();
         }
-        if(id == Side.Buy) {
-          document.getElementById("buyCountInputText")!.focus()
+        if (id == Side.Buy) {
+          document.getElementById("buyCountInputText")!.focus();
         }
-      },500)
-    })  
- 
+      }, 500);
+    });
   }
 
 
@@ -294,7 +273,7 @@ export const useInstrument = defineStore("instrument", () => {
     focusMode,
     getByKey,
     getFocus,
-    getSelected,
+    getActive,
     getSelectedIndex,
     //Mutations
     updateInstrument,
@@ -303,8 +282,7 @@ export const useInstrument = defineStore("instrument", () => {
     setFocusMode,
     removeFocus,
     select,
-    selectByIndex,
-    selectById,
+    activateTab,
     setWidth,
     // Actions
     getInstrumentsDetail,
@@ -313,7 +291,6 @@ export const useInstrument = defineStore("instrument", () => {
     getOrderQueue,
     getClientDistribution,
     getTeammates,
-    getTradeHistories,
     focusOnCount
   };
 });

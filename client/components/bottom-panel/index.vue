@@ -11,7 +11,7 @@ import AdaToggle from "@/components/adaToggle.vue";
 import AdaBtn from "@/components/adaBtn.vue";
 import AdaTabs from "@/components/adaTabs/index.vue"
 import AdaTab from "@/components/adaTabs/adaTab.vue"
-import TradeHistoryTransactions from "./TradeHistoryTransactions.vue"
+// import TradeHistoryTransactions from "./TradeHistoryTransactions.vue"
 
 
 ////
