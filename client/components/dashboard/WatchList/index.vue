@@ -230,7 +230,19 @@ getData(props.searchModel);
     }
 
     &.active {
-      background-color: rgba(var(--c-primary), .1);
+      position: relative;
+      background-color: rgba(var(--c-selected-inst), .4);
+
+      &::befor {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        z-index: -1;
+      }
     }
   }
 }
@@ -246,9 +258,9 @@ getData(props.searchModel);
 
       <RowHandler draggable="true" @dragstart="(ev) => drag(item)"
         @dragover="(ev) => { ev.preventDefault(); if (ev.dataTransfer) { ev.dataTransfer.dropEffect = 'move'; } }"
-        dropzone="true" @drop="(ev) => { ev.preventDefault(); drop(item); }"
-        @click="() => select(item)" class="inst" :class="{ 'active': selected && selected.id == item.id }"
-        v-for="item in instruments" :key="item.id" :model="{ headers, item }">
+        dropzone="true" @drop="(ev) => { ev.preventDefault(); drop(item); }" @click="() => select(item)" class="inst"
+        :class="{ 'active': selected && selected.id == item.id }" v-for="item in instruments" :key="item.id"
+        :model="{ headers, item }">
         <template #item.actions="{ item }">
           <div class="text-no-wrap">
             <ada-icon class="tw-m-0 tw-p-0 tw-mx-2" color="info" @click.stop="() => focus(item)" :disabled="!canfocus"

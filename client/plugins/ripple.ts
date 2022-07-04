@@ -98,7 +98,7 @@ const ripples = {
     const computed = window.getComputedStyle(el);
     if (computed && computed.position === "static") {
       el.style.position = "relative";
-      el.dataset.previousPosition = "static";
+      el.dataset.previousPosition = "relative";
     }
 
     animation.classList.add("v-ripple__animation--enter");
