@@ -62,10 +62,6 @@ const showLoading = computed(() => bottomPanel.loading);
 const headers: ComputedRef<TabItem[]> = computed(() =>
   typeof tab.value?.children != 'undefined' ? tab.value.children : [{ title: '', params: [] }]);
 
-// watch(instrument.state, (val)=> {
-//   console.log(val.selected)
-// },{deep: true})
-
 function expand() {
   bottomPanel.toggleExpand();
 }
@@ -216,7 +212,7 @@ function close() {
             <default-order-list/>
           </ada-tab>
           <ada-tab name="bottom-panel.orders.drafts" class="tw-overflow-y-auto">
-            <default-order-list v-model="searchModels.draftOrders" />
+            <default-order-list v-model="searchModels.draftOrders"/>
           </ada-tab>
           <ada-tab name="bottom-panel.orders.actives" class="tw-overflow-y-auto">
             <default-order-list v-model="searchModels.actives" />
@@ -249,7 +245,6 @@ function close() {
         <ada-toggle v-model="active" class="tabs">
           <ada-btn :height="32" class="tab" v-for="(t, i) in headers" :key="t.title" :model="t">
             {{ $t(t.title) }}<span v-if="t.title2" v-text="`-${t.title2}`"></span>
-             <span v-text="useInstrument().state.selected && !t.title2 ? '-' + useInstrument().state.selected.name: ''"></span>
             <bar v-if="i != headers.length - 1" />
           </ada-btn>
         </ada-toggle>

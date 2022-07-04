@@ -42,7 +42,7 @@ const wage = ref({ buy: 0, sell: 0 });
 const agreement = ref(true);
 const orderDivision = ref(false);
 const accountTypefield = ref(0);
-
+const validatePercent = ref<number>(0)
 
 
 
@@ -149,8 +149,9 @@ async function placeOrder(options: { draft: boolean }) {
     orderManager.placeOrder(param)
     .then((res)=> {
       if(res.status === 201) {
+        options.draft ? useBottomPanel().$state._titles[0].default = "bottom-panel.orders.drafts" : useBottomPanel().$state._titles[0].default = "bottom-panel.orders.all"
         useBottomPanel()._activeTab = useBottomPanel().$state._titles[0]
-         orderManager.last_update = new Date().toISOString()
+        orderManager.last_update = new Date().toISOString()
       }
     })
     .catch((e)=> {
@@ -170,6 +171,7 @@ function updateData () {
   countVal.value = 0
   priceVal.value = 0
   orderDivision.value= false
+  validatePercent.value = 0
 }
 
 
@@ -334,10 +336,10 @@ instrumentManager
 <template>
   <div class="buy-sell">
     <v-tabs height="32" hide-slider v-model="tab" grow>
-      <v-tab class="buy" :key="Side.Buy" :href="'#' + Side.Buy">
+      <v-tab class="buy" :key="Side.Buy" :href="'#' + Side.Buy" @click="instrumentManager.focusOnCount(1)">
         {{ $t("oms.buy") }}
       </v-tab>
-      <v-tab class="sell" :key="Side.Sell" :href="'#' + Side.Sell">
+      <v-tab class="sell" :key="Side.Sell" :href="'#' + Side.Sell" @click="instrumentManager.focusOnCount(2)">
         {{ $t("oms.sell") }}
       </v-tab>
     </v-tabs>
@@ -403,7 +405,7 @@ instrumentManager
             </percent>
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100" :value="0" tabindex="-1">
+            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100" v-model="validatePercent" tabindex="-1">
             </text-input>
             <bar />
           </div>
@@ -503,7 +505,7 @@ instrumentManager
             </percent>
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100" :value="0" tabindex="-1">
+            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100" v-model="validatePercent" tabindex="-1">
             </text-input>
             <bar />
           </div>
