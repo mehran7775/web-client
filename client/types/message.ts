@@ -4,13 +4,11 @@ export class MessageQuery implements SearchModel {
   filters: MessageFilter;
   offset: number;
   length: number;
-  title: string | null;
   echo: any;
   constructor(offset: number, length: number, filters: MessageFilter) {
     this.filters = filters;
     this.offset = offset;
     this.length = length;
-    this.title = null;
   }
 }
 

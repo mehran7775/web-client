@@ -90,11 +90,11 @@ watch(toggleMenu, (newVal, oldVal) => {
 
 watch(selected, (newval) => {
   if (newval) {
-    myMessageQuery.value.title = "(" + newval?.name + ")";
-    messageQuery.value.title = "(" + newval?.name + ")";
+    myMessageQuery.value.filters.title = "(" + newval?.name;
+    messageQuery.value.filters.title = "(" + newval?.name;
   } else {
-    myMessageQuery.value.title = null;
-    messageQuery.value.title = null;
+    myMessageQuery.value.filters.title = null;
+    messageQuery.value.filters.title = null;
   }
   myMessages.splice(0, Infinity);
   loadMyMessages();
