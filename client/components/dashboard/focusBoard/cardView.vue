@@ -17,7 +17,7 @@ const maxwidthVal = computed(
   }
 );
 
-const selected = computed(() => instrumentManager.getSelected)
+const selected = computed(() => instrumentManager.state.selected)
 
 function close(item: InstrumentCache) {
   instrumentManager.removeFocus(item.id);
@@ -27,10 +27,14 @@ function order(item: InstrumentCache, side: Side) {
   instrumentManager.select(item);
   instrumentManager.setFocusMode(0);
   instrumentManager.focusOnCount(side)
- 
+
 }
 function select(item: InstrumentCache) {
-  instrumentManager.select(item);
+  const crt = instrumentManager.state.selected;
+  if (crt == null || crt.id != item.id)
+    instrumentManager.select(item);
+  else
+    instrumentManager.select(null);
 }
 
 defineExpose({

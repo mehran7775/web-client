@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from "#app";
-import { Tabs, DeepOptions, Instrument, SameSectorQuery } from "@/types";
+import { Tabs, DeepOptions, Instrument, SameSectorQuery, InstrumentCache } from "@/types";
 import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
@@ -15,12 +15,19 @@ const count = ref(0);
 const price = ref(0);
 const tab = computed({
   get: () => {
-    return instrumentManager.getSelected;
+    return instrumentManager.getActive;
   },
   set: (val) => {
-    instrumentManager.select(val);
+    instrumentManager.activateTab(val);
   },
 });
+function select(val: InstrumentCache) {
+  const crt = instrumentManager.state.selected;
+  if (crt == null || crt.id != val.id)
+    instrumentManager.select(val);
+  else
+    instrumentManager.select(null);
+}
 function close(id: number) {
   instrumentManager.removeFocus(id);
 }
@@ -48,6 +55,7 @@ async function deep(option: DeepOptions, instrument: Instrument) {
 defineExpose({
   close,
   deep,
+  select,
   LastPrice,
   price,
   count,
@@ -110,7 +118,8 @@ defineExpose({
 <template>
   <div class="tab-view tw-w-full">
     <ada-toggle :height="32" color="primary" v-model="tab" align-with-title>
-      <ada-btn v-for="(item, i) in instruments" :key="item.id" :model="item" name-key="$.id" :height="32" class="tab">
+      <ada-btn @click="() => select(item)" v-for="(item, i) in instruments" :key="item.id" :model="item" name-key="$.id"
+        :height="32" class="tab">
         <ada-badge color="success" dot left offset-y="75%" offset-x="-5">
           {{ item.name }}
           <last-price :value="item" />
@@ -137,7 +146,7 @@ defineExpose({
           </ada-col>
         </div>
         <div class="panel">
-          <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" :insName="item.name"/>
+          <buy-sell-card :price.sync="price" :count.sync="count" :insId="item.id" :insName="item.name" />
         </div>
         <div class="panel">
           <instrument-card :insId="item.id" :insName="item.name" @count="(val) => {

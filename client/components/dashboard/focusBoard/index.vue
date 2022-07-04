@@ -171,13 +171,13 @@ if (process.client) {
         <ada-icon :size="14" class="tw-w-8 tw-h-full" @click="unmark(b)">mdi-close</ada-icon>
       </nuxt-link>
       <ada-toggle class="mode tw-justify-end" color="primary" v-model="viewMode">
-        <div v-if="filter" class="filter">
+        <!-- <div v-if="filter" class="filter">
           <ada-icon class="filter" :size="14" color="primary">isax-search-normal-1</ada-icon>
           <span class="txt">
             {{ filter.name }}
           </span>
           <ada-icon class="close" @click="deselect" :size="14" color="primary">mdi-close</ada-icon>
-        </div>
+        </div> -->
         <ada-btn :height="28" :width="28" :model="0">
           <ada-icon :color="viewMode == 0 ? 'primary' : 'gray'" :size="16">
             isax-menu

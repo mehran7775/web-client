@@ -90,16 +90,22 @@ function parseStatus(state: number) {
   }
 }
 function select(item: InstrumentCache) {
-  instrumentManager.select(item);
+  const crt = instrumentManager.state.selected;
+  if (crt == null || crt.id != item.id)
+    instrumentManager.select(item);
+  else
+    instrumentManager.select(null);
 }
 function order(item: InstrumentCache, side: Side) {
   orderManager.setSide(side, item.id.toString());
   instrumentManager.addFocus(item);
+  instrumentManager.activateTab(item);
   instrumentManager.select(item);
   instrumentManager.setFocusMode(0);
   instrumentManager.focusOnCount(side)
 }
 function focus(item: InstrumentCache) {
+  instrumentManager.activateTab(item);
   instrumentManager.select(item);
   instrumentManager.addFocus(item);
 }
@@ -175,8 +181,9 @@ if (process.client) {
   sh.addShortcut({
     key: "alt+shift+a",
     action: () => {
-      const item = instrumentManager.getSelected;
+      const item = instrumentManager.state.selected;
       if (item) {
+        instrumentManager.activateTab(item)
         instrumentManager.updateInstrument(
           Object.assign({}, item, {
             side: Side.Buy,
@@ -189,8 +196,9 @@ if (process.client) {
   sh.addShortcut({
     key: "alt+shift+s",
     action: () => {
-      const item = instrumentManager.getSelected;
+      const item = instrumentManager.state.selected;
       if (item) {
+        instrumentManager.activateTab(item)
         instrumentManager.updateInstrument(
           Object.assign({}, item, {
             id: item.id,
@@ -236,7 +244,10 @@ getData(props.searchModel);
         <header-selector />
       </template>
 
-      <RowHandler v-ada-ripple @click="() => select(item)" class="inst" :class="{ 'active': selected && selected.id == item.id }"
+      <RowHandler draggable="true" @dragstart="(ev) => drag(item)"
+        @dragover="(ev) => { ev.preventDefault(); if (ev.dataTransfer) { ev.dataTransfer.dropEffect = 'move'; } }"
+        dropzone="true" @drop="(ev) => { ev.preventDefault(); drop(item); }"
+        @click="() => select(item)" class="inst" :class="{ 'active': selected && selected.id == item.id }"
         v-for="item in instruments" :key="item.id" :model="{ headers, item }">
         <template #item.actions="{ item }">
           <div class="text-no-wrap">
