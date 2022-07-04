@@ -20,7 +20,11 @@ export const useOrder = defineStore("order", () => {
   const axios = useAxios();
   const instrumentManager = useInstrument();
   const wealthManager = useWealth();
+<<<<<<< HEAD
   const all_orders = ref<PaginatedResult<Order>[] | undefined>([])
+=======
+  const last_update: string = new Date().toISOString()
+>>>>>>> resolve
   const orderFormCache: { [key: string]: Ref<Order> } = {};
   const last_update: string = new Date().toISOString()
 

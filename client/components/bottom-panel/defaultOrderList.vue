@@ -39,19 +39,13 @@ const cols = [
 const agreement = ref(true);
 
 
-//////////////////////
+
 
 watch(()=> orderManager.last_update, ()=> {
-  console.log('5')
   getOrders()
 })
 
 
-
-
-
-
-/////////////////////
 
 function parseOrderFlags(status: number) {
   if (status == OrderFlags.Draft) {

@@ -139,7 +139,7 @@ async function check() {
 
 
 async function placeOrder(options: { draft: boolean }) {
-  if ( await check()) {
+  if (await check()) {
     const param: any = { ...order.value };
     if (options.draft) param.flags = param.flags | 1;
     param.termsAndConditions = agreement.value;
