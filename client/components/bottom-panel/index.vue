@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, Ref, computed, ComputedRef, watch } from "#app";
-import { OrderFlags, OrderSearchModel, TabItem, defaultItem } from "@/types";
+import { OrderFlags, OrderSearchModel, TabItem, defaultItem, TradesHistorySerachModel } from "@/types";
 import furtherInformation from "./furtherInformation/index.vue";
 import DefaultOrderList from "./defaultOrderList.vue";
 import DateInfo from "./DateInfo.vue";
@@ -11,6 +11,7 @@ import AdaToggle from "@/components/adaToggle.vue";
 import AdaBtn from "@/components/adaBtn.vue";
 import AdaTabs from "@/components/adaTabs/index.vue"
 import AdaTab from "@/components/adaTabs/adaTab.vue"
+import TradeHistoryTransactions from "./TradeHistoryTransactions.vue"
 
 
 ////
@@ -24,10 +25,6 @@ const props = withDefaults(
   }
 );
 
-
-
-////////
-
 const bottomPanel = useBottomPanel();
 const active: Ref<TabItem> = ref(defaultItem)
 const tabs = computed(() => bottomPanel.tabs);
@@ -36,13 +33,12 @@ const searchModels = {
   draftOrders: new OrderSearchModel(0, 10, OrderFlags.Draft),
   actives: new OrderSearchModel(0, 10, OrderFlags.Confirmed | OrderFlags.PreOpening | OrderFlags.Created | OrderFlags.Sent),
   canceledOrders: new OrderSearchModel(0, 10, OrderFlags.Cancelled),
+  tradeHistories:<TradesHistorySerachModel> {
+    offset:0,
+    length:10,
+  },
 }
 const instrument = useInstrument()
-
-
-
-
-///////
 
 const tab = computed({
   get(): TabItem {
@@ -66,18 +62,9 @@ const showLoading = computed(() => bottomPanel.loading);
 const headers: ComputedRef<TabItem[]> = computed(() =>
   typeof tab.value?.children != 'undefined' ? tab.value.children : [{ title: '', params: [] }]);
 
-
-
-
-
-//////////////
-
 // watch(instrument.state, (val)=> {
 //   console.log(val.selected)
 // },{deep: true})
-
-
-////////////////////
 
 function expand() {
   bottomPanel.toggleExpand();
@@ -251,6 +238,9 @@ function close() {
           </ada-tab>
           <ada-tab v-if="useBottomPanel()._activeTab" :name="active.title">
             <p v-text="useBottomPanel()._activeTab.body"></p>
+          </ada-tab>
+          <ada-tab name="bottom-panel.dateInfo.tradesHistory">
+            <trade-history-transactions :value="searchModels.tradeHistories"/>
           </ada-tab>
         </ada-tabs>
         <loading :loading="showLoading" />
