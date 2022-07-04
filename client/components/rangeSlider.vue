@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { watch, ref, computed } from "#app";
 import { useAsrTrader } from "@/composables";
-import { time } from "console";
 const props = withDefaults(
   defineProps<{
     value: number;
@@ -47,8 +46,9 @@ watch(
 
 <style lang="postcss" scoped>
 .range-container {
-  position: relative;
-  display: flex;
+  @apply tw-flex tw-relative;
+  min-width: 47%;
+  margin-right: 3%;
   .tooltip {
     border-radius: var(--border-radius-root);
     transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
@@ -123,6 +123,7 @@ watch(
       :min="min"
       :max="max"
       @input="setVal"
+      v-bind="$attrs"
     />
     <div class="process" :style="{ width: process + '%' }"></div>
   </div>

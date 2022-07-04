@@ -17,7 +17,11 @@ export class MessageFilter {
   dateTime: string | null;
   tags: MessageTag[];
   title: string | null;
-  constructor(tags: MessageTag[], dateTime: string | null = null, title: string | null = null) {
+  constructor(
+    tags: MessageTag[],
+    dateTime: string | null = null,
+    title: string | null = null
+  ) {
     this.tags = tags;
     this.dateTime = dateTime;
     this.title = title;
@@ -40,19 +44,18 @@ enum types {
 }
 
 export interface Message {
-  id: number,
-  dateTime: string | null,
-  title: string,
-  preview: string,
-  origin: number,
-  type: types,
-  flags: number,
-  message: string,
-  seenDate: string
+  id: number;
+  dateTime: string | null;
+  title: string;
+  preview: string;
+  origin: number;
+  type: types;
+  flags: number;
+  message: string;
+  seenDate: string | null;
 }
 
-export interface MessageTemplate {
-}
+export interface MessageTemplate {}
 
 export interface MessageTemplate_1 extends MessageTemplate {
   body: String;

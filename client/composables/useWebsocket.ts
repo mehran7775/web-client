@@ -28,7 +28,15 @@ export const useWebSocket = defineStore("webSocket", () => {
       for (let i in toSend) {
         send(toSend[i]);
       }
+      console.log(new Date(),"WS Connected.")
     };
+    connection.onclose = reconnect;
+  }
+
+  function reconnect(){
+    setTimeout(() => {
+      connect();
+    }, 2000);
   }
 
   function registerHandler(type: string, handler: (obj: ISharedObject) => any) {

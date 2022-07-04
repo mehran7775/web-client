@@ -13,6 +13,7 @@ const props = withDefaults(
     rounded: string;
     bg: string;
     activeBorder: boolean;
+    readonly: boolean
   }>(),
   {
     label: "",
@@ -25,6 +26,7 @@ const props = withDefaults(
     rounded: "var(--border-radius-root)",
     bg: "rgba(var(--c-primary), 0.1)",
     activeBorder: true,
+    readonly: false
   }
 );
 
@@ -34,7 +36,7 @@ const ltr = computed<string>(() => (props.type == "number" ? "ltr" : ""));
 const val = ref(props.value);
 const active = ref(false)
 
-function setValue(update: any) {
+function setValue(update: string | number) {
   val.value = update;
 }
 
@@ -101,7 +103,10 @@ watch(
       borderRadius: rounded
     }" v-model="val" :class="[ltr, activeBorder ? 'active-border' : '']"
       @input="() => emit('input', type == 'number' ? parseInt(val) : val)"
-      v-bind="{ min, max, minlength, maxlength, ...$attrs }" />
+      v-bind="{ min, max, minlength, maxlength, ...$attrs }"
+      :readonly="readonly"
+      :pattern="`.{${min}, ${max}}`"
+      />
     <slot name="append"></slot>
   </label>
 </template>

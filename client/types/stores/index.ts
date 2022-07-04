@@ -51,6 +51,7 @@ export interface InstrumentState {
   focus: Array<InstrumentCache>;
   focusViewMode: number;
   selected: InstrumentCache | null;
+  activeTab: InstrumentCache | null;
   orderQueueCache: { [key: string]: Array<OrderQueueItem> };
   clientDistributionCache: { [key: string]: ClientDistribution };
   width: number;

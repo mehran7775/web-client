@@ -32,7 +32,7 @@ function getTradeHistories() {
       bottomPanelManager.setLoading(false);
     });
 }
- getTradeHistories();
+getTradeHistories();
 </script>
 
 <template>

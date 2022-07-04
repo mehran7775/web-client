@@ -26,6 +26,7 @@ export const useInstrument = defineStore("instrument", () => {
     focus: reactive([]),
     focusViewMode: 0,
     selected: null,
+    activeTab: null,
     orderQueueCache: {},
     clientDistributionCache: {},
     width: process.client ? window.screen.availWidth : 800,
