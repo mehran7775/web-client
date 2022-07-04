@@ -37,7 +37,7 @@ const props = defineProps<{
     type: number,
     flags: number,
     message: string,
-    seenDate: string
+    seenDate: string | null
 }>()
 
 

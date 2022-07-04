@@ -4,7 +4,7 @@ import filterAutoComplete from "./filterAutoComplete.vue";
 import { AxiosResponse } from "axios";
 import { PaginatedResult, Message, MessageFilter, MessageQuery, Tabs } from "@/types";
 import MessageList from "./messageList.vue";
-import { useAsrTrader, useBottomPanel, useMessages } from "~/composables";
+import { useAsrTrader, useBottomPanel, useMessages, useInstrument } from "~/composables";
 import Search from "@/components/search/Search.vue"
 import MessageItem from './MessageItem.vue'
 
@@ -13,6 +13,7 @@ const emit = defineEmits(["openWatchList", "input", "update:mini"]);
 const props = defineProps<{ value: boolean; mini: boolean; clipped: boolean }>();
 const messageManager = useMessages();
 const appManager = useAsrTrader();
+const instrumentManager = useInstrument();
 const bottomPanel = useBottomPanel();
 const rtl = appManager.rtl;
 
@@ -32,6 +33,8 @@ const drawer = computed({
 const loading = ref(false);
 const myMessages: Message[] = reactive([]);
 const messages: Message[] = reactive([]);
+
+const selected = computed(() => instrumentManager.state.selected)
 
 const myMessageQuery: Ref<MessageQuery> = ref(
   new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00", null))
@@ -85,7 +88,19 @@ watch(toggleMenu, (newVal, oldVal) => {
   }
 })
 
-
+watch(selected, (newval) => {
+  if (newval) {
+    myMessageQuery.value.title = "(" + newval?.name + ")";
+    messageQuery.value.title = "(" + newval?.name + ")";
+  } else {
+    myMessageQuery.value.title = null;
+    messageQuery.value.title = null;
+  }
+  myMessages.splice(0, Infinity);
+  loadMyMessages();
+  messages.splice(0, Infinity);
+  loadMessages();
+})
 
 
 
@@ -138,7 +153,7 @@ const trigger_show_message = async (message: any) => {
     return item.title == getTitle(message.type)
   })
   if (tab) {
-    const res =useBottomPanel()._titles.filter(item => {
+    const res = useBottomPanel()._titles.filter(item => {
       return item.title != tab.title
     })
     useBottomPanel()._titles = res
