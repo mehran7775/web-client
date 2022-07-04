@@ -21,6 +21,7 @@ const tab = computed({
     instrumentManager.activateTab(val);
   },
 });
+const selected = computed(() => instrumentManager.state.selected)
 function select(val: InstrumentCache) {
   const crt = instrumentManager.state.selected;
   if (crt == null || crt.id != val.id)
@@ -81,6 +82,12 @@ defineExpose({
       min-width: 168px;
       border-radius: 0 !important;
 
+      &.selected {
+        background-color: white;
+        &::after {
+          background-color: rgba(var(--c-selected-inst), .25);
+        }
+      }
 
       &::after {
         border-radius: 0 !important;
@@ -119,7 +126,7 @@ defineExpose({
   <div class="tab-view tw-w-full">
     <ada-toggle :height="32" color="primary" v-model="tab" align-with-title>
       <ada-btn @click="() => select(item)" v-for="(item, i) in instruments" :key="item.id" :model="item" name-key="$.id"
-        :height="32" class="tab">
+        :height="32" class="tab" :class="{ 'selected': selected && selected.id == item.id }">
         <ada-badge color="success" dot left offset-y="75%" offset-x="-5">
           {{ item.name }}
           <last-price :value="item" />

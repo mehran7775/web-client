@@ -30,6 +30,7 @@ function order(item: InstrumentCache, side: Side) {
 
 }
 function select(item: InstrumentCache) {
+  instrumentManager.activateTab(item);
   const crt = instrumentManager.state.selected;
   if (crt == null || crt.id != item.id)
     instrumentManager.select(item);
@@ -57,15 +58,25 @@ defineExpose({
   height: 320px;
 
   >.card-view {
+    position: relative;
     background-color: white;
     border-left: 1px solid #e0e0e0;
     border-right: 1px solid #e0e0e0;
     cursor: pointer;
 
     &.active {
-      border-left: 1px solid rgba(var(--c-primary), 0.5);
-      border-right: 1px solid rgba(var(--c-primary), 0.5);
-      background-color: rgba(var(--c-primary), 0.01);
+      border-left: 1px solid rgba(var(--c-selected-inst), 0.5);
+      border-right: 1px solid rgba(var(--c-selected-inst), 0.5);
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(var(--c-selected-inst), .2);
+      }
     }
 
     .toolbar {
