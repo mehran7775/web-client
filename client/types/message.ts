@@ -54,7 +54,7 @@ export interface Message {
   type: types;
   flags: number;
   message: string;
-  seenDate: string;
+  seenDate: string | null;
 }
 
 export interface MessageTemplate {}
