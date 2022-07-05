@@ -248,7 +248,6 @@ function close() {
         <ada-toggle v-model="active" class="tabs">
           <ada-btn :height="32" class="tab" v-for="(t, i) in headers" :key="t.title" :model="t">
             {{ $t(t.title) }}<span v-if="t.title2" v-text="`-${t.title2}`"></span>
-             <span v-text="useInstrument().state.selected && !t.title2 ? '-' + useInstrument().state.selected.name: ''"></span>
             <bar v-if="i != headers.length - 1" />
           </ada-btn>
         </ada-toggle>
