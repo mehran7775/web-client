@@ -22,7 +22,7 @@ getNotifs();
 <template>
     <div>
         <ada-icon v-for="notif in notifs" :key="notif.type" color="success">
-            mdi-message
+            mdi-email-fast-outline
         </ada-icon>
     </div>
 </template>
