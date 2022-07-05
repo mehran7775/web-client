@@ -266,6 +266,7 @@
     "shares": "سهام",
     "sharesCount": "@:oms.count @:wealth.wealth @:wealth.shares",
     "order": {
+      "enteredPrice": "قیمت واردشده",
       "lastTransaction": "زمان آخرین معامله",
       "creationDate": "تاریخ سفارش",
       "vol": "حجم سفارش",

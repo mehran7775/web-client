@@ -9,5 +9,5 @@ export interface TradesHistory {
 }
 
 export interface TradesHistorySerachModel extends SearchModel {
-  instrumentId: number | null;
+  id: number | null;
 }

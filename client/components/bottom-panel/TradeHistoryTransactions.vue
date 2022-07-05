@@ -49,7 +49,7 @@ function getTradeHistories() {
 }
 
 watch(() => inst.value, (update) => {
-  model.value.instrumentId = update?.id || null
+  model.value.id = update?.id || null
   getTradeHistories();
 })
 
