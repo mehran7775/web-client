@@ -62,7 +62,7 @@ watch(() => instrumentManager.state.selected, (val) => {
 
 async function getMygroups() {
   const selected = instrumentManager.state.selected!
-  bottomPanel.setLoading(false)
+  bottomPanel.setLoading(true)
   try {
     const searchModel = new SameSectorQuery(selected.id, selected.sector)
     const res = await instrumentManager.getTeammates(searchModel)

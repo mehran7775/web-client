@@ -127,6 +127,7 @@
     }
   },
   "instrument": {
+    "notifications": "اعلانات",
     "remove": "آیا از حذف این نماد اطمینان دارید؟",
     "detail": "جزئیات نماد",
     "id": "شناسه",
@@ -159,6 +160,7 @@
     "tradingShares": "سهام شناور",
     "lastPrice": "آخرین قیمت",
     "status": "وضعیت",
+    "tradeDate": "تاریخ معامله",
     "state": {
       "activeRead": "مجاز - مسدود",
       "activeTrading": "مجاز - متوقف",
@@ -267,6 +269,7 @@
     "shares": "سهام",
     "sharesCount": "@:oms.count @:wealth.wealth @:wealth.shares",
     "order": {
+      "enteredPrice": "قیمت",
       "lastTransaction": "زمان آخرین معامله",
       "creationDate": "تاریخ سفارش",
       "vol": "حجم سفارش",
@@ -368,9 +371,9 @@
     "completeInfo": {
       "index": "اطلاعات تکمیلی",
       "depth": "عمق بازار",
-      "myGroups" : "همگروه ها",
-      "holdersCombination" : "ترکیب سهامداران",
-      "type" : "حقیقی و حقوقی"
+      "myGroups": "همگروه ها",
+      "holdersCombination": "ترکیب سهامداران",
+      "type": "حقیقی و حقوقی"
     },
     "orders": {
       "all": "سفارشات",
@@ -385,10 +388,9 @@
       "type": "حقیقی و حقوقی"
     },
     "more": {
-      "presentation" : "@:oms.presentation",
+      "presentation": "@:oms.presentation",
       "directorate": "هیئت مدیره",
       "index": "مشخصات"
-
     },
     "statisticsKeys": {
       "index": "آمار کلیدی",
@@ -401,10 +403,10 @@
     "enter": "ورود",
     "exit": "خروج"
   },
-  "categories" : {
-    "marketModerator" : "ناظر بازار",
-    "codal" : "کدال",
-    "tedan" : "تدان",
+  "categories": {
+    "marketModerator": "ناظر بازار",
+    "codal": "کدال",
+    "tedan": "تدان",
     "news": "خبر"
   }
 }

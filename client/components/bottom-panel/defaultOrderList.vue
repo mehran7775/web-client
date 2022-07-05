@@ -31,6 +31,7 @@ const cols = [
   new WatchlistColumns(i18n.t("wealth.order.vol").toString(), "quantity"),
   new WatchlistColumns(i18n.t("wealth.order.vol-done").toString(), "doneQuantity"),
   new WatchlistColumns(i18n.t("wealth.order.vol-rem").toString(), "remainQuantity"),
+  new WatchlistColumns(i18n.t("wealth.order.enteredPrice").toString(), "enteredPrice"),
   new WatchlistColumns(i18n.t("wealth.order.creationDate").toString(), "creationDate"),
   new WatchlistColumns(i18n.t("wealth.order.lastTransaction").toString(), "last"),
   new WatchlistColumns(i18n.t("wealth.order.side.title").toString(), "side"),

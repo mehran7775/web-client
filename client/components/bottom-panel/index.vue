@@ -214,7 +214,7 @@ function close() {
             <default-order-list/>
           </ada-tab>
           <ada-tab name="bottom-panel.orders.drafts" class="tw-overflow-y-auto">
-            <default-order-list v-model="searchModels.draftOrders"/>
+            <default-order-list v-model="searchModels.draftOrders" />
           </ada-tab>
           <ada-tab name="bottom-panel.orders.actives" class="tw-overflow-y-auto">
             <default-order-list v-model="searchModels.actives" />
@@ -269,8 +269,9 @@ function close() {
     <ada-toggle class="tabs" v-model="tab">
       <ada-btn class="tab" v-for="(t, i) in tabs" :key="t.title" :model="t">
         <span :class="{ 'active': tab.title == t.title }">
-          {{$t(t.title) }}
-          <span v-text="useInstrument().state.selected && !t.deleteAble ? '-' + useInstrument().state.selected.name: ''"></span>
+          {{ $t(t.title) }}
+          <span
+            v-text="useInstrument().state.selected && !t.deleteAble ? '-' + useInstrument().state.selected.name : ''"></span>
         </span>
         <bar v-if="i != tabs.length - 1" />
       </ada-btn>

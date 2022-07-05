@@ -14,6 +14,7 @@ import {
   TradesHistorySerachModel,
   PaginatedResult,
   Wealth,
+  SearchModel,
 } from "~/types";
 import manager from "@/repositories/oms/instruments_manager";
 import { useAxios } from "../useAxios";
@@ -195,6 +196,15 @@ export const useInstrument = defineStore("instrument", () => {
     });
     return data;
   }
+  async function getDailyPrices(
+    id: number,
+    searchModel: SearchModel
+  ): Promise<Array<DailyPrice>> {
+    const {
+      data: { data },
+    } = await manager.getInstrumentDailyPrice(id, searchModel, axios);
+    return data;
+  }
   async function getMarketHistory(
     ids: Array<number>
   ): Promise<Array<MarketHistory> | number> {
@@ -255,19 +265,6 @@ export const useInstrument = defineStore("instrument", () => {
     return data;
   }
 
-  function focusOnCount(side: number, id: number) {
-    nextTick(() => {
-      setTimeout(() => {
-        if (side == Side.Sell) {
-          document.getElementById(`sellCountInputText-${ id }`)!.focus();
-        }
-        if (side == Side.Buy) {
-          document.getElementById(`buyCountInputText-${ id }`)!.focus();
-        }
-      }, 700);
-    });
-  }
-
   async function getTradeHistories(
     searchModel: TradesHistorySerachModel
   ): Promise<PaginatedResult<TradesHistory>> {
@@ -306,11 +303,11 @@ export const useInstrument = defineStore("instrument", () => {
     // Actions
     getInstrumentsDetail,
     getInstrumentPrices,
+    getDailyPrices,
     getMarketHistory,
     getOrderQueue,
     getClientDistribution,
     getTeammates,
-    focusOnCount,
     getTradeHistories,
     getMyGroups
   };

@@ -96,6 +96,5 @@ export function DefaultCols(): WatchlistColumns[] {
     new WatchlistColumns("instrument.opening", "opening"),
     new WatchlistColumns("instrument.last", "last"),
     new WatchlistColumns("instrument.closing", "closing"),
-    new WatchlistColumns("instrument.status", "status", 'center', '123px'),
   ]
 }

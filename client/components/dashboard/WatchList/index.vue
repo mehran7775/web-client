@@ -64,6 +64,8 @@ const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
       })
     }) as WatchlistColumns[])
   );
+  const status = new WatchlistColumns(i18n.t("instrument.notifications"), "status", 'center', '123px');
+  res.push(status);
   const more = new WatchlistColumns("", "more");
   more.draggable = false;
   more.divider = false;
@@ -102,7 +104,6 @@ function order(item: InstrumentCache, side: Side) {
   instrumentManager.activateTab(item);
   instrumentManager.select(item);
   instrumentManager.setFocusMode(0);
-  instrumentManager.focusOnCount(side, item.id)
 }
 function focus(item: InstrumentCache) {
   instrumentManager.activateTab(item);
