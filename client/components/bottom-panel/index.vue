@@ -61,10 +61,6 @@ const showLoading = computed(() => bottomPanel.loading);
 const headers: ComputedRef<TabItem[]> = computed(() =>
   typeof tab.value?.children != 'undefined' ? tab.value.children : [{ title: '', params: [] }]);
 
-// watch(instrument.state, (val)=> {
-//   console.log(val.selected)
-// },{deep: true})
-
 function expand() {
   bottomPanel.toggleExpand();
 }
@@ -215,7 +211,7 @@ function close() {
             <default-order-list/>
           </ada-tab>
           <ada-tab name="bottom-panel.orders.drafts" class="tw-overflow-y-auto">
-            <default-order-list v-model="searchModels.draftOrders" />
+            <default-order-list v-model="searchModels.draftOrders"/>
           </ada-tab>
           <ada-tab name="bottom-panel.orders.actives" class="tw-overflow-y-auto">
             <default-order-list v-model="searchModels.actives" />

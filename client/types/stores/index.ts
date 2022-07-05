@@ -65,4 +65,6 @@ export interface Snack {
   content: string;
   color: string;
   show?: boolean;
+  timeout?: number;
+  bg?: string
 }

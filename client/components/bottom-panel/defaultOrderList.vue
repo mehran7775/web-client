@@ -14,6 +14,7 @@ import NumericField from "../numericField.vue";
 
 const props = withDefaults(defineProps<{
   value: OrderSearchModel,
+  name?: string
 }>(), {
   value: () => new OrderSearchModel(),
 })
