@@ -12,8 +12,10 @@ import {
 import { useInstrument, useOrder, useUser } from "@/composables";
 import { useShortcut } from "@/utils/shortcutManager";
 import HeaderSelector from "./headerSelector.vue";
-import RowHandler from "@/components/adaDataTable/rowHandler.vue"
+import RowHandler from "@/components/adaDataTable/rowHandler.vue";
 import { useRoute, useNuxtApp } from "#app";
+import InstrumentNotifications from "./instrumentNotifications.vue";
+
 
 const props = withDefaults(
   defineProps<{
@@ -64,7 +66,7 @@ const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
       })
     }) as WatchlistColumns[])
   );
-  const status = new WatchlistColumns(i18n.t("instrument.notifications"), "status", 'center', '123px');
+  const status = new WatchlistColumns(i18n.t("instrument.notifications"), "notifications", 'center', '123px');
   res.push(status);
   const more = new WatchlistColumns("", "more");
   more.draggable = false;
@@ -337,6 +339,9 @@ getData(props.searchModel);
           " :size="16">
             isax-trash
           </ada-icon>
+        </template>
+        <template #item.notifications="{ item }">
+          <instrument-notifications :value="item"></instrument-notifications>
         </template>
       </RowHandler>
     </ada-data-table>

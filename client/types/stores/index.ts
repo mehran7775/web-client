@@ -1,4 +1,4 @@
-import { User, AnonymousUser, InstrumentCache } from "@/types/";
+import { User, AnonymousUser, InstrumentCache, Notification } from "@/types/";
 import { reactive, Ref, ref } from "#app";
 import { KeyValuePairs } from "../collection";
 import { ClientDistribution, OrderQueueItem } from "../wealth";
@@ -66,5 +66,9 @@ export interface Snack {
   color: string;
   show?: boolean;
   timeout?: number;
-  bg?: string
+  bg?: string;
+}
+
+export interface NotificationState {
+  cache: Map<string, Array<Notification>>;
 }

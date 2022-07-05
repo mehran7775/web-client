@@ -5,7 +5,12 @@ import {
   getMessageFilters as GetMessageFilters,
   getMessageList as GetMessageList,
 } from "~/repositories/oms/message_manager";
-import { PaginatedResult, Message, AutoCompleteItem } from "@/types";
+import {
+  PaginatedResult,
+  Message,
+  AutoCompleteItem,
+  MessageQuery,
+} from "@/types";
 import { MessageState } from "@/types/stores";
 import { AxiosResponse } from "axios";
 import { useAxios } from "../useAxios";
@@ -18,7 +23,7 @@ export const useMessages = defineStore("messages", () => {
     return await GetMessage(id, axios);
   }
   async function getMessages(
-    searchModel: object
+    searchModel: MessageQuery
   ): Promise<AxiosResponse<PaginatedResult<Message>>> {
     return await GetMessageList(searchModel, axios);
   }
