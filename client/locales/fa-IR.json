@@ -157,6 +157,7 @@
     "totalTrades": "@:instrument.tradeCount",
     "tradingShares": "سهام شناور",
     "status": "وضعیت",
+    "tradeDate": "تاریخ معامله",
     "state": {
       "activeRead": "مجاز - مسدود",
       "activeTrading": "مجاز - متوقف",
@@ -366,9 +367,9 @@
     "completeInfo": {
       "index": "اطلاعات تکمیلی",
       "depth": "عمق بازار",
-      "myGroups" : "همگروه ها",
-      "holdersCombination" : "ترکیب سهامداران",
-      "type" : "حقیقی و حقوقی"
+      "myGroups": "همگروه ها",
+      "holdersCombination": "ترکیب سهامداران",
+      "type": "حقیقی و حقوقی"
     },
     "orders": {
       "all": "سفارشات",
@@ -383,10 +384,9 @@
       "type": "حقیقی و حقوقی"
     },
     "more": {
-      "presentation" : "@:oms.presentation",
+      "presentation": "@:oms.presentation",
       "directorate": "هیئت مدیره",
       "index": "مشخصات"
-
     },
     "statisticsKeys": {
       "index": "آمار کلیدی",
@@ -399,10 +399,10 @@
     "enter": "ورود",
     "exit": "خروج"
   },
-  "categories" : {
-    "marketModerator" : "ناظر بازار",
-    "codal" : "کدال",
-    "tedan" : "تدان",
+  "categories": {
+    "marketModerator": "ناظر بازار",
+    "codal": "کدال",
+    "tedan": "تدان",
     "news": "خبر"
   }
 }

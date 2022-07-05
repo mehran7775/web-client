@@ -17,21 +17,22 @@ const model = ref<TradesHistorySerachModel>({
 const tradeHistories: TradesHistory[] = reactive([]);
 const inst = computed(() => instrumentManager.state.selected)
 const defaultCols = [
+  new WatchlistColumns(i18n.t("instrument.tradeDate").toString(), "dateTime"),
   new WatchlistColumns(i18n.t("instrument.tradeCount").toString(), "totalTrades"),
   new WatchlistColumns(i18n.t("instrument.totalShares").toString(), "totalShares"),
   new WatchlistColumns(i18n.t("instrument.totalTradesValue").toString(), "totalTradeValue"),
 ];
-const dateCol = new WatchlistColumns(i18n.t("instrument.dateTime").toString(), "dateTime");
 
 const cols = computed(() => {
   const tmp = [...defaultCols];
   if (instrumentManager.state.selected)
     tmp.push(...[
+      new WatchlistColumns(i18n.t("instrument.opening").toString(), "opening"),
       new WatchlistColumns(i18n.t("instrument.lowest").toString(), "lowest"),
       new WatchlistColumns(i18n.t("instrument.highest").toString(), "highest"),
+      new WatchlistColumns(i18n.t("instrument.last").toString(), "last"),
       new WatchlistColumns(i18n.t("instrument.closing").toString(), "closing"),
     ])
-  tmp.push(dateCol);
   return tmp;
 });
 
@@ -67,7 +68,7 @@ getTradeHistories();
       <NumericField :value="item.totalTradeValue" />
     </template>
     <template #item.dateTime="{ item }">
-      <DateTime :value="item.dateTime" :format="$t('general.date.dt')" class="ltr" />
+      <DateTime :value="item.dateTime" :format="$t('general.date.d')" class="ltr" />
     </template>
   </ada-data-table>
 </template>
