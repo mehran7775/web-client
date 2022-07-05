@@ -238,7 +238,8 @@ export const useInstrument = defineStore("instrument", () => {
       state.value.clientDistributionCache[id.toString()] =
         new ClientDistribution();
       manager.getClientDistribution(id, axios).then((resp) => {
-        state.value.clientDistributionCache[id.toString()] = resp.data.clients;
+        state.value.clientDistributionCache[id.toString()] =
+          resp.data.clients || new ClientDistribution();
       });
     }
     return state.value.clientDistributionCache[id.toString()];
@@ -269,11 +270,8 @@ export const useInstrument = defineStore("instrument", () => {
 
   async function getTradeHistories(
     searchModel: TradesHistorySerachModel
-    ): Promise<PaginatedResult<TradesHistory>> {
-    const { data } = await manager.getTradeHistories(
-      searchModel,
-      axios
-    );
+  ): Promise<PaginatedResult<TradesHistory>> {
+    const { data } = await manager.getTradeHistories(searchModel, axios);
     return data;
   }
 
@@ -303,6 +301,6 @@ export const useInstrument = defineStore("instrument", () => {
     getClientDistribution,
     getTeammates,
     focusOnCount,
-    getTradeHistories
+    getTradeHistories,
   };
 });

@@ -11,6 +11,7 @@ import AdaToggle from "@/components/adaToggle.vue";
 import AdaBtn from "@/components/adaBtn.vue";
 import AdaTabs from "@/components/adaTabs/index.vue"
 import AdaTab from "@/components/adaTabs/adaTab.vue"
+import TradeHistoryTransactions from "./TradeHistoryTransactions.vue"
 
 
 ////
@@ -231,11 +232,12 @@ function close() {
           <ada-tab name="bottom-panel.statisticsKeys">
             <statistics-keys />
           </ada-tab>
-          <ada-tab v-if="useBottomPanel()._activeTab" :name="active.title">
-            <p v-text="useBottomPanel()._activeTab.body"></p>
-          </ada-tab>
           <ada-tab name="bottom-panel.dateInfo.tradesHistory">
              <trade-history-transactions :value="searchModels.tradeHistories"/>
+          </ada-tab>
+          <!-- //TODO Correct this shit! -->
+          <ada-tab v-if="useBottomPanel()._activeTab" :name="active.title">
+            <p v-text="useBottomPanel()._activeTab.body"></p>
           </ada-tab>
         </ada-tabs>
         <loading :loading="showLoading" />
