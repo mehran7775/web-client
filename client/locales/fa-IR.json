@@ -67,7 +67,8 @@
       "d": "D",
       "t": "TT",
       "longdt": "cccc DDD / TT"
-    }
+    },
+    "notFound": "داده ای موجود نیست."
   },
   "user": {
     "personality": {
@@ -132,7 +133,7 @@
     "code": "کد",
     "name": "نماد",
     "fullName": "نام کامل",
-    "sectorCode": "کد بخش",
+    "sector": "کد بخش",
     "categoryName": "کد دسته",
     "baseVol": "حجم مبنا",
     "settlementDelay": "تاخیر تسویه",
@@ -156,6 +157,7 @@
     "tradeCount": "تعداد معاملات",
     "totalTrades": "@:instrument.tradeCount",
     "tradingShares": "سهام شناور",
+    "lastPrice": "آخرین قیمت",
     "status": "وضعیت",
     "state": {
       "activeRead": "مجاز - مسدود",

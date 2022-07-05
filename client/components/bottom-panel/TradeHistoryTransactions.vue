@@ -23,7 +23,6 @@ const cols = [
 ];
 
 function getTradeHistories() {
-    console.log("trade history")
   bottomPanelManager.setLoading(true);
   instrumentManager
     .getTradeHistories(props.value)

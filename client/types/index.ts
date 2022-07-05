@@ -21,7 +21,7 @@ export class InstrumentCache implements IInstrumentCache {
   code: string;
   name: string;
   fullName: string;
-  sectorCode: number;
+  sector: number;
   categoryName: string;
   baseVol: number;
   tradeVal: number;
@@ -60,7 +60,7 @@ export class InstrumentCache implements IInstrumentCache {
     this.code = "";
     this.name = "";
     this.fullName = "";
-    this.sectorCode = 0;
+    this.sector = 0;
     this.categoryName = "";
     this.baseVol = 0;
     this.tradeVal = 0;

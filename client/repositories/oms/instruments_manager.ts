@@ -33,12 +33,13 @@ export async function getClientDistribution(value: number, axios: NuxtAxiosInsta
 }
 
 export async function getTeammates(instrumentId: number, sectorId: number, axios: NuxtAxiosInstance | AxiosInstance) {
-  return axios.get('oms/instruments/same-sub-sectors/' + instrumentId + "/" + sectorId)
+  return axios.get('oms/instruments/same-sectors/' + instrumentId + "/" + sectorId)
 }
 
 export async function getTradeHistories(searchModel: TradesHistorySerachModel, axios: NuxtAxiosInstance | AxiosInstance): Promise<AxiosResponse<PaginatedResult<TradesHistory>>> {
   return axios.get('oms/market-history', {params: searchModel})
 }
+
 
 export default {
   getInstruments,

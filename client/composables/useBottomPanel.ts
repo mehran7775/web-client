@@ -145,11 +145,11 @@ export const useBottomPanel = defineStore("bottom-panel", {
       const sectors = useSectors();
       const sector = await sectors.getSector(payload.sector);
       if (sector) {
-        this.setTitle({
-          tab: Tabs.depth,
-          title: "bottom-panel." + DeepOptions.teammates,
-          params: [sector.name],
-        });
+        // this.setTitle({
+        //   tab: Tabs.depth,
+        //   title: "bottom-panel." + DeepOptions.teammates,
+        //   params: [sector.name],
+        // });
         const data = await this.getTeammates(payload);
         this.setDepthData({
           tab: DeepOptions.teammates,

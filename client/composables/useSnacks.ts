@@ -7,7 +7,7 @@ export const useSnacks = defineStore("snacks", () => {
     color: "",
     content: "",
     show: false ,
-    timeout: 2,
+    timeout: 0,
     bg: 'tw-bg-primary'
   });
   function showMessage(payload: Snack) {

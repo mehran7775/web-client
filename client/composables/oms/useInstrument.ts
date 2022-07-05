@@ -274,6 +274,16 @@ export const useInstrument = defineStore("instrument", () => {
     const { data } = await manager.getTradeHistories(searchModel, axios);
     return data;
   }
+  
+  async function getMyGroups(searchModel: InstrumentSearchModel): Promise<PaginatedResult<Instrument> | undefined> {
+    try {
+      const { data } = await manager.getInstruments(searchModel, axios)
+      console.log('data', data.data)
+      return data
+    }catch(e){
+      console.log(e)
+    }
+  }
 
   return {
     state,
@@ -302,5 +312,6 @@ export const useInstrument = defineStore("instrument", () => {
     getTeammates,
     focusOnCount,
     getTradeHistories,
+    getMyGroups
   };
 });

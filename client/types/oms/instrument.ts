@@ -1,13 +1,14 @@
 import { SearchModel } from "..";
 
 export class Instrument {
+[x: string]: number;
   id: number;
   instrumentId: number;
   instrumentCode: string;
   code: string;
   name: string;
   fullName: string;
-  sectorCode: number;
+  sector: number;
   categoryName: string;
   baseVol: number;
   tradeVal: number;
@@ -50,7 +51,7 @@ export class Instrument {
     this.namedPrice = 0;
     this.buyPrice = 0;
     this.sellPrice = 0;
-    this.sectorCode = 0;
+    this.sector = 0;
     this.settlementDelay = 0;
     this.tradeVal = 0;
     this.shares = 0;
