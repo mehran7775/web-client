@@ -173,7 +173,7 @@ export const useInstrument = defineStore("instrument", () => {
     }
 
     res.sort((a, b) => {
-      return searchModel.ids.indexOf(a.id) - searchModel.ids.indexOf(b.id);
+        return searchModel.ids.indexOf(a.id) - searchModel.ids.indexOf(b.id);
     });
     websocket.watchInstruments(null);
     const ids = res.map((item) => item.id);
@@ -256,7 +256,7 @@ export const useInstrument = defineStore("instrument", () => {
   }
   async function getTeammates(
     searchModel: SameSectorQuery
-  ): Promise<{ queue: Array<OrderQueueItem> }> {
+  ): Promise<PaginatedResult<number>> {
     const { data } = await manager.getTeammates(
       searchModel.instrument,
       searchModel.sector,
@@ -271,14 +271,16 @@ export const useInstrument = defineStore("instrument", () => {
     const { data } = await manager.getTradeHistories(searchModel, axios);
     return data;
   }
-  
-  async function getMyGroups(searchModel: InstrumentSearchModel): Promise<PaginatedResult<Instrument> | undefined> {
+
+  async function getMyGroups(
+    searchModel: InstrumentSearchModel
+  ): Promise<PaginatedResult<Instrument> | undefined> {
     try {
-      const { data } = await manager.getInstruments(searchModel, axios)
-      console.log('data', data.data)
-      return data
-    }catch(e){
-      console.log(e)
+      const { data } = await manager.getInstruments(searchModel, axios);
+      console.log("data", data.data);
+      return data;
+    } catch (e) {
+      console.log(e);
     }
   }
 
@@ -309,6 +311,6 @@ export const useInstrument = defineStore("instrument", () => {
     getClientDistribution,
     getTeammates,
     getTradeHistories,
-    getMyGroups
+    getMyGroups,
   };
 });

@@ -81,8 +81,14 @@ export async function getOrderQueue(
   return axios.get("oms/instruments/order-queue/" + value);
 }
 
-export async function getTeammates(instrumentId: number, sectorId: number, axios: NuxtAxiosInstance | AxiosInstance) {
-  return axios.get('oms/instruments/same-sectors/' + instrumentId + "/" + sectorId)
+export async function getTeammates(
+  instrumentId: number,
+  sectorId: number,
+  axios: AxiosInstance
+): Promise<AxiosResponse<PaginatedResult<number>>> {
+  return axios.get(
+    "oms/instruments/same-sectors/" + instrumentId + "/" + sectorId
+  );
 }
 export async function getClientDistribution(
   value: number,
@@ -97,7 +103,6 @@ export async function getTradeHistories(
 ): Promise<AxiosResponse<PaginatedResult<TradesHistory>>> {
   return axios.get("oms/market-history", { params: searchModel });
 }
-
 
 export default {
   getInstruments,
