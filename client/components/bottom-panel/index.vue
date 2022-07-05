@@ -33,10 +33,6 @@ const searchModels = {
   draftOrders: new OrderSearchModel(0, 10, OrderFlags.Draft),
   actives: new OrderSearchModel(0, 10, OrderFlags.Confirmed | OrderFlags.PreOpening | OrderFlags.Created | OrderFlags.Sent),
   canceledOrders: new OrderSearchModel(0, 10, OrderFlags.Cancelled),
-  tradeHistories:<TradesHistorySerachModel> {
-    offset:0,
-    length:10,
-  },
 }
 const instrument = useInstrument()
 
@@ -208,11 +204,11 @@ function close() {
     <div class="detail">
       <div class="contents">
         <ada-tabs v-model="active" name-key="$.title" class="tw-h-full" :class="{ expanded: expanded }">
-          <ada-tab name="bottom-panel.orders.all" class="tw-overflow-y-auto" >
-            <default-order-list/>
+          <ada-tab name="bottom-panel.orders.all" class="tw-overflow-y-auto">
+            <default-order-list />
           </ada-tab>
           <ada-tab name="bottom-panel.orders.drafts" class="tw-overflow-y-auto">
-            <default-order-list v-model="searchModels.draftOrders"/>
+            <default-order-list v-model="searchModels.draftOrders" />
           </ada-tab>
           <ada-tab name="bottom-panel.orders.actives" class="tw-overflow-y-auto">
             <default-order-list v-model="searchModels.actives" />
@@ -233,7 +229,7 @@ function close() {
             <statistics-keys />
           </ada-tab>
           <ada-tab name="bottom-panel.dateInfo.tradesHistory">
-             <trade-history-transactions :value="searchModels.tradeHistories"/>
+            <trade-history-transactions />
           </ada-tab>
           <!-- //TODO Correct this shit! -->
           <ada-tab v-if="useBottomPanel()._activeTab" :name="active.title">
@@ -263,8 +259,9 @@ function close() {
     <ada-toggle class="tabs" v-model="tab">
       <ada-btn class="tab" v-for="(t, i) in tabs" :key="t.title" :model="t">
         <span :class="{ 'active': tab.title == t.title }">
-          {{$t(t.title) }}
-          <span v-text="useInstrument().state.selected && !t.deleteAble ? '-' + useInstrument().state.selected.name: ''"></span>
+          {{ $t(t.title) }}
+          <span
+            v-text="useInstrument().state.selected && !t.deleteAble ? '-' + useInstrument().state.selected.name : ''"></span>
         </span>
         <bar v-if="i != tabs.length - 1" />
       </ada-btn>
