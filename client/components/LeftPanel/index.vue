@@ -10,7 +10,7 @@ import MessageItem from './MessageItem.vue'
 
 
 const emit = defineEmits(["openWatchList", "input", "update:mini"]);
-const props = defineProps<{ value: boolean; mini: boolean; clipped: boolean }>();
+const props = defineProps<{ value: boolean; clipped: boolean }>();
 const messageManager = useMessages();
 const appManager = useAsrTrader();
 const instrumentManager = useInstrument();
@@ -35,6 +35,14 @@ const myMessages: Message[] = reactive([]);
 const messages: Message[] = reactive([]);
 
 const selected = computed(() => instrumentManager.state.selected)
+const mini = computed({
+  get() {
+    return bottomPanel.LeftPanelMini;
+  },
+  set(val) {
+    bottomPanel.LeftPanelMini = val
+  }
+});
 
 const myMessageQuery: Ref<MessageQuery> = ref(
   new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00", null))
@@ -82,9 +90,10 @@ const categories = ref<{ title: string, bg: string, color: string, active: boole
 
 watch(toggleMenu, (newVal, oldVal) => {
   if (typeof newVal == 'undefined' || newVal == null) {
-    emit("update:mini", true);
+    mini.value = true;
+
   } else {
-    emit("update:mini", false);
+    mini.value = false;
   }
 })
 

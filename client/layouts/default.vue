@@ -18,7 +18,6 @@ const rightMenu = ref({
   drawer: true,
 });
 const leftMenu = ref({
-  mini: true,
   drawer: true,
 });
 
@@ -26,17 +25,19 @@ const rmini = computed({
   get: () => rightMenu.value.mini,
   set(val) {
     rightMenu.value.mini = val;
-    if(!leftMenu.value.mini) leftMenu.value.mini = true
+    if (!lmini.value) lmini.value = true
   }
 })
 
 const lmini = computed({
-  get: ()=> leftMenu.value.mini,
+  get: () => bottomPanelManager.LeftPanelMini,
   set(val) {
-    leftMenu.value.mini = val
-    if(!rightMenu.value.mini) rightMenu.value.mini = true
+    bottomPanelManager.LeftPanelMini = val
+    if (!rightMenu.value.mini) rightMenu.value.mini = true
   }
 })
+
+lmini.value = true;
 
 const locale = appManager.locale;
 const formatter = appManager.formatter;
@@ -208,7 +209,7 @@ const rtl = computed(() => appManager.rtl);
         () => {
           if (rightMenu.drawer) {
             rightMenu.mini = !rightMenu.mini;
-            if (!rightMenu.mini) leftMenu.mini = true
+            if (!rightMenu.mini) lmini = true
           } else {
             rightMenu.drawer = true;
             rightMenu.mini = false;
@@ -222,10 +223,12 @@ const rtl = computed(() => appManager.rtl);
       <clock :format="$t('general.date.longdt')" width="240px" />
       <div class="center tw-flex">
         <ada-badge class="tw-mx-5" color="green">
-          <span v-text="$t('oms.bourseIndex')" class="tw-text-primary"></span>: <span class="tw-text-sm badge-content">{{ formatter.format(151371577) }}</span>
+          <span v-text="$t('oms.bourseIndex')" class="tw-text-primary"></span>: <span
+            class="tw-text-sm badge-content">{{ formatter.format(151371577) }}</span>
         </ada-badge>
         <ada-badge color="orange">
-          <span v-text="$t('oms.superBourseIndex')" class="tw-text-primary"></span>: <span class="tw-text-sm badge-content">{{ formatter.format(20411.30) }}</span>
+          <span v-text="$t('oms.superBourseIndex')" class="tw-text-primary"></span>: <span
+            class="tw-text-sm badge-content">{{ formatter.format(20411.30) }}</span>
         </ada-badge>
       </div>
       <ada-spacer />
@@ -234,26 +237,24 @@ const rtl = computed(() => appManager.rtl);
     <v-main :class="{
       'dashboardmain-page': true,
       right: !rightMenu.mini,
-      left: !leftMenu.mini,
+      left: !lmini,
     }">
       <div :class="['dashboardmain-nuxt', collaps ? 'collaps' : '']">
         <nuxt />
       </div>
       <bottom-panel :class="{
         right: !rightMenu.mini,
-        left: !leftMenu.mini,
-      }" 
-      :slideToBottom="invisibleFinInfo"
-      />
+        left: !lmini,
+      }" :slideToBottom="invisibleFinInfo" />
       <footer v-if="!invisibleFinInfo" class="mainBackground" :class="{
         footer: true,
         right: !rightMenu.mini,
-        left: !leftMenu.mini,
+        left: !lmini,
       }">
-        <div class="summary center" >
+        <div class="summary center">
           <ada-badge color="green" class="tw-ml-3">{{ $t("accounting.account.amount")
           }}
-          <span class="badge-content"> ۲٬۰۰۰٬۰۰۰</span>
+            <span class="badge-content"> ۲٬۰۰۰٬۰۰۰</span>
           </ada-badge>
           <ada-badge color="red" class="tw-ml-3">{{
               $t("accounting.account.blockedAmount")
@@ -278,7 +279,7 @@ const rtl = computed(() => appManager.rtl);
       bottom: '8px',
       left: '8px',
     }" width="32px" height="32px" color="primary 0.9">
-      <ada-icon color="white" :size="24" @click="invisibleFinInfo = !invisibleFinInfo">     
+      <ada-icon color="white" :size="24" @click="invisibleFinInfo = !invisibleFinInfo">
         mdi-chevron-triple-right
       </ada-icon>
     </floating-button>

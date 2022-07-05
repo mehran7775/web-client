@@ -5,11 +5,11 @@ import {
   TabItem,
   SameSectorQuery,
   Message,
-  Order
+  Order,
 } from "@/types";
 import { useSectors } from ".";
 
-let TabNames =[
+let TabNames = [
   {
     tab: Tabs.activeOrders,
     title: "bottom-panel.orders.all",
@@ -55,7 +55,6 @@ let TabNames =[
         title: "bottom-panel.completeInfo.type",
         params: [],
       },
-    
     ],
     default: "bottom-panel.completeInfo.depth",
   },
@@ -113,7 +112,6 @@ let TabNames =[
   },
 ];
 
-
 export const useBottomPanel = defineStore("bottom-panel", {
   state: () => ({
     _activeTab: <TabItem | null>null,
@@ -131,6 +129,7 @@ export const useBottomPanel = defineStore("bottom-panel", {
     _orders: {},
     _orderItems: <Order[]>[],
     _loading: false,
+    LeftPanelMini: true,
   }),
   getters: {
     tabs: (state): Array<TabItem> => state._titles,
@@ -174,6 +173,5 @@ export const useBottomPanel = defineStore("bottom-panel", {
     setLoading(payload: boolean) {
       this._loading = payload;
     },
-    
   },
 });
