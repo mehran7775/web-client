@@ -3,7 +3,7 @@ import { useNuxtApp, reactive, ref, computed, watch } from "#app";
 import { useBottomPanel, useInstrument } from "~~/composables";
 import DateTime from "../DateTime/dateTime.vue";
 import NumericField from "../numericField.vue";
-import { TradesHistory, WatchlistColumns, PaginatedResult, TradesHistorySerachModel } from "@/types";
+import { TradesHistory, WatchlistColumns, PaginatedResult, TradesHistorySerachModel, DailyPrice, MarketHistory } from "@/types";
 
 const { $i18n: i18n } = useNuxtApp();
 const bottomPanelManager = useBottomPanel();
@@ -11,10 +11,11 @@ const instrumentManager = useInstrument();
 const model = ref<TradesHistorySerachModel>({
   offset: 0,
   length: 17,
-  instrumentId: null,
+  id: null,
   echo: null
 })
-const tradeHistories: TradesHistory[] = reactive([]);
+const tradeHistories = reactive<Array<TradesHistory>>([]);
+const dailyPrices = reactive<Array<DailyPrice>>([]);
 const inst = computed(() => instrumentManager.state.selected)
 const defaultCols = [
   new WatchlistColumns(i18n.t("instrument.tradeDate").toString(), "dateTime"),
@@ -30,22 +31,37 @@ const cols = computed(() => {
       new WatchlistColumns(i18n.t("instrument.opening").toString(), "opening"),
       new WatchlistColumns(i18n.t("instrument.lowest").toString(), "lowest"),
       new WatchlistColumns(i18n.t("instrument.highest").toString(), "highest"),
-      new WatchlistColumns(i18n.t("instrument.last").toString(), "last"),
+      new WatchlistColumns(i18n.t("instrument.last").toString(), "lastPrice"),
       new WatchlistColumns(i18n.t("instrument.closing").toString(), "closing"),
     ])
   return tmp;
 });
 
-function getTradeHistories() {
+async function getTradeHistories() {
   bottomPanelManager.setLoading(true);
   tradeHistories.splice(0, Infinity);
-  instrumentManager
-    .getTradeHistories(model.value)
-    .then((res: PaginatedResult<TradesHistory> | undefined) => {
-      if (res) tradeHistories.push(...res.data);
-    }).finally(() => {
-      bottomPanelManager.setLoading(false);
-    });
+  let task: Promise<DailyPrice[]> | null = null;
+  if (inst)
+    task = getDailyPrices();
+  if (task) {
+    const { data } = await instrumentManager.getTradeHistories(model.value)
+    const daily = await task;
+    tradeHistories.push(...data.map((market) => {
+      const ind = daily.findIndex((item) => item.dateTime == market.dateTime);
+      return {
+        ...market,
+        ...(ind > -1 ? daily[ind] : {})
+      }
+    }));
+  } else {
+    const { data } = await instrumentManager.getTradeHistories(model.value)
+    tradeHistories.push(...data);
+  }
+  bottomPanelManager.setLoading(false);
+
+}
+async function getDailyPrices() {
+  return await instrumentManager.getDailyPrices(model.value.id ?? 0, model.value)
 }
 
 watch(() => inst.value, (update) => {
@@ -57,7 +73,8 @@ getTradeHistories();
 </script>
 
 <template>
-  <ada-data-table :items="tradeHistories" :headers="cols" item-key="id" class="tw-w-full tw-h-full tw-overflow-y-auto">
+  <ada-data-table :items="tradeHistories" :headers="cols" item-key="dateTime"
+    class="tw-w-full tw-h-full tw-overflow-y-auto">
     <template #item.totalTrades="{ item }">
       <NumericField :value="item.totalTrades" />
     </template>
