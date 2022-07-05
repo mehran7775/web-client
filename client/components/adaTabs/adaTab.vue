@@ -10,36 +10,37 @@ const cls = computed(() => val.value == props.model || name.value == props.name 
 </script>
 <style lang="postcss" scoped>
 .tab {
-    @apply tw-absolute tw-h-full tw-w-full tw-inset-0 tw-flex;
+    @apply tw-absolute tw-h-full tw-w-full tw-flex;
     @apply tw-transition-all tw-ease-in-out tw-duration-700 tw-transform;
     background-color: var(--c-default-bg-rgb);
     opacity: 0;
 
     &--active {
+        @apply tw-inset-0;
         opacity: 1
     }
 }
 
 .ltr .tab {
-    @apply -tw-translate-x-full;
+    @apply tw-inset-x-full;
 
     &--active {
-        @apply tw-translate-x-0;
+        @apply tw-inset-x-0;
 
         ~.tab {
-            @apply tw-translate-x-full;
+            @apply -tw-inset-x-full;
         }
     }
 }
 
 .rtl .tab {
-    @apply tw-translate-x-full;
+    @apply -tw-inset-x-full;
 
     &--active {
-        @apply tw-translate-x-0;
+        @apply tw-inset-x-0;
 
         ~.tab {
-            @apply -tw-translate-x-full;
+            @apply tw-inset-x-full;
         }
     }
 }

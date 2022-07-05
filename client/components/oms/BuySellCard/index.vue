@@ -88,7 +88,6 @@ const tab = computed({
        value,
         active.value.id.toString()  
       );
-      instrumentManager.focusOnCount(value, props.insId)
       updateData()
     }
   },
@@ -115,7 +114,7 @@ const tab = computed({
 
 
 
-instrumentManager.focusOnCount(Side.Buy, props.insId)
+
 
 
 
@@ -336,10 +335,10 @@ instrumentManager
 <template>
   <div class="buy-sell">
     <v-tabs height="32" hide-slider v-model="tab" grow>
-      <v-tab class="buy" :key="Side.Buy" :href="'#' + Side.Buy" @click="instrumentManager.focusOnCount(1, insId)">
+      <v-tab class="buy" :key="Side.Buy" :href="'#' + Side.Buy">
         {{ $t("oms.buy") }}
       </v-tab>
-      <v-tab class="sell" :key="Side.Sell" :href="'#' + Side.Sell" @click="instrumentManager.focusOnCount(2, insId)">
+      <v-tab class="sell" :key="Side.Sell" :href="'#' + Side.Sell">
         {{ $t("oms.sell") }}
       </v-tab>
     </v-tabs>

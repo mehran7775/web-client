@@ -126,7 +126,7 @@ defineExpose({
 <template>
   <div class="tab-view tw-w-full">
     <ada-toggle :height="32" color="primary" v-model="tab" align-with-title>
-      <ada-btn @click="() => select(item) & instrumentManager.focusOnCount(Side.Buy ,item.id)" v-for="(item, i) in instruments" :key="item.id" :model="item" name-key="$.id"
+      <ada-btn @click="() => select(item)" v-for="(item, i) in instruments" :key="item.id" :model="item" name-key="$.id"
         :height="32" class="tab" :class="{ 'selected': selected && selected.id == item.id }">
         <ada-badge color="success" dot left offset-y="75%" offset-x="-5">
           {{ item.name }}

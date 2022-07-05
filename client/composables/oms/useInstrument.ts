@@ -265,19 +265,6 @@ export const useInstrument = defineStore("instrument", () => {
     return data;
   }
 
-  function focusOnCount(side: number, id: number) {
-    nextTick(() => {
-      setTimeout(() => {
-        if (side == Side.Sell) {
-          document.getElementById(`sellCountInputText-${id}`)!.focus();
-        }
-        if (side == Side.Buy) {
-          document.getElementById(`buyCountInputText-${id}`)!.focus();
-        }
-      }, 700);
-    });
-  }
-
   async function getTradeHistories(
     searchModel: TradesHistorySerachModel
   ): Promise<PaginatedResult<TradesHistory>> {
@@ -311,7 +298,6 @@ export const useInstrument = defineStore("instrument", () => {
     getOrderQueue,
     getClientDistribution,
     getTeammates,
-    focusOnCount,
     getTradeHistories,
   };
 });
