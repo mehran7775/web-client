@@ -10,6 +10,7 @@ const cls = computed(() => val.value == props.model || name.value == props.name 
 </script>
 <style lang="postcss" scoped>
 .tab {
+    pointer-events: none;
     @apply tw-absolute tw-h-full tw-w-full tw-flex;
     @apply tw-transition-all tw-ease-in-out tw-duration-700 tw-transform;
     background-color: var(--c-default-bg-rgb);
@@ -17,7 +18,8 @@ const cls = computed(() => val.value == props.model || name.value == props.name 
 
     &--active {
         @apply tw-inset-0;
-        opacity: 1
+        opacity: 1;
+        pointer-events: unset;
     }
 }
 

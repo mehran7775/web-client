@@ -24,7 +24,7 @@ watch(
 </script>
 <style lang="postcss" scoped>
 .tabs {
-    @apply tw-relative tw-overflow-hidden;
+    @apply tw-relative tw-overflow-clip;
 }
 </style>
 <template>
