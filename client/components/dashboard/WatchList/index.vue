@@ -64,6 +64,8 @@ const headers: ComputedRef<WatchlistColumns[]> = computed(() => {
       })
     }) as WatchlistColumns[])
   );
+  const status = new WatchlistColumns(i18n.t("instrument.notifications"), "status", 'center', '123px');
+  res.push(status);
   const more = new WatchlistColumns("", "more");
   more.draggable = false;
   more.divider = false;

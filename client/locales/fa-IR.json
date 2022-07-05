@@ -126,6 +126,7 @@
     }
   },
   "instrument": {
+    "notifications": "اعلانات",
     "remove": "آیا از حذف این نماد اطمینان دارید؟",
     "detail": "جزئیات نماد",
     "id": "شناسه",
@@ -266,7 +267,7 @@
     "shares": "سهام",
     "sharesCount": "@:oms.count @:wealth.wealth @:wealth.shares",
     "order": {
-      "enteredPrice": "قیمت واردشده",
+      "enteredPrice": "قیمت",
       "lastTransaction": "زمان آخرین معامله",
       "creationDate": "تاریخ سفارش",
       "vol": "حجم سفارش",
