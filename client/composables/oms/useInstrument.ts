@@ -254,16 +254,16 @@ export const useInstrument = defineStore("instrument", () => {
     return data;
   }
 
-  function focusOnCount(id: number) {
+  function focusOnCount(side: number, id: number) {
     nextTick(() => {
       setTimeout(() => {
-        if (id == Side.Sell) {
-          document.getElementById("sellCountInputText")!.focus();
+        if (side == Side.Sell) {
+          document.getElementById(`sellCountInputText-${ id }`)!.focus();
         }
-        if (id == Side.Buy) {
-          document.getElementById("buyCountInputText")!.focus();
+        if (side == Side.Buy) {
+          document.getElementById(`buyCountInputText-${ id }`)!.focus();
         }
-      }, 500);
+      }, 700);
     });
   }
 

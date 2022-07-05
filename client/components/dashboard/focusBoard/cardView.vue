@@ -24,9 +24,11 @@ function close(item: InstrumentCache) {
 }
 function order(item: InstrumentCache, side: Side) {
   orderManager.setSide(side, item.id.toString());
+  instrumentManager.addFocus(item);
+  instrumentManager.activateTab(item);
   instrumentManager.select(item);
   instrumentManager.setFocusMode(0);
-  instrumentManager.focusOnCount(side)
+  instrumentManager.focusOnCount(side, item.id)
 
 }
 function select(item: InstrumentCache) {

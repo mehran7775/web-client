@@ -102,7 +102,7 @@ function order(item: InstrumentCache, side: Side) {
   instrumentManager.activateTab(item);
   instrumentManager.select(item);
   instrumentManager.setFocusMode(0);
-  instrumentManager.focusOnCount(side)
+  instrumentManager.focusOnCount(side, item.id)
 }
 function focus(item: InstrumentCache) {
   instrumentManager.activateTab(item);

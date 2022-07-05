@@ -88,7 +88,7 @@ const tab = computed({
        value,
         active.value.id.toString()  
       );
-      instrumentManager.focusOnCount(value)
+      instrumentManager.focusOnCount(value, props.insId)
       updateData()
     }
   },
@@ -115,7 +115,7 @@ const tab = computed({
 
 
 
-instrumentManager.focusOnCount(Side.Buy)
+instrumentManager.focusOnCount(Side.Buy, props.insId)
 
 
 
@@ -336,10 +336,10 @@ instrumentManager
 <template>
   <div class="buy-sell">
     <v-tabs height="32" hide-slider v-model="tab" grow>
-      <v-tab class="buy" :key="Side.Buy" :href="'#' + Side.Buy" @click="instrumentManager.focusOnCount(1)">
+      <v-tab class="buy" :key="Side.Buy" :href="'#' + Side.Buy" @click="instrumentManager.focusOnCount(1, insId)">
         {{ $t("oms.buy") }}
       </v-tab>
-      <v-tab class="sell" :key="Side.Sell" :href="'#' + Side.Sell" @click="instrumentManager.focusOnCount(2)">
+      <v-tab class="sell" :key="Side.Sell" :href="'#' + Side.Sell" @click="instrumentManager.focusOnCount(2, insId)">
         {{ $t("oms.sell") }}
       </v-tab>
     </v-tabs>
@@ -360,7 +360,7 @@ instrumentManager
             <numeric-field :value="1000" />
           </div>
           <div class="tw-justify-between">  
-            <text-input :label="$t('oms.count')" type="number" v-model="countVal" id="buyCountInputText"
+            <text-input :label="$t('oms.count')" type="number" v-model="countVal" :id="`buyCountInputText-${insId}`"
               :readonly="countLock" class="tw-mt-1 inputColor" 
               :min="!!active ? active.minQuantityPerOrder : 1"
               :max="!!active ? active.maxQuantityPerOrder || null : null">
@@ -461,7 +461,7 @@ instrumentManager
             <numeric-field :value="1000" />
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('oms.count')" type="number" v-model="countVal" id="sellCountInputText"
+            <text-input :label="$t('oms.count')" type="number" v-model="countVal" :id="`sellCountInputText-${insId}`"
               :readonly="countLock" class="tw-mt-1 inputColor"
               :min="!!active ? active.minQuantityPerOrder : 1"
               :max="!!active ? active.maxQuantityPerOrder || null : null">
