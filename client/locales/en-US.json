@@ -83,7 +83,7 @@
     "code": "Code",
     "name": "Name",
     "fullName": "Full-Name",
-    "sectorCode": "Sector Code",
+    "sector": "Sector Code",
     "categoryName": "Category Name",
     "baseVol": "Base Volume",
     "settlementDelay": "Settlement Delay",

@@ -151,6 +151,7 @@ async function placeOrder(options: { draft: boolean }) {
         options.draft ? useBottomPanel().$state._titles[0].default = "bottom-panel.orders.drafts" : useBottomPanel().$state._titles[0].default = "bottom-panel.orders.all"
         useBottomPanel()._activeTab = useBottomPanel().$state._titles[0]
         orderManager.last_update = new Date().toISOString()
+        updateData()
       }
     })
     .catch((e)=> {

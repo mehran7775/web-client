@@ -12,7 +12,7 @@ import AdaBtn from "@/components/adaBtn.vue";
 import AdaTabs from "@/components/adaTabs/index.vue"
 import AdaTab from "@/components/adaTabs/adaTab.vue"
 import TradeHistoryTransactions from "./TradeHistoryTransactions.vue"
-
+import SameSector from './deepInformation/sameSector.vue'
 
 ////
 
@@ -33,6 +33,12 @@ const searchModels = {
   draftOrders: new OrderSearchModel(0, 10, OrderFlags.Draft),
   actives: new OrderSearchModel(0, 10, OrderFlags.Confirmed | OrderFlags.PreOpening | OrderFlags.Created | OrderFlags.Sent),
   canceledOrders: new OrderSearchModel(0, 10, OrderFlags.Cancelled),
+  tradeHistories:<TradesHistorySerachModel> {
+    offset:0,
+    length:10,
+  },
+
+
 }
 const instrument = useInstrument()
 
@@ -205,7 +211,7 @@ function close() {
       <div class="contents">
         <ada-tabs v-model="active" name-key="$.title" class="tw-h-full" :class="{ expanded: expanded }">
           <ada-tab name="bottom-panel.orders.all" class="tw-overflow-y-auto">
-            <default-order-list />
+            <default-order-list/>
           </ada-tab>
           <ada-tab name="bottom-panel.orders.drafts" class="tw-overflow-y-auto">
             <default-order-list v-model="searchModels.draftOrders" />
@@ -216,22 +222,26 @@ function close() {
           <ada-tab name="bottom-panel.orders.canceled" class="tw-overflow-y-auto">
             <default-order-list v-model="searchModels.canceledOrders" />
           </ada-tab>
-          <ada-tab name="bottom-panel.completeInfo">
+          <ada-tab name="bottom-panel.completeInfo" class="tw-overflow-y-auto">
             <complete-info />
           </ada-tab>
-          <ada-tab name="bottom-panel.dateInfo">
+          <ada-tab name="bottom-panel.dateInfo" class="tw-overflow-y-auto">
             <date-info />
           </ada-tab>
-          <ada-tab name="bottom-panel.more">
+          <ada-tab name="bottom-panel.more" class="tw-overflow-y-auto">
             <further-information />
           </ada-tab>
-          <ada-tab name="bottom-panel.statisticsKeys">
+          <ada-tab name="bottom-panel.statisticsKeys" class="tw-overflow-y-auto">
             <statistics-keys />
           </ada-tab>
-          <ada-tab name="bottom-panel.dateInfo.tradesHistory">
-            <trade-history-transactions />
+          <ada-tab name="bottom-panel.dateInfo.tradesHistory" class="tw-overflow-y-auto">
+             <trade-history-transactions :value="searchModels.tradeHistories"/>
           </ada-tab>
           <!-- //TODO Correct this shit! -->
+          <ada-tab name="bottom-panel.completeInfo.myGroups" class="tw-overflow-y-auto">
+            <SameSector />
+          </ada-tab>
+          
           <ada-tab v-if="useBottomPanel()._activeTab" :name="active.title">
             <p v-text="useBottomPanel()._activeTab.body"></p>
           </ada-tab>

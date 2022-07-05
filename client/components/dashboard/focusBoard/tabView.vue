@@ -5,7 +5,7 @@ import instrumentCard from "@/components/oms/instrumentCard.vue";
 import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
 import LegalRealCard from "@/components/oms/legalRealCard.vue";
 import BuySellCard from "@/components/oms/BuySellCard/index.vue";
-import { useBottomPanel, useInstrument } from "~/composables";
+import { Panel, useInstrument } from "~/composables";
 import LastPrice from "@/components/oms/lastPrice.vue"
 
 const bottomPanel = useBottomPanel();
@@ -39,7 +39,7 @@ async function deep(option: DeepOptions, instrument: Instrument) {
       try {
         bottomPanel.setLoading(true);
         await bottomPanel.getTeammates(
-          new SameSectorQuery(instrument.id, instrument.sectorCode)
+          new SameSectorQuery(instrument.id, instrument.sector)
         );
       } finally {
         bottomPanel.setLoading(false);
