@@ -244,7 +244,7 @@ loadMyMessages();
           <ada-icon color="primary" class="" :size="14"> isax-search-normal-1 </ada-icon>
         </template>
       </search> -->
-      <div id="categories">
+      <div class="categories">
         <span v-for="category in categories" :key="category.title"
           :class="[`${category.active ? category.bg + ' ' + category.color : ''}`]" v-text="$t(category.title)"
           @click="category.active = !category.active"></span>
@@ -295,8 +295,9 @@ loadMyMessages();
     width: calc(100% - 48px);
 
 
-    #categories {
+    .categories {
       @apply tw-px-3 tw-mt-1 tw-select-none tw-flex tw-justify-between tw-items-center;
+      height: 32px;
 
       span {
         @apply tw-px-3 tw-py-2 tw-mx-1 tw-rounded-2xl tw-cursor-pointer tw-font-semibold;
