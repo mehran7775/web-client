@@ -33,6 +33,7 @@ const drawer = computed({
 const loading = ref(false);
 const myMessages: Message[] = reactive([]);
 const messages: Message[] = reactive([]);
+const origins: Array<'RLC' | 'SUPPORT' | 'ADMIN' | 'TEDAN' | 'CODAL' | 'NEWS'> = ['RLC']
 
 const selected = computed(() => instrumentManager.state.selected)
 const mini = computed({
@@ -52,36 +53,43 @@ const messageQuery: Ref<MessageQuery> = ref(
   new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00", null))
 );
 
+myMessageQuery.value.filters.origins = origins;
+messageQuery.value.filters.origins = origins;
+
 const items = [
   { title: "general.me" },
   { title: "general.all" },
   // { title: "oms.openingTrade" },
 ];
 
-const categories = ref<{ title: string, bg: string, color: string, active: boolean }[]>([
+const categories = ref<{ title: string, bg: string, color: string, active: boolean, code: string }[]>([
   {
     title: 'categories.marketModerator',
     bg: 'tw-bg-primary-100',
     color: 'tw-text-primary',
-    active: true
+    active: true,
+    code: 'RLC'
   },
   {
     title: 'categories.codal',
     bg: 'tw-bg-green-100',
     color: 'tw-text-green',
-    active: false
+    active: false,
+    code: 'CODAL'
   },
   {
     title: 'categories.tedan',
     bg: 'tw-bg-red-100',
     color: 'tw-text-red',
-    active: false
+    active: false,
+    code: 'TEDAN'
   },
   {
     title: 'categories.news',
     bg: 'tw-bg-blue-100',
     color: 'tw-text-blue',
-    active: false
+    active: false,
+    code: 'NEWS'
   },
 ])
 
@@ -246,8 +254,13 @@ loadMyMessages();
       </search> -->
       <div class="categories">
         <span v-for="category in categories" :key="category.title"
-          :class="[`${category.active ? category.bg + ' ' + category.color : ''}`]" v-text="$t(category.title)"
-          @click="category.active = !category.active"></span>
+          :class="[`${category.active ? category.bg + ' ' + category.color : ''}`]" v-text="$t(category.title)" @click="() => {
+            category.active = !category.active
+            if (category.active) origins.push(category.code)
+            else origins.splice(origins.indexOf(category.code), 1)
+            loadMyMessages()
+            loadMessages()
+          }"></span>
       </div>
       <div id="messages">
         <div v-for="message in  toggleMenu == 'general.all' ? messages : myMessages" :key="message.id">
