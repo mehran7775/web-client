@@ -112,6 +112,7 @@ function hasValidityDate(order: Order) {
 
 function getOrders() {
   bottomPanel.setLoading(true);
+  orders.splice(0, Infinity)
   orderManager
     .getOrders(searchModel.value)
     .then((res: PaginatedResult<Order> | undefined) => {
