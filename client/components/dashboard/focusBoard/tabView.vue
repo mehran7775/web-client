@@ -86,7 +86,7 @@ defineExpose({
       &.selected {
         background-color: white;
         &::after {
-          background-color: rgba(var(--c-selected-inst), .4);
+          background-color: rgba(var(--c-selected-inst), .1);
         }
       }
 
