@@ -28,12 +28,14 @@ export const useWebSocket = defineStore("webSocket", () => {
       for (let i in toSend) {
         send(toSend[i]);
       }
-      console.log(new Date(),"WS Connected.")
+      console.log(new Date(), "WS Connected.");
+      watchInstruments(watch_list);
+      console.log(new Date(), "Re-watch.");
     };
     connection.onclose = reconnect;
   }
 
-  function reconnect(){
+  function reconnect() {
     setTimeout(() => {
       connect();
     }, 2000);
@@ -45,7 +47,7 @@ export const useWebSocket = defineStore("webSocket", () => {
 
   function addInstrumentToWatch(instrument: InstrumentCache | Instrument) {
     watch_list.push({
-      id: instrument.instrumentId,
+      id: instrument.instrumentId.toString(),
       name: instrument.name,
       tid: instrument.id,
     });
