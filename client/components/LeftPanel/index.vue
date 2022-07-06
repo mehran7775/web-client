@@ -53,8 +53,8 @@ const messageQuery: Ref<MessageQuery> = ref(
   new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00", null))
 );
 
-myMessageQuery.value.filters.origin = origins;
-messageQuery.value.filters.origin = origins;
+myMessageQuery.value.filters.origins = origins;
+messageQuery.value.filters.origins = origins;
 
 const items = [
   { title: "general.me" },

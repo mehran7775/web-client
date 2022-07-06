@@ -17,7 +17,7 @@ export class MessageFilter {
   dateTime: string | null;
   tags: MessageTag[];
   title: string | null;
-  origin: Array<string>;
+  origins: Array<string>;
   
   constructor(
     tags: MessageTag[],
@@ -27,7 +27,7 @@ export class MessageFilter {
     this.tags = tags;
     this.dateTime = dateTime;
     this.title = title;
-    this.origin = ["RLC"];
+    this.origins = ["RLC"];
   }
 }
 
