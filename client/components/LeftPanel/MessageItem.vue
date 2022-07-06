@@ -28,7 +28,7 @@ enum types {
     codal = 5,
 }
 ///// 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
     id: number,
     dateTime: string | null,
     title: string,
@@ -38,7 +38,10 @@ const props = defineProps<{
     flags: number,
     message: string,
     seenDate: string | null
-}>()
+}>(), {
+    dateTime: null,
+    seenDate: null
+})
 
 
 const emits = defineEmits(['click'])
