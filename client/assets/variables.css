@@ -22,7 +22,7 @@
   --c-gray6: 229, 233, 250;
   --c-gray6-rgb: rgb(var(--c-gray6));
 
-  --c-selected-inst: 219, 219, 80;
+  --c-selected-inst: var(--c-primary);
   --c-selected-inst-rgb: rgb(var(--c-selected-inst-rgb));
 
   --border-radius-root: 6px;

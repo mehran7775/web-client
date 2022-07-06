@@ -70,7 +70,7 @@ defineExpose({
       border-right: 1px solid rgba(var(--c-selected-inst), 0.5);
 
       .toolbar {
-        background-color: rgba(var(--c-selected-inst), .4) !important;
+        background-color: rgba(var(--c-selected-inst), .1) !important;
       }
     }
 

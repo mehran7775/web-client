@@ -234,7 +234,7 @@ getData(props.searchModel);
 
     &.active {
       position: relative;
-      background-color: rgba(var(--c-selected-inst), .4);
+      background-color: rgba(var(--c-selected-inst), .1);
 
       &::befor {
         content: '';
