@@ -53,8 +53,8 @@ const messageQuery: Ref<MessageQuery> = ref(
   new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00", null))
 );
 
-myMessageQuery.value.filters.origins = origins;
-messageQuery.value.filters.origins = origins;
+myMessageQuery.value.filters.origin = origins;
+messageQuery.value.filters.origin = origins;
 
 const items = [
   { title: "general.me" },
@@ -113,9 +113,7 @@ watch(selected, (newval) => {
     myMessageQuery.value.filters.title = null;
     messageQuery.value.filters.title = null;
   }
-  myMessages.splice(0, Infinity);
   loadMyMessages();
-  messages.splice(0, Infinity);
   loadMessages();
 })
 
@@ -127,15 +125,17 @@ watch(selected, (newval) => {
 
 function loadMyMessages() {
   load(myMessageQuery).then((res) => {
+    myMessages.splice(0, Infinity);
     myMessages.push(...res);
-    myMessageQuery.value.offset = messages.length;
+    //myMessageQuery.value.offset = messages.length;
   });
 }
 
 function loadMessages() {
   load(messageQuery).then((res) => {
+    messages.splice(0, Infinity);
     messages.push(...res);
-    messageQuery.value.offset = messages.length;
+    //messageQuery.value.offset = messages.length;
   });
 }
 
