@@ -35,8 +35,8 @@ getNotifs();
 </script>
 <template>
     <div>
-        <ada-icon @click.stop="() => openMsg()" :color="notifs.length > 0 ? 'info' : 'default'" :size="16">
-            isax-presention-chart
+        <ada-icon v-if="notifs.length > 0" @click.stop="() => openMsg()" color="primary" :size="16">
+            lotfi-sms
         </ada-icon>
     </div>
 </template>
