@@ -238,12 +238,12 @@ loadMyMessages();
       </ada-list>
     </ada-toggle>
     <ada-tabs class="tab-items" v-model="toggleMenu">
-      <search v-model="searchItem" @update="(val) => searchItem = val" :placeholder="`${$t('user.search')}...`"
+      <!-- <search v-model="searchItem" @update="(val) => searchItem = val" :placeholder="`${$t('user.search')}...`"
         class="tw-text-base tw-px-4 tw-py-3">
         <template #prepend>
           <ada-icon color="primary" class="" :size="14"> isax-search-normal-1 </ada-icon>
         </template>
-      </search>
+      </search> -->
       <div id="categories">
         <span v-for="category in categories" :key="category.title"
           :class="[`${category.active ? category.bg + ' ' + category.color : ''}`]" v-text="$t(category.title)"
