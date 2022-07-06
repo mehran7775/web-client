@@ -29,7 +29,7 @@ export const useWebSocket = defineStore("webSocket", () => {
         send(toSend[i]);
       }
       console.log(new Date(), "WS Connected.");
-      watchInstruments(watch_list);
+      watchInstruments(null);
       console.log(new Date(), "Re-watch.");
     };
     connection.onclose = reconnect;
@@ -65,6 +65,7 @@ export const useWebSocket = defineStore("webSocket", () => {
   }
 
   function send(msg: ISharedObject) {
+    console.log(msg);
     if (connection && connection.readyState) connection?.send(encode(msg));
     else toSend.push(msg);
   }

@@ -136,7 +136,8 @@ export const useInstrument = defineStore("instrument", () => {
   }
 
   async function getInstrumentsDetail(
-    searchModel: InstrumentSearchModel
+    searchModel: InstrumentSearchModel,
+    watch: boolean = true
   ): Promise<Array<InstrumentCache>> {
     const res: Array<InstrumentCache> = [];
     const missing: Array<number> = [];
@@ -167,15 +168,15 @@ export const useInstrument = defineStore("instrument", () => {
       );
       data.forEach((item) => {
         updateInstrument(item);
-        websocket.addInstrumentToWatch(item);
+        if (watch) websocket.addInstrumentToWatch(item);
         res.push(state.value.cache.get(item.id.toString()) as InstrumentCache);
       });
     }
 
     res.sort((a, b) => {
-        return searchModel.ids.indexOf(a.id) - searchModel.ids.indexOf(b.id);
+      return searchModel.ids.indexOf(a.id) - searchModel.ids.indexOf(b.id);
     });
-    websocket.watchInstruments(null);
+    if (watch) websocket.watchInstruments(null);
     const ids = res.map((item) => item.id);
     if (ids.length > 0) {
       getInstrumentPrices(ids);
