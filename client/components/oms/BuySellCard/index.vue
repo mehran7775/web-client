@@ -505,7 +505,7 @@ instrumentManager
             </percent>
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100" v-model="validatePercent" tabindex="-1">
+            <text-input label="درصد سهام" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100" v-model="validatePercent" tabindex="-1">
             </text-input>
             <bar />
           </div>

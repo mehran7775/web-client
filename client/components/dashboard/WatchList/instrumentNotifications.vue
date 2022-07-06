@@ -16,7 +16,12 @@ const notifs = reactive<Array<Notification>>([]);
 
 async function getNotifs() {
     const res = await notifManager.getInstrumentNotifications(props.value)
+    console.log(res)
     notifs.push(...res);
+}
+
+function hasnotif() {
+    return notifs.findIndex((item) => true) > -1
 }
 
 function openMsg() {
@@ -30,8 +35,8 @@ getNotifs();
 </script>
 <template>
     <div>
-        <ada-icon v-for="notif in notifs" :key="notif.type" @click.stop="() => openMsg()" color="success">
-            mdi-email-fast-outline
+        <ada-icon v-if="notifs.length > 0" @click.stop="() => openMsg()" color="primary" :size="16">
+            lotfi-sms
         </ada-icon>
     </div>
 </template>

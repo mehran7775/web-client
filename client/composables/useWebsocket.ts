@@ -65,7 +65,6 @@ export const useWebSocket = defineStore("webSocket", () => {
   }
 
   function send(msg: ISharedObject) {
-    console.log(msg);
     if (connection && connection.readyState) connection?.send(encode(msg));
     else toSend.push(msg);
   }

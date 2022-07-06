@@ -21,16 +21,16 @@ export const useNotifications = defineStore("notifications", () => {
     inst: InstrumentCache
   ): Promise<Array<Notification>> {
     const res: Array<Notification> = [];
-    const { data } = await msg.getMessages(
-      new MessageQuery(0, 1, new MessageFilter([], null, "(" + inst.name))
-    );
+    const qry = new MessageQuery(0, 1, new MessageFilter([]));
+    qry.filters.title = "(" + inst.name;
+    const { data } = await msg.getMessages(qry);
     if (data.length > 0) {
       res.push({
         type: "Administrative",
         params: [],
       });
     }
-    return [];
+    return res;
   }
 
   return {

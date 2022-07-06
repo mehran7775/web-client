@@ -33,6 +33,7 @@ const drawer = computed({
 const loading = ref(false);
 const myMessages: Message[] = reactive([]);
 const messages: Message[] = reactive([]);
+const origins: Array<'RLC' | 'SUPPORT' | 'ADMIN' | 'TEDAN' | 'CODAL' | 'NEWS'> = ['RLC']
 
 const selected = computed(() => instrumentManager.state.selected)
 const mini = computed({
@@ -52,36 +53,43 @@ const messageQuery: Ref<MessageQuery> = ref(
   new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00", null))
 );
 
+myMessageQuery.value.filters.origins = origins;
+messageQuery.value.filters.origins = origins;
+
 const items = [
   { title: "general.me" },
   { title: "general.all" },
   // { title: "oms.openingTrade" },
 ];
 
-const categories = ref<{ title: string, bg: string, color: string, active: boolean }[]>([
+const categories = ref<{ title: string, bg: string, color: string, active: boolean, code: string }[]>([
   {
     title: 'categories.marketModerator',
     bg: 'tw-bg-primary-100',
     color: 'tw-text-primary',
-    active: true
+    active: true,
+    code: 'RLC'
   },
   {
     title: 'categories.codal',
     bg: 'tw-bg-green-100',
     color: 'tw-text-green',
-    active: false
+    active: false,
+    code: 'CODAL'
   },
   {
     title: 'categories.tedan',
     bg: 'tw-bg-red-100',
     color: 'tw-text-red',
-    active: false
+    active: false,
+    code: 'TEDAN'
   },
   {
     title: 'categories.news',
     bg: 'tw-bg-blue-100',
     color: 'tw-text-blue',
-    active: false
+    active: false,
+    code: 'NEWS'
   },
 ])
 
@@ -105,9 +113,7 @@ watch(selected, (newval) => {
     myMessageQuery.value.filters.title = null;
     messageQuery.value.filters.title = null;
   }
-  myMessages.splice(0, Infinity);
   loadMyMessages();
-  messages.splice(0, Infinity);
   loadMessages();
 })
 
@@ -119,15 +125,17 @@ watch(selected, (newval) => {
 
 function loadMyMessages() {
   load(myMessageQuery).then((res) => {
+    myMessages.splice(0, Infinity);
     myMessages.push(...res);
-    myMessageQuery.value.offset = messages.length;
+    //myMessageQuery.value.offset = messages.length;
   });
 }
 
 function loadMessages() {
   load(messageQuery).then((res) => {
+    messages.splice(0, Infinity);
     messages.push(...res);
-    messageQuery.value.offset = messages.length;
+    //messageQuery.value.offset = messages.length;
   });
 }
 
@@ -244,16 +252,21 @@ loadMyMessages();
           <ada-icon color="primary" class="" :size="14"> isax-search-normal-1 </ada-icon>
         </template>
       </search> -->
-      <div id="categories">
+      <div class="categories">
         <span v-for="category in categories" :key="category.title"
-          :class="[`${category.active ? category.bg + ' ' + category.color : ''}`]" v-text="$t(category.title)"
-          @click="category.active = !category.active"></span>
+          :class="[`${category.active ? category.bg + ' ' + category.color : ''}`]" v-text="$t(category.title)" @click="() => {
+            category.active = !category.active
+            if (category.active) origins.push(category.code)
+            else origins.splice(origins.indexOf(category.code), 1)
+            loadMyMessages()
+            loadMessages()
+          }"></span>
       </div>
       <div id="messages">
         <div v-for="message in  toggleMenu == 'general.all' ? messages : myMessages" :key="message.id">
           <hr class="line">
           <MessageItem :id="message.id" :dateTime="message.dateTime" :title="message.title" :preview="message.preview"
-            :origin="message.origin" :type="message.type" :flags="message.flags" :message="message.message.body"
+            :origin="message.origin" :type="message.origin" :flags="message.flags" :message="message.message.body"
             :seenDate="message.seenDate" style="height: 58.9px;" @click="trigger_show_message" />
         </div>
       </div>
@@ -295,8 +308,9 @@ loadMyMessages();
     width: calc(100% - 48px);
 
 
-    #categories {
+    .categories {
       @apply tw-px-3 tw-mt-1 tw-select-none tw-flex tw-justify-between tw-items-center;
+      height: 32px;
 
       span {
         @apply tw-px-3 tw-py-2 tw-mx-1 tw-rounded-2xl tw-cursor-pointer tw-font-semibold;
