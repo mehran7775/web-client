@@ -224,11 +224,15 @@ const rtl = computed(() => appManager.rtl);
       <div class="center tw-flex">
         <ada-badge class="tw-mx-5" color="green">
           <span v-text="$t('oms.bourseIndex')" class="tw-text-primary"></span>: <span
-            class="tw-text-sm badge-content">{{ formatter.format(151371577) }}</span>
+            class="tw-text-sm badge-content">{{ formatter.format(150259871) }}
+             <span class="tw-text-red">(8477.14)</span>
+            </span>
         </ada-badge>
         <ada-badge color="orange">
           <span v-text="$t('oms.superBourseIndex')" class="tw-text-primary"></span>: <span
-            class="tw-text-sm badge-content">{{ formatter.format(20411.30) }}</span>
+            class="tw-text-sm badge-content">{{ formatter.format(20136.69) }}
+            <span class="tw-text-red">(84.12)</span>
+            </span>
         </ada-badge>
       </div>
       <ada-spacer />
