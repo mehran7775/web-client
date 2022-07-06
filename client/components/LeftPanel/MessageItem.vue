@@ -2,11 +2,11 @@
     <div class="message" v-bind="$attrs" @click="show_message()">
         <ada-btn color="transparent" class="template">
             <ada-icon :size="26" v-if="type == types.rlc" class="tw-text-primary">lotfi-sms</ada-icon>
-            <ada-icon :size="24" v-else-if="props.type == types.codal" class="tw-text-green">isax-document-text-outline
+            <ada-icon :size="26" v-else-if="props.type == types.codal" class="tw-text-green">isax-document-text-outline
             </ada-icon>
-            <ada-icon :size="24" v-else-if="props.type == types.tedan" class="tw-text-red">isax-messages-3-outline
+            <ada-icon :size="26" v-else-if="props.type == types.tedan" class="tw-text-red">isax-messages-3-outline
             </ada-icon>
-            <ada-icon :size="24" v-else class="tw-text-blue">isax-note-favorite-outline</ada-icon>
+            <ada-icon :size="26" v-else class="tw-text-blue">isax-note-favorite-outline</ada-icon>
             <div class="tw-mr-2 tw-pt-3 tw-w-5/6">
                 <div class="tw-flex tw-items-center tw-justify-between">
                     <h4 class="tw-text-primary tw-text-lg" v-text="title"></h4>

@@ -266,7 +266,7 @@ loadMyMessages();
         <div v-for="message in  toggleMenu == 'general.all' ? messages : myMessages" :key="message.id">
           <hr class="line">
           <MessageItem :id="message.id" :dateTime="message.dateTime" :title="message.title" :preview="message.preview"
-            :origin="message.origin" :type="message.type" :flags="message.flags" :message="message.message.body"
+            :origin="message.origin" :type="message.origin" :flags="message.flags" :message="message.message.body"
             :seenDate="message.seenDate" style="height: 58.9px;" @click="trigger_show_message" />
         </div>
       </div>
