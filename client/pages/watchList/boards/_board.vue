@@ -44,23 +44,21 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-container class="ma-0 pa-0" fluid>
-    <v-row class="ma-0 pa-0" dense>
-      <v-col class="ma-0 pa-0">
+  <div class="2xl:tw-container tw-p-0">
+    <div class="tw-grid tw-grid-cols-1">
+      <div class="tw-col-span-1">
         <focus-board>
           <template #toolbar>
             <board-selector @input="select" :value="board" />
           </template>
         </focus-board>
-      </v-col>
-    </v-row>
-    <v-row class="ma-0 pa-0" dense>
-      <v-col class="ma-0 pa-0" style="position: relative">
+      </div>
+      <div class="tw-col-span-1">
         <WatchList :searchModel.sync="searchModel" paginated />
         <loading :loading="loading" />
-      </v-col>
-    </v-row>
-  </v-container>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="postcss" scoped>
