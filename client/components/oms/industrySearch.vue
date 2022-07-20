@@ -1,124 +1,152 @@
-<script setup lang="ts">
-import { ref, reactive, useRouter, computed, useRoute } from "#app";
-import 
-{ AutoCompleteItem,
+<script lang="ts">
+import { defineComponent, ref, reactive, computed } from "#app";
+import { autoComplete } from "@/repositories/oms/instruments_manager";
+import {
+  AutoCompleteItem,
   AutoCompleteSearchModel,
-  Sector
-  } from "@/types";
-import { useAxios, useSectors } from "~/composables";
-import { autoComplete } from "@/repositories/oms/industry_manager";
-import items from "../rightPanel/items";
-
-const props = withDefaults(defineProps<{
-  secId: number
-}>(),{
-  secId:0,
-})
-
-const axios = useAxios().createInstance();
-const sectorManager = useSectors();
-const loading = ref(false);
-const entries: Array<AutoCompleteItem> = reactive([]);
-const model = ref<Sector|null>(null);
-const val = ref<Sector|null>(null);
-const router = useRouter();
+  InstrumentCache,
+  InstrumentSearchModel,
+} from "@/types";
+import { useAxios, useInstrument, useUser, useAutoComplete, useDebounce } from "~/composables";
+import { useRoute, watch } from "#app";
 
 
-sectorManager.getSector(props.secId).then((res)=>{
-  if(res != null){
-    entries.push({
-      id: res.id.toString(),
-      name: res.name,
-      fullName: res.name
-      })
-    val.value=res
-  }
-  
-})
+export default defineComponent({
+  name: 'instrument-search',
+  emits: ["input"],
+  props: { focusResult: { type: Boolean, default: false } },
+  setup(props ,{ emit }) {
+
+    const userManager = useUser();
+    const instrumentManager = useInstrument();
+
+    const axios = useAxios().createInstance();
+    const route = useRoute();
+    const model = ref(null);
+    const entries: Array<AutoCompleteItem> = reactive([]);
+
+    const focus = instrumentManager.getFocus;
+    const watchlists = userManager.watchList;
+    const ac = useAutoComplete([])
 
 
-function generateAddress(id: string): void {
-  router.push("/watchlist/industries/" + id);
-}
 
-async function searchSectors(value: string) {
-  if (!!value && value.length > 0) {
-    loading.value = true;
-    entries.splice(0, entries.length);
-    try {
-      const res = await autoComplete(new AutoCompleteSearchModel(value, 0, 10), axios);
-      entries.push(
-        ...res.data.data.map((item) => ({
-          fullName:item.name,
+    /////////////
+
+    watch(() => ac.state.userInput, (val) => {
+      if (!val) {
+        ac.state.loading = true
+        useDebounce(() => {
+          ac.state.suggestions = []
+          ac.state.loading = false
+        }, 1600)()
+       
+      } else {
+        ac.state.loading = true
+        useDebounce(search, 1500)()
+      }
+
+
+    })
+
+
+
+
+    ////////////
+
+    async function search() {
+      // entries.splice(0, entries.length);
+      try {
+        const res = await autoComplete(new AutoCompleteSearchModel(ac.state.userInput, 0, 7), axios);
+        ac.state.suggestions = res.data.data.map((item) => ({
           name: item.name,
-          id: item.id
+          id: item.id,
+          fullName: (item.name + " - " + item.fullName).replace(
+            ac.state.userInput,
+            `<span class="tw-text-red-900 tw-font-bold">${ac.state.userInput}</span>`
+          ),
         }))
-      );
-    } finally {
-      loading.value = false;
-    }
-  }
-}
 
+      } catch (e) {
+        console.log(e)
+      }finally{
+         ac.state.loading = false
+      }
+    }
+
+    function select_suggest(item: AutoCompleteItem): void {
+      props.focusResult? select(item): emit('input', item)
+      ac.state.userInput = ""
+      ac.state.suggestions = []
+    }
+
+    async function select(val: AutoCompleteItem) {
+      const name = route.params.name;
+      ac.state.loading = true;
+      if (
+        val &&
+        (!watchlists[name] || watchlists[name]?.indexOf(val.id.toString()) == -1)
+      ) {
+        const inst = await instrumentManager.getInstrumentsDetail(
+          new InstrumentSearchModel([parseInt(val.id)])
+        );
+
+        // If focus panel is open
+        if (focus.length > 0 || !route.params.name) {
+          instrumentManager.addFocus(inst[0]);
+          instrumentManager.select(inst[0]);
+        }
+
+        const tmp = [val.id.toString()];
+        tmp.push(...(watchlists[name] ?? []));
+        userManager.setWatchlist({
+          name,
+          watchlist: tmp,
+          changeState: true,
+        });
+      }
+      ac.state.loading = false;
+      model.value = null;
+    }
+    return {
+      model,
+      entries,
+      search,
+      select,
+      ac,
+      select_suggest
+    };
+  },
+});
 </script>
 
 <template>
-  <v-autocomplete
-    height="28"
-    v-model="model"
-    :placeholder="$t('oms.sectorAutoComplete')"
-    :loading="loading"
-    :items="entries"
-    :value="val"
-    class="sector-search no-translate"
-    return-object
-    append-icon=""
-    item-text="name"
-    item-value="id"
-    @input="
-      (val) => {
-        $emit('input', val);
-        generateAddress(val.id);
-      }
-    "
-    @update:search-input="
-      (val) => {
-        searchSectors(val);
-      }
-    "
-    :menu-props="{
-      bottom: true,
-      'offset-y': true,
-      'content-class': 'sector-search__content',
-    }"
-    flat
-    no-filter
-    rounded
-    hide-details
-    dense
-  />
- 
+  <div>
+    <auto-complete-feild v-model="ac.state.userInput" borderColor="tw-border-gray-200" background="tw-bg-primary-100"
+      :suggestions="ac.state.suggestions || ac.state.userInput != '' ? true : false"
+      :placeholder="$t('instrument.search')" class="tw-w-[164px] tw-mx-auto tw-text-primary">
+      <template #prepend>
+        <ada-icon color="primary" class="mt-2" :size="14"> isax-search-normal-1 </ada-icon>
+      </template>
+      <template #suggestions v-if="ac.state.loading || ac.state.suggestions.length || ac.state.userInput != ''">
+        <ul class="tw-p-0 tw-m-0 tw-border tw-border-gray-200 tw-text-black tw-bg-white">
+          <template v-if="ac.state.loading">
+            <li class="tw-px-1 tw-py-2" v-text="$t('general.waiting')"></li>
+          </template>
+          <template v-else-if="ac.state.suggestions.length">
+            <li v-for="item in ac.state.suggestions" :key="item.id"
+              class="hover:tw-bg-primary-100 tw-cursor-pointer tw-px-1 tw-py-2" @click="select_suggest(item)">
+              <span v-html="item.fullName"></span>
+            </li>
+          </template>
+          <template v-else-if="ac.state.userInput != ''">
+            <li class="tw-px-1 tw-py-2" v-text="$t('general.notFound')"></li>
+          </template>
+        </ul>
+      </template>
+    </auto-complete-feild>
+  </div>
 </template>
 
 <style lang="postcss" scoped>
-.sector-search {
-  background-color: rgba(var(--c-primary), 0.05);
-  border-radius: var(--border-radius-root);
-  font-size: 0.75rem;
-}
-</style>
-<style lang="postcss">
-.v-autocomplete__content {
-  .sector-search-text {
-    color: var(--c-primary-rgb);
-  }
-}
-.sector-search {
-  input {
-    color: var(--c-primary-rgb) !important;
-    &::placeholder {
-      color: var(--c-primary-rgb) !important;
-    }
-  }
-}
 </style>
