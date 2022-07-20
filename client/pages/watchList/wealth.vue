@@ -34,9 +34,7 @@ export default defineComponent({
     <div class="tw-col-span-1" dense>
       <focus-board>
         <template #toolbar>
-          <v-input class="menu px-2" height="28" dense hide-details>
-            {{ $t("menu.wealth") }}
-          </v-input>
+          <div class="tw-rounded tw-w-52 tw-bg-primary-100 tw-pr-2 tw-py-1 tw-text-right" v-text="$t('menu.wealth')"></div>
         </template>
       </focus-board>
     </div>
