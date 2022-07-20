@@ -20,7 +20,7 @@ import InstrumentNotifications from "./instrumentNotifications.vue";
 const props = withDefaults(
   defineProps<{
     searchModel: InstrumentSearchModel;
-    paginated: boolean;
+    paginated?: boolean;
   }>(),
   {
     paginated: false,

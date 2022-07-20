@@ -2,7 +2,7 @@
 import { computed } from "#app"
 
 const props = withDefaults(defineProps<{
-    color: string
+    color?: string
 }>(), {
     color: "success"
 })

@@ -5,8 +5,8 @@ import { useAsrTrader } from "~/composables";
 
 const params = withDefaults(
   defineProps<{
-    format: string;
-    width: string | number;
+    format?: string;
+    width?: string | number;
   }>(),
   {
     format: "HH:mm:ss",

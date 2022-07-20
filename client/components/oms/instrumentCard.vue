@@ -8,11 +8,11 @@ import DateTime from "../DateTime/dateTime.vue";
 
 const props = withDefaults(
   defineProps<{
-    responsive: boolean;
-    compact: boolean;
-    insId: number;
-    insName: string,
-    hideHeaders: boolean;
+    responsive?: boolean;
+    compact?: boolean;
+    insId?: number;
+    insName?: string,
+    hideHeaders?: boolean;
   }>(),
   {
     responsive: false,

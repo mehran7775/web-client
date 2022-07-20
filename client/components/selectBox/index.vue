@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref, watch } from "#app";
 export interface selectProps {
-  label: string;
-  placeholder: string;
-  height: string;
-  readonly: boolean;
-  items: any;
-  textPath: string;
-  keyPath: string;
-  value: any;
+  label?: string;
+  placeholder?: string;
+  height?: string;
+  readonly?: boolean;
+  items?: any;
+  textPath?: string;
+  keyPath?: string;
+  value?: any;
 }
 
 const props = withDefaults(defineProps<selectProps>(), {

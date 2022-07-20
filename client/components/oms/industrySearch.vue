@@ -11,7 +11,7 @@ import items from "../rightPanel/items";
 import AutoCompleteFeild from '../AutoCompleteField.vue'
 
 const props = withDefaults(defineProps<{
-  secId: number
+  secId?: number
 }>(),{
   secId:0,
 })

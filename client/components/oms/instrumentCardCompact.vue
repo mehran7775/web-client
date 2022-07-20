@@ -5,9 +5,9 @@ import { useInstrument } from "~/composables";
 
 const props = withDefaults(
   defineProps<{
-    responsive: boolean;
+    responsive?: boolean;
     insId: number;
-    hideHeaders: boolean;
+    hideHeaders?: boolean;
   }>(),
   { responsive: false, hideHeaders: false }
 );

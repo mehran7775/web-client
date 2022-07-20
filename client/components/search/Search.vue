@@ -3,9 +3,9 @@
 
 const props = withDefaults(
     defineProps<{
-        label: string,
-        placeholder: string,
-        value: string
+        label?: string,
+        placeholder?: string,
+        value?: string
     }>(),
     {
         label: '',

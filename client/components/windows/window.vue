@@ -2,7 +2,7 @@
 const props = withDefaults(
   defineProps<{
     value: number | string;
-    selected: number | string;
+    selected?: number | string;
   }>(),
   {
     selected: "",

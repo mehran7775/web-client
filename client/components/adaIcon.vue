@@ -2,11 +2,11 @@
 import { computed, useSlots } from "#app";
 const props = withDefaults(
   defineProps<{
-    ico: string;
-    color: string | null;
-    size: string | number;
-    clickPointer: string;
-    disabled: string | boolean;
+    ico?: string;
+    color?: string | null;
+    size?: string | number;
+    clickPointer?: string;
+    disabled?: string | boolean;
   }>(),
   {
     ico: "mdi-icon",

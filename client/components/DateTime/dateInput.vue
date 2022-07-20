@@ -5,8 +5,8 @@ import { useAsrTrader } from "~/composables";
 
 const props = withDefaults(
   defineProps<{
-    label: string;
-    value: string;
+    label?: string;
+    value?: string;
   }>(),
   {
     label: "",

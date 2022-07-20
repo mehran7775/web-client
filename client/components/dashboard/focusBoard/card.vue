@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const props = withDefaults(
   defineProps<{
-    minWidth: number | string;
-    width: number | string;
-    maxWidth: number | string;
+    minWidth?: number | string;
+    width?: number | string;
+    maxWidth?: number | string;
   }>(),
   {
     minWidth: "0",
