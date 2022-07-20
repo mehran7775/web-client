@@ -61,12 +61,15 @@ defineExpose({
   userMenu,
   userMenuItems,
 });
+const me = ()=> {
+  console.log('me')
+}
 </script>
 
 <style lang="postcss" scoped>
 .user-menu-activator {
-  @apply tw-ml-14 tw-flex tw-justify-start;
-  
+  @apply tw-ml-14 tw-flex tw-justify-start tw-relative;
+
   &::before {
     background-color: var(--c-primary-rgb) !important;
   }
@@ -74,26 +77,30 @@ defineExpose({
 </style>
 
 <template>
-  <v-menu v-model="userMenu" class="user-menu" offset-y>
-    <template #activator="{ on, attrs }">
-      <ada-btn :height="28" min-width="184px" v-bind="attrs" v-on="on"
-        class="user-menu-activator tw-py-0 tw-px-2" color="transparent" depressed>
-        <profile-picture :address="currentUser.profile && currentUser.profile.profilePic" />
-        <span class="tw-mr-2 tw-font-semibold" v-text="currentUser.profile.nickname ? currentUser.profile.nickname: currentUser.userName"></span>
-      </ada-btn>
-    </template>
-    <v-list dense>
-      <v-list-item v-for="item in userMenuItems" :key="item.title" :to="item.to" @click="
-        () => {
-          if (item.click) item.click();
-        }
-      ">
-        <ada-icon :color="item.color" :size="16">{{ item.icon }}</ada-icon>
-        <v-list-item-title :class="item.color + '--text'">
-          {{ $t(item.title) }}
-        </v-list-item-title>
-      </v-list-item>
-    </v-list>
-  </v-menu>
+  <div class="userMenu" v-ada-click-outside="()=> userMenu = false">
+    <ada-btn :height="28" min-width="184px" class="user-menu-activator tw-py-0 tw-px-2"
+      color="transparent" depressed @click.native="userMenu = !userMenu">
+      <profile-picture :address="currentUser.profile && currentUser.profile.profilePic" />
+      <span class="tw-mr-2 tw-font-semibold"
+        v-text="currentUser.profile.nickname ? currentUser.profile.nickname : currentUser.userName"></span>
+    </ada-btn>
+    <transition name="slide-fade">
+      <div v-if="userMenu" class="tw-absolute tw-left-16 tw-top-12 tw-bg-white tw-shadow-md tw-border tw-border-gray-100">
+        <ada-list class="tw-p-0 tw-m-0">
+          <ada-list-item v-for="item in userMenuItems" :key="item.title" :to="item.to" :value="item" class="hover:tw-bg-gray-200"
+            >
+           <template #item="{value}">
+             <div class="tw-cursor-pointer" @click="item.click">
+              <ada-icon :color="value.color" :size="16">{{ value.icon }}</ada-icon>
+              <span v-text="$t(value.title)"></span>
+             </div>
+           </template>
+            </ada-list-item>
+        </ada-list>
+      </div>
+    </transition>
+  </div>
+
+
 </template>
 

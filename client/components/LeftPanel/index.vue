@@ -5,7 +5,6 @@ import { AxiosResponse } from "axios";
 import { PaginatedResult, Message, MessageFilter, MessageQuery, Tabs } from "@/types";
 import MessageList from "./messageList.vue";
 import { useAsrTrader, useBottomPanel, useMessages, useInstrument } from "~/composables";
-import Search from "@/components/search/Search.vue"
 import MessageItem from './MessageItem.vue'
 
 
