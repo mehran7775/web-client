@@ -67,31 +67,27 @@ defineExpose({
 </script>
 
 <template>
-  <v-container class="ma-0 pa-0" fluid>
-    <v-row class="ma-0 pa-0" dense>
-      <v-col class="ma-0 pa-0">
-        <focus-board>
-          <template #toolbar>
-            <watchlist-selector auto-route class="tw-mt-0 tw tw-max-w-[164px]"/>
-            <instrument-search class="tw-mt-0 tw-mr-2 tw-max-w-[164px]" focus-result/>
-            <ada-btn dark v-if="edited" @click="apply" color="success" class="tw-m-0 tw-mx-1 tw-p-0 tw-text-sm"
-              :height="28" :width="56">
-              {{ $t("general.apply") }}
-            </ada-btn>
-            <ada-btn dark v-if="edited" @click="reset" color="error" class="tw-m-0 tw-mx-1 tw-p-0  tw-text-sm"
-              :height="28" :width="56">
-              {{ $t("general.cancel") }}
-            </ada-btn>
-            <bar v-if="edited" class="tw-mx-1 tw-static" />
-          </template>
-        </focus-board>
-      </v-col>
-    </v-row>
-    <v-row class="ma-0 pa-0" dense>
-      <v-col class="ma-0 pa-0">
-        <WatchList :searchModel="searchModel" />
-      </v-col>
-    </v-row>
+  <div class="2xl:tw-container">
+    <div class="tw-grid tw-col-span-1">
+      <focus-board>
+        <template #toolbar>
+          <watchlist-selector auto-route class="tw-mt-0 tw tw-max-w-[164px]" />
+          <instrument-search class="tw-mt-0 tw-mr-2 tw-max-w-[164px]" focus-result />
+          <ada-btn dark v-if="edited" @click="apply" color="success" class="tw-m-0 tw-mx-1 tw-p-0 tw-text-sm"
+            :height="28" :width="56">
+            {{ $t("general.apply") }}
+          </ada-btn>
+          <ada-btn dark v-if="edited" @click="reset" color="error" class="tw-m-0 tw-mx-1 tw-p-0  tw-text-sm"
+            :height="28" :width="56">
+            {{ $t("general.cancel") }}
+          </ada-btn>
+          <bar v-if="edited" class="tw-mx-1 tw-static" />
+        </template>
+      </focus-board>
+    </div>
+    <div class="tw-grid tw-scroll-p-1">
+      <WatchList :searchModel="searchModel" />
+    </div>
     <loading :loading="loadingRef" />
-  </v-container>
+  </div>
 </template>
