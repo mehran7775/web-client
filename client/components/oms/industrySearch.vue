@@ -90,45 +90,11 @@ async function searchSectors() {
 </script>
 
 <template>
-  <!-- <v-autocomplete
-    height="28"
-    v-model="model"
-    :placeholder="$t('oms.sectorAutoComplete')"
-    :loading="loading"
-    :items="entries"
-    :value="val"
-    class="sector-search no-translate"
-    return-object
-    append-icon=""
-    item-text="name"
-    item-value="id"
-    @input="
-      (val) => {
-        $emit('input', val);
-        generateAddress(val.id);
-      }
-    "
-    @update:search-input="
-      (val) => {
-        searchSectors(val);
-      }
-    "
-    :menu-props="{
-      bottom: true,
-      'offset-y': true,
-      'content-class': 'sector-search__content',
-    }"
-    flat
-    no-filter
-    rounded
-    hide-details
-    dense
-  /> -->
    <auto-complete-feild v-model="ac.state.userInput" borderColor="tw-border-gray-200" background="tw-bg-primary-100"
     :suggestions="ac.state.suggestions || ac.state.userInput != '' ? true : false"
     :placeholder="$t('oms.sectorAutoComplete')">
     <template #prepend>
-      <ada-icon color="primary" class="mt-2" :size="14"> isax-search-normal-1 </ada-icon>
+      <ada-icon color="primary" :size="14"> isax-search-normal-1 </ada-icon>
     </template>
     <template #suggestions v-if="ac.state.loading || ac.state.suggestions.length || ac.state.userInput != ''">
       <ul class="tw-p-0 tw-m-0 tw-border tw-border-gray-200 tw-text-black tw-bg-white">
@@ -151,24 +117,5 @@ async function searchSectors() {
 </template>
 
 <style lang="postcss" scoped>
-.sector-search {
-  background-color: rgba(var(--c-primary), 0.05);
-  border-radius: var(--border-radius-root);
-  font-size: 0.75rem;
-}
-</style>
-<style lang="postcss">
-.v-autocomplete__content {
-  .sector-search-text {
-    color: var(--c-primary-rgb);
-  }
-}
-.sector-search {
-  input {
-    color: var(--c-primary-rgb) !important;
-    &::placeholder {
-      color: var(--c-primary-rgb) !important;
-    }
-  }
-}
+
 </style>
