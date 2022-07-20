@@ -7,8 +7,8 @@ import { useInstrument } from "~/composables";
 const props = withDefaults(
   defineProps<{
     insId: number;
-    hideHeaders: boolean;
-    responsive: boolean;
+    hideHeaders?: boolean;
+    responsive?: boolean;
   }>(),
   {
     hideHeaders: true,

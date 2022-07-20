@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = withDefaults(defineProps<{}>(), {});
+
 </script>
 
 <style lang="postcss">
@@ -12,6 +12,6 @@ const props = withDefaults(defineProps<{}>(), {});
 
 <template>
   <ada-btn class="floating-btn" v-bind="$attrs" v-on="$listeners">
-    <slot />
+    <slot></slot>
   </ada-btn>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "#app"
 const props = withDefaults(defineProps<{
-    position: 'above' | 'left' | 'right' | 'under'
+    position?: 'above' | 'left' | 'right' | 'under'
 }>(), {
     position: 'above'
 })

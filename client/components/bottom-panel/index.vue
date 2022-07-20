@@ -18,7 +18,7 @@ import SameSector from './deepInformation/sameSector.vue'
 
 const props = withDefaults(
   defineProps<{
-    slideToBottom: boolean
+    slideToBottom?: boolean
   }>(),
   {
     slideToBottom: false

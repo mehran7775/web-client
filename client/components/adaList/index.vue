@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-    tag: 'menu' | 'ul' | 'ol' | 'dl'
+    tag?: 'menu' | 'ul' | 'ol' | 'dl'
 }>(), {
     tag: 'ol'
 });

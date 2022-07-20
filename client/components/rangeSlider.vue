@@ -3,10 +3,10 @@ import { watch, ref, computed } from "#app";
 import { useAsrTrader } from "@/composables";
 const props = withDefaults(
   defineProps<{
-    value: number;
-    dir: "ltr" | "rtl";
-    min: number;
-    max: number;
+    value?: number;
+    dir?: "ltr" | "rtl";
+    min?: number;
+    max?: number;
   }>(),
   {
     value: 0,

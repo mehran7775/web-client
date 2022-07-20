@@ -10,8 +10,8 @@ import { useRouter } from "#app";
 
 const props = withDefaults(
   defineProps<{
-    width: number;
-    inputHeight: number;
+    width?: number;
+    inputHeight?: number;
   }>(),
   {
     inputHeight: 32,

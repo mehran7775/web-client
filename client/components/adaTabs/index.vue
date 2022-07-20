@@ -2,8 +2,8 @@
 import { provide, ref, watch } from "#app";
 const props = withDefaults(
     defineProps<{
-        value: any;
-        nameKey: string;
+        value?: any;
+        nameKey?: string;
     }>(),
     {
         value: 0,

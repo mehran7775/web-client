@@ -10,7 +10,7 @@ import { autoComplete } from "@/repositories/oms/industry_manager";
 import items from "../rightPanel/items";
 
 const props = withDefaults(defineProps<{
-  secId: number
+  secId?: number
 }>(),{
   secId:0,
 })

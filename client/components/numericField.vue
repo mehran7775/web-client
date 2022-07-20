@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAsrTrader } from "~/composables";
 
-const props = withDefaults(defineProps<{ value: number }>(), { value: 0 });
+const props = withDefaults(defineProps<{ value?: number }>(), { value: 0 });
 
 const appManager = useAsrTrader();
 const formatter = appManager.formatter;

@@ -6,11 +6,15 @@ import { useAsrTrader, useUser } from "~/composables";
 import { getMenuItems } from "./items";
 import { useRouter } from "#app";
 
-const props = defineProps<{
-  value: boolean;
-  mini: boolean;
-  clipped: boolean;
-}>();
+const props = withDefaults(defineProps<{
+  value?: boolean;
+  mini?: boolean;
+  clipped?: boolean;
+}>(), {
+  value: true,
+  mini: false,
+  clipped: true,
+});
 
 const emit = defineEmits(["input", "update:mini"]);
 
@@ -71,21 +75,21 @@ const secondWatchList = ref<MenuItem[]>([
     title: "تابلوخوانی",
     to: "/watchList/تابلوخوانی"
   },
-   {
+  {
     bookmarkPosition: 1,
     icon: "isax-eye",
     text: "توصیفی",
     title: "توصیفی",
     to: "/watchList/توصیفی"
   },
-   {
+  {
     bookmarkPosition: 1,
     icon: "isax-eye",
     text: "تکنیکال",
     title: "تکنیکال",
     to: "/watchList/تکنیکال"
   },
-   {
+  {
     bookmarkPosition: 1,
     icon: "isax-eye",
     text: "بنیادی",

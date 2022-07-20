@@ -5,7 +5,7 @@ import { useRoute, useRouter } from "#app";
 
 const props = withDefaults(
   defineProps<{
-    autoRoute: boolean;
+    autoRoute?: boolean;
   }>(),
   {
     autoRoute: false,

@@ -3,14 +3,15 @@ import { computed, ref, watch } from "#app";
 
 const props = withDefaults(
   defineProps<{
-    height: string;
-    amount: number;
-    min: number;
-    max: number;
-    label: string;
-    total: number;
+    height?: string;
+    amount?: number;
+    min?: number;
+    max?: number;
+    label?: string;
+    total?: number;
   }>(),
   {
+    height:'42px',
     amount: 1,
     min: 1,
     max: 100,

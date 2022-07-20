@@ -3,13 +3,13 @@ import { computed, inject, ref, Ref, useRouter } from "#app";
 const props = withDefaults(
   defineProps<{
     model?: any;
-    width: number | string;
-    height: number | string;
-    type: "button" | "submit" | "reset";
-    icon: boolean;
-    dark: boolean;
-    bordered: boolean | string;
-    color: string;
+    width?: number | string;
+    height?: number | string;
+    type?: "button" | "submit" | "reset";
+    icon?: boolean;
+    dark?: boolean;
+    bordered?: boolean | string;
+    color?: string;
     to?: string;
   }>(),
   {

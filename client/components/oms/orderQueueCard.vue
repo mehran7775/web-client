@@ -8,9 +8,9 @@ const emit = defineEmits(["count", "price"]);
 const props = withDefaults(
   defineProps<{
     inst: Instrument | InstrumentCache;
-    copy: boolean;
-    responsive: boolean;
-    "extra-col": boolean;
+    copy?: boolean;
+    responsive?: boolean;
+    "extra-col"?: boolean;
   }>(),
   {
     copy: false,

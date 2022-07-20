@@ -5,8 +5,8 @@ import { DateTime } from "luxon";
 
 const props = withDefaults(
   defineProps<{
-    value: string;
-    format: string;
+    value?: string;
+    format?: string;
   }>(),
   {
     value: DateTime.now().toISO(),

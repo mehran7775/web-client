@@ -3,9 +3,9 @@ import { BookmarkPosition, MenuItem, CreateBookmark } from '@/types';
 import { ref } from "#app";
 
 const props = withDefaults(defineProps<{
-    listTag: 'menu' | 'ul' | 'ol' | 'dl',
-    tag: 'li' | 'dd';
-    value: MenuItem
+    listTag?: 'menu' | 'ul' | 'ol' | 'dl',
+    tag?: 'li' | 'dd';
+    value?: MenuItem
 }>(), {
     tag: 'li',
     listTag: 'ol'

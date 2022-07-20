@@ -2,7 +2,7 @@
 import { computed } from "#app";
 import { useAsrTrader } from "~/composables";
 
-const props = defineProps<{ value: number }>();
+const props = withDefaults(defineProps<{ value?: number }>(), { value: 0 });
 
 const appManager = useAsrTrader();
 const formatter = computed(() => appManager.currencyFormatter);

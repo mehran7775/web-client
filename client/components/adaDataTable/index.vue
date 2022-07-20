@@ -5,12 +5,12 @@ import HeaderHandler from "./headerHandler.vue";
 import RowHandler from "./rowHandler.vue";
 
 const props = withDefaults(defineProps<{
-  headers: Array<WatchlistColumns>;
-  items: Array<any>;
-  itemKey: string;
+  headers?: Array<WatchlistColumns>;
+  items?: Array<any>;
+  itemKey?: string;
 }>(), {
   itemKey: "id",
-  headers: [] as Array<WatchlistColumns>,
+  headers: () => [] as Array<WatchlistColumns>,
 });
 
 const data = computed(() => props.items);

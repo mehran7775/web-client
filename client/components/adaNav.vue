@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-    fixed: boolean;
-    value: boolean;
-    mini: boolean;
-    minWidth: number | string;
-    maxWidth: number | string;
+    fixed?: boolean;
+    value?: boolean;
+    mini?: boolean;
+    minWidth?: number | string;
+    maxWidth?: number | string;
 }>(), {
     fixed: false,
     value: true,

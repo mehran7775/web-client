@@ -29,15 +29,15 @@ enum types {
 }
 ///// 
 const props = withDefaults(defineProps<{
-    id: number,
-    dateTime: string | null,
-    title: string,
-    preview: string,
-    origin: number,
-    type: number,
-    flags: number,
-    message: string,
-    seenDate: string | null
+    id?: number,
+    dateTime?: string | null,
+    title?: string,
+    preview?: string,
+    origin?: number,
+    type?: number,
+    flags?: number,
+    message?: string,
+    seenDate?: string | null
 }>(), {
     dateTime: null,
     seenDate: null
