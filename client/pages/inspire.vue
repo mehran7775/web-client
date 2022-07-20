@@ -1,9 +1,11 @@
 <template>
-  <v-container>
-    <client-only placeholder="Loading...">
-      <printer />
-    </client-only>
-  </v-container>
+  <div class="2xl:tw-container">
+    <div class="tw-grid tw-grid-cols-1">
+      <client-only placeholder="Loading...">
+        <printer />
+      </client-only>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -15,7 +17,7 @@ export default defineComponent({
   components: {
     printer,
   },
-  setup() {},
+  setup() { },
 });
 </script>
 
