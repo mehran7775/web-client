@@ -68,7 +68,8 @@
       "t": "TT",
       "longdt": "cccc DDD / TT"
     },
-    "notFound": "داده ای موجود نیست."
+    "notFound": "داده ای موجود نیست.",
+    "waiting": "لطفا صبر کنید"
   },
   "user": {
     "personality": {
