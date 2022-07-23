@@ -16,7 +16,6 @@ const notifs = reactive<Array<Notification>>([]);
 
 async function getNotifs() {
     const res = await notifManager.getInstrumentNotifications(props.value)
-    console.log(res)
     notifs.push(...res);
 }
 
@@ -26,7 +25,6 @@ function hasnotif() {
 
 function openMsg() {
     instrumentManager.select(props.value)
-    console.log(props.value)
     panelManager.LeftPanelMini = false;
 }
 

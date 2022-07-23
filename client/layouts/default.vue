@@ -8,9 +8,9 @@ const appManager = useAsrTrader();
 const userManager = useUser();
 const bottomPanelManager = useBottomPanel();
 const wealthManager = useWealth();
-const wbsocket = useWebSocket();
+// const wbsocket = useWebSocket();
 
-wbsocket.connect();
+// wbsocket.connect();
 wealthManager.getActiveRestrictions();
 
 const rightMenu = ref({
