@@ -33,7 +33,7 @@ defineExpose({
 </style>
 
 <template>
-  <v-avatar :size="size" rounded>
+  <div :size="size" rounded>
     <v-img :src="img" :max-width="size">
       <ada-icon :size="size" slot="placeholder"> mdi-account </ada-icon>
     </v-img>
@@ -49,5 +49,5 @@ defineExpose({
       dense
     >
     </v-file-input>
-  </v-avatar>
+  </div>
 </template>

@@ -36,39 +36,40 @@ export const useInstrument = defineStore("instrument", () => {
   const axiosManager = useAxios();
   const axios = axiosManager.createInstance();
 
-  const websocket = useWebSocket();
+  //TODO WebSocket
+  // const websocket = useWebSocket();
 
-  websocket.registerHandler("TSE_UPDATE", (data) => {
-    const inst = state.value.cache.get(data.obj.tid.toString());
-    if (inst) {
-      inst.lastTradeDate = data.obj.lastTradeDate;
-      if (data.obj.legalReal) {
-        state.value.clientDistributionCache[data.obj.tid] = data.obj.legalReal;
-      }
-      if (data.obj.price) {
-        inst.last = data.obj.price.last;
-        inst.opening = data.obj.price.opening;
-        inst.closing = data.obj.price.closing;
-        inst.lowest = data.obj.price.lowest;
-        inst.highest = data.obj.price.highest;
-        inst.yesterdayPrice = data.obj.price.yesterdayPrice;
-      }
-      if (data.obj.market) {
-        inst.totalShares = data.obj.market.totalShares;
-        inst.totalTrades = data.obj.market.totalTrades;
-        inst.totalTradesValue = data.obj.market.totalTradesValue;
-      }
-    }
-    if (data.obj.queue) {
-      if (state.value.orderQueueCache[data.obj.id]) {
-        state.value.orderQueueCache[data.obj.id].splice(
-          0,
-          data.obj.queue.length,
-          ...data.obj.queue
-        );
-      } else state.value.orderQueueCache[data.obj.id] = data.obj.queue;
-    }
-  });
+  // websocket.registerHandler("TSE_UPDATE", (data) => {
+  //   const inst = state.value.cache.get(data.obj.tid.toString());
+  //   if (inst) {
+  //     inst.lastTradeDate = data.obj.lastTradeDate;
+  //     if (data.obj.legalReal) {
+  //       state.value.clientDistributionCache[data.obj.tid] = data.obj.legalReal;
+  //     }
+  //     if (data.obj.price) {
+  //       inst.last = data.obj.price.last;
+  //       inst.opening = data.obj.price.opening;
+  //       inst.closing = data.obj.price.closing;
+  //       inst.lowest = data.obj.price.lowest;
+  //       inst.highest = data.obj.price.highest;
+  //       inst.yesterdayPrice = data.obj.price.yesterdayPrice;
+  //     }
+  //     if (data.obj.market) {
+  //       inst.totalShares = data.obj.market.totalShares;
+  //       inst.totalTrades = data.obj.market.totalTrades;
+  //       inst.totalTradesValue = data.obj.market.totalTradesValue;
+  //     }
+  //   }
+  //   if (data.obj.queue) {
+  //     if (state.value.orderQueueCache[data.obj.id]) {
+  //       state.value.orderQueueCache[data.obj.id].splice(
+  //         0,
+  //         data.obj.queue.length,
+  //         ...data.obj.queue
+  //       );
+  //     } else state.value.orderQueueCache[data.obj.id] = data.obj.queue;
+  //   }
+  // });
 
   // Getters
   const width = computed({
@@ -168,7 +169,8 @@ export const useInstrument = defineStore("instrument", () => {
       );
       data.forEach((item) => {
         updateInstrument(item);
-        if (watch) websocket.addInstrumentToWatch(item);
+        //TODO WebSocket
+        //if (watch) websocket.addInstrumentToWatch(item);
         res.push(state.value.cache.get(item.id.toString()) as InstrumentCache);
       });
     }
@@ -176,7 +178,8 @@ export const useInstrument = defineStore("instrument", () => {
     res.sort((a, b) => {
       return searchModel.ids.indexOf(a.id) - searchModel.ids.indexOf(b.id);
     });
-    if (watch) websocket.watchInstruments(null);
+    //TODO WebSocket
+    //if (watch) websocket.watchInstruments(null);
     const ids = res.map((item) => item.id);
     if (ids.length > 0) {
       getInstrumentPrices(ids);
@@ -278,7 +281,6 @@ export const useInstrument = defineStore("instrument", () => {
   ): Promise<PaginatedResult<Instrument> | undefined> {
     try {
       const { data } = await manager.getInstruments(searchModel, axios);
-      console.log("data", data.data);
       return data;
     } catch (e) {
       console.log(e);

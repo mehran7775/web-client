@@ -61,7 +61,7 @@ defineExpose({
   userMenu,
   userMenuItems,
 });
-const me = ()=> {
+const me = () => {
   console.log('me')
 }
 </script>
@@ -77,25 +77,28 @@ const me = ()=> {
 </style>
 
 <template>
-  <div class="userMenu" v-ada-click-outside="()=> userMenu = false">
-    <ada-btn :height="28" min-width="184px" class="user-menu-activator tw-py-0 tw-px-2"
-      color="transparent" depressed @click.native="userMenu = !userMenu">
+  <div class="userMenu" v-ada-click-outside="() => userMenu = false">
+    <ada-btn :height="28" min-width="184px" class="user-menu-activator tw-py-0 tw-px-2" color="transparent" depressed
+      @click.native="userMenu = !userMenu">
       <profile-picture :address="currentUser.profile && currentUser.profile.profilePic" />
       <span class="tw-mr-2 tw-font-semibold"
         v-text="currentUser.profile.nickname ? currentUser.profile.nickname : currentUser.userName"></span>
     </ada-btn>
     <transition name="slide-fade">
-      <div v-if="userMenu" class="tw-absolute tw-left-16 tw-top-12 tw-bg-white tw-shadow-md tw-border tw-border-gray-100">
+      <div v-if="userMenu"
+        class="tw-absolute tw-left-16 tw-top-12 tw-bg-white tw-shadow-md tw-border tw-border-gray-100">
         <ada-list class="tw-p-0 tw-m-0">
-          <ada-list-item v-for="item in userMenuItems" :key="item.title" :to="item.to" :value="item" class="hover:tw-bg-gray-200"
-            >
-           <template #item="{value}">
-             <div class="tw-cursor-pointer" @click="item.click">
-              <ada-icon :color="value.color" :size="16">{{ value.icon }}</ada-icon>
-              <span v-text="$t(value.title)"></span>
-             </div>
-           </template>
-            </ada-list-item>
+          <ada-list-item v-for="item in userMenuItems" :key="item.title" :to="item.to" :value="item"
+            class="hover:tw-bg-gray-200">
+            <template #item="{ value }">
+              <div class="tw-cursor-pointer" @click="() => {
+                if (item.click) item.click()
+              }">
+                <ada-icon :color="value.color" :size="16">{{ value.icon }}</ada-icon>
+                <span v-text="$t(value.title)"></span>
+              </div>
+            </template>
+          </ada-list-item>
         </ada-list>
       </div>
     </transition>
