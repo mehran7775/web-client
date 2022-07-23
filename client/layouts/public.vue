@@ -1,31 +1,41 @@
 <script setup lang="ts">
 import snackbar from "@/components/snacks.vue";
+import { computed } from "vue";
 import { useAsrTrader } from "~/composables";
 
 const appManager = useAsrTrader();
-const locale = appManager.locale;
+const locale = computed(() => appManager.locale);
+const rtl = computed(() => appManager.rtl);
 </script>
 
 <template>
-  <v-app :class="locale">
-    <v-main>
+  <div :class="[locale, rtl ? 'rtl' : 'ltr']" class="page">
+    <main>
       <nuxt />
-      <v-footer color="transparent" class="justify-start text-start" absolute>
-        <span class="default--text text--lighten-2">
-          طراحی و توسعه شرکت عصر دانش افزار
-        </span>
-      </v-footer>
-    </v-main>
+    </main>
+    <footer class="tw-justify-start tw-text-start tw-h-[32px]" absolute>
+      <span>
+        طراحی و توسعه شرکت عصر دانش افزار
+      </span>
+    </footer>
     <snackbar />
-  </v-app>
+  </div>
 </template>
 
 <style lang="postcss" scoped>
-.v-main {
+.page {
   overflow-y: auto;
   overflow-x: hidden;
   background-color: var(--c-primary-rgb);
   color: white;
-  min-height: 100vh;
+  height: 100vh;
+
+  main {
+    min-height: calc(100vh - 32px);
+  }
+
+  footer {
+    @apply tw-px-2;
+  }
 }
 </style>
