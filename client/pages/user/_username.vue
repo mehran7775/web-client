@@ -15,24 +15,14 @@ defineExpose({ currentUser, pic, profile });
 </script>
 
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col>
-        <profile-pic
-          :address="currentUser.profile && currentUser.profile.profilePic"
-          :size="184"
-          v-model="pic"
-          @input="(a) => profile(a)"
-        />
-      </v-col>
-      <v-col>
-        <profileViewer v-model="currentUser.profile" />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <logs />
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="2xl:tw-container">
+    <div class="tw-grid tw-grid-cols-2">
+      <profile-pic :address="currentUser.profile && currentUser.profile.profilePic" :size="184" v-model="pic"
+        @input="(a) => profile(a)" />
+      <profileViewer v-model="currentUser.profile" />
+    </div>
+    <div class="tw-grid tw-grid-cols-1">
+      <logs />
+    </div>
+  </div>
 </template>

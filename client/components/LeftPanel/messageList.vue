@@ -1,5 +1,5 @@
 <template>
-  <div class="msgs">
+  <!-- <div class="msgs">
     <div class="scroll">
       <v-list-item v-for="item in value" :key="item.id" @click="() => $emit('select', item.id)" dense>
         <ada-icon> {{ icons[item.origin] }} </ada-icon>
@@ -15,7 +15,7 @@
       <v-progress-circular size="26" indeterminate v-show="loading" />
       <ada-icon v-show="!loading"> mdi-dots-horizontal </ada-icon>
     </ada-btn>
-  </div>
+  </div> -->
 </template>
 <script lang="ts">
 import { defineComponent, Ref, ref, computed } from "#app";

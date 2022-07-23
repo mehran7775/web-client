@@ -41,7 +41,7 @@ const props = withDefaults(defineProps<{
 <template>
     <div id="auto-complete" :class="[background, suggestions ? 'tw-rounded-t-md' : 'tw-rounded-md']">
         <slot name="lable"></slot>
-        <div class="tw-flex">
+        <div class="tw-flex tw-items-center">
             <slot name="prepend"></slot>
             <input type="text" id="text-auto-complete" :value="value" @input="$emit('input', $event.target.value)"
                 v-bind="{ ...$attrs }" :placeholder="placeholder" autocomplete="false">

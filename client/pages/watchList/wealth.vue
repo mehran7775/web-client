@@ -30,25 +30,21 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-container class="ma-0 pa-0" fluid>
-    <v-row class="ma-0 pa-0" dense>
-      <v-col class="ma-0 pa-0">
-        <focus-board>
-          <template #toolbar>
-            <v-input class="menu px-2" height="28" dense hide-details>
-              {{ $t("menu.wealth") }}
-            </v-input>
-          </template>
-        </focus-board>
-      </v-col>
-    </v-row>
-    <v-row class="ma-0 pa-0" dense>
-      <v-col class="ma-0 pa-0" style="position: relative">
+  <div class="tw-grid">
+    <div class="tw-col-span-1" dense>
+      <focus-board>
+        <template #toolbar>
+          <div class="tw-rounded tw-w-52 tw-bg-primary-100 tw-pr-2 tw-py-1 tw-text-right" v-text="$t('menu.wealth')"></div>
+        </template>
+      </focus-board>
+    </div>
+    <div class="tw-col-span-1" dense>
+      <div class="tw-relative">
         <WatchList :searchModel="searchModel" paginated />
         <loading :loading="loading" />
-      </v-col>
-    </v-row>
-  </v-container>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="postcss" scoped>

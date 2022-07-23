@@ -14,17 +14,14 @@ defineExpose({
 </script>
 
 <template>
-  <v-container class="ma-0 pa-0" fluid>
-    <v-row dense>
-      <v-col v-if="initData">
-        <teammates
-          v-if="initData.type == DeepOptions.teammates"
-          v-model="initData.data"
-        />
-      </v-col>
-      <v-col v-else>
+  <div class="tw-container tw-mx-auto">
+    <div class="tw-grid w-grid-cols-1">
+      <div class="tw-col-span-1" v-if="initData">
+        <teammates v-if="initData.type == DeepOptions.teammates" v-model="initData.data" />
+      </div>
+      <div class="tw-col-span-1" v-else>
         <h3>else</h3>
-      </v-col>
-    </v-row>
-  </v-container>
+      </div>
+    </div>
+  </div>
 </template>

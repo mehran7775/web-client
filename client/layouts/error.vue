@@ -9,15 +9,17 @@ const otherError = "An error occurred";
 </script>
 
 <template>
-  <v-app>
-    <h1 v-if="error.statusCode === 404">
+  <div class="tw-container">
+    <div class="tw-grid tw-grid-cols-1">
+       <h1 v-if="error.statusCode === 404">
       {{ pageNotFound }}
     </h1>
     <h1 v-else>
       {{ otherError }}
     </h1>
     <NuxtLink to="/"> Home page </NuxtLink>
-  </v-app>
+    </div>
+  </div>
 </template>
 
 <style scoped>
