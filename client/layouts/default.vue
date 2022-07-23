@@ -2,13 +2,14 @@
 import { defaultItem } from "@/types"
 import { computed, ref, watch } from "#app";
 import snackbar from "@/components/snacks.vue";
-import { useAsrTrader, useUser, useBottomPanel, useWealth, useWebSocket } from "~/composables";
+import { useAsrTrader, useUser, useBottomPanel, useWealth, useWebSocket, useMenu } from "~/composables";
 
 const appManager = useAsrTrader();
 const userManager = useUser();
 const bottomPanelManager = useBottomPanel();
 const wealthManager = useWealth();
 const wbsocket = useWebSocket();
+const menu = useMenu()
 
 wbsocket.connect();
 wealthManager.getActiveRestrictions();
@@ -225,14 +226,14 @@ const rtl = computed(() => appManager.rtl);
         <ada-badge class="tw-mx-5" color="green">
           <span v-text="$t('oms.bourseIndex')" class="tw-text-primary"></span>: <span
             class="tw-text-sm badge-content">{{ formatter.format(1502605.15) }}
-             <span v-text="`(${ new Number(8471.09).toLocaleString(appManager.locale) })`" class="tw-text-red"></span>
-            </span>
+            <span v-text="`(${new Number(8471.09).toLocaleString(appManager.locale)})`" class="tw-text-red"></span>
+          </span>
         </ada-badge>
         <ada-badge color="orange">
           <span v-text="$t('oms.superBourseIndex')" class="tw-text-primary"></span>: <span
             class="tw-text-sm badge-content">{{ formatter.format(20136.69) }}
-             <span v-text="`(${ new Number(84.12).toLocaleString(appManager.locale) })`" class="tw-text-red"></span>
-            </span>
+            <span v-text="`(${new Number(84.12).toLocaleString(appManager.locale)})`" class="tw-text-red"></span>
+          </span>
         </ada-badge>
       </div>
       <ada-spacer />
@@ -294,5 +295,11 @@ const rtl = computed(() => appManager.rtl);
       <ada-icon color="white" :size="24"> isax-messages-2-bold </ada-icon>
     </floating-button>
     <snackbar />
+    <transition name="slide-fade">
+      <ada-menu v-if="menu.state.active" :left="menu.state.left" :top="menu.state.top">
+        <div class="tw-rounded-b-md tw-bg-white tw-shadow-md" v-for="item in menu.state.content" v-html="item"></div>
+      </ada-menu>
+    </transition>
+
   </v-app>
 </template>

@@ -68,6 +68,12 @@ export interface Snack {
   timeout?: number;
   bg?: string;
 }
+export interface Menu {
+  active: boolean,
+  left: string,
+  top: string,
+  content: any
+}
 
 export interface NotificationState {
   cache: Map<string, Array<Notification>>;

@@ -43,14 +43,22 @@ export default defineComponent({
 
 <template>
   <div>
-    <v-text-field class="captcha" aria-label="Picture Captcha" aria-required="true" ref="captcharef" v-model="captcha"
+    <!-- <v-text-field class="captcha" aria-label="Picture Captcha" aria-required="true" ref="captcharef" v-model="captcha"
       :rules="[rules.required]" hide-details v-on="$listeners" v-bind="$attrs">
       <template #append>
         <v-img :src="captchaUrl" :height="height - 8" class="ma-0 me-3 pa-0 d-inline-block">
         </v-img>
         <ada-icon :size="24" class="tw-mt-1" @click="refreshCaptcha"> isax-refresh-2 </ada-icon>
       </template>
-    </v-text-field>
+    </v-text-field> -->
+    <text-input v-model="captcha" ref="captcharef" v-bind="$attrs" v-on="$listeners" placeholder="کد روبرو را وارد کنید"
+    bg="white" borderColor="tw-border-gray-500"
+    >
+      <template #append>
+        <img :src="captchaUrl" alt="" :height="height-8" class="tw-my-0 tw-ml-0 tw-mr-3 tw-p-0 tw-inline-block">
+        <ada-icon :size="24" class="tw-mt-1" @click="refreshCaptcha"> isax-refresh-2 </ada-icon>
+      </template>
+    </text-input>
     <div v-if="captcharef && !captcharef.isFocused && !captcharef.valid" class="error--text" style="font-size: 10px">
       <div v-for="item in captcharef.validations" :key="item" class="pt-2">
         <ada-icon color="error" :size="17"> mdi-alert-circle-outline</ada-icon>
@@ -63,9 +71,4 @@ export default defineComponent({
 </template>
 
 <style lang="postcss">
-.captcha {
-  .v-input__append-inner {
-    margin-top: 3px !important;
-  }
-}
 </style>

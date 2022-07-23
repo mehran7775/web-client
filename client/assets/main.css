@@ -81,3 +81,11 @@ hr.divider {
   border-width: thin 0 0 0;
   transition: inherit;
 }
+
+
+.slide-fade-enter-active, .fslide-ade-leave-active {
+  transition: opacity .5s;
+}
+.slide-fade-enter, .slide-fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
