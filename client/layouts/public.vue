@@ -24,6 +24,7 @@ const rtl = computed(() => appManager.rtl);
 
 <style lang="postcss" scoped>
 .page {
+  position: relative;
   overflow-y: auto;
   overflow-x: hidden;
   background-color: var(--c-primary-rgb);

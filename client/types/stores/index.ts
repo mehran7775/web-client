@@ -63,12 +63,15 @@ export interface MessageState {}
 
 export interface Snack {
   content: string;
-  color: string;
-  show?: boolean;
-  timeout?: number;
+  color?: string;
+  timeout: number;
   bg?: string;
 }
 
+export interface SnackState {
+  Snacks: Array<Snack>;
+}
+
 export interface NotificationState {
-  cache: Map<string, Array<Notification>>;
+  Notifications: Array<Notification>;
 }

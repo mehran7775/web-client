@@ -1,32 +1,29 @@
 import { defineStore } from "pinia";
-import { ref } from "#app";
-import { Snack } from "@/types/stores";
+import { reactive, ref } from "#app";
+import { Snack, SnackState } from "@/types/stores";
 
 export const useSnacks = defineStore("snacks", () => {
-  const state = ref<Snack>({ 
-    color: "",
-    content: "",
-    show: false ,
-    timeout: 0,
-    bg: 'tw-bg-primary'
+  const state = ref<SnackState>({
+    Snacks: reactive([]),
   });
-  function showMessage(payload: Snack) {
-    state.value.content = payload.content;
-    state.value.color = payload.color;
-    payload.bg ? state.value.bg = payload.bg : null
-    payload.timeout ? state.value.timeout = payload.timeout : null
-    hideMessage(state.value.timeout)
+  function showMessage(snack: Snack) {
+    state.value.Snacks.splice(0, 0, snack);
+    hideMessage(snack);
   }
-  function hideMessage(time: number | undefined) {
-    if (time){
-      setTimeout(()=> {
-        state.value.timeout = 0
-      }, time*1000)
-    }
+  function hideMessage(snack: Snack) {
+    console.log(snack.timeout);
+    setTimeout(() => {
+      close(snack);
+    }, snack.timeout ?? 1000);
+  }
+  function close(snack: Snack) {
+    if (state.value.Snacks.indexOf(snack) > -1)
+      state.value.Snacks.splice(state.value.Snacks.indexOf(snack), 1);
   }
 
   return {
     state,
     showMessage,
+    close,
   };
 });
