@@ -13,7 +13,7 @@ const userManager = useUser();
 const axios = useAxios().createInstance();
 const bookmarks = computed(() => userManager.getBookmarks);
 const items: Array<AutoCompleteItem> = reactive([]);
-const home = computed(() => userManager.me.settings.home);
+const home = computed(() => userManager.me.settings?.home);
 function generateAddress(id: string): string {
   return "/watchlist/boards/" + id;
 }

@@ -33,7 +33,7 @@ const selected = computed({
 const rtl = computed(() => appManager.rtl);
 const bookmarks = computed(() => userManager.getBookmarks);
 const shourtcuts = computed(() => userManager.getShourtcuts);
-const home = computed(() => userManager.me.settings.home);
+const home = computed(() => userManager.me.settings?.home);
 const isMarked = computed(() => (data: MenuItem) => {
   switch (data.bookmarkPosition) {
     case BookmarkPosition.ToolBar:

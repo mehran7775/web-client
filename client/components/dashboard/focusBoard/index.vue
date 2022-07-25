@@ -16,7 +16,7 @@ const toolbar = ref<HTMLElement | null>(null)
 
 const me = userManager.me;
 const bookmarks = computed(() => userManager.getBookmarks);
-const home = computed(() => me.settings.home);
+const home = computed(() => me.settings?.home);
 const path = computed(() => route.fullPath);
 const filter = computed(() => instrumentManager.state.selected);
 

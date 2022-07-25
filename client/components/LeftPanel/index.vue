@@ -150,20 +150,6 @@ async function load(query: Ref<MessageQuery>) {
   }
 }
 
-
-// async function selectMessage(id: number) {
-//   try {
-//     bottomPanel.setLoading(true);
-
-//     const message: Message = (await messageManager.getMessage(id)).data;
-//     bottomPanel.setMessage(message);
-//     bottomPanel.setTitle({ tab: Tabs.furtherInfo, title: message.title, params: [] });
-//   } catch {
-//     //TODO Snack for error
-//   } finally {
-//     bottomPanel.setLoading(false);
-//   }
-// }
 const trigger_show_message = async (message: any) => {
   const tab = useBottomPanel()._titles.find(item => {
     return item.title == getTitle(message.type)

@@ -73,5 +73,5 @@ export interface SnackState {
 }
 
 export interface NotificationState {
-  Notifications: Array<Notification>;
+  cache: Map<string, Array<Notification>>;
 }
