@@ -26,9 +26,12 @@ export const useWealth = defineStore("wealth", () => {
           axios.createInstance()
         )
       ).data?.data;
-      doAsync(() =>
-        wealth.every((item) => instrumentManager.updateInstrument(item))
-      );
+      doAsync(() => {
+        if (wealth)
+          return wealth.every((item) =>
+            instrumentManager.updateInstrument(item)
+          );
+      });
       return wealth;
     } else return [];
   }

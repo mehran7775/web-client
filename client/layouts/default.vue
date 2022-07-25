@@ -8,10 +8,11 @@ const appManager = useAsrTrader();
 const userManager = useUser();
 const bottomPanelManager = useBottomPanel();
 const wealthManager = useWealth();
+
 const wbsocket = useWebSocket();
 // const wbsocket = useWebSocket();
 
-// wbsocket.connect();
+
 wealthManager.getActiveRestrictions();
 
 const rightMenu = ref({
@@ -46,7 +47,7 @@ const collaps = computed(() => {
   const tab = bottomPanelManager.activeTab;
   return tab && tab != defaultItem;
 });
-const home = computed(() => userManager.me.settings.home);
+const home = computed(() => userManager.me.settings?.home);
 const clipped = ref(true);
 const invisibleFinInfo = ref(false);
 const rtl = computed(() => appManager.rtl);

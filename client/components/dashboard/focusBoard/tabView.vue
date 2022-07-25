@@ -46,11 +46,11 @@ async function deep(option: DeepOptions, instrument: Instrument) {
       }
       break;
     default:
-      //TODO
+      //TODO Notifs
       //bottomPanel.setTitle({ tab: Tabs.depth, title: "oms." + option, params: [] });
       break;
   }
-  //TODO
+  //TODO Notif action
   //bottomPanel.setActiveTab(Tabs.depth);
 }
 
