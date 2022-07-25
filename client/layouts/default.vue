@@ -2,15 +2,19 @@
 import { defaultItem } from "@/types"
 import { computed, ref, watch } from "#app";
 import snackbar from "@/components/snacks.vue";
-import { useAsrTrader, useUser, useBottomPanel, useWealth, useWebSocket } from "~/composables";
+import { useAsrTrader, useUser, useBottomPanel, useWealth, useWebSocket, useMenu } from "~/composables";
 
 const appManager = useAsrTrader();
 const userManager = useUser();
 const bottomPanelManager = useBottomPanel();
 const wealthManager = useWealth();
-const wbsocket = useWebSocket();
 
+const wbsocket = useWebSocket();
 wbsocket.connect();
+
+const menu = useMenu()
+
+
 wealthManager.getActiveRestrictions();
 
 const rightMenu = ref({
@@ -301,5 +305,10 @@ const rtl = computed(() => appManager.rtl);
       </floating-button>
     </v-app>
     <snackbar />
-  </div>
+    <transition name="slide-fade">
+      <ada-menu v-if="menu.state.active" :left="menu.state.left" :top="menu.state.top">
+        <div class="tw-rounded-b-md tw-bg-white tw-shadow-md" v-for="item in menu.state.content" v-html="item"></div>
+      </ada-menu>
+    </transition>
+</div>
 </template>

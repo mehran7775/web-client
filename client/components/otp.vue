@@ -73,8 +73,7 @@ export default defineComponent({
 
 <template>
   <div>
-    <v-text-field aria-label="otp" aria-required="true" ref="otpref" class="otp" hide-details hide-spin-buttons
-      v-bind="$attrs" v-on="$listeners">
+    <input-text ref="otpref" class="otp" v-bind="$attrs" v-on="$listeners">
       <template #append>
         <ada-btn class="sms" :width="100" :disabled="counter > 0" @click="() => $emit('request')" :height="height - 8">
           <span v-if="counter == 0">
@@ -88,7 +87,7 @@ export default defineComponent({
           </span>
         </ada-btn>
       </template>
-    </v-text-field>
+    </input-text>
     <div v-if="otpref && !otpref.valid" class="error--text" style="font-size: 10px">
       <div v-for="item in otpref.validations" :key="item" class="pt-2">
         <ada-icon color="error" :size="17"> mdi-alert-circle-outline</ada-icon>

@@ -60,7 +60,7 @@ async function login(data: LoginModel) {
         router.push(user.settings?.home ?? "/watchlist/wealth");
         snack.showMessage({ content: "login.successful", color: "success" });
       }
-    } catch (err : any) {
+    } catch (err: any) {
       captcharef.value.refreshCaptcha();
       const error = ErrorExtractor(err as AxiosError);
       if (error.detail.length == 0)
@@ -72,7 +72,7 @@ async function login(data: LoginModel) {
         }
         snack.showMessage({ content: res, color: "error" });
       }
-      if(err.response.status === 401) data.captcha = ""
+      if (err.response.status === 401) data.captcha = ""
     } finally {
       loading.value = false;
     }
@@ -91,8 +91,9 @@ function requestOtp() {
 }
 
 onMounted(() => {
-  userref.value?.focus();
+  console.log(userref.value?.$el.children[1].children[1].focus())
 });
+
 </script>
 
 <style lang="postcss">
@@ -104,6 +105,7 @@ fieldset.login-cmp {
     @apply tw-text-xl tw-m-0 tw-mt-[8px] tw-p-0 tw-justify-start tw-font-bold;
     display: block;
   }
+
   >button {
     color: var(--c-primary-rgb);
   }
@@ -163,14 +165,11 @@ button {
         $t("login.title")
     }}</div>
     <v-form ref="frm">
-      <p class="tw-mt-[16px] tw-mb-2">{{ $t("user.username") }}</p>
-      <v-text-field aria-label="username" aria-required="true" tabindex="1" ref="userref" :height="inputHeight"
-        v-model="data.userName" prepend-inner-icon="isax-user" :rules="[rules.required]" @input="checkTries"
-        @keyup.enter="
-          () => {
-            if (passref) passref.focus();
-            else if (captcharef) captcharef.focus();
-          }
+      <text-input :label="$t('user.username')" v-model="data.userName" ref="userref" class="tw-my-4 tw-text-primary" borderColor="tw-border-gray-500"
+        tabIndex="1" @keyup.enter="() => {
+          if (passref) passref.focus();
+          else if (captcharef) captcharef.focus();
+        }
         " @focus="
   () => {
     if (keyboard.active)
@@ -178,9 +177,12 @@ button {
         data.userName = data.userName + key;
       });
   }
-" hide-details outlined dense validate-on-blur>
+">
+        <template #prepend="{ active }">
+          <ada-icon class="tw-mr-2" :size="24" :color="active ? 'primary' : 'black'">isax-user</ada-icon>
+        </template>
         <template #append>
-          <ada-icon :size="24" @click="
+          <ada-icon class="tw-ml-3" :size="24" @click="
             () => {
               keyboard.active = !keyboard.active;
               if (keyboard.active)
@@ -188,11 +190,9 @@ button {
                   data.userName = data.userName + key;
                 });
             }
-          " :color="keyboard.active ? 'primary' : null">
-            isax-keyboard
-          </ada-icon>
+          " :color="keyboard.active ? 'primary' : 'black'">isax-keyboard</ada-icon>
         </template>
-      </v-text-field>
+      </text-input>
       <div v-if="userref && !userref.valid" class="error--text" style="font-size: 10px">
         <div v-for="item in userref.validations" :key="item" class="pt-2">
           <ada-icon color="error" :size="17"> mdi-alert-circle-outline</ada-icon>
@@ -201,19 +201,16 @@ button {
           </span>
         </div>
       </div>
-      <p v-if="data.passwordType == 2" class="tw-mt-4 tw-mb-2">
-        {{ $t("login.otp") }}
-      </p>
-      <p v-else class="tw-mt-4 tw-mb-2">{{ $t("user.password") }}</p>
       <otp v-if="data.passwordType == 2" timer="90" :height="inputHeight" tabindex="4" ref="otpref"
         @request="requestOtp" @keyup.enter="
           () => {
             login(data);
           }
         " outlined dense />
-      <v-text-field aria-label="password" aria-required="true" v-if="data.passwordType == 1" tabindex="2" ref="passref"
-        :height="inputHeight" v-model="data.password" :type="showPassword ? 'text' : 'Password'"
-        prepend-inner-icon="isax-lock" @keyup.enter="
+      <text-input :label="data.passwordType == 2 ? $t('login.otp') : $t('user.password')" v-model="data.password"
+        borderColor="tw-border-gray-500"
+        ref="passref" class="tw-mt-13 tw-text-primary" tabIndex="2" :type="showPassword ? 'text' : 'Password'"
+        :class="{ 'pass-star': !showPassword }" @keyup.enter="
           () => {
             if (false) login(data);
             else captcharef.focus();
@@ -225,25 +222,31 @@ button {
         data.password = data.password + key;
       });
   }
-" :class="{ 'pass-star': !showPassword }" :rules="[rules.required]" hide-details outlined dense validate-on-blur>
-        <template #append>
-          <ada-icon :size="24" class="tw-mx-1" :color="showPassword ? 'primary' : null"
-            @click="showPassword = !showPassword">
-            isax-eye
-          </ada-icon>
-          <ada-icon :size="24" @click="
-            () => {
-              keyboard.active = !keyboard.active;
-              if (keyboard.active)
-                keyboard.setListener((key) => {
-                  data.password = data.password + key;
-                });
-            }
-          ">
-            isax-keyboard
-          </ada-icon>
+">
+        <template #prepend="{ active }">
+          <ada-icon class="tw-mr-2" :size="24" :color="active ? 'primary' : 'black'">isax-lock</ada-icon>
         </template>
-      </v-text-field>
+        <template #append>
+          <div class="tw-flex">
+            <ada-icon :size="24" class="tw-mx-1" :color="showPassword ? 'primary' : 'black'"
+              @click="showPassword = !showPassword">
+              isax-eye
+            </ada-icon>
+            <ada-icon :size="24" @click="
+              () => {
+                keyboard.active = !keyboard.active;
+                if (keyboard.active)
+                  keyboard.setListener((key) => {
+                    data.password = data.password + key;
+                  });
+              }
+            " :color="keyboard.active ? 'primary' : 'black'">
+              isax-keyboard
+            </ada-icon>
+          </div>
+        </template>
+      </text-input>
+
       <v-row class="tw-m-0 tw-mt-[4px] tw-p-0" style="font-size: 10px">
         <v-col cols="6" class="tw-m-0 tw-p-0">
           <div v-if="passref" class="error--text">
@@ -265,7 +268,7 @@ button {
       </v-row>
       <div v-if="true" class="tw-m-0 tw-p-0 tw-mt-1 tw-mb-4">
         <p class="tw-mb-2">{{ $t("login.captcha") }}</p>
-        <simple-captcha v-model="data.captcha" tabindex="3" ref="captcharef" class="captcha" :height="inputHeight"
+        <simple-captcha v-model="data.captcha" tabindex="3" ref="captcharef" class="captcha tw-text-primary" :height="inputHeight"
           @keyup.enter="
             () => {
               if (passref) login(data);
