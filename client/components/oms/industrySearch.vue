@@ -5,7 +5,7 @@ import
   AutoCompleteSearchModel,
   Sector
   } from "@/types";
-import { useAxios, useSectors, useAutoComplete, useDebounce } from "~/composables";
+import { useAxios, useSectors, autoComplete as acom, useDebounce } from "~/composables";
 import { autoComplete } from "@/repositories/oms/industry_manager";
 import items from "../rightPanel/items";
 import AutoCompleteFeild from '../AutoCompleteField.vue'
@@ -21,7 +21,7 @@ const sectorManager = useSectors();
 const model = ref<Sector|null>(null);
 const val = ref<Sector|null>(null);
 const router = useRouter();
-const ac = useAutoComplete([])
+const ac = acom([])
 
 sectorManager.getSector(props.secId).then((res)=>{
   if(res != null){

@@ -1,7 +1,7 @@
 import { ref, reactive, toRefs } from '#app'
 import { AutoCompleteItem } from '@/types'
 
-export const useAutoComplete = (options: Array<AutoCompleteItem>) => {
+export const autoComplete = (options: Array<AutoCompleteItem>) => {
     const state = reactive({
         userInput: "" as string,
         loading: false as boolean,
