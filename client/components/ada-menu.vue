@@ -1,71 +1,40 @@
-<!-- <template>
-    <div v-show="show" class="context-menu" ref="context" tabindex="0" :style="style">
-        {{ items }}
-        <span>
-            <slot></slot>
-        </span>
-    </div>
-</template> -->
 <template>
-    <span>
+    <span id="menu-context">
         <slot name="activator"></slot>
-        <dialog ref="menu">
+        <dialog open id="menu" :class="{ 'rtl': rtl }">
+            <slot></slot>
         </dialog>
     </span>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from '#app'
-
-//////////
-
-const props = defineProps<{
-    display: boolean
-}>()
+import { computed, onMounted } from '#app'
+import { useAsrTrader } from "~/composables";
 
 
-//////////
+const appManager = useAsrTrader();
 
-const show = ref<boolean>(true)
-const left = ref<number>(200)
-const top = ref<number>(50)
+const rtl = computed(() => appManager.rtl);
 
-
-
-/////////
-
-const style = computed(() => {
-    return {
-        left: `${left.value}px`,
-        top: `${top.value}px`
-    }
+onMounted(() => {
+    const tem = document.getElementById('menu-context')!
+    const properties = tem.getBoundingClientRect()
+    document.getElementById('auto-complete')?.offsetWidth
+    let dialog = document.getElementById('menu')!
+    dialog.style.left = `${properties.left - 6}px`
+    dialog.style.top = `${properties.top + 26}px`
+    dialog.style.width = `${document.getElementById('auto-complete')?.offsetWidth}px`
+    document.body.appendChild(dialog)
 })
 
-
-
-///////////
-
-const close = (): void => {
-    show.value = false
-    left.value = 0
-    top.value = 0
-}
-const open = (e: Element): void => {
-    const loc = e.getBoundingClientRect()
-    left.value = loc.left
-    top.value = loc.top
-    show.value = true
-}
-
-defineExpose({ close, open })
 
 </script>
 
 
 <style lang="postcss" scoped>
-.context-menu {
-    @apply tw-fixed tw-bg-white tw-outline-none tw-shadow-md tw-w-40 tw-z-50 tw-overflow-y-auto;
+#menu {
+    @apply tw-absolute tw-bg-white tw-outline-none tw-shadow-md tw-z-50 tw-overflow-y-auto tw-rounded-b-md;
     max-height: 165px;
-    max-height: 185px;
+    max-height: 195px;
 }
 </style>

@@ -303,11 +303,5 @@ const rtl = computed(() => appManager.rtl);
       </floating-button>
     </v-app>
     <snackbar />
-    <!-- <transition name="slide-fade">
-      <ada-menu v-if="menu.state.active" :left="menu.state.left" :top="menu.state.top">
-        <div class="tw-rounded-b-md tw-bg-white tw-shadow-md" v-for="item in menu.state.content" v-html="item"></div>
-      </ada-menu>
-    </transition> -->
-    <ada-menu :display="true" ref="contextMenu"></ada-menu>
   </div>
 </template>
