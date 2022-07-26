@@ -19,7 +19,6 @@ const rtl = computed(() => appManager.rtl);
 onMounted(() => {
     const tem = document.getElementById('menu-context')!
     const properties = tem.getBoundingClientRect()
-    document.getElementById('auto-complete')?.offsetWidth
     let dialog = document.getElementById('menu')!
     dialog.style.left = `${properties.left - 6}px`
     dialog.style.top = `${properties.top + 26}px`
