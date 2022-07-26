@@ -12,19 +12,11 @@ import { useAsrTrader } from "~~/composables/useAsrTrader";
 const otpref: Ref<any> = ref(null);
 
 const step = ref(1);
-
 const forms: Ref<any> = ref({
   form1: null,
   form2: null,
-  form0: null
+  form0: null,
 });
-
-const myForms = {
-  form0: {
-    meliCode: '',
-    phoneNumber: ''
-  }
-}
 const rform1: Ref<any> = ref(null),
   rform2: Ref<any> = ref(null),
   rform0: Ref<any> = ref(null);
@@ -65,9 +57,7 @@ function requestOtp() {
     <div class="pie-2 pie"></div>
 
     <v-card class="dotted reg-crd">
-      <ada-icon color="gray" :size="24"
-        :class="['tw-absolute tw-top-20', !rtl ? 'tw-left-10 tw-rotate-180' : 'tw-left-auto tw-right-10']"
-        @click="back"> mdi-arrow-right </ada-icon>
+      <ada-icon color="gray" :size="24" :class="['tw-absolute tw-top-20', !rtl ? 'tw-left-10 tw-rotate-180' : 'tw-left-auto tw-right-10']" @click="back"> mdi-arrow-right </ada-icon>
       <div class="justify-center text-center">
         <nuxt-link to="/about-us" class="logo" />
         <h3>
@@ -93,18 +83,12 @@ function requestOtp() {
         <v-stepper-items>
           <v-stepper-content class="ma-0 my-2 pa-0" step="1">
             <v-form v-model="forms.form0" ref="rform0" lazy-validation>
-              <text-input class="tw-my-2 tw-text-primary" :label="$t('user.profile.nid')" borderColor="tw-border-gray-500"
-                v-model="myForms.form0.meliCode">
-                <template #prepend="{ active }">
-                  <ada-icon class="tw-mr-2" :size="24" :color="active ? 'primary' : 'black'">isax-user</ada-icon>
-                </template>
-              </text-input>
-              <text-input class="tw-my-2 tw-text-primary" :label="$t('user.profile.contact.mobile')" borderColor="tw-border-gray-500"
-                v-model="myForms.form0.phoneNumber">
-                <template #prepend="{ active }">
-                  <ada-icon class="tw-mr-2" :size="24" :color="active ? 'primary' : 'black'">isax-mobile</ada-icon>
-                </template>
-              </text-input>
+              <h4>{{ $t("user.profile.nid") }}</h4>
+              <v-text-field class="my-2" prepend-inner-icon="isax-user" outlined hide-details dense>
+              </v-text-field>
+              <h4>{{ $t("user.profile.contact.mobile") }}</h4>
+              <v-text-field class="my-2" prepend-inner-icon="isax-mobile" outlined hide-details dense>
+              </v-text-field>
             </v-form>
           </v-stepper-content>
           <v-stepper-content class="ma-0 my-2 pa-0" step="2">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch, useSlots } from "#app";
+import { computed, ref, watch } from "#app";
 
 const props = withDefaults(
   defineProps<{
@@ -12,42 +12,29 @@ const props = withDefaults(
     maxlength: number | null;
     rounded: string;
     bg: string;
-    readonly: boolean,
-    borderColor: string
-    borderActive?: boolean,
+    activeBorder: boolean;
+    readonly: boolean
   }>(),
   {
     label: "",
     type: "text",
     value: "",
-    min: 1,
-    max: 5,
+    min: null,
+    max: null,
     minlength: null,
     maxlength: null,
     rounded: "var(--border-radius-root)",
-    bg: "tw-bg-white",
-    readonly: false,
-    borderColor: "tw-border-transparent",
-    borderActive: false,
+    bg: "rgba(var(--c-primary), 0.1)",
+    activeBorder: true,
+    readonly: false
   }
 );
 
-
-///////////////
-
-const emit = defineEmits(["input", "keyup:enter", 'focus']);
+const emit = defineEmits(["input", "keyup"]);
 
 const ltr = computed<string>(() => (props.type == "number" ? "ltr" : ""));
 const val = ref(props.value);
 const active = ref(false)
-const slots = useSlots()
-const hasSlot = (name: string) => {
-  return !!slots[name];
-}
-
-
-
-////////////
 
 function setValue(update: string | number) {
   val.value = update;
@@ -62,32 +49,64 @@ watch(
 </script>
 
 <style lang="postcss" scoped>
-.template-input {
-  .template-te {
-    @apply tw-w-full tw-relative tw-flex tw-items-center tw-justify-between tw-h-full tw-rounded-md tw-border;
-    @apply tw-py-1;
-
+.rtl {
+  .ada-input {
+    &.has-label {
+      input {
+        margin: auto 4px auto 0;
+      }
+    }
   }
-  .input-feild {
-    @apply tw-w-full tw-h-full tw-relative tw-py-3 tw-px-2;
-    @apply  focus:tw-outline-none tw-rounded-md;
-    color: inherit;
+}
+
+.ada-input {
+  @apply tw-flex tw-flex-grow tw-items-center tw-justify-between tw-whitespace-nowrap tw-min-w-0;
+
+  &.has-label {
+    .label {
+      @apply tw-flex tw-items-center;
+      min-width: 65px;
+    }
+
+    input {
+      margin: auto 0 auto 4px;
+    }
+  }
+
+  input {
+    @apply tw-min-w-0 tw-inline tw-flex-grow tw-min-h-0;
+    height: 100%;
+    outline-style: none;
+    line-height: inherit;
+    font-size: inherit;
+    font-weight: bold;
+    padding: 0 6px 0 6px;
+
+    &.active-border:focus {
+      background-color: white;
+      border: solid 1px var(--c-primary-rgb);
+      color: var(--c-primary-rgb);
+    }
+
   }
 }
 </style>
 
 <template>
-  <div class="template-input" tabindex="-1">
-    <label tabindex="-1" v-text="label" class="tw-block tw-my-2 tw-text-black"></label>
-    <div class="template-te"
-    :class="[ hasSlot('prepend') ? 'tw-pr-2' : null, hasSlot('append') ? 'tw-pl-2' : null, active ? 'tw-border-primary' : null, borderColor]"
-    >
-      <slot name="prepend" :active="active"></slot>
-      <input class="input-feild" :type="type" @focus="() => { active = true, $emit('focus') }" @blur="() => { active = false }" @keyup.enter="$emit('keyup:enter')"
-        v-model="val" :class="[ltr, bg]"
-        @input="() => emit('input', type == 'number' ? parseInt(val) : val)"
-        v-bind="{ min, max, minlength, maxlength, ...$attrs }" :readonly="readonly"/>
-      <slot name="append"></slot>
+  <label :class="['ada-input', active ? 'active' : '', label == '' ? '' : 'has-label']">
+    <div class="label">
+      {{ label }}
     </div>
-  </div>
+    <slot name="prepend"> </slot>
+    <input :type="type" @focus="() => { active = true }" @blur="() => { active = false }" @keyup.enter="$emit('keyup')" :style="{
+      backgroundColor: bg,
+      borderRadius: rounded
+    }" v-model="val" :class="[ltr, activeBorder ? 'active-border' : '']"
+      @input="() => emit('input', type == 'number' ? parseInt(val) : val)"
+      v-bind="{ min, max, minlength, maxlength, ...$attrs }"
+      :readonly="readonly"
+      :pattern="`.{${min}, ${max}}`"
+      />
+    <slot name="append"></slot>
+  </label>
 </template>
