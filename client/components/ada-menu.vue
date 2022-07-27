@@ -2,7 +2,9 @@
     <span id="menu-context">
         <slot name="activator"></slot>
         <dialog open id="menu" :class="{ 'rtl': rtl }">
-            <slot></slot>
+            <slot name="prepend-item"></slot>
+            <slot name="items"></slot>
+            <slot name="append-item"></slot>
         </dialog>
     </span>
 </template>

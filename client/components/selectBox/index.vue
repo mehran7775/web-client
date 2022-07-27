@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from "#app";
+import AdaMenu from '@/components/ada-menu.vue'
+
 export interface selectProps {
   label?: string;
   placeholder?: string;
@@ -166,19 +168,31 @@ props.value ? select(props.value) : null
       {{ label }}
     </div>
     <div class="input">
-      <slot name="prepend"> </slot>
-      <input type="text" class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
-        v-model="selectedText" readonly ref="inp" :aria-readonly="readonly" :placeholder="placeholder" v-bind="$attrs"/>
+      <slot name="prepend"></slot>
+      <ada-menu>
+        <template #activator>
+          <input type="text" class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
+            v-model="selectedText" readonly ref="inp" :aria-readonly="readonly" :placeholder="placeholder"
+            v-bind="$attrs" />
+        </template>
+        <template #prepend-item></template>
+        <template #items>
+          <slot></slot>
+        </template>
+        <template #append-item></template>
+      </ada-menu>
       <slot name="append">
         <i @click="toggleActive" class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"></i>
       </slot>
-      <ol class="menu tw-m-0 tw-p-0 tw-shadow" v-show="active">
+      <!-- <input type="text" class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
+        v-model="selectedText" readonly ref="inp" :aria-readonly="readonly" :placeholder="placeholder" v-bind="$attrs"/> -->
+      <!-- <ol class="menu tw-m-0 tw-p-0 tw-shadow" v-show="active">
         <slot name="prepend-item"></slot>
         <li v-for="item in items" :key="getValue(item)" @click="() => select(item)">
           {{ getText(item) }}
         </li>
         <slot name="append-item"></slot>
-      </ol>
+      </ol> -->
     </div>
   </label>
 </template>

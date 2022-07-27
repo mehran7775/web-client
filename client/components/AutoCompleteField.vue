@@ -58,23 +58,25 @@ const active_menu = computed(() => {
                         @input="$emit('input', $event.target.value)" v-bind="{ ...$attrs }" :placeholder="placeholder"
                         autocomplete="false">
                 </template>
-                <div v-if="active_menu">
-                    <ul class="tw-p-0 tw-m-0 tw-border tw-border-gray-200 tw-text-black tw-bg-white">
-                        <template v-if="props.loading">
-                            <li class="tw-px-1 tw-py-2" v-text="$t('general.waiting')"></li>
-                        </template>
-                        <template v-else-if="props.suggestions.length">
-                            <li v-for="item in props.suggestions" :key="item.id"
-                                class="hover:tw-bg-primary-100 tw-cursor-pointer tw-px-1 tw-py-2"
-                                @click="$emit('select_item', item)">
-                                <span v-html="item.fullName"></span>
-                            </li>
-                        </template>
-                        <template v-else-if="value != ''">
-                            <li class="tw-px-1 tw-py-2" v-text="$t('general.notFound')"></li>
-                        </template>
-                    </ul>
-                </div>
+                <template v-if="active_menu" #items>
+                    <div>
+                        <ul class="tw-p-0 tw-m-0 tw-border tw-border-gray-200 tw-text-black tw-bg-white">
+                            <template v-if="props.loading">
+                                <li class="tw-px-1 tw-py-2" v-text="$t('general.waiting')"></li>
+                            </template>
+                            <template v-else-if="props.suggestions.length">
+                                <li v-for="item in props.suggestions" :key="item.id"
+                                    class="hover:tw-bg-primary-100 tw-cursor-pointer tw-px-1 tw-py-2"
+                                    @click="$emit('select_item', item)">
+                                    <span v-html="item.fullName"></span>
+                                </li>
+                            </template>
+                            <template v-else-if="value != ''">
+                                <li class="tw-px-1 tw-py-2" v-text="$t('general.notFound')"></li>
+                            </template>
+                        </ul>
+                    </div>
+                </template>
             </ada-menu>
         </div>
         <slot name="append"></slot>
