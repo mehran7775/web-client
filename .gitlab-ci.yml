@@ -31,6 +31,7 @@ build-image-General:
   except:
     changes:
       - docker-compose.yml
+      - .gitlab-ci.yml
 
 
 #### Deploy section ####
