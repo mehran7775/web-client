@@ -41,7 +41,8 @@ Deploy-General:
     - SftWre
   script:
       - docker pull $repository/docker/bourse/$CONTAINER_NAME:$CI_COMMIT_REF_NAME
-      - docker-compose -f $CI_COMMIT_REF_NAME.yml up -d
+      - cd ./$CI_COMMIT_REF_NAME
+      - docker-compose up -d
   when : manual
   
 
@@ -52,6 +53,7 @@ Restart-General:
   tags: 
     - SftWre
   script:
-    - docker-compose -f $CI_COMMIT_REF_NAME.yml down
-    - docker-compose -f $CI_COMMIT_REF_NAME.yml up -d
+    - cd ./$CI_COMMIT_REF_NAME
+    - docker-compose down
+    - docker-compose up -d
   when: manual
