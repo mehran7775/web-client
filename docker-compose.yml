@@ -3,7 +3,7 @@ services:
   bourse-ui:
     image: $repository/docker/bourse/$CONTAINER_NAME:$CI_COMMIT_REF_NAME
     container_name: $CONTAINER_NAME-$CI_COMMIT_REF_NAME
-    hostname: $CONTAINER_NAME
+    hostname: $CONTAINER_NAME-$CI_COMMIT_REF_NAME
     labels:
       - "collect_logs_with_filebeat=true"
       - "decode_log_event_to_json_object=true"
