@@ -1,6 +1,5 @@
 stages:
   - build-image
-  - artifact
   - deploy
   - restart
 
@@ -42,7 +41,7 @@ Deploy-General:
     - SftWre
   script:
       - docker pull $repository/docker/bourse/$CONTAINER_NAME:$CI_COMMIT_REF_NAME
-      - docker-compose --compatibility  up -d
+      - docker-compose up -d
   when : manual
   
 
@@ -54,5 +53,5 @@ Restart-General:
     - SftWre
   script:
     - docker-compose down
-    - docker-compose --compatibility up -d
+    - docker-compose up -d
   when: manual
