@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  bourse-ui:
+    image: $repository/docker/bourse/$CONTAINER_NAME:$CI_COMMIT_REF_NAME
+    container_name: $CONTAINER_NAME-$CI_COMMIT_REF_NAME
+    hostname: $CONTAINER_NAME-$CI_COMMIT_REF_NAME
+    labels:
+      - "collect_logs_with_filebeat=true"
+      - "decode_log_event_to_json_object=true"
+    networks:
+      - gateway
+    environment:
+      - TZ=Asia/Tehran
+    env_file:
+      - ./client/.env
+
+networks:
+  gateway:
+    name: gateway-net
+    external: true
