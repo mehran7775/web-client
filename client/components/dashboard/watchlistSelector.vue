@@ -2,11 +2,10 @@
 import { ref, Ref, reactive, watch, computed } from "#app";
 import { useUser } from "~/composables";
 import { useRoute, useRouter } from "#app";
-import { nextTick } from "process";
 
 const props = withDefaults(
   defineProps<{
-    autoRoute?: boolean;
+    autoRoute: boolean;
   }>(),
   {
     autoRoute: false,
@@ -19,8 +18,6 @@ const userManager = useUser();
 const selected: Ref<any> = ref(null);
 const newName = ref("");
 const watchList: any[] = reactive([]);
-const textFeild: Ref<any> = ref(null);
-
 const wls = computed(() => userManager.watchList);
 
 function refresh() {
@@ -73,13 +70,6 @@ refresh();
 function drag(ev: DragEvent) { }
 
 watch(selected, select);
-
-
-const focusOnInput = () => {
-  nextTick(()=> {
-    textFeild.value.$el.children[1].children[0].focus()
-  })
-}
 </script>
 
 <style lang="postcss" scoped>
@@ -174,8 +164,7 @@ const focusOnInput = () => {
           </ada-btn>
           <ada-btn key="edit" color="transparent" class="tw-px-1" @click.stop="
             () => {
-              item.onEdit = true
-              focusOnInput()
+              item.onEdit = true;
             }
           ">
             <ada-icon color="gray" :size="14">
@@ -184,9 +173,8 @@ const focusOnInput = () => {
           </ada-btn>
         </div>
         <div class="tw-flex tw-flex-grow" v-else>
-            <text-input v-model="item.newName" class="tw-m-0 tw-p-0 tw-w-[116px] tw-h-7" height="28" borderColor="tw-border-primary-100" ref="textFeild"
-            @keyup.enter.stop="() => rename(item)" @click.native.stop="focusOnInput()" bg="tw-bg-primary-100"
-            ></text-input>
+          <v-text-field style="width: 116px" class="ma-0 pa-0" height="28" v-model="item.newName" @click.stop=""
+            @keyup.enter.stop="() => rename(item)" dense hide-details color="var(--c-blue-rgb)"/>
           <ada-btn key="save" dark @click.stop="() => rename(item)" class="ms-1" :height="28" :width="28">
             <ada-icon :size="16"> mdi-check </ada-icon>
           </ada-btn>
