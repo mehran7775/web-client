@@ -51,6 +51,6 @@ Restart-General:
   tags: 
     - SftWre
   script:
-    - docker compose down
-    - docker compose up -f $CI_COMMIT_REF_NAME
+    - docker stack rm $CONTAINER_NAME-$CI_COMMIT_REF_NAME
+    - docker stack deploy -c $CI_COMMIT_REF_NAME.yml $CONTAINER_NAME-$CI_COMMIT_REF_NAME
   when: manual
