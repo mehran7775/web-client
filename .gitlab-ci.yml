@@ -31,8 +31,6 @@ build-image-General:
   except:
     changes:
       - docker-compose.yml
-      - .gitlab-ci.yml
-
 
 #### Deploy section ####
 
@@ -42,7 +40,7 @@ Deploy-General:
     - SftWre
   script:
       - docker pull $repository/docker/bourse/$CONTAINER_NAME:$CI_COMMIT_REF_NAME
-      - docker compose up -f $CI_COMMIT_REF_NAME -d
+      - docker compose -d up -f $CI_COMMIT_REF_NAME
   when : manual
   
 
@@ -54,5 +52,5 @@ Restart-General:
     - SftWre
   script:
     - docker compose down
-    - docker compose up -f $CI_COMMIT_REF_NAME -d
+    - docker compose -d up -f $CI_COMMIT_REF_NAME
   when: manual
