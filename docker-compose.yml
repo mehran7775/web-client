@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   bourse-ui:
-    image: $repository/docker/bourse/$CONTAINER_NAME:TestStage
+    image: $repository/docker/bourse/$CONTAINER_NAME:$CI_COMMIT_REF_NAME
     container_name: $CONTAINER_NAME
     hostname: $CONTAINER_NAME
     labels:
@@ -17,4 +17,4 @@ services:
 networks:
   gateway:
     name: gateway-net
-    external: yes
+    external: true
