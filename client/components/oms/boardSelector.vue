@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref, useRouter } from "#app";
+import { computed, reactive, ref, useRoute, useRouter, toRaw } from "#app";
 import { AutoCompleteItem, Bookmark } from "@/types";
 import { getBoards } from "@/repositories/oms/board_manager";
 import { useAxios, useUser } from "~/composables";
@@ -13,10 +13,12 @@ const userManager = useUser();
 const axios = useAxios().createInstance();
 const bookmarks = computed(() => userManager.getBookmarks);
 const items: Array<AutoCompleteItem> = reactive([]);
+const items2 = ref<AutoCompleteItem[]>()
 const home = computed(() => userManager.me.settings?.home);
 const router = useRouter()
+const route = useRoute()
 
-const val = ref<any>(null)
+const val = ref<any>(props.value)
 
 
 function generateAddress(id: string): string {
@@ -60,26 +62,31 @@ function unmark(item: AutoCompleteItem) {
 
 getBoards(axios).then((resp) => {
   items.push(...resp.data.data);
+  items2.value = resp.data.data
 })
 
 
 
 function findItem() {
-  return items.find(el => parseInt(el.id) == props.value )
+  return items2.value?.find((item) => {
+    console.log(item.id)
+    return parseInt(item.id) == props.value
+  })
+  // return items.find(el => parseInt(el.id) == props.value )
 }
+// console.log('item', findItem())
 function selectItem(item: AutoCompleteItem) {
-  router.push(`/watchlist/boards/${ item.id }`) 
+  router.push(`/watchlist/boards/${ item.id }`)
 }
-
 </script>
 
 <template>
   <select-box :value="findItem()" v-bind="$attrs" class="board-search" height="28px"
     :placeholder="$t('menu.boards')">
-    <template>
+    <template #items>
       <ul class="tw-p-0 tw-m-0">
         <li v-for="item in items" :key="item.name" @click="selectItem(item)"
-          class="tw-flex tw-items-center tw-justify-between tw-p-2 tw-cursor-pointer hover:tw-bg-gray-200">
+          class="tw-flex tw-items-center tw-justify-between tw-p-2 tw-cursor-pointer hover:tw-bg-primary-100">
           <span v-text="item.name"></span>
           <div class="tw-flex tw-flex-row tw-justify-end tw-my-0">
             <ada-icon @click.stop.prevent="

@@ -23,22 +23,19 @@ const props = withDefaults(defineProps<selectProps>(), {
   keyPath: "$.id",
   value: null,
 });
-const emit = defineEmits(["input"]);
 
 const active = ref(false);
 const selectedText = ref("");
 const val = ref<string | null>(props.value);
 const inp = ref<HTMLInputElement | null>(null);
-// watch(
-//   () => props.value,
-//   (update) => {
-//     if (update) select(update);
-//     else {
-//       selectedText.value = "";
-//       val.value = null;
-//     }
-//   },
-// );
+
+////////////
+
+watch(()=> props.value, (newVal)=>{
+  select(newVal)
+})
+
+////////////
 function toggleActive() {
   active.value = !active.value;
 }
@@ -56,10 +53,10 @@ const getValue: (item: any) => any = eval(
 );
 
 function select(item: any) {
-    val.value = item
-    selectedText.value = getText(item)
-    active.value = false;
-  
+  val.value = item
+  selectedText.value = getText(item)
+  active.value = false;
+
 }
 props.value ? select(props.value) : null
 
@@ -171,11 +168,17 @@ props.value ? select(props.value) : null
       <ada-menu :mLeft="29" :mTop="27">
         <template #activator>
           <input type="text" class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
-            :value="value?.name ? value.name : null" readonly ref="inp" :aria-readonly="readonly" :placeholder="placeholder"
-            v-bind="$attrs" />
+            :value="selectedText" readonly ref="inp" :aria-readonly="readonly"
+            :placeholder="placeholder" v-bind="$attrs" />
+        </template>
+        <template v-if="active" #prepend-item>
+          <slot name="prepend-item"></slot>
         </template>
         <template v-if="active" #items>
-          <slot></slot>
+          <slot v-if="active" name="items"></slot>
+        </template>
+        <template v-if="active" #append-item>
+          <slot name="append-item"></slot>
         </template>
       </ada-menu>
       <slot name="append">

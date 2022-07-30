@@ -1,5 +1,5 @@
 <template>
-    <span id="menu-context">
+    <span class="menu-context">
         <slot name="activator"></slot>
         <dialog open id="menu" :class="{ 'rtl': rtl }">
             <slot name="prepend-item"></slot>
@@ -18,8 +18,8 @@ const props = withDefaults(defineProps<{
     mTop: number
 }>(),
 {
-    mLeft: 0,
-    mTop: 0
+    mLeft: 6,
+    mTop: 25
 }
 )
 
@@ -29,7 +29,7 @@ const appManager = useAsrTrader();
 const rtl = computed(() => appManager.rtl);
 
 onMounted(() => {
-    const tem = document.getElementById('menu-context')!
+    const tem = document.querySelector('.menu-context')!
     const properties = tem.getBoundingClientRect()
     let dialog = document.getElementById('menu')!
     dialog.style.left = `${properties.left - props.mLeft}px`
