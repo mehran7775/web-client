@@ -29,17 +29,16 @@ const active = ref(false);
 const selectedText = ref("");
 const val = ref<string | null>(props.value);
 const inp = ref<HTMLInputElement | null>(null);
-watch(
-  () => props.value,
-  (update) => {
-    if (update) select(update);
-    else {
-      selectedText.value = "";
-      val.value = null;
-    }
-  },
-);
-
+// watch(
+//   () => props.value,
+//   (update) => {
+//     if (update) select(update);
+//     else {
+//       selectedText.value = "";
+//       val.value = null;
+//     }
+//   },
+// );
 function toggleActive() {
   active.value = !active.value;
 }
@@ -57,10 +56,10 @@ const getValue: (item: any) => any = eval(
 );
 
 function select(item: any) {
-  val.value = item;
-  emit("input", item);
-  selectedText.value = getText(item);
-  active.value = false;
+    val.value = item
+    selectedText.value = getText(item)
+    active.value = false;
+  
 }
 props.value ? select(props.value) : null
 
@@ -169,30 +168,19 @@ props.value ? select(props.value) : null
     </div>
     <div class="input">
       <slot name="prepend"></slot>
-      <ada-menu>
+      <ada-menu :mLeft="29" :mTop="27">
         <template #activator>
           <input type="text" class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
-            v-model="selectedText" readonly ref="inp" :aria-readonly="readonly" :placeholder="placeholder"
+            :value="value?.name ? value.name : null" readonly ref="inp" :aria-readonly="readonly" :placeholder="placeholder"
             v-bind="$attrs" />
         </template>
-        <template #prepend-item></template>
-        <template #items>
+        <template v-if="active" #items>
           <slot></slot>
         </template>
-        <template #append-item></template>
       </ada-menu>
       <slot name="append">
         <i @click="toggleActive" class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"></i>
       </slot>
-      <!-- <input type="text" class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
-        v-model="selectedText" readonly ref="inp" :aria-readonly="readonly" :placeholder="placeholder" v-bind="$attrs"/> -->
-      <!-- <ol class="menu tw-m-0 tw-p-0 tw-shadow" v-show="active">
-        <slot name="prepend-item"></slot>
-        <li v-for="item in items" :key="getValue(item)" @click="() => select(item)">
-          {{ getText(item) }}
-        </li>
-        <slot name="append-item"></slot>
-      </ol> -->
     </div>
   </label>
 </template>

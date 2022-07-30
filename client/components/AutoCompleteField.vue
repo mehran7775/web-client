@@ -31,7 +31,7 @@ const active_menu = computed(() => {
 
 <style lang="postcss" scoped>
 #auto-complete {
-    @apply tw-relative tw-z-50 tw-min-h-[28px] tw-px-2 tw-pt-[2px];
+    @apply tw-relative tw-z-50 tw-h-[28px] tw-px-2 tw-pt-[2px];
 
     input {
         @apply tw-w-full tw-border-none tw-p-1;
@@ -52,7 +52,7 @@ const active_menu = computed(() => {
         <slot name="lable"></slot>
         <div class="tw-flex tw-items-center">
             <slot name="prepend"></slot>
-            <ada-menu>
+            <ada-menu :mLeft="6" :mTop="26">
                 <template #activator>
                     <input type="text" id="text-auto-complete" :value="value"
                         @input="$emit('input', $event.target.value)" v-bind="{ ...$attrs }" :placeholder="placeholder"
