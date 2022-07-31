@@ -1,6 +1,5 @@
 stages:
   - build-image
-  - artifact
   - deploy
   - restart
 
@@ -9,9 +8,10 @@ variables:
   VUE_APP_I18N_LOCALE: "fa"
   VUE_APP_I18N_FALLBACK_LOCALE: "en"
   VUE_APP_NAME: "Bourse Panel"
+  REF_NAME: $CI_COMMIT_REF_NAME
 
 
-build-image-Development:
+build-image-General:
   stage: build-image
   tags:
     - SftWre
@@ -23,166 +23,37 @@ build-image-Development:
       --build-arg VUE_APP_I18N_LOCALE=$VUE_APP_I18N_LOCALE 
       --build-arg VUE_APP_I18N_FALLBACK_LOCALE=$VUE_APP_I18N_FALLBACK_LOCALE 
       --build-arg VUE_APP_Host=$VUE_APP_Host_Dev
+      --build-arg REF_NAME=$CI_COMMIT_REF_NAME
       -t $CONTAINER_NAME .
-    - docker tag $CONTAINER_NAME  $repository/docker/bourse/$CONTAINER_NAME:TestStage
-    - docker push $repository/docker/bourse/$CONTAINER_NAME:TestStage
+    - docker tag $CONTAINER_NAME  $repository/docker/bourse/$CONTAINER_NAME:$CI_COMMIT_REF_NAME
+    - docker push $repository/docker/bourse/$CONTAINER_NAME:$CI_COMMIT_REF_NAME
     - docker logout
   except:
     changes:
       - docker-compose.yml
       - .gitlab-ci.yml
-  only:
-    refs:
-      - development
 
-build-image-PreProduct: 
-  stage: build-image
-  tags: 
-    - SftWre
-  script:
-    - docker login -u $user_repository -p $pass_repository https://$repository
-    - docker build 
-      --build-arg VUE_APP_BASE_ROUTE=$VUE_APP_BASE_ROUTE
-      --build-arg VUE_APP_I18N_LOCALE=$VUE_APP_I18N_LOCALE 
-      --build-arg VUE_APP_I18N_FALLBACK_LOCALE=$VUE_APP_I18N_FALLBACK_LOCALE 
-      --build-arg VUE_APP_Host=$VUE_APP_Host_Pre
-      -t $CONTAINER_NAME .
-    - docker tag $CONTAINER_NAME  $repository/docker/bourse/$CONTAINER_NAME:PreProduct
-    - docker push $repository/docker/bourse/$CONTAINER_NAME:PreProduct
-  only:
-    refs:  
-      - preproduct
-  except:
-    changes:
-      - docker-compose.yml
-      
-      
-      - .gitlab-ci.yml
-
-build-image-Product: 
-  stage: build-image
-  tags:
-    - SftWre
-  script:
-    - docker login -u $user_repository -p $pass_repository https://$repository
-    - docker build 
-      --build-arg VUE_APP_BASE_ROUTE=$VUE_APP_BASE_ROUTE
-      --build-arg VUE_APP_I18N_LOCALE=$VUE_APP_I18N_LOCALE 
-      --build-arg VUE_APP_I18N_FALLBACK_LOCALE=$VUE_APP_I18N_FALLBACK_LOCALE 
-      --build-arg VUE_APP_Host=$VUE_APP_Host_Pro
-      -t $CONTAINER_NAME .
-      #$VUE_APP_Host_pro should be define
-    - docker tag $CONTAINER_NAME  $repository/docker/bourse/$CONTAINER_NAME:Product
-    - docker push $repository/docker/bourse/$CONTAINER_NAME:Product
-  only:
-    refs:  
-      - master
-  except:
-    changes:
-      - docker-compose.yml
-      - .gitlab-ci.yml
-#### Artifact section ####
-
-artifactory-PreProduct:
-  stage: artifact
-  tags:
-    - SftWre
-  script:
-    - docker login -u $user_repository -p $pass_repository betamb.qmb.ir
-    - docker pull $repository/docker/bourse/$CONTAINER_NAME:PreProduct
-    - docker tag $repository/docker/bourse/$CONTAINER_NAME:PreProduct betamb.qmb.ir/docker/bourse/$CONTAINER_NAME:PreProduct
-    - docker push betamb.qmb.ir/docker/bourse/$CONTAINER_NAME:PreProduct
-  only: 
-    refs:
-      - preproduct
-  except:
-    changes:
-      - docker-compose.yml
-      - .gitlab-ci.yml
-
-artifactory-Product:
-  stage: artifact
-  tags:
-    - SftWre
-  script:
-    - docker login -u $user_repository -p $pass_repository betamb.qmb.ir
-    - docker pull $repository/docker/bourse/$CONTAINER_NAME:Product
-    - docker tag $repository/docker/bourse/$CONTAINER_NAME:Product betamb.qmb.ir/docker/bourse/$CONTAINER_NAME:Product
-    - docker push betamb.qmb.ir/docker/bourse/$CONTAINER_NAME:Product
-  only: 
-    refs:
-      - master
-  except:
-    changes:
-      - docker-compose.yml
-      - .gitlab-ci.yml
 #### Deploy section ####
 
-Development:
+Deploy-General:
   stage: deploy
   tags:
     - SftWre
   script:
-      - docker pull $repository/docker/bourse/$CONTAINER_NAME:TestStage
-      - docker-compose --compatibility  up -d
+      - docker pull $repository/docker/bourse/$CONTAINER_NAME:$CI_COMMIT_REF_NAME
+      - cd ./$CI_COMMIT_REF_NAME
+      - docker-compose up -d
   when : manual
-  only:
-    - development
-   
-PreProduct:
-  stage: deploy
-  tags: 
-    - SftWre
-  script:
-    - docker stack deploy -c PreProduct.yml $PRE_STACK_NAME
-  when : manual
-  only:
-    - preproduct
+  
 
-Product:
-  stage: deploy
-  tags: 
-    - SftWre
-  script:
-    - ls
-    - docker stack deploy -c Product.yml $STACK_NAME
-  when : manual
-  only:
-    - master
 #### Restart section ####
 
-Development-restart:
+Restart-General:
   stage: restart
   tags: 
     - SftWre
   script:
+    - cd ./$CI_COMMIT_REF_NAME
     - docker-compose down
-    - docker-compose --compatibility up -d
-  only:
-    - development
+    - docker-compose up -d
   when: manual
-
-PreProduct-restart:
-  stage: restart
-  tags:
-    - SftWre
-  script:
-    - docker stack rm $PRE_STACK_NAME
-    - docker stack deploy -c PreProduct.yml $PRE_STACK_NAME 
-  only:  
-    - preproduct
-  when: manual
-
-Product-restart:
-  stage: restart
-  tags:
-    - SftWre
-  script:
-    - docker stack rm $STACK_NAME
-    - docker stack deploy -c Product.yml $STACK_NAME
-  only:
-    - master
-  when: manual
-
-
-
