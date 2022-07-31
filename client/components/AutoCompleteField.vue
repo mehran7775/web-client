@@ -54,13 +54,13 @@ const active_menu = computed(() => {
         <slot name="lable"></slot>
         <div class="tw-flex tw-items-center">
             <slot name="prepend"></slot>
-            <ada-menu :id="id">
+            <ada-menu :id="id" :active="active_menu">
                 <template #activator>
                     <input type="text" id="text-auto-complete" :value="value"
                         @input="$emit('input', $event.target.value)" v-bind="{ ...$attrs }" :placeholder="placeholder"
                         autocomplete="false">
                 </template>
-                <template v-if="active_menu" #items>
+                <template #items>
                     <div>
                         <ul class="tw-p-0 tw-m-0 tw-border tw-border-gray-200 tw-text-black tw-bg-white">
                             <template v-if="props.loading">

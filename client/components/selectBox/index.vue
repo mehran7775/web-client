@@ -165,19 +165,19 @@ props.value ? select(props.value) : null
     </div>
     <div class="input">
       <slot name="prepend"></slot>
-      <ada-menu :mLeft="29" :mTop="27">
+      <ada-menu :mLeft="29" :mTop="27" :active="active">
         <template #activator>
           <input type="text" class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
             :value="selectedText" readonly ref="inp" :aria-readonly="readonly"
             :placeholder="placeholder" v-bind="$attrs" />
         </template>
-        <template v-if="active" #prepend-item>
+        <template #prepend-item>
           <slot name="prepend-item"></slot>
         </template>
-        <template v-if="active" #items>
-          <slot v-if="active" name="items"></slot>
+        <template #items>
+          <slot name="items"></slot>
         </template>
-        <template v-if="active" #append-item>
+        <template #append-item>
           <slot name="append-item"></slot>
         </template>
       </ada-menu>

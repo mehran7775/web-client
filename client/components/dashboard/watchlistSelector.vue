@@ -171,7 +171,7 @@ watch(selected, select);
       <v-list-item style="width: 164px" class="px-2" @click.stop="">
         <text-input v-model="newName" style="width: 164px;" class="tw-h-9" @keyup="create">
         </text-input>
-        <ada-btn dark @click.stop="create" class="ms-1" color="primary" :height="28" :width="28">
+        <ada-btn dark @click.stop="create" class="tw-mr-1" color="primary" :height="28" :width="28">
           <ada-icon :size="16"> mdi-plus </ada-icon>
         </ada-btn>
       </v-list-item>

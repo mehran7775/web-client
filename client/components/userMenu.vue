@@ -78,7 +78,7 @@ const me = () => {
 
 <template>
   <div class="userMenu" v-ada-click-outside="() => userMenu = false">
-    <ada-menu id="user" :mTop="36" :mLeft="-33">
+    <ada-menu id="user" :mTop="36" :mLeft="-33" :active="userMenu">
       <template #activator>
         <ada-btn :height="28" min-width="184px" class="user-menu-activator tw-py-0 tw-px-2" color="transparent"
           depressed @click.native="userMenu = !userMenu">
@@ -87,7 +87,7 @@ const me = () => {
             v-text="currentUser.profile.nickname ? currentUser.profile.nickname : currentUser.userName"></span>
         </ada-btn>
       </template>
-      <template v-if="userMenu" #items>
+      <template #items>
         <ada-list class="tw-p-0 tw-m-0">
           <ada-list-item v-for="item in userMenuItems" :key="item.title" :to="item.to" :value="item"
             class="hover:tw-bg-gray-200">

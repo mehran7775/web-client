@@ -1,5 +1,5 @@
 <template>
-  <ada-menu id="watchlist">
+  <ada-menu id="watchlist" :active="menu">
     <template #activator>
       <ada-btn :color="menu ? 'primary' : 'transparent'" class="ma-0 pa-0" v-on="on" v-bind="attrs" :width="24"
         :height="24" @click="menu= !menu">
@@ -8,7 +8,7 @@
         </ada-icon>
       </ada-btn>
     </template>
-    <template v-if="menu" #items>
+    <template #items>
       <v-list class="pt-0" min-height="256" dense>
         <v-list-item class="px-2 item" @click.stop="" dense>
           <v-list-item-title>

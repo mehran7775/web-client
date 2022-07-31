@@ -3,9 +3,12 @@
         <slot name="activator"></slot>
         <dialog open :id="`menu-${id}`" :class="{ 'rtl': rtl, }" class="menu">
             <transition name="slide-fade">
-                <slot name="prepend-item"></slot>
-                <slot name="items"></slot>
-                <slot name="append-item"></slot>
+                <div v-if="active">
+
+                    <slot name="prepend-item"></slot>
+                    <slot name="items"></slot>
+                    <slot name="append-item"></slot>
+                </div>
             </transition>
         </dialog>
     </span>
@@ -18,12 +21,14 @@ import { useAsrTrader } from "~/composables";
 const props = withDefaults(defineProps<{
     id?: string,
     mLeft: number,
-    mTop: number
+    mTop: number,
+    active?: boolean
 }>(),
     {
         id: '1',
         mLeft: 6,
-        mTop: 25
+        mTop: 25,
+        active: false
     }
 )
 
