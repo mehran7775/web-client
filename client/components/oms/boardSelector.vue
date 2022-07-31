@@ -69,7 +69,6 @@ getBoards(axios).then((resp) => {
 
 function findItem() {
   return items2.value?.find((item) => {
-    console.log(item.id)
     return parseInt(item.id) == props.value
   })
   // return items.find(el => parseInt(el.id) == props.value )

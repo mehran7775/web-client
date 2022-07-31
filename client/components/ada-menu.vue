@@ -1,5 +1,5 @@
 <template>
-    <span class="menu-context">
+    <span :class="`menu-context-${ id }`">
         <slot name="activator"></slot>
         <dialog open id="menu" :class="{ 'rtl': rtl }">
             <slot name="prepend-item"></slot>
@@ -14,10 +14,12 @@ import { computed, onMounted, onUnmounted } from '#app'
 import { useAsrTrader } from "~/composables";
 
 const props = withDefaults(defineProps<{
+    id: number,
     mLeft: number,
     mTop: number
 }>(),
 {
+    id: 1,
     mLeft: 6,
     mTop: 25
 }
@@ -29,7 +31,7 @@ const appManager = useAsrTrader();
 const rtl = computed(() => appManager.rtl);
 
 onMounted(() => {
-    const tem = document.querySelector('.menu-context')!
+    const tem = document.querySelector(`.menu-context-${ props.id }`)!
     const properties = tem.getBoundingClientRect()
     let dialog = document.getElementById('menu')!
     dialog.style.left = `${properties.left - props.mLeft}px`
