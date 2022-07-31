@@ -361,7 +361,7 @@ instrumentManager
           </div>
           <div class="tw-justify-between">  
             <text-input :label="$t('oms.count')" type="number" v-model="countVal" :id="`buyCountInputText-${insId}`"
-              :readonly="countLock" class="tw-mt-1 inputColor" 
+              :readonly="countLock" class="tw-mt-1 inputColor" activeBorder
               :min="!!active ? active.minQuantityPerOrder : 1"
               :max="!!active ? active.maxQuantityPerOrder || null : null">
               <template #append>
@@ -377,7 +377,7 @@ instrumentManager
             <bar />
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('oms.price')" type="number" v-model="priceVal"
+            <text-input :label="$t('oms.price')" type="number" v-model="priceVal" activeBorder
             :readonly="priceLock" class="tw-mt-1 inputColor"
               :min="!!active ? active.minAllowedPrice : 1" 
               :max="!!active ? active.maxAllowedPrice || null : null">
@@ -405,7 +405,7 @@ instrumentManager
             </percent>
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100" v-model="validatePercent" tabindex="-1">
+            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100" v-model="validatePercent" tabindex="-1" activeBorder>
             </text-input>
             <bar />
           </div>
@@ -462,7 +462,7 @@ instrumentManager
           </div>
           <div class="tw-justify-between">
             <text-input :label="$t('oms.count')" type="number" v-model="countVal" :id="`sellCountInputText-${insId}`"
-              :readonly="countLock" class="tw-mt-1 inputColor"
+              :readonly="countLock" class="tw-mt-1 inputColor" activeBorder
               :min="!!active ? active.minQuantityPerOrder : 1"
               :max="!!active ? active.maxQuantityPerOrder || null : null">
               <template #append>
@@ -479,7 +479,7 @@ instrumentManager
           </div>
           <div class="tw-justify-between">
             <text-input :label="$t('oms.price')" type="number" v-model="priceVal" 
-              :readonly="priceLock" class="tw-mt-1 inputColor"
+              :readonly="priceLock" class="tw-mt-1 inputColor" activeBorder
               :min="!!active ? active.minAllowedPrice : 1" 
               :max="!!active ? active.maxAllowedPrice || null : null">
               <template #append>
@@ -505,7 +505,7 @@ instrumentManager
             </percent>
           </div>
           <div class="tw-justify-between">
-            <text-input label="درصد سهام" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100" v-model="validatePercent" tabindex="-1">
+            <text-input label="درصد سهام" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100" v-model="validatePercent" tabindex="-1" activeBorder>
             </text-input>
             <bar />
           </div>

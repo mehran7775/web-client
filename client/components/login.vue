@@ -60,7 +60,7 @@ async function login(data: LoginModel) {
         router.push(user.settings?.home ?? "/watchlist/wealth");
         snack.showMessage({ content: "login.successful", color: "success" });
       }
-    } catch (err : any) {
+    } catch (err: any) {
       captcharef.value.refreshCaptcha();
       const error = ErrorExtractor(err as AxiosError);
       if (error.detail.length == 0)
@@ -72,7 +72,7 @@ async function login(data: LoginModel) {
         }
         snack.showMessage({ content: res, color: "error" });
       }
-      if(err.response.status === 401) data.captcha = ""
+      if (err.response.status === 401) data.captcha = ""
     } finally {
       loading.value = false;
     }
@@ -91,7 +91,8 @@ function requestOtp() {
 }
 
 onMounted(() => {
-  userref.value?.focus();
+  console.log(userref.value.$el.children)
+  // userref.value?.focus();
 });
 </script>
 
@@ -104,6 +105,7 @@ fieldset.login-cmp {
     @apply tw-text-xl tw-m-0 tw-mt-[8px] tw-p-0 tw-justify-start tw-font-bold;
     display: block;
   }
+
   >button {
     color: var(--c-primary-rgb);
   }
@@ -163,22 +165,25 @@ button {
         $t("login.title")
     }}</div>
     <v-form ref="frm">
-      <p class="tw-mt-[16px] tw-mb-2">{{ $t("user.username") }}</p>
-      <v-text-field aria-label="username" aria-required="true" tabindex="1" ref="userref" :height="inputHeight"
-        v-model="data.userName" prepend-inner-icon="isax-user" :rules="[rules.required]" @input="checkTries"
-        @keyup.enter="
+      <text-input v-model="data.userName" tabindex="1" ref="userref" :label="$t('user.username')" 
+      class="tw-block" borderColor="tw-border-gray-200" bg="white" maxWidth="100%"
+      @keyup.enter.native="
           () => {
             if (passref) passref.focus();
             else if (captcharef) captcharef.focus();
           }
-        " @focus="
-  () => {
-    if (keyboard.active)
-      keyboard.setListener((key) => {
-        data.userName = data.userName + key;
-      });
-  }
-" hide-details outlined dense validate-on-blur>
+        "
+        @focus.native="
+        () => {
+          if (keyboard.active)
+            keyboard.setListener((key) => {
+              data.userName = data.userName + key;
+            });
+        }"
+      >
+        <template #prepend="{ active }">
+          <ada-icon :size="21" :color="[active ? 'primary': 'black']">isax-user</ada-icon>
+        </template>
         <template #append>
           <ada-icon :size="24" @click="
             () => {
@@ -188,11 +193,11 @@ button {
                   data.userName = data.userName + key;
                 });
             }
-          " :color="keyboard.active ? 'primary' : null">
+          " :color="keyboard.active ? 'primary' : 'black'">
             isax-keyboard
           </ada-icon>
         </template>
-      </v-text-field>
+      </text-input>
       <div v-if="userref && !userref.valid" class="error--text" style="font-size: 10px">
         <div v-for="item in userref.validations" :key="item" class="pt-2">
           <ada-icon color="error" :size="17"> mdi-alert-circle-outline</ada-icon>
@@ -201,37 +206,39 @@ button {
           </span>
         </div>
       </div>
-      <p v-if="data.passwordType == 2" class="tw-mt-4 tw-mb-2">
-        {{ $t("login.otp") }}
-      </p>
-      <p v-else class="tw-mt-4 tw-mb-2">{{ $t("user.password") }}</p>
       <otp v-if="data.passwordType == 2" timer="90" :height="inputHeight" tabindex="4" ref="otpref"
         @request="requestOtp" @keyup.enter="
           () => {
             login(data);
           }
         " outlined dense />
-      <v-text-field aria-label="password" aria-required="true" v-if="data.passwordType == 1" tabindex="2" ref="passref"
-        :height="inputHeight" v-model="data.password" :type="showPassword ? 'text' : 'Password'"
-        prepend-inner-icon="isax-lock" @keyup.enter="
+      <text-input v-if="data.passwordType == 1" v-model="data.password" tabindex="2" ref="passref" :label="data.passwordType == 2 ? $t('login.otp'): $t('user.password')" 
+      class="tw-block" borderColor="tw-border-gray-200" bg="white" maxWidth="100%" :class="{ 'pass-star': !showPassword }"
+      :type="showPassword ? 'text' : 'password'"
+      @keyup.enter.native="
           () => {
             if (false) login(data);
             else captcharef.focus();
           }
-        " @focus="
-  () => {
-    if (keyboard.active)
-      keyboard.setListener((key) => {
-        data.password = data.password + key;
-      });
-  }
-" :class="{ 'pass-star': !showPassword }" :rules="[rules.required]" hide-details outlined dense validate-on-blur>
-        <template #append>
+        "
+        @focus.native="
+          () => {
+            if (keyboard.active)
+              keyboard.setListener((key) => {
+                data.password = data.password + key;
+              });
+          }
+        "
+      >
+        <template #prepend="{ active }">
+          <ada-icon :size="21" :color="[active ? 'primary': 'black']">isax-lock</ada-icon>
+        </template>
+         <template #append>
           <ada-icon :size="24" class="tw-mx-1" :color="showPassword ? 'primary' : null"
             @click="showPassword = !showPassword">
             isax-eye
           </ada-icon>
-          <ada-icon :size="24" @click="
+          <ada-icon :size="24" :color="keyboard.active? 'primary': 'black'" @click="
             () => {
               keyboard.active = !keyboard.active;
               if (keyboard.active)
@@ -243,7 +250,7 @@ button {
             isax-keyboard
           </ada-icon>
         </template>
-      </v-text-field>
+      </text-input>
       <v-row class="tw-m-0 tw-mt-[4px] tw-p-0" style="font-size: 10px">
         <v-col cols="6" class="tw-m-0 tw-p-0">
           <div v-if="passref" class="error--text">
