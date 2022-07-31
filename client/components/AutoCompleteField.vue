@@ -10,13 +10,15 @@ const props = withDefaults(defineProps<{
     background?: string,
     borderColor?: string,
     loading: boolean,
-    suggestions: AutoCompleteItem[] | []
+    suggestions: AutoCompleteItem[] | [],
+    id?: string
 
 }>(), {
     value: '',
     placeholder: '',
     background: 'tw-bg-white',
-    borderColor: 'tw-border-gray-200'
+    borderColor: 'tw-border-gray-200',
+    id: '1'
 })
 
 
@@ -52,7 +54,7 @@ const active_menu = computed(() => {
         <slot name="lable"></slot>
         <div class="tw-flex tw-items-center">
             <slot name="prepend"></slot>
-            <ada-menu :id="2">
+            <ada-menu :id="id">
                 <template #activator>
                     <input type="text" id="text-auto-complete" :value="value"
                         @input="$emit('input', $event.target.value)" v-bind="{ ...$attrs }" :placeholder="placeholder"

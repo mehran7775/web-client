@@ -1,5 +1,5 @@
 <template>
-  <select-box v-bind="$attrs" :items="items" keyPath="$.id" v-model="value"> </select-box>
+  <select-box v-bind="$attrs" :items="items" keyPath="$.id" v-model="value" id="6"> </select-box>
 </template>
 <script setup lang="ts">
 import { ref } from '#app'

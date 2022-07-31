@@ -134,6 +134,7 @@ watch(selected, select);
 
 <template>
   <select-box height="28px" :value="selected" :placeholder="$t('watchList.title')" textPath="$.newName"
+  id="4"
   >
     <template #items>
       <ul class="tw-p-0 tw-m-0">

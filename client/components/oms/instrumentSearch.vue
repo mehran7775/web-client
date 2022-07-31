@@ -110,7 +110,7 @@ async function select(val: AutoCompleteItem) {
   <div>
     <auto-complete-feild v-model="ac.state.userInput" borderColor="tw-border-gray-200" background="tw-bg-primary-100"
       :suggestions="ac.state.suggestions" :loading="ac.state.loading" @select_item="item => select_suggest(item)"
-      :placeholder="$t('instrument.search')" class="tw-w-[164px] tw-mx-auto tw-text-primary">
+      :placeholder="$t('instrument.search')" class="tw-w-[164px] tw-mx-auto tw-text-primary" id="2">
       <template #prepend>
         <ada-icon color="primary" :size="14"> isax-search-normal-1 </ada-icon>
       </template>

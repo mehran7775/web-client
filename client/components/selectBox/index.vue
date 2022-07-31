@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<selectProps>(), {
   readonly: false,
   textPath: "$.name",
   keyPath: "$.id",
-  value: null,
+  value: null
 });
 
 const active = ref(false);
@@ -165,7 +165,7 @@ props.value ? select(props.value) : null
     </div>
     <div class="input">
       <slot name="prepend"></slot>
-      <ada-menu :id="3" :mLeft="29" :mTop="27">
+      <ada-menu :mLeft="29" :mTop="27">
         <template #activator>
           <input type="text" class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
             :value="selectedText" readonly ref="inp" :aria-readonly="readonly"

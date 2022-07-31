@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defaultItem } from "@/types"
-import { computed, ref, watch } from "#app";
+import { computed, ref, watch, provide } from "#app";
 import snackbar from "@/components/snacks.vue";
 import { useAsrTrader, useUser, useBottomPanel, useWealth, useWebSocket } from "~/composables";
 import AdaMenu from '@/components/ada-menu.vue'
@@ -54,7 +54,7 @@ const rtl = computed(() => appManager.rtl);
 // const unitPanel = computed(() => {
 //   if(rightMenu.value.mini)
 // });
-
+provide('triggerRightMenu',rightMenu.value.mini)
 
 
 </script>
