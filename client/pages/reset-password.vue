@@ -28,48 +28,28 @@ function back() {
     <div class="pie pie-1"></div>
     <div class="pie pie-2"></div>
     <v-card elevation="0" class="dotted res-crd" :loading="loading">
-      <ada-icon color="gray" :size="24" :class="['tw-absolute tw-top-20', !rtl ? 'tw-left-10 tw-rotate-180' : 'tw-left-auto tw-right-10']" @click="back"> mdi-arrow-right </ada-icon>
+      <ada-icon color="gray" :size="24"
+        :class="['tw-absolute tw-top-20', !rtl ? 'tw-left-10 tw-rotate-180' : 'tw-left-auto tw-right-10']"
+        @click="back"> mdi-arrow-right </ada-icon>
       <div class="text-center">
         <nuxt-link to="/about-us" class="logo" />
         <h3>{{ $t("login.forget-password") }}</h3>
       </div>
       <v-card-text class="tw-px-3">
         <v-form>
-          <!-- <p class="tw-mt-[16px] tw-mb-2 tw-text-base">{{ $t("user.username") }}</p> -->
-          <!-- <text-input v-model:value="userName" :placeholder="$t('user.username')" :label="$t('user.username')"
-            :focus="() =>{
-                if (keyboard.active)
-                  keyboard.setListener((key) => {
-                    userName = userName + key;
-                  });
-              }"
-          >
-            <template #prepend>
-              <ada-icon :size="24">isax-user</ada-icon>
-            </template>
-            <template #append>
-               <ada-icon :size="24" @click="
-                () => {
-                  keyboard.active = !keyboard.active;
-                  if (keyboard.active)
-                    keyboard.setListener((key) => {
-                      userName = userName + key;
-                    });
-                }
-              " :color="keyboard.active ? 'primary' : null">
-                isax-keyboard
-              </ada-icon>
-            </template>
-          </text-input> -->
-          <v-text-field v-model="userName" :placeholder="$t('user.username')" prepend-inner-icon="isax-user"
-            class="my-2" outlined hide-details dense aria-lable="username" @focus="
+          <text-input v-model="userName" tabIndex="1" ref="userref" :label="$t('user.username')" class="tw-block"
+            borderColor="tw-border-gray-200" bg="white" maxWidth="100%" @focus.native="
+            () => {
               () => {
                 if (keyboard.active)
                   keyboard.setListener((key) => {
                     userName = userName + key;
                   });
               }
-            ">
+            }">
+            <template #prepend="{ active }">
+              <ada-icon :size="21" :color="[active ? 'primary' : 'black']">isax-user</ada-icon>
+            </template>
             <template #append>
               <ada-icon :size="24" @click="
                 () => {
@@ -83,8 +63,8 @@ function back() {
                 isax-keyboard
               </ada-icon>
             </template>
-          </v-text-field>
-          <label for="captcha" class="tw-block tw-mb-2 tw-text-base">{{ $t("login.captcha") }}</label>
+          </text-input>
+          <label for="captcha" class="tw-block tw-mb-2 tw-mt-3 tw-text-base">{{ $t("login.captcha") }}</label>
           <simple-captcha tabindex="1" :height="42" outlined dense id="captcha"
             @focus="() => keyboard.active = false" />
         </v-form>
