@@ -50,50 +50,55 @@ const failedCount = userManager.tryCount;
 const rtl = appManager.rtl;
 
 async function login(data: LoginModel) {
-  captcharef.value.validate()
-  if (frm.value?.validate()) {
-    loading.value = true;
-    try {
-      const res = await userManager.login(data);
-      if (res >= 200 && res < 300) {
-        const user = userManager.me;
-        router.push(user.settings?.home ?? "/watchlist/wealth");
-        snack.showMessage({ content: "login.successful", color: "success" });
-      }
-    } catch (err: any) {
-      captcharef.value.refreshCaptcha();
-      const error = ErrorExtractor(err as AxiosError);
-      if (error.detail.length == 0)
-        snack.showMessage({ content: "errors." + error.code, color: "error" });
-      else {
-        let res = "";
-        for (let e in error.detail) {
-          res += i18n.t(error.detail[e].type) + "\r\n";
-        }
-        snack.showMessage({ content: res, color: "error" });
-      }
-      if (err.response.status === 401) data.captcha = ""
-    } finally {
-      loading.value = false;
+  loading.value = true;
+  try {
+    const res = await userManager.login(data);
+    if (res >= 200 && res < 300) {
+      const user = userManager.me;
+      router.push(user.settings?.home ?? "/watchlist/wealth");
+      snack.showMessage({ content: "login.successful", color: "success" });
     }
+  } catch (err: any) {
+    captcharef.value.refreshCaptcha();
+    const error = ErrorExtractor(err as AxiosError);
+    if (error.detail.length == 0)
+      snack.showMessage({ content: "errors." + error.code, color: "error" });
+    else {
+      let res = "";
+      for (let e in error.detail) {
+        res += i18n.t(error.detail[e].type) + "\r\n";
+      }
+      snack.showMessage({ content: res, color: "error" });
+    }
+    if (err.response.status === 401) data.captcha = ""
+  } finally {
+    loading.value = false;
   }
+
 }
 function captchaResult(code: string) {
   data.value.captcha = code;
 }
 
 function requestOtp() {
-  frm.value.validate();
   otpref.value.focus();
-  if (userref.value.validate() && captcharef.value.validate()) {
-    otpref.value.setTimer();
-  }
+  otpref.value.setTimer();
+
 }
 
 onMounted(() => {
-  console.log(userref.value.$el.children)
-  // userref.value?.focus();
+  userref.value?.$el.children[1].children[1].focus()
 });
+
+function setFocus(el: string | null = null) {
+  if (!el) {
+    if (passref) passref.value?.$el.children[1].children[1].focus();
+    else if (captcharef) captcharef.value?.$el.children[0].children[1].children[0].focus();
+  } else {
+    captcharef.value?.$el.children[0].children[1].children[0].focus();
+  }
+}
+
 </script>
 
 <style lang="postcss">
@@ -165,24 +170,16 @@ button {
         $t("login.title")
     }}</div>
     <v-form ref="frm">
-      <text-input v-model="data.userName" tabindex="1" ref="userref" :label="$t('user.username')" 
-      class="tw-block" borderColor="tw-border-gray-200" bg="white" maxWidth="100%"
-      @keyup.enter.native="
-          () => {
-            if (passref) passref.focus();
-            else if (captcharef) captcharef.focus();
-          }
-        "
-        @focus.native="
+      <text-input v-model="data.userName" tabindex="1" ref="userref" :label="$t('user.username')" class="tw-block"
+        borderColor="tw-border-gray-200" bg="white" maxWidth="100%" @keyup.enter.native="setFocus()" @focus.native="
         () => {
           if (keyboard.active)
             keyboard.setListener((key) => {
               data.userName = data.userName + key;
             });
-        }"
-      >
+        }">
         <template #prepend="{ active }">
-          <ada-icon :size="21" :color="[active ? 'primary': 'black']">isax-user</ada-icon>
+          <ada-icon :size="21" :color="[active ? 'primary' : 'black']">isax-user</ada-icon>
         </template>
         <template #append>
           <ada-icon :size="24" @click="
@@ -206,39 +203,37 @@ button {
           </span>
         </div>
       </div>
-      <otp v-if="data.passwordType == 2" timer="90" :height="inputHeight" tabindex="4" ref="otpref"
+      <otp v-if="data.passwordType == 2" timer="90" :height="inputHeight" tabindex="2" ref="otpref"
         @request="requestOtp" @keyup.enter="
           () => {
             login(data);
           }
         " outlined dense />
-      <text-input v-if="data.passwordType == 1" v-model="data.password" tabindex="2" ref="passref" :label="data.passwordType == 2 ? $t('login.otp'): $t('user.password')" 
-      class="tw-block" borderColor="tw-border-gray-200" bg="white" maxWidth="100%" :class="{ 'pass-star': !showPassword }"
-      :type="showPassword ? 'text' : 'password'"
-      @keyup.enter.native="
+      <text-input v-if="data.passwordType == 1" v-model="data.password" tabindex="2" ref="passref"
+        :label="data.passwordType == 2 ? $t('login.otp') : $t('user.password')" class="tw-block"
+        borderColor="tw-border-gray-200" bg="white" maxWidth="100%" :class="{ 'pass-star': !showPassword }"
+        :type="showPassword ? 'text' : 'password'" @keyup.enter.native="
           () => {
             if (false) login(data);
-            else captcharef.focus();
+            else setFocus('captch')
           }
-        "
-        @focus.native="
-          () => {
-            if (keyboard.active)
-              keyboard.setListener((key) => {
-                data.password = data.password + key;
-              });
-          }
-        "
-      >
+        " @focus.native="
+  () => {
+    if (keyboard.active)
+      keyboard.setListener((key) => {
+        data.password = data.password + key;
+      });
+  }
+">
         <template #prepend="{ active }">
-          <ada-icon :size="21" :color="[active ? 'primary': 'black']">isax-lock</ada-icon>
+          <ada-icon :size="21" :color="[active ? 'primary' : 'black']">isax-lock</ada-icon>
         </template>
-         <template #append>
+        <template #append>
           <ada-icon :size="24" class="tw-mx-1" :color="showPassword ? 'primary' : null"
             @click="showPassword = !showPassword">
             isax-eye
           </ada-icon>
-          <ada-icon :size="24" :color="keyboard.active? 'primary': 'black'" @click="
+          <ada-icon :size="24" :color="keyboard.active ? 'primary' : 'black'" @click="
             () => {
               keyboard.active = !keyboard.active;
               if (keyboard.active)

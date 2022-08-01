@@ -14,8 +14,8 @@ const props = withDefaults(
     bg: string;
     activeBorder: boolean;
     readonly: boolean,
-    borderColor: string
-    maxWidth?: string
+    borderColor: string,
+    maxWidth?: string,
   }>(),
   {
     label: "",
@@ -78,7 +78,7 @@ watch(
   }
 
   .scaffold {
-    @apply tw-border tw-p-3 tw-rounded-lg tw-cursor-text tw-flex tw-justify-between;
+    @apply tw-border tw-p-3 tw-rounded-lg tw-cursor-text tw-flex tw-justify-between tw-items-center;
     input {
       @apply tw-min-w-0 tw-inline tw-flex-grow tw-min-h-0;
       height: 100%;
@@ -101,7 +101,7 @@ watch(
 </style>
 
 <template>
-  <label :class="['ada-input', active ? 'active' : '', label == '' ? '' : 'has-label']">
+  <label :class="['ada-input', active ? 'active' : '', label == '' ? '' : 'has-label']" tabindex="-1">
     <div :class="['label', borderColor != 'tw-border-transparent' ? 'tw-my-2': null]">
       {{ label }}
     </div>
@@ -114,7 +114,7 @@ watch(
           maxWidth: maxWidth
         }" v-model="val" :class="[ltr, activeBorder ? 'active-border' : '']"
         @input="() => emit('input', type == 'number' ? parseInt(val) : val)"
-        v-bind="{ min, max, minlength, maxlength, ...$attrs }" :readonly="readonly" />
+        v-bind="{ min, max, minlength, maxlength, ...$attrs }" :readonly="readonly"/>
       <slot name="append"></slot>
     </div>
 
