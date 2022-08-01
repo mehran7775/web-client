@@ -16,6 +16,7 @@ const props = withDefaults(
     readonly: boolean,
     borderColor: string,
     maxWidth?: string,
+    tabIndex: string
   }>(),
   {
     label: "",
@@ -30,7 +31,9 @@ const props = withDefaults(
     activeBorder: false,
     readonly: false,
     borderColor: 'tw-border-transparent',
-    maxWidth: '105px'
+    maxWidth: '105px',
+    tabIndex: '0'
+
   }
 );
 
@@ -114,7 +117,7 @@ watch(
           maxWidth: maxWidth
         }" v-model="val" :class="[ltr, activeBorder ? 'active-border' : '']"
         @input="() => emit('input', type == 'number' ? parseInt(val) : val)"
-        v-bind="{ min, max, minlength, maxlength, ...$attrs }" :readonly="readonly"/>
+        v-bind="{ min, max, minlength, maxlength, ...$attrs }" :readonly="readonly" :tabindex="tabIndex"/>
       <slot name="append"></slot>
     </div>
 

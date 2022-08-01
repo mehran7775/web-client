@@ -170,7 +170,7 @@ button {
         $t("login.title")
     }}</div>
     <v-form ref="frm">
-      <text-input v-model="data.userName" tabindex="1" ref="userref" :label="$t('user.username')" class="tw-block"
+      <text-input v-model="data.userName" tabIndex="1" ref="userref" :label="$t('user.username')" class="tw-block"
         borderColor="tw-border-gray-200" bg="white" maxWidth="100%" @keyup.enter.native="setFocus()" @focus.native="
         () => {
           if (keyboard.active)
@@ -209,7 +209,7 @@ button {
             login(data);
           }
         " outlined dense />
-      <text-input v-if="data.passwordType == 1" v-model="data.password" tabindex="2" ref="passref"
+      <text-input v-if="data.passwordType == 1" v-model="data.password" tabIndex="2" ref="passref"
         :label="data.passwordType == 2 ? $t('login.otp') : $t('user.password')" class="tw-block"
         borderColor="tw-border-gray-200" bg="white" maxWidth="100%" :class="{ 'pass-star': !showPassword }"
         :type="showPassword ? 'text' : 'password'" @keyup.enter.native="
@@ -267,7 +267,7 @@ button {
       </v-row>
       <div v-if="true" class="tw-m-0 tw-p-0 tw-mt-1 tw-mb-4">
         <p class="tw-mb-2">{{ $t("login.captcha") }}</p>
-        <simple-captcha v-model="data.captcha" tabindex="3" ref="captcharef" class="captcha" :height="inputHeight"
+        <simple-captcha v-model="data.captcha" tabIndex="3" ref="captcharef" class="captcha" :height="inputHeight"
           @keyup.enter="
             () => {
               if (passref) login(data);

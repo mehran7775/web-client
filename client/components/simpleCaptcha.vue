@@ -5,7 +5,7 @@ import { useAsrTrader } from "@/composables";
 
 export default defineComponent({
   inheritAttrs: false,
-  props: ["value", "height"],
+  props: ["value", "height", "tabIndex"],
   setup(props, ctx) {
     const appManager = useAsrTrader();
     const captcharef: Ref<any> = ref(null);
@@ -43,16 +43,8 @@ export default defineComponent({
 
 <template>
   <div>
-    <!-- <v-text-field class="captcha" aria-label="Picture Captcha" aria-required="true" ref="captcharef" v-model="captcha"
-      :rules="[rules.required]" hide-details v-on="$listeners" v-bind="$attrs">
-      <template #append>
-        <v-img :src="captchaUrl" :height="height - 8" class="ma-0 me-3 pa-0 d-inline-block">
-        </v-img>
-        <ada-icon :size="24" class="tw-mt-1" @click="refreshCaptcha"> isax-refresh-2 </ada-icon>
-      </template>
-    </v-text-field> -->
     <text-input v-model="captcha" ref="captcharef" v-bind="$attrs" v-on="$listeners" placeholder="کد روبرو را وارد کنید"
-    bg="white" borderColor="tw-border-gray-200" class="tw-block" maxWidth="100%"
+    bg="white" borderColor="tw-border-gray-200" class="tw-block" maxWidth="100%" :tabIndex="tabIndex"
     >
       <template #append>
         <img :src="captchaUrl" alt="" :height="height-8" class="tw-my-0 tw-ml-0 tw-mr-3 tw-p-0 tw-inline-block">
