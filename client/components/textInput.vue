@@ -16,7 +16,8 @@ const props = withDefaults(
     readonly: boolean,
     borderColor: string,
     maxWidth?: string,
-    tabIndex: string
+    tabIndex: string,
+    height: string
   }>(),
   {
     label: "",
@@ -32,7 +33,8 @@ const props = withDefaults(
     readonly: false,
     borderColor: 'tw-border-transparent',
     maxWidth: '105px',
-    tabIndex: '0'
+    tabIndex: '0',
+    height: 'auto'
 
   }
 );
@@ -114,7 +116,8 @@ watch(
         @keyup.enter="$emit('keyup')" :style="{
           backgroundColor: bg,
           borderRadius: rounded,
-          maxWidth: maxWidth
+          maxWidth: maxWidth,
+          height: height
         }" v-model="val" :class="[ltr, activeBorder ? 'active-border' : '']"
         @input="() => emit('input', type == 'number' ? parseInt(val) : val)"
         v-bind="{ min, max, minlength, maxlength, ...$attrs }" :readonly="readonly" :tabindex="tabIndex"/>

@@ -133,12 +133,11 @@ watch(selected, select);
 
 
 <template>
-  <select-box height="28px" :value="selected" :placeholder="$t('watchList.title')" textPath="$.newName"
-  id="4"
-  >
+  <select-box height="28px" :value="selected" :placeholder="$t('watchList.title')" textPath="$.newName" id="4">
     <template #items>
       <ul class="tw-p-0 tw-m-0">
-        <li v-for="item in watchList" :key="item.id" @click="select(item)" class="tw-p-2 hover:tw-bg-primary-100 tw-cursor-pointer">
+        <li v-for="item in watchList" :key="item.id" @click="select(item)"
+          class="tw-p-2 hover:tw-bg-primary-100 tw-cursor-pointer">
           <div class="tw-flex tw-flex-grow" v-if="!item.onEdit">
             <span>{{ item.text }}</span>
             <ada-spacer />
@@ -158,8 +157,9 @@ watch(selected, select);
             </ada-btn>
           </div>
           <div class="tw-flex tw-flex-grow" v-else>
-            <v-text-field style="width: 116px" class="ma-0 pa-0" height="28" v-model="item.newName" @click.stop=""
-              @keyup.enter.stop="() => rename(item)" dense hide-details color="var(--c-blue-rgb)" />
+            <text-input v-model="item.newName" activeBorder :readonly="priceLock" height="28px"
+              class="tw-m-0 tw-p-0 tw-text-primary" @keyup.enter.stop.native="() => rename(item)" @click.stop.native="">
+            </text-input>
             <ada-btn key="save" dark @click.stop="() => rename(item)" class="ms-1" :height="28" :width="28">
               <ada-icon :size="16"> mdi-check </ada-icon>
             </ada-btn>
@@ -169,9 +169,9 @@ watch(selected, select);
     </template>
     <template #append-item>
       <v-list-item style="width: 164px" class="px-2" @click.stop="">
-        <text-input v-model="newName" style="width: 164px;" class="tw-h-9" @keyup="create">
+        <text-input class="tw-text-primary" v-model="newName" height="28px" @keyup.native="create">
         </text-input>
-        <ada-btn dark @click.stop="create" class="tw-mr-1" color="primary" :height="28" :width="28">
+        <ada-btn dark @click.stop="create" color="primary" :height="28" :width="28" class="tw-ml-3">
           <ada-icon :size="16"> mdi-plus </ada-icon>
         </ada-btn>
       </v-list-item>

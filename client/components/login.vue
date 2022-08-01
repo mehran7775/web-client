@@ -50,6 +50,7 @@ const failedCount = userManager.tryCount;
 const rtl = appManager.rtl;
 
 async function login(data: LoginModel) {
+  console.log('lo')
   loading.value = true;
   try {
     const res = await userManager.login(data);
@@ -81,6 +82,7 @@ function captchaResult(code: string) {
 }
 
 function requestOtp() {
+  console.log('req')
   otpref.value.focus();
   otpref.value.setTimer();
 
@@ -195,14 +197,14 @@ button {
           </ada-icon>
         </template>
       </text-input>
-      <div v-if="userref && !userref.valid" class="error--text" style="font-size: 10px">
+      <!-- <div v-if="userref && !userref.valid" class="error--text" style="font-size: 10px">
         <div v-for="item in userref.validations" :key="item" class="pt-2">
           <ada-icon color="error" :size="17"> mdi-alert-circle-outline</ada-icon>
           <span style="display: inline-block">
             {{ $t(item) }}
           </span>
         </div>
-      </div>
+      </div> -->
       <otp v-if="data.passwordType == 2" timer="90" :height="inputHeight" tabindex="2" ref="otpref"
         @request="requestOtp" @keyup.enter="
           () => {
@@ -247,7 +249,7 @@ button {
         </template>
       </text-input>
       <v-row class="tw-m-0 tw-mt-[4px] tw-p-0" style="font-size: 10px">
-        <v-col cols="6" class="tw-m-0 tw-p-0">
+        <!-- <v-col cols="6" class="tw-m-0 tw-p-0">
           <div v-if="passref" class="error--text">
             <div v-for="item in passref.validations" :key="item" class="tw-mb-1">
               <ada-icon color="error" :size="17"> mdi-alert-circle-outline</ada-icon>
@@ -256,7 +258,7 @@ button {
               </span>
             </div>
           </div>
-        </v-col>
+        </v-col> -->
         <v-col cols="6" class="tw-m-0 tw-p-0 tw-justify-end" :style="{
           'text-align': rtl ? 'left' : 'right',
         }">
@@ -268,7 +270,7 @@ button {
       <div v-if="true" class="tw-m-0 tw-p-0 tw-mt-1 tw-mb-4">
         <p class="tw-mb-2">{{ $t("login.captcha") }}</p>
         <simple-captcha v-model="data.captcha" tabIndex="3" ref="captcharef" class="captcha" :height="inputHeight"
-          @keyup.enter="
+          @keyup.enter.native="
             () => {
               if (passref) login(data);
               else if (otpref) {
