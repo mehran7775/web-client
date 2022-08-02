@@ -1,18 +1,3 @@
-<template>
-    <span :class="`menu-global menu-context-${id}`">
-        <slot name="activator"></slot>
-        <dialog open :id="`menu-${id}`" :class="{ 'rtl': rtl, }" class="menu">
-            <transition name="slide-fade">
-                <div v-if="active">
-
-                    <slot name="prepend-item"></slot>
-                    <slot name="items"></slot>
-                    <slot name="append-item"></slot>
-                </div>
-            </transition>
-        </dialog>
-    </span>
-</template>
 
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, inject, watch, ref } from '#app'
@@ -20,8 +5,8 @@ import { useAsrTrader } from "~/composables";
 
 const props = withDefaults(defineProps<{
     id?: string,
-    mLeft: number,
-    mTop: number,
+    mLeft?: number,
+    mTop?: number,
     active?: boolean
 }>(),
     {
@@ -75,3 +60,19 @@ onUnmounted(() => {
     z-index: 10001;
 }
 </style>
+
+<template>
+    <span :class="`menu-global menu-context-${id}`">
+        <slot name="activator"></slot>
+        <dialog open :id="`menu-${id}`" :class="{ 'rtl': rtl, }" class="menu">
+            <transition name="slide-fade">
+                <div v-if="active">
+
+                    <slot name="prepend-item"></slot>
+                    <slot name="items"></slot>
+                    <slot name="append-item"></slot>
+                </div>
+            </transition>
+        </dialog>
+    </span>
+</template>
