@@ -41,7 +41,8 @@ const confirmInstrumentRemoval = ref(false);
 
 const watchlists = computed(() => userManager.watchList);
 const selected = computed(() => instrumentManager.state.selected)
-const focused = computed(() => instrumentManager.getFocus);
+//TODO Correct in vue3
+const focused = ref({ f: instrumentManager.getFocus });
 const canfocus = computed(() => {
   if (!process.client) return false;
   return instrumentManager.getFocus.length < Math.floor(instrumentManager.width / 360);
@@ -119,10 +120,11 @@ async function getData(val: InstrumentSearchModel) {
   }
 }
 function refresh() {
+  console.log("refreshing")
   instruments.splice(0, instruments.length);
   instruments.push(
     ..._instruments.filter((item) => {
-      return focused.value.findIndex((i) => i.id == item.id) == -1;
+      return focused.value.f.findIndex((i) => i.id == item.id) == -1;
     })
   );
 }
@@ -164,7 +166,7 @@ async function drop(item: InstrumentCache) {
 watch(_instruments, (val) => {
   refresh();
 });
-watch(focused, (val) => {
+watch(focused.value.f, (val) => {
   refresh();
 });
 watch(
