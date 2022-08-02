@@ -3,21 +3,6 @@ import { computed, ref, watch } from "#app";
 
 const props = withDefaults(
   defineProps<{
-<<<<<<< HEAD
-    label: string;
-    type: string;
-    value: string | number;
-    min: number | null;
-    max: number | null;
-    minlength: number | null;
-    maxlength: number | null;
-    rounded: string;
-    bg: string;
-    activeBorder: boolean;
-    readonly: boolean,
-    tabIndex: string,
-    height: string
-=======
     label?: string;
     type?: string;
     value?: string | number;
@@ -33,7 +18,6 @@ const props = withDefaults(
     maxWidth?: string,
     tabIndex?: string,
     height?: string
->>>>>>> e6c2554b708453ff92a9005b37b33f79ef52dcf8
   }>(),
   {
     label: "",
