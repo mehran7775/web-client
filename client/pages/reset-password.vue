@@ -32,11 +32,11 @@ function back() {
         :class="['tw-absolute tw-top-20', !rtl ? 'tw-left-10 tw-rotate-180' : 'tw-left-auto tw-right-10']"
         @click="back"> mdi-arrow-right </ada-icon>
       <div class="text-center">
-        <nuxt-link to="/about-us" class="logo" />
+        <nuxt-link tabindex="-1" to="/about-us" class="logo" />
         <h3>{{ $t("login.forget-password") }}</h3>
       </div>
       <v-card-text class="tw-px-3">
-        <v-form>
+        <form>
           <text-input v-model="userName" tabIndex="1" ref="userref" :label="$t('user.username')" class="tw-block"
             borderColor="tw-border-gray-200" bg="white" maxWidth="100%" @focus.native="
             () => {
@@ -65,9 +65,9 @@ function back() {
             </template>
           </text-input>
           <label for="captcha" class="tw-block tw-mb-2 tw-mt-3 tw-text-base">{{ $t("login.captcha") }}</label>
-          <simple-captcha tabindex="1" :height="42" outlined dense id="captcha"
+          <simple-captcha :height="42" outlined dense id="captcha"
             @focus="() => keyboard.active = false" />
-        </v-form>
+        </form>
       </v-card-text>
       <v-card-actions>
         <ada-btn depressed color="primary" @click="otp" width="100%" large dark class="tw-py-3">
@@ -99,6 +99,22 @@ function back() {
   max-width: 514px;
   min-width: 514px;
   height: 658px;
+
+  .ada-input {
+    @apply tw-mt-4;
+
+    .label {
+      @apply tw-my-2;
+    }
+
+    .scaffold {
+      @apply tw-border tw-border-gray-700 tw-px-3 tw-h-16;
+
+      &.active {
+        @apply tw-border-primary;
+      }
+    }
+  }
 }
 
 .pie-1 {
@@ -109,5 +125,24 @@ function back() {
 .pie-2 {
   bottom: -290px;
   left: -210px;
+}
+</style>
+<style lang="postcss">
+.res-crd {
+  .ada-input {
+    @apply tw-mt-4;
+
+    .label {
+      @apply tw-my-2;
+    }
+
+    .scaffold {
+      @apply tw-border tw-border-gray-700 tw-px-3 tw-h-16;
+
+      &.active {
+        @apply tw-border-primary;
+      }
+    }
+  }
 }
 </style>

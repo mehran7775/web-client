@@ -81,7 +81,7 @@ function selectItem(item: AutoCompleteItem) {
 
 <template>
   <select-box :value="findItem()" v-bind="$attrs" class="board-search" height="28px"
-    :placeholder="$t('menu.boards')" id="5">
+    :placeholder="$t('menu.boards')" id="border-selector">
     <template #items>
       <ul class="tw-p-0 tw-m-0">
         <li v-for="item in items" :key="item.name" @click="selectItem(item)"

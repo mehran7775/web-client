@@ -133,7 +133,7 @@ watch(selected, select);
 
 
 <template>
-  <select-box height="28px" :value="selected" :placeholder="$t('watchList.title')" textPath="$.newName" id="4">
+  <select-box height="28px" :value="selected" :placeholder="$t('watchList.title')" textPath="$.newName" id="watchlist-selector">
     <template #items>
       <ul class="tw-p-0 tw-m-0">
         <li v-for="item in watchList" :key="item.id" @click="select(item)"

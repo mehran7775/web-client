@@ -11,6 +11,7 @@ export interface selectProps {
   textPath?: string;
   keyPath?: string;
   value?: any;
+  id: string
 }
 
 const props = withDefaults(defineProps<selectProps>(), {
@@ -21,7 +22,8 @@ const props = withDefaults(defineProps<selectProps>(), {
   readonly: false,
   textPath: "$.name",
   keyPath: "$.id",
-  value: null
+  value: null,
+  id: '1'
 });
 
 const active = ref(false);
@@ -79,11 +81,17 @@ props.value ? select(props.value) : null
   &.has-label {
     .label {
       @apply tw-flex tw-items-center;
-      min-width: 65px;
+      width: 96px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
     .input {
       margin: 0 0 0 4px;
+      max-width: calc(100% - 96px);
+
+      
     }
   }
 
@@ -99,7 +107,7 @@ props.value ? select(props.value) : null
   }
 
   .input {
-    @apply tw-flex tw-flex-grow tw-min-w-0 tw-whitespace-nowrap;
+    @apply tw-flex tw-flex-grow tw-min-w-0 tw-whitespace-nowrap tw-justify-between;
     position: relative;
     border-radius: var(--border-radius-input);
     background-color: rgba(var(--c-primary), 0.1);
@@ -129,25 +137,14 @@ props.value ? select(props.value) : null
     }
   }
 }
+</style>
 
-.menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 999999;
-  min-width: 100%;
-  background-color: white;
-  padding: 0 !important;
+<style lang="postcss">
+.ada-select {
 
-  li {
-    display: block;
-    list-style: none;
-    padding: 0 6px 0 6px;
-    height: var(--row-height);
-    line-height: var(--row-height);
-
-    &:hover {
-      background-color: rgba(var(--c-primary), 0.05);
+  .input{
+    .menu-global {
+      max-width: calc(100% - 48px);
     }
   }
 }
@@ -165,7 +162,7 @@ props.value ? select(props.value) : null
     </div>
     <div class="input">
       <slot name="prepend"></slot>
-      <ada-menu :mLeft="29" :mTop="27" :active="active">
+      <ada-menu :mLeft="48" :mTop="27" :active="active" :id="id">
         <template #activator>
           <input type="text" class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
             :value="selectedText" readonly ref="inp" :aria-readonly="readonly"

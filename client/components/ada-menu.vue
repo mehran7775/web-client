@@ -1,5 +1,5 @@
 <template>
-    <span :class="`menu-context-${id}`">
+    <span :class="`menu-global menu-context-${id}`">
         <slot name="activator"></slot>
         <dialog open :id="`menu-${id}`" :class="{ 'rtl': rtl, }" class="menu">
             <transition name="slide-fade">
@@ -71,7 +71,7 @@ onUnmounted(() => {
 .menu {
     @apply tw-absolute tw-bg-white tw-outline-none tw-shadow-lg tw-overflow-y-auto tw-rounded-b-md tw-w-[164px];
     max-width: 165px;
-    max-height: 195px;
+    max-height: 50vh;
     z-index: 10001;
 }
 </style>

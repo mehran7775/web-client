@@ -14,8 +14,6 @@ const props = withDefaults(
     bg: string;
     activeBorder: boolean;
     readonly: boolean,
-    borderColor: string,
-    maxWidth?: string,
     tabIndex: string,
     height: string
   }>(),
@@ -31,8 +29,6 @@ const props = withDefaults(
     bg: "rgba(var(--c-primary), 0.1)",
     activeBorder: false,
     readonly: false,
-    borderColor: 'tw-border-transparent',
-    maxWidth: '105px',
     tabIndex: '0',
     height: 'auto'
 
@@ -74,7 +70,10 @@ watch(
   &.has-label {
     .label {
       @apply tw-flex tw-items-center tw-text-black;
-      min-width: 33px;
+      width: 96px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
     input {
@@ -83,16 +82,20 @@ watch(
   }
 
   .scaffold {
-    @apply tw-border tw-p-3 tw-rounded-lg tw-cursor-text tw-flex tw-justify-between tw-items-center;
+    @apply tw-cursor-text;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: calc(100% - 96px);
+   
+
     input {
       @apply tw-min-w-0 tw-inline tw-flex-grow tw-min-h-0;
-      height: 100%;
       outline-style: none;
       line-height: inherit;
       font-size: inherit;
-      font-weight: bold;
+      font-weight: inherit;
       padding: 0 6px 0 6px;
-      color: inherit;
 
       &.active-border:focus {
         background-color: white;
@@ -107,20 +110,19 @@ watch(
 
 <template>
   <label :class="['ada-input', active ? 'active' : '', label == '' ? '' : 'has-label']" tabindex="-1">
-    <div :class="['label', borderColor != 'tw-border-transparent' ? 'tw-my-2': null]">
+    <div :class="['label']">
       {{ label }}
     </div>
-    <div class="scaffold" :class="[borderColor, borderColor != 'tw-border-transparent' && active ? 'tw-border-primary': null]">
+    <div class="scaffold" :class="{ 'active': active }" :style="{ borderRadius: rounded }">
       <slot name="prepend" :active="active"> </slot>
       <input :type="type" @focus="() => { active = true }" @blur="() => { active = false }"
         @keyup.enter="$emit('keyup')" :style="{
           backgroundColor: bg,
           borderRadius: rounded,
-          maxWidth: maxWidth,
           height: height
         }" v-model="val" :class="[ltr, activeBorder ? 'active-border' : '']"
         @input="() => emit('input', type == 'number' ? parseInt(val) : val)"
-        v-bind="{ min, max, minlength, maxlength, ...$attrs }" :readonly="readonly" :tabindex="tabIndex"/>
+        v-bind="{ min, max, minlength, maxlength, ...$attrs }" :readonly="readonly" :tabindex="tabIndex" />
       <slot name="append"></slot>
     </div>
 

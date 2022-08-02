@@ -116,6 +116,22 @@ fieldset.login-cmp {
   >button {
     color: var(--c-primary-rgb);
   }
+
+  .ada-input {
+    @apply tw-mt-4;
+
+    .label {
+      @apply tw-my-2;
+    }
+
+    .scaffold {
+      @apply tw-border tw-border-gray-700 tw-px-3 tw-h-16;
+
+      &.active {
+        @apply tw-border-primary;
+      }
+    }
+  }
 }
 
 a {
@@ -165,13 +181,14 @@ button {
 }
 </style>
 
+
 <template>
   <fieldset class="login-cmp tw-m-0 tw-p-0" :max-width="width" :min-width="width" elevation="0" color="transparent"
     :loading="loading">
     <div class="legend">{{
         $t("login.title")
     }}</div>
-    <v-form ref="frm">
+    <form ref="frm">
       <text-input v-model="data.userName" tabIndex="1" ref="userref" :label="$t('user.username')" class="tw-block"
         borderColor="tw-border-gray-200" bg="white" maxWidth="100%" @keyup.enter.native="setFocus()" @focus.native="
         () => {
@@ -248,6 +265,11 @@ button {
           </ada-icon>
         </template>
       </text-input>
+      <div class="tw-pt-2" :style="{ 'text-align': rtl ? 'left' : 'right' }">
+        <nuxt-link to="/reset-password" class="tw-text-primary">
+          {{ $t("login.forget-password") }}
+        </nuxt-link>
+      </div>
       <v-row class="tw-m-0 tw-mt-[4px] tw-p-0" style="font-size: 10px">
         <!-- <v-col cols="6" class="tw-m-0 tw-p-0">
           <div v-if="passref" class="error--text">
@@ -259,13 +281,13 @@ button {
             </div>
           </div>
         </v-col> -->
-        <v-col cols="6" class="tw-m-0 tw-p-0 tw-justify-end" :style="{
+        <!-- <v-col cols="6" class="tw-m-0 tw-p-0 tw-justify-end" :style="{
           'text-align': rtl ? 'left' : 'right',
         }">
           <nuxt-link to="/reset-password">
             {{ $t("login.forget-password") }}
           </nuxt-link>
-        </v-col>
+        </v-col> -->
       </v-row>
       <div v-if="true" class="tw-m-0 tw-p-0 tw-mt-1 tw-mb-4">
         <p class="tw-mb-2">{{ $t("login.captcha") }}</p>
@@ -298,7 +320,7 @@ button {
         width="100%" :height="inputHeight">
         {{ $t("login.login") }}
       </ada-btn>
-    </v-form>
+    </form>
     <ada-btn tabindex="7" class="tw-mb-8 tw-text-xl" depressed color="primary" to="/registration" width="100%"
       :height="inputHeight" bordered>
       {{ $t("login.registration") }}

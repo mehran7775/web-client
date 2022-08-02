@@ -61,7 +61,7 @@ function requestOtp() {
         :class="['tw-absolute tw-top-20', !rtl ? 'tw-left-10 tw-rotate-180' : 'tw-left-auto tw-right-10']"
         @click="back"> mdi-arrow-right </ada-icon>
       <div class="justify-center text-center">
-        <nuxt-link to="/about-us" class="logo" />
+        <nuxt-link tabindex="-1" to="/about-us" class="logo" />
         <h3>
           {{ $t("login.registration") }}
         </h3>
@@ -144,15 +144,19 @@ function requestOtp() {
 </template>
 
 <style lang="postcss">
-.otp {
-  &.v-text-field {
-    .v-input {
-      &__append-inner {
-        margin-top: 0 !important;
-      }
+.reg-crd {
+  .ada-input {
+    @apply tw-mt-4;
 
-      &__slot {
-        padding: 4px 12px 4px 4px !important;
+    .label {
+      @apply tw-my-2;
+    }
+
+    .scaffold {
+      @apply tw-border tw-border-gray-700 tw-px-3 tw-h-16;
+
+      &.active {
+        @apply tw-border-primary;
       }
     }
   }

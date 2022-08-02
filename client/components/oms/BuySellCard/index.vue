@@ -83,10 +83,10 @@ const tab = computed({
     return order.value.side.toString();
   },
   set(value: any) {
-    if (active.value){
+    if (active.value) {
       orderManager.setSide(
-       value,
-        active.value.id.toString()  
+        value,
+        active.value.id.toString()
       );
       updateData()
     }
@@ -146,17 +146,17 @@ async function placeOrder(options: { draft: boolean }) {
     param.draft = options.draft;
     param.accountType = accountTypefield.value;
     orderManager.placeOrder(param)
-    .then((res)=> {
-      if(res.status === 201) {
-        options.draft ? useBottomPanel().$state._titles[0].default = "bottom-panel.orders.drafts" : useBottomPanel().$state._titles[0].default = "bottom-panel.orders.all"
-        useBottomPanel()._activeTab = useBottomPanel().$state._titles[0]
-        orderManager.last_update = new Date().toISOString()
-        updateData()
-      }
-    })
-    .catch((e)=> {
-      console.log(e)
-    })
+      .then((res) => {
+        if (res.status === 201) {
+          options.draft ? useBottomPanel().$state._titles[0].default = "bottom-panel.orders.drafts" : useBottomPanel().$state._titles[0].default = "bottom-panel.orders.all"
+          useBottomPanel()._activeTab = useBottomPanel().$state._titles[0]
+          orderManager.last_update = new Date().toISOString()
+          updateData()
+        }
+      })
+      .catch((e) => {
+        console.log(e)
+      })
   }
 }
 
@@ -167,10 +167,10 @@ function togglePriceLock() {
   priceLock.value = !priceLock.value;
 }
 
-function updateData () {
+function updateData() {
   countVal.value = 0
   priceVal.value = 0
-  orderDivision.value= false
+  orderDivision.value = false
   validatePercent.value = 0
 }
 
@@ -212,9 +212,16 @@ instrumentManager
 </script>
 
 <style lang="postcss" scoped>
-.inputColor{
-  color: #3554d1!important;
+.inputColor {
+  color: #3554d1 !important;
+
+  .scaffold {
+    input {
+      @apply tw-font-bold
+    }
+  }
 }
+
 .buy-sell {
   .frm {
     @apply tw-m-0 tw-p-0 tw-grid tw-grid-cols-2;
@@ -235,12 +242,14 @@ instrumentManager
         @apply tw-h-8;
       }
     }
+
     /*the class must define globaly */
-    .input-checkbox{
-      @apply tw-relative tw-w-5 tw-h-5 tw-border tw-border-solid  tw-rounded tw-cursor-pointer tw-transition-all tw-duration-150 tw-ml-1;
+    .input-checkbox {
+      @apply tw-relative tw-w-5 tw-h-5 tw-border tw-border-solid tw-rounded tw-cursor-pointer tw-transition-all tw-duration-150 tw-ml-1;
       border-color: var(--c-primary-rgb);
       appearance: none;
       outline: 0;
+
       &:checked {
         background: var(--c-blue-rgb);
       }
@@ -294,7 +303,8 @@ instrumentManager
       color: white !important;
     }
   }
-  *{
+
+  * {
     @apply tw-text-base;
   }
 }
@@ -330,6 +340,17 @@ instrumentManager
       }
     }
   }
+
+  .frm {
+    .inputColor {
+      .scaffold {
+        input {
+          @apply tw-font-bold;
+        }
+      }
+    }
+
+  }
 }
 </style>
 
@@ -359,7 +380,7 @@ instrumentManager
             <span>{{ $t("oms.priceThreshold") }}: </span>
             <numeric-field :value="1000" />
           </div>
-          <div class="tw-justify-between">  
+          <div class="tw-justify-between">
             <text-input :label="$t('oms.count')" type="number" v-model="countVal" :id="`buyCountInputText-${insId}`"
               :readonly="countLock" class="tw-mt-1 inputColor" activeBorder
               :min="!!active ? active.minQuantityPerOrder : 1"
@@ -377,9 +398,8 @@ instrumentManager
             <bar />
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('oms.price')" type="number" v-model="priceVal" activeBorder
-            :readonly="priceLock" class="tw-mt-1 inputColor"
-              :min="!!active ? active.minAllowedPrice : 1" 
+            <text-input :label="$t('oms.price')" type="number" v-model="priceVal" activeBorder :readonly="priceLock"
+              class="tw-mt-1 inputColor" :min="!!active ? active.minAllowedPrice : 1"
               :max="!!active ? active.maxAllowedPrice || null : null">
               <template #append>
                 <ada-btn :class="['tw-mx-1', priceLock ? 'active' : '']" :width="24" :height="24"
@@ -390,30 +410,32 @@ instrumentManager
             </text-input>
           </div>
           <div class="tw-justify-between">
-            <account-type v-model="accountTypefield" :label="$t('accounting.account.type')" 
-            class="tw-my-1 inputColor" height="24px" tabindex="-1">
+            <account-type v-model="accountTypefield" :label="$t('accounting.account.type')" class="tw-my-1 inputColor"
+              height="24px" tabindex="-1">
             </account-type>
             <bar />
           </div>
           <div class="tw-justify-between">
-            <credit height="24px" class="tw-my-1 inputColor" :label="$t('accounting.account.credit')"  tabindex="-1">
+            <credit height="24px" class="tw-my-1 inputColor" :label="$t('accounting.account.credit')" tabindex="-1">
             </credit>
           </div>
           <div class="tw-justify-between tw-col-span-2">
             <percent v-model="order.discloseQuantity" :label="$t('oms.view-count')" height="31px"
-              class="tw-flex tw-flex-grow tw-h-[24px] inputColor" :min="30" :max="100" :total="countVal" :amount="100" tabindex="-1">
+              class="tw-flex tw-flex-grow tw-h-[24px] inputColor" :min="30" :max="100" :total="countVal" :amount="100"
+              tabindex="-1">
             </percent>
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100" v-model="validatePercent" tabindex="-1" activeBorder>
+            <text-input :label="$t('wealth.order.creditPercent')" type="number" class="tw-h-[24px] inputColor" :min="0"
+              :max="100" v-model="validatePercent" tabindex="-1" activeBorder>
             </text-input>
             <bar />
           </div>
           <div class="tw-justify-between">
-           <div class="tw-w-max tw-flex tw-items-center">
+            <div class="tw-w-max tw-flex tw-items-center">
               <input type="checkbox" v-model="orderDivision" class="input-checkbox" tabindex="-1">
               <label for="checked-checkbox" class="inputColor" v-text="$t('oms.splitOrders')"></label>
-           </div>
+            </div>
           </div>
           <div class="tw-justify-between">
             <span>{{ $t("oms.tradeWage") }}: </span>
@@ -478,9 +500,8 @@ instrumentManager
             <bar />
           </div>
           <div class="tw-justify-between">
-            <text-input :label="$t('oms.price')" type="number" v-model="priceVal" 
-              :readonly="priceLock" class="tw-mt-1 inputColor" activeBorder
-              :min="!!active ? active.minAllowedPrice : 1" 
+            <text-input :label="$t('oms.price')" type="number" v-model="priceVal" :readonly="priceLock"
+              class="tw-mt-1 inputColor" activeBorder :min="!!active ? active.minAllowedPrice : 1"
               :max="!!active ? active.maxAllowedPrice || null : null">
               <template #append>
                 <ada-btn @click="togglePriceLock" :class="['tw-mx-1', priceLock ? 'active' : '']" :width="24"
@@ -501,19 +522,21 @@ instrumentManager
           </div>
           <div class="tw-justify-between tw-col-span-2">
             <percent v-model="order.discloseQuantity" :label="$t('oms.view-count')" height="31px"
-              class="tw-flex tw-flex-grow tw-h-[24px] inputColor" :min="30" :total="countVal" :amount="100" tabindex="-1">
+              class="tw-flex tw-flex-grow tw-h-[24px] inputColor" :min="30" :total="countVal" :amount="100"
+              tabindex="-1">
             </percent>
           </div>
           <div class="tw-justify-between">
-            <text-input label="درصد سهام" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100" v-model="validatePercent" tabindex="-1" activeBorder>
+            <text-input label="درصد سهام" type="number" class="tw-h-[24px] inputColor" :min="0" :max="100"
+              v-model="validatePercent" tabindex="-1" activeBorder>
             </text-input>
             <bar />
           </div>
           <div class="tw-justify-between">
-           <div class="tw-w-max tw-flex tw-items-center">
+            <div class="tw-w-max tw-flex tw-items-center">
               <input type="checkbox" v-model="orderDivision" class="input-checkbox" tabindex="-1">
               <label for="checked-checkbox" class="inputColor" v-text="$t('oms.splitOrders')"></label>
-           </div>
+            </div>
           </div>
           <div class="tw-justify-between">
             <span>{{ $t("oms.tradeWage") }}: </span>

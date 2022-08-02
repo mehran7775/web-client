@@ -43,7 +43,7 @@ export default defineComponent({
 
 <template>
   <div>
-    <text-input v-model="captcha" ref="captcharef" v-bind="$attrs" v-on="$listeners" placeholder="کد روبرو را وارد کنید"
+    <text-input v-model="captcha" ref="captcharef" v-bind="$attrs" v-on="$listeners" :placeholder="$t('login.placeholder-captch')"
     bg="white" borderColor="tw-border-gray-200" class="tw-block" maxWidth="100%" :tabIndex="tabIndex"
     >
       <template #append>
