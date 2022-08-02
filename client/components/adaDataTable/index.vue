@@ -27,7 +27,7 @@ const data = computed(() => props.items);
       <slot name="header">
         <HeaderHandler :headers="headers">
           <template v-for="header in headers" :slot="'header.' + header.value">
-            <slot :header="header" :name="'header.' + header.value" />
+            <slot :header="header" :name="'header.' + header.value"></slot>
           </template>
         </HeaderHandler>
       </slot>
