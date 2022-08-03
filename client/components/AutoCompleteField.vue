@@ -8,7 +8,6 @@ const props = withDefaults(defineProps<{
     value?: string,
     placeholder?: string,
     background?: string,
-    borderColor?: string,
     loading: boolean,
     suggestions: AutoCompleteItem[] | [],
     id?: string
@@ -17,7 +16,6 @@ const props = withDefaults(defineProps<{
     value: '',
     placeholder: '',
     background: 'tw-bg-white',
-    borderColor: 'tw-border-gray-200',
     id: '1'
 })
 
@@ -62,7 +60,7 @@ const active_menu = computed(() => {
                 </template>
                 <template #items>
                     <div>
-                        <ul class="tw-p-0 tw-m-0 tw-border tw-border-gray-200 tw-text-black tw-bg-white">
+                        <ul class="tw-p-0 tw-m-0 tw-text-black tw-bg-white tw-shadow-lg">
                             <template v-if="props.loading">
                                 <li class="tw-px-1 tw-py-2" v-text="$t('general.waiting')"></li>
                             </template>

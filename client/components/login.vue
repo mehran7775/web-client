@@ -125,7 +125,7 @@ fieldset.login-cmp {
     }
 
     .scaffold {
-      @apply tw-border tw-border-gray-700 tw-px-3 tw-h-16;
+      @apply tw-border tw-border-gray4 tw-px-3 tw-h-16;
 
       &.active {
         @apply tw-border-primary;
@@ -190,7 +190,7 @@ button {
     }}</div>
     <form ref="frm">
       <text-input v-model="data.userName" tabIndex="1" ref="userref" :label="$t('user.username')" class="tw-block"
-        borderColor="tw-border-gray-200" bg="white" maxWidth="100%" @keyup.enter.native="setFocus()" @focus.native="
+        bg="white" maxWidth="100%" @keyup.enter.native="setFocus()" @focus.native="
         () => {
           if (keyboard.active)
             keyboard.setListener((key) => {
@@ -230,7 +230,7 @@ button {
         " outlined dense />
       <text-input v-if="data.passwordType == 1" v-model="data.password" tabIndex="2" ref="passref"
         :label="data.passwordType == 2 ? $t('login.otp') : $t('user.password')" class="tw-block"
-        borderColor="tw-border-gray-200" bg="white" maxWidth="100%" :class="{ 'pass-star': !showPassword }"
+        bg="white" maxWidth="100%" :class="{ 'pass-star': !showPassword }"
         :type="showPassword ? 'text' : 'password'" @keyup.enter.native="
           () => {
             if (false) login(data);

@@ -44,7 +44,7 @@ export default defineComponent({
 <template>
   <div>
     <text-input v-model="captcha" ref="captcharef" v-bind="$attrs" v-on="$listeners" :placeholder="$t('login.placeholder-captch')"
-    bg="white" borderColor="tw-border-gray-200" class="tw-block" maxWidth="100%" :tabIndex="tabIndex"
+    bg="white" class="tw-block" maxWidth="100%" :tabIndex="tabIndex"
     >
       <template #append>
         <img :src="captchaUrl" alt="" :height="height-8" class="tw-my-0 tw-ml-0 tw-mr-3 tw-p-0 tw-inline-block">

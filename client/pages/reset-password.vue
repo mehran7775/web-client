@@ -38,7 +38,7 @@ function back() {
       <v-card-text class="tw-px-3">
         <form>
           <text-input v-model="userName" tabIndex="1" ref="userref" :label="$t('user.username')" class="tw-block"
-            borderColor="tw-border-gray-200" bg="white" maxWidth="100%" @focus.native="
+            bg="white" maxWidth="100%" @focus.native="
             () => {
               () => {
                 if (keyboard.active)
@@ -108,7 +108,7 @@ function back() {
     }
 
     .scaffold {
-      @apply tw-border tw-border-gray-700 tw-px-3 tw-h-16;
+      @apply tw-border tw-border-gray4 tw-px-3 tw-h-16;
 
       &.active {
         @apply tw-border-primary;
@@ -137,7 +137,7 @@ function back() {
     }
 
     .scaffold {
-      @apply tw-border tw-border-gray-700 tw-px-3 tw-h-16;
+      @apply tw-border tw-border-gray4 tw-px-3 tw-h-16;
 
       &.active {
         @apply tw-border-primary;

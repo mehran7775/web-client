@@ -85,13 +85,13 @@ function requestOtp() {
         <v-stepper-items>
           <v-stepper-content class="ma-0 my-2 pa-0" step="1">
             <v-form v-model="forms.form0" ref="rform0" lazy-validation>
-              <text-input tabIndex="1" :label="$t('user.profile.nid')" class="tw-block" borderColor="tw-border-gray-200"
+              <text-input tabIndex="1" :label="$t('user.profile.nid')" class="tw-block"
                 bg="white" maxWidth="100%">
                 <template #prepend="{ active }">
                   <ada-icon :size="21" :color="[active ? 'primary' : 'black']">isax-user</ada-icon>
                 </template>
               </text-input>
-              <text-input tabIndex="1" :label="$t('user.profile.contact.mobile')" class="tw-block" borderColor="tw-border-gray-200"
+              <text-input tabIndex="1" :label="$t('user.profile.contact.mobile')" class="tw-block"
                 bg="white" maxWidth="100%">
                 <template #prepend="{ active }">
                   <ada-icon :size="21" :color="[active ? 'primary' : 'black']">isax-mobile</ada-icon>
@@ -153,7 +153,7 @@ function requestOtp() {
     }
 
     .scaffold {
-      @apply tw-border tw-border-gray-700 tw-px-3 tw-h-16;
+      @apply tw-border tw-border-gray4 tw-px-3 tw-h-16;
 
       &.active {
         @apply tw-border-primary;

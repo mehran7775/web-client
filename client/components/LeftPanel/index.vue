@@ -303,7 +303,7 @@ loadMyMessages();
     }
 
     .line {
-      @apply tw-w-11/12 tw-border-y-gray-200 tw-mx-auto;
+      @apply tw-w-11/12 tw-border-y-divider tw-mx-auto;
       border-top-width: .5px;
       margin-top: 5px;
     }
