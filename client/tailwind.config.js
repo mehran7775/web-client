@@ -213,7 +213,6 @@ module.exports = {
       },
       'divider': 'rgba(229, 233, 250, 1)'
     }
-    // #2547FF
   },
   plugins: [],
   prefix: "tw-",
