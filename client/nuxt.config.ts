@@ -17,7 +17,7 @@ export default defineNuxtConfig({
   head: {
     title: process.env.VUE_APP_NAME,
     htmlAttrs: {
-      lang: "en",
+      lang: "fa",
     },
     meta: [
       { charset: "utf-8" },
@@ -111,20 +111,6 @@ export default defineNuxtConfig({
           }),
         ],
       },
-    },
-  },
-  hooks: {
-    "build:done": (builder: any) => {
-      // const indexFilePath = path.join(
-      //   builder.nuxt.options.buildDir + "/dist/server",
-      //   "index.mjs"
-      // );
-      // fs.writeFileSync(indexFilePath, "export './server.mjs';");
-      const serverFilePath = path.join(
-        builder.nuxt.options.buildDir + "/dist/server",
-        "server.mjs"
-      );
-      fs.writeFileSync(serverFilePath, "export {};");
     },
   },
 

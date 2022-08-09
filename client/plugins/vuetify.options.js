@@ -1,8 +1,5 @@
 import fa from 'vuetify/es5/locale/fa'
 import en from 'vuetify/es5/locale/en'
-import ar from 'vuetify/es5/locale/ar'
-import ckb from 'vuetify/es5/locale/ckb'
-import az from 'vuetify/es5/locale/az'
 import '@mdi/font/css/materialdesignicons.min.css'
 //import '@/assets/icons/ada/style.css'
 import '@/assets/icons/icosax/style.css'
@@ -37,7 +34,7 @@ export default function ({  }) {
     rtl: true,
     lang: {
       current: 'fa',
-      locales: { en, fa, az, ar, ckb },
+      locales: { en, fa },
     },
     icons: {
       iconfont: 'mdi',// default - only for display purposes
