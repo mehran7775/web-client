@@ -68,10 +68,10 @@ export interface Snack {
   bg?: string;
 }
 export interface Menu {
-  active: boolean,
-  left: string,
-  top: string,
-  content: any
+  active: boolean;
+  left: string;
+  top: string;
+  content: any;
 }
 
 export interface SnackState {
@@ -79,5 +79,5 @@ export interface SnackState {
 }
 
 export interface NotificationState {
-  cache: Map<string, Array<Notification>>;
+  cache: { [key: string]: Array<Notification> };
 }

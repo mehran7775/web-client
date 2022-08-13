@@ -1,7 +1,7 @@
 import { SearchModel } from "..";
 
 export class Instrument {
-[x: string]: number;
+  [x: string]: any;
   id: number;
   instrumentId: number;
   instrumentCode: string;

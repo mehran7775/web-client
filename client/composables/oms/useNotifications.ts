@@ -1,40 +1,50 @@
 import { defineStore } from "pinia";
-import { ref, computed, reactive } from "#app";
+import { Ref, ref, computed, reactive } from "#app";
 import {
   Notification,
   InstrumentCache,
   MessageQuery,
   MessageFilter,
+  MessageOrigin,
 } from "@/types";
 import { NotificationState } from "@/types/stores";
-import { useMessages } from "@/composables";
+import { getMessageSource } from "@/repositories/oms/message_manager";
+import { useAxios, useInstrument } from "..";
+
 
 export const useNotifications = defineStore("notifications", () => {
   const state = ref<NotificationState>({
-    cache: new Map<string, Array<Notification>>(),
+    cache: reactive({}),
   });
 
-  //TODO Replace check notification source
-  const msg = useMessages();
+  const axios = useAxios().createInstance();
+  const instManager = useInstrument();
 
-  async function getInstrumentNotifications(
-    inst: InstrumentCache
-  ): Promise<Array<Notification>> {
-    const res: Array<Notification> = [];
-    const qry = new MessageQuery(0, 1, new MessageFilter([]));
-    qry.filters.title = "(" + inst.name;
-    const { data } = await msg.getMessages(qry);
-    if (data.length > 0) {
-      res.push({
+  async function initNotifications(inst: Array<string>): Promise<any> {
+    //InitCache
+
+    //Get message sources
+    const { data } = await getMessageSource(inst, axios);
+    const groupData = data.data.reduce((r, i, arr) => {
+      r[i.instrumentCode] = r[i.instrumentCode] || [];
+      r[i.instrumentCode].push({
+        origin: i.origin,
+        messagesCount: i.messagesCount,
+      });
+      return r;
+    }, {} as { [key: string]: Array<{ origin: MessageOrigin; messagesCount: number }> });
+    for (var d in groupData) {
+      const dm: Array<Notification> = groupData[d].map((i) => ({
         type: "Administrative",
         params: [],
-      });
+      }));
+      state.value.cache[d] = dm;
     }
-    return res;
+    return groupData;
   }
 
   return {
     state,
-    getInstrumentNotifications,
+    initNotifications,
   };
 });

@@ -11,29 +11,19 @@ const props = defineProps<{
 const notifManager = useNotifications();
 const panelManager = useBottomPanel();
 const instrumentManager = useInstrument();
-
-const notifs = reactive<Array<Notification>>([]);
-
-async function getNotifs() {
-    const res = await notifManager.getInstrumentNotifications(props.value)
-    notifs.push(...res);
-}
-
-function hasnotif() {
-    return notifs.findIndex((item) => true) > -1
-}
+const notifs = computed(() => notifManager.state.cache[props.value.instrumentCode])
 
 function openMsg() {
     instrumentManager.select(props.value)
     panelManager.LeftPanelMini = false;
 }
 
-getNotifs();
+console.log(notifs.value)
 
 </script>
 <template>
     <div>
-        <ada-icon v-if="notifs.length > 0" @click.stop="() => openMsg()" color="primary" :size="16">
+        <ada-icon v-if="notifs && notifs.length > 0" @click.stop="() => openMsg()" color="primary" :size="16">
             lotfi-sms
         </ada-icon>
     </div>

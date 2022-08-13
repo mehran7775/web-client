@@ -1,9 +1,5 @@
 import { AxiosResponse, AxiosInstance } from "axios";
-import {
-  PaginatedResult,
-  AutoCompleteItem,
-  Message,
-} from "@/types";
+import { PaginatedResult, AutoCompleteItem, Message, MessageSourceResult } from "@/types";
 
 export async function getMessage(
   id: number,
@@ -18,6 +14,16 @@ export async function getMessageList(
   axios: AxiosInstance
 ): Promise<AxiosResponse<PaginatedResult<Message>>> {
   const result = await axios.post("oms/messages/list", filters);
+  return result;
+}
+
+export async function getMessageSource(
+  instruments: Array<string>,
+  axios: AxiosInstance
+): Promise<AxiosResponse<PaginatedResult<MessageSourceResult>>> {
+  const result = await axios.get(
+    "oms/messages/available-sources?ids=" + instruments
+  );
   return result;
 }
 

@@ -18,7 +18,7 @@ export class MessageFilter {
   tags: MessageTag[];
   title: string | null;
   origins: Array<string>;
-  
+
   constructor(
     tags: MessageTag[],
     dateTime: string | null = null,
@@ -40,7 +40,7 @@ export class MessageTag {
   }
 }
 
-enum types {
+export enum MessageOrigin {
   rlc = 1,
   tedan = 4,
   codal = 5,
@@ -52,10 +52,16 @@ export interface Message {
   title: string;
   preview: string;
   origin: number;
-  type: types;
+  type: MessageOrigin;
   flags: number;
   message: string;
   seenDate: string | null;
+}
+
+export interface MessageSourceResult {
+  instrumentCode: string;
+  origin: MessageOrigin;
+  messagesCount: number;
 }
 
 export interface MessageTemplate {}

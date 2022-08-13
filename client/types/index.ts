@@ -7,14 +7,16 @@ export * from "./wealth";
 export * from "./accounting";
 export * from "./websocket";
 
-import { Instrument, DailyPrice, MarketHistory } from "./oms";
+import { Instrument, DailyPrice, MarketHistory, Notification } from "./oms";
 import { Side, Wealth } from "./wealth";
 
 export interface IInstrumentCache
   extends Instrument,
     DailyPrice,
     MarketHistory,
-    Wealth {}
+    Wealth {
+  notifs: Array<Notification>;
+}
 
 export class InstrumentCache implements IInstrumentCache {
   id: number;
@@ -55,6 +57,7 @@ export class InstrumentCache implements IInstrumentCache {
   totalTradesValue: number;
   amount: number;
   last: number;
+  notifs: Array<Notification>;
   constructor() {
     this.id = 0;
     this.code = "";
@@ -94,6 +97,7 @@ export class InstrumentCache implements IInstrumentCache {
     this.totalTradesValue = 0;
     this.amount = 0;
     this.last = 0;
+    this.notifs = [];
   }
 }
 

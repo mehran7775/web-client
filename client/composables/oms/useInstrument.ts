@@ -19,7 +19,6 @@ import {
 import manager from "@/repositories/oms/instruments_manager";
 import { useAxios } from "../useAxios";
 import { useWebSocket } from "../useWebsocket";
-import { object } from "yup";
 import { Side } from "@/types";
 
 export const useInstrument = defineStore("instrument", () => {
@@ -116,8 +115,8 @@ export const useInstrument = defineStore("instrument", () => {
     state.value.focusViewMode = data;
   }
   function removeFocus(data: number) {
-    const index = state.value.focus.findIndex(
-      (element: Instrument) => element.id == data
+    const index = state.value.focus.findIndex((element) =>
+      element.id == data ? element : false
     );
     state.value.focus.splice(index, 1);
     state.value.activeTab =

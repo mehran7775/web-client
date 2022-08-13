@@ -9,7 +9,7 @@ import {
   InstrumentStatus,
   InstrumentSearchModel,
 } from "@/types";
-import { useInstrument, useOrder, useUser } from "@/composables";
+import { useInstrument, useOrder, useUser, useNotifications } from "@/composables";
 import { useShortcut } from "@/utils/shortcutManager";
 import HeaderSelector from "./headerSelector.vue";
 import RowHandler from "@/components/adaDataTable/rowHandler.vue";
@@ -31,6 +31,7 @@ const { $i18n: i18n } = useNuxtApp();
 const userManager = useUser();
 const instrumentManager = useInstrument();
 const orderManager = useOrder();
+const notificationManager = useNotifications();
 const route = useRoute();
 const sh = useShortcut();
 const itemToDelete = ref<InstrumentCache | null>(null);
@@ -117,6 +118,7 @@ async function getData(val: InstrumentSearchModel) {
   if (val) {
     _instruments.splice(0, _instruments.length);
     _instruments.push(...(await instrumentManager.getInstrumentsDetail(val)));
+    notificationManager.initNotifications(val.ids.map(id => id.toString()));
   }
 }
 function refresh() {
