@@ -44,19 +44,23 @@ const clickOutside = ref<boolean>(true)
       }
     }
   }
+
+  &.active {
+    @apply tw-rounded-b-none;
+  }
 }
 </style>
 
 <template>
   <div
     class="auto-complete"
-    :class="[active_menu ? 'tw-rounded-t-md' : 'tw-rounded-md']"
+    :class="{ active: active_menu }"
     v-ada-click-outside="()=> clickOutside = false"
   >
     <slot name="lable"></slot>
     <div class="body">
       <slot name="prepend"></slot>
-      <ada-menu :active="active_menu && clickOutside" :mTop="32" :mLeft="19">
+      <ada-menu :active="active_menu && clickOutside" :mTop="32" :mLeft="20">
         <template #activator>
           <input
             type="text"

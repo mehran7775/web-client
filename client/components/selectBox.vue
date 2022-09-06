@@ -71,7 +71,7 @@ props.value ? select(props.value) : null
 }
 
 .ada-select {
-  @apply tw-flex tw-flex-grow tw-min-w-0 tw-whitespace-nowrap;
+  @apply tw-flex tw-flex-grow tw-min-w-0 tw-whitespace-nowrap tw-rounded;
   position: relative;
 
   &.has-label {
@@ -100,6 +100,7 @@ props.value ? select(props.value) : null
     i {
       transform: rotate(-180deg);
     }
+    @apply tw-rounded-b-none;
   }
 
   .input {

@@ -47,7 +47,7 @@ const name = computed(() => route.params.name as string);
 const instruments = computed(()=>
   {
     return _instruments.filter((item) => {
-        return focused.value.findIndex((i) => i.id === item.id) == -1;
+        return focused.findIndex((i) => i.id === item.id) == -1;
       });
   }
 );
@@ -61,7 +61,7 @@ async function refresh(){
 const watchLists = computed(() => userManager.watchList);
 const selected = computed(() => instrumentManager.state.selected);
 //TODO Correct in vue3
-const focused = computed(() => instrumentManager.getFocus);
+const focused = instrumentManager.getFocus;
 const canFocus = computed(() => {
   if (!process.client) return false;
   return (
