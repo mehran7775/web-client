@@ -1,27 +1,16 @@
-<script setup lang="ts">
-import { computed } from "#app";
-import { DeepOptions } from "@/types";
-import Teammates from "./sameSector.vue";
-import { useBottomPanel } from "@/composables";
+<script lang="ts" setup>
+import { OrderSearchModel, TabItem } from "@/types"
+import loader from "../loader.vue";
 
-const bottomPanel = useBottomPanel();
-const initData = computed(() => bottomPanel.market_depth);
-
-defineExpose({
-  initData,
-  DeepOptions,
-});
+const props = defineProps<{
+    modelValue: TabItem,
+    tabs: Array<TabItem>
+}>();
 </script>
-
-<template>
-  <div class="tw-container tw-mx-auto">
-    <div class="tw-grid w-grid-cols-1">
-      <div class="tw-col-span-1" v-if="initData">
-        <teammates v-if="initData.type == DeepOptions.teammates" v-model="initData.data" />
-      </div>
-      <div class="tw-col-span-1" v-else>
-        <h3>else</h3>
-      </div>
-    </div>
-  </div>
+  <template>
+  <ada-tabs v-model="props.modelValue" class="tw-h-full tw-w-full">
+    <ada-tab v-for="t in props.tabs" :key="t.title" :model="t" class="tw-overflow-y-auto">
+      <loader v-if="t.component" :module="t.component" v-model="t.params"></loader>
+    </ada-tab>
+  </ada-tabs>
 </template>

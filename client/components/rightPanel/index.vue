@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import { defineComponent, ref, Ref, computed, watch, ComputedRef } from "#app";
+import { ComputedRef } from "vue";
 import { useShortcut } from "@/utils/shortcutManager";
-import { BookmarkPosition, CreateBookmark, MenuItem } from "~/types";
+import { BookmarkPosition, CreateBookmark, MenuItem, TabItem } from "~/types";
 import { useAsrTrader, useUser } from "~/composables";
 import { getMenuItems } from "./items";
-import { useRouter } from "#app";
 
 const props = withDefaults(defineProps<{
-  value?: boolean;
+  modelValue?: boolean;
   mini?: boolean;
   clipped?: boolean;
 }>(), {
-  value: true,
+  modelValue: true,
   mini: false,
   clipped: true,
 });
 
-const emit = defineEmits(["input", "update:mini"]);
+const emit = defineEmits(["update:modelValue", "update:mini", "update:clipped"]);
 
 const userManager = useUser();
 const appManager = useAsrTrader();
@@ -30,6 +29,7 @@ const selected = computed({
     appManager.setMenu(val);
   },
 });
+const bottomPanel = useBottomPanel()
 const rtl = computed(() => appManager.rtl);
 const bookmarks = computed(() => userManager.getBookmarks);
 const shourtcuts = computed(() => userManager.getShourtcuts);
@@ -102,10 +102,10 @@ const items = getMenuItems(watchList, secondWatchList);
 
 const drawer = computed({
   get() {
-    return props.value;
+    return props.modelValue;
   },
   set(value: boolean) {
-    emit("input", value);
+    emit("update:modelValue", value);
   },
 });
 function setHome(item: MenuItem) {
@@ -171,6 +171,28 @@ function unmark(data: MenuItem) {
   }
 }
 
+function setOnBottomPanel(value: MenuItem): void {
+  const tab: TabItem= {
+    title: value.title,
+    params: {},
+    children: [],
+    current: value.title,
+    // component: `./menu/${ value.title.split('.')[1] }`,
+    deletable: true
+  } 
+  if(isExistTab(tab)) {
+    bottomPanel.removeTab(tab)
+    return
+  }
+  bottomPanel.registerTab(tab)
+  bottomPanel.activeTab = tab
+}
+const isExistTab = (tab: TabItem):boolean => {
+  if(bottomPanel.state._tabs[tab.title]) {
+    return true
+  }
+  return false
+}
 
 watch(selected, (n, o) => {
   if (typeof n == 'undefined' || n == null) {
@@ -196,8 +218,8 @@ if (process.client) {
 <style lang="postcss" scoped>
 .r-panel {
   font-size: 0.875rem;
-  padding-top: 42px;
-  background-color: rgba(var(--c-primary), 0.01);
+  /* padding-top: 42px; */
+  @apply tw-bg-primary tw-bg-opacity-10;
 
   &::before {
     @apply tw-inset-0 tw-absolute tw-w-full tw-h-full;
@@ -208,25 +230,29 @@ if (process.client) {
     pointer-events: none;
   }
 
-  .toggle.tabs {
-    @apply tw-items-center tw-px-2;
+  .tabs {
+    @apply tw-items-center tw-px-2 tw-shadow-[-2px_1px_2px_0] tw-shadow-primary/20;
     padding-top: 8px;
     height: calc(100vh - 42px);
     padding-bottom: 54px;
     min-width: 48px;
     width: 48px;
     max-width: 48px;
-    flex-basis: 48px;
-    box-shadow: -2px 1px 2px 0 rgba(var(--c-primary), 0.2);
+    flex-basis: 48px;    
 
     .icon {
       font-size: 1.5rem;
     }
+
+    .divider {
+      @apply tw-text-gray3;
+    }
+
   }
 
-  .tabs.tab-items {
+  .tab-items {
     min-width: 208px;
-    background-color: rgba(var(--c-primary), 0.01);
+    /* background-color: rgba(var(--c-primary), 0.01); */
     width: calc(100% - 48px);
 
     .tab {
@@ -235,17 +261,35 @@ if (process.client) {
       overflow-y: auto;
     }
   }
+
+  .ada-button {
+    @apply tw-bg-transparent tw-w-11 tw-h-11;
+    &.active {
+      @apply tw-bg-primary tw-bg-opacity-10;
+      .icon {
+        @apply tw-text-primary;
+      }
+    }
+  }
+}
+
+</style>
+<style lang="postcss">
+.r-panel {
+  .router-link-active , .router-link-exact-active {
+    @apply tw-bg-primary tw-bg-opacity-10;
+  }
 }
 </style>
 
 <template>
-  <ada-nav v-model="drawer" min-width="48px" max-width="256px" :mini="mini" class="r-panel" mobile-breakpoint="960"
+  <ada-nav v-model="drawer" min-width="48px" max-width="256px" v-model:mini="mini" class="r-panel" mobile-breakpoint="960"
     fixed>
     <ada-toggle class="tabs" v-model="selected" vertical>
       <ada-tooltip position="left">
         <template #activator>
           <ada-btn :width="32" :height="32" color="transparent" :to="home" :model="null">
-            <ada-icon size="18" color="primary">
+            <ada-icon size="18">
               isax-home-2
             </ada-icon>
           </ada-btn>
@@ -259,7 +303,7 @@ if (process.client) {
               $emit('update:mini', !mini);
             }
           ">
-            <ada-icon size="18" :color="item.color">
+            <ada-icon size="18" :class="[ item.color ? `tw-text-${item.color}` : null ]">
               {{ item.icon }}
             </ada-icon>
           </ada-btn>
@@ -274,7 +318,7 @@ if (process.client) {
               $emit('update:mini', true);
             }
           " depressed>
-            <ada-icon size="18" :color="item.color">
+            <ada-icon size="18" :class="`tw-text-${item.color}`">
               {{ item.icon }}
             </ada-icon>
           </ada-btn>
@@ -285,29 +329,31 @@ if (process.client) {
 
     <ada-tabs class="tab-items" v-model="selected">
       <ada-tab v-for="item in items" :key="item.title" :name="item.title">
-        <h4 class="tw-flex tw-flex-shrink-0 tw-h-[42px] tw-justify-center tw-items-center">
+        <h6 class="tw-flex tw-flex-shrink-0 tw-h-[42px] tw-justify-center tw-items-center">
           {{ $t(item.title) }}
-        </h4>
+        </h6>
         <ada-list>
-          <ada-list-item v-for="child in item.children ? item.children : []" :key="child.title" :value="child">
+          <ada-list-item v-for="(child, i) in item.children ? item.children : []" :key="i" :value="child">
             <template #item="{ value }">
               <div class="tw-w-full tw-h-full tw-flex tw-justify-between tw-items-center">
                 <span>{{ value.text ? value.text : $t(value.title) }}{{ value.expand }}</span>
                 <span v-if="value.to && value.to != ''" class="tw-flex tw-items-baseline">
-                  <ada-icon v-if="value.bookmarkPosition" size="1.34rem" :color="isMarked(value) ? 'blue' : 'gray4'"
+                  <ada-icon size="1.34rem" :class="[isMarked(value) ? 'tw-text-primary' : 'tw-text-gray4']"
                     @click.stop.prevent="() => {
                       if (isMarked(value)) unmark(value);
                       else mark(value);
                     
-                    }" :ico="isMarked(value) ? 'mdi-bookmark' : 'mdi-bookmark-outline'" />
-                  <ada-icon @click.prevent.stop="
+                    }">{{isMarked(value) ? 'mdi-bookmark' : 'mdi-bookmark-outline'}}</ada-icon>
+                  <ada-icon @click.stop.prevent="
                     () => {
                       setHome(value);
                     }
-                  " size="1.34rem" :color="value.to == home ? 'blue' : 'gray4'"
-                    :ico="value.to == home ? 'isax-star-1-bold' : 'isax-star-1'">
+                  " size="1.34rem" :class="[value.to == home ? 'tw-text-primary' : 'tw-text-gray4']">
+                  {{  value.to == home ? 'isax-star-1-bold' : 'isax-star-1' }}
                   </ada-icon>
-
+                  <ada-icon size="1.34rem" :class="[isExistTab(value) ? 'tw-text-primary' :'tw-text-gray4']"
+                  @click.stop.prevent="setOnBottomPanel(value)"
+                  >{{isExistTab(value) ? 'mdi-arrow-down-bold' : 'mdi-arrow-down-bold-outline'}}</ada-icon>
                 </span>
               </div>
             </template>

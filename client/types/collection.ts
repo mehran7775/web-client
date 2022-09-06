@@ -20,7 +20,7 @@ export interface Paginated {
 }
 
 export interface SearchModel extends Paginated {
-  echo: any;
+  echo?: any;
 }
 
 export class AutoCompleteSearchModel implements SearchModel {

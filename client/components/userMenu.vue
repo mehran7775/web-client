@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from "#app";
 import ProfilePicture from "@/components/sso/profilePicture.vue";
 import { MenuItem } from "~/types";
 import { useUser } from "~/composables";
-import { useRouter } from "#app";
 import { DateTime } from "luxon"
-import AdaIcon from "./adaIcon.vue";
 
 
 const router = useRouter();
@@ -61,6 +58,7 @@ defineExpose({
   userMenu,
   userMenuItems,
 });
+//TODO
 const me = () => {
   console.log('me')
 }
@@ -77,11 +75,11 @@ const me = () => {
 </style>
 
 <template>
-  <div class="userMenu" v-ada-click-outside="() => userMenu = false">
-    <ada-menu id="user" :mTop="36" :mLeft="-33" :active="userMenu">
+  <div class="userMenu"  >
+    <ada-menu :mTop="42" :mLeft="43" :active="userMenu">
       <template #activator>
         <ada-btn :height="28" min-width="184px" class="user-menu-activator tw-py-0 tw-px-2" color="transparent"
-          depressed @click.native="userMenu = !userMenu">
+          depressed @click="userMenu = !userMenu" v-ada-click-outside="() => userMenu = false">
           <profile-picture :address="currentUser.profile && currentUser.profile.profilePic" />
           <span class="tw-mr-2 tw-font-semibold"
             v-text="currentUser.profile.nickname ? currentUser.profile.nickname : currentUser.userName"></span>
@@ -92,7 +90,7 @@ const me = () => {
           <ada-list-item v-for="item in userMenuItems" :key="item.title" :to="item.to" :value="item"
             class="hover:tw-bg-gray-200">
             <template #item="{ value }">
-              <div class="tw-cursor-pointer" @click="() => {
+              <div class="tw-cursor-pointer tw-w-full" @click="() => {
                 if (item.click) item.click()
               }">
                 <ada-icon :color="value.color" :size="16">{{ value.icon }}</ada-icon>

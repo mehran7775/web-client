@@ -1,20 +1,11 @@
-<template >
-<div class="double-chart-bar">
-    <single-bar-chart :value="right/2" x="50%" success />
-    <single-bar-chart :value="left/2" x-position="right" x="50%"/>
-  </div>
-</template>
-
-<script lang="ts">
-import { defineComponent } from "#app";
-
-export default defineComponent({
-  props: {
-    left: Number,
-    right: Number,
-  },
-  setup() {},
-});
+<script lang="ts" setup>
+const props = withDefaults(defineProps<{
+  left?: number,
+  right?: number,
+}>(), {
+  left: 0,
+  right: 0
+})
 </script>
 <style lang="postcss" scoped>
 .double-chart-bar {
@@ -26,3 +17,10 @@ export default defineComponent({
   content: "";
 }
 </style>
+
+<template >
+  <div class="double-chart-bar">
+    <single-bar-chart :value="right / 2" x="50%" success />
+    <single-bar-chart :value="left / 2" x-position="right" x="50%" />
+  </div>
+</template>

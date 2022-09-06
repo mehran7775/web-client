@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "#app";
+import { computed, defineComponent, ref } from "vue";
 
 export default defineComponent({
   props: {

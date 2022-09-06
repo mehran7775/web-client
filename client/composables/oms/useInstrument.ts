@@ -1,4 +1,4 @@
-import { computed, nextTick, reactive, ref, Ref } from "#app";
+import { computed, nextTick, reactive, ref, Ref } from "vue";
 import { defineStore } from "pinia";
 import { InstrumentState } from "@/types/stores";
 import {
@@ -17,7 +17,7 @@ import {
   SearchModel,
 } from "~/types";
 import manager from "@/repositories/oms/instruments_manager";
-import { useAxios } from "../useAxios";
+import { useAxios } from "..";
 import { useWebSocket } from "../useWebsocket";
 import { Side } from "@/types";
 

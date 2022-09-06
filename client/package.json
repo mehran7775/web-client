@@ -1,47 +1,33 @@
 {
-  "name": "client",
-  "version": "1.0.0",
   "private": true,
-  "license": "All rights reserved for Asre Danesh Afzar",
   "scripts": {
-    "dev": "nuxi dev",
     "build": "nuxi build",
-    "start": "nuxi preview",
+    "dev": "nuxi dev",
     "generate": "nuxi generate",
-    "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
-    "lint": "yarn lint:js"
-  },
-  "dependencies": {
-    "@msgpack/msgpack": "latest",
-    "@pinia/nuxt": "^0.1.9",
-    "axios": "latest",
-    "cookie": "latest",
-    "form-data": "^4.0.0",
-    "jalali-moment": "^3.3.11",
-    "luxon": "latest",
-    "marked": "^4.0.18",
-    "mock-file-server": "^0.1.17",
-    "nuxt-edge": "latest",
-    "pinia": "^2.0.17",
-    "vue-i18n": "8",
-    "yup": "^0.32.11",
-    "ufo": "^0.8.4"
+    "preview": "nuxi preview",
+    "start": "nuxi preview"
   },
   "devDependencies": {
-    "@nuxt/bridge": "npm:@nuxt/bridge-edge",
-    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
-    "@nuxtjs/vuetify": "1.12.3",
-    "@mdi/font": "latest",
-    "@nuxt/types": "latest",
-    "@types/cookie": "latest",
-    "@types/luxon": "latest",
-    "@types/marked": "^4.0.3",
-    "@vue/runtime-dom": "^3.2.37",
+    "@nuxt/content": "^2.0.1",
+    "@pinia/nuxt": "^0.4.1",
     "autoprefixer": "latest",
     "cssnano": "latest",
-    "postcss": "latest",
+    "nuxt": "3.0.0-rc.9",
+    "postcss": "^8.4.16",
     "postcss-nested": "latest",
     "postcss-preset-env": "latest",
-    "tailwindcss": "latest"
+    "tailwindcss": "^3.1.8",
+    "typescript": "^4.8.2",
+    "vue-tsc": "^0.40.9"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.0.96",
+    "@msgpack/msgpack": "^2.8.0",
+    "axios": "latest",
+    "jalali-moment": "^3.3.11",
+    "luxon": "latest",
+    "pinia": "latest",
+    "vue-i18n": "^9.2.2",
+    "yup": "^0.32.11"
   }
 }

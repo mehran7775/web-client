@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, reactive, ref, useRoute, useRouter, toRaw } from "#app";
 import { AutoCompleteItem, Bookmark } from "@/types";
 import { getBoards } from "@/repositories/oms/board_manager";
 import { useAxios, useUser } from "~/composables";
@@ -7,7 +6,6 @@ import { useAxios, useUser } from "~/composables";
 const props = defineProps<{
   value: number;
 }>();
-const emit = defineEmits(["input"]);
 
 const userManager = useUser();
 const axios = useAxios().createInstance();

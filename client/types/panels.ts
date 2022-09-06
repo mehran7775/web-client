@@ -1,4 +1,4 @@
-import { ComputedRef } from "#app";
+import { ComputedRef } from "vue";
 
 export enum BookmarkPosition {
   ToolBar = 1,
@@ -36,28 +36,14 @@ export function CreateBookmark(item: MenuItem): Bookmark {
   };
 }
 
-export enum Tabs {
-  none = -1,
-  activeOrders = 0,
-  completeInfo = 1,
-  dateInfo = 2,
-  furtherInfo = 3,
-  statisticsKeys = 4
-}
-
 export interface TabItem {
-  tab?: Tabs;
   title: string;
-  title2?: string;
-  params: Array<any>;
+  params: { [key: string]: any };
   children?: Array<TabItem>;
-  default?: string;
-  body?: string
-  deleteAble?: boolean
+  current?: string;
+  component?: string;
+  deletable: boolean;
 }
-
-export const defaultItem = { title: "", params: [] };
-
 
 export enum DeepOptions {
   teammates = "teammates",

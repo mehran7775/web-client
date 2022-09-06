@@ -7,3 +7,11 @@ input::-webkit-inner-spin-button {
 input[type="number"]{
   -moz-appearance: textfield
 }
+
+body {
+  background-color: white;
+}
+
+a {
+  text-decoration: none;
+}

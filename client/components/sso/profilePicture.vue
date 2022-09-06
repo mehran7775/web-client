@@ -1,12 +1,11 @@
 <template>
-  <div class="tw-relative tw-w-10 tw-h-10 tw-overflow-hidden tw-bg-primary-100 tw-rounded-full">
+  <div class="tw-relative tw-w-10 tw-h-10 tw-overflow-hidden tw-bg-primary tw-bg-opacity-10 tw-rounded-full">
     <ada-icon v-if="img" class="tw-m-0 tw-p-0 tw-text-primary" slot="placeholder" :size="20"> isax-frame-bold
     </ada-icon>
     <img v-else :src="img" alt="پروفایل کاربر" class="tw-bg-contain tw-w-full tw-h-full">
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from "#app";
 import { useUser } from "~/composables";
 
 export default defineComponent({

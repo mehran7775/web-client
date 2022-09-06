@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { reactive, ref } from "#app";
+import { reactive, ref } from "vue";
 import { Snack, SnackState } from "@/types/stores";
 
 export const useSnacks = defineStore("snacks", () => {
@@ -11,7 +11,6 @@ export const useSnacks = defineStore("snacks", () => {
     hideMessage(snack);
   }
   function hideMessage(snack: Snack) {
-    console.log(snack.timeout);
     setTimeout(() => {
       close(snack);
     }, snack.timeout ?? 1000);

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { Ref, ref, computed, reactive } from "#app";
+import { Ref, ref, computed, reactive } from "vue";
 import {
   Notification,
   InstrumentCache,
@@ -36,11 +36,14 @@ export const useNotifications = defineStore("notifications", () => {
     for (var d in groupData) {
       const dm: Array<Notification> = groupData[d].map((i) => ({
         type: "Administrative",
-        params: [],
+        params: {
+          origin: i.origin,
+          messagesCount: i.messagesCount
+        }
       }));
       state.value.cache[d] = dm;
     }
-    return groupData;
+    return state.value.cache;
   }
 
   return {

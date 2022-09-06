@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref, Ref } from "#app";
+import { Ref } from "vue";
 import { ClientDistribution } from "@/types";
-import { computed } from "@vue/reactivity";
 import { useInstrument } from "~/composables";
 
 const props = withDefaults(
@@ -46,13 +45,11 @@ const total = computed(() => {
   }
 
   .real {
-    color: var(--c-info-rgb);
-    background-color: rgba(var(--c-info), 0.1);
+    @apply tw-text-info tw-bg-info tw-bg-opacity-10;
   }
 
   .legal {
-    color: var(--c-info-rgb);
-    background-color: rgba(var(--c-info), 0.1);
+    @apply tw-text-info tw-bg-info tw-bg-opacity-10;
   }
 }
 </style>

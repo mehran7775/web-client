@@ -1,0 +1,3 @@
+.ada-floating-button {
+  @apply tw-absolute tw-z-[9999] tw-rounded-full;
+}

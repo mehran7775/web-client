@@ -1,5 +1,5 @@
 {
-  "errors": {
+  "error": {
     "400": "خطای کاربری",
     "401": "نیاز به ورود مجدد",
     "406": "غیر قابل قبول",
@@ -69,7 +69,8 @@
       "longdt": "cccc DDD / TT"
     },
     "notFound": "داده ای موجود نیست.",
-    "waiting": "لطفا صبر کنید"
+    "waiting": "لطفا صبر کنید",
+    "copyRight": "طراحی و توسعه شرکت عصر دانش افزار"
   },
   "user": {
     "personality": {
@@ -207,7 +208,12 @@
       "type": "نوع حساب"
     },
     "deposit": "واریز",
-    "deposit-report": "@:general.report @:accounting.deposit وجه"
+    "deposit-report": "@:general.report @:accounting.deposit وجه",
+    "gateway": "درگاه",
+    "amount": "مبلغ",
+    "currency": {
+      "rial": "ریال"
+    }
   },
   "oms": {
     "openingTrade": "عرضه اولیه",
@@ -383,7 +389,7 @@
       "actives": "سفارشات‌ فعال",
       "canceled": "لغوشده/خطاها"
     },
-    "dateInfo": {
+    "archive": {
       "index": "تاریخچه اطلاعات",
       "tradesHistory": "سابقه معاملات",
       "holdersCompition": "ترکیب سهامداران",

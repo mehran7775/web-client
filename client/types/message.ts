@@ -42,6 +42,8 @@ export class MessageTag {
 
 export enum MessageOrigin {
   rlc = 1,
+  support = 2,
+  admin = 3,
   tedan = 4,
   codal = 5,
 }

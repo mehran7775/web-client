@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineComponent, ref, Ref } from "#app";
+import { Ref } from "vue";
 import { InstrumentCache, InstrumentSearchModel } from "@/types";
 import { useInstrument } from "~/composables";
 
@@ -56,7 +56,7 @@ defineExpose({
     <div class="tw-col-span-3 col-border">
       <span class="header">{{ $t("instrument.closing") }}</span>
       <span>{{ instrument.closing }}</span>
-      <bar />
+      <div class="bar"></div>
     </div>
     <div class="tw-col-span-3 col-border">
       <span class="header">{{ $t("instrument.last") }}</span>

@@ -1,20 +1,21 @@
-import { Plugin } from "@nuxt/types";
-import Vue from "vue";
-import VueI18n from "vue-i18n";
-import { useAsrTrader } from "~~/composables";
-import fa from "@/locales/fa-IR";
-import en from "@/locales/en-US";
+import { defineNuxtPlugin } from "#app";
+import { createI18n } from "vue-i18n";
+import { useAsrTrader } from "@/composables";
 
-Vue.use(VueI18n);
+import fa from "@/locales/fa-IR.json";
+import en from "@/locales/en-US.json";
 
-export default <Plugin>function ({ app, $pinia }) {
-  const appManager = useAsrTrader($pinia);
-  app.i18n = new VueI18n({
-    locale: appManager.locale,
-    fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE,
+export default defineNuxtPlugin(({ $pinia, vueApp }) => {
+  const app = useAsrTrader($pinia);
+  const i18n = createI18n({
+    legacy: false,
+    globalInjection: true,
+    locale: app.locale,
+    allowComposition: true, // you need to specify that!
     messages: {
-      en,
-      fa,
+      "fa-IR": fa,
+      "en-US": en,
     },
   });
-};
+  vueApp.use(i18n);
+});

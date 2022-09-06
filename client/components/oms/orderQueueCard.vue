@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { reactive, ref, computed, Ref } from "#app";
+import {  Ref } from "vue";
 import { Instrument, InstrumentCache, InstrumentSearchModel, OrderQueueItem } from "@/types";
 import { useAsrTrader, useInstrument } from "~/composables";
-import doubleBarChart from "../doubleBarChart.vue";
 
 const emit = defineEmits(["count", "price"]);
 const props = withDefaults(
@@ -47,6 +46,7 @@ const totalQueue = computed(() => totalBuy.value + totalSell.value);
 
 //TODO Replace in vue 3
 const queue = ref<OrderQueueItem[]>(instrumentManager.getOrderQueue(props.inst));// computed(() => instrumentManager.getOrderQueue(props.inst));
+
 setInterval(() => {
   queue.value = instrumentManager.getOrderQueue(props.inst)
 }, 700)
@@ -131,17 +131,17 @@ defineExpose({
           $emit('count', item.buy.count);
         }
       ">
-        <numeric-field v-model="item.buy.count"></numeric-field>
+        <numeric-field :value="item.buy.count"></numeric-field>
       </div>
       <div class="field">
-        <numeric-field v-model="item.buy.amount"></numeric-field>
+        <numeric-field :value="item.buy.amount"></numeric-field>
       </div>
       <div class="copy-cursor field" @click="
         () => {
           $emit('price', item.buy.price);
         }
       ">
-        <numeric-field v-model="item.buy.price">
+        <numeric-field :value="item.buy.price">
           <!-- <span
             :class="[change(item.sell.price) < 0 ? 'error--text' : 'success--text']"
             style="font-size: 7px !important"
@@ -149,14 +149,14 @@ defineExpose({
             (%{{ formatter.format(change(item.buy.price)) }})
           </span> -->
         </numeric-field>
-        <bar />
+        <div class="bar"></div>
       </div>
       <div class="copy-cursor field" @click="
         () => {
           $emit('price', item.sell.price);
         }
       ">
-        <numeric-field v-model="item.sell.price">
+        <numeric-field :value="item.sell.price">
           <!-- <span
             :class="[change(item.sell.price) < 0 ? 'error--text' : 'success--text']"
             style="font-size: 7px !important"
@@ -166,14 +166,14 @@ defineExpose({
         </numeric-field>
       </div>
       <div class="field">
-        <numeric-field v-model="item.sell.amount"></numeric-field>
+        <numeric-field :value="item.sell.amount"></numeric-field>
       </div>
       <div class="copy-cursor field" @click="
         () => {
           $emit('count', item.sell.count);
         }
       ">
-        <numeric-field v-model="item.sell.count"></numeric-field>
+        <numeric-field :value="item.sell.count"></numeric-field>
       </div>
     </div>
   </div>

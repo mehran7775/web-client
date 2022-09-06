@@ -1,4 +1,4 @@
-import { ComputedRef, Ref } from "#app";
+import { ComputedRef, Ref } from "vue";
 import { BookmarkPosition, MenuItem } from "~/types";
 
 export default {
@@ -6,7 +6,7 @@ export default {
 };
 
 export function getMenuItems(
-  watchList: ComputedRef<Array<MenuItem>>, secondWatchList: Ref<MenuItem[]>
+  watchList: ComputedRef<Array<MenuItem>>, secondWatchList: any
 ): Array<MenuItem> {
   return [
     {

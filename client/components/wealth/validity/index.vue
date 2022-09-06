@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "#app";
 import { AutoCompleteItem } from "~/types";
-import Window from "~~/components/windows/window.vue";
-import Windows from "~~/components/windows/index.vue";
-import DateInput from "../../DateTime/dateInput.vue";
+
 
 const items = [
   new AutoCompleteItem("1", "روز"),
@@ -25,7 +22,7 @@ const select = (item: AutoCompleteItem):void =>{
 </script>
 <template>
   <Windows>
-    <window value="select" :selected="window">
+    <windows-item value="select" :selected="window">
       <!-- <select-box v-bind="$attrs" :items="items" keyPath="$.id" v-model="value">
       </select-box> -->
       <select-box :value="value" keyPath="$.id" v-bind="$attrs" id="credit-wealth">
@@ -37,9 +34,9 @@ const select = (item: AutoCompleteItem):void =>{
           </ul>
         </template>
       </select-box>
-    </window>
-    <window value="date" :selected="window">
-      <DateInput>
+    </windows-item>
+    <windows-item value="date" :selected="window">
+      <date-input>
         <template #append>
           <ada-btn @click="
             () => {
@@ -49,7 +46,7 @@ const select = (item: AutoCompleteItem):void =>{
             {{ $t("general.cancellation") }}
           </ada-btn>
         </template>
-      </DateInput>
-    </window>
+      </date-input>
+    </windows-item>
   </Windows>
 </template>

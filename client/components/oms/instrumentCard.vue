@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { ref, Ref } from "#app";
+import { Ref } from "vue";
 import { useInstrument } from "@/composables";
 import { Instrument, InstrumentSearchModel } from "@/types";
 import { field, fieldType } from "./types";
-import NumericField from "../numericField.vue";
-import DateTime from "../DateTime/dateTime.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -108,13 +106,13 @@ instrumentManager
       "
     >
       <span>{{ $t(field.i18n) }}</span>
-      <DateTime
+      <date-time
         v-if="field.type == fieldType.dateTime"
         :value="instrument[field.name]"
-      ></DateTime>
+      ></date-time>
       <span v-else-if="field.type == fieldType.text">{{ instrument[field.name] }}</span>
-      <NumericField v-else :value="instrument[field.name]"> </NumericField>
-      <bar class="d-none d-md-block" v-if="index % 2 == 0" />
+      <numeric-field v-else :value="instrument[field.name]"> </numeric-field>
+      <div v-if="index % 2 == 0" class="bar d-none d-md-block"></div>
     </div>
   </div>
 </template>

@@ -1,4 +1,3 @@
-import { reactive } from "#app";
 import { defineStore } from "pinia";
 import { encode, decode } from "@msgpack/msgpack";
 import { Instrument, InstrumentCache, ISharedObject } from "@/types";

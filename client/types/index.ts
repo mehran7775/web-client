@@ -15,7 +15,7 @@ export interface IInstrumentCache
     DailyPrice,
     MarketHistory,
     Wealth {
-  notifs: Array<Notification>;
+    notifications: Array<Notification>;
 }
 
 export class InstrumentCache implements IInstrumentCache {
@@ -57,7 +57,7 @@ export class InstrumentCache implements IInstrumentCache {
   totalTradesValue: number;
   amount: number;
   last: number;
-  notifs: Array<Notification>;
+  notifications: Array<Notification>;
   constructor() {
     this.id = 0;
     this.code = "";
@@ -97,7 +97,7 @@ export class InstrumentCache implements IInstrumentCache {
     this.totalTradesValue = 0;
     this.amount = 0;
     this.last = 0;
-    this.notifs = [];
+    this.notifications = [];
   }
 }
 

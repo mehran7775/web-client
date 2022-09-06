@@ -1,0 +1,35 @@
+.ripple {
+  overflow: clip;
+  &::after {
+    @apply tw-bg-black/30 tw-rounded-full;
+    display: none;
+    content: "";
+    position: absolute;
+
+    width: 100px;
+    height: 100px;
+    margin-top: -50px;
+    margin-left: -50px;
+
+    /* Center the ripple */
+    top: 50%;
+    left: 50%;
+
+    animation: ripple 1s;
+    opacity: 0;
+  }
+  &:focus:not(:active)::after {
+    display: block;
+  }
+}
+
+@keyframes ripple {
+  from {
+    opacity: 1;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(10);
+  }
+}

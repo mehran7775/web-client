@@ -1,43 +1,38 @@
-<script lang="ts">
-import { defineComponent, ref, Ref, computed } from "#app";
-import { useAsrTrader } from "~/composables";
+<script lang="ts" setup>
+import { Ref } from "vue";
 
-export default defineComponent({
-  emits: ["request"],
-  props: ["value", "timer", "height"],
-  inheritAttrs: false,
-  setup(props, ctx) {
-    const appManager = useAsrTrader();
-    const otpref: Ref<any> = ref(null);
+const emit = defineEmits(["request", "update:modelValue"]);
+const props = defineProps(["value", "timer", "height"])
+const appManager = useAsrTrader();
+const otpref: Ref<any> = ref(null);
 
-    const counter = ref(0);
-    let timer: NodeJS.Timeout | null = null;
+const counter = ref(0);
+let timer: NodeJS.Timeout | null = null;
 
-    const formatter = appManager.formatter;
-    const otp = computed({
-      get() {
-        return props.value;
-      },
-      set(val) {
-        ctx.emit("input", val);
-      },
-    });
-    function setTimer() {
-      counter.value = props.timer;
-      timer = setInterval(() => {
-        if (counter.value > 1) counter.value = counter.value - 1;
-        else {
-          if (timer) clearInterval(timer);
-          counter.value = 0;
-        }
-      }, 1000);
-    }
-    function focus() {
-      otpref.value.focus();
-    }
-    return { otp, otpref, formatter, counter, setTimer, focus };
+const formatter = appManager.formatter;
+const otp = computed({
+  get() {
+    return props.value;
+  },
+  set(val) {
+    emit("update:modelValue", val);
   },
 });
+function setTimer() {
+  counter.value = props.timer;
+  timer = setInterval(() => {
+    if (counter.value > 1) counter.value = counter.value - 1;
+    else {
+      if (timer) clearInterval(timer);
+      counter.value = 0;
+    }
+  }, 1000);
+}
+function focus() {
+  otpref.value.focus();
+}
+defineExpose({ otp, otpref, formatter, counter, setTimer, focus });
+
 </script>
 
 <style lang="postcss">
@@ -73,7 +68,7 @@ export default defineComponent({
 
 <template>
   <div>
-    <input-text ref="otpref" class="otp" v-bind="$attrs" v-on="$listeners">
+    <ada-input ref="otpref" class="otp" v-bind="$attrs">
       <template #append>
         <ada-btn class="sms" :width="100" :disabled="counter > 0" @click="() => $emit('request')" :height="height - 8">
           <span v-if="counter == 0">
@@ -87,7 +82,7 @@ export default defineComponent({
           </span>
         </ada-btn>
       </template>
-    </input-text>
+    </ada-input>
     <div v-if="otpref && !otpref.valid" class="error--text" style="font-size: 10px">
       <div v-for="item in otpref.validations" :key="item" class="pt-2">
         <ada-icon color="error" :size="17"> mdi-alert-circle-outline</ada-icon>

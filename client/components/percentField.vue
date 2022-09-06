@@ -6,8 +6,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "#app";
-import { useAsrTrader } from "~/composables";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: { value: Number },

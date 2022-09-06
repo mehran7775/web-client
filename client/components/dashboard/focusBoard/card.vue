@@ -15,8 +15,6 @@ const props = withDefaults(
 <template>
   <div
     v-bind="$attrs"
-    v-on="$listeners"
-    v-ada-ripple
     :style="{
       minWidth:
         typeof props.minWidth == 'number' ? props.minWidth + 'px' : props.minWidth,

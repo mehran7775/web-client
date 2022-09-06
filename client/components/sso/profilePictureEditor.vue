@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineComponent, ref } from "#app";
 import { useUser } from "~/composables";
 
 const props = defineProps<{

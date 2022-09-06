@@ -1,91 +1,58 @@
 <script setup lang="ts">
-import { ref, Ref, computed, ComputedRef, watch } from "#app";
-import { OrderFlags, OrderSearchModel, TabItem, defaultItem, TradesHistorySerachModel } from "@/types";
-import furtherInformation from "./furtherInformation/index.vue";
-import DefaultOrderList from "./defaultOrderList.vue";
-import DateInfo from "./DateInfo.vue";
-import CompleteInfo from "./CompleteInfo.vue";
-import StatisticsKeys from "./StatisticsKeys.vue"
-import { useBottomPanel, useInstrument } from "~/composables";
-import AdaToggle from "@/components/adaToggle.vue";
-import AdaBtn from "@/components/adaBtn.vue";
-import AdaTabs from "@/components/adaTabs/index.vue"
-import AdaTab from "@/components/adaTabs/adaTab.vue"
-import TradeHistoryTransactions from "./TradeHistoryTransactions.vue"
-import SameSector from './deepInformation/sameSector.vue'
+import { TabItem } from "@/types"
+import { useInstrument, useBottomPanel } from "~~/composables";
+import loader from "./loader.vue"
+import defaultTabs from "./tabs";
 
-////
 
-const props = withDefaults(
-  defineProps<{
-    slideToBottom?: boolean
-  }>(),
-  {
-    slideToBottom: false
-  }
-);
-
+const instrumentManager = useInstrument();
 const bottomPanel = useBottomPanel();
-const active: Ref<TabItem> = ref(defaultItem)
+
+
 const tabs = computed(() => bottomPanel.tabs);
-const searchModels = {
-
-  draftOrders: new OrderSearchModel(0, 10, OrderFlags.Draft),
-  actives: new OrderSearchModel(0, 10, OrderFlags.Confirmed | OrderFlags.PreOpening | OrderFlags.Created | OrderFlags.Sent),
-  canceledOrders: new OrderSearchModel(0, 10, OrderFlags.Cancelled),
-  tradeHistories:<TradesHistorySerachModel> {
-    offset:0,
-    length:10,
-  },
-
-
-}
-const instrument = useInstrument()
-
 const tab = computed({
-  get(): TabItem {
-    return bottomPanel.activeTab ?? defaultItem;
+  get() {
+    return bottomPanel.activeTab
   },
-  set(value: TabItem) {
-    bottomPanel.setActiveTab(value);
-    if (value) {
-      if (value.default && value.children) {
-        active.value = value.children.find((item) => item.title == value.default) || defaultItem;
-      } else {
-        active.value = value
-      }
-    } else {
-      active.value = defaultItem
-    }
-  },
+  set(val: TabItem) {
+    bottomPanel.activeTab = val
+  }
 });
-const expanded = computed(() => bottomPanel.expanded);
-const showLoading = computed(() => bottomPanel.loading);
-const headers: ComputedRef<TabItem[]> = computed(() =>
-  typeof tab.value?.children != 'undefined' ? tab.value.children : [{ title: '', params: [] }]);
 
+function close() {
+  tab.value = null;
+}
 function expand() {
   bottomPanel.toggleExpand();
 }
-function close() {
-  if (expanded.value) bottomPanel.toggleExpand();
-  if (useBottomPanel()._activeTab?.deleteAble) {
-    const res = useBottomPanel()._titles.filter(item => {
-      return item.title !== active.value.title
-    })
-    useBottomPanel()._titles = res
+const showLoading = computed(() => bottomPanel.loading)
+const expanded = computed(() => bottomPanel.expanded)
+
+const active = computed({
+  get() {
+    if (tab.value && tab.value.current) {
+      return tab.value.children.find(q => q.title == tab.value.current)
+    }
+    return null;
+  }, set(val) {
+    tab.value.current = val?.title
   }
-  bottomPanel.setActiveTab(null);
+});
+
+//Register Default Tabs
+for (let i in defaultTabs) {
+  bottomPanel.registerTab((defaultTabs as Array<TabItem>)[i]);
 }
+
+
 </script>
 
 <style lang="postcss" scoped>
-.footer {
-  @apply tw-flex tw-flex-col tw-flex-grow;
+.ada-bottom-panel {
+  @apply tw-flex tw-flex-col tw-flex-grow tw-w-full;
   @apply tw-transition-all tw-ease-in-out tw-duration-700;
   position: fixed;
   bottom: 32px;
-  background-color: white;
 
   &.slideToBottom {
     bottom: 0;
@@ -114,45 +81,21 @@ function close() {
   }
 
   >.detail {
-    position: relative;
-    width: 100%;
+    @apply tw-relative tw-w-full tw-bg-white;
     font-size: 1rem;
     line-height: 1.5;
     height: calc(100% - 32px);
 
     >.header {
-      @apply tw-flex tw-flex-grow tw-w-full;
-
-      position: absolute;
+      @apply tw-absolute tw-flex tw-flex-grow tw-w-full tw-bg-primary/10 tw-shadow tw-shadow-primary/50;
       top: 0;
       left: 0;
-      box-shadow: 0 0 12px 0 rgba(53, 84, 209, 0.05);
-      align-items: center;
       height: 32px;
-      color: var(--c-primary-rgb);
-      background-color: rgba(var(--c-primary), 0.08);
       padding: 0 0 0 12px;
-      top: 0;
-      left: 0;
 
-      >.tabs {
-        @apply tw-justify-start tw-w-full tw-items-end;
-        color: rgb(0, 0, 0);
-        box-shadow: 0 0 1px 0 #e2e2e2;
-        height: 32px;
-
-        .tab {
-          @apply tw-px-1;
-          background-color: rgba(0, 0, 0, 0);
-          min-width: 168px;
-          border-radius: 0 !important;
-
-          &::after {
-            border-radius: 0 !important;
-          }
-        }
+      .b-tabs {
+        @apply tw-bg-transparent;
       }
-
     }
 
     >.contents {
@@ -160,26 +103,25 @@ function close() {
       overflow-y: auto;
       height: calc(100% - 32px);
 
-      p {
-        @apply tw-p-5 tw-break-words tw-whitespace-normal tw-font-normal tw-overflow-auto;
+      .tabs {
+        @apply tw-h-full;
       }
+
     }
   }
 
-  >.tabs {
-    @apply tw-justify-start tw-w-full tw-relative;
-    background-color: rgba(var(--c-primary), 0.1);
+  .b-tabs {
+    @apply tw-justify-start tw-w-full tw-relative tw-bg-primary/10;
     box-shadow: 0 0 1px 0 #e2e2e2;
     min-height: 32px;
     max-height: 32px;
 
-    .tab {
-      background-color: rgba(0, 0, 0, 0);
-      border: none;
-      min-width: 168px;
+    .tab-title {
+      @apply tw-bg-transparent tw-border-none tw-min-h-[32px] tw-min-w-[168px];
       margin-inline-start: 3px;
 
       &::after {
+        @apply tw-bg-primary/20 tw-opacity-100;
         border-radius: 0 !important;
       }
     }
@@ -193,87 +135,52 @@ function close() {
   }
 
   .active {
-    color: var(--c-blue-rgb);
+    @apply tw-text-primary;
   }
 
 }
 </style>
 
 <template>
-  <footer :class="{
-    footer: true,
-    expanded: expanded && tab != defaultItem,
-    half: tab != defaultItem && !expanded,
-    hidden: tab == defaultItem,
-    slideToBottom: props.slideToBottom
+  <footer class="ada-bottom-panel" :class="{
+    half: tab != null
   }">
-    <div class="detail">
+    <div class="detail" v-if="tab != null">
       <div class="contents">
-        <ada-tabs v-model="active" name-key="$.title" class="tw-h-full" :class="{ expanded: expanded }">
-          <ada-tab name="bottom-panel.orders.all" class="tw-overflow-y-auto">
-            <default-order-list/>
-          </ada-tab>
-          <ada-tab name="bottom-panel.orders.drafts" class="tw-overflow-y-auto">
-            <default-order-list v-model="searchModels.draftOrders" />
-          </ada-tab>
-          <ada-tab name="bottom-panel.orders.actives" class="tw-overflow-y-auto">
-            <default-order-list v-model="searchModels.actives" />
-          </ada-tab>
-          <ada-tab name="bottom-panel.orders.canceled" class="tw-overflow-y-auto">
-            <default-order-list v-model="searchModels.canceledOrders" />
-          </ada-tab>
-          <ada-tab name="bottom-panel.completeInfo" class="tw-overflow-y-auto">
-            <complete-info />
-          </ada-tab>
-          <ada-tab name="bottom-panel.dateInfo" class="tw-overflow-y-auto">
-            <date-info />
-          </ada-tab>
-          <ada-tab name="bottom-panel.more" class="tw-overflow-y-auto">
-            <further-information />
-          </ada-tab>
-          <ada-tab name="bottom-panel.statisticsKeys" class="tw-overflow-y-auto">
-            <statistics-keys />
-          </ada-tab>
-          <ada-tab name="bottom-panel.dateInfo.tradesHistory" class="tw-overflow-y-auto">
-             <trade-history-transactions :value="searchModels.tradeHistories"/>
-          </ada-tab>
-          <!-- //TODO Correct this shit! -->
-          <ada-tab name="bottom-panel.completeInfo.myGroups" class="tw-overflow-y-auto">
-            <SameSector />
-          </ada-tab>
-          
-          <ada-tab v-if="useBottomPanel()._activeTab" :name="active.title">
-            <p v-text="useBottomPanel()._activeTab.body"></p>
+        <ada-tabs v-model="tab">
+          <ada-tab v-for="t in tabs" :key="t.title" :model="t">
+            <loader v-if="t.component" :module="t.component" v-model="active" :tabs="t.children"></loader>
           </ada-tab>
         </ada-tabs>
-        <loading :loading="showLoading" />
       </div>
-      <header class="header" v-show="tab.title != ''">
-        <ada-toggle v-model="active" class="tabs">
-          <ada-btn :height="32" class="tab" v-for="(t, i) in headers" :key="t.title" :model="t">
-            {{ $t(t.title) }}<span v-if="t.title2" v-text="`-${t.title2}`"></span>
-            <bar v-if="i != headers.length - 1" />
+      <header class="header">
+        <ada-toggle v-model="active" class="b-tabs">
+          <ada-btn class="tab-title" v-for="(t, i) in tab.children" :key="t.title" :model="t">
+            {{ $t(t.title) }}
+            <div v-if="i != tab.children.length - 1" class="bar"></div>
           </ada-btn>
         </ada-toggle>
-        <ada-spacer />
-        <ada-btn class="tw-mx-[5px]" :color="expanded && tab != defaultItem ? 'primary' : 'transparent'" :width="24"
-          :height="24" @click="expand()">
-          <ada-icon :color="expanded && tab != defaultItem ? 'white' : 'primary'" :size="16"> isax-maximize-3
+        <ada-btn class="tw-mx-[5px]" :class="expanded && tab != null ? 'tw-text-primary' : 'tw-text-transparent'"
+          :width="24" :height="24" @click="expand">
+          <ada-icon :color="expanded && tab != null ? 'white' : 'primary'" :size="16"> isax-maximize-3
           </ada-icon>
         </ada-btn>
-        <ada-btn color="primary" :width="24" :height="24" @click="close()">
+        <ada-btn color="primary" @click="close">
           <ada-icon color="white" :size="16">mdi-window-close</ada-icon>
         </ada-btn>
       </header>
     </div>
-    <ada-toggle class="tabs" v-model="tab">
-      <ada-btn class="tab" v-for="(t, i) in tabs" :key="t.title" :model="t">
-        <span :class="{ 'active': tab.title == t.title }">
+    <ada-toggle class="b-tabs" v-model="tab">
+      <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.title" :model="t">
+        <span :class="{ 'active': tab != null && tab.title == t.title }">
           {{ $t(t.title) }}
           <span
-            v-text="useInstrument().state.selected && !t.deleteAble ? '-' + useInstrument().state.selected.name : ''"></span>
+            v-text="instrumentManager.state.selected && !t.deletable ? '-' + instrumentManager.state.selected.name : ''"></span>
         </span>
-        <bar v-if="i != tabs.length - 1" />
+        <div v-if="i != tabs.length - 1" class="bar"></div>
+        <ada-icon size="1.3rem" v-if="t.deletable" class="tw-absolute tw-top-[1px] tw-left-[5px] hover:tw-text-gray3"
+        @click.stop.prevent="bottomPanel.removeTab(t)"
+        >mdi-close</ada-icon>
       </ada-btn>
     </ada-toggle>
   </footer>

@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { ref, watch, computed } from "#app";
 import NumericField from "~~/components/numericField.vue";
 const props = defineProps<{
-  value: number;
+  modelValue: number;
 }>();
-const emit = defineEmits(["input"]);
+const emit = defineEmits(["update:modelValue"]);
 const val = ref(100);
-const total = ref(props.value);
+const total = ref(props.modelValue);
 const res = computed(() => Math.ceil(total.value * (val.value / 100)));
 watch(
-  () => props.value,
+  () => props.modelValue,
   (update) => {
     total.value = update;
   }
@@ -21,13 +20,13 @@ watch(
 }
 </style>
 <template>
-  <text-input
+  <ada-input
     :label="$t('oms.view-count')"
     type="number"
-    v-model="val"
+    v-model:value="val"
     @input="
       () => {
-        emit('input', val);
+        emit('update:modelValue', val);
       }
     "
     class="tw-mt-1"
@@ -37,5 +36,5 @@ watch(
     <template #append>
       <NumericField :value="res" class="tw-px-0 tw-my-[4px] tw-min-w-[25%] view" />
     </template>
-  </text-input>
+  </ada-input>
 </template>

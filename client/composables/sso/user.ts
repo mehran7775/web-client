@@ -1,5 +1,5 @@
-import { AxiosError, AxiosResponse } from "axios";
-import { computed, ref, reactive } from "#app";
+import Axios, { AxiosError, AxiosResponse } from "axios";
+import { computed, ref, reactive } from "vue";
 import { defineStore } from "pinia";
 import { Buffer } from "buffer";
 import {
@@ -10,120 +10,116 @@ import {
   PaginatedResult,
   Setting,
   User,
-  WatchlistColumns,
+  WatchListColumns,
 } from "~/types";
 import { refreshKey, tokenKey, userKey, UserState } from "~/types/stores";
 import userManager from "@/repositories/sso/user_manager";
 import jwtManager from "~/repositories/sso/jwt_token";
-import {
-  DeleteClientCookie,
-  GetClientCookies,
-  SetClientCookie,
-} from "~/utils/cookie";
 import { useAxios } from "..";
 
 export const useUser = defineStore("user", () => {
-  const state = ref(new UserState());
-
+  const appconfig = useRuntimeConfig();
+  const state = reactive(new UserState());
   const axiosManager = useAxios();
-  const axios = axiosManager.createInstance();
+  const axios = computed(() => axiosManager.createInstance());
+  const bareAxios = Axios.create({
+    baseURL: appconfig.public.VUE_APP_Host,
+  });
 
   // Getters
   const refreshingToken = computed({
     get() {
-      return state.value.renewToken;
+      return state.renewToken;
     },
     set(val: boolean) {
       setRefreshingToken(val);
     },
   });
-  const getBookmarks = computed(
-    () => state.value.user.settings.bookmarks || []
-  );
-  const getShourtcuts = computed(
-    () => state.value.user.settings.shourtcuts || []
-  );
-  const getToken = computed(() => state.value.token);
-  const getRefresh = computed(() => state.value.refresh);
-  const me = computed(() => state.value.user ?? AnonymousUser());
-  const isLogin = computed(() => !!(state && state.value.token));
-  const watchList = computed(
-    () => state.value.user?.settings?.watch_lists ?? {}
-  );
-  const tryCount = computed(() => state.value.tryCount);
-  const settingsChanged = computed(() => state.value.settingsChanged);
+  const getBookmarks = computed(() => state.user?.settings?.bookmarks || []);
+  const getShourtcuts = computed(() => state.user?.settings?.shourtcuts || []);
+  const getToken = computed(() => state.token);
+  const getRefresh = computed(() => state.refresh);
+  const me = computed(() => state.user ?? AnonymousUser());
+  const isLogin = computed(() => !!(state && state.token));
+  const watchList = computed(() => state.user?.settings?.watch_lists ?? {});
+  const tryCount = computed(() => state.tryCount);
+  const settingsChanged = computed(() => state.settingsChanged);
 
   // Mutations
   function setHome(data: string) {
-    state.value.user.settings.home = data;
+    state.user.settings.home = data;
   }
   function setRefreshingToken(data: boolean) {
-    state.value.renewToken = data;
+    state.renewToken = data;
   }
   function tries(data: { user: string; tries: number }) {
-    if (data.tries > 0)
-      SetClientCookie(data.user + ".tryCount", data.tries.toString(), {
-        maxAge: 300,
-      });
-    else DeleteClientCookie("tryCount");
-    state.value.tryCount = data.tries;
+    //TODO Cookie
+    //if (data.tries > 0)
+    //   SetClientCookie(data.user + ".tryCount", data.tries.toString(), {
+    //     maxAge: 300,
+    //   });
+    // else DeleteClientCookie("tryCount");
+    state.tryCount = data.tries;
   }
   function setToken(data: string) {
     if (!!data) {
-      state.value.token = data;
+      state.token = data;
       const token = JSON.parse(
         Buffer.from(decodeURIComponent(data.split(".")[1]), "base64").toString()
       );
-      state.value.userName = token.sub;
-      if (process.client) {
-        SetClientCookie(tokenKey, data, {
-          expires: new Date(token.exp * 1000),
-        });
-      }
+      state.userName = token.sub;
+      //TODO Cookie
+      // if (process.client) {
+      //   sessionStorage.setItem(tokenKey, data);
+      //   SetClientCookie(tokenKey, data, {
+      //     expires: new Date(token.exp * 1000),
+      //   });
+      // }
     }
   }
   function setRefresh(data: string) {
-    state.value.refresh = data;
-    if (process.client) {
-      SetClientCookie(refreshKey, data, {});
-      localStorage.setItem(refreshKey, data);
-    }
+    state.refresh = data;
+    //TODO Cookie
+    // if (process.client) {
+    //   SetClientCookie(refreshKey, data, {});
+    //   localStorage.setItem(refreshKey, data);
+    // }
   }
   function logout() {
     if (process.client) {
-      DeleteClientCookie(userKey);
-      DeleteClientCookie(tokenKey);
-      DeleteClientCookie(refreshKey);
+      //TODO Cookie
+      // DeleteClientCookie(userKey);
+      // DeleteClientCookie(tokenKey);
+      // DeleteClientCookie(refreshKey);
       sessionStorage.clear();
       localStorage.clear();
     }
 
-    state.value.settingsChanged = reactive([]);
-    state.value.token = null;
-    state.value.user = AnonymousUser();
-    state.value.refresh = null;
+    state.settingsChanged = reactive([]);
+    state.token = null;
+    state.user = AnonymousUser();
+    state.refresh = null;
   }
   function setUser(data: User) {
-    state.value.user = data;
-    state.value.settingsChanged = reactive([]);
+    state.user = data;
+    state.settingsChanged = reactive([]);
     if (process.client) {
-      SetClientCookie(userKey, data.userName, {});
+      //TODO Cookie
+      // SetClientCookie(userKey, data.userName, {});
       localStorage.setItem(userKey, data.userName);
     }
   }
   function setSettings(settings: Setting) {
-    state.value.user.settings = settings;
+    console.log(settings)
+    state.user.settings = settings;
   }
-  function setCols(data: Array<WatchlistColumns>) {
-    if (
-      state.value.settingsChanged.findIndex((item) => item.key == "/columns") ==
-      -1
-    )
-      state.value.settingsChanged.push({
+  function setCols(data: Array<WatchListColumns>) {
+    if (state.settingsChanged.findIndex((item) => item.key == "/columns") == -1)
+      state.settingsChanged.push({
         key: "/columns",
-        value: [...state.value.user.settings.columns],
+        value: [...state.user.settings.columns],
       });
-    state.value.user.settings.columns = data;
+    state.user.settings.columns = data;
   }
   function setWatchlist(data: {
     watchlist: Array<string>;
@@ -132,52 +128,51 @@ export const useUser = defineStore("user", () => {
   }) {
     if (
       data.changeState &&
-      state.value.settingsChanged.findIndex(
+      state.settingsChanged.findIndex(
         (item) => item.key == "/watch_lists/" + data.name
       ) == -1
     )
-      state.value.settingsChanged.push({
+      state.settingsChanged.push({
         key: "/watch_lists/" + data.name,
-        value: [...state.value.user.settings.columns],
+        value: [...state.user.settings.columns],
       });
-    state.value.user.settings.watch_lists[data.name] = data.watchlist;
+    state.user.settings.watch_lists[data.name] = data.watchlist;
   }
   function setSettingsChanged(data: { key: string; value: any }) {
-    if (
-      state.value.settingsChanged.findIndex((item) => item.key == data.key) ==
-      -1
-    )
-      state.value.settingsChanged.push({ key: data.key, value: data.value });
+    if (state.settingsChanged.findIndex((item) => item.key == data.key) == -1)
+      state.settingsChanged.push({ key: data.key, value: data.value });
   }
   function settingsNotChanged(data: string) {
-    state.value.settingsChanged.splice(
-      state.value.settingsChanged.findIndex((item) => item.key == data),
+    state.settingsChanged.splice(
+      state.settingsChanged.findIndex((item) => item.key == data),
       1
     );
   }
 
-  // Actions TODO Move buisiness here
-  async function getUser(userName: string): Promise<User | number> {
+  // Actions
+  async function getUser(userName: string): Promise<User> {
     const { data, status } = await userManager.getUser(
-      userName ?? state.value.userName,
-      axios
+      userName ?? state.userName,
+      axios.value
     );
     setUser(data);
-    return data || status;
+    return data;
   }
   function checkTries(userName: string) {
-    const tr = GetClientCookies()[userName + ".tryCount"];
-    if (tr && tr != "") {
-      tries({ user: userName, tries: parseInt(tr) });
-    } else {
-      tries({ user: userName, tries: 0 });
-    }
+    //TODO Cookie
+    // const tr = GetClientCookies()[userName + ".tryCount"];
+    // if (tr && tr != "") {
+    //   tries({ user: userName, tries: parseInt(tr) });
+    // } else {
+    //   tries({ user: userName, tries: 0 });
+    // }
   }
   async function login(payload: LoginModel): Promise<number> {
     try {
       refreshingToken.value = true;
-      tries({ user: payload.userName, tries: state.value.tryCount + 1 });
+      tries({ user: payload.userName, tries: state.tryCount + 1 });
       const { data, status } = await jwtManager.login(
+        bareAxios,
         payload.userName,
         payload.password,
         payload.captcha
@@ -200,17 +195,20 @@ export const useUser = defineStore("user", () => {
   }
   async function doLogout(): Promise<void> {
     try {
-      await jwtManager.logout(axios);
+      await jwtManager.logout(axios.value);
     } finally {
       logout();
     }
   }
   async function refreshToken(): Promise<number> {
-    const token = state.value.refresh;
+    const token = state.refresh;
     if (token) {
       try {
         refreshingToken.value = true;
-        const { data, status } = await jwtManager.refreshToken(token);
+        const { data, status } = await jwtManager.refreshToken(
+          token,
+          bareAxios
+        );
         if (status >= 200 && status < 300 && !!data.token) {
           setToken("Bearer " + data.token);
           setRefresh(data.refresh);
@@ -234,12 +232,11 @@ export const useUser = defineStore("user", () => {
       const resp = await userManager.updateUserSettings(
         payload.path,
         payload.value,
-        axios
+        axios.value
       );
       if (resp.data.setting) {
         setSettings(resp.data.setting);
-        if (process.client)
-          localStorage.setItem(userKey, state.value.user.userName);
+        if (process.client) localStorage.setItem(userKey, state.user.userName);
       }
       settingsNotChanged(payload.path);
     } catch (e) {
@@ -249,11 +246,10 @@ export const useUser = defineStore("user", () => {
   }
   async function delete_settings(payload: { path: string }): Promise<void> {
     try {
-      const resp = await userManager.deleteUserSettings(payload.path, axios);
+      const resp = await userManager.deleteUserSettings(payload.path, axios.value);
       if (resp.data.setting) {
         setSettings(resp.data.setting);
-        if (process.client)
-          localStorage.setItem(userKey, state.value.user.userName);
+        if (process.client) localStorage.setItem(userKey, state.user.userName);
       }
       settingsNotChanged(payload.path);
     } catch (e) {
@@ -262,7 +258,7 @@ export const useUser = defineStore("user", () => {
     }
   }
   async function getProfilePic(name: string): Promise<string> {
-    const img: Uint8Array = (await userManager.getProfileImage(name, axios))
+    const img: Uint8Array = (await userManager.getProfileImage(name, axios.value))
       ?.data;
     return (
       "data:image/jpeg;base64," +
@@ -278,10 +274,10 @@ export const useUser = defineStore("user", () => {
     payload: Paginated
   ): Promise<AxiosResponse<PaginatedResult<Log>>> {
     return userManager.getUserLog(
-      state.value.userName ?? "",
+      state.userName ?? "",
       payload?.offset,
       payload?.length,
-      axios
+      axios.value
     );
   }
 

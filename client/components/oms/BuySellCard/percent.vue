@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "#app";
 
 const props = withDefaults(
   defineProps<{
+    modelValue: number
     height?: string;
     amount?: number;
     min?: number;
@@ -11,6 +11,7 @@ const props = withDefaults(
     total?: number;
   }>(),
   {
+    modelValue: 30,
     height:'42px',
     amount: 1,
     min: 1,
@@ -20,7 +21,8 @@ const props = withDefaults(
   }
 );
 
-const emit = defineEmits(["input","count"]);
+const emit = defineEmits(["update:modelValue","count"]);
+const val = ref(props.amount);
 
 const minCount = computed(() => {
   if (props.total) return Math.ceil((props.min / 100) * props.total);
@@ -36,10 +38,9 @@ const result = computed(() => {
       Math.max(Math.round((val.value / 100) * props.total), minCount.value),
       maxCount.value
     );
-  else return val.value;
+  else return 0;
 });
-const val = ref(props.amount);
-const beforeTriggerRange = ref(true)
+
 
 watch(
   () => props.amount,
@@ -48,10 +49,9 @@ watch(
   }
 );
 function setValue(update: number | string) {
-  beforeTriggerRange.value = false
   if (typeof update == "string") update = parseInt(update);
   val.value = update > props.max ? props.max : update < props.min ? props.min : update;
-  emit("input", val.value);
+  emit("update:modelValue", val.value);
 }
 function toPercent(value: number) {
   if (props.total) val.value = (value / props.total) * 100;
@@ -61,20 +61,19 @@ function toPercent(value: number) {
 
 <template>
   <div class="percent-container">
-    <RangeSlider :min="min" :max="max" :value="val" @input="setValue" class="tw-max-w-full" v-bind="$attrs"/>
-    <TextInput
-      class="tw-flex-grow tw-h-[24px] tw-w-1/2 tw-ml-[13px] tw-focus:border-none"
+    <RangeSlider :min="min" :max="max" v-model="val" @update="setValue" class="tw-max-w-full" v-bind="$attrs"/>
+    <ada-input
+      class="tw-flex-grow tw-h-[24px] tw-w-1/2"
       dir="rtl"
       type="number"
       :label="label"
-      :value="beforeTriggerRange ? total : result"
-      @input="toPercent"
+      :modelValue="result"
+      @update:modelValue="toPercent"
       :min="minCount"
       :max="maxCount"
       readonly
-      :activeBorder="false"
       v-bind="$attrs"
-    ></TextInput>
+    ></ada-input>
   </div>
 </template>
 
@@ -82,6 +81,18 @@ function toPercent(value: number) {
 .percent-container {
   @apply tw-justify-between;
   direction: ltr;
+
+  .ada-input {
+    & :deep(.scaffold) {
+      @apply tw-border-none tw-ml-[15px];
+    }
+    &.active :deep(.scaffold) {
+      @apply tw-bg-primary tw-bg-opacity-10;
+    }
+    /* & :deep(input) {
+      @apply tw-pl-0 tw-ml-0;
+    } */
+  }
   .percent {
     @apply tw-relative;
     min-width: 233px;

@@ -1,10 +1,11 @@
+import { useRuntimeConfig } from "#app";
 import { useAsrTrader, useSnacks, useUser } from ".";
 import axios, { AxiosError, AxiosInstance } from "axios";
 import { defineStore } from "pinia";
 import { ErrorExtractor } from "~/utils/error";
-import { Snack } from "@/types/stores";
 
 export const useAxios = defineStore("axios", () => {
+  const appconfig = useRuntimeConfig();
   const user = useUser();
   const app = useAsrTrader();
   const snacks = useSnacks();
@@ -14,7 +15,7 @@ export const useAxios = defineStore("axios", () => {
     instance.interceptors.request.use((config) => {
       Object.assign(config, {
         withCredentials: true,
-        baseURL: process.env.VUE_APP_Host,
+        baseURL: appconfig.public.VUE_APP_Host,
         headers: {
           ...config.headers,
           ...{
@@ -52,6 +53,7 @@ export const useAxios = defineStore("axios", () => {
             snacks.showMessage({
               content: "error." + error.code,
               color: "error",
+              timeout: 1000,
             });
             if (process.client) {
               window.history.pushState({}, "", "/login");
@@ -63,6 +65,7 @@ export const useAxios = defineStore("axios", () => {
           snacks.showMessage({
             content: "error." + error.code,
             color: "error",
+            timeout: 1000,
           });
           return Promise.reject(error);
         }

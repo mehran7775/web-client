@@ -1,18 +1,13 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, Ref, onBeforeUnmount } from "#app";
 import { useShortcut } from "@/utils/shortcutManager";
-import CardView from "./cardView.vue";
-import TabView from "./tabView.vue";
 import { Bookmark } from "~/types";
 import { useInstrument, useUser } from "~/composables";
-import { useRoute } from "#app";
-import AdaToggle from "@/components/adaToggle.vue"
 
 const instrumentManager = useInstrument();
 const userManager = useUser();
 const sh = useShortcut();
 const route = useRoute();
-const toolbar = ref<HTMLElement | null>(null)
+const toolbar = ref<HTMLElement | null>(null);
 
 const me = userManager.me;
 const bookmarks = computed(() => userManager.getBookmarks);
@@ -84,15 +79,19 @@ if (process.client) {
 }
 
 .bookmark {
-  @apply tw-mx-[4px] tw-px-[4px] tw-rounded-md tw-bg-primary-100 tw-w-[110px] tw-h-[28px] tw-text-primary;
+  @apply tw-mx-[4px] tw-px-[4px] tw-rounded tw-bg-primary tw-bg-opacity-10 tw-w-[110px] tw-h-[28px] tw-text-primary;
   @apply tw-flex tw-items-center tw-justify-between tw-text-ellipsis tw-overflow-hidden tw-whitespace-nowrap;
 
-  &.nuxt-link-exact-active,
-  &.nuxt-link-active {
+  .icon {
+    @apply tw-text-primary;
+  }
+
+  &.router-link-exact-active,
+  &.router-link-active {
     @apply tw-border tw-border-primary;
   }
 
-  >.label {
+  > .label {
     font-size: 0.8334rem;
     display: inline-block;
     max-width: 67px;
@@ -117,27 +116,38 @@ if (process.client) {
 }
 
 .mode {
-  >.filter {
+  > .ada-button {
+    @apply tw-bg-primary tw-bg-opacity-10 tw-w-10 tw-h-10 tw-rounded;
+
+    &.active {
+      @apply tw-text-primary;
+
+      .icon {
+        @apply tw-text-primary;
+      }
+    }
+  }
+  > .filter {
     @apply tw-flex tw-flex-row tw-items-center tw-justify-items-stretch tw-px-2 tw-mx-3;
     min-width: 110px;
     background-color: rgba(var(--c-primary), 0.05);
     border-radius: var(--border-radius-root);
     border: solid 1px rgba(var(--c-primary), 0.5);
 
-    >.filter {
+    > .filter {
       @apply tw-flex tw-mx-2;
     }
 
-    >.txt {
+    > .txt {
       @apply tw-flex tw-flex-grow;
     }
 
-    >.close {
+    > .close {
       @apply tw-flex tw-justify-self-end tw-mx-2;
     }
   }
 
-  >button {
+  > button {
     border-radius: var(--border-radius-root);
     border: none !important;
   }
@@ -164,13 +174,21 @@ if (process.client) {
   <div class="tw-m-0 tw-p-0">
     <header ref="toolbar" class="toolbar">
       <slot name="toolbar"> </slot>
-      <span v-if="bookmarks.length > 0"
-        class="tw-h-7 tw-border-r-2 tw-rounded-md tw-border-primary-200 tw-mr-3 tw-ml-2"></span>
+      <span
+        v-if="bookmarks.length > 0"
+        class="tw-h-7 tw-border-r-2 tw-rounded-md tw-border-primary-200 tw-mr-3 tw-ml-2"
+      ></span>
       <nuxt-link v-for="b in bookmarks" :key="b.to" :to="b.to" class="bookmark">
         <span v-text="b.text ? b.text : $t(b.title)"></span>
-        <ada-icon :size="14" class="tw-w-8 tw-h-full" @click="unmark(b)">mdi-close</ada-icon>
+        <ada-icon :size="14" class="tw-w-8 tw-h-full" @click.stop.prevent="unmark(b)"
+          >mdi-close</ada-icon
+        >
       </nuxt-link>
-      <ada-toggle class="mode tw-justify-end" color="primary" v-model="viewMode">
+      <ada-toggle
+        class="mode tw-justify-end"
+        color="primary"
+        v-model="viewMode"
+      >
         <!-- <div v-if="filter" class="filter">
           <ada-icon class="filter" :size="14" color="primary">isax-search-normal-1</ada-icon>
           <span class="txt">
@@ -178,26 +196,25 @@ if (process.client) {
           </span>
           <ada-icon class="close" @click="deselect" :size="14" color="primary">mdi-close</ada-icon>
         </div> -->
-        <ada-btn :height="28" :width="28" :model="0">
-          <ada-icon :color="viewMode == 0 ? 'primary' : 'gray'" :size="16">
-            isax-menu
-          </ada-icon>
+        <ada-btn :model="0">
+          <ada-icon :size="16"> isax-menu </ada-icon>
         </ada-btn>
-        <ada-btn :height="28" :width="28" :model="1">
-          <ada-icon :color="viewMode == 1 ? 'primary' : 'gray'" :size="16">
-            isax-element-3-bold
-          </ada-icon>
+        <ada-btn :model="1">
+          <ada-icon :size="16"> isax-element-3-bold </ada-icon>
         </ada-btn>
       </ada-toggle>
     </header>
-    <ada-tabs class="focus-board" v-if="instruments.length > 0" v-model="viewMode">
+    <ada-tabs
+      class="focus-board"
+      v-if="instruments.length > 0"
+      v-model="viewMode"
+    >
       <ada-tab :model="0">
-        <tab-view />
+        <DashboardFocusBoardTabView />
       </ada-tab>
       <ada-tab :model="1">
-        <card-view />
+        <DashboardFocusBoardCardView />
       </ada-tab>
     </ada-tabs>
-
   </div>
 </template>

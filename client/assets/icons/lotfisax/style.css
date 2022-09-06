@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'lotfisax';
-  src:  url('fonts/lotfisax.eot?vws94z');
-  src:  url('fonts/lotfisax.eot?vws94z#iefix') format('embedded-opentype'),
+  src:  local('lotfisax'),
+    url('fonts/lotfisax.eot?vws94z#iefix') format('embedded-opentype'),
     url('fonts/lotfisax.ttf?vws94z') format('truetype'),
     url('fonts/lotfisax.woff?vws94z') format('woff'),
     url('fonts/lotfisax.svg?vws94z#lotfisax') format('svg');

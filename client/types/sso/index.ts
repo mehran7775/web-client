@@ -22,7 +22,7 @@ export type Log = {
 
 export type Setting = {
   lang: string,
-  columns: Array<WatchlistColumns>,
+  columns: Array<WatchListColumns>,
   watch_lists: { [key: string]: Array<string> },
   home: string,
   bookmarks: Array<Bookmark>,
@@ -51,7 +51,7 @@ export type UserProfile = {
   profilePic: string | null
 }
 
-export class WatchlistColumns {
+export class WatchListColumns {
   text: string
   value: string
   align: string | null
@@ -84,17 +84,17 @@ export function AnonymousUser(): User {
     { lang: 'fa-IR', columns: [], watch_lists: {}, home: '/', bookmarks: [], shourtcuts: [] }
   )
 }
-export function DefaultCols(): WatchlistColumns[] {
+export function DefaultCols(): WatchListColumns[] {
   return [
-    new WatchlistColumns("instrument.name", "name", "start"),
-    new WatchlistColumns("instrument.tradeCount", "totalTrades"),
-    new WatchlistColumns("instrument.tradeVol", "totalShares"),
-    new WatchlistColumns("instrument.tradeVal", "totalTradesValue"),
-    new WatchlistColumns("instrument.lowest", "lowest"),
-    new WatchlistColumns("instrument.highest", "highest"),
-    new WatchlistColumns("instrument.yesterdayPrice", "yesterdayPrice"),
-    new WatchlistColumns("instrument.opening", "opening"),
-    new WatchlistColumns("instrument.last", "last"),
-    new WatchlistColumns("instrument.closing", "closing"),
+    new WatchListColumns("instrument.name", "name", "start"),
+    new WatchListColumns("instrument.tradeCount", "totalTrades"),
+    new WatchListColumns("instrument.tradeVol", "totalShares"),
+    new WatchListColumns("instrument.tradeVal", "totalTradesValue"),
+    new WatchListColumns("instrument.lowest", "lowest"),
+    new WatchListColumns("instrument.highest", "highest"),
+    new WatchListColumns("instrument.yesterdayPrice", "yesterdayPrice"),
+    new WatchListColumns("instrument.opening", "opening"),
+    new WatchListColumns("instrument.last", "last"),
+    new WatchListColumns("instrument.closing", "closing"),
   ]
 }

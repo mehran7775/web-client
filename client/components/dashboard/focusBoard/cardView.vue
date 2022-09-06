@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import { computed } from "#app";
 import { Side, InstrumentCache } from "@/types";
-import instrumentCard from "@/components/oms/instrumentCardCompact.vue";
-import OrderQueueCard from "@/components/oms/orderQueueCard.vue";
-import card from "./card.vue";
 import { useInstrument, useOrder } from "~/composables";
 
 const instrumentManager = useInstrument();
@@ -66,38 +62,55 @@ defineExpose({
     cursor: pointer;
 
     &.active {
-      border-left: 1px solid rgba(var(--c-selected-inst), 0.5);
-      border-right: 1px solid rgba(var(--c-selected-inst), 0.5);
+      @apply tw-border tw-border-l-primary tw-border-r-primary;
 
       .toolbar {
-        background-color: rgba(var(--c-selected-inst), .1) !important;
+        @apply tw-bg-primary tw-bg-opacity-10;
       }
     }
 
     .toolbar {
-      @apply tw-flex tw-flex-grow tw-whitespace-nowrap tw-items-center;
+      @apply tw-flex tw-flex-grow tw-whitespace-nowrap tw-items-center tw-justify-between tw-bg-primary tw-bg-opacity-5;
       padding: 0 8px;
-      background-color: rgba(var(--c-primary), 0.05) !important;
       height: 32px;
       line-height: 32px;
+
+      .actions {
+        @apply tw-flex tw-items-center;
+      }
 
       .title {
         font-weight: 700;
         font-size: 1rem !important;
-        color: var(--c-primary-rgb);
         margin: 0 8px;
-      }
+        @apply tw-text-primary;
 
+        & :deep(.badge) {
+          @apply tw-bg-success;
+        }
+      }
+      .buy, .sell{
+        @apply tw-w-[58px] tw-text-white tw-mx-1 tw-h-[26px];
+      }
       .buy {
-        background-color: rgba(var(--c-success), 0.7) !important;
+        @apply tw-bg-success tw-bg-opacity-70;
       }
 
       .sell {
-        background-color: rgba(var(--c-error), 0.7) !important;
+        @apply tw-bg-error tw-bg-opacity-70;
       }
 
       .close {
-        background-color: rgba(var(--c-primary), 0.1) !important;
+        @apply tw-bg-primary tw-bg-opacity-10 tw-w-8 tw-h-8 tw-text-primary tw-mr-3;
+        .icon {
+          @apply tw-text-primary tw-mb-2;
+        }
+        &:hover {
+          @apply tw-bg-primary tw-text-white;
+          .icon {
+            @apply tw-text-white;
+          }
+        }
       }
     }
   }
@@ -106,10 +119,11 @@ defineExpose({
 
 <template>
   <div class="card-row">
-    <card @click="() => select(item)" class="card-view" :class="{ 'active': selected && selected.id == item.id }"
+    <dashboard-focus-board-card @click="() => select(item)" class="card-view" :class="{ 'active': selected && selected.id == item.id }"
       :minWidth="maxwidthVal" v-for="item in instruments" :key="item.id">
       <header class="toolbar">
-        <ada-badge class="title" :color="
+        <div class="tw-flex">
+          <ada-badge class="title" :color="
           (item.status & 1) != 1
             ? 'error'
             : (item.status & 6) != 6
@@ -118,27 +132,29 @@ defineExpose({
         " dot>
           {{ item.name }}
         </ada-badge>
-        ({{ $t("instrument.state." + item.status) }})
-        <ada-spacer />
-        <ada-btn depressed height="24px" width="56px" color="success" dark small class="ma-0 me-2 pa-0 buy"
+          <span v-text="`(${ $t('instrument.state.' + item.status) })`"></span>
+        </div>
+       <div class="actions">
+        <ada-btn depressed dark small class="buy"
           @click.stop="() => order(item, Side.Buy)">
           {{ $t("oms.buy") }}
         </ada-btn>
-        <ada-btn depressed height="24px" width="56px" color="error" dark small class="me-3 pa-0 sell"
+        <ada-btn depressed dark small class="sell"
           @click.stop="() => order(item, Side.Sell)">
           {{ $t("oms.sell") }}
         </ada-btn>
-        <ada-btn @click.stop="() => close(item)" height="24px" width="24px" class="close me-1" depressed small>
-          <ada-icon color="primary" :size="12"> mdi-close </ada-icon>
+        <ada-btn @click.stop="() => close(item)" class="close" depressed small>
+          <ada-icon :size="12"> mdi-close </ada-icon>
         </ada-btn>
+       </div>
       </header>
       <div class="text-caption ma-0 px-0">
-        <order-queue-card :inst="item" />
-        <instrument-card :insId="item.id" hide-headers />
+        <oms-order-queue-card :inst="item" />
+        <oms-instrument-card :insId="item.id" hide-headers />
         <ada-col class="col-border tw-justify-center tw-align-middle">
           <ada-icon :size="16"> isax-presention-chart </ada-icon>
         </ada-col>
       </div>
-    </card>
+    </dashboard-focus-board-card>
   </div>
 </template>

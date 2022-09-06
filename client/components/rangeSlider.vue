@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { watch, ref, computed } from "#app";
+import { watch, ref, computed } from "vue";
 import { useAsrTrader } from "@/composables";
 const props = withDefaults(
   defineProps<{
-    value?: number;
+    modelValue?: number;
     dir?: "ltr" | "rtl";
     min?: number;
     max?: number;
   }>(),
   {
-    value: 0,
+    modelValue: 0,
     dir: "ltr",
     min: 0,
     max: 100,
   }
 );
-const emit = defineEmits(["input", "update:value"]);
+const emit = defineEmits(["update:modelValue"]);
 const app = useAsrTrader();
 const fromatter = computed(() => app.percentFormatter);
-const val = ref(Math.max(props.min, props.value));
+const val = ref(Math.max(props.min, props.modelValue));
 const tooltipPos = computed(
   () => Math.floor((val.value - props.min) * 100) / (props.max - props.min + 8)
 );
@@ -26,13 +26,10 @@ const process = computed(
   () => Math.floor((val.value - props.min) * 100) / (props.max - props.min)
 );
 const dataChanged = ref(false);
-function setVal(data: Event) {
-  emit("input", val.value);
-  emit("update:value", val.value);
-}
+
 let timeout: number | null = null;
 watch(
-  () => props.value,
+  () => props.modelValue,
   (update) => {
     val.value = update;
     dataChanged.value = true;
@@ -61,9 +58,9 @@ watch(
     padding: 0 3px 0 3px;
     line-height: 24px;
     text-align: center;
-    white-space: nowrap;
-    background-color: var(--c-primary-rgb);
+    white-space: nowrap; 
     color: white;
+    @apply tw-bg-primary;
   }
   &:hover,
   .update {
@@ -72,37 +69,35 @@ watch(
     }
   }
   .range {
-    @apply tw-flex tw-flex-grow;
+    @apply tw-flex tw-flex-grow tw-bg-primary tw-bg-opacity-10 tw-rounded;
     appearance: none;
-    background-color: rgba(var(--c-primary), 0.1);
     cursor: pointer;
     height: 6px;
-    border-radius: 3px;
     margin: auto 0 auto 0;
 
     &::-webkit-slider-thumb {
       appearance: none;
-      background-color: var(--c-primary-rgb);
       width: 16px;
       height: 16px;
       border-radius: 50%;
+      @apply tw-bg-primary;
     }
     &::-moz-range-thumb {
       appearance: none;
-      background-color: var(--c-primary-rgb);
       width: 16px;
       height: 16px;
       border-radius: 50%;
       border: 0;
+      @apply tw-bg-primary;
     }
   }
   .process {
     position: absolute;
     height: 6px;
     border-radius: 3px;
-    background-color: var(--c-primary-rgb);
     top: calc(50% - 3px);
     pointer-events: none;
+    @apply tw-bg-primary;
   }
 }
 </style>
@@ -122,7 +117,7 @@ watch(
       v-model="val"
       :min="min"
       :max="max"
-      @input="setVal"
+      @input="$emit('update:modelValue', val)"
       v-bind="$attrs"
     />
     <div class="process" :style="{ width: process + '%' }"></div>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { reactive, useNuxtApp } from "#app";
-import { Paginated, Log, WatchlistColumns } from "@/types";
+import { Paginated, Log, WatchListColumns } from "@/types";
 import { DateTime } from "luxon";
 import { useAsrTrader, useUser } from "~/composables";
 
@@ -8,10 +7,10 @@ const userManager = useUser();
 const appManager = useAsrTrader();
 const { $i18n: i18n } = useNuxtApp();
 const res: Array<Log> = reactive([]);
-const headers: Array<WatchlistColumns> = [
-  new WatchlistColumns("dateTime", "dateTime"),
-  new WatchlistColumns("ip", "ip"),
-  new WatchlistColumns("type", "type"),
+const headers: Array<WatchListColumns> = [
+  new WatchListColumns("dateTime", "dateTime"),
+  new WatchListColumns("ip", "ip"),
+  new WatchListColumns("type", "type"),
 ];
 const searchParam: Paginated = { offset: 0, length: 10 };
 const locale = appManager.locale;

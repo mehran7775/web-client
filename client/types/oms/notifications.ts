@@ -1,4 +1,9 @@
+import { MessageOrigin } from '@/types/message'
+
 export interface Notification {
   type: "Administrative" | "Accounting";
-  params: Array<any>;
+  params: {
+    origin: number,
+    messagesCount: MessageOrigin
+  };
 }

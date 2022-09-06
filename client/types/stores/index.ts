@@ -1,19 +1,11 @@
 import { User, AnonymousUser, InstrumentCache, Notification } from "@/types/";
-import { reactive, Ref, ref } from "#app";
+import { reactive, Ref, ref } from "vue";
 import { KeyValuePairs } from "../collection";
 import { ClientDistribution, OrderQueueItem } from "../wealth";
 
-export class RootState {
+export interface RootState {
   locale: string;
   menu: string | number | null;
-
-  constructor() {
-    this.locale = process.env.VUE_APP_I18N_LOCALE ?? "en-US";
-    this.menu = null;
-  }
-  toJSON() {
-    return { ...this };
-  }
 }
 
 // User

@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { ref } from "#app";
+import { ref } from "vue";
 import { DateTime } from "luxon";
 import { useAsrTrader } from "~/composables";
 
 const params = withDefaults(
   defineProps<{
     format?: string;
-    width?: string | number;
   }>(),
   {
     format: "HH:mm:ss",
-    width: "auto",
   }
 );
 
@@ -22,8 +20,14 @@ setInterval(() => {
 }, 1000);
 </script>
 
+<style lang="postcss" scoped>
+.clock{
+  @apply tw-leading-none tw-justify-start;
+}
+</style>
+
 <template>
-  <div :style="{ width: width }">
+  <span class="clock">
     {{ date.toFormat(format) }}
-  </div>
+  </span>
 </template>

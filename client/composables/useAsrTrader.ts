@@ -1,32 +1,36 @@
-import { ref, computed } from "#app";
+import { reactive } from "vue";
 import { defineStore } from "pinia";
 import { RootState } from "@/types/stores";
 
 export const useAsrTrader = defineStore("app", () => {
-  const state = ref(new RootState());
+  const runtimeConfig = useRuntimeConfig()
+  const state: RootState = reactive({
+    menu: null,
+    locale: runtimeConfig.VUE_APP_I18N_LOCALE
+  });
 
   // Getters
   const locale = computed({
     get() {
-      return state.value.locale;
+      return state.locale;
     },
     set(locale: string) {
       setLocale(locale);
     },
   });
   const rtl = computed(() =>
-    ["fa", "ar", "azIr", "ckb"].includes(state.value.locale)
+    ["fa-IR", "ar", "azIr", "ckb"].includes(state.locale)
   );
   const menu = computed({
     get() {
-      return state.value.menu;
+      return state.menu;
     },
     set(menu: string | number | null) {
       setMenu(menu);
     },
   });
   const percentFormatter = computed(() =>
-    Intl.NumberFormat(state.value.locale, {
+    Intl.NumberFormat(state.locale, {
       style: "percent",
       minimumFractionDigits: 0,
       maximumFractionDigits: 3,
@@ -35,7 +39,7 @@ export const useAsrTrader = defineStore("app", () => {
   const currencyFormatter = computed(
     () =>
       (currency: string = "IRR") =>
-        Intl.NumberFormat(state.value.locale, {
+        Intl.NumberFormat(state.locale, {
           style: "currency",
           currency: currency,
           minimumFractionDigits: 1,
@@ -43,7 +47,7 @@ export const useAsrTrader = defineStore("app", () => {
         })
   );
   const formatter = computed(() =>
-    Intl.NumberFormat(state.value.locale, {
+    Intl.NumberFormat(state.locale, {
       minimumFractionDigits: 0,
       maximumFractionDigits: 3,
     })
@@ -51,10 +55,10 @@ export const useAsrTrader = defineStore("app", () => {
 
   // Mutations
   function setMenu(menu: string | number | null) {
-    state.value.menu = menu;
+    state.menu = menu;
   }
   function setLocale(locale: string) {
-    state.value.locale = locale;
+    state.locale = locale;
   }
 
   return {

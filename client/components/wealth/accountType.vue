@@ -10,14 +10,13 @@
   </select-box>
 </template>
 <script setup lang="ts">
-import { ref, watch } from '#app'
 import { AutoCompleteItem } from "~/types";
 
 withDefaults(defineProps<{
-  value?: any,
+  modelValue?: any,
   label?: string
 }>(),{
-  value: '',
+  modelValue: '',
   label: ''
 })
 
@@ -26,7 +25,7 @@ const value = ref<AutoCompleteItem | null>(items[0])
 
 
 function select(val: any) {
- console.log(val)
+  //TODO select val
 }
 
 watch(value, select);

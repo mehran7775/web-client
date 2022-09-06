@@ -1,0 +1,12 @@
+.modal {
+  @apply tw-absolute tw-left-0 tw-top-0 tw-bg-black tw-bg-opacity-30;
+  @apply tw-w-screen tw-h-screen;
+  z-index: 998;
+}
+.dialog {
+    @apply tw-absolute tw-top-0 tw-left-0 tw-w-screen tw-h-screen tw-flex tw-items-center tw-justify-center;
+    &-container{
+        @apply tw-rounded tw-p-5 tw-bg-white;
+    }
+    z-index: 998;
+  }

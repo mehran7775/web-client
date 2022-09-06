@@ -1,7 +1,7 @@
 @import "../fonts/iransansx";
 @import "../fonts/times.css";
 
-.fa * {
+[class^="fa"], [class*=" fa"] * {
   font-family: "Iran Sans X FaNum" !important;
 }
 
@@ -9,18 +9,20 @@
   font-family: "Times New Roman" !important;
 }
 
-.rtl {
-  direction: rtl;
-  &.tw-text-start,
-  .tw-text-start {
-    @apply tw-text-right;
+@layer utilities {
+  .rtl {
+    direction: rtl;
+    &.tw-text-start,
+    .tw-text-start {
+      @apply tw-text-right;
+    }
   }
-}
 
-.ltr {
-  direction: ltr;
-  &.tw-text-start,
-  .tw-text-start {
-    @apply tw-text-left;
+  .ltr {
+    direction: ltr;
+    &.tw-text-start,
+    .tw-text-start {
+      @apply tw-text-left;
+    }
   }
 }

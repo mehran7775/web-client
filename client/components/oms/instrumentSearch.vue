@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineComponent, ref, reactive, computed, provide, } from "#app";
 import { autoComplete } from "@/repositories/oms/instruments_manager";
 import {
   AutoCompleteItem,
@@ -7,9 +6,8 @@ import {
   InstrumentCache,
   InstrumentSearchModel,
 } from "@/types";
-import { useAxios, useInstrument, useUser, autoComplete as acom, useDebounce } from "~/composables";
-import { useRoute, watch } from "#app";
-import AutoCompleteFeild from '../AutoCompleteField.vue'
+import { useAxios, useInstrument, useUser, useAutoComplete as acom, useDebounce } from "~/composables";
+
 
 const props = withDefaults(defineProps<{
   focusResult: boolean
@@ -76,14 +74,14 @@ function select_suggest(item: AutoCompleteItem): void {
 }
 
 async function select(val: AutoCompleteItem) {
-  const name = route.params.name;
+  const name = route.params.name as string;
   ac.state.loading = true;
   if (
     val &&
     (!watchlists[name] || watchlists[name]?.indexOf(val.id.toString()) == -1)
   ) {
     const inst = await instrumentManager.getInstrumentsDetail(
-      new InstrumentSearchModel([val.id])
+      new InstrumentSearchModel([parseInt(val.id)])
     );
 
     // If focus panel is open
@@ -108,13 +106,13 @@ async function select(val: AutoCompleteItem) {
 
 <template>
   <div>
-    <auto-complete-feild v-model="ac.state.userInput" background="tw-bg-primary-100"
+    <ada-auto-complete v-model="ac.state.userInput" id="instrument-search"
       :suggestions="ac.state.suggestions" :loading="ac.state.loading" @select_item="item => select_suggest(item)"
-      :placeholder="$t('instrument.search')" class="tw-w-[164px] tw-mx-auto tw-text-primary" id="2">
+      :placeholder="$t('instrument.search')" class="tw-w-[164px] tw-mx-auto tw-text-primary">
       <template #prepend>
-        <ada-icon color="primary" :size="14"> isax-search-normal-1 </ada-icon>
+        <ada-icon class="tw-text-primary" :size="14"> isax-search-normal-1 </ada-icon>
       </template>
-    </auto-complete-feild>
+    </ada-auto-complete>
   </div>
 </template>
 

@@ -1,22 +1,21 @@
 <script lang="ts" setup>
 import { useBottomPanel, useInstrument } from "~~/composables";
-import { defineComponent, ref, Ref, computed, reactive } from "#app";
-import { InstrumentSearchModel, WatchlistColumns, SameSectorQuery, InstrumentCache } from "@/types";
-import { watch, useNuxtApp } from "#app";
+import { InstrumentSearchModel, WatchListColumns, SameSectorQuery, InstrumentCache } from "@/types";
+import { useI18n } from "vue-i18n"
 
 
 const instrumentManager = useInstrument()
 
 const items = reactive<InstrumentCache[]>([])
 
-const { $i18n: i18n } = useNuxtApp();
+const i18n = useI18n();
 const cols = [
-  new WatchlistColumns(i18n.t("instrument.name").toString(), "name"),
-  new WatchlistColumns(i18n.t("instrument.lastPrice").toString(), "lastPrice"),
-  new WatchlistColumns(i18n.t("instrument.closing").toString(), "closing"),
-  new WatchlistColumns(i18n.t("instrument.tradeCount").toString(), "tradeCount"),
-  new WatchlistColumns(i18n.t("instrument.tradeVol").toString(), "tradeVol"),
-  new WatchlistColumns(i18n.t("instrument.tradeVal").toString(), "tradeVal")
+  new WatchListColumns(i18n.t("instrument.name").toString(), "name"),
+  new WatchListColumns(i18n.t("instrument.lastPrice").toString(), "lastPrice"),
+  new WatchListColumns(i18n.t("instrument.closing").toString(), "closing"),
+  new WatchListColumns(i18n.t("instrument.tradeCount").toString(), "tradeCount"),
+  new WatchListColumns(i18n.t("instrument.tradeVol").toString(), "tradeVol"),
+  new WatchListColumns(i18n.t("instrument.tradeVal").toString(), "tradeVal")
 ];
 
 const bottomPanel = useBottomPanel();
