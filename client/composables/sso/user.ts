@@ -53,12 +53,12 @@ export const useUser = defineStore("user", () => {
     state.renewToken = data;
   }
   function tries(data: { user: string; tries: number }) {
-    //TODO Cookie
-    //if (data.tries > 0)
-    //   SetClientCookie(data.user + ".tryCount", data.tries.toString(), {
-    //     maxAge: 300,
-    //   });
-    // else DeleteClientCookie("tryCount");
+    const tryCookie = useCookie(data.user + ".tryCount", {
+      maxAge: 300,
+    });
+    if (data.tries > 0) {
+      tryCookie.value = data.tries.toString();
+    } else tryCookie.value = null;
     state.tryCount = data.tries;
   }
   function setToken(data: string) {
@@ -68,32 +68,34 @@ export const useUser = defineStore("user", () => {
         Buffer.from(decodeURIComponent(data.split(".")[1]), "base64").toString()
       );
       state.userName = token.sub;
-      //TODO Cookie
-      // if (process.client) {
-      //   sessionStorage.setItem(tokenKey, data);
-      //   SetClientCookie(tokenKey, data, {
-      //     expires: new Date(token.exp * 1000),
-      //   });
-      // }
+      if (process.client) {
+        sessionStorage.setItem(tokenKey, data);
+      }
+      const tkCookie = useCookie(tokenKey, {
+        expires: new Date(token.exp * 1000),
+      });
+      tkCookie.value = data;
     }
   }
   function setRefresh(data: string) {
     state.refresh = data;
-    //TODO Cookie
-    // if (process.client) {
-    //   SetClientCookie(refreshKey, data, {});
-    //   localStorage.setItem(refreshKey, data);
-    // }
+    if (process.client) {
+      const refCookie = useCookie(refreshKey, {});
+      refCookie.value = data;
+      localStorage.setItem(refreshKey, data);
+    }
   }
   function logout() {
     if (process.client) {
-      //TODO Cookie
-      // DeleteClientCookie(userKey);
-      // DeleteClientCookie(tokenKey);
-      // DeleteClientCookie(refreshKey);
       sessionStorage.clear();
       localStorage.clear();
     }
+    const refCookie = useCookie(refreshKey);
+    const tkCookie = useCookie(tokenKey);
+    const usrCookie = useCookie(userKey);
+    refCookie.value = null;
+    tkCookie.value = null;
+    usrCookie.value = null;
 
     state.settingsChanged = reactive([]);
     state.token = null;
@@ -104,13 +106,13 @@ export const useUser = defineStore("user", () => {
     state.user = data;
     state.settingsChanged = reactive([]);
     if (process.client) {
-      //TODO Cookie
-      // SetClientCookie(userKey, data.userName, {});
+      const usrCookie = useCookie(userKey);
+      usrCookie.value = data.userName;
       localStorage.setItem(userKey, data.userName);
     }
   }
   function setSettings(settings: Setting) {
-    console.log(settings)
+    console.log(settings);
     state.user.settings = settings;
   }
   function setCols(data: Array<WatchListColumns>) {
@@ -159,13 +161,14 @@ export const useUser = defineStore("user", () => {
     return data;
   }
   function checkTries(userName: string) {
-    //TODO Cookie
-    // const tr = GetClientCookies()[userName + ".tryCount"];
-    // if (tr && tr != "") {
-    //   tries({ user: userName, tries: parseInt(tr) });
-    // } else {
-    //   tries({ user: userName, tries: 0 });
-    // }
+    const tr = useCookie(userName + ".tryCount", {
+      maxAge: 300,
+    });
+    if (tr.value && tr.value != "") {
+      tries({ user: userName, tries: parseInt(tr.value) });
+    } else {
+      tries({ user: userName, tries: 0 });
+    }
   }
   async function login(payload: LoginModel): Promise<number> {
     try {
@@ -246,7 +249,10 @@ export const useUser = defineStore("user", () => {
   }
   async function delete_settings(payload: { path: string }): Promise<void> {
     try {
-      const resp = await userManager.deleteUserSettings(payload.path, axios.value);
+      const resp = await userManager.deleteUserSettings(
+        payload.path,
+        axios.value
+      );
       if (resp.data.setting) {
         setSettings(resp.data.setting);
         if (process.client) localStorage.setItem(userKey, state.user.userName);
@@ -258,8 +264,9 @@ export const useUser = defineStore("user", () => {
     }
   }
   async function getProfilePic(name: string): Promise<string> {
-    const img: Uint8Array = (await userManager.getProfileImage(name, axios.value))
-      ?.data;
+    const img: Uint8Array = (
+      await userManager.getProfileImage(name, axios.value)
+    )?.data;
     return (
       "data:image/jpeg;base64," +
       Buffer.from(
