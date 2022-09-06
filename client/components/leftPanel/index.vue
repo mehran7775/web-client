@@ -201,11 +201,13 @@ loadMyMessages();
     max-width: 48px;
     flex-basis: 48px;
   }
-  .ada-button{
+  .ada-button, .ada-tooltip-container :deep(.ada-button){
     @apply tw-bg-transparent tw-w-10;
 
     &.active {
       @apply tw-bg-primary tw-bg-opacity-20 tw-text-primary;
+
+      i{ @apply tw-text-primary }
     }
   }
   .tabs.tab-items {
@@ -269,7 +271,6 @@ loadMyMessages();
                   <ada-btn
                     :width="32"
                     :height="32"
-                    color="transparent"
                     :model="$t('oms.openingTrade')"
                     @click="$emit('update:mini', !mini)"
                     class="tw-mt-1"

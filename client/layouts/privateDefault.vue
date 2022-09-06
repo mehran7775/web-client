@@ -67,7 +67,7 @@ const invisibleFinInfo = ref(false);
     }
 
     div.start {
-      @apply tw-flex;
+      @apply tw-flex tw-pr-[10px];
     }
 
     div.center {
@@ -222,7 +222,7 @@ const invisibleFinInfo = ref(false);
     <header>
       <div class="start">
         <nuxt-link class="tw-flex tw-px-2 tw-items-center tw-justify-center" :to="home">
-          <img class="tw-m-0 tw-p-0 tw-h-7" src="/logo.png" />
+          <img class="tw-m-0 tw-p-0 tw-h-[20px]" src="/logo.png" />
           <span v-if="!rightMenu.mini && rightMenu.drawer" class="tw-mr-2">
             {{  $t("general.proxyCompany")  }}
           </span>

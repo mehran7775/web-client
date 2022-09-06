@@ -172,12 +172,13 @@ function unmark(data: MenuItem) {
 }
 
 function setOnBottomPanel(value: MenuItem): void {
+  const component = value.to.replaceAll('/', '-').substring(1)
   const tab: TabItem= {
     title: value.title,
     params: {},
     children: [],
     current: value.title,
-    // component: `./menu/${ value.title.split('.')[1] }`,
+    component: component,
     deletable: true
   } 
   if(isExistTab(tab)) {
@@ -263,9 +264,9 @@ if (process.client) {
   }
 
   .ada-button {
-    @apply tw-bg-transparent tw-w-11 tw-h-11;
+    @apply tw-bg-transparent tw-w-[32px] tw-h-[32px];
     &.active {
-      @apply tw-bg-primary tw-bg-opacity-10;
+      @apply tw-bg-primary tw-bg-opacity-20;
       .icon {
         @apply tw-text-primary;
       }
@@ -288,7 +289,7 @@ if (process.client) {
     <ada-toggle class="tabs" v-model="selected" vertical>
       <ada-tooltip position="left">
         <template #activator>
-          <ada-btn :width="32" :height="32" color="transparent" :to="home" :model="null">
+          <ada-btn :to="home" :model="null">
             <ada-icon size="18">
               isax-home-2
             </ada-icon>
@@ -298,7 +299,7 @@ if (process.client) {
       </ada-tooltip>
       <ada-tooltip v-for="item in items" :key="item.title" position='left'>
         <template #activator>
-          <ada-btn :width="32" :height="32" color="transparent" :model="item.title" @click="
+          <ada-btn :model="item.title" @click="
             () => {
               $emit('update:mini', !mini);
             }
@@ -313,7 +314,7 @@ if (process.client) {
       <hr class="divider" />
       <ada-tooltip v-for="item in shourtcuts" :key="item.title" position="left">
         <template #activator>
-          <ada-btn :width="32" :height="32" color="transparent" :to="item.to" @click="
+          <ada-btn :to="item.to" @click="
             () => {
               $emit('update:mini', true);
             }
@@ -351,7 +352,7 @@ if (process.client) {
                   " size="1.34rem" :class="[value.to == home ? 'tw-text-primary' : 'tw-text-gray4']">
                   {{  value.to == home ? 'isax-star-1-bold' : 'isax-star-1' }}
                   </ada-icon>
-                  <ada-icon size="1.34rem" :class="[isExistTab(value) ? 'tw-text-primary' :'tw-text-gray4']"
+                  <ada-icon v-if="!(/watchlist/gi.test(value.to))" size="1.34rem" :class="[isExistTab(value) ? 'tw-text-primary' :'tw-text-gray4']"
                   @click.stop.prevent="setOnBottomPanel(value)"
                   >{{isExistTab(value) ? 'mdi-arrow-down-bold' : 'mdi-arrow-down-bold-outline'}}</ada-icon>
                 </span>

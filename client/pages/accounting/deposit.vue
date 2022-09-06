@@ -1,22 +1,25 @@
 <script setup lang="ts">
+import { usePayment } from "@/composables";
+import { useAxios } from "@/composables";
+
 definePageMeta({
-  layout:'private-default'
-})
-// import { usePayment } from "@/composables"
-// import { useAxios } from '@/composables'
+  layout: "private-default",
+});
 
-// const paymentManager = usePayment();
+const appManager = useAsrTrader();
+const lang: string = appManager.locale.split("-")[0];
 
-// const banks = computed(() => paymentManager.paymentMethods)
+const paymentManager = usePayment();
 
-// const axios = useAxios()
+const banks = computed(() => paymentManager.paymentMethods);
+
+const axios = useAxios();
 const paymentMethod = ref(null);
 const router = useRouter();
-
 </script>
 <style lang="postcss" scoped>
 .tmp-ctr {
-  height: 100%;
+  @apply tw-h-full tw-w-full;
 }
 
 header {
@@ -44,37 +47,33 @@ header {
 
   form {
     &.card {
-      >div {
-        @apply tw-max-w-xs tw-m-auto;
+      > div {
+        @apply tw-m-auto;
+        max-width: 310px;
+        > .banks {
+          @apply tw-flex tw-justify-between tw-w-full tw-mb-[16px] tw-h-[64px];
 
-        >.banks {
-          @apply tw-flex tw-justify-between tw-mb-[16px] tw-h-[64px];
-
-          >button {
-            @apply tw-flex tw-justify-center tw-items-center tw-border tw-border-default tw-rounded-lg;
-
+          > button {
+            @apply tw-flex tw-justify-center tw-items-center tw-border tw-border-default tw-rounded-lg  tw-w-[64px] tw-text-white tw-bg-white;
             &.active {
               @apply tw-border-primary;
 
-              &::after {
-                @apply tw-bg-black;
-              }
+             
             }
           }
         }
 
-        >.actions {
+        > .actions {
           @apply tw-h-12 tw-my-[16px] tw-flex tw-justify-between;
 
           .ada-button {
-            @apply tw-w-36;
+            width: 45%;
             &:nth-child(1) {
               @apply tw-bg-white tw-border tw-border-primary tw-bg-opacity-90 hover:tw-bg-primary hover:tw-bg-opacity-90 hover:tw-text-white;
             }
             &:nth-child(2) {
               @apply tw-bg-primary tw-bg-opacity-90 tw-text-white;
             }
-
           }
         }
       }
@@ -96,7 +95,7 @@ header {
       .scaffold {
         @apply tw-border tw-border-gray4 tw-px-3 tw-h-[42px];
 
-        >span {
+        > span {
           @apply tw-bg-primary tw-bg-opacity-10 tw-block tw-relative tw-h-full tw-w-11 tw-text-center tw-pt-[3px] tw-font-bold -tw-left-[12px];
         }
 
@@ -105,7 +104,6 @@ header {
         }
       }
     }
-
   }
 }
 </style>
@@ -121,21 +119,28 @@ header {
             </template>
           </ada-input>
           <span class="label" v-text="$t('accounting.gateway')"></span>
-          <!-- <ada-toggle class="banks" style="flex-grow: 0;">
-          <ada-btn color="white" :height="64" :width="64" v-for="(bank, i) in banks" :key="bank.name" :model="i">
-            <img :src="'/banks/' + bank.name + '.png'" :alt="bank.name" />
-          </ada-btn>
-        </ada-toggle> -->
+          <ada-toggle class="banks" style="flex-grow: 0">
+            <ada-btn
+              v-for="(bank, i) in banks"
+              :key="bank.name"
+              :model="i"
+            >
+              <img :src="'/images/banks/' + bank.name + '.png'" :alt="bank.name" />
+            </ada-btn>
+          </ada-toggle>
           <div class="actions">
-            <ada-btn :height="36" :width="142" to="/accounting/deposit-report">{{
-                $t('menu.depositReport')
+            <ada-btn
+              to="/accounting/deposit-report"
+              >{{ $t("menu.depositReport") }}</ada-btn
+            >
+            <ada-btn :height="36" :width="142" dark>{{
+              $t("accounting.deposit")
             }}</ada-btn>
-            <ada-btn :height="36" :width="142" dark>{{ $t('accounting.deposit') }}</ada-btn>
           </div>
         </div>
       </form>
       <div class="card">
-        <content-viewer src="/accounting/deposit"></content-viewer>
+        <ContentDoc :path="`${lang}/accounting/deposit`" class="doc" />
       </div>
     </main>
   </div>

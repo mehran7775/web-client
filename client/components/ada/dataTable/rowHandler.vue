@@ -11,18 +11,20 @@ const props = defineProps<{
 
 <style lang="postcss" scoped>
 .row-border {
+  @apply tw-p-0;
   position: relative;
   border: none;
-  height: var(--row-height);
+  height: var(--row-height)!important;
+  max-height: var(--row-height)!important;
   -webkit-user-drag: element;
-  
 
   td {
-    height: var(--row-height);
-    border: none;
+    @apply tw-p-0 tw-box-border;
+    height: var(--row-height)!important;
+    max-height: var(--row-height)!important;
+    /* border: none; */
     border-bottom: 1px solid #e0e0e0;
     padding: 0;
-    box-sizing: border-box;
   }
 }
 </style>

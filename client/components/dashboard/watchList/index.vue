@@ -42,7 +42,7 @@ const notificationManager = useNotifications();
 
 //////////////////////
 
-const name = computed(() => route.params.name as string);
+const name = route.params.name as string;
 
 const instruments = computed(()=>
   {
@@ -58,9 +58,9 @@ async function refresh(){
   notificationManager.initNotifications(props.searchModel.ids.map((id) => id.toString()));
 }
 
-const watchLists = computed(() => userManager.watchList);
-const selected = computed(() => instrumentManager.state.selected);
-//TODO Correct in vue3
+const watchLists = userManager.watchList
+const selected = instrumentManager.state.selected;
+
 const focused = instrumentManager.getFocus;
 const canFocus = computed(() => {
   if (!process.client) return false;
@@ -69,7 +69,7 @@ const canFocus = computed(() => {
     Math.floor(instrumentManager.width / 360)
   );
 });
-const me = computed(() => userManager.me);
+const me = userManager.me;
 
 const headers = computed(() => {
   const res: Array<WatchListColumns> = [];
@@ -78,7 +78,7 @@ const headers = computed(() => {
   actions.divider = false;
   res.push(actions);
   res.push(
-    ...((me.value.settings.columns ?? DefaultCols()).map(
+    ...((me.settings.columns ?? DefaultCols()).map(
       (col: WatchListColumns) => {
         if (col == null)
           return {
@@ -144,10 +144,10 @@ function focus(item: InstrumentCache) {
 }
 
 async function remove(val: InstrumentCache) {
-  const tmp = [...(watchLists.value[name.value] ?? [])];
+  const tmp = [...(watchLists[name] ?? [])];
   tmp.splice(tmp.lastIndexOf(val.id.toString()), 1);
   await userManager.update_settings({
-    path: "/watch_lists/" + name.value,
+    path: "/watch_lists/" + name,
     value: tmp,
   });
   refresh()
@@ -159,18 +159,18 @@ function drag(item: InstrumentCache) {
 }
 async function drop(item: InstrumentCache) {
   if (dragItem && dragItem != item) {
-    const wl = [...(watchLists.value[name.value] ?? [])];
+    const wl = [...(watchLists[name] ?? [])];
     const ind = wl.findIndex((i) => i == dragItem?.id.toString());
     wl.splice(ind, 1);
     const target = wl.findIndex((i) => i == item.id.toString());
     wl.splice(ind > target ? target : target + 1, 0, dragItem?.id.toString());
     userManager.setWatchlist({
-      name: name.value,
+      name: name,
       watchlist: wl,
       changeState: false,
     });
     await userManager.update_settings({
-      path: "/watch_lists/" + name.value,
+      path: "/watch_lists/" + name,
       value: wl,
     });
     refresh();

@@ -32,7 +32,7 @@ function click() {
   }
 
   &.active::after {
-    @apply tw-rounded tw-absolute tw-w-full tw-h-full tw-bg-current tw-opacity-20;
+    @apply tw-rounded tw-absolute tw-w-full tw-h-full;
     content: "";
     top: 0;
     left: 0;
