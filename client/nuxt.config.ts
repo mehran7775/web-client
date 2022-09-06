@@ -8,11 +8,15 @@ export default defineNuxtConfig({
     "@/assets/icons/icosax/style.css",
     "@/assets/icons/lotfisax/style.css",
     "@/assets/icons/ada/style.css",
-    '@mdi/font/css/materialdesignicons.min.css'
+    "@mdi/font/css/materialdesignicons.min.css",
   ],
   modules: ["@nuxt/content"],
   content: {
     // https://content.nuxtjs.org/api/configuration
+  },
+  components: {
+    global: true,
+    dirs: ["~/components", "~/pages"],
   },
   runtimeConfig: {
     public: {

@@ -176,7 +176,7 @@ if (process.client) {
       <slot name="toolbar"> </slot>
       <span
         v-if="bookmarks.length > 0"
-        class="tw-h-7 tw-border-r-2 tw-rounded-md tw-border-primary-200 tw-mr-3 tw-ml-2"
+        class="tw-h-7 tw-border-r-2 tw-rounded tw-border-primary-200 tw-mr-3 tw-ml-2"
       ></span>
       <nuxt-link v-for="b in bookmarks" :key="b.to" :to="b.to" class="bookmark">
         <span v-text="b.text ? b.text : $t(b.title)"></span>

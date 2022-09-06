@@ -3,7 +3,7 @@ const panels: Array<TabItem> = [
   {
     title: "bottom-panel.orders.all",
     params: {},
-    component: "./defaultOrderList",
+    component: "bottom-panel-defaultOrderList",
     children: [
       {
         title: "bottom-panel.orders.all",
@@ -51,7 +51,7 @@ const panels: Array<TabItem> = [
   {
     title: "bottom-panel.completeInfo.index",
     params: {},
-    component: "./deepInformation",
+    component: "bottom-panel-deepInformation",
     children: [
       {
         title: "bottom-panel.completeInfo.depth",
@@ -61,7 +61,7 @@ const panels: Array<TabItem> = [
       {
         title: "bottom-panel.completeInfo.myGroups",
         params: {},
-        component: "./deepInformation/sameSector",
+        component: "bottom-panel-deepInformation-sameSector",
         deletable: false,
       },
       {
@@ -81,7 +81,7 @@ const panels: Array<TabItem> = [
   {
     title: "bottom-panel.archive.index",
     params: {},
-    component: "./archive",
+    component: "bottom-panel-archive",
     children: [
       {
         title: "bottom-panel.archive.tradesHistory",
@@ -89,7 +89,7 @@ const panels: Array<TabItem> = [
           offset: 0,
           length: 20,
         },
-        component:"./archive/tradeHistoryTransactions.vue",
+        component:"bottom-panel-archive-tradeHistoryTransactions",
         deletable: false,
       },
       {

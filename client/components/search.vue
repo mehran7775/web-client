@@ -20,7 +20,7 @@ const emit = defineEmits(['update:modelValue'])
 
 <style lang="postcss" scoped>
 div {
-    @apply tw-rounded-md;
+    @apply tw-rounded;
 
     >input {
 

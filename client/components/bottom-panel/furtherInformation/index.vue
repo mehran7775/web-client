@@ -1,5 +1,4 @@
 <script lang="ts">
-import { defineComponent, computed, ComputedRef } from "#app";
 import template1 from "./type1.vue";
 import { Message } from "@/types";
 import { useBottomPanel } from "@/composables";
@@ -10,7 +9,7 @@ export default defineComponent({
   },
   setup(_) {
     const bottomPanel = useBottomPanel();
-    const message: ComputedRef<Message> = computed(() => bottomPanel.further_information);
+    const message = { type: 1 };
 
     return {
       message,

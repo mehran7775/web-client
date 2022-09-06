@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from "#app";
 import { useAsrTrader } from "~/composables";
 
 const props = withDefaults(defineProps<{ value?: number }>(), { value: 0 });

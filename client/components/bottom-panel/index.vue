@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { TabItem } from "@/types"
 import { useInstrument, useBottomPanel } from "~~/composables";
-import loader from "./loader.vue"
 import defaultTabs from "./tabs";
 
 
@@ -149,7 +148,7 @@ for (let i in defaultTabs) {
       <div class="contents">
         <ada-tabs v-model="tab">
           <ada-tab v-for="t in tabs" :key="t.title" :model="t">
-            <loader v-if="t.component" :module="t.component" v-model="active" :tabs="t.children"></loader>
+            <component v-if="t.component" :is="t.component" v-model="active" :tabs="t.children"></component>
           </ada-tab>
         </ada-tabs>
       </div>
@@ -179,8 +178,7 @@ for (let i in defaultTabs) {
         </span>
         <div v-if="i != tabs.length - 1" class="bar"></div>
         <ada-icon size="1.3rem" v-if="t.deletable" class="tw-absolute tw-top-[1px] tw-left-[5px] hover:tw-text-gray3"
-        @click.stop.prevent="bottomPanel.removeTab(t)"
-        >mdi-close</ada-icon>
+          @click.stop.prevent="bottomPanel.removeTab(t)">mdi-close</ada-icon>
       </ada-btn>
     </ada-toggle>
   </footer>

@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import { defineComponent } from '#app'
 
 export default defineComponent({
     props: ['message']
