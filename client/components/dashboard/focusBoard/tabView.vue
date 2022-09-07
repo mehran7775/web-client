@@ -71,17 +71,24 @@ defineExpose({
 .tab-view {
   @apply tw-w-full;
   > .toggle {
-    @apply tw-justify-start tw-w-full tw-items-end tw-bg-gray4 tw-bg-opacity-20 tw-border-b tw-border-primary tw-border-opacity-10;
+    @apply tw-justify-start tw-w-full tw-items-end tw-bg-white tw-bg-opacity-20 tw-border-b tw-border-primary tw-border-opacity-10;
     box-shadow: 0 0 1px 0 #e2e2e2;
     min-height: 32px;
+    background-color: #F9FAFE;
+
+    .ada-button {
+      @apply tw-mx-2;
+      .bar {
+        @apply -tw-left-[12px];
+      }
+    }
 
     .tab {
-      @apply tw-px-2 tw-flex tw-items-center tw-justify-between tw-bg-transparent;
+      @apply tw-px-2 tw-flex tw-items-center tw-justify-between tw-bg-transparent tw-rounded tw-text-primary tw-transition;
       min-width: 168px;
-      border-radius: 0 !important;
 
       &.selected {
-        @apply tw-bg-primary tw-bg-opacity-20;
+        @apply tw-border-[1px] tw-border-primary tw-border-opacity-80 tw-rounded tw-shadow;
         &::after {
           background-color: transparent;
         }
@@ -97,6 +104,9 @@ defineExpose({
         & :deep(.badge) {
           @apply tw-bg-success;
         }
+      }
+      i{
+        @apply tw-text-primary;
       }
     }
   }
@@ -143,12 +153,12 @@ defineExpose({
       >
         <ada-badge dot left offset-y="75%" offset-x="-5">
           {{ item.name }}
-          <last-price :value="item" />
+          <last-price :value="item" class="tw-mr-1"/>
         </ada-badge>
         <ada-icon @click.stop="() => close(item.id)" :size="12">
           mdi-close
         </ada-icon>
-        <div v-if="i != instruments.length - 1" class="bar"></div>
+        <div v-if="(i != instruments.length - 1) && !(selected && selected.id == item.id)" class="bar"></div>
       </ada-btn>
     </ada-toggle>
     <ada-tabs v-model="tab">

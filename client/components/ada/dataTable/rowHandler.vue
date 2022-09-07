@@ -13,7 +13,6 @@ const props = defineProps<{
 .row-border {
   @apply tw-p-0;
   position: relative;
-  border: none;
   height: var(--row-height)!important;
   max-height: var(--row-height)!important;
   -webkit-user-drag: element;

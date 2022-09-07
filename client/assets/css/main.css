@@ -50,13 +50,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .bar {
   border-top: 1px solid;
-  @apply tw-border-primary;
-  width: 16px;
+  @apply tw-border-primary tw-bg-opacity-90;
+  width: 18px;
   transform: rotate(90deg);
   position: absolute;
   left: -8px;
   top: 50%;
-  opacity: 50%;
 }
 
 hr.divider {

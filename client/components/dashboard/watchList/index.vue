@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import {
   WatchListColumns,
   DefaultCols,
@@ -12,7 +11,7 @@ import {
   useInstrument,
   useOrder,
   useUser,
-  useNotifications
+  useNotifications,
 } from "@/composables";
 import { useShortcut } from "@/utils/shortcutManager";
 import { useI18n } from "vue-i18n";
@@ -38,28 +37,28 @@ const _instruments: Array<InstrumentCache> = reactive([]);
 const confirmInstrumentRemoval = ref(false);
 const notificationManager = useNotifications();
 
-
-
 //////////////////////
 
 const name = route.params.name as string;
 
-const instruments = computed(()=>
-  {
-    return _instruments.filter((item) => {
-        return focused.findIndex((i) => i.id === item.id) == -1;
-      });
-  }
-);
+const instruments = computed(() => {
+  return _instruments.filter((item) => {
+    return focused.findIndex((i) => i.id === item.id) == -1;
+  });
+});
 
-async function refresh(){
-  _instruments.splice(0,Infinity);
-  _instruments.push(...await instrumentManager.getInstrumentsDetail(props.searchModel, true))
-  notificationManager.initNotifications(props.searchModel.ids.map((id) => id.toString()));
+async function refresh() {
+  _instruments.splice(0, Infinity);
+  _instruments.push(
+    ...(await instrumentManager.getInstrumentsDetail(props.searchModel, true))
+  );
+  notificationManager.initNotifications(
+    props.searchModel.ids.map((id) => id.toString())
+  );
 }
 
-const watchLists = userManager.watchList
-const selected = instrumentManager.state.selected;
+const watchLists = userManager.watchList;
+const selected = computed(() => instrumentManager.state.selected);
 
 const focused = instrumentManager.getFocus;
 const canFocus = computed(() => {
@@ -78,18 +77,16 @@ const headers = computed(() => {
   actions.divider = false;
   res.push(actions);
   res.push(
-    ...((me.settings.columns ?? DefaultCols()).map(
-      (col: WatchListColumns) => {
-        if (col == null)
-          return {
-            text: "",
-            value: "",
-          };
-        return Object.assign({}, col, {
-          text: col.text == "" ? "" : i18n.t(col.text),
-        });
-      }
-    ) as WatchListColumns[])
+    ...((me.settings.columns ?? DefaultCols()).map((col: WatchListColumns) => {
+      if (col == null)
+        return {
+          text: "",
+          value: "",
+        };
+      return Object.assign({}, col, {
+        text: col.text == "" ? "" : i18n.t(col.text),
+      });
+    }) as WatchListColumns[])
   );
   const status = new WatchListColumns(
     i18n.t("instrument.notifications"),
@@ -150,7 +147,7 @@ async function remove(val: InstrumentCache) {
     path: "/watch_lists/" + name,
     value: tmp,
   });
-  refresh()
+  refresh();
 }
 
 let dragItem: InstrumentCache | null = null;
@@ -184,9 +181,12 @@ const removeWatchList = (item: InstrumentCache): void => {
 
 ////////////////////////////////////////////
 
-watch(()=>props.searchModel,(update)=>{
-  refresh()
-});
+watch(
+  () => props.searchModel,
+  (update) => {
+    refresh();
+  }
+);
 
 //////////////////////////////////////////
 
@@ -226,8 +226,7 @@ if (process.client) {
 
 //////////////////////////////////
 
-refresh()
-
+refresh();
 </script>
 
 <style lang="postcss" scoped>
@@ -239,16 +238,21 @@ refresh()
     font-size: 0.8334rem;
   }
 
-  .inst {
+  .row-border {
     cursor: pointer;
 
     &:hover {
       background-color: rgba(var(--c-primary), 0.07);
     }
 
+    td{
+      @apply tw-transition-all;
+    }
+
     &.active {
       position: relative;
       background-color: rgba(var(--c-selected-inst), 0.1);
+      @apply tw-border tw-border-primary;
 
       &::befor {
         content: "";
@@ -260,6 +264,9 @@ refresh()
         background-color: white;
         z-index: -1;
       }
+      & :deep(td) {
+        @apply tw-border-t-[1.2px] tw-border-b tw-border-primary tw-rounded-t tw-rounded-b;
+      }
     }
 
     .ada-badge {
@@ -267,7 +274,7 @@ refresh()
         @apply tw-ml-[1px];
       }
 
-      &.error :deep(.badge){
+      &.error :deep(.badge) {
         @apply tw-bg-error;
       }
 
@@ -305,49 +312,89 @@ refresh()
 
 <template>
   <div class="pb-1">
-    <ada-data-table :headers="headers" :items="instruments" item-key="id" class="watchlist" hide-default-header
-      hide-default-footer disable-pagination dense>
+    <ada-data-table
+      :headers="headers"
+      :items="instruments"
+      item-key="id"
+      class="watchlist"
+      hide-default-header
+      hide-default-footer
+      disable-pagination
+      dense
+    >
       <template #header.more>
         <dashboard-watch-list-header-selector />
       </template>
-      <ada-data-table-row-handler draggable="true" @dragstart="(ev) => drag(item)" @dragover="
-        (ev) => {
-          ev.preventDefault();
-          if (ev.dataTransfer) {
-            ev.dataTransfer.dropEffect = 'move';
+      <ada-data-table-row-handler
+        draggable="true"
+        @dragstart="(ev) => drag(item)"
+        @dragover="
+          (ev) => {
+            ev.preventDefault();
+            if (ev.dataTransfer) {
+              ev.dataTransfer.dropEffect = 'move';
+            }
           }
-        }
-      " dropzone="true" @drop="
-        (ev) => {
-          ev.preventDefault();
-          drop(item);
-        }
-      " @click="() => select(item)" class="inst" :class="{ active: selected && selected.id == item.id }"
-        v-for="item in instruments" :key="item.id" :model="{ headers, item }">
+        "
+        dropzone="true"
+        @drop="
+          (ev) => {
+            ev.preventDefault();
+            drop(item);
+          }
+        "
+        @click="() => select(item)"
+        class="inst"
+        v-for="item in instruments"
+        :key="item.id"
+        :model="{ headers, item }"
+        :class="{ active: selected && selected.id == item.id }"
+      >
         <template #item.actions="{ item }">
           <div class="text-no-wrap">
-            <ada-icon class="tw-text-info tw-m-0 tw-p-0 tw-mx-2" @click.stop="() => focus(item)" :disabled="!canFocus"
-              :size="16">
+            <ada-icon
+              class="tw-text-info tw-m-0 tw-p-0 tw-mx-2"
+              @click.stop="() => focus(item)"
+              :disabled="!canFocus"
+              :size="16"
+            >
               isax-eye
             </ada-icon>
-            <ada-icon :class="['tw-m-0 tw-p-0', (item.status & 3) != 3 ? null : 'tw-text-success']"
-              @click.stop="() => order(item, Side.Buy)" :disabled="(item.status & 3) != 3" :size="16">
+            <ada-icon
+              :class="[
+                'tw-m-0 tw-p-0',
+                (item.status & 3) != 3 ? null : 'tw-text-success',
+              ]"
+              @click.stop="() => order(item, Side.Buy)"
+              :disabled="(item.status & 3) != 3"
+              :size="16"
+            >
               isax-bag-tick-2
             </ada-icon>
-            <ada-icon :class="['tw-m-0 tw-p-0 tw-mx-2', (item.status & 3) != 3 ? null: 'tw-text-error']"
-              @click.stop="() => order(item, Side.Sell)" :disabled="(item.status & 3) != 3" :size="16">
+            <ada-icon
+              :class="[
+                'tw-m-0 tw-p-0 tw-mx-2',
+                (item.status & 3) != 3 ? null : 'tw-text-error',
+              ]"
+              @click.stop="() => order(item, Side.Sell)"
+              :disabled="(item.status & 3) != 3"
+              :size="16"
+            >
               isax-bag-cross-1
             </ada-icon>
           </div>
         </template>
         <template #item.name="{ item }">
-          <ada-badge :class="[
-            (item.status & 1) != 1
-              ? 'error'
-              : (item.status & 6) != 6
-              ? 'warning'
-              : 'success',
-          ]" dot>
+          <ada-badge
+            :class="[
+              (item.status & 1) != 1
+                ? 'error'
+                : (item.status & 6) != 6
+                ? 'warning'
+                : 'success',
+            ]"
+            dot
+          >
             <ada-tooltip position="right">
               <template #activator>
                 <span style="line-height: 2.5" class="tw-block">
@@ -391,7 +438,11 @@ refresh()
           </span>
         </template>
         <template #item.more="{ item }">
-          <ada-icon class="tw-text-error" @click.self.stop.prevent="removeWatchList(item)" :size="16">
+          <ada-icon
+            class="tw-text-error"
+            @click.self.stop.prevent="removeWatchList(item)"
+            :size="16"
+          >
             isax-trash
           </ada-icon>
         </template>
@@ -405,20 +456,28 @@ refresh()
         <h5 v-text="$t('general.alert')"></h5>
         <p v-text="$t('instrument.remove')"></p>
         <footer class="tw-flex tw-items-center tw-p-2">
-          <ada-btn dark :width="65" @click.stop.prevent="
-            () => {
-              remove(itemToDelete);
-              confirmInstrumentRemoval = false;
-            }
-          ">
+          <ada-btn
+            dark
+            :width="65"
+            @click.stop.prevent="
+              () => {
+                remove(itemToDelete);
+                confirmInstrumentRemoval = false;
+              }
+            "
+          >
             {{ $t("general.yes") }}
           </ada-btn>
-          <ada-btn dark :width="65" @click.stop.prevent="
-            () => {
-              itemToDelete = null;
-              confirmInstrumentRemoval = false;
-            }
-          ">
+          <ada-btn
+            dark
+            :width="65"
+            @click.stop.prevent="
+              () => {
+                itemToDelete = null;
+                confirmInstrumentRemoval = false;
+              }
+            "
+          >
             {{ $t("general.no") }}
           </ada-btn>
         </footer>

@@ -33,7 +33,7 @@ header {
     
     .card {
       @apply tw-p-[24px] tw-mx-auto tw-rounded-t-lg;
-      max-width: 507px;
+      max-width: 527px;
     }
 
     form.card {
@@ -43,14 +43,15 @@ header {
         @apply tw-flex tw-justify-between;
 
         .ada-input {
+          width: 30.5%;
           & :deep(.scaffold) {
-            @apply tw-border-gray4 tw-bg-white tw-h-[36px] tw-w-[142px];
+            @apply tw-border-gray4 tw-bg-white tw-h-[36px];
           }
           &:nth-child(2) {
             @apply tw-flex tw-flex-col;
 
             & :deep(.input-container) {
-              @apply tw-p-0 tw-justify-between tw-border tw-border-gray4 tw-rounded-lg tw-w-[142px] tw-h-[36px];
+              @apply tw-p-0 tw-justify-between tw-border tw-border-gray4 tw-rounded-lg tw-h-[36px];
               .ada-input {
                 @apply tw-max-w-fit tw-mx-1;
 
@@ -74,8 +75,10 @@ header {
         @apply tw-flex tw-justify-between tw-mt-6;
 
         .ada-select {
+          width: 48%;
           & :deep(.input) {
-            @apply tw-border tw-border-gray4 tw-h-[36px] tw-w-[222px] tw-rounded-lg;
+            @apply tw-border tw-border-gray4 tw-h-[36px] tw-rounded-lg;
+            
           }
         }
       }
@@ -85,7 +88,7 @@ header {
         .uploader {
           @apply tw-flex tw-px-10 tw-py-5 tw-cursor-pointer;
           div {
-            @apply tw-flex tw-flex-col tw-mr-2;
+            @apply tw-flex tw-flex-col tw-mr-5;
           }
         }
       }
@@ -94,7 +97,7 @@ header {
         .ada-button {
             @apply tw-w-[48%];
             &:first-child {
-                @apply tw-bg-transparent tw-border tw-border-primary hover:tw-bg-primary hover:tw-text-white;
+                @apply tw-bg-transparent tw-border tw-text-primary tw-border-primary hover:tw-bg-primary hover:tw-text-white;
             }
             &:nth-child(2) {
                 @apply tw-bg-primary tw-text-white;
@@ -150,7 +153,7 @@ header {
           </div>
           <div>
             <div class="uploader">
-              <ada-icon class="uploader__icon--info" size="3.5rem"
+              <ada-icon class="uploader__icon--info" size="3.25rem"
                 >isax-document-upload-outline</ada-icon
               >
               <div>
@@ -167,13 +170,10 @@ header {
           </div>
           <div>
             <ada-btn
-              :height="36"
-              color="primary"
               @click="goToDeposit"
-              bordered
               >{{ $t("menu.deposit") }}</ada-btn
             >
-            <ada-btn :height="36" color="primary" dark>{{
+            <ada-btn>{{
               $t("accounting.deposit-report")
             }}</ada-btn>
           </div>

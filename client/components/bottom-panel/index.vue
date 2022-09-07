@@ -106,6 +106,8 @@ for (let i in defaultTabs) {
         @apply tw-h-full;
       }
 
+      .tab--active { @apply tw-overflow-auto; }
+
     }
   }
 
