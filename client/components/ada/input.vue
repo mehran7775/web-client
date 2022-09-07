@@ -48,7 +48,7 @@ const active = ref(false)
 }
 
 .ada-input {
-  @apply tw-flex-grow tw-whitespace-nowrap tw-min-w-0;
+  @apply tw-whitespace-nowrap tw-min-w-0;
 
   &.has-label {
     .label {

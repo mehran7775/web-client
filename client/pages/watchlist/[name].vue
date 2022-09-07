@@ -73,7 +73,7 @@ defineExpose({
 
 
 <template>
-  <div class="2xl:tw-container tw-mx-auto">
+  <div class="tw-mx-auto">
     <div class="tw-grid tw-col-span-1 tw-bg-white">
       <dashboard-focus-board>
         <template #toolbar>

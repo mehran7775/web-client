@@ -34,9 +34,6 @@ watch(()=> props.value, (newVal)=>{
 })
 
 ////////////
-function toggleActive() {
-  active.value = !active.value;
-}
 
 const getText: (item: any) => string = eval(
   "(item)=>{\
@@ -71,7 +68,7 @@ props.value ? select(props.value) : null
 }
 
 .ada-select {
-  @apply tw-flex tw-flex-grow tw-min-w-0 tw-whitespace-nowrap tw-rounded;
+  @apply tw-flex tw-min-w-0 tw-whitespace-nowrap tw-rounded tw-relative tw-z-50;
   position: relative;
 
   &.has-label {
@@ -124,7 +121,7 @@ props.value ? select(props.value) : null
       background-color: transparent;
       outline-style: none;
       line-height: 0.83334rem !important;
-      font-size: 0.83334rem;
+
       border-radius: var(--border-radius-input);
       cursor: inherit;
 
@@ -152,13 +149,13 @@ props.value ? select(props.value) : null
     active ? 'active' : 'inactive',
     val == null ? '' : 'value',
     label == '' ? '' : 'has-label',
-  ]" @click="toggleActive">
+  ]" @click="active = !active" v-ada-click-outside="()=> active = false">
 
   <!-- set outslide click directive -->
     <div class="label">
       {{ label }}
     </div>
-    <div class="input" v-ada-click-outside="()=> active = false">
+    <div class="input">
       <slot name="prepend"></slot>
       <ada-menu :mLeft="-49" :mTop="28" :width="50" :active="active">
         <template #activator>
@@ -177,7 +174,7 @@ props.value ? select(props.value) : null
         </template>
       </ada-menu>
       <slot name="append">
-        <i @click="toggleActive" class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"></i>
+        <i @click="active = !active" class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"></i>
       </slot>
     </div>
   </label>

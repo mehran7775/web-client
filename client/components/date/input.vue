@@ -20,6 +20,7 @@ const locale = appManager.locale;
 const day = ref(1);
 const month = ref(1);
 const year = ref(1400);
+const active = ref<boolean>(false)
 const val = computed({
   get() {
     return year.value + "-" + month.value + "-" + day.value;
@@ -46,11 +47,11 @@ watch(
 
 <style lang="postcss" scoped>
 .ada-input {
-  @apply tw-flex tw-flex-grow tw-whitespace-nowrap tw-min-w-0;
+  @apply tw-flex tw-whitespace-nowrap tw-min-w-0;
   border-radius: var(--border-radius-input);
 
   .input-container {
-    @apply tw-p-[4px] tw-min-w-0 tw-flex tw-flex-grow tw-justify-between;
+    @apply tw-p-[4px] tw-min-w-0 tw-flex tw-justify-between;
     background-color: rgba(var(--c-primary), 0.1);
     border-radius: var(--border-radius-input);
   
@@ -87,11 +88,11 @@ watch(
     <div class="label">
       {{ label }}
     </div>
-    <div class="input-container">
+    <div class="input-container" @focus="active = true" @blur="active = false" :class="{ active: active }">
       <slot name="prepend"> </slot>
-      <ada-input type="number" v-model="day" @input="change" :min="1" :max="31" />
-      <ada-input type="number" v-model="month" @input="change" :min="1" :max="12" />
-      <ada-input type="number" v-model="year" @input="change" :min="1400" :max="9999" />
+      <ada-input type="number" v-model="day" @input="change" :min="1" :max="31" @focus="active = true" @blur="active = false"/>
+      <ada-input type="number" v-model="month" @input="change" :min="1" :max="12" @focus="active = true" @blur="active = false"/>
+      <ada-input type="number" v-model="year" @input="change" :min="1400" :max="9999" @focus="active = true" @blur="active = false"/>
       <slot name="append"></slot>
     </div>
   </label>
