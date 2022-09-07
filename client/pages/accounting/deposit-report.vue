@@ -82,7 +82,7 @@ header {
       &>:nth-child(3) {
         @apply tw-bg-info tw-bg-opacity-5 tw-my-6 tw-border tw-border-dashed tw-border-info tw-rounded-lg;
 
-        .upload {
+        .uploader {
           @apply tw-flex tw-px-10 tw-py-5 tw-cursor-pointer;
           div {
             @apply tw-flex tw-flex-col tw-mr-2;
@@ -109,10 +109,10 @@ header {
 }
 </style>
 
-//TODO set in assetst css files
+//TODO set in assetst css files // globally
 <style lang="postcss">
 .tmp-ctr {
-  .upload {
+  .uploader {
     &__icon {
       &--info {
         @apply tw-text-info tw-text-opacity-80;
@@ -149,18 +149,18 @@ header {
             <select-box placeholder="علت واریز وجه"></select-box>
           </div>
           <div>
-            <div class="upload">
-              <ada-icon class="upload__icon--info" size="3.5rem"
+            <div class="uploader">
+              <ada-icon class="uploader__icon--info" size="3.5rem"
                 >isax-document-upload-outline</ada-icon
               >
               <div>
                 <h5
                   v-text="$t('accounting.upload')"
-                  class="upload__title--info"
+                  class="uploader__title--info"
                 ></h5>
                 <p
                   v-text="$t('accounting.desUpload')"
-                  class="upload__description--gray"
+                  class="uploader__description--gray"
                 ></p>
               </div>
             </div>

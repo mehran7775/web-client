@@ -185,6 +185,9 @@ function setOnBottomPanel(value: MenuItem): void {
     bottomPanel.removeTab(tab)
     return
   }
+  const res = existDeletableTab()
+  res ? bottomPanel.removeTab(res): null
+
   bottomPanel.registerTab(tab)
   bottomPanel.activeTab = tab
 }
@@ -193,6 +196,9 @@ const isExistTab = (tab: TabItem):boolean => {
     return true
   }
   return false
+}
+const existDeletableTab = ():TabItem|undefined => {
+  return bottomPanel.tabs.find((item)=> item.deletable === true)
 }
 
 watch(selected, (n, o) => {
