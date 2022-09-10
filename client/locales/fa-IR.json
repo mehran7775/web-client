@@ -190,7 +190,11 @@
     "wealth": "@:wealth.wealth",
     "amount": "@:wealth.wealth",
     "buyPrice": "@:oms.price @:oms.buy",
-    "sellPrice": "@:oms.price @:oms.sell"
+    "sellPrice": "@:oms.price @:oms.sell",
+    "WithdrawableAmount": "مبلغ قابل برداشت",
+    "wholePrice": "کل مبلغ",
+    "price": "قیمت"
+
   },
   "watchList": {
     "title": "دیدبان",

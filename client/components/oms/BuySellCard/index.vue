@@ -33,7 +33,8 @@ const accountTypefield = ref(0);
 const validatePercent = ref<number>(0);
 const activeCalculator = ref<boolean>(false);
 const activeCalculatorSell = ref<boolean>(false);
-
+const appManager = useAsrTrader();
+const formatter = appManager.formatter;
 ////////////////////////
 
 const countVal = computed({
@@ -78,6 +79,15 @@ const tab = computed({
     }
   },
 });
+
+const whoePriceCalculate = ref<number>(0)
+
+const sellWageCalculate = computed(
+  () => whoePriceCalculate.value * order.value.quantity * wage.value.sell
+);
+const buyWageCalculate = computed(
+  () => (whoePriceCalculate.value * order.value.quantity * wage.value.buy).toFixed(6)
+);
 
 ///////////////////
 
@@ -143,6 +153,8 @@ function updateData() {
   priceVal.value = 0;
   orderDivision.value = false;
   validatePercent.value = 0;
+  whoePriceCalculate.value = 0
+
 }
 
 instrumentManager
@@ -336,6 +348,41 @@ instrumentManager
     }
   }
 }
+.menu {
+  .calculate {
+    @apply tw-rounded tw-shadow-xl tw-flex tw-flex-col tw-py-[14px] tw-px-[8px] tw-bg-white tw-mx-auto tw-text-black;
+    /* @apply  */
+    .ada-input {
+      @apply tw-flex tw-items-center;
+      .label {
+        @apply tw-w-[65px];
+      }
+      .scaffold {
+        @apply tw-w-full;
+        border-color: transparent;
+      }
+      &.active {
+        .scaffold {
+          @apply tw-border-primary;
+        }
+      }
+      &>:nth-child(1) {
+        @apply tw-mt-[8px];
+      }
+    }
+
+    & > :first-child {
+      @apply tw-mb-[16px];
+    }
+
+    & > :last-child {
+      @apply tw-mt-[16px];
+      span:last-child {
+        @apply tw-mr-6 tw-text-info;
+      }
+    }
+  }
+}
 </style>
 
 <template>
@@ -389,20 +436,48 @@ instrumentManager
                   <ada-icon>isax-lock-1</ada-icon>
                 </ada-btn>
 
-                <ada-menu :active="activeCalculator" :mWidth="300" :mLeft="28" :mTop="-45">
+                <ada-menu
+                  :active="activeCalculator"
+                  :mWidth="205"
+                  :mLeft="28"
+                
+                >
                   <template #activator>
                     <ada-btn
                       @click.stop="activeCalculator = !activeCalculator"
                       :width="24"
                       :height="24"
                       tabindex="-1"
-                      :class="[activeCalculator ? 'tw-bg-primary': null]"
+                      :class="[activeCalculator ? 'tw-bg-primary' : null]"
                     >
-                      <ada-icon :class="[activeCalculator ? 'tw-text-white': null]">isax-calculator</ada-icon>
+                      <ada-icon
+                        :class="[activeCalculator ? 'tw-text-white' : null]"
+                        >isax-calculator</ada-icon
+                      >
                     </ada-btn>
                   </template>
                   <template #items>
-                    <lazy-ada-calculator v-ada-click-outside="()=> activeCalculator = false" @close="activeCalculator = false"/>
+                    <div class="calculate" v-ada-click-outside="()=> activeCalculator = false">
+                      <div class="tw-flex">
+                        <h6 v-text="$t('instrument.WithdrawableAmount')"></h6>
+                        <span class="tw-mr-2 tw-text-success">
+                          <b v-text="formatter.format(150000)"></b>
+                          <!-- <span ></span> -->
+                        </span>
+                      </div>
+                      <ada-input :label="$t('instrument.wholePrice')" type="number" placeholder="0" v-model="whoePriceCalculate">
+                      </ada-input>
+                      <ada-input :label="$t('instrument.price')" type="number" placeholder="3345">
+                      </ada-input>
+
+                      <div>
+                        <span>{{$t('oms.wage')}}:</span>
+                        <span>
+                          <b v-text="buyWageCalculate"></b>
+                          تومان</span
+                        >
+                      </div>
+                    </div>
                   </template>
                 </ada-menu>
               </template>
@@ -582,20 +657,29 @@ instrumentManager
                 >
                   <ada-icon color="primary">isax-lock-1</ada-icon>
                 </ada-btn>
-                <ada-menu :active="activeCalculatorSell" :mWidth="300" :mLeft="28" :mTop="-45">
+                <ada-menu
+                  :active="activeCalculatorSell"
+                  :mWidth="125"
+                  :mLeft="28"
+                  
+                >
                   <template #activator>
                     <ada-btn
                       @click.stop="activeCalculatorSell = !activeCalculatorSell"
                       :width="24"
                       :height="24"
                       tabindex="-1"
-                      :class="[activeCalculatorSell ? 'tw-bg-primary': null]"
+                      :class="[activeCalculatorSell ? 'tw-bg-primary' : null]"
                     >
-                      <ada-icon :class="[activeCalculatorSell ? 'tw-text-white': null]">isax-calculator</ada-icon>
+                      <ada-icon
+                        :class="[activeCalculatorSell ? 'tw-text-white' : null]"
+                        >isax-calculator</ada-icon
+                      >
                     </ada-btn>
                   </template>
                   <template #items>
-                    <lazy-ada-calculator v-ada-click-outside="()=> activeCalculatorSell = false" @close="activeCalculatorSell = false"/>
+                    <!-- <lazy-ada-calculator v-ada-click-outside="()=> activeCalculatorSell = false" @close="activeCalculatorSell = false"/> -->
+                    sdgj
                   </template>
                 </ada-menu>
               </template>
