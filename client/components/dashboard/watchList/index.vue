@@ -131,12 +131,10 @@ function order(item: InstrumentCache, side: Side) {
   orderManager.setSide(side, item.id.toString());
   instrumentManager.addFocus(item);
   instrumentManager.activateTab(item);
-  instrumentManager.select(item);
   instrumentManager.setFocusMode(0);
 }
 function focus(item: InstrumentCache) {
   instrumentManager.activateTab(item);
-  instrumentManager.select(item);
   instrumentManager.addFocus(item);
 }
 
@@ -354,7 +352,7 @@ refresh();
           <div class="text-no-wrap">
             <ada-icon
               class="tw-text-info tw-m-0 tw-p-0 tw-mx-2"
-              @click.stop="() => focus(item)"
+              @click.stop.prevent="() => focus(item)"
               :disabled="!canFocus"
               :size="16"
             >
@@ -365,7 +363,7 @@ refresh();
                 'tw-m-0 tw-p-0',
                 (item.status & 3) != 3 ? null : 'tw-text-success',
               ]"
-              @click.stop="() => order(item, Side.Buy)"
+              @click.stop.prevent="() => order(item, Side.Buy)"
               :disabled="(item.status & 3) != 3"
               :size="16"
             >

@@ -31,6 +31,8 @@ const agreement = ref(true);
 const orderDivision = ref(false);
 const accountTypefield = ref(0);
 const validatePercent = ref<number>(0);
+const activeCalculator = ref<boolean>(false);
+const activeCalculatorSell = ref<boolean>(false);
 
 ////////////////////////
 
@@ -384,11 +386,25 @@ instrumentManager
                   icon
                   tabindex="-1"
                 >
-                  <ada-icon color="primary">isax-lock-1</ada-icon>
+                  <ada-icon>isax-lock-1</ada-icon>
                 </ada-btn>
-                <ada-btn :width="24" :height="24" icon tabindex="-1">
-                  <ada-icon color="primary">isax-calculator</ada-icon>
-                </ada-btn>
+
+                <ada-menu :active="activeCalculator" :mWidth="300" :mLeft="28" :mTop="-45">
+                  <template #activator>
+                    <ada-btn
+                      @click.stop="activeCalculator = !activeCalculator"
+                      :width="24"
+                      :height="24"
+                      tabindex="-1"
+                      :class="[activeCalculator ? 'tw-bg-primary': null]"
+                    >
+                      <ada-icon :class="[activeCalculator ? 'tw-text-white': null]">isax-calculator</ada-icon>
+                    </ada-btn>
+                  </template>
+                  <template #items>
+                    <lazy-ada-calculator v-ada-click-outside="()=> activeCalculator = false" @close="activeCalculator = false"/>
+                  </template>
+                </ada-menu>
               </template>
             </ada-input>
             <div class="bar"></div>
@@ -443,7 +459,7 @@ instrumentManager
               v-model="order.discloseQuantity"
               :label="$t('oms.view-count')"
               height="31px"
-              class="tw-flex tw-flex-grow tw-h-[24px] inputColor"
+              class="tw-flex tw-flex-grow inputColor"
               :min="30"
               :max="100"
               :total="countVal"
@@ -566,9 +582,22 @@ instrumentManager
                 >
                   <ada-icon color="primary">isax-lock-1</ada-icon>
                 </ada-btn>
-                <ada-btn :width="24" :height="24" icon tabindex="-1">
-                  <ada-icon color="primary">isax-calculator</ada-icon>
-                </ada-btn>
+                <ada-menu :active="activeCalculatorSell" :mWidth="300" :mLeft="28" :mTop="-45">
+                  <template #activator>
+                    <ada-btn
+                      @click.stop="activeCalculatorSell = !activeCalculatorSell"
+                      :width="24"
+                      :height="24"
+                      tabindex="-1"
+                      :class="[activeCalculatorSell ? 'tw-bg-primary': null]"
+                    >
+                      <ada-icon :class="[activeCalculatorSell ? 'tw-text-white': null]">isax-calculator</ada-icon>
+                    </ada-btn>
+                  </template>
+                  <template #items>
+                    <lazy-ada-calculator v-ada-click-outside="()=> activeCalculatorSell = false" @close="activeCalculatorSell = false"/>
+                  </template>
+                </ada-menu>
               </template>
             </ada-input>
             <div class="bar"></div>
@@ -622,7 +651,7 @@ instrumentManager
               v-model="order.discloseQuantity"
               :label="$t('oms.view-count')"
               height="31px"
-              class="tw-flex tw-flex-grow tw-h-[24px] inputColor"
+              class="tw-flex tw-flex-grow inputColor"
               :min="30"
               :total="countVal"
               :amount="100"

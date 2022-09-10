@@ -63,7 +63,7 @@ function toPercent(value: number) {
   <div class="percent-container">
     <RangeSlider :min="min" :max="max" v-model="val" @update="setValue" class="tw-max-w-full" v-bind="$attrs"/>
     <ada-input
-      class="tw-flex-grow tw-h-[24px] tw-w-1/2"
+      class="tw-flex-grow tw-w-1/2"
       dir="rtl"
       type="number"
       :label="label"
@@ -84,7 +84,8 @@ function toPercent(value: number) {
 
   .ada-input {
     & :deep(.scaffold) {
-      @apply tw-border-none tw-ml-[15px];
+      @apply tw-border-none tw-ml-[10px];
+      width: 86%!important;
     }
     &.active :deep(.scaffold) {
       @apply tw-bg-primary tw-bg-opacity-10;
