@@ -5,32 +5,33 @@ import NumericField from "../../numericField.vue";
 import { TradesHistory, WatchListColumns, PaginatedResult, TradesHistorySerachModel, DailyPrice, MarketHistory } from "@/types";
 import { useI18n } from "vue-i18n"
 
-const i18n  = useI18n();
+const i18n = useI18n();
 const bottomPanelManager = useBottomPanel();
 const instrumentManager = useInstrument();
 
 const props = withDefaults(
   defineProps<{
-    modelValue?:TradesHistorySerachModel
+    modelValue?: TradesHistorySerachModel
   }>(),
   {
-  modelValue:()=>({
-    offset: 0,
-    length: 17,
-  })
-});
+    modelValue: () => ({
+      offset: 0,
+      length: 17,
+    })
+  });
 const emit = defineEmits(["update:modelValue"]);
 
 const model = computed({
-  get(){
+  get() {
     return props.modelValue
   },
-  set(value){
-    emit("update:modelValue",value)
-  }})
+  set(value) {
+    emit("update:modelValue", value)
+  }
+})
 const tradeHistories = reactive<Array<TradesHistory>>([]);
 const dailyPrices = reactive<Array<DailyPrice>>([]);
-const inst = computed(() => instrumentManager.state.selected)
+const inst = instrumentManager.getSelected;
 const defaultCols = [
   new WatchListColumns(i18n.t("instrument.tradeDate").toString(), "dateTime"),
   new WatchListColumns(i18n.t("instrument.tradeCount").toString(), "totalTrades"),
@@ -52,14 +53,20 @@ const cols = computed(() => {
 });
 
 async function getTradeHistories() {
+  model.value.id = inst?.id || null
   bottomPanelManager.setLoading(true);
   tradeHistories.splice(0, Infinity);
   let task: Promise<DailyPrice[]> | null = null;
-  if (inst)
+
+  if (instrumentManager.getSelected) {
     task = getDailyPrices();
-  if (task) {
+    console.log(task)
+  }
+  if (task != null) {
     const { data } = await instrumentManager.getTradeHistories(model.value)
     const daily = await task;
+    console.log('model', model.value)
+    console.log('daily', daily)
     tradeHistories.push(...data.map((market) => {
       const ind = daily.findIndex((item) => item.dateTime == market.dateTime);
       return {
@@ -78,8 +85,7 @@ async function getDailyPrices() {
   return await instrumentManager.getDailyPrices(model.value.id ?? 0, model.value)
 }
 
-watch(() => inst.value, (update) => {
-  model.value.id = update?.id || null
+watch(() => instrumentManager.getSelected, (update) => {
   getTradeHistories();
 })
 

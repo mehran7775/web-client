@@ -19,7 +19,6 @@ import {
 import manager from "@/repositories/oms/instruments_manager";
 import { useAxios } from "..";
 import { useWebSocket } from "../useWebsocket";
-import { Side } from "@/types";
 
 export const useInstrument = defineStore("instrument", () => {
   const state = ref<InstrumentState>({
@@ -88,6 +87,7 @@ export const useInstrument = defineStore("instrument", () => {
   const getActive = computed(
     (): InstrumentCache | null => state.value.activeTab
   );
+  const getSelected = computed(() => state.value.selected);
   const getSelectedIndex = computed((): number =>
     state.value.focus.findIndex((item) => item.id == state.value.selected?.id)
   );
@@ -293,6 +293,7 @@ export const useInstrument = defineStore("instrument", () => {
     getByKey,
     getFocus,
     getActive,
+    getSelected,
     getSelectedIndex,
     //Mutations
     updateInstrument,

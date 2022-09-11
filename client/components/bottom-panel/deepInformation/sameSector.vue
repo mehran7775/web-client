@@ -21,7 +21,7 @@ const cols = [
 const bottomPanel = useBottomPanel();
 
 
-watch(() => instrumentManager.state.selected, (val) => {
+watch(() => instrumentManager.getSelected, (val) => {
   items.splice(0, Infinity);
   if (val) {
     getMygroups()
@@ -30,12 +30,11 @@ watch(() => instrumentManager.state.selected, (val) => {
 })
 
 async function getMygroups() {
-  const selected = instrumentManager.state.selected!
   bottomPanel.setLoading(true)
   try {
-    const searchModel = new SameSectorQuery(selected.id, selected.sector)
+    const searchModel = new SameSectorQuery(instrumentManager.getSelected?.id || 0, instrumentManager.getSelected?.sector || 0)
     const { data } = await instrumentManager.getTeammates(searchModel)
-    if (data.length > 0) {
+    if (data?.length > 0) {
       const sameSectors = await instrumentManager.getInstrumentsDetail(new InstrumentSearchModel(data), false)
       items.push(...sameSectors)
     }
@@ -45,6 +44,8 @@ async function getMygroups() {
     bottomPanel.setLoading(false)
   }
 }
+
+getMygroups()
 
 </script>
 
