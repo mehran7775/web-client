@@ -9,8 +9,7 @@ export default defineNuxtPlugin(({ vueApp }) => {
       el.ondragover = onDragOver
       el.ondragstart = onDragStart
       el.ondragleave = onDragLeave
-      el.ondrop = (e: DragEvent) => onDrop(e, el, binding, vnode)
-      // el.ondrop = (e) => console.log(e)
+      el.ondrop = (e) => onDrop(e, el, binding, vnode)
     },
     onUnmounted(el, binding, vnode) {
       el.removeEventListener('dragover', onDragOver)
@@ -27,21 +26,20 @@ export default defineNuxtPlugin(({ vueApp }) => {
     e.preventDefault();
   }
   const onDragLeave = (e: DragEvent) => {
-    console.log(e)
     e.preventDefault()
   }
 
 
   const onDrop = (e: DragEvent, el, binding, vnode) => {
     e.preventDefault()
-    console.log('drop',e)
-    // const { addFiles, files } = uploadAbleFile()
-    // addFiles(e.dataTransfer?.files)
-    // if (vnode.componentInstance) {
-    //   vnode.componentInstance.$emit('uploaded_files', { detail: files })
-    // } else {
-    //   el.dispatchEvent(new CustomEvent('uploaded_files', { detail: files }));
-    // }
+    console.log(e.dataTransfer)
+    const { addFiles, files } = uploadAbleFile()
+    addFiles(e.dataTransfer?.files)
+    if (vnode.componentInstance) {
+      vnode.componentInstance.$emit('uploaded_files', { detail: files })
+    } else {
+      el.dispatchEvent(new CustomEvent('uploaded_files', { detail: files }));
+    }
 
   }
 
