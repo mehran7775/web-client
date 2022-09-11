@@ -149,9 +149,9 @@ for (let i in defaultTabs) {
     <div class="detail" v-if="tab != null">
       <div class="contents">
         <ada-tabs v-model="tab">
-          <ada-tab v-for="t in tabs" :key="t.title" :model="t">
+          <lazy-ada-tab v-for="t in tabs" :key="t.title" :model="t">
             <component v-if="t.component" :is="t.component" v-model="active" :tabs="t.children"></component>
-          </ada-tab>
+          </lazy-ada-tab>
         </ada-tabs>
       </div>
       <header class="header">

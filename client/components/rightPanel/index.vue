@@ -172,33 +172,33 @@ function unmark(data: MenuItem) {
 }
 
 function setOnBottomPanel(value: MenuItem): void {
-  const component = value.to.replaceAll('/', '-').substring(1)
-  const tab: TabItem= {
+  const component = 'pages-' + (value.to.replaceAll('/', '-').substring(1));
+  const tab: TabItem = {
     title: value.title,
     params: {},
     children: [],
     current: value.title,
     component: component,
     deletable: true
-  } 
-  if(isExistTab(tab)) {
+  }
+  if (isExistTab(tab)) {
     bottomPanel.removeTab(tab)
     return
   }
   const res = existDeletableTab()
-  res ? bottomPanel.removeTab(res): null
+  res ? bottomPanel.removeTab(res) : null
 
   bottomPanel.registerTab(tab)
   bottomPanel.activeTab = tab
 }
-const isExistTab = (tab: TabItem):boolean => {
-  if(bottomPanel.state._tabs[tab.title]) {
+const isExistTab = (tab: TabItem): boolean => {
+  if (bottomPanel.state._tabs[tab.title]) {
     return true
   }
   return false
 }
-const existDeletableTab = ():TabItem|undefined => {
-  return bottomPanel.tabs.find((item)=> item.deletable === true)
+const existDeletableTab = (): TabItem | undefined => {
+  return bottomPanel.tabs.find((item) => item.deletable === true)
 }
 
 watch(selected, (n, o) => {
@@ -245,7 +245,7 @@ if (process.client) {
     min-width: 48px;
     width: 48px;
     max-width: 48px;
-    flex-basis: 48px;    
+    flex-basis: 48px;
 
     .icon {
       font-size: 1.5rem;
@@ -271,27 +271,30 @@ if (process.client) {
 
   .ada-button {
     @apply tw-bg-transparent tw-w-[32px] tw-h-[32px];
+
     &.active {
       @apply tw-bg-primary tw-bg-opacity-20;
+
       .icon {
         @apply tw-text-primary;
       }
     }
   }
 }
-
 </style>
 <style lang="postcss">
 .r-panel {
-  .router-link-active , .router-link-exact-active {
+
+  .router-link-active,
+  .router-link-exact-active {
     @apply tw-bg-primary tw-bg-opacity-10;
   }
 }
 </style>
 
 <template>
-  <ada-nav v-model="drawer" min-width="48px" max-width="256px" v-model:mini="mini" class="r-panel" mobile-breakpoint="960"
-    fixed>
+  <ada-nav v-model="drawer" min-width="48px" max-width="256px" v-model:mini="mini" class="r-panel"
+    mobile-breakpoint="960" fixed>
     <ada-toggle class="tabs" v-model="selected" vertical>
       <ada-tooltip position="left">
         <template #activator>
@@ -356,11 +359,12 @@ if (process.client) {
                       setHome(value);
                     }
                   " size="1.34rem" :class="[value.to == home ? 'tw-text-primary' : 'tw-text-gray4']">
-                  {{  value.to == home ? 'isax-star-1-bold' : 'isax-star-1' }}
+                    {{ value.to == home ? 'isax-star-1-bold' : 'isax-star-1' }}
                   </ada-icon>
-                  <ada-icon v-if="!(/watchlist/gi.test(value.to))" size="1.34rem" :class="[isExistTab(value) ? 'tw-text-primary' :'tw-text-gray4']"
-                  @click.stop.prevent="setOnBottomPanel(value)"
-                  >{{isExistTab(value) ? 'mdi-arrow-down-bold' : 'mdi-arrow-down-bold-outline'}}</ada-icon>
+                  <ada-icon v-if="!(/watchlist/gi.test(value.to))" size="1.34rem"
+                    :class="[isExistTab(value) ? 'tw-text-primary' :'tw-text-gray4']"
+                    @click.stop.prevent="setOnBottomPanel(value)">{{isExistTab(value) ? 'mdi-arrow-down-bold' :
+                    'mdi-arrow-down-bold-outline'}}</ada-icon>
                 </span>
               </div>
             </template>
