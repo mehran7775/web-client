@@ -9,4 +9,5 @@ export * from "./useBottomPanel"
 export * from "./wealth"
 export * from "./useDebounce"
 export * from "./useAutoComplete"
+export * from "./upload"
 

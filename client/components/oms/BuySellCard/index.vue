@@ -80,29 +80,32 @@ const tab = computed({
   },
 });
 
-const wholePriceBuy = ref<number>(0)
-const uniqPriceBuy = computed(()=> wholePriceBuy.value/(order.value.quantity*(1 + buyWage.value)))
-const wageCalculateBuy = computed(()=> {
-  const res = (wholePriceBuy.value/uniqPriceBuy.value*order.value.quantity)-1
-  if(isNaN(res)) return 0
-  return res
-})
+const wholePriceBuy = ref<number>(0);
+const countBuy = computed(
+  () => wholePriceBuy.value / priceVal.value * (1 + wage.value.buy)
+);
+const wageBuyCalculate = computed(
+  () => {
+    const res = priceVal.value * countBuy.value * wage.value.buy
+    if(isNaN(res)) return 0
+    return res
+  }
+);
 
-const wholePriceSell = ref<number>(0)
-const uniqPriceSell = computed(()=> wholePriceSell.value/(order.value.quantity*(1 + buyWage.value)))
-const wageCalculateSell = computed(()=>{
-  const res = (wholePriceSell.value/uniqPriceSell.value*order.value.quantity)-1
-  if(isNaN(res)) return 0
-  return res
-})
 
-///////////////////
+const wholePriceSell = ref<number>(0);
+const countSell = computed(
+  () => wholePriceSell.value / priceVal.value * (1 + wage.value.sell)
+);
+const wageSellCalculate = computed(
+  () => {
+    const res = priceVal.value * countSell.value * wage.value.sell
+    if(isNaN(res)) return 0
+    return res
+  }
+);
 
-// onMounted(()=> {
-//   document.getElementById("buyCountInputText")!.focus()
-// })
 
-///////////////////
 
 async function check() {
   if (buyForm.value) {
@@ -160,9 +163,8 @@ function updateData() {
   priceVal.value = 0;
   orderDivision.value = false;
   validatePercent.value = 0;
-  wholePriceBuy.value = 0
-  wholePriceSell.value = 0
-
+  // wholePriceBuy.value = 0
+  // wholePriceSell.value = 0
 }
 
 instrumentManager
@@ -374,7 +376,7 @@ instrumentManager
           @apply tw-border-primary;
         }
       }
-      &>:nth-child(1) {
+      & > :nth-child(1) {
         @apply tw-mt-[8px];
       }
     }
@@ -385,7 +387,7 @@ instrumentManager
 
     & > :last-child {
       @apply tw-mt-[16px];
-      >span:last-child {
+      > span:last-child {
         @apply tw-mr-6 tw-text-info;
       }
     }
@@ -444,12 +446,7 @@ instrumentManager
                   <ada-icon>isax-lock-1</ada-icon>
                 </ada-btn>
 
-                <ada-menu
-                  :active="activeCalculator"
-                  :mWidth="205"
-                  :mLeft="28"
-                
-                >
+                <ada-menu :active="activeCalculator" :mWidth="205" :mLeft="28">
                   <template #activator>
                     <ada-btn
                       @click.stop="activeCalculator = !activeCalculator"
@@ -465,7 +462,10 @@ instrumentManager
                     </ada-btn>
                   </template>
                   <template #items>
-                    <div class="calculate" v-ada-click-outside="()=> activeCalculator = false">
+                    <div
+                      class="calculate"
+                      v-ada-click-outside="() => (activeCalculator = false)"
+                    >
                       <div class="tw-flex">
                         <h6 v-text="$t('instrument.WithdrawableAmount')"></h6>
                         <span class="tw-mr-2 tw-text-success">
@@ -473,18 +473,26 @@ instrumentManager
                           <!-- <span ></span> -->
                         </span>
                       </div>
-                      <ada-input :label="$t('instrument.wholePrice')" type="number" placeholder="0" v-model="wholePriceBuy">
+                      <ada-input
+                        :label="$t('instrument.wholePrice')"
+                        type="number"
+                        placeholder="0"
+                        v-model="wholePriceBuy"
+                      >
                       </ada-input>
-                      <ada-input :label="$t('instrument.price')" type="number" readonly :modelValue="uniqPriceBuy">
+                      <ada-input
+                        :label="$t('instrument.price')"
+                        type="number"
+                        v-model="priceVal"
+                      >
                       </ada-input>
 
                       <div>
-                        <span>{{$t('oms.wage')}}:</span>
+                        <span>{{ $t("oms.wage") }}:</span>
                         <span>
-                          <numeric-field :value="wageCalculateBuy" />
-                          <span v-if="wageCalculateBuy">تومان</span>
-                          </span
-                        >
+                          <numeric-field :value="wageBuyCalculate" />
+                          <span v-if="wageBuyCalculate">تومان</span>
+                        </span>
                       </div>
                     </div>
                   </template>
@@ -670,7 +678,6 @@ instrumentManager
                   :active="activeCalculatorSell"
                   :mWidth="205"
                   :mLeft="28"
-                
                 >
                   <template #activator>
                     <ada-btn
@@ -687,7 +694,10 @@ instrumentManager
                     </ada-btn>
                   </template>
                   <template #items>
-                    <div class="calculate" v-ada-click-outside="()=> activeCalculatorSell = false">
+                    <div
+                      class="calculate"
+                      v-ada-click-outside="() => (activeCalculatorSell = false)"
+                    >
                       <div class="tw-flex">
                         <h6 v-text="$t('instrument.WithdrawableAmount')"></h6>
                         <span class="tw-mr-2 tw-text-success">
@@ -695,18 +705,26 @@ instrumentManager
                           <!-- <span ></span> -->
                         </span>
                       </div>
-                      <ada-input :label="$t('instrument.wholePrice')" type="number" placeholder="0" v-model="wholePriceSell">
+                      <ada-input
+                        :label="$t('instrument.wholePrice')"
+                        type="number"
+                        placeholder="0"
+                        v-model="wholePriceSell"
+                      >
                       </ada-input>
-                      <ada-input :label="$t('instrument.price')" type="number" readonly :modelValue="uniqPriceSell">
+                      <ada-input
+                        :label="$t('instrument.price')"
+                        type="number"
+                        v-model="priceVal"
+                      >
                       </ada-input>
 
                       <div>
-                        <span>{{$t('oms.wage')}}:</span>
+                        <span>{{ $t("oms.wage") }}:</span>
                         <span>
-                          <numeric-field :value="wageCalculateSell" />
-                          <span v-if="wageCalculateSell">تومان</span>
-                          </span
-                        >
+                          <numeric-field :value="wageSellCalculate" />
+                          <span v-if="wageSellCalculate">تومان</span>
+                        </span>
                       </div>
                     </div>
                   </template>
