@@ -175,15 +175,19 @@ for (let i in defaultTabs) {
       </header>
     </div>
     <ada-toggle class="b-tabs" v-model="tab">
-      <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.title" :model="t">
+      <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.title"
+        :model="t">
         <span :class="{ 'active': tab != null && tab.title == t.title }">
           {{ $t(t.title) }}
           <span
             v-text="instrumentManager.state.selected && !t.deletable ? '-' + instrumentManager.state.selected.name : ''"></span>
         </span>
         <div v-if="i != tabs.length - 1" class="bar"></div>
-        <ada-icon size="1.3rem" v-if="t.deletable" class="tw-absolute tw-top-[1px] tw-left-[5px] hover:tw-text-gray3"
-          @click.stop.prevent="bottomPanel.removeTab(t)">mdi-close</ada-icon>
+        <ada-btn v-if="t.deletable" class="tw-absolute tw-items-center tw-leading-[12px] tw-top-2 tw-left-2 tw-h-[18px] tw-w-[18px] tw-bg-error" @click.stop.prevent="bottomPanel.removeTab(t)">
+          <ada-icon class="tw-font-bold tw-text-white">
+            mdi-close
+          </ada-icon>
+        </ada-btn>
       </ada-btn>
     </ada-toggle>
   </footer>
