@@ -86,11 +86,11 @@ for (let i in defaultTabs) {
     height: calc(100% - 32px);
 
     >.header {
-      @apply tw-absolute tw-flex tw-flex-grow tw-w-full tw-bg-primary/10 tw-shadow tw-shadow-primary/50;
+      @apply tw-absolute tw-flex tw-flex-grow tw-items-center tw-w-full tw-bg-primary/10 tw-shadow tw-shadow-primary/50;
       top: 0;
       left: 0;
       height: 32px;
-      padding: 0 0 0 12px;
+      padding: 0 12px;
 
       .b-tabs {
         @apply tw-bg-transparent;
@@ -106,7 +106,9 @@ for (let i in defaultTabs) {
         @apply tw-h-full;
       }
 
-      .tab--active { @apply tw-overflow-auto; }
+      .tab--active {
+        @apply tw-overflow-auto;
+      }
 
     }
   }
@@ -144,14 +146,15 @@ for (let i in defaultTabs) {
 
 <template>
   <footer class="ada-bottom-panel" :class="{
-    half: tab != null
+    half: tab != null && !expanded,
+    expanded: tab != null && expanded
   }">
     <div class="detail" v-if="tab != null">
       <div class="contents">
         <ada-tabs v-model="tab">
-          <ada-tab v-for="t in tabs" :key="t.title" :model="t">
+          <lazy-ada-tab v-for="t in tabs" :key="t.title" :model="t">
             <component v-if="t.component" :is="t.component" v-model="active" :tabs="t.children"></component>
-          </ada-tab>
+          </lazy-ada-tab>
         </ada-tabs>
       </div>
       <header class="header">
@@ -161,13 +164,13 @@ for (let i in defaultTabs) {
             <div v-if="i != tab.children.length - 1" class="bar"></div>
           </ada-btn>
         </ada-toggle>
-        <ada-btn class="tw-mx-[5px]" :class="expanded && tab != null ? 'tw-text-primary' : 'tw-text-transparent'"
-          :width="24" :height="24" @click="expand">
-          <ada-icon :color="expanded && tab != null ? 'white' : 'primary'" :size="16"> isax-maximize-3
+        <ada-btn class="tw-mx-[5px] tw-h-[24px] tw-w-[24px]"
+          :class="[expanded && tab != null ? 'tw-bg-primary' : 'tw-bg-transparent']" @click="expand">
+          <ada-icon :class="[expanded && tab != null ? 'tw-text-white' : 'tw-text-primary']" :size="16"> isax-maximize-3
           </ada-icon>
         </ada-btn>
-        <ada-btn color="primary" @click="close">
-          <ada-icon color="white" :size="16">mdi-window-close</ada-icon>
+        <ada-btn class="tw-h-[24px] tw-w-[24px] tw-bg-primary" @click="close">
+          <ada-icon class="tw-text-white" :size="16">mdi-window-close</ada-icon>
         </ada-btn>
       </header>
     </div>

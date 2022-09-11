@@ -141,6 +141,7 @@ const panels: Array<TabItem> = [
     ],
     current: "bottom-panel.more.presentation",
     deletable: false,
+    component: "lazy-pages-login"
   },
 ];
 

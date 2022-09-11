@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   },
   components: {
     global: true,
-    dirs: ["~/components", "~/pages"],
+    dirs: ["~/components"],
   },
   runtimeConfig: {
     public: {

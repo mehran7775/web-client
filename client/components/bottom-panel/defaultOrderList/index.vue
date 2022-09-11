@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { OrderSearchModel, TabItem } from "@/types"
-import list from "./orders.vue"
+
+const list = defineAsyncComponent(() => import("./orders.vue"));
 
 const props = defineProps<{
     modelValue: TabItem,
