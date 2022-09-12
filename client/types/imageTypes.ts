@@ -1,3 +1,3 @@
-type imageTypes = 'image/png' | 'image/jpeg' | 'image/webp'
+type FileTypes = 'image/png' | 'image/jpeg' | 'image/webp' | 'text/plain'
 
-export default imageTypes
+export default FileTypes

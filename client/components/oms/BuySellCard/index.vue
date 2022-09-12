@@ -80,26 +80,17 @@ const tab = computed({
   },
 });
 
-const wholePriceBuy = ref<number>(0);
-const countBuy = computed(
-  () => wholePriceBuy.value / priceVal.value * (1 + wage.value.buy)
-);
-const wageBuyCalculate = computed(
+const wholePrice = ref<number>(0);
+const count = computed(
   () => {
-    const res = priceVal.value * countBuy.value * wage.value.buy
-    if(isNaN(res)) return 0
+    const res = Math.round(wholePrice.value / priceVal.value * (1 + wage.value.sell))
+    countVal.value = res
     return res
   }
 );
-
-
-const wholePriceSell = ref<number>(0);
-const countSell = computed(
-  () => wholePriceSell.value / priceVal.value * (1 + wage.value.sell)
-);
-const wageSellCalculate = computed(
+const wageCalculate = computed(
   () => {
-    const res = priceVal.value * countSell.value * wage.value.sell
+    const res = priceVal.value * count.value * wage.value.sell
     if(isNaN(res)) return 0
     return res
   }
@@ -163,8 +154,7 @@ function updateData() {
   priceVal.value = 0;
   orderDivision.value = false;
   validatePercent.value = 0;
-  // wholePriceBuy.value = 0
-  // wholePriceSell.value = 0
+  wholePrice.value = 0
 }
 
 instrumentManager
@@ -360,12 +350,12 @@ instrumentManager
 }
 .menu {
   .calculate {
-    @apply tw-rounded tw-shadow-xl tw-flex tw-flex-col tw-py-[14px] tw-px-[8px] tw-bg-white tw-mx-auto tw-text-black;
+    @apply tw-shadow-xl tw-flex tw-flex-col tw-pb-3 tw-pt-[5px] tw-px-[8px] tw-bg-primary tw-bg-opacity-5 tw-mx-auto tw-text-black;
     /* @apply  */
     .ada-input {
       @apply tw-flex tw-items-center;
       .label {
-        @apply tw-w-[65px];
+        @apply tw-w-[85px];
       }
       .scaffold {
         @apply tw-w-full;
@@ -377,19 +367,19 @@ instrumentManager
         }
       }
       & > :nth-child(1) {
-        @apply tw-mt-[8px];
+        @apply tw-mt-[6.5px];
       }
     }
 
-    & > :first-child {
-      @apply tw-mb-[16px];
-    }
-
-    & > :last-child {
-      @apply tw-mt-[16px];
+    &>div {
+      @apply tw-mt-1;
       > span:last-child {
-        @apply tw-mr-6 tw-text-info;
+        @apply tw-mr-10 tw-text-info;
       }
+    }
+    .ada-button {
+      @apply tw-bg-primary tw-w-fit tw-px-2 tw-py-0 tw-float-left tw-text-white tw-font-normal tw-h-9 tw-ml-1;
+      line-height: 1rem;
     }
   }
 }
@@ -446,7 +436,7 @@ instrumentManager
                   <ada-icon>isax-lock-1</ada-icon>
                 </ada-btn>
 
-                <ada-menu :active="activeCalculator" :mWidth="205" :mLeft="28">
+                <ada-menu :active="activeCalculator" :mWidth="196" :mLeft="-11" :mTop="28">
                   <template #activator>
                     <ada-btn
                       @click.stop="activeCalculator = !activeCalculator"
@@ -466,18 +456,11 @@ instrumentManager
                       class="calculate"
                       v-ada-click-outside="() => (activeCalculator = false)"
                     >
-                      <div class="tw-flex">
-                        <h6 v-text="$t('instrument.WithdrawableAmount')"></h6>
-                        <span class="tw-mr-2 tw-text-success">
-                          <b v-text="formatter.format(150000)"></b>
-                          <!-- <span ></span> -->
-                        </span>
-                      </div>
                       <ada-input
                         :label="$t('instrument.wholePrice')"
                         type="number"
                         placeholder="0"
-                        v-model="wholePriceBuy"
+                        v-model="wholePrice"
                       >
                       </ada-input>
                       <ada-input
@@ -490,10 +473,10 @@ instrumentManager
                       <div>
                         <span>{{ $t("oms.wage") }}:</span>
                         <span>
-                          <numeric-field :value="wageBuyCalculate" />
-                          <span v-if="wageBuyCalculate">تومان</span>
+                          <numeric-field :value="wageCalculate" />
                         </span>
                       </div>
+                      <div><ada-btn @click.stop="activeCalculator = false"><span v-text="$t('general.verify')"></span></ada-btn></div>
                     </div>
                   </template>
                 </ada-menu>
@@ -676,8 +659,7 @@ instrumentManager
                 </ada-btn>
                 <ada-menu
                   :active="activeCalculatorSell"
-                  :mWidth="205"
-                  :mLeft="28"
+                  :mWidth="196" :mLeft="-11" :mTop="28"
                 >
                   <template #activator>
                     <ada-btn
@@ -698,18 +680,11 @@ instrumentManager
                       class="calculate"
                       v-ada-click-outside="() => (activeCalculatorSell = false)"
                     >
-                      <div class="tw-flex">
-                        <h6 v-text="$t('instrument.WithdrawableAmount')"></h6>
-                        <span class="tw-mr-2 tw-text-success">
-                          <b v-text="formatter.format(150000)"></b>
-                          <!-- <span ></span> -->
-                        </span>
-                      </div>
                       <ada-input
                         :label="$t('instrument.wholePrice')"
                         type="number"
                         placeholder="0"
-                        v-model="wholePriceSell"
+                        v-model="wholePrice"
                       >
                       </ada-input>
                       <ada-input
@@ -722,10 +697,10 @@ instrumentManager
                       <div>
                         <span>{{ $t("oms.wage") }}:</span>
                         <span>
-                          <numeric-field :value="wageSellCalculate" />
-                          <span v-if="wageSellCalculate">تومان</span>
+                          <numeric-field :value="wageCalculate" />
                         </span>
                       </div>
+                      <div><ada-btn @click.stop="activeCalculatorSell = false"><span v-text="$t('general.verify')"></span></ada-btn></div>
                     </div>
                   </template>
                 </ada-menu>

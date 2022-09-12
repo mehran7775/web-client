@@ -32,7 +32,7 @@ export default defineNuxtPlugin(({ vueApp }) => {
 
   const onDrop = (e: DragEvent, el, binding, vnode) => {
     e.preventDefault()
-    console.log(e.dataTransfer)
+    console.log(e.dataTransfer.files)
     const { addFiles, files } = uploadAbleFile()
     addFiles(e.dataTransfer?.files)
     if (vnode.componentInstance) {
