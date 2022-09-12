@@ -71,3 +71,12 @@ export interface MessageTemplate {}
 export interface MessageTemplate_1 extends MessageTemplate {
   body: String;
 }
+
+
+export interface MessageChat {
+  id: number
+  body: string
+  self: boolean
+  date: string
+  file: File
+}

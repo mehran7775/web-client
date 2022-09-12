@@ -71,7 +71,10 @@
     "notFound": "داده ای موجود نیست.",
     "waiting": "لطفا صبر کنید",
     "copyRight": "طراحی و توسعه شرکت عصر دانش افزار",
-    "verify": "تایید"
+    "verify": "تایید",
+    "chat": "گفتوگو",
+    "supporter": "پشتیبان",
+    "messagePlaceholder": "پیام خودرا وارد کنید"
   },
   "user": {
     "personality": {

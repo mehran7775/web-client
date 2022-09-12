@@ -11,3 +11,5 @@ export * from "./useDebounce"
 export * from "./useAutoComplete"
 export * from "./upload"
 
+export * from "./chat"
+

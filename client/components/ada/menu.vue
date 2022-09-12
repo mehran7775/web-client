@@ -21,9 +21,9 @@ const rtl = computed(() => appManager.rtl);
 const locale = computed(() => appManager.locale);
 
 const menu = ref(null)
-
+//TODO reactive style
 const style = computed(() => {
-    const properties = menu.value?.getBoundingClientRect()
+    const properties = menu.value.getBoundingClientRect()
     return {
         width: `${ properties?.width + props.mWidth}px`,
         left: `${ properties?.left + props.mLeft }px`,

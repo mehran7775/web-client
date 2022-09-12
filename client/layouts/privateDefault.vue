@@ -193,9 +193,6 @@ const invisibleFinInfo = ref(false);
     @apply tw-left-3;
   }
 
-  #chat-footer {
-    @apply tw-right-3;
-  }
 }
 </style>
 
@@ -274,9 +271,9 @@ const invisibleFinInfo = ref(false);
     <left-panel v-model:mini="lmini" v-model:clipped="clipped" v-model="leftMenu.drawer" class="shadow right" />
     <main class="dashboardmain-page" :class="{ right: !rightMenu.mini, left: !lmini }">
       <div :class="['dashboardmain-nuxt', collaps ? 'collaps' : null]">
-        <transition name="slide-fade">
+        <!-- <transition name="slide-fade" mode="out-in" appear>
+        </transition> -->
           <nuxt-page />
-        </transition>
       </div>
     </main>
     <bottom-panel class="dashboardmain-page" :class="{
@@ -310,9 +307,6 @@ const invisibleFinInfo = ref(false);
       <ada-icon color="white" :size="24" @click="invisibleFinInfo = !invisibleFinInfo">
         mdi-chevron-triple-right
       </ada-icon>
-    </ada-btn>
-    <ada-btn id="chat-footer" class="floating-button">
-      <ada-icon color="white" :size="24"> isax-messages-2-bold </ada-icon>
     </ada-btn>
     <ada-snacks />
   </div>
