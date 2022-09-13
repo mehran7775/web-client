@@ -84,6 +84,8 @@ const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
 });
 
 const messages = chat.state.messages;
+const optionMessage = ref<boolean>(false)
+const activeOptionMessage = ref<boolean>(false)
 
 const secondWatchList = ref<MenuItem[]>([
   {
@@ -336,10 +338,23 @@ if (process.client) {
         }
       }
       &__message {
-        @apply tw-rounded-xl tw-items-center tw-bg-primary tw-bg-opacity-10 tw-text-primary tw-py-2 tw-px-3 tw-my-2 tw-block;
+        @apply tw-relative tw-rounded-xl tw-items-center tw-bg-primary tw-bg-opacity-10 tw-text-primary tw-pb-2 tw-pt-4 tw-px-3 tw-my-2 tw-block;
         @apply tw-whitespace-normal tw-break-all tw-w-fit;
         max-width: 75%;
         line-height: 1.8;
+
+        .menu-global {
+          & :deep(.ada-button) {
+            @apply tw-bg-transparent tw-absolute tw-top-0 tw-left-0 tw-w-fit tw-h-fit;
+            .icon {
+              @apply tw-text-primary tw-text-opacity-60;
+            }
+
+            /* .icon {
+              @apply
+            } */
+          }
+        }
 
         > small {
           @apply tw-block tw-mt-1 tw-mr-[3px] tw-text-primary tw-text-opacity-70;
@@ -360,9 +375,9 @@ if (process.client) {
       }
 
       &__activator {
-        @apply tw-fixed tw-bottom-10 tw-left-0 tw-w-full tw-text-center tw-bg-white tw-pt-2;
+        @apply tw-fixed tw-bottom-10 tw-left-0 tw-w-full tw-text-center tw-bg-transparent tw-pt-2;
         > p {
-          @apply tw-inline-block tw-w-3/4  tw-border tw-border-primary/80 tw-pr-2 tw-text-primary;
+          @apply tw-inline-block tw-w-3/4  tw-border tw-border-primary/80 tw-pr-2 tw-text-primary tw-bg-white;
           @apply tw-rounded-xl tw-text-right;
 
           &:focus {
@@ -564,12 +579,23 @@ if (process.client) {
                 :key="msg.id"
                 :class="[!msg.self ? 'tw-justify-end' : null]"
               >
-                <p class="chatroom__message" :class="{ supporter: !msg.self }">
+                <p class="chatroom__message" :class="{ supporter: !msg.self }" @mouseover="activeOptionMessage = true" @mouseleave="activeOptionMessage = false">
+                  <!-- <ada-menu :active="optionMessage">
+                    <template #activator>
+                      <ada-btn v-if="activeOptionMessage" @click.stop="optionMessage = true">
+                        <ada-icon size="1.5rem">mdi-menu-down</ada-icon>
+                      </ada-btn>
+                    </template>
+                    <template #items>
+                      dsgsdg
+                    </template>
+                  </ada-menu> -->
                   {{ msg.body }}
                   <small>
-                    <ada-icon>mdi-clock-outline</ada-icon>
+                    <ada-icon>mdi-check</ada-icon>
+                    <!-- <ada-icon>mdi-clock-outline</ada-icon> -->
                     {{ msg.time }}
-                  </small>
+                  </small>  
                 </p>
               </ada-list-item>
             </ada-list>
@@ -580,6 +606,7 @@ if (process.client) {
               contenteditable
               :data-placeholder="$t('general.messagePlaceholder')"
               @input="inputChat = ($event.target as HTMLElement).innerText"
+              @keyup.enter="sendMessage"
             >
               {{ inputChat }}
             </p>

@@ -16,9 +16,7 @@ export const useChat = defineStore("chat", ()=> {
     function pusher(message: string):void {
         const id = Math.floor(Math.random() * (50000 - 100) + 100)
         const res = new MessageChat(id, message, '1401/06/22')
-        const res2 = new MessageChat(id, message, '1401/06/22', "11:50", null, false)
         state.messages.push(res)
-        state.messages.push(res2)
     }
 
     function remove(message:MessageChat):void {
