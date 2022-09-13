@@ -72,11 +72,29 @@ export interface MessageTemplate_1 extends MessageTemplate {
   body: String;
 }
 
-
-export interface MessageChat {
+export interface MessageChatType {
   id: number
   body: string
-  self: boolean
+  self?: boolean
   date: string
-  file: File
+  time: string
+  file?: File | null
+}
+
+export class MessageChat implements MessageChatType{
+ readonly id: number
+ readonly body: string
+ readonly self: boolean 
+ readonly date: string
+ readonly time: string
+ readonly file: File | null
+
+  constructor(id: number, body: string, date: string, time: string = '11:50', file: File = null, self: boolean = true) {
+    this.id = id
+    this.body = body
+    this.date = date
+    this.time = time
+    this.file = file
+    this.self = self
+  }
 }

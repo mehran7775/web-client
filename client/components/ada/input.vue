@@ -29,7 +29,7 @@ const props = withDefaults(
   }
 );
 
-const emit = defineEmits(["update:modelValue", "keyup"]);
+const emit = defineEmits(["update:modelValue"]);
 
 const ltr = computed<string>(() => (props.type == "number" ? "ltr" : ""));
 const active = ref(false)
@@ -93,7 +93,7 @@ const active = ref(false)
     <div class="scaffold">
       <slot name="prepend" :active="active"> </slot>
       <input :type="type" @focus="() => { active = true }" @blur="() => { active = false }"
-        @keyup.enter="$emit('keyup')" :value="modelValue" :class="[ltr]"
+        :value="modelValue" :class="[ltr]"
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
         v-bind="{ min, max, minlength, maxlength, ...$attrs }" :readonly="readonly" :tabindex="tabIndex" />
       <slot name="append" :active="active"></slot>

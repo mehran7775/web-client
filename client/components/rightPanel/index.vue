@@ -18,17 +18,26 @@ const props = withDefaults(
   }
 );
 
+//////////////
+
 const emit = defineEmits([
   "update:modelValue",
   "update:mini",
   "update:clipped",
 ]);
 
+/////////////
+
 const userManager = useUser();
 const appManager = useAsrTrader();
 const router = useRouter();
 const sh = useShortcut();
 const chat = useChat();
+
+const inputChat = ref<string>("");
+
+//////////////////
+
 const selected = computed({
   get() {
     return appManager.menu;
@@ -73,6 +82,8 @@ const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
   }
   return res;
 });
+
+const messages = chat.state.messages;
 
 const secondWatchList = ref<MenuItem[]>([
   {
@@ -122,6 +133,18 @@ function setHome(item: MenuItem) {
       value: item.to,
     });
 }
+
+////////////////
+
+watch(selected, (n, o) => {
+  if (typeof n == "undefined" || n == null) {
+    emit("update:mini", true);
+  } else {
+    emit("update:mini", false);
+  }
+});
+
+////////////////
 
 function mark(data: MenuItem) {
   const bk = CreateBookmark(data);
@@ -198,23 +221,34 @@ function setOnBottomPanel(value: MenuItem): void {
   bottomPanel.registerTab(tab);
   bottomPanel.activeTab = tab;
 }
+
 const isExistTab = (tab: TabItem): boolean => {
   if (bottomPanel.state._tabs[tab.title]) {
     return true;
   }
   return false;
 };
+
 const existDeletableTab = (): TabItem | undefined => {
   return bottomPanel.tabs.find((item) => item.deletable === true);
 };
 
-watch(selected, (n, o) => {
-  if (typeof n == "undefined" || n == null) {
-    emit("update:mini", true);
-  } else {
-    emit("update:mini", false);
+async function sendMessage(): void {
+  if (inputChat.value) {
+    chat.pusher(inputChat.value);
+    const chatroom = document.querySelector(".chatroom__messages");
+    await nextTick()
+   
+      chatroom.scrollTo({
+      top: chatroom.scrollHeight,
+      left: 0,
+      behavior: 'smooth'
+   
+    })
+    inputChat.value = ''
   }
-});
+}
+
 if (process.client) {
   for (let i = 1; i < 10; i++) {
     sh.addShortcut({
@@ -286,32 +320,63 @@ if (process.client) {
       overflow-y: auto;
     }
     .chatroom {
-      @apply tw-relative tw-h-full;
+      @apply tw-h-full;
       &__avatar {
-        @apply tw-mx-auto tw-mt-4 tw-bg-primary tw-bg-opacity-10 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-p-2;
-        i { @apply tw-text-primary; }
+        @apply tw-mx-auto tw-mt-4 tw-text-center;
+        i {
+          @apply tw-text-primary;
+        }
+      }
+      &__messages {
+        @apply tw-p-2 tw-overflow-y-auto tw-justify-end tw-mt-2 tw-bg-transparent;
+        height: calc(100% - 130px);
+
+        .ada-list-item {
+          @apply tw-max-h-fit;
+        }
+      }
+      &__message {
+        @apply tw-rounded-xl tw-items-center tw-bg-primary tw-bg-opacity-10 tw-text-primary tw-py-2 tw-px-3 tw-my-2 tw-block;
+        @apply tw-whitespace-normal tw-break-all tw-w-fit;
+        max-width: 75%;
+        line-height: 1.8;
+
+        > small {
+          @apply tw-block tw-mt-1 tw-mr-[3px] tw-text-primary tw-text-opacity-70;
+          .icon {
+            @apply tw-text-primary tw-text-opacity-60;
+          }
+        }
+        &.supporter {
+          @apply tw-bg-success tw-bg-opacity-10 tw-text-success;
+          > small {
+            @apply tw-text-success tw-text-opacity-70;
+
+            .icon {
+              @apply tw-text-success tw-text-opacity-60;
+            }
+          }
+        }
       }
 
       &__activator {
-        @apply tw-absolute tw-bottom-10 tw-left-0 tw-w-full tw-px-6;
+        @apply tw-fixed tw-bottom-10 tw-left-0 tw-w-full tw-text-center tw-bg-white tw-pt-2;
+        > p {
+          @apply tw-inline-block tw-w-3/4  tw-border tw-border-primary/80 tw-pr-2 tw-text-primary;
+          @apply tw-rounded-xl tw-text-right;
 
-        .ada-input {
-          & :deep(.scaffold) {
-            @apply tw-border-none tw-bg-transparent;
-            input {
-              @apply tw-border tw-bg-white tw-border-primary tw-border-opacity-50 tw-text-primary;
-              &::placeholder {
-                @apply tw-text-primary tw-text-opacity-50;
-              }
-            }
-
+          &:focus {
+            @apply tw-outline-none tw-border-primary/100;
           }
-          & :deep(.ada-button) {
-            @apply tw-bg-transparent;
-            .icon {
-              @apply tw-text-primary tw-text-opacity-90 tw-rotate-180 tw-mr-1 hover:tw-text-opacity-100;
-            }
+          &:empty::before {
+            content: attr(data-placeholder);
+            @apply tw-text-primary/70 tw-pr-1;
           }
+        }
+        .ada-button {
+          .icon {
+          @apply tw-text-primary tw-text-opacity-90 tw-rotate-180 tw-mr-1 hover:tw-text-opacity-100;
+        }
         }
       }
     }
@@ -350,7 +415,7 @@ if (process.client) {
     fixed
   >
     <ada-toggle class="tabs" v-model="selected" vertical>
-      <ada-tooltip position="left">
+      <ada-tooltip position="above">
         <template #activator>
           <ada-btn :to="home" :model="null">
             <ada-icon size="18"> isax-home-2 </ada-icon>
@@ -487,31 +552,40 @@ if (process.client) {
       <ada-tab name="menu.chat">
         <div class="chatroom">
           <header>
-            <ada-tooltip position="left">
-              <template #activator>
-               <div class="chatroom__avatar"> <ada-icon size="2.5rem">isax-frame-bold</ada-icon></div>
-                <!-- <img class="chatroom__avatar" src="/logo.png" /> -->
-              </template>
-              <span v-text="$t('general.supporter')"></span>
-            </ada-tooltip>
+            <div class="chatroom__avatar">
+              <ada-icon size="2.5rem">isax-frame-bold</ada-icon>
+            </div>
+            <!-- <img class="chatroom__avatar" src="/logo.png" /> -->
           </header>
           <body class="chatroom__messages">
-            <div class="chatroom__message"></div>
+            <ada-list>
+              <ada-list-item
+                v-for="msg in messages"
+                :key="msg.id"
+                :class="[!msg.self ? 'tw-justify-end' : null]"
+              >
+                <p class="chatroom__message" :class="{ supporter: !msg.self }">
+                  {{ msg.body }}
+                  <small>
+                    <ada-icon>mdi-clock-outline</ada-icon>
+                    {{ msg.time }}
+                  </small>
+                </p>
+              </ada-list-item>
+            </ada-list>
           </body>
 
           <footer class="chatroom__activator">
-            <ada-input :placeholder="$t('general.messagePlaceholder')">
-              <template #append>
-               <ada-tooltip position="left">
-                <template #activator>
-                  <ada-btn @click.stop="chat.send('')">
-                    <ada-icon size="2.5rem">mdi-send-circle</ada-icon>
-                  </ada-btn>
-                </template>
-                <span v-text="$t('general.send')"></span>
-               </ada-tooltip>
-              </template>
-            </ada-input>
+            <p
+              contenteditable
+              :data-placeholder="$t('general.messagePlaceholder')"
+              @input="inputChat = ($event.target as HTMLElement).innerText"
+            >
+              {{ inputChat }}
+            </p>
+            <ada-btn @click.stop="sendMessage">
+              <ada-icon size="2.5rem">mdi-send-circle</ada-icon>
+            </ada-btn>
           </footer>
         </div>
       </ada-tab>
