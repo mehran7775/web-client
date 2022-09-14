@@ -281,7 +281,7 @@ if (process.client) {
   }
 
   .tabs {
-    @apply tw-items-center tw-px-2 tw-shadow-[-2px_1px_2px_0] tw-shadow-primary/20;
+    @apply tw-items-center tw-px-2 tw-shadow-[-2px_1px_2px_0] tw-shadow-primary/20 tw-overflow-y-auto;
     padding-top: 8px;
     height: calc(100vh - 42px);
     padding-bottom: 54px;
@@ -335,42 +335,6 @@ if (process.client) {
 
         .ada-list-item {
           @apply tw-max-h-fit;
-        }
-      }
-      &__message {
-        @apply tw-relative tw-rounded-xl tw-items-center tw-bg-primary tw-bg-opacity-10 tw-text-primary tw-pb-2 tw-pt-4 tw-px-3 tw-my-2 tw-block;
-        @apply tw-whitespace-normal tw-break-all tw-w-fit;
-        max-width: 75%;
-        line-height: 1.8;
-
-        .menu-global {
-          & :deep(.ada-button) {
-            @apply tw-bg-transparent tw-absolute tw-top-0 tw-left-0 tw-w-fit tw-h-fit;
-            .icon {
-              @apply tw-text-primary tw-text-opacity-60;
-            }
-
-            /* .icon {
-              @apply
-            } */
-          }
-        }
-
-        > small {
-          @apply tw-block tw-mt-1 tw-mr-[3px] tw-text-primary tw-text-opacity-70;
-          .icon {
-            @apply tw-text-primary tw-text-opacity-60;
-          }
-        }
-        &.supporter {
-          @apply tw-bg-success tw-bg-opacity-10 tw-text-success;
-          > small {
-            @apply tw-text-success tw-text-opacity-70;
-
-            .icon {
-              @apply tw-text-success tw-text-opacity-60;
-            }
-          }
         }
       }
 
@@ -579,24 +543,7 @@ if (process.client) {
                 :key="msg.id"
                 :class="[!msg.self ? 'tw-justify-end' : null]"
               >
-                <p class="chatroom__message" :class="{ supporter: !msg.self }" @mouseover="activeOptionMessage = true" @mouseleave="activeOptionMessage = false">
-                  <!-- <ada-menu :active="optionMessage">
-                    <template #activator>
-                      <ada-btn v-if="activeOptionMessage" @click.stop="optionMessage = true">
-                        <ada-icon size="1.5rem">mdi-menu-down</ada-icon>
-                      </ada-btn>
-                    </template>
-                    <template #items>
-                      dsgsdg
-                    </template>
-                  </ada-menu> -->
-                  {{ msg.body }}
-                  <small>
-                    <ada-icon>mdi-check</ada-icon>
-                    <!-- <ada-icon>mdi-clock-outline</ada-icon> -->
-                    {{ msg.time }}
-                  </small>  
-                </p>
+              <ada-message-caht :msg="msg" class="chatroom__message"></ada-message-caht>
               </ada-list-item>
             </ada-list>
           </body>

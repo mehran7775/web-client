@@ -93,7 +93,7 @@ export default defineComponent({
 }
 </style>
 <template>
-  <ada-menu :active="menu" :mTop="25">
+  <ada-menu :active="menu" :mTop="25" :mWidth="145">
     <template #activator>
       <ada-btn
         @click.stop="()=> menu = !menu" :class="{ active: menu }" v-ada-click-outside="()=> menu = false">
