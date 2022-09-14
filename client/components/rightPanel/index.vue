@@ -281,7 +281,7 @@ if (process.client) {
   }
 
   .tabs {
-    @apply tw-items-center tw-px-2 tw-shadow-[-2px_1px_2px_0] tw-shadow-primary/20 tw-overflow-y-auto;
+    @apply tw-items-center tw-px-2 tw-shadow-[-2px_1px_2px_0] tw-shadow-primary/20;
     padding-top: 8px;
     height: calc(100vh - 42px);
     padding-bottom: 54px;
