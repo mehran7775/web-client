@@ -2,8 +2,9 @@ import { ref } from 'vue'
 import UploadableFile from '~~/types/upload/UploadableFile'
 import FileTypes from '~~/types/imageTypes'
 
-export function uploadAbleFile() {
-    let files = ref<UploadableFile[]>([])
+export function useUploadAbleFile() {
+    const files = ref<UploadableFile[]>([])
+    const contentFile = ref<string>('')
     function addFiles(newFiles: FileList): void {
         let newUploadableFiles = [...newFiles]
             .filter(( file ) => validateType(file.type as FileTypes))
@@ -17,17 +18,24 @@ export function uploadAbleFile() {
         return files.value.some((file: UploadableFile) => file.id === otherId)
     }
 
-    function removeFile(file: UploadableFile): void {
-        const index = files.value.indexOf(file)
-
-        if (index > -1) files.value.splice(index, 1)
-    }
 
     function validateType(type: FileTypes) {
-        const acceptedImageTypes = ['image/png', 'image/jpeg', 'image/webp', 'text/plain']
-        return acceptedImageTypes.includes(type)
+        const acceptedFileTypes = ['image/png', 'image/jpeg', 'image/webp', 'text/plain', 'application/json']
+        return acceptedFileTypes.includes(type)
     }
 
-    return { files, addFiles, removeFile }
+    function readerTextFile (file: File) {
+       
+        let readerFile = new FileReader()
+        readerFile.onload = (evt)=> {
+            contentFile.value = evt.target.result as string
+        }
+        
+        readerFile.readAsText(file)
+        
+    }
+
+
+    return { files, contentFile, addFiles, readerTextFile }
 }
 

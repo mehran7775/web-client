@@ -1,6 +1,6 @@
 // import { Plugin } from "@nuxt/types";
 // import Vue, { DirectiveOptions,  VNodeDirective, VNode} from "vue";
-import { uploadAbleFile } from "@/composables";
+import { useUploadAbleFile } from "@/composables";
 
 
 export default defineNuxtPlugin(({ vueApp }) => {
@@ -32,8 +32,7 @@ export default defineNuxtPlugin(({ vueApp }) => {
 
   const onDrop = (e: DragEvent, el, binding, vnode) => {
     e.preventDefault()
-    console.log(e.dataTransfer.files)
-    const { addFiles, files } = uploadAbleFile()
+    const { addFiles, files } = useUploadAbleFile()
     addFiles(e.dataTransfer?.files)
     if (vnode.componentInstance) {
       vnode.componentInstance.$emit('uploaded_files', { detail: files })

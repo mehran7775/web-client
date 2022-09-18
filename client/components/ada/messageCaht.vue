@@ -39,6 +39,9 @@ p {
   }
   small {
     @apply tw-block tw-mt-1 tw-mr-[3px] tw-text-primary tw-text-opacity-70;
+    .icon {
+        @apply tw-text-primary tw-text-opacity-60;
+      }
   }
   &.supporter {
     @apply tw-bg-success tw-bg-opacity-10 tw-text-success;
