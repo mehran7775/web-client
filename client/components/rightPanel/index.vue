@@ -279,7 +279,9 @@ if (process.client) {
     touch-action: none;
     pointer-events: none;
   }
-
+  .toggle.tabs {
+    @apply tw-overflow-y-auto;
+  }
   .tabs {
     @apply tw-items-center tw-px-2 tw-shadow-[-2px_1px_2px_0] tw-shadow-primary/20;
     padding-top: 8px;
@@ -440,19 +442,6 @@ if (process.client) {
           </ada-btn>
         </template>
         <span>{{ item.text ? item.text : $t(item.title) }}</span>
-      </ada-tooltip>
-
-      <ada-tooltip position="left">
-        <template #activator>
-          <ada-btn
-            class="chat-icon"
-            model="menu.chat"
-            @click="$emit('update:mini', !mini)"
-          >
-            <ada-icon color="white" :size="24"> isax-messages-2-bold </ada-icon>
-          </ada-btn>
-        </template>
-        <span v-text="$t('general.chat')"></span>
       </ada-tooltip>
     </ada-toggle>
 

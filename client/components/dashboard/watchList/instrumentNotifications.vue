@@ -67,14 +67,7 @@ const calculateColor = (value: MessageOrigin) => {
 <style lang="postcss" scoped>
 div {
   @apply tw-px-1 tw-flex tw-justify-center tw-items-center tw-max-h-full;
-  .ada-tooltip-container {
-    @apply tw-w-fit;
-
-    & :deep(.ada-tooltip.above) {
-      min-width: 35px;
-      height: 25px;
-    }
-  }
+ 
 }
 </style>
 <template>

@@ -40,13 +40,19 @@ const collaps = computed(() => {
 const home = computed(() => userManager.me.settings?.home);
 const clipped = ref(true);
 const invisibleFinInfo = ref(false);
+
+
+const triggerChatRoom = ()=> {
+  rmini.value = !rmini.value
+  appManager.setMenu('menu.chat')
+}
 </script>
 
 <style lang="postcss" scoped>
 .page {
   @apply tw-relative tw-block tw-overflow-clip tw-h-screen tw-pt-[42px] tw-pb-[64px] tw-bg-gray4/5;
 
-  >header {
+  > header {
     @apply tw-flex tw-fixed tw-w-full tw-justify-between tw-items-center tw-align-middle tw-bg-gray4/5 tw-shadow-2xl;
     top: 0;
     left: 0;
@@ -56,7 +62,7 @@ const invisibleFinInfo = ref(false);
       @apply tw-leading-[42px];
     }
 
-    >a span {
+    > a span {
       @apply tw-text-primary;
     }
 
@@ -89,13 +95,13 @@ const invisibleFinInfo = ref(false);
     }
   }
 
-  >main {
+  > main {
     @apply tw-w-full tw-overflow-y-auto;
     height: calc(100vh - 106px);
     box-sizing: border-box;
   }
 
-  >.footer {
+  > .footer {
     @apply tw-flex tw-items-center tw-w-full tw-justify-center tw-transition-all;
     height: 32px;
     position: fixed;
@@ -169,7 +175,8 @@ const invisibleFinInfo = ref(false);
     }
   }
 
-  @media (max-width: 959px) {}
+  @media (max-width: 959px) {
+  }
 
   .dashboardmain-nuxt {
     overflow-y: auto;
@@ -190,19 +197,21 @@ const invisibleFinInfo = ref(false);
   }
 
   #colopse-info-footer {
-    @apply tw-left-3;
+    @apply tw-left-2;
   }
-
+  #chat-footer {
+    @apply tw-right-2;
+  }
 }
 </style>
 
 <style lang="postcss">
 .page {
-  header>.end {
+  header > .end {
     .userMenu .ada-button {
       @apply tw-flex tw-items-center tw-bg-transparent tw-transition-all;
 
-      >div {
+      > div {
         @apply tw-flex tw-justify-center tw-items-center;
       }
 
@@ -218,29 +227,37 @@ const invisibleFinInfo = ref(false);
   <div class="page" :class="[locale, rtl ? 'rtl' : 'ltr']">
     <header>
       <div class="start">
-        <nuxt-link class="tw-flex tw-px-2 tw-items-center tw-justify-center" :to="home">
+        <nuxt-link
+          class="tw-flex tw-px-2 tw-items-center tw-justify-center"
+          :to="home"
+        >
           <img class="tw-m-0 tw-p-0 tw-h-[20px]" src="/logo.png" />
           <span v-if="!rightMenu.mini && rightMenu.drawer" class="tw-mr-2">
-            {{  $t("general.proxyCompany")  }}
+            {{ $t("general.proxyCompany") }}
           </span>
         </nuxt-link>
-        <ada-icon click="click" @click.stop="
-          () => {
-            if (rightMenu.drawer) {
-              rightMenu.mini = !rightMenu.mini;
-              if (!rightMenu.mini) lmini = true;
-            } else {
-              rightMenu.drawer = true;
-              rightMenu.mini = false;
+        <ada-icon
+          click="click"
+          @click.stop="
+            () => {
+              if (rightMenu.drawer) {
+                rightMenu.mini = !rightMenu.mini;
+                if (!rightMenu.mini) lmini = true;
+              } else {
+                rightMenu.drawer = true;
+                rightMenu.mini = false;
+              }
             }
-          }
-        " :class="[
-  'tw-m-0',
-  'tw-p-0',
-  'te-mx-[5px]',
-  'drawer-activator',
-  !rightMenu.mini && rightMenu.drawer ? 'open' : '',
-]" :size="18">
+          "
+          :class="[
+            'tw-m-0',
+            'tw-p-0',
+            'te-mx-[5px]',
+            'drawer-activator',
+            !rightMenu.mini && rightMenu.drawer ? 'open' : '',
+          ]"
+          :size="18"
+        >
           mdi-menu-open
         </ada-icon>
         <clock :format="$t('general.date.longdt')" class="tw-w-[240px]" />
@@ -248,18 +265,30 @@ const invisibleFinInfo = ref(false);
       <div class="tw-flex center">
         <ada-badge class="tw-mx-5">
           <span v-text="$t('oms.bourseIndex')" class="tw-text-primary"></span>:
-          <span class="tw-text-sm badge-content">{{  formatter.format(1502605.15)  }}
-            <span v-text="
-              `(${new Number(8471.09).toLocaleString(appManager.locale)})`
-            " class="tw-text-error"></span>
+          <span class="tw-text-sm badge-content"
+            >{{ formatter.format(1502605.15) }}
+            <span
+              v-text="
+                `(${new Number(8471.09).toLocaleString(appManager.locale)})`
+              "
+              class="tw-text-error"
+            ></span>
           </span>
         </ada-badge>
         <ada-badge>
-          <span v-text="$t('oms.superBourseIndex')" class="tw-text-primary"></span>:
-          <span class="tw-text-sm badge-content">{{  formatter.format(20136.69)  }}
-            <span v-text="
-              `(${new Number(84.12).toLocaleString(appManager.locale)})`
-            " class="tw-text-error"></span>
+          <span
+            v-text="$t('oms.superBourseIndex')"
+            class="tw-text-primary"
+          ></span
+          >:
+          <span class="tw-text-sm badge-content"
+            >{{ formatter.format(20136.69) }}
+            <span
+              v-text="
+                `(${new Number(84.12).toLocaleString(appManager.locale)})`
+              "
+              class="tw-text-error"
+            ></span>
           </span>
         </ada-badge>
       </div>
@@ -267,46 +296,81 @@ const invisibleFinInfo = ref(false);
         <user-menu />
       </div>
     </header>
-    <right-panel v-model:mini="rmini" v-model:clipped="clipped" v-model="rightMenu.drawer" class="shadow left" />
-    <left-panel v-model:mini="lmini" v-model:clipped="clipped" v-model="leftMenu.drawer" class="shadow right" />
-    <main class="dashboardmain-page" :class="{ right: !rightMenu.mini, left: !lmini }">
+    <right-panel
+      v-model:mini="rmini"
+      v-model:clipped="clipped"
+      v-model="rightMenu.drawer"
+      class="shadow left"
+    />
+    <left-panel
+      v-model:mini="lmini"
+      v-model:clipped="clipped"
+      v-model="leftMenu.drawer"
+      class="shadow right"
+    />
+    <main
+      class="dashboardmain-page"
+      :class="{ right: !rightMenu.mini, left: !lmini }"
+    >
       <div :class="['dashboardmain-nuxt', collaps ? 'collaps' : null]">
         <!-- <transition name="slide-fade" mode="out-in" appear>
         </transition> -->
-          <nuxt-page />
+        <nuxt-page />
       </div>
     </main>
-    <bottom-panel class="dashboardmain-page" :class="{
-      right: !rightMenu.mini,
-      left: !lmini,
-    }" :slideToBottom="invisibleFinInfo" />
-    <footer v-if="!invisibleFinInfo" class="footer dashboardmain-page" :class="{
-      right: !rightMenu.mini,
-      left: !lmini,
-    }">
+    <bottom-panel
+      class="dashboardmain-page"
+      :class="{
+        right: !rightMenu.mini,
+        left: !lmini,
+      }"
+      :slideToBottom="invisibleFinInfo"
+    />
+    <footer
+      v-if="!invisibleFinInfo"
+      class="footer dashboardmain-page"
+      :class="{
+        right: !rightMenu.mini,
+        left: !lmini,
+      }"
+    >
       <div class="summary">
-        <ada-badge class="tw-ml-3">{{  $t("accounting.account.amount")  }}
+        <ada-badge class="tw-ml-3"
+          >{{ $t("accounting.account.amount") }}
           <span class="badge-content"> ۲٬۰۰۰٬۰۰۰</span>
         </ada-badge>
-        <ada-badge class="tw-ml-3">{{  $t("accounting.account.blockedAmount") 
-          }}<span class="badge-content">0</span></ada-badge>
+        <ada-badge class="tw-ml-3"
+          >{{ $t("accounting.account.blockedAmount")
+          }}<span class="badge-content">0</span></ada-badge
+        >
         <ada-badge class="tw-ml-3">
-          {{  $t("accounting.account.onlineBlockedAmount")  }}
+          {{ $t("accounting.account.onlineBlockedAmount") }}
           <span class="badge-content">0</span>
         </ada-badge>
-        <ada-badge class="tw-ml-3">{{  $t("accounting.account.remaining") 
-          }}<span class="badge-content">0</span></ada-badge>
-        <ada-badge class="tw-ml-3">{{  $t("accounting.account.credit") 
-          }}<span class="badge-content">0</span></ada-badge>
+        <ada-badge class="tw-ml-3"
+          >{{ $t("accounting.account.remaining")
+          }}<span class="badge-content">0</span></ada-badge
+        >
+        <ada-badge class="tw-ml-3"
+          >{{ $t("accounting.account.credit")
+          }}<span class="badge-content">0</span></ada-badge
+        >
       </div>
       <div class="cw">
-        &copy; {{  new Date().getFullYear()  }} {{  $t("general.company")  }}
+        &copy; {{ new Date().getFullYear() }} {{ $t("general.company") }}
       </div>
     </footer>
     <ada-btn id="colopse-info-footer" class="floating-button">
-      <ada-icon color="white" :size="24" @click="invisibleFinInfo = !invisibleFinInfo">
+      <ada-icon
+        color="white"
+        :size="24"
+        @click="invisibleFinInfo = !invisibleFinInfo"
+      >
         mdi-chevron-triple-right
       </ada-icon>
+    </ada-btn>
+    <ada-btn id="chat-footer" class="floating-button" @click="triggerChatRoom">
+      <ada-icon color="white" :size="24"> isax-messages-2-bold </ada-icon>
     </ada-btn>
     <ada-snacks />
   </div>

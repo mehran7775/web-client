@@ -6,6 +6,8 @@ const props = withDefaults(defineProps<{
     position: 'above'
 })
 
+const tooltip = ref(null)
+const tooltipContent = ref(null)
 const visible = ref(false)
 
 function mouseenter() {
@@ -14,55 +16,64 @@ function mouseenter() {
 function mouseleave() {
     visible.value = false
 }
+
+
+const style = computed(()=> {
+   return doStyling()
+})
+
+
+const doStyling = ()=> {
+    const properties = tooltip.value?.getBoundingClientRect()
+    const  pContent = tooltipContent.value?.getBoundingClientRect()
+    const top =  properties?.top
+    const left =  properties?.left
+    const right =  properties?.right
+    const bottom =  properties?.bottom
+    let res = { }
+    if(props.position === 'left') {
+        res['top'] = `${ top  }px`
+        res['left'] = `${ left - pContent?.width - 5  }px`
+    }else if(props.position === 'right') {
+        res['top'] = `${ top }px`
+        res['left'] = `${ right + 5 }px`
+    }
+    else if(props.position === 'under') {
+        res['top'] = `${ bottom + 5 }px`
+        res['left'] = `${ left - pContent?.width/2 + properties?.width/2 }px`
+    }else {
+        res['top'] = `${ top - pContent?.height - 5 }px`
+        res['left'] = `${ left - pContent?.width/2 + properties?.width/2 }px`
+    }
+    return res
+}
+
 </script>
 <style lang="postcss" scoped>
 .ada-tooltip-container {
-    @apply tw-relative tw-flex tw-flex-shrink tw-justify-center tw-items-center;
-    position: relative;
-
+    @apply tw-relative tw-w-fit tw-h-fit;
+}
+</style>
+<style lang="postcss">
     .ada-tooltip {
-        @apply tw-absolute tw-flex tw-justify-center tw-items-center tw-bg-tooltip tw-rounded tw-px-1;
+        @apply tw-absolute tw-w-fit tw-flex tw-justify-center tw-items-center tw-bg-primary tw-rounded tw-px-1 tw-text-white;
         @apply tw-transition-all tw-ease-in-out tw-duration-500;
-        min-height: calc(var(--row-height) - 8px);
-        min-width: 65px;
-        width: fit-content;
+        min-width: 20px;
+        min-height: 20px;
         z-index: 1000;
-        color: white;
-        pointer-events: none;
         touch-action: none;
         white-space: nowrap;
         font-weight: bolder;
-
-        &.above {
-            top: calc(0px - var(--row-height) + 4px);
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        &.under {
-            bottom: calc(0px - var(--row-height) + 4px);
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        &.left {
-            top: 4px;
-            right: calc(100% + 4px);
-        }
-
-        &.right {
-            top: 4px;
-            left: calc(100% + 4px);
-        }
     }
-}
 </style>
-
 <template>
-    <div class="ada-tooltip-container" @mouseenter="mouseenter" @mouseleave="mouseleave">
-        <slot name="activator" />
-        <span :style="{ opacity: visible ? 1 : 0 }" class="ada-tooltip" :class="[position]">
+    <div ref="tooltip" class="ada-tooltip-container" @mouseenter="mouseenter" @mouseleave="mouseleave">
+        <slot name="activator"></slot>
+        <Teleport to="body">
+            <span ref="tooltipContent" :style="style" class="ada-tooltip" :class="[ visible ? 'tw-opacity-100' : 'tw-opacity-0' ]">
             <slot />
         </span>
+        </Teleport>
+      
     </div>
 </template>
