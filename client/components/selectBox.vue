@@ -74,18 +74,12 @@ props.value ? select(props.value) : null
   &.has-label {
     .label {
       @apply tw-flex tw-items-center;
-      width: 96px;
+      max-width: 65px;
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
     }
 
-    .input {
-      margin: 0 0 0 4px;
-      max-width: calc(100% - 96px);
-
-      
-    }
   }
 
   li,
@@ -94,51 +88,33 @@ props.value ? select(props.value) : null
   }
 
   &.active {
-    i {
+    @apply tw-rounded-b-none;
+    .input i {
+      display: inline-block;
       transform: rotate(-180deg);
     }
-    @apply tw-rounded-b-none;
   }
 
   .input {
-    @apply tw-flex tw-flex-grow tw-min-w-0 tw-whitespace-nowrap tw-justify-between;
-    position: relative;
-    border-radius: var(--border-radius-input);
-    background-color: rgba(var(--c-primary), 0.1);
-    color: var(--c-primary-rgb);
-    cursor: pointer;
-
-    &.value {
-      background-color: var(--c-primary-rgb);
-
-      input,
-      i {
-        color: white;
-      }
-    }
-
+    @apply tw-relative tw-flex tw-min-w-0 tw-whitespace-nowrap tw-justify-between;
+    @apply tw-rounded tw-cursor-pointer;
     input {
-      background-color: transparent;
-      outline-style: none;
+      @apply tw-bg-transparent tw-outline-none tw-rounded;
       line-height: 0.83334rem !important;
-
-      border-radius: var(--border-radius-input);
       cursor: inherit;
-
       &::placeholder {
         color: var(--c-primary-rgb);
       }
     }
-  }
-}
-</style>
-
-<style lang="postcss">
-.ada-select {
-  .input{
     .menu-global {
-      max-width: calc(100% - 48px);
+      max-width: calc(100% - 24px);
     }
+    .ada-button {
+      @apply tw-bg-transparent tw-w-[24px] tw-h-full;
+    }
+    /* .i {
+      @apply tw-w-[24px] tw-h-[24px] tw-bg-error tw-text-error ;
+    } */
   }
 }
 </style>
@@ -149,15 +125,15 @@ props.value ? select(props.value) : null
     active ? 'active' : 'inactive',
     val == null ? '' : 'value',
     label == '' ? '' : 'has-label',
-  ]" @click="active = !active" v-ada-click-outside="()=> active = false">
+  ]">
 
   <!-- set outslide click directive -->
     <div class="label">
       {{ label }}
     </div>
-    <div class="input">
+    <div class="input" @click="active = !active" v-ada-click-outside="()=> active = false">
       <slot name="prepend"></slot>
-      <ada-menu :mLeft="-49" :mTop="28" :mWidth="50" :active="active">
+      <ada-menu :mLeft="-25" :mTop="28" :mWidth="25" :active="active">
         <template #activator>
           <input type="text" class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
             :value="selectedText" readonly ref="inp" :aria-readonly="readonly"
@@ -174,7 +150,9 @@ props.value ? select(props.value) : null
         </template>
       </ada-menu>
       <slot name="append">
-        <i @click="active = !active" class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"></i>
+        <ada-btn @click.stop="active = !active">
+          <i class="isax isax-arrow-down tw-text-sm tw-my-auto tw-mx-2"></i>
+        </ada-btn>
       </slot>
     </div>
   </label>

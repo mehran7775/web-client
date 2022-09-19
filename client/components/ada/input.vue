@@ -37,27 +37,13 @@ const active = ref(false)
 </script>
 
 <style lang="postcss">
-.rtl {
-  .ada-input {
-    &.has-label {
-      input {
-        margin: auto 4px auto 0;
-      }
-    }
-  }
-}
-
 .ada-input {
-  @apply tw-whitespace-nowrap tw-min-w-0;
+  @apply tw-whitespace-nowrap tw-min-w-0 tw-w-full;
 
   &.has-label {
     .label {
       @apply tw-flex tw-items-center tw-text-black tw-overflow-clip tw-text-ellipsis tw-whitespace-nowrap;
-      width: 96px;
-    }
-
-    input {
-      margin: auto 0 auto 4px;
+      max-width: 65px;
     }
   }
 
@@ -69,9 +55,8 @@ const active = ref(false)
 
   .scaffold {
     @apply tw-flex tw-justify-between tw-align-middle tw-cursor-text tw-bg-primary/10 tw-overflow-clip;
-    min-width: calc(100% - 96px);
     @apply tw-border tw-border-black/50 tw-rounded;
-
+    
     input {
       @apply tw-rounded tw-min-w-0 tw-inline tw-flex-grow tw-min-h-0 tw-px-2;
       background: none;

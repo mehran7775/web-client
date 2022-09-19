@@ -210,7 +210,7 @@ instrumentManager
       @apply tw-m-0 tw-p-0 tw-grid tw-grid-cols-2;
 
       .ada-input {
-        @apply tw-flex;
+        @apply tw-flex tw-justify-between;
 
         & :deep(.scaffold) {
           @apply tw-border-none tw-bg-transparent;
@@ -334,14 +334,20 @@ instrumentManager
           @apply tw-text-primary;
         }
         .scaffold {
-          @apply tw-w-full;
+          width: calc(100% - 65px);
+          max-width: calc(100% - 65px);
+            /* @apply tw-bg-red-400; */
+            
           input {
             @apply tw-font-bold tw-py-1;
           }
         }
       }
       .ada-select {
+        @apply tw-justify-between;
         .input {
+          width: calc(100% - 65px);
+          max-width: calc(100% - 65px);
           @apply tw-bg-primary tw-bg-opacity-10 tw-rounded tw-items-center;
         }
       }
