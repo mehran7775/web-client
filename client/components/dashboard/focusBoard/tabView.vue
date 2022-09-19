@@ -70,7 +70,7 @@ defineExpose({
 .tab-view {
   @apply tw-w-full;
   > .toggle {
-    @apply tw-justify-start tw-w-full tw-items-end tw-bg-white tw-bg-opacity-5 tw-transition-all tw-shadow;
+    @apply tw-justify-start tw-w-full tw-items-end tw-bg-white tw-bg-opacity-5 tw-transition-all tw-shadow tw-box-border;
     min-height: 32px;
     &.active {
       @apply tw-border-b tw-border-primary tw-border-opacity-80;

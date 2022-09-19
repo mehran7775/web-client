@@ -133,7 +133,7 @@ props.value ? select(props.value) : null
     </div>
     <div class="input" @click="active = !active" v-ada-click-outside="()=> active = false">
       <slot name="prepend"></slot>
-      <ada-menu :mLeft="-25" :mTop="28" :mWidth="25" :active="active">
+      <ada-menu :mLeft="-24" :mTop="28" :mWidth="24" :active="active">
         <template #activator>
           <input type="text" class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
             :value="selectedText" readonly ref="inp" :aria-readonly="readonly"
