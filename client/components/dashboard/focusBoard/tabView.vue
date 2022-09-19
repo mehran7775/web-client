@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {
-  Tabs,
   DeepOptions,
   Instrument,
   SameSectorQuery,
@@ -71,24 +70,34 @@ defineExpose({
 .tab-view {
   @apply tw-w-full;
   > .toggle {
-    @apply tw-justify-start tw-w-full tw-items-end tw-bg-white tw-bg-opacity-20 tw-border-b tw-border-primary tw-border-opacity-10;
-    box-shadow: 0 0 1px 0 #e2e2e2;
+    @apply tw-justify-start tw-w-full tw-items-end tw-bg-white tw-bg-opacity-5 tw-transition-all tw-shadow;
     min-height: 32px;
-    background-color: #F9FAFE;
-
+    &.active {
+      @apply tw-border-b tw-border-primary tw-border-opacity-80;
+    }
     .ada-button {
-      @apply tw-mx-2;
+      @apply tw-relative;
       .bar {
         @apply -tw-left-[12px];
+      }
+      .sepreat-border {
+        @apply tw-absolute tw-left-0 -tw-bottom-[1px] tw-bg-white tw-w-full tw-h-[1px];
+      }
+      /* &.selected {
+        @apply tw-bg-error;
+      } */
+      &:not(:first-child){
+        @apply tw-mr-2;
       }
     }
 
     .tab {
-      @apply tw-px-2 tw-flex tw-items-center tw-justify-between tw-bg-transparent tw-rounded tw-text-primary tw-transition;
+      @apply tw-px-2 tw-flex tw-items-center tw-justify-between tw-bg-transparent tw-text-primary tw-transition;
+      @apply tw-rounded-none;
       min-width: 168px;
 
       &.selected {
-        @apply tw-border-[1px] tw-border-primary tw-border-opacity-80 tw-rounded tw-shadow;
+        @apply tw-border-t-[1px] tw-border-l-[1px] tw-border-r-[1px] tw-border-primary tw-border-opacity-80;
         &::after {
           background-color: transparent;
         }
@@ -140,7 +149,7 @@ defineExpose({
 
 <template>
   <div class="tab-view">
-    <ada-toggle :height="32" v-model="tab" align-with-title>
+    <ada-toggle :height="32" v-model="tab" align-with-title :class="{ active: selected }">
       <ada-btn
         @click="() => select(item)"
         v-for="(item, i) in instruments"
@@ -149,7 +158,7 @@ defineExpose({
         name-key="$.id"
         :height="32"
         class="tab"
-        :class="{ selected: selected && selected.id == item.id }"
+        :class="{ selected: (selected && selected.id == item.id) }"
       >
         <ada-badge dot left offset-y="75%" offset-x="-5">
           {{ item.name }}
@@ -158,7 +167,8 @@ defineExpose({
         <ada-icon @click.stop="() => close(item.id)" :size="12">
           mdi-close
         </ada-icon>
-        <div v-if="(i != instruments.length - 1) && !(selected && selected.id == item.id)" class="bar"></div>
+        <div v-if="(i != instruments.length - 1)" class="bar"></div>
+        <div v-if="selected && selected.id == item.id" class="sepreat-border"></div>
       </ada-btn>
     </ada-toggle>
     <ada-tabs v-model="tab">
