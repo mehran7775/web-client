@@ -4,7 +4,7 @@ import FileTypes from '~~/types/imageTypes'
 
 export function useUploadAbleFile() {
     const files = ref<UploadableFile[]>([])
-    const contentFile = ref<string>('')
+    
     function addFiles(newFiles: FileList): void {
         let newUploadableFiles = [...newFiles]
             .filter(( file ) => validateType(file.type as FileTypes))
@@ -24,18 +24,13 @@ export function useUploadAbleFile() {
         return acceptedFileTypes.includes(type)
     }
 
-    function readerTextFile (file: File) {
-       
+    function readerTextFile (file: File, callback: (evt: any) => void) {
         let readerFile = new FileReader()
-        readerFile.onload = (evt)=> {
-            contentFile.value = evt.target.result as string
-        }
-        
         readerFile.readAsText(file)
-        
+        readerFile.onloadend = callback
     }
 
 
-    return { files, contentFile, addFiles, readerTextFile }
+    return { files, addFiles, readerTextFile }
 }
 

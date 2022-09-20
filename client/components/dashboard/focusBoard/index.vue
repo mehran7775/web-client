@@ -79,7 +79,7 @@ if (process.client) {
 }
 
 .bookmark {
-  @apply tw-mx-[4px] tw-px-[4px] tw-rounded tw-bg-primary tw-bg-opacity-10 tw-w-[110px] tw-h-[28px] tw-text-primary;
+  @apply tw-mx-[4px] tw-px-[4px] tw-rounded tw-bg-default tw-w-[110px] tw-h-[28px] tw-text-primary;
   @apply tw-flex tw-items-center tw-justify-between tw-text-ellipsis tw-overflow-hidden tw-whitespace-nowrap;
 
   .icon {
@@ -88,7 +88,10 @@ if (process.client) {
 
   &.router-link-exact-active,
   &.router-link-active {
-    @apply tw-border tw-border-primary;
+    @apply tw-bg-primary tw-text-white;
+    .icon {
+      @apply tw-text-white;
+    }
   }
 
   > .label {

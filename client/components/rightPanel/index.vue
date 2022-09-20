@@ -49,14 +49,14 @@ const selected = computed({
 const bottomPanel = useBottomPanel();
 const rtl = computed(() => appManager.rtl);
 const bookmarks = computed(() => userManager.getBookmarks);
-const shourtcuts = computed(() => userManager.getShourtcuts);
+const shortcuts = computed(() => userManager.getShourtcuts);
 const home = computed(() => userManager.me.settings?.home);
 const isMarked = computed(() => (data: MenuItem) => {
   switch (data.bookmarkPosition) {
     case BookmarkPosition.ToolBar:
       return bookmarks.value.findIndex((val) => val.title == data.title) > -1;
     case BookmarkPosition.RightPanel:
-      return shourtcuts.value.findIndex((val) => val.title == data.title) > -1;
+      return shortcuts.value.findIndex((val) => val.title == data.title) > -1;
   }
 });
 const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
@@ -162,9 +162,9 @@ function mark(data: MenuItem) {
       break;
     case BookmarkPosition.RightPanel:
       {
-        const tmp = [...shourtcuts.value, bk];
+        const tmp = [...shortcuts.value, bk];
         userManager.update_settings({
-          path: "/shourtcuts",
+          path: "/shortcuts",
           value: tmp,
         });
       }
@@ -189,13 +189,13 @@ function unmark(data: MenuItem) {
       break;
     case BookmarkPosition.RightPanel:
       {
-        let tmp = [...shourtcuts.value];
+        let tmp = [...shortcuts.value];
         tmp.splice(
           tmp.findIndex((item) => item.to == data.to),
           1
         );
         userManager.update_settings({
-          path: "/shourtcuts",
+          path: "/shortcuts",
           value: tmp,
         });
       }
@@ -422,7 +422,7 @@ if (process.client) {
         <span>{{ item.text ? item.text : $t(item.title) }}</span>
       </ada-tooltip>
       <hr class="divider" />
-      <ada-tooltip v-for="item in shourtcuts" :key="item.title" position="left">
+      <ada-tooltip v-for="item in shortcuts" :key="item.title" position="left">
         <template #activator>
           <ada-btn
             :to="item.to"
@@ -468,6 +468,7 @@ if (process.client) {
                   class="tw-flex tw-items-baseline"
                 >
                   <ada-icon
+                    v-if="value.bookmarkPosition"
                     size="1.34rem"
                     :class="[
                       isMarked(value) ? 'tw-text-primary' : 'tw-text-gray4',

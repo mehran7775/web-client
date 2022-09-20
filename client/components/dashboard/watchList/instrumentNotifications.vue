@@ -15,6 +15,9 @@ const notifManager = useNotifications();
 const panelManager = useBottomPanel();
 const instrumentManager = useInstrument();
 const messageManager = useMessages();
+const appManager = useAsrTrader();
+
+const formatter = appManager.formatter;
 const notifs = computed(
   () => notifManager.state.cache[props.value.instrumentCode]
 );
@@ -62,12 +65,23 @@ const calculateColor = (value: MessageOrigin) => {
     return "info";
   }
 };
+
+const calculateType = (n: MessageOrigin): string => {
+  if (n == MessageOrigin.rlc) {
+    return "categories.marketModerator";
+  } else if (n == MessageOrigin.support) {
+    return "categories.news";
+  } else if (n == MessageOrigin.tedan) {
+    return "categories.tedan";
+  } else if (n == MessageOrigin.codal) {
+    return "categories.codal";
+  }
+};
 </script>
 
 <style lang="postcss" scoped>
 div {
   @apply tw-px-1 tw-flex tw-justify-center tw-items-center tw-max-h-full;
- 
 }
 </style>
 <template>
@@ -89,7 +103,10 @@ div {
           <span v-else>isax-document-text-outline</span>
         </ada-icon>
       </template>
-      {{ not.params.messagesCount }}
+      <span class="tw-flex">
+        <span v-text="$t(calculateType(not.params.origin))"> </span>
+        <span v-text="formatter.format(not.params.messagesCount)" class="tw-pl-1"></span>
+      </span>
     </ada-tooltip>
   </div>
 </template>

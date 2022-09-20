@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
 import {
   getMessage as GetMessage,
   getMessageFilters as GetMessageFilters,
@@ -10,6 +9,7 @@ import {
   Message,
   AutoCompleteItem,
   MessageQuery,
+  MessageOrigin
 } from "@/types";
 import { MessageState } from "@/types/stores";
 import { AxiosResponse } from "axios";

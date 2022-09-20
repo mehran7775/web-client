@@ -16,6 +16,7 @@
   "general": {
     "save": "ثبت",
     "download": "دانلود",
+    "upload": "آپلود",
     "send": "ارسال",
     "percent": "درصد",
     "export": "خروجی",
@@ -384,7 +385,8 @@
     "switchBrokerageReport": "@:general.report @:general.switch @:oms.brokerage",
     "brokerage": "@:oms.brokerage",
     "conditional": "@:general.conditional",
-    "saveSettings": "@:general.download @:general.settings"
+    "saveSettings": "@:general.download @:general.settings",
+    "uploadSettings": "@:general.upload @:general.settings"
   },
   "bottom-panel": {
     "completeInfo": {

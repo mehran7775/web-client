@@ -449,7 +449,7 @@ refresh();
         </template>
       </ada-data-table-row-handler>
     </ada-data-table>
-    <ada-dialog :active="confirmInstrumentRemoval">
+    <lazy-ada-dialog :active="confirmInstrumentRemoval">
       <div class="dialog-delete">
         <h5 v-text="$t('general.alert')"></h5>
         <p v-text="$t('instrument.remove')"></p>
@@ -480,6 +480,6 @@ refresh();
           </ada-btn>
         </footer>
       </div>
-    </ada-dialog>
+    </lazy-ada-dialog>
   </div>
 </template>

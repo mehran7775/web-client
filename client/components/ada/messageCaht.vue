@@ -76,12 +76,10 @@ p {
     :class="{ supporter: !msg.self }"
   >
     <ada-btn
-      v-show="activeOptionMessage"
-      @click.stop="optionMessage = !optionMessage"
-    >
+      v-show="activeOptionMessage">
       <ada-menu :active="optionMessage" :mWidth="55" :mLeft="-80" :mTop="-3">
         <template #activator>
-          <ada-icon size="1.8rem">mdi-menu-down</ada-icon>
+          <ada-icon size="1.8rem"  @click.stop="optionMessage = !optionMessage">mdi-menu-down</ada-icon>
         </template>
         <template #items>
           <ada-list
@@ -93,11 +91,11 @@ p {
                 <span v-text="$t('general.edit')"></span>
               </ada-btn>
             </ada-list-item>
-            <ada-list-item @click.stop="chat.remove(msg)">
+            <!-- <ada-list-item @click.stop="chat.remove(msg)">
               <ada-btn>
                 <span v-text="$t('general.delete')"></span>
               </ada-btn>
-            </ada-list-item>
+            </ada-list-item> -->
           </ada-list>
         </template>
       </ada-menu>
