@@ -64,7 +64,7 @@ defineExpose({
     max-height: 320px;
 
     &.active {
-      @apply tw-border tw-border-primary;
+      @apply tw-border tw-border-primary tw-rounded;
 
       .toolbar {
         @apply tw-bg-primary tw-bg-opacity-10;
@@ -92,7 +92,7 @@ defineExpose({
         }
       }
       .buy, .sell{
-        @apply tw-w-[58px] tw-text-white tw-mx-1 tw-h-[26px];
+        @apply tw-w-[58px] tw-text-white tw-mx-1 tw-h-[26px] tw-leading-3;
       }
       .buy {
         @apply tw-bg-success tw-bg-opacity-70;

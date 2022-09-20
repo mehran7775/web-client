@@ -38,6 +38,7 @@ export function CreateBookmark(item: MenuItem): Bookmark {
 
 export interface TabItem {
   title: string;
+  secondTitle?: string;
   params: { [key: string]: any };
   children?: Array<TabItem>;
   current?: string;

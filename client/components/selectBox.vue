@@ -68,7 +68,7 @@ props.value ? select(props.value) : null
 }
 
 .ada-select {
-  @apply tw-flex tw-min-w-0 tw-whitespace-nowrap tw-rounded tw-relative tw-z-50;
+  @apply tw-flex tw-min-w-0 tw-whitespace-nowrap tw-rounded tw-relative;
   position: relative;
 
   &.has-label {

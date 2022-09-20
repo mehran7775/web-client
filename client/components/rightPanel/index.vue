@@ -217,7 +217,7 @@ function setOnBottomPanel(value: MenuItem): void {
     bottomPanel.removeTab(tab);
     return;
   }
-  const res = existDeletableTab();
+  const res = bottomPanel.existDeletableTab();
   res ? bottomPanel.removeTab(res) : null;
 
   bottomPanel.registerTab(tab);
@@ -231,11 +231,8 @@ const isExistTab = (tab: TabItem): boolean => {
   return false;
 };
 
-const existDeletableTab = (): TabItem | undefined => {
-  return bottomPanel.tabs.find((item) => item.deletable === true);
-};
 
-async function sendMessage(): void {
+async function sendMessage(): Promise<void> {
   if (inputChat.value) {
     chat.pusher(inputChat.value);
     const chatroom = document.querySelector(".chatroom__messages");

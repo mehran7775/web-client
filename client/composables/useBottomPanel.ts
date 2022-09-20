@@ -38,6 +38,9 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
   function removeTab(tab: TabItem):void {
     state.value._tabs[tab.title] ? delete state.value._tabs[tab.title] : null
   }
+  const existDeletableTab = (): TabItem | undefined => {
+    return tabs.value.find((item) => item.deletable === true);
+  }; 
 
   return {
     state,
@@ -45,6 +48,7 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
     setLoading,
     toggleExpand,
     removeTab,
+    existDeletableTab,
     tabs,
     activeTab,
     expanded,

@@ -29,7 +29,7 @@ const clickOutside = ref<boolean>(true)
 
 <style lang="postcss" scoped>
 .auto-complete {
-  @apply tw-relative tw-z-50 tw-h-[28px] tw-px-2 tw-pt-[2px] tw-bg-primary tw-bg-opacity-10 tw-rounded tw-overflow-hidden;
+  @apply tw-relative tw-h-[28px] tw-px-2 tw-pt-[2px] tw-bg-primary tw-bg-opacity-10 tw-rounded tw-overflow-hidden;
   .body {
     @apply tw-flex tw-items-center tw-h-full;
     input {

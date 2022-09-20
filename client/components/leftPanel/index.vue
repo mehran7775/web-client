@@ -131,33 +131,30 @@ async function load(query: Ref<MessageQuery>) {
   }
 }
 
-const trigger_show_message = async (message: any) => {
-  const tab = useBottomPanel()._titles.find((item) => {
-    return item.title == getTitle(message.type);
-  });
-  if (tab) {
-    const res = useBottomPanel()._titles.filter((item) => {
-      return item.title != tab.title;
-    });
-    useBottomPanel()._titles = res;
-  }
-  const item = {
+function trigger_show_message(message: Message) {
+  const tab = {
     title: getTitle(message.type),
-    body: message.message,
-    params: [],
+    params: [
+      { body: message.message }
+    ],
     children: [
       {
         title: getTitle(message.type),
-        title2: message.title,
+        secondTitle: message.title,
         params: [],
+        deletable: false
       },
     ],
-    default: `${getTitle(message.type)}`,
-    deleteAble: true,
-  };
-  useBottomPanel()._titles.push(item);
-  useBottomPanel()._activeTab = item;
-};
+    current: `${getTitle(message.type)}`,
+    deletable: true
+  }
+  const res = bottomPanel.existDeletableTab()
+  if(res) bottomPanel.removeTab(res)
+  bottomPanel.registerTab(tab)
+  bottomPanel.activeTab = tab;
+
+}
+
 
 const getTitle = (type: number) => {
   if (type === 1) {

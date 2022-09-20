@@ -104,6 +104,10 @@ for (let i in defaultTabs) {
 
       .tabs {
         @apply tw-h-full;
+
+        .tab :deep(p) {
+          @apply tw-p-5 tw-leading-8;
+        }
       }
 
       .tab--active {
@@ -154,13 +158,18 @@ for (let i in defaultTabs) {
         <ada-tabs v-model="tab">
           <lazy-ada-tab v-for="t in tabs" :key="t.title" :model="t">
             <component v-if="t.component" :is="t.component" v-model="active" :tabs="t.children"></component>
+            <template v-if="t.params.length">
+              <div v-for="p in t.params">
+                <p v-if="p.body" v-text="p.body"></p>
+              </div>
+            </template>
           </lazy-ada-tab>
         </ada-tabs>
       </div>
       <header class="header">
         <ada-toggle v-model="active" class="b-tabs">
           <ada-btn class="tab-title" v-for="(t, i) in tab.children" :key="t.title" :model="t">
-            {{ $t(t.title) }}
+            {{ $t(t.title) }}  <span v-if="t.secondTitle">{{ ` - ${ t.secondTitle }` }}</span>
             <div v-if="i != tab.children.length - 1" class="bar"></div>
           </ada-btn>
         </ada-toggle>

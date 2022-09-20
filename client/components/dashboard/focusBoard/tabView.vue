@@ -72,20 +72,18 @@ defineExpose({
   > .toggle {
     @apply tw-justify-start tw-w-full tw-items-end tw-bg-white tw-bg-opacity-5 tw-transition-all tw-shadow tw-box-border;
     min-height: 32px;
-    &.active {
-      @apply tw-border-b tw-border-primary tw-border-opacity-80;
-    }
+   
     .ada-button {
-      @apply tw-relative;
+      @apply tw-relative tw-mr-2;
       .bar {
         @apply -tw-left-[12px];
       }
       .sepreat-border {
-        @apply tw-absolute tw-left-0 -tw-bottom-[1px] tw-bg-white/90 tw-w-full tw-h-[1px];
+        @apply tw-absolute tw-left-0 -tw-bottom-[1px] tw-bg-white/80 tw-w-full tw-h-[1px];
       }
-      &:not(:first-child){
+      /* &:not(:first-child){
         @apply tw-mr-2;
-      }
+      } */
     }
 
     .tab {
@@ -100,7 +98,7 @@ defineExpose({
         }
       }
       &.active {
-        @apply tw-bg-primary/10;
+        @apply tw-bg-primary/20;
       }
       &::after {
         border-radius: 0 !important;
@@ -168,7 +166,6 @@ defineExpose({
           mdi-close
         </ada-icon>
         <div v-if="(i != instruments.length - 1)" class="bar"></div>
-        <div v-if="selected && selected.id == item.id" class="sepreat-border"></div>
       </ada-btn>
     </ada-toggle>
     <ada-tabs v-model="tab">
