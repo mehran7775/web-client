@@ -19,8 +19,8 @@ export async function updateUser(form: object, axios: AxiosInstance) {
 }
 
 export async function updateUserSettings(path: string, settings: any, axios: AxiosInstance):
-  Promise<AxiosResponse<{ setting: Setting }>> {
-  return await axios.put('/sso/user/edit-setting?keys=' + (path ?? '/'), settings, {
+  Promise<AxiosResponse<{ setting:{settings: Setting }}>> {
+  return await axios.put('/sso/user/edit-setting?keys=' + (path ?? '/settings'), settings, {
     headers: {
       'Content-Type': 'application/json'
     }

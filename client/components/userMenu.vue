@@ -88,7 +88,7 @@ function removeFile(file: UploadableFile): void {
 async function uploadSetting() {
   if (content.value) {
     await userManager.update_settings({
-      path: "/",
+      path: "/settings",
       value: JSON.parse(content.value),
     });
     triggerUploadModal.value = false

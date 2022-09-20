@@ -238,7 +238,7 @@ export const useUser = defineStore("user", () => {
         axios.value
       );
       if (resp.data.setting) {
-        setSettings(resp.data.setting);
+        setSettings(resp.data.setting.settings);
         if (process.client) localStorage.setItem(userKey, state.user.userName);
       }
       settingsNotChanged(payload.path);

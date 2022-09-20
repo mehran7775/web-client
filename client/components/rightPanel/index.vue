@@ -131,7 +131,7 @@ const drawer = computed({
 function setHome(item: MenuItem) {
   if (item.to)
     userManager.update_settings({
-      path: "/home",
+      path: "/settings/home",
       value: item.to,
     });
 }
@@ -155,7 +155,7 @@ function mark(data: MenuItem) {
       {
         const tmp = [...bookmarks.value, bk];
         userManager.update_settings({
-          path: "/bookmarks",
+          path: "/settings/bookmarks",
           value: tmp,
         });
       }
@@ -164,7 +164,7 @@ function mark(data: MenuItem) {
       {
         const tmp = [...shortcuts.value, bk];
         userManager.update_settings({
-          path: "/shortcuts",
+          path: "/settings/shortcuts",
           value: tmp,
         });
       }
@@ -182,7 +182,7 @@ function unmark(data: MenuItem) {
           1
         );
         userManager.update_settings({
-          path: "/bookmarks",
+          path: "/settings/bookmarks",
           value: tmp,
         });
       }
@@ -195,7 +195,7 @@ function unmark(data: MenuItem) {
           1
         );
         userManager.update_settings({
-          path: "/shortcuts",
+          path: "/settings/shortcuts",
           value: tmp,
         });
       }

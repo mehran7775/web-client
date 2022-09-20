@@ -142,7 +142,7 @@ async function remove(val: InstrumentCache) {
   const tmp = [...(watchLists[name] ?? [])];
   tmp.splice(tmp.lastIndexOf(val.id.toString()), 1);
   await userManager.update_settings({
-    path: "/watch_lists/" + name,
+    path: "/settings/watch_lists/" + name,
     value: tmp,
   });
   refresh();
@@ -165,7 +165,7 @@ async function drop(item: InstrumentCache) {
       changeState: false,
     });
     await userManager.update_settings({
-      path: "/watch_lists/" + name,
+      path: "/settings/watch_lists/" + name,
       value: wl,
     });
     refresh();

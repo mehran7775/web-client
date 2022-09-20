@@ -35,7 +35,7 @@ function refresh() {
 async function create() {
   if (!newName.value || newName.value == "") return;
   await userManager.update_settings({
-    path: "/watch_lists/" + newName.value,
+    path: "/settings/watch_lists/" + newName.value,
     value: [],
   });
   newName.value = "";
@@ -43,7 +43,7 @@ async function create() {
 }
 async function remove(name: string) {
   await userManager.delete_settings({
-    path: "/watch_lists/" + name,
+    path: "/settings/watch_lists/" + name,
   });
   if (name == route.params.name) router.push(watchList[0].to);
   refresh();
@@ -55,7 +55,7 @@ async function rename(item: any) {
     else tmp[i] = wls.value[i];
   });
   await userManager.update_settings({
-    path: "/watch_lists",
+    path: "/settings/watch_lists",
     value: tmp,
   });
   if (item.id == route.params.name) router.push("/watchList/" + item.newName);
