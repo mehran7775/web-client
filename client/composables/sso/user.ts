@@ -104,6 +104,7 @@ export const useUser = defineStore("user", () => {
   }
   function setUser(data: User) {
     state.user = data;
+    state.user.settings = (state.user.settings as any).settings;
     state.settingsChanged = reactive([]);
     if (process.client) {
       const usrCookie = useCookie(userKey);
