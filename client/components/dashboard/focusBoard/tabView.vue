@@ -70,7 +70,7 @@ defineExpose({
 .tab-view {
   @apply tw-w-full;
   > .toggle {
-    @apply tw-justify-start tw-w-full tw-items-end tw-bg-white tw-bg-opacity-5 tw-transition-all tw-shadow;
+    @apply tw-justify-start tw-w-full tw-items-end tw-bg-white tw-bg-opacity-5 tw-transition-all tw-shadow tw-box-border;
     min-height: 32px;
     &.active {
       @apply tw-border-b tw-border-primary tw-border-opacity-80;
@@ -81,11 +81,8 @@ defineExpose({
         @apply -tw-left-[12px];
       }
       .sepreat-border {
-        @apply tw-absolute tw-left-0 -tw-bottom-[1px] tw-bg-white tw-w-full tw-h-[1px];
+        @apply tw-absolute tw-left-0 -tw-bottom-[1px] tw-bg-white/90 tw-w-full tw-h-[1px];
       }
-      /* &.selected {
-        @apply tw-bg-error;
-      } */
       &:not(:first-child){
         @apply tw-mr-2;
       }
@@ -97,10 +94,13 @@ defineExpose({
       min-width: 168px;
 
       &.selected {
-        @apply tw-border-t-[1px] tw-border-l-[1px] tw-border-r-[1px] tw-border-primary tw-border-opacity-80;
+        @apply tw-border-t-[1px] tw-border-l-[1px] tw-border-r-[1px] tw-rounded-t tw-border-primary tw-border-opacity-80;
         &::after {
           background-color: transparent;
         }
+      }
+      &.active {
+        @apply tw-bg-primary/10;
       }
       &::after {
         border-radius: 0 !important;

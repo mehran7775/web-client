@@ -82,7 +82,7 @@ watch(selected, select);
 
 <style lang="postcss">
 .ada-select-watchlist {
-  @apply tw-bg-primary tw-text-white tw-h-[28px];
+  @apply tw-bg-primary/10 tw-text-primary tw-h-[28px];
 }
 
 .menu {

@@ -112,8 +112,6 @@ function selectItem(item: AutoCompleteItem) {
 
 <style lang="postcss" scoped>
 .board-search {
-  background-color: rgba(var(--c-primary), 0.05);
-  border-radius: var(--border-radius-root);
   font-size: 0.75rem;
   max-width: 164px;
 
@@ -122,23 +120,6 @@ function selectItem(item: AutoCompleteItem) {
       .arrow {
         transform: rotate(-180deg);
       }
-    }
-  }
-}
-</style>
-<style lang="postcss">
-.board-search {
-  &.v-select {
-    * {
-      color: var(--c-primary-rgb) !important;
-    }
-  }
-
-  input {
-    color: var(--c-primary-rgb) !important;
-
-    &::placeholder {
-      color: var(--c-primary-rgb) !important;
     }
   }
 }
