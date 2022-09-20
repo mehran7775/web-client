@@ -164,7 +164,7 @@ function mark(data: MenuItem) {
       {
         const tmp = [...shortcuts.value, bk];
         userManager.update_settings({
-          path: "/settings/shortcuts",
+          path: "/shortcuts",
           value: tmp,
         });
       }
@@ -195,7 +195,7 @@ function unmark(data: MenuItem) {
           1
         );
         userManager.update_settings({
-          path: "/settings/shortcuts",
+          path: "/shortcuts",
           value: tmp,
         });
       }
