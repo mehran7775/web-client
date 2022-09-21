@@ -1,5 +1,5 @@
 <template>
-  <select-box height="28px" :value="value" :label="label" textPath="$.name" id="accountType">
+  <select-box :value="value" :label="label" textPath="$.name" id="accountType">
     <template #items>
      <ul class="tw-m-0 tw-p-0">
       <li v-for="item in items" :key="item.id" class="tw-p-2 tw-cursor-pointer hover:tw-bg-primary-100">

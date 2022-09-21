@@ -300,7 +300,7 @@ if (process.client) {
 
   .tab-items {
     width: calc(100% - 48px);
-    @apply tw-shadow-[-2px_1px_2px_0] tw-shadow-primary/20;
+    @apply tw-shadow-[-2px_1px_2px_0] tw-overflow-clip tw-shadow-primary/20;
 
     .tab {
       @apply tw-flex tw-flex-col tw-flex-grow;

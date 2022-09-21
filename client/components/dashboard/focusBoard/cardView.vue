@@ -61,7 +61,7 @@ defineExpose({
     border-left: 1px solid #e0e0e0;
     border-right: 1px solid #e0e0e0;
     cursor: pointer;
-    max-height: 320px;
+   
 
     &.active {
       @apply tw-border tw-border-primary tw-rounded;
@@ -150,9 +150,9 @@ defineExpose({
         </ada-btn>
        </div>
       </header>
-      <div class="text-caption ma-0 px-0">
+      <div class="text-caption tw-p-0 tw-m-0">
         <oms-order-queue-card :inst="item" />
-        <oms-instrument-card :insId="item.id" hide-headers />
+        <oms-instrument-card-compact :insId="item.id" hide-headers />
         <ada-col class="col-border tw-justify-center tw-align-middle">
           <ada-icon :size="16"> isax-presention-chart </ada-icon>
         </ada-col>

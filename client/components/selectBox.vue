@@ -68,7 +68,7 @@ props.value ? select(props.value) : null
 }
 
 .ada-select {
-  @apply tw-flex tw-min-w-0 tw-whitespace-nowrap tw-rounded tw-relative;
+  @apply tw-flex tw-min-w-0 tw-whitespace-nowrap tw-rounded tw-relative tw-w-full;
   position: relative;
 
   &.has-label {
@@ -86,15 +86,6 @@ props.value ? select(props.value) : null
   i {
     color: var(--c-primary-rgb);
   }
-
-  &.active {
-    @apply tw-rounded-b-none;
-    .input i {
-      display: inline-block;
-      transform: rotate(-180deg);
-    }
-  }
-
   .input {
     @apply tw-relative tw-flex tw-min-w-0 tw-whitespace-nowrap tw-justify-between;
     @apply tw-rounded tw-cursor-pointer;
@@ -116,6 +107,18 @@ props.value ? select(props.value) : null
       @apply tw-w-[24px] tw-h-[24px] tw-bg-error tw-text-error ;
     } */
   }
+  &.active {
+    .input {
+      border-bottom-right-radius: 0!important;
+      border-bottom-left-radius: 0!important;
+      i {
+      display: inline-block;
+      transform: rotate(-180deg);
+    }
+    }
+  }
+
+  
 }
 </style>
 
@@ -133,7 +136,7 @@ props.value ? select(props.value) : null
     </div>
     <div class="input" @click="active = !active" v-ada-click-outside="()=> active = false">
       <slot name="prepend"></slot>
-      <ada-menu :mLeft="-24" :mTop="28" :mWidth="24" :active="active">
+      <ada-menu :mLeft="-24" :mTop="27.5" :mWidth="24" :active="active">
         <template #activator>
           <input type="text" class="tw-min-w-0 tw-max-w-full tw-h-full tw-flex-grow tw-px-2 tw-inline-block"
             :value="selectedText" readonly ref="inp" :aria-readonly="readonly"

@@ -123,7 +123,7 @@ if (process.client) {
     @apply tw-bg-primary tw-bg-opacity-10 tw-w-10 tw-h-10 tw-rounded;
 
     &.active {
-      @apply tw-text-primary;
+      @apply tw-bg-primary/20 tw-shadow;
 
       .icon {
         @apply tw-text-primary;

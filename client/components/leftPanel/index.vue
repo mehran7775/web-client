@@ -209,7 +209,7 @@ loadMyMessages();
   }
   .tab-items {
     width: calc(100% - 48px);
-    @apply tw-shadow-[0_2px_3px_1px] tw-shadow-primary/20 tw-py-2;
+    @apply tw-shadow-[0_2px_3px_1px] tw-shadow-primary/20 tw-py-2 tw-overflow-clip;
     & :deep(.ada-button) {
       @apply tw-bg-transparent;
     }

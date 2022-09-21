@@ -51,6 +51,9 @@ const total = computed(() => {
   .legal {
     @apply tw-text-info tw-bg-info tw-bg-opacity-10;
   }
+  .col-border {
+    border-bottom: 1px solid #e0e0e0;
+  }
 }
 </style>
 

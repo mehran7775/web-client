@@ -442,7 +442,7 @@ instrumentManager
                   <ada-icon>isax-lock-1</ada-icon>
                 </ada-btn>
 
-                <ada-menu :active="activeCalculator" :mWidth="196" :mLeft="-11" :mTop="28">
+                <ada-menu :active="activeCalculator" :mWidth="196" :mLeft="-11" :mTop="25">
                   <template #activator>
                     <ada-btn
                       @click.stop="activeCalculator = !activeCalculator"

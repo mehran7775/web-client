@@ -84,6 +84,9 @@ instrumentManager
     line-height: var(--row-height);
     height: var(--row-height);
   }
+  .col-border {
+    border-bottom: 1px solid #e0e0e0;
+  }
 }
 </style>
 
