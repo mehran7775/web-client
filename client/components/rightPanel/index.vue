@@ -131,7 +131,7 @@ const drawer = computed({
 function setHome(item: MenuItem) {
   if (item.to)
     userManager.update_settings({
-      path: "/settings/home",
+      path: "/home",
       value: item.to,
     });
 }
@@ -155,7 +155,7 @@ function mark(data: MenuItem) {
       {
         const tmp = [...bookmarks.value, bk];
         userManager.update_settings({
-          path: "/settings/bookmarks",
+          path: "/bookmarks",
           value: tmp,
         });
       }
@@ -182,7 +182,7 @@ function unmark(data: MenuItem) {
           1
         );
         userManager.update_settings({
-          path: "/settings/bookmarks",
+          path: "/bookmarks",
           value: tmp,
         });
       }

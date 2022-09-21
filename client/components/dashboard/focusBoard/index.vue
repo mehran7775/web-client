@@ -28,7 +28,7 @@ const viewMode = computed({
 
 async function setHome() {
   await userManager.update_settings({
-    path: "/settings/home",
+    path: "/home",
     value: path.value,
   });
 }
@@ -36,7 +36,7 @@ async function setHome() {
 async function unmark(bookmark: Bookmark) {
   const tmp = [...bookmarks.value.filter((item) => item.to != bookmark.to)];
   userManager.update_settings({
-    path: "/settings/bookmarks",
+    path: "/bookmarks",
     value: tmp,
   });
 }

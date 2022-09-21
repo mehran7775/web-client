@@ -28,7 +28,7 @@ const isMarked = computed(() => (data: AutoCompleteItem) => {
 });
 function setHome(item: AutoCompleteItem) {
   userManager.update_settings({
-    path: "/settings/home",
+    path: "/home",
     value: generateAddress(item.id),
   });
 }
@@ -41,7 +41,7 @@ function mark(item: AutoCompleteItem) {
   };
   const tmp = [...bookmarks.value, bk];
   userManager.update_settings({
-    path: "/settings/bookmarks",
+    path: "/bookmarks",
     value: tmp,
   });
 }
@@ -53,7 +53,7 @@ function unmark(item: AutoCompleteItem) {
     1
   );
   userManager.update_settings({
-    path: "/settings/bookmarks",
+    path: "/bookmarks",
     value: tmp,
   });
 }

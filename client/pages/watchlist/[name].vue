@@ -48,7 +48,7 @@ async function apply() {
   const name = route.params.name;
   try {
     await userManager.update_settings({
-      path: "/settings/watch_lists/" + name,
+      path: "/watch_lists/" + name,
       value: watchlists[name as string],
     });
   } finally {

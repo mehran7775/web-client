@@ -47,14 +47,14 @@ export default defineComponent({
         tmp.splice(ind, 1);
       }
       await userManager.update_settings({
-        path: "/settings/columns",
+        path: "/columns",
         value: tmp,
       });
     }
     async function resetDefault() {
       userManager.setCols(DefaultCols());
       await userManager.update_settings({
-        path: "/settings/columns",
+        path: "/columns",
         value: DefaultCols(),
       });
     }

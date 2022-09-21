@@ -22,7 +22,7 @@ async function drop(item: WatchListColumns) {
     hrs.splice(ind > target ? target : target + 1, 0, draggingCol);
     userManager.setCols(hrs);
     await userManager.update_settings({
-      path: "/settings/columns",
+      path: "/columns",
       value: hrs,
     });
   }
