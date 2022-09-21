@@ -13,13 +13,6 @@ const tooltip = ref(null);
 const tooltipContent = ref(null);
 const visible = ref(false);
 
-function mouseenter() {
-  visible.value = true;
-}
-function mouseleave() {
-  visible.value = false;
-}
-
 const style = computed(() => {
   return doStyling();
 });
@@ -68,8 +61,8 @@ const doStyling = () => {
   <div
     ref="tooltip"
     class="ada-tooltip-container"
-    @mouseenter="mouseenter"
-    @mouseleave="mouseleave"
+    @mouseenter="visible = true"
+    @mouseleave="visible = false"
   >
     <slot name="activator"></slot>
     <Teleport to="body">

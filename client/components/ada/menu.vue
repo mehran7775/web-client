@@ -15,15 +15,16 @@ const props = withDefaults(defineProps<{
         mWidth: 0
     }
 )
-
 const appManager = useAsrTrader();
 const rtl = computed(() => appManager.rtl);
 const locale = computed(() => appManager.locale);
 
 const menu = ref(null)
+const menuContent = ref(null)
 //TODO reactive style
 const style = computed(() => {
     const properties = menu.value.getBoundingClientRect()
+    menuContent.value?.getBoundingClientRect();
     return {
         width: `${ properties?.width + props.mWidth}px`,
         left: `${ properties?.left + props.mLeft }px`,
@@ -48,7 +49,7 @@ const style = computed(() => {
         <slot name="activator"></slot>
         <Teleport to="body">
             <transition name="slide-fade">
-                <div v-if="active" class="menu"  :class="[rtl? 'rtl': null, locale]" :style="style">
+                <div ref="menuContent" :style="style" v-if="active" class="menu"  :class="[rtl? 'rtl': null, locale]">
 
                     <slot name="prepend-item"></slot>
                     <slot name="items"></slot>
