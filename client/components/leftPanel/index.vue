@@ -188,7 +188,7 @@ loadMyMessages();
     pointer-events: none;
   }
 
-  .tabs {
+  .toggle.tabs {
     @apply tw-items-center tw-px-2 tw-shadow-[0_2px_3px_1px] tw-shadow-primary/20;
     padding-top: 8px;
     height: calc(100vh - 42px);
@@ -207,10 +207,9 @@ loadMyMessages();
       i{ @apply tw-text-primary }
     }
   }
-  .tabs.tab-items {
-    min-width: 208px;
+  .tab-items {
     width: calc(100% - 48px);
-
+    @apply tw-shadow-[0_2px_3px_1px] tw-shadow-primary/20 tw-py-2;
     & :deep(.ada-button) {
       @apply tw-bg-transparent;
     }

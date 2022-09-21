@@ -207,7 +207,7 @@ instrumentManager
     height: calc(100% - 32px);
 
     .frm {
-      @apply tw-m-0 tw-p-0 tw-grid tw-grid-cols-2;
+      @apply tw-w-full tw-m-0 tw-p-0 tw-grid tw-grid-cols-2;
 
       .ada-input {
         @apply tw-flex tw-justify-between;

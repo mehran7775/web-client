@@ -279,7 +279,7 @@ if (process.client) {
   .toggle.tabs {
     @apply tw-overflow-y-auto;
   }
-  .tabs {
+  .toggle.tabs {
     @apply tw-items-center tw-px-2 tw-shadow-[-2px_1px_2px_0] tw-shadow-primary/20;
     padding-top: 8px;
     height: calc(100vh - 42px);
@@ -296,24 +296,11 @@ if (process.client) {
     .divider {
       @apply tw-text-gray3;
     }
-    .chat-icon {
-      @apply tw-rounded-full tw-bg-primary tw-w-11 tw-h-11 tw-mt-12;
-      &.active {
-        @apply tw-bg-primary;
-        i {
-          @apply tw-text-white;
-        }
-      }
-      i {
-        @apply tw-text-white;
-      }
-    }
   }
 
   .tab-items {
-    min-width: 208px;
-    /* background-color: rgba(var(--c-primary), 0.01); */
     width: calc(100% - 48px);
+    @apply tw-shadow-[-2px_1px_2px_0] tw-shadow-primary/20;
 
     .tab {
       @apply tw-flex tw-flex-col tw-flex-grow;

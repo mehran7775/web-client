@@ -33,7 +33,7 @@ header {
     
     .card {
       @apply tw-p-[24px] tw-mx-auto tw-rounded-t-lg;
-      max-width: 527px;
+      max-width: 75%;
     }
 
     form.card {

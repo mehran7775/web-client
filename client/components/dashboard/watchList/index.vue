@@ -288,7 +288,7 @@ refresh();
 }
 
 .dialog-delete {
-  @apply tw-w-[550px];
+  width: 40vw;
 
   .ada-button {
     @apply tw-text-white tw-w-16;

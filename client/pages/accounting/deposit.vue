@@ -49,7 +49,7 @@ header {
     &.card {
       > div {
         @apply tw-m-auto;
-        max-width: 310px;
+        max-width: 65%;
         > .banks {
           @apply tw-flex tw-justify-between tw-w-full tw-mb-[16px] tw-h-[64px];
 
