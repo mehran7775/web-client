@@ -74,7 +74,7 @@ defineExpose({
 
 <template>
   <div class="tw-mx-auto">
-    <div class="tw-grid tw-col-span-1 tw-bg-white">
+    <div class="tw-grid tw-col-span-1">
       <dashboard-focus-board>
         <template #toolbar>
           <dashboard-watch-list-selector auto-route class="tw-mt-0 tw tw-max-w-[164px]" />

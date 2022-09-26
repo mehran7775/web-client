@@ -29,11 +29,11 @@ const clickOutside = ref<boolean>(true)
 
 <style lang="postcss" scoped>
 .auto-complete {
-  @apply tw-relative tw-h-[28px] tw-px-2 tw-pt-[2px] tw-bg-primary tw-bg-opacity-10 tw-rounded tw-overflow-hidden;
+  @apply tw-relative tw-h-[28px] tw-pr-2 tw-pt-[2px] tw-bg-primary tw-bg-opacity-10 tw-rounded tw-overflow-hidden;
   .body {
     @apply tw-flex tw-items-center tw-h-full;
     input {
-      @apply tw-w-full tw-border-none tw-p-1 tw-bg-inherit;
+      @apply tw-border-none tw-p-1 tw-bg-inherit tw-w-full;
 
       &:focus {
         @apply tw-outline-none tw-border-[1.5px];
@@ -43,6 +43,9 @@ const clickOutside = ref<boolean>(true)
         @apply tw-text-primary;
       }
     }
+    /* .menu-global {
+      max-width: calc(100% - 14px);
+    } */
   }
 
   &.active {
@@ -60,7 +63,7 @@ const clickOutside = ref<boolean>(true)
     <slot name="lable"></slot>
     <div class="body">
       <slot name="prepend"></slot>
-      <ada-menu :active="active_menu && clickOutside" :mTop="32" :mLeft="20">
+      <ada-menu :active="active_menu && clickOutside" :mTop="32" :mLeft="0" :mWidth="20">
         <template #activator>
           <input
             type="text"

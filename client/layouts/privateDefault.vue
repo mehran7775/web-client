@@ -53,10 +53,12 @@ const triggerChatRoom = ()=> {
   @apply tw-relative tw-block tw-overflow-clip tw-h-screen tw-pt-[42px] tw-pb-[64px] tw-bg-gray4/5;
 
   > header {
-    @apply tw-flex tw-fixed tw-w-full tw-justify-between tw-items-center tw-align-middle tw-bg-gray4/5 tw-shadow-2xl;
+    @apply tw-flex tw-fixed tw-w-full tw-justify-between tw-items-center tw-align-middle;
     top: 0;
     left: 0;
     height: 42px;
+    background-color: #f9fafe;
+    box-shadow: 0 1px 4px rgba(0,0,0,.05)!important;
 
     * {
       @apply tw-leading-[42px];
@@ -189,7 +191,7 @@ const triggerChatRoom = ()=> {
   }
 
   .floating-button {
-    @apply tw-fixed tw-z-[9999] tw-rounded-full tw-bg-primary tw-w-11 tw-h-11 tw-bottom-7;
+    @apply tw-fixed tw-z-[9999] tw-rounded-full tw-bg-primary tw-w-11 tw-h-11 tw-bottom-3;
 
     .icon {
       @apply tw-text-white;

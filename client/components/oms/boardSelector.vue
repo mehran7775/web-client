@@ -77,8 +77,22 @@ function selectItem(item: AutoCompleteItem) {
 }
 </script>
 
+
+
+<style lang="postcss" scoped>
+  .board-search {
+    @apply tw-bg-primary/10 tw-text-primary tw-h-[28px];
+    font-size: 0.75rem;
+    max-width: 164px;
+  
+    & :deep(.input) { @apply tw-w-full; }
+  }
+  </style>
+
+
+
 <template>
-  <select-box :value="findItem()" v-bind="$attrs" class="board-search" height="28px"
+  <select-box :value="findItem()" v-bind="$attrs" class="board-search"
     :placeholder="$t('menu.boards')" id="border-selector">
     <template #items>
       <ul class="tw-p-0 tw-m-0">
@@ -110,17 +124,3 @@ function selectItem(item: AutoCompleteItem) {
 
 </template>
 
-<style lang="postcss" scoped>
-.board-search {
-  font-size: 0.75rem;
-  max-width: 164px;
-
-  &.v-select {
-    &--is-menu-active {
-      .arrow {
-        transform: rotate(-180deg);
-      }
-    }
-  }
-}
-</style>

@@ -78,12 +78,6 @@ defineExpose({
       .bar {
         @apply -tw-left-[12px];
       }
-      .sepreat-border {
-        @apply tw-absolute tw-left-0 -tw-bottom-[1px] tw-bg-white/80 tw-w-full tw-h-[1px];
-      }
-      /* &:not(:first-child){
-        @apply tw-mr-2;
-      } */
     }
 
     .tab {

@@ -108,6 +108,8 @@ props.value ? select(props.value) : null
     } */
   }
   &.active {
+    border-bottom-right-radius: 0!important;
+    border-bottom-left-radius: 0!important;
     .input {
       border-bottom-right-radius: 0!important;
       border-bottom-left-radius: 0!important;

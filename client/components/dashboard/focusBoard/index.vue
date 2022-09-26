@@ -70,16 +70,17 @@ if (process.client) {
 }
 
 .toolbar {
-  @apply tw-flex tw-flex-grow;
+  @apply tw-flex tw-flex-grow tw-bg-white/20;
   height: 42px;
   padding: 0 8px 0 8px;
   position: relative;
   align-items: center;
-  background-color: var(--c-default-bg-rbg);
+  /* background-color: var(--c-default-bg-rbg); */
+  
 }
 
 .bookmark {
-  @apply tw-mx-[4px] tw-px-[4px] tw-rounded tw-bg-default tw-w-[110px] tw-h-[28px] tw-text-primary;
+  @apply tw-mx-[4px] tw-px-[4px] tw-rounded tw-bg-default/90 tw-w-[110px] tw-h-[28px] tw-text-primary;
   @apply tw-flex tw-items-center tw-justify-between tw-text-ellipsis tw-overflow-hidden tw-whitespace-nowrap;
 
   .icon {

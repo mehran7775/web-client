@@ -108,7 +108,7 @@ async function select(val: AutoCompleteItem) {
   <div>
     <ada-auto-complete v-model="ac.state.userInput" id="instrument-search"
       :suggestions="ac.state.suggestions" :loading="ac.state.loading" @select_item="item => select_suggest(item)"
-      :placeholder="$t('instrument.search')" class="tw-w-[164px] tw-mx-auto tw-text-primary">
+      :placeholder="$t('instrument.search')" class="tw-mx-auto tw-text-primary">
       <template #prepend>
         <ada-icon class="tw-text-primary" :size="14"> isax-search-normal-1 </ada-icon>
       </template>
