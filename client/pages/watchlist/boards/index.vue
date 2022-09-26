@@ -36,7 +36,7 @@
             </dashboard-focus-board>
           </div>
           <div class="tw-col-span-1">
-            <DashboardWatchList :searchModel="searchModel" paginated />
+            <DashboardWatchList :searchModel.sync="searchModel" paginated />
             <loading :loading="loading" />
           </div>
         </div>
