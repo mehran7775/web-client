@@ -49,7 +49,7 @@ const selected = computed({
 const bottomPanel = useBottomPanel();
 const rtl = computed(() => appManager.rtl);
 const bookmarks = computed(() => userManager.getBookmarks);
-const shortcuts = computed(() => userManager.getShourtcuts);
+const shortcuts = computed(() => userManager.getShortcuts);
 const home = computed(() => userManager.me.settings?.home);
 const isMarked = computed(() => (data: MenuItem) => {
   switch (data.bookmarkPosition) {
@@ -152,6 +152,7 @@ function mark(data: MenuItem) {
   const bk = CreateBookmark(data);
   switch (data.bookmarkPosition) {
     case BookmarkPosition.ToolBar:
+      console.log(1)
       {
         const tmp = [...bookmarks.value, bk];
         userManager.update_settings({
@@ -161,8 +162,10 @@ function mark(data: MenuItem) {
       }
       break;
     case BookmarkPosition.RightPanel:
+      console.log(shortcuts.value)
       {
         const tmp = [...shortcuts.value, bk];
+        console.log(2, tmp)
         userManager.update_settings({
           path: "/shortcuts",
           value: tmp,
@@ -175,6 +178,7 @@ function mark(data: MenuItem) {
 function unmark(data: MenuItem) {
   switch (data.bookmarkPosition) {
     case BookmarkPosition.ToolBar:
+      console.log(3)
       {
         let tmp = [...bookmarks.value];
         tmp.splice(
@@ -188,6 +192,7 @@ function unmark(data: MenuItem) {
       }
       break;
     case BookmarkPosition.RightPanel:
+    console.log(4)
       {
         let tmp = [...shortcuts.value];
         tmp.splice(

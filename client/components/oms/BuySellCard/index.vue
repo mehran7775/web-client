@@ -420,9 +420,8 @@ instrumentManager
             <numeric-field :value="1000" />
           </div>
           <div class="tw-justify-between">
-            <ada-input
+            <ada-currency-input
               :label="$t('oms.count')"
-              type="number"
               v-model="countVal"
               :id="`buyCountInputText-${insId}`"
               :readonly="countLock"
@@ -462,19 +461,17 @@ instrumentManager
                       class="calculate"
                       v-ada-click-outside="() => (activeCalculator = false)"
                     >
-                      <ada-input
+                      <ada-currency-input
                         :label="$t('instrument.wholePrice')"
-                        type="number"
                         placeholder="0"
                         v-model="wholePrice"
                       >
-                      </ada-input>
-                      <ada-input
+                      </ada-currency-input>
+                      <ada-currency-input
                         :label="$t('instrument.price')"
-                        type="number"
                         v-model="priceVal"
                       >
-                      </ada-input>
+                      </ada-currency-input>
 
                       <div>
                         <span>{{ $t("oms.wage") }}:</span>
@@ -487,13 +484,12 @@ instrumentManager
                   </template>
                 </ada-menu>
               </template>
-            </ada-input>
+            </ada-currency-input>
             <div class="bar"></div>
           </div>
           <div class="tw-justify-between">
-            <ada-input
+            <ada-currency-input
               :label="$t('oms.price')"
-              type="number"
               v-model="priceVal"
               activeBorder
               :readonly="priceLock"
@@ -513,7 +509,7 @@ instrumentManager
                   <ada-icon color="primary">isax-lock-1</ada-icon>
                 </ada-btn>
               </template>
-            </ada-input>
+            </ada-currency-input>
           </div>
           <div class="tw-justify-between">
             <wealth-account-type
@@ -550,16 +546,15 @@ instrumentManager
             </oms-buy-sell-card-percent>
           </div>
           <div class="tw-justify-between">
-            <ada-input
+            <ada-currency-input
               :label="$t('wealth.order.creditPercent')"
-              type="number"
               class="tw-h-[24px] inputColor"
               :min="0"
               :max="100"
               v-model="validatePercent"
               tabindex="-1"
             >
-            </ada-input>
+            </ada-currency-input>
             <div class="bar"></div>
           </div>
           <div class="tw-justify-between">
@@ -641,9 +636,8 @@ instrumentManager
             <numeric-field :value="1000" />
           </div>
           <div class="tw-justify-between">
-            <ada-input
+            <ada-currency-input
               :label="$t('oms.count')"
-              type="number"
               v-model="countVal"
               :id="`sellCountInputText-${insId}`"
               :readonly="countLock"
@@ -686,19 +680,17 @@ instrumentManager
                       class="calculate"
                       v-ada-click-outside="() => (activeCalculatorSell = false)"
                     >
-                      <ada-input
+                      <ada-currency-input
                         :label="$t('instrument.wholePrice')"
-                        type="number"
                         placeholder="0"
                         v-model="wholePrice"
                       >
-                      </ada-input>
-                      <ada-input
+                      </ada-currency-input>
+                      <ada-currency-input
                         :label="$t('instrument.price')"
-                        type="number"
                         v-model="priceVal"
                       >
-                      </ada-input>
+                      </ada-currency-input>
 
                       <div>
                         <span>{{ $t("oms.wage") }}:</span>
@@ -711,13 +703,12 @@ instrumentManager
                   </template>
                 </ada-menu>
               </template>
-            </ada-input>
+            </ada-currency-input>
             <div class="bar"></div>
           </div>
           <div class="tw-justify-between">
-            <ada-input
+            <ada-currency-input
               :label="$t('oms.price')"
-              type="number"
               v-model="priceVal"
               :readonly="priceLock"
               class="tw-mt-1 inputColor"
@@ -737,7 +728,7 @@ instrumentManager
                   <ada-icon color="primary">isax-lock-1</ada-icon>
                 </ada-btn>
               </template>
-            </ada-input>
+            </ada-currency-input>
           </div>
           <div class="tw-justify-between">
             <wealth-account-type
@@ -772,9 +763,8 @@ instrumentManager
             </oms-buy-sell-card-percent>
           </div>
           <div class="tw-justify-between">
-            <ada-input
+            <ada-currency-input
               label="درصد سهام"
-              type="number"
               class="tw-h-[24px] inputColor"
               :min="0"
               :max="100"
@@ -782,7 +772,7 @@ instrumentManager
               tabindex="-1"
               activeBorder
             >
-            </ada-input>
+            </ada-currency-input>
             <div class="bar"></div>
           </div>
           <div class="tw-justify-between">

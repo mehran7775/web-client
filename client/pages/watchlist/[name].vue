@@ -30,6 +30,7 @@ watch(
   (wls) => {
     searchModel.value.ids.splice(0, searchModel.value.ids.length);
     searchModel.value.ids.push(...(wls?.map((item) => parseInt(item)) ?? []));
+    // console.log('ids',searchModel.value.ids)
     keyWatchList.value++
   }
 );

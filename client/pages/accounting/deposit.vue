@@ -13,9 +13,11 @@ const paymentManager = usePayment();
 
 const banks = computed(() => paymentManager.paymentMethods);
 
+const amount =  ref()
 const axios = useAxios();
 const paymentMethod = ref(null);
 const router = useRouter();
+
 </script>
 <style lang="postcss" scoped>
 .tmp-ctr {
@@ -113,11 +115,11 @@ header {
     <main class="deposit">
       <form class="card">
         <div>
-          <ada-input type="number" :label="$t('accounting.amount')">
+          <ada-currency-input v-model="amount" :label="$t('accounting.amount')">
             <template #append>
               <span v-text="$t('accounting.currency.rial')"></span>
             </template>
-          </ada-input>
+          </ada-currency-input>
           <span class="label" v-text="$t('accounting.gateway')"></span>
           <ada-toggle class="banks" style="flex-grow: 0">
             <ada-btn

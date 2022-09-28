@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import NumericField from "~~/components/numericField.vue";
 const props = defineProps<{
   modelValue: number;
@@ -37,4 +37,4 @@ watch(
       <NumericField :value="res" class="tw-px-0 tw-my-[4px] tw-min-w-[25%] view" />
     </template>
   </ada-input>
-</template>
+</template> -->

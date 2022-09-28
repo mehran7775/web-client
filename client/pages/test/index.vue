@@ -3,9 +3,12 @@ import UploadableFile from "~/types/upload/UploadableFile";
 import { useUploadAbleFile } from "~~/composables";
 
 const uploadFile = useUploadAbleFile();
-const files = ref<UploadableFile[]>([]);
 
+const files = ref<UploadableFile[]>([]);
 const content = ref(null);
+const res = ref()
+
+
 function receive_files_uploaded(e: any) {
   files.value = e.detail.value;
   const { readerTextFile, contentFile } = uploadFile;
@@ -22,6 +25,7 @@ function removeFile(file: UploadableFile): void {
   const index = files.value.indexOf(file);
   if (index > -1) files.value.splice(index, 1);
 }
+
 </script>
 
 <style lang="postcss" scoped>
@@ -104,6 +108,10 @@ function removeFile(file: UploadableFile): void {
           </template>
         </TransitionGroup>
       </div>
+    </div>
+    <br />
+    <div class="tw-mx-auto tw-text-center">
+      <ada-currency-input v-model="res"/>
     </div>
   </NuxtLayout>
 </template>

@@ -37,14 +37,13 @@ export const useAsrTrader = defineStore("app", () => {
     })
   );
   const currencyFormatter = computed(
-    () =>
-      (currency: string = "IRR") =>
-        Intl.NumberFormat(state.locale, {
-          style: "currency",
-          currency: currency,
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 3,
-        })
+    (currency: string = "IRR") =>
+      Intl.NumberFormat(state.locale, {
+        style: "currency",
+        currency: currency,
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 3,
+      })
   );
   const formatter = computed(() =>
     Intl.NumberFormat(state.locale, {

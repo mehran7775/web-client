@@ -18,13 +18,23 @@ import { useI18n } from "vue-i18n";
 
 const props = withDefaults(
   defineProps<{
-    searchModel: InstrumentSearchModel;
+    searchModel: any;
     paginated?: boolean;
   }>(),
   {
     paginated: false,
   }
 );
+
+
+watch(
+  () => props.searchModel,
+  (update) => {
+    console.log('update')
+    refresh();
+  }
+);
+
 
 const i18n = useI18n();
 const userManager = useUser();
@@ -176,15 +186,6 @@ const removeWatchList = (item: InstrumentCache): void => {
   itemToDelete.value = item;
   confirmInstrumentRemoval.value = true;
 };
-
-////////////////////////////////////////////
-
-watch(
-  () => props.searchModel,
-  (update) => {
-    refresh();
-  }
-);
 
 //////////////////////////////////////////
 

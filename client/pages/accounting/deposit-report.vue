@@ -6,6 +6,8 @@ definePageMeta({
 const router = useRouter();
 const appManager = useAsrTrader();
 const lang: string = appManager.locale.split("-")[0];
+const amount = ref()
+
 function goToDeposit() {
   router.push("/accounting/deposit");
 }
@@ -46,6 +48,9 @@ header {
           width: 30.5%;
           & :deep(.scaffold) {
             @apply tw-border-gray4 tw-bg-white tw-h-[36px];
+          }
+          & :deep(.label) {  
+            max-width: 95px;
           }
           &:nth-child(2) {
             @apply tw-flex tw-flex-col;
@@ -143,9 +148,9 @@ header {
       <section>
         <form class="card">
           <div>
-            <ada-input type="number" label="مبلغ واریز (ریال)"></ada-input>
+            <ada-currency-input v-model="amount" label="مبلغ واریز (ریال)"></ada-currency-input>
             <date-input label="تاریخ واریز"></date-input>
-            <ada-input type="number" label="شماره"></ada-input>
+            <ada-currency-input label="شماره"></ada-currency-input>
           </div>
           <div>
             <select-box placeholder="شماره حساب کارگزار"></select-box>

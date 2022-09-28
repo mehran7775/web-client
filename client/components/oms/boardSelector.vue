@@ -84,8 +84,14 @@ function selectItem(item: AutoCompleteItem) {
     @apply tw-bg-primary/10 tw-text-primary tw-h-[28px];
     font-size: 0.75rem;
     max-width: 164px;
-  
-    & :deep(.input) { @apply tw-w-full; }
+
+    & :deep(.input) {
+      @apply tw-w-full;
+
+      .menu-global {
+        @apply tw-w-full;
+      }
+    }
   }
   </style>
 
@@ -97,7 +103,7 @@ function selectItem(item: AutoCompleteItem) {
     <template #items>
       <ul class="tw-p-0 tw-m-0">
         <li v-for="item in items" :key="item.name" @click="selectItem(item)"
-          class="tw-flex tw-items-center tw-justify-between tw-p-2 tw-cursor-pointer hover:tw-bg-primary-100">
+          class="tw-flex tw-items-center tw-justify-between tw-p-2 tw-cursor-pointer hover:tw-bg-primary/10">
           <span v-text="item.name"></span>
           <div class="tw-flex tw-flex-row tw-justify-end tw-my-0">
             <ada-icon @click.stop.prevent="

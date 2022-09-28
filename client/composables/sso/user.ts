@@ -36,7 +36,7 @@ export const useUser = defineStore("user", () => {
     },
   });
   const getBookmarks = computed(() => state.user?.settings?.bookmarks || []);
-  const getShourtcuts = computed(() => state.user?.settings?.shourtcuts || []);
+  const getShortcuts = computed(() => state.user?.settings?.shortcuts || []);
   const getToken = computed(() => state.token);
   const getRefresh = computed(() => state.refresh);
   const me = computed(() => state.user ?? AnonymousUser());
@@ -231,6 +231,7 @@ export const useUser = defineStore("user", () => {
     path: string;
     value: any;
   }): Promise<void> {
+    console.log(payload)
     try {
       const resp = await userManager.updateUserSettings(
         payload.path,
@@ -293,7 +294,7 @@ export const useUser = defineStore("user", () => {
     // Getters
     refreshingToken,
     getBookmarks,
-    getShourtcuts,
+    getShortcuts,
     getToken,
     getRefresh,
     me,

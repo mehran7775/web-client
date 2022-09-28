@@ -43,12 +43,16 @@ const style = computed(() => {
     @apply tw-absolute tw-bg-white tw-outline-none tw-shadow-lg tw-overflow-y-auto tw-p-0 tw-m-0 tw-rounded-b;
     max-width: 465px;
     max-height: 50vh;
-    z-index: 9999;
+    z-index: 999;
+
+    ul li {
+        @apply hover:tw-bg-primary/10;
+    }
 }
 </style>
 
 <template>
-    <span class="menu-global" ref="menu">
+    <div class="menu-global" ref="menu">
         <slot name="activator"></slot>
         <Teleport to="body">
             <transition name="slide-fade">
@@ -60,5 +64,5 @@ const style = computed(() => {
                 </div>
             </transition>
         </Teleport>
-    </span>
+    </div>
 </template>

@@ -87,10 +87,10 @@ async function searchSectors() {
 
 <template>
   <ada-auto-complete v-model="ac.state.userInput" :suggestions="ac.state.suggestions"
-    :loading="ac.state.loading" @select_item="item => generateAddress(item.id)" :placeholder="$t('instrument.search')"
+    :loading="ac.state.loading" @select_item="item => generateAddress(item.id)" :placeholder="$t('oms.sectorAutoComplete')"
     class="tw-mx-auto tw-text-primary">
     <template #prepend>
-      <ada-icon color="primary" :size="14"> isax-search-normal-1 </ada-icon>
+      <ada-icon class="tw-text-primary" :size="14"> isax-search-normal-1 </ada-icon>
     </template>
   </ada-auto-complete>
 
