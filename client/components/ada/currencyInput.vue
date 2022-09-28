@@ -1,38 +1,3 @@
-<!-- <script lang="ts" setup>
-
-
-const res = ref();
-const valueInput = computed({
-  get() {
-    return res.value;
-  },
-  set(val) {
-    if(val.includes(',')){
-        val = val.replace(/\,/gi, '');
-    }
-    res.value = separate(val);
-  },
-});
-
-const separate = (Number) => {
-  Number += "";
-  Number = Number.replace(",", "");
-  let x = Number.split(".");
-  let y = x[0];
-  let z = x.length > 1 ? "." + x[1] : "";
-  var rgx = /(\d+)(\d{3})/;
-  while (rgx.test(y)) y = y.replace(rgx, "$1" + "," + "$2");
-  return y + z;
-};
-
-</script>
-
-<style lang="postcss" scoped></style>
-
-<template>
-  <input class="tw-border" type="text" v-model="valueInput" />
-</template> -->
-
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 const props = withDefaults(
@@ -64,8 +29,8 @@ const emit = defineEmits(["update:modelValue"]);
 
 const active = ref(false);
 
-function updateModelValue(e) {
-  let val = e.target.value;
+function updateModelValue(data) {
+  let val = data.toString()
   if (val.includes(",")) {
     val = val.replace(/\,/gi, "");
   }
@@ -82,6 +47,7 @@ const separate = (val: string) => {
   while (rgx.test(y)) y = y.replace(rgx, "$1" + "," + "$2");
   return y + z;
 }
+updateModelValue(props.modelValue)
 
 </script>
 
@@ -147,7 +113,7 @@ const separate = (val: string) => {
         "
         :value="modelValue"
         class="ltr"
-        @input="updateModelValue"
+        @input="(e)=> updateModelValue((e.target as HTMLInputElement).value)"
         v-bind="{ min, max, minlength, maxlength, ...$attrs }"
         :readonly="readonly"
         :tabindex="tabIndex"

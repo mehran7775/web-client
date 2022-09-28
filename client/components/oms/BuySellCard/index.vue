@@ -420,9 +420,10 @@ instrumentManager
             <numeric-field :value="1000" />
           </div>
           <div class="tw-justify-between">
-            <ada-currency-input
+            <ada-input
               :label="$t('oms.count')"
               v-model="countVal"
+              type="number"
               :id="`buyCountInputText-${insId}`"
               :readonly="countLock"
               class="inputColor"
@@ -484,7 +485,7 @@ instrumentManager
                   </template>
                 </ada-menu>
               </template>
-            </ada-currency-input>
+            </ada-input>
             <div class="bar"></div>
           </div>
           <div class="tw-justify-between">
