@@ -62,16 +62,17 @@ function toPercent(value: number) {
 <template>
   <div class="percent-container">
     <RangeSlider :min="min" :max="max" v-model="val" @update="setValue" class="tw-max-w-full" v-bind="$attrs"/>
-    <ada-currency-input
+    <ada-input
       dir="rtl"
       :label="label"
+      type="number"
       :modelValue="result"
       @update:modelValue="toPercent"
       :min="minCount"
       :max="maxCount"
       readonly
       v-bind="$attrs"
-    ></ada-currency-input>
+    ></ada-input>
   </div>
 </template>
 

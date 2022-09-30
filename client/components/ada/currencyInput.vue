@@ -2,7 +2,7 @@
 const props = withDefaults(
   defineProps<{
     label?: string;
-    modelValue?: string;
+    modelValue: string;
     min?: number | null;
     max?: number | null;
     minlength?: number | null;
@@ -13,7 +13,6 @@ const props = withDefaults(
   }>(),
   {
     label: "",
-    modelValue: "",
     min: null,
     max: null,
     minlength: null,
