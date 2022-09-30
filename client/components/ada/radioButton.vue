@@ -23,14 +23,12 @@ const value: Ref<any> = inject("toggle-ref", ref(1));
     @apply tw-relative tw-m-auto tw-max-w-full;
 
     label {
-        @apply tw-flex tw-items-center tw-justify-center tw-py-1 tw-px-[28px] tw-my-auto tw-mx-[10px] tw-rounded;
+        @apply tw-flex tw-items-center tw-justify-center tw-py-1 tw-px-[1rem] tw-my-auto tw-mx-[10px] tw-rounded;
         min-width: 50px;
         transition: all .2s;
 
         span {
             @apply tw-text-black;
-            /* min-width: 32px; */
-            max-width: 64px;
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;

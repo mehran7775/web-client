@@ -55,6 +55,7 @@ const priceVal = computed({
   },
   set(enteredPrice) {
     if (priceLock.value) return;
+    // console.log(enteredPrice)
     orderManager.updateForm({
       instrumentId: order.value.instrumentId,
       enteredPrice,

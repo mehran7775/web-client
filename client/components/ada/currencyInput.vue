@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
 const props = withDefaults(
   defineProps<{
     label?: string;
-    modelValue?: string | number;
+    modelValue?: string;
     min?: number | null;
     max?: number | null;
     minlength?: number | null;
@@ -29,15 +28,14 @@ const emit = defineEmits(["update:modelValue"]);
 
 const active = ref(false);
 
-function updateModelValue(data) {
-  let val = data.toString()
+const join = (val: string): string=> {
   if (val.includes(",")) {
-    val = val.replace(/\,/gi, "");
+    return val.replace(/\,/gi, "");
   }
-  emit('update:modelValue', separate(val))
+  return val
 }
 
-const separate = (val: string) => {
+const separate = (val: string): string => {
   val += "";
   val = val.replace(",", "");
   let x = val.split(".");
@@ -47,7 +45,11 @@ const separate = (val: string) => {
   while (rgx.test(y)) y = y.replace(rgx, "$1" + "," + "$2");
   return y + z;
 }
-updateModelValue(props.modelValue)
+const separateValue = ref(separate(props.modelValue))
+
+watch(()=> props.modelValue , (newVal)=> {
+  separateValue.value = separate(newVal)
+})
 
 </script>
 
@@ -111,9 +113,9 @@ updateModelValue(props.modelValue)
             active = false;
           }
         "
-        :value="modelValue"
+        :value="separateValue"
         class="ltr"
-        @input="(e)=> updateModelValue((e.target as HTMLInputElement).value)"
+        @input="(e) => $emit('update:modelValue', join((e.target as HTMLInputElement).value))"
         v-bind="{ min, max, minlength, maxlength, ...$attrs }"
         :readonly="readonly"
         :tabindex="tabIndex"
