@@ -30,9 +30,10 @@ const props = withDefaults(
 watch(
   () => props.searchModel,
   (update) => {
-    console.log('update')
+    console.log('update', update)
     refresh();
-  }
+  },
+  { deep: true }
 );
 
 

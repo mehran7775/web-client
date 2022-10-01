@@ -6,7 +6,7 @@ const uploadFile = useUploadAbleFile();
 
 const files = ref<UploadableFile[]>([]);
 const content = ref(null);
-const res = ref(255101)
+const res = ref('255101')
 
 const secondValue1 = ref(null)
 
@@ -113,7 +113,7 @@ function removeFile(file: UploadableFile): void {
     </div>
     <br />
     <div class="tw-mx-auto tw-text-center">
-      <ada-currency-input v-model="res" ref="secondValue1"/>
+      <ada-currency-input v-model="res"/>
     </div>
   </NuxtLayout>
 </template>

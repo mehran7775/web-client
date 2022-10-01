@@ -26,7 +26,6 @@ const props = withDefaults(
 const emit = defineEmits(["update:modelValue"]);
 
 const active = ref(false);
-const currencyInput = ref('')
 const join = (val: string): string=> {
   if (val.includes(",")) {
     return val.replace(/\,/gi, "");
@@ -115,17 +114,8 @@ watch(()=> props.modelValue , (newVal)=> {
       <slot name="prepend" :active="active"> </slot>
       <input
         type="text"
-        @focus="
-          () => {
-            active = true;
-          }
-        "
-        @blur="
-          () => {
-            active = false;
-          }
-        "
-        ref="currencyInput"
+        @focus="active = true"
+        @blur="active = false"
         :value="separateValue"
         class="ltr"
         @keypress="validateInput"
