@@ -26,13 +26,25 @@ const props = withDefaults(
 const emit = defineEmits(["update:modelValue"]);
 
 const active = ref(false);
-
+const currencyInput = ref('')
 const join = (val: string): string=> {
   if (val.includes(",")) {
     return val.replace(/\,/gi, "");
   }
   return val
 }
+
+const reg = /^[a-zA-Z ]$/;
+
+const validateInput = (e)=> {
+  if(reg.test(e.key)) {
+    e.preventDefault()
+    e.stopPropagation();
+    return false
+  }
+
+}
+
 
 const separate = (val: string): string => {
   val += "";
@@ -44,6 +56,7 @@ const separate = (val: string): string => {
   while (rgx.test(y)) y = y.replace(rgx, "$1" + "," + "$2");
   return y + z;
 }
+
 const separateValue = ref(separate(props.modelValue))
 
 watch(()=> props.modelValue , (newVal)=> {
@@ -112,9 +125,11 @@ watch(()=> props.modelValue , (newVal)=> {
             active = false;
           }
         "
+        ref="currencyInput"
         :value="separateValue"
         class="ltr"
-        @input="(e) => $emit('update:modelValue', join((e.target as HTMLInputElement).value))"
+        @keypress="validateInput"
+        @input="(e)=> emit('update:modelValue',join((e.target as HTMLInputElement).value))"
         v-bind="{ min, max, minlength, maxlength, ...$attrs }"
         :readonly="readonly"
         :tabindex="tabIndex"
