@@ -103,6 +103,7 @@ export const useUser = defineStore("user", () => {
     state.refresh = null;
   }
   function setUser(data: User) {
+    console.log(data)
     state.user = data;
     state.settingsChanged = reactive([]);
     if (process.client) {
@@ -112,7 +113,6 @@ export const useUser = defineStore("user", () => {
     }
   }
   function setSettings(settings: Setting) {
-    console.log(settings);
     state.user.settings = settings;
   }
   function setCols(data: Array<WatchListColumns>) {
@@ -139,6 +139,7 @@ export const useUser = defineStore("user", () => {
         value: [...state.user.settings.columns],
       });
     state.user.settings.watch_lists[data.name] = data.watchlist;
+    console.log('watchs', state.user.settings.watch_lists[data.name])
   }
   function setSettingsChanged(data: { key: string; value: any }) {
     if (state.settingsChanged.findIndex((item) => item.key == data.key) == -1)
@@ -231,7 +232,6 @@ export const useUser = defineStore("user", () => {
     path: string;
     value: any;
   }): Promise<void> {
-    console.log(payload)
     try {
       const resp = await userManager.updateUserSettings(
         payload.path,

@@ -4,6 +4,10 @@ import { useUploadAbleFile } from "~~/composables";
 
 const uploadFile = useUploadAbleFile();
 
+const state = reactive({
+  settings: []
+});
+
 const files = ref<UploadableFile[]>([]);
 const content = ref(null);
 const res = ref('255101')
@@ -26,6 +30,17 @@ function receive_files_uploaded(e: any) {
 function removeFile(file: UploadableFile): void {
   const index = files.value.indexOf(file);
   if (index > -1) files.value.splice(index, 1);
+}
+
+
+watch(state, ()=> {
+  console.log('changed')
+})
+
+
+function changeState() {
+  const rn = Math.random()
+  state.settings = [rn]
 }
 
 </script>
@@ -114,6 +129,12 @@ function removeFile(file: UploadableFile): void {
     <br />
     <div class="tw-mx-auto tw-text-center">
       <ada-currency-input v-model="res"/>
+
+
+
+      <button @click="changeState()" value="changeState">changeState</button>
+
+      {{ state.settings[0] }}
     </div>
   </NuxtLayout>
 </template>

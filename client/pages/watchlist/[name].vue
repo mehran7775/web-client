@@ -24,16 +24,25 @@ const edited = computed(
 const searchModel = computed(()=>
   new InstrumentSearchModel(watchlists[name as string]?.map((item) => parseInt(item)) ?? [])
 );
+
 watch(
   () => userManager.watchList[name as string]
   ,
   (wls) => {
-    searchModel.value.ids.splice(0, searchModel.value.ids.length);
-    searchModel.value.ids.push(...(wls?.map((item) => parseInt(item)) ?? []));
-    console.log('ids',searchModel.value.ids)
+    console.log('s1',searchModel.value)
+    searchModel.value.ids = []
+    searchModel.value.ids.push(...wls?.map((item) => parseInt(item)) ?? []);
+    console.log('s2',searchModel.value.ids)
     keyWatchList.value++
   }
 );
+
+// watch(searchModel, (newVal)=> {
+//   console.log('newSearchModel', newVal)
+
+// })
+
+
 
 async function reset() {
   loadingRef.value = true;

@@ -21,7 +21,6 @@ const userManager = useUser();
 const instrumentManager = useInstrument();
 const axios = useAxios().createInstance();
 const route = useRoute();
-const model = ref(null);
 const entries: Array<AutoCompleteItem> = reactive([]);
 
 const focus = instrumentManager.getFocus;
@@ -89,7 +88,6 @@ async function select(val: AutoCompleteItem) {
       instrumentManager.addFocus(inst[0]);
       instrumentManager.select(inst[0]);
     }
-
     const tmp = [val.id.toString()];
     tmp.push(...(watchlists[name] ?? []));
     userManager.setWatchlist({
@@ -99,7 +97,6 @@ async function select(val: AutoCompleteItem) {
     });
   }
   ac.state.loading = false;
-  model.value = null;
 }
 
 </script>
