@@ -252,7 +252,7 @@ refresh();
     &.active {
       position: relative;
       background-color: rgba(var(--c-selected-inst), 0.1);
-      @apply tw-border tw-border-primary;
+      @apply tw-border tw-border-dashed tw-border-primary;
 
       &::befor {
         content: "";
