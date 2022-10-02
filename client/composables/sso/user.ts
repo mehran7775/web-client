@@ -139,7 +139,6 @@ export const useUser = defineStore("user", () => {
         value: [...state.user.settings.columns],
       });
     state.user.settings.watch_lists[data.name] = data.watchlist;
-    console.log('watchs', state.user.settings.watch_lists[data.name])
   }
   function setSettingsChanged(data: { key: string; value: any }) {
     if (state.settingsChanged.findIndex((item) => item.key == data.key) == -1)
@@ -231,6 +230,7 @@ export const useUser = defineStore("user", () => {
   async function update_settings(payload: {
     path: string;
     value: any;
+    name?: string
   }): Promise<void> {
     try {
       const resp = await userManager.updateUserSettings(
@@ -240,6 +240,7 @@ export const useUser = defineStore("user", () => {
       );
       if (resp.data.setting) {
         setSettings(resp.data.setting);
+        state.addWatchListChanges[payload.name] ? state.addWatchListChanges[payload.name].splice(0, Infinity) : null
         if (process.client) localStorage.setItem(userKey, state.user.userName);
       }
       settingsNotChanged(payload.path);
@@ -323,5 +324,7 @@ export const useUser = defineStore("user", () => {
     delete_settings,
     getProfilePic,
     getLogs,
+    setSettingsChanged,
+    settingsNotChanged
   };
 });

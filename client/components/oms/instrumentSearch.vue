@@ -79,22 +79,23 @@ async function select(val: AutoCompleteItem) {
     val &&
     (!watchlists[name] || watchlists[name]?.indexOf(val.id.toString()) == -1)
   ) {
+
     const inst = await instrumentManager.getInstrumentsDetail(
       new InstrumentSearchModel([parseInt(val.id)])
     );
 
     // If focus panel is open
-    if (focus.length > 0 || !route.params.name) {
+    if (focus.length > 0 || !name) {
       instrumentManager.addFocus(inst[0]);
       instrumentManager.select(inst[0]);
     }
-    const tmp = [val.id.toString()];
-    tmp.push(...(watchlists[name] ?? []));
-    userManager.setWatchlist({
-      name,
-      watchlist: tmp,
-      changeState: true,
-    });
+    
+    if(userManager.state.addWatchListChanges[name as string]) {
+      userManager.state.addWatchListChanges[name as string].push(val.id)
+    }else {
+      userManager.state.addWatchListChanges[name as string] = [val.id]
+    }
+    userManager.setSettingsChanged({key: `/watch_lists/${ name }`, value: null})
   }
   ac.state.loading = false;
 }

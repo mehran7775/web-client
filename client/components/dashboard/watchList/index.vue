@@ -36,6 +36,8 @@ watch(
   { deep: true }
 );
 
+const emit = defineEmits(['update:searchModel']);
+
 
 const i18n = useI18n();
 const userManager = useUser();
@@ -68,7 +70,6 @@ async function refresh() {
   );
 }
 
-const watchLists = userManager.watchList;
 const selected = computed(() => instrumentManager.state.selected);
 
 const focused = instrumentManager.getFocus;
@@ -150,13 +151,18 @@ function focus(item: InstrumentCache) {
 }
 
 async function remove(val: InstrumentCache) {
-  const tmp = [...(watchLists[name] ?? [])];
-  tmp.splice(tmp.lastIndexOf(val.id.toString()), 1);
+  const tmp = { ...props.searchModel }
+  tmp.ids.splice(tmp.ids.indexOf(val.id), 1);
+  const res = userManager.state.addWatchListChanges[name]
+  if(res?.length) {
+    const index = res.findIndex((item)=> item === val.id)
+    if(index!== -1) res.splice(index, 1)
+  }
   await userManager.update_settings({
     path: "/watch_lists/" + name,
-    value: tmp,
+    value: tmp.ids,
   });
-  refresh();
+  emit('update:searchModel', tmp)
 }
 
 let dragItem: InstrumentCache | null = null;
@@ -165,21 +171,21 @@ function drag(item: InstrumentCache) {
 }
 async function drop(item: InstrumentCache) {
   if (dragItem && dragItem != item) {
-    const wl = [...(watchLists[name] ?? [])];
-    const ind = wl.findIndex((i) => i == dragItem?.id.toString());
-    wl.splice(ind, 1);
-    const target = wl.findIndex((i) => i == item.id.toString());
-    wl.splice(ind > target ? target : target + 1, 0, dragItem?.id.toString());
-    userManager.setWatchlist({
-      name: name,
-      watchlist: wl,
-      changeState: false,
-    });
+    const wl = { ...props.searchModel }
+    const ind = wl.ids.findIndex((i) => i == dragItem?.id.toString());
+    wl.ids.splice(ind, 1);
+    const target = wl.ids.findIndex((i) => i == item.id.toString());
+    wl.ids.splice(ind > target ? target : target + 1, 0, dragItem?.id.toString());
+    // userManager.setWatchlist({
+    //   name: name,
+    //   watchlist: wl,
+    //   changeState: false,
+    // });
     await userManager.update_settings({
       path: "/watch_lists/" + name,
-      value: wl,
+      value: wl.ids,
     });
-    refresh();
+    emit('update:searchModel', wl)
   }
   dragItem = null;
 }
@@ -252,7 +258,7 @@ refresh();
     &.active {
       position: relative;
       background-color: rgba(var(--c-selected-inst), 0.1);
-      @apply tw-border tw-border-primary;
+      @apply tw-border tw-border-dashed tw-border-primary;
 
       &::befor {
         content: "";
@@ -265,7 +271,7 @@ refresh();
         z-index: -1;
       }
       & :deep(td) {
-        @apply tw-border-t-[1.2px] tw-border-b tw-border-primary tw-rounded-t tw-rounded-b;
+        @apply tw-border-dashed tw-border-t-[1.2px] tw-border-b tw-border-primary tw-rounded-t tw-rounded-b;
       }
     }
 

@@ -22,6 +22,8 @@ export class UserState {
   userName: string | null;
   renewToken: boolean;
   settingsChanged: Array<KeyValuePairs<string, any>>;
+  addWatchListChanges: any
+
   constructor() {
     this.tryCount = 0;
     this.token = null;
@@ -30,6 +32,7 @@ export class UserState {
     this.userName = null;
     this.renewToken = false;
     this.settingsChanged = reactive([]);
+    this.addWatchListChanges = {}
   }
   toJSON() {
     return { ...this };

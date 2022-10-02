@@ -10,9 +10,6 @@ const route = useRoute();
 const userManager = useUser();
 const loadingRef = ref(false);
 const name = route.params.name ?? "new";
-const watchlists = userManager.watchList;
-const keyWatchList = ref<number>(1)
-
 
 const edited = computed(
   () =>
@@ -21,56 +18,46 @@ const edited = computed(
     ) != -1
 );
 
-const searchModel = computed(()=>
-  new InstrumentSearchModel(watchlists[name as string]?.map((item) => parseInt(item)) ?? [])
-);
 
-watch(
-  () => userManager.watchList[name as string]
-  ,
-  (wls) => {
-    console.log('s1',searchModel.value)
-    searchModel.value.ids = []
-    searchModel.value.ids.push(...wls?.map((item) => parseInt(item)) ?? []);
-    console.log('s2',searchModel.value.ids)
-    keyWatchList.value++
+let searchModel = reactive({...new InstrumentSearchModel(userManager.watchList[name as string]?.map((item) => parseInt(item)) ?? [])})
+
+watch(userManager.state.addWatchListChanges, (newVal)=> {
+  if(newVal[name as string]){
+    if(newVal[name as string].length) {
+      console.log('new', newVal[name as string])
+      let merge = searchModel.ids.concat(newVal[name as string])
+      searchModel.ids = merge.filter((item, index)=> merge.indexOf(item) === index)
+    }
   }
-);
+})
 
-// watch(searchModel, (newVal)=> {
-//   console.log('newSearchModel', newVal)
-
-// })
-
+watch(searchModel, ()=> {
+  console.log('searchModel', searchModel)
+})
 
 
 async function reset() {
-  loadingRef.value = true;
-  try {
-    await userManager.getUser(userManager.me.userName);
-  } finally {
-    loadingRef.value = false;
-  }
+  userManager.settingsNotChanged(`/watch_lists/${ name }`)
 }
 
 async function apply() {
   loadingRef.value = true;
-  const name = route.params.name;
+  const value = [...searchModel.ids]
   try {
     await userManager.update_settings({
       path: "/watch_lists/" + name,
-      value: watchlists[name as string],
+      value: value.map((item) => item.toString()),
+      name: name as string
     });
   } finally {
     loadingRef.value = false;
   }
 }
 defineExpose({
-  apply,
   reset,
   loadingRef,
   edited,
-  searchModel,
+  // searchModel,
 });
 
 
@@ -102,7 +89,7 @@ defineExpose({
       </dashboard-focus-board>
     </div>
     <div class="tw-grid tw-scroll-p-1">
-      <DashboardWatchList :searchModel="searchModel"/>
+      <DashboardWatchList :searchModel="searchModel" @update:searchModel="(val)=> searchModel = val"/>
     </div>
     <loading :loading="loadingRef" />
   </div>
