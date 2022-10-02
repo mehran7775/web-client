@@ -265,7 +265,7 @@ refresh();
         z-index: -1;
       }
       & :deep(td) {
-        @apply tw-border-t-[1.2px] tw-border-b tw-border-primary tw-rounded-t tw-rounded-b;
+        @apply tw-border-dashed tw-border-t-[1.2px] tw-border-b tw-border-primary tw-rounded-t tw-rounded-b;
       }
     }
 
