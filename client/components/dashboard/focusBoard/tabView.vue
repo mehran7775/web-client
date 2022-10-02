@@ -86,7 +86,7 @@ defineExpose({
       min-width: 168px;
 
       &.selected {
-        @apply tw-border-t-[1px] tw-border-l-[1px] tw-border-r-[1px] tw-rounded-t tw-border-primary tw-border-opacity-80;
+        @apply tw-border-dashed tw-border-t-[1px] tw-border-l-[1px] tw-border-r-[1px] tw-rounded-t tw-border-primary tw-border-opacity-80;
         &::after {
           background-color: transparent;
         }
