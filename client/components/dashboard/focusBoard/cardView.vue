@@ -65,7 +65,7 @@ defineExpose({
    
 
     &.active {
-      @apply tw-border tw-border-primary tw-rounded;
+      @apply tw-border-dashed tw-border tw-border-primary tw-rounded;
 
       .toolbar {
         @apply tw-bg-primary tw-bg-opacity-10;
