@@ -29,9 +29,9 @@ watch(userManager.state.addWatchListChanges, (newVal)=> {
   }
 })
 
-watch(()=> userManager.watchList[name as string], (newVal)=> {
-  searchModel.ids = newVal.map((item) => parseInt(item)) ?? []
-})
+// watch(()=> userManager.watchList[name as string], (newVal)=> {
+//   searchModel.ids = newVal.map((item) => parseInt(item)) ?? []
+// })
 
 
 async function reset() {
