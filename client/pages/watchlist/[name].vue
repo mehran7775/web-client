@@ -9,15 +9,14 @@ definePageMeta({
 const route = useRoute();
 const userManager = useUser();
 const loadingRef = ref(false);
-const name = route.params.name ?? "new";
+const name = route.params.name as string ?? "new";
 
 const edited = computed(
   () =>
     userManager.settingsChanged.findIndex(
       (item) => item.key == "/watch_lists/" + name
-    ) != -1
+    ) != -1 && userManager.tmpWatchlist[name].length
 );
-
 
 async function reset() {
   userManager.settingsNotChanged(`/watch_lists/${ name }`)
@@ -29,7 +28,8 @@ async function apply() {
   try {
     await userManager.update_settings({
       path: "/watch_lists/" + name,
-      value: ids.map((item) => item.toString())
+      value: ids.map((item) => item.toString()),
+      deActiveChange: true
     });
   } finally {
     loadingRef.value = false;

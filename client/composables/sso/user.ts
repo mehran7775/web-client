@@ -1,5 +1,5 @@
 import Axios, { AxiosError, AxiosResponse } from "axios";
-import { computed, ref, reactive } from "vue";
+import { computed, ref, reactive, watch } from "vue";
 import { defineStore } from "pinia";
 import { Buffer } from "buffer";
 import {
@@ -21,7 +21,7 @@ import { useAxios } from "..";
 
 export const useUser = defineStore("user", () => {
   const route = useRoute()
-  const routeName = route.params.name as string
+  const routeName = route.params.name as string || "new"
   const appconfig = useRuntimeConfig();
   const state = reactive(new UserState());
   const axiosManager = useAxios();
@@ -169,7 +169,7 @@ export const useUser = defineStore("user", () => {
     if(res1 !== -1) {
       state.user?.settings?.watch_lists[routeName as string].splice(res1, 1)
     }else{
-      const res = tmpWatchlist[routeName as string]
+      const res = tmpWatchlist.value[routeName as string]
       res.splice(res.findIndex((item)=> item === payload.item.id), 1)
     }
     await update_settings({
@@ -263,7 +263,6 @@ export const useUser = defineStore("user", () => {
   value: null,
   deActiveChange: true
 }): Promise<void> {
-  console.log(payload.deActiveChange)
     try {
       const resp = await userManager.updateUserSettings(
         payload.path,
@@ -272,12 +271,14 @@ export const useUser = defineStore("user", () => {
       );
       if (resp.data.setting) {
         setSettings(resp.data.setting);
-        state.tmpWatchlist[routeName as string] ? delete state.tmpWatchlist[routeName as string] : null
+        
         if (process.client) localStorage.setItem(userKey, state.user.userName);
       }
        if(payload.deActiveChange){
-         settingsNotChanged(payload.path);
-        }
+        state.tmpWatchlist[routeName as string] ? delete state.tmpWatchlist[routeName as string] : null
+        settingsNotChanged(payload.path);
+       }
+        // }
     } catch (e) {
       setSettingsChanged({ key: payload.path, value: null });
       throw e;
