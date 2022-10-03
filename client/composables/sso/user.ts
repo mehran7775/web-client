@@ -4,6 +4,8 @@ import { defineStore } from "pinia";
 import { Buffer } from "buffer";
 import {
   AnonymousUser,
+  InstrumentCache,
+  InstrumentSearchModel,
   Log,
   LoginModel,
   Paginated,
@@ -18,6 +20,8 @@ import jwtManager from "~/repositories/sso/jwt_token";
 import { useAxios } from "..";
 
 export const useUser = defineStore("user", () => {
+  const route = useRoute()
+  const routeName = route.params.name as string
   const appconfig = useRuntimeConfig();
   const state = reactive(new UserState());
   const axiosManager = useAxios();
@@ -44,6 +48,17 @@ export const useUser = defineStore("user", () => {
   const watchList = computed(() => state.user?.settings?.watch_lists ?? {});
   const tryCount = computed(() => state.tryCount);
   const settingsChanged = computed(() => state.settingsChanged);
+  const tmpWatchlist = computed(()=> state.tmpWatchlist)
+  const showSearchModel = computed(()=> {
+    const searchModel = new InstrumentSearchModel(watchList.value[routeName as string]?.map((item) => parseInt(item)) ?? [])
+    if(tmpWatchlist.value[routeName as string]){
+      let merge = tmpWatchlist.value[routeName as string].concat(searchModel.ids)
+      searchModel.ids = merge.filter((item, index)=> merge.indexOf(item) === index)
+    }
+    return searchModel
+  })
+
+
 
   // Mutations
   function setHome(data: string) {
@@ -149,7 +164,20 @@ export const useUser = defineStore("user", () => {
       1
     );
   }
-
+  async function removeWatchlist (payload: { searchModel: any, item: InstrumentCache}) {
+    const res1 = watchList.value[routeName as string].findIndex((item)=> parseInt(item) === payload.item.id)
+    if(res1 !== -1) {
+      state.user?.settings?.watch_lists[routeName as string].splice(res1, 1)
+    }else{
+      const res = tmpWatchlist[routeName as string]
+      res.splice(res.findIndex((item)=> item === payload.item.id), 1)
+    }
+    await update_settings({
+      path: "/watch_lists/" + routeName,
+      value: watchList.value[routeName as string],
+      deActiveChange: false
+    });
+  }
   // Actions
   async function getUser(userName: string): Promise<User> {
     const { data, status } = await userManager.getUser(
@@ -229,8 +257,13 @@ export const useUser = defineStore("user", () => {
   async function update_settings(payload: {
     path: string;
     value: any;
-    name?: string
-  }): Promise<void> {
+    deActiveChange?: boolean
+} = {
+  path: '',
+  value: null,
+  deActiveChange: true
+}): Promise<void> {
+  console.log(payload.deActiveChange)
     try {
       const resp = await userManager.updateUserSettings(
         payload.path,
@@ -239,10 +272,12 @@ export const useUser = defineStore("user", () => {
       );
       if (resp.data.setting) {
         setSettings(resp.data.setting);
-        state.addWatchListChanges[payload.name] ? delete state.addWatchListChanges[payload.name] : null
+        state.tmpWatchlist[routeName as string] ? delete state.tmpWatchlist[routeName as string] : null
         if (process.client) localStorage.setItem(userKey, state.user.userName);
       }
-      settingsNotChanged(payload.path);
+       if(payload.deActiveChange){
+         settingsNotChanged(payload.path);
+        }
     } catch (e) {
       setSettingsChanged({ key: payload.path, value: null });
       throw e;
@@ -302,6 +337,8 @@ export const useUser = defineStore("user", () => {
     watchList,
     tryCount,
     settingsChanged,
+    tmpWatchlist,
+    showSearchModel,
     // Mutations
     setHome,
     setRefreshingToken,
@@ -324,6 +361,7 @@ export const useUser = defineStore("user", () => {
     getProfilePic,
     getLogs,
     setSettingsChanged,
-    settingsNotChanged
+    settingsNotChanged,
+    removeWatchlist
   };
 });

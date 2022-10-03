@@ -19,33 +19,17 @@ const edited = computed(
 );
 
 
-let searchModel = reactive({...new InstrumentSearchModel(userManager.watchList[name as string]?.map((item) => parseInt(item)) ?? [])})
-
-watch(userManager.state.addWatchListChanges, (newVal)=> {
-  if(newVal[name as string]){
-      let merge = newVal[name as string].concat(searchModel.ids)
-      searchModel.ids = merge.filter((item, index)=> merge.indexOf(item) === index)
-   
-  }
-})
-
-// watch(()=> userManager.watchList[name as string], (newVal)=> {
-//   searchModel.ids = newVal.map((item) => parseInt(item)) ?? []
-// })
-
-
 async function reset() {
   userManager.settingsNotChanged(`/watch_lists/${ name }`)
 }
 
 async function apply() {
   loadingRef.value = true;
-  const ids = [...searchModel.ids]
+  const ids = [...userManager.showSearchModel.ids]
   try {
     await userManager.update_settings({
       path: "/watch_lists/" + name,
-      value: ids.map((item) => item.toString()),
-      name: name as string
+      value: ids.map((item) => item.toString())
     });
   } finally {
     loadingRef.value = false;
@@ -87,7 +71,7 @@ defineExpose({
       </dashboard-focus-board>
     </div>
     <div class="tw-grid tw-scroll-p-1">
-      <DashboardWatchList :searchModel="searchModel" @update:searchModel="(val)=> searchModel = val"/>
+      <DashboardWatchList :searchModel="userManager.showSearchModel"/>
     </div>
     <loading :loading="loadingRef" />
   </div>

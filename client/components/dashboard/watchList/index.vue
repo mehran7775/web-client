@@ -151,18 +151,11 @@ function focus(item: InstrumentCache) {
 }
 
 async function remove(val: InstrumentCache) {
-  const tmp = Object.assign({}, props.searchModel)
-  tmp.ids.splice(tmp.ids.indexOf(val.id), 1);
-  const res = userManager.state.addWatchListChanges[name]
-  if(res?.length) {
-    const index = res.findIndex((item)=> item === val.id)
-    if(index!== -1) res.splice(index, 1)
+  const payload = {
+    searchModel: props.searchModel,
+    item: val
   }
-  await userManager.update_settings({
-    path: "/watch_lists/" + name,
-    value: tmp.ids,
-  });
-  emit('update:searchModel', tmp)
+  userManager.removeWatchlist(payload)
 }
 
 let dragItem: InstrumentCache | null = null;
@@ -180,7 +173,6 @@ async function drop(item: InstrumentCache) {
       path: "/watch_lists/" + name,
       value: wl.ids,
     });
-    emit('update:searchModel', wl)
   }
   dragItem = null;
 }

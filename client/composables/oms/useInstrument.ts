@@ -134,7 +134,7 @@ export const useInstrument = defineStore("instrument", () => {
     state.value.width = width;
   }
 
-  async function getInstrumentsDetail(
+ async function getInstrumentsDetail(
     searchModel: InstrumentSearchModel,
     watch: boolean = true
   ): Promise<Array<InstrumentCache>> {
@@ -186,6 +186,7 @@ export const useInstrument = defineStore("instrument", () => {
 
     return res;
   }
+
   async function getInstrumentPrices(
     ids: Array<number>
   ): Promise<Array<DailyPrice> | number> {

@@ -83,17 +83,16 @@ async function select(val: AutoCompleteItem) {
     const inst = await instrumentManager.getInstrumentsDetail(
       new InstrumentSearchModel([parseInt(val.id)])
     );
-
     // If focus panel is open
     if (focus.length > 0 || !name) {
       instrumentManager.addFocus(inst[0]);
       instrumentManager.select(inst[0]);
     }
     
-    if(userManager.state.addWatchListChanges[name as string]) {
-      userManager.state.addWatchListChanges[name as string].push(val.id)
+    if(userManager.tmpWatchlist[name as string]) {
+      userManager.tmpWatchlist[name as string].push(parseInt(val.id))
     }else {
-      userManager.state.addWatchListChanges[name as string] = [val.id]
+      userManager.tmpWatchlist[name as string] = [parseInt(val.id)]
     }
     userManager.setSettingsChanged({key: `/watch_lists/${ name }`, value: null})
   }
