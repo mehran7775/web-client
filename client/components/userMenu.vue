@@ -28,12 +28,12 @@ const userMenuItems: Array<MenuItem> = [
     click: downloadSettings,
     color: "info",
   },
-  // {
-  //   icon: "mdi-upload",
-  //   title: "menu.uploadSettings",
-  //   click: () => (triggerUploadModal.value = true),
-  //   color: "info",
-  // },
+  {
+    icon: "mdi-upload",
+    title: "menu.uploadSettings",
+    click: () => (triggerUploadModal.value = true),
+    color: "info",
+  },
   {
     icon: "mdi-logout",
     color: "error",
@@ -89,7 +89,7 @@ async function uploadSetting() {
   if (content.value) {
     await userManager.update_settings({
       path: "/",
-      value: JSON.parse(content.value),
+      value: JSON.stringify(content.value),
     });
     triggerUploadModal.value = false
   }

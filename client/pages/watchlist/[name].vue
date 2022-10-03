@@ -23,16 +23,14 @@ let searchModel = reactive({...new InstrumentSearchModel(userManager.watchList[n
 
 watch(userManager.state.addWatchListChanges, (newVal)=> {
   if(newVal[name as string]){
-    if(newVal[name as string].length) {
-      console.log('new', newVal[name as string])
-      let merge = searchModel.ids.concat(newVal[name as string])
+      let merge = newVal[name as string].concat(searchModel.ids)
       searchModel.ids = merge.filter((item, index)=> merge.indexOf(item) === index)
-    }
+   
   }
 })
 
-watch(searchModel, ()=> {
-  console.log('searchModel', searchModel)
+watch(()=> userManager.watchList[name as string], (newVal)=> {
+  searchModel.ids = newVal.map((item) => parseInt(item)) ?? []
 })
 
 
@@ -42,11 +40,11 @@ async function reset() {
 
 async function apply() {
   loadingRef.value = true;
-  const value = [...searchModel.ids]
+  const ids = [...searchModel.ids]
   try {
     await userManager.update_settings({
       path: "/watch_lists/" + name,
-      value: value.map((item) => item.toString()),
+      value: ids.map((item) => item.toString()),
       name: name as string
     });
   } finally {

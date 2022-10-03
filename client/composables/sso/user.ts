@@ -103,7 +103,6 @@ export const useUser = defineStore("user", () => {
     state.refresh = null;
   }
   function setUser(data: User) {
-    console.log(data)
     state.user = data;
     state.settingsChanged = reactive([]);
     if (process.client) {
@@ -123,23 +122,23 @@ export const useUser = defineStore("user", () => {
       });
     state.user.settings.columns = data;
   }
-  function setWatchlist(data: {
-    watchlist: Array<string>;
-    name: string;
-    changeState: boolean;
-  }) {
-    if (
-      data.changeState &&
-      state.settingsChanged.findIndex(
-        (item) => item.key == "/watch_lists/" + data.name
-      ) == -1
-    )
-      state.settingsChanged.push({
-        key: "/watch_lists/" + data.name,
-        value: [...state.user.settings.columns],
-      });
-    state.user.settings.watch_lists[data.name] = data.watchlist;
-  }
+  // function setWatchlist(data: {
+  //   watchlist: Array<string>;
+  //   name: string;
+  //   changeState: boolean;
+  // }) {
+  //   if (
+  //     data.changeState &&
+  //     state.settingsChanged.findIndex(
+  //       (item) => item.key == "/watch_lists/" + data.name
+  //     ) == -1
+  //   )
+  //     state.settingsChanged.push({
+  //       key: "/watch_lists/" + data.name,
+  //       value: [...state.user.settings.columns],
+  //     });
+  //   state.user.settings.watch_lists[data.name] = data.watchlist;
+  // }
   function setSettingsChanged(data: { key: string; value: any }) {
     if (state.settingsChanged.findIndex((item) => item.key == data.key) == -1)
       state.settingsChanged.push({ key: data.key, value: data.value });
@@ -240,7 +239,7 @@ export const useUser = defineStore("user", () => {
       );
       if (resp.data.setting) {
         setSettings(resp.data.setting);
-        state.addWatchListChanges[payload.name] ? state.addWatchListChanges[payload.name].splice(0, Infinity) : null
+        state.addWatchListChanges[payload.name] ? delete state.addWatchListChanges[payload.name] : null
         if (process.client) localStorage.setItem(userKey, state.user.userName);
       }
       settingsNotChanged(payload.path);
@@ -313,7 +312,7 @@ export const useUser = defineStore("user", () => {
     setUser,
     setSettings,
     setCols,
-    setWatchlist,
+    // setWatchlist,
     // Actions
     getUser,
     checkTries,
