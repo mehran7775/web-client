@@ -21,7 +21,7 @@ import { useAxios } from "..";
 
 export const useUser = defineStore("user", () => {
   const route = useRoute()
-  const routeName = route.params.name as string || "new"
+  // const routeName = route.params.name as string || "new"
   const appconfig = useRuntimeConfig();
   const state = reactive(new UserState());
   const axiosManager = useAxios();
@@ -50,9 +50,9 @@ export const useUser = defineStore("user", () => {
   const settingsChanged = computed(() => state.settingsChanged);
   const tmpWatchlist = computed(()=> state.tmpWatchlist)
   const showSearchModel = computed(()=> {
-    const searchModel = new InstrumentSearchModel(watchList.value[routeName as string]?.map((item) => parseInt(item)) ?? [])
-    if(tmpWatchlist.value[routeName as string]){
-      let merge = tmpWatchlist.value[routeName as string].concat(searchModel.ids)
+    const searchModel = new InstrumentSearchModel(watchList.value[route.params.name as string]?.map((item) => parseInt(item)) ?? [])
+    if(tmpWatchlist.value[route.params.name as string]){
+      let merge = tmpWatchlist.value[route.params.name as string].concat(searchModel.ids)
       searchModel.ids = merge.filter((item, index)=> merge.indexOf(item) === index)
     }
     return searchModel
@@ -165,16 +165,16 @@ export const useUser = defineStore("user", () => {
     );
   }
   async function removeWatchlist (payload: { searchModel: any, item: InstrumentCache}) {
-    const res1 = watchList.value[routeName as string].findIndex((item)=> parseInt(item) === payload.item.id)
+    const res1 = watchList.value[route.params.name as string].findIndex((item)=> parseInt(item) === payload.item.id)
     if(res1 !== -1) {
-      state.user?.settings?.watch_lists[routeName as string].splice(res1, 1)
+      state.user?.settings?.watch_lists[route.params.name as string].splice(res1, 1)
     }else{
-      const res = tmpWatchlist.value[routeName as string]
+      const res = tmpWatchlist.value[route.params.name as string]
       res.splice(res.findIndex((item)=> item === payload.item.id), 1)
     }
     await update_settings({
-      path: "/watch_lists/" + routeName,
-      value: watchList.value[routeName as string],
+      path: "/watch_lists/" + route.params.name,
+      value: watchList.value[route.params.name as string],
       deActiveChange: false
     });
   }
@@ -275,7 +275,7 @@ export const useUser = defineStore("user", () => {
         if (process.client) localStorage.setItem(userKey, state.user.userName);
       }
        if(payload.deActiveChange){
-        state.tmpWatchlist[routeName as string] ? delete state.tmpWatchlist[routeName as string] : null
+        state.tmpWatchlist[route.params.name as string] ? delete state.tmpWatchlist[route.params.name as string] : null
         settingsNotChanged(payload.path);
        }
         // }
