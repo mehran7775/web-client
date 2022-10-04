@@ -50,7 +50,6 @@ const bottomPanel = useBottomPanel();
 const rtl = computed(() => appManager.rtl);
 const bookmarks = computed(() => userManager.getBookmarks);
 const shortcuts = computed(() => userManager.getShortcuts);
-const home = computed(() => userManager.me.settings?.home);
 const isMarked = computed(() => (data: MenuItem) => {
   switch (data.bookmarkPosition) {
     case BookmarkPosition.ToolBar:
@@ -128,13 +127,7 @@ const drawer = computed({
     emit("update:modelValue", value);
   },
 });
-function setHome(item: MenuItem) {
-  if (item.to)
-    userManager.update_settings({
-      path: "/home",
-      value: item.to,
-    });
-}
+
 
 ////////////////
 
@@ -385,14 +378,6 @@ if (process.client) {
     fixed
   >
     <ada-toggle class="tabs" v-model="selected" vertical>
-      <ada-tooltip position="above">
-        <template #activator>
-          <ada-btn :to="home" :model="null">
-            <ada-icon size="18"> isax-home-2 </ada-icon>
-          </ada-btn>
-        </template>
-        <span>{{ $t("menu.home") }}</span>
-      </ada-tooltip>
       <ada-tooltip v-for="item in items" :key="item.title" position="left">
         <template #activator>
           <ada-btn
@@ -475,19 +460,6 @@ if (process.client) {
                       isMarked(value) ? "mdi-bookmark" : "mdi-bookmark-outline"
                     }}</ada-icon
                   >
-                  <ada-icon
-                    @click.stop.prevent="
-                      () => {
-                        setHome(value);
-                      }
-                    "
-                    size="1.34rem"
-                    :class="[
-                      value.to == home ? 'tw-text-primary' : 'tw-text-gray4',
-                    ]"
-                  >
-                    {{ value.to == home ? "isax-star-1-bold" : "isax-star-1" }}
-                  </ada-icon>
                   <ada-icon
                     v-if="!/watchlist/gi.test(value.to)"
                     size="1.34rem"
