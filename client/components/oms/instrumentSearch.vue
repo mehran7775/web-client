@@ -90,7 +90,7 @@ async function select(val: AutoCompleteItem) {
     }
     
     if(userManager.tmpWatchlist[name as string]) {
-      userManager.tmpWatchlist[name as string].push(parseInt(val.id))
+      userManager.tmpWatchlist[name as string].unshift(parseInt(val.id))
     }else {
       userManager.tmpWatchlist[name as string] = [parseInt(val.id)]
     }
