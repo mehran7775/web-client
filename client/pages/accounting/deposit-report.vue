@@ -6,7 +6,11 @@ definePageMeta({
 const router = useRouter();
 const appManager = useAsrTrader();
 const lang: string = appManager.locale.split("-")[0];
-const amount = ref()
+const amount = ref('')
+
+const day = ref<string>('')
+const month = ref<string>('')
+const year = ref<string>('')
 
 function goToDeposit() {
   router.push("/accounting/deposit");
@@ -35,7 +39,7 @@ header {
     
     .card {
       @apply tw-p-[24px] tw-mx-auto tw-rounded-t-lg;
-      max-width: 75%;
+      max-width: 390px;
     }
 
     form.card {
@@ -53,17 +57,18 @@ header {
             max-width: 95px;
           }
           &:nth-child(2) {
-            @apply tw-flex tw-flex-col;
+            @apply tw-flex tw-flex-col tw-items-start;
 
             & :deep(.input-container) {
-              @apply tw-p-0 tw-justify-between tw-border tw-border-gray4 tw-rounded-lg tw-h-[36px];
-              .ada-input {
-                @apply tw-max-w-fit tw-mx-1;
+              @apply tw-p-0 tw-justify-between tw-border tw-border-gray4 tw-rounded-lg tw-h-[36px] tw-bg-white;
+              input {
+                @apply tw-max-w-fit tw-mx-1 tw-text-black;
 
-                .scaffold {
-                  @apply tw-border-none tw-h-auto;
-                }
               }
+              ::placeholder {
+                @apply tw-text-gray4;
+              }
+              span{ @apply tw-text-black/60; }
               &.active {
                 @apply tw-border-primary;
               }
@@ -149,8 +154,8 @@ header {
         <form class="card">
           <div>
             <ada-currency-input v-model="amount" label="مبلغ واریز (ریال)"></ada-currency-input>
-            <date-input label="تاریخ واریز"></date-input>
-            <ada-currency-input label="شماره"></ada-currency-input>
+            <date-input v-model:day="day" v-model:month="month" v-model:year="year" label="تاریخ واریز"></date-input>
+            <ada-input dir="rtl" type="number" label="شماره"></ada-input>
           </div>
           <div>
             <select-box placeholder="شماره حساب کارگزار"></select-box>

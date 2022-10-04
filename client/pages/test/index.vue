@@ -15,6 +15,10 @@ const res = ref('255101')
 const secondValue1 = ref(null)
 
 
+const day = ref<string>('')
+const month = ref<string>('')
+const year = ref<string>('')
+
 function receive_files_uploaded(e: any) {
   files.value = e.detail.value;
   const { readerTextFile, contentFile } = uploadFile;
@@ -91,7 +95,7 @@ function changeState() {
 
 <template>
   <NuxtLayout name="test">
-    <div id="uploader" v-ada-drop-zone @uploaded_files="receive_files_uploaded">
+    <!-- <div id="uploader" v-ada-drop-zone @uploaded_files="receive_files_uploaded">
       <div class="uploader">
         <TransitionGroup name="slide-fade">
           <template v-if="!files.length">
@@ -125,16 +129,22 @@ function changeState() {
           </template>
         </TransitionGroup>
       </div>
-    </div>
+    </div> -->
     <br />
-    <div class="tw-mx-auto tw-text-center">
-      <ada-currency-input v-model="res"/>
+    <div class="tw-mx-auto tw-text-center tw-w-full">
+      <!-- <ada-currency-input v-model="res"/>
 
 
 
       <button @click="changeState()" value="changeState">changeState</button>
 
-      {{ state.settings[0] }}
+      {{ state.settings[0] }} -->
+
+      <date-input v-model:day="day" v-model:month="month" v-model:year="year">
+        <template #append>
+          <ada-btn class="tw-mr-5">gfg</ada-btn>
+        </template>
+      </date-input>
     </div>
   </NuxtLayout>
 </template>

@@ -25,7 +25,7 @@ function click() {
 
 <style lang="postcss" scoped>
 .ada-button {
-  @apply tw-font-bold tw-relative tw-text-ellipsis tw-rounded tw-bg-default;
+  @apply tw-font-bold tw-relative tw-text-ellipsis tw-rounded tw-bg-default tw-outline-none;
 
   &:disabled {
     @apply tw-bg-gray4 tw-text-gray-400 tw-opacity-20;

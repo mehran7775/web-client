@@ -2,7 +2,7 @@
 const props = withDefaults(
   defineProps<{
     label?: string;
-    modelValue: string;
+    modelValue: number | string;
     min?: number | null;
     max?: number | null;
     minlength?: number | null;
@@ -56,10 +56,10 @@ const separate = (val: string): string => {
   return y + z;
 }
 
-const separateValue = ref(separate(props.modelValue))
+const separateValue = ref(separate(props.modelValue?.toString()))
 
 watch(()=> props.modelValue , (newVal)=> {
-  separateValue.value = separate(newVal)
+  separateValue.value = separate(newVal.toString())
 })
 
 </script>

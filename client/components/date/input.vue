@@ -5,77 +5,107 @@ import { useAsrTrader } from "~/composables";
 const props = withDefaults(
   defineProps<{
     label?: string;
-    modelValue?: string;
+    day: string
+    month: string
+    year: string
   }>(),
   {
-    label: "",
-    modelValue: "2020-01-01",
+    label: ""
   }
 );
 
-const emit = defineEmits(["update:modelValue"]);
 
-const appManager = useAsrTrader();
-const locale = appManager.locale;
-const day = ref(1);
-const month = ref(1);
-const year = ref(1400);
+const reg = /^[a-zA-Z ]$/;
+
+
+const emit = defineEmits(['update:day', 'update:month', 'update:year'])
+
 const active = ref<boolean>(false)
-const val = computed({
-  get() {
-    return year.value + "-" + month.value + "-" + day.value;
-  },
-  set(value: string) {
-    const tmp = value.split("-");
-    year.value = parseInt(tmp[0]);
-    month.value = parseInt(tmp[1]);
-    day.value = parseInt(tmp[2]);
-  },
-});
 
-function change() {
-  emit("update:modelValue", moment(val.value, "jYYYY-jM/jD").format("YYYY-MM-DD"));
+
+const cDay = computed({
+  get() {
+    return props.day
+  },
+  set(val: string) {
+    emit('update:day', val)
+  }
+})
+
+const cMonth = computed({
+  get() {
+    return props.month
+  },
+  set(val: string) {
+    emit('update:month', val)
+  }
+})
+
+const cYear = computed({
+  get() {
+    return props.year
+  },
+  set(val: string) {
+    emit('update:year', val)
+  }
+})
+
+
+
+///////functions////////////
+
+const dayValidate = (e)=> {
+  const val =parseInt(cDay.value.concat(e.key))
+  if(reg.test(e.key) || val > 31) {
+    prevent(e)
+  }
 }
 
-watch(
-  () => props.modelValue,
-  (update) => {
-    val.value = update;
+const monthValidate = (e)=> {
+  const val =parseInt(cMonth.value.concat(e.key))
+  if(reg.test(e.key) || val > 12) {
+    prevent(e)
   }
-);
+}
+
+const yearValidate = (e)=> {
+  const val =parseInt(cYear.value.concat(e.key))
+  if(reg.test(e.key) || val > 1450) {
+    prevent(e)
+  }
+}
+
+
+const prevent = (e)=> {
+    e.preventDefault()
+    e.stopPropagation();
+    return false
+}
+
 </script>
 
 <style lang="postcss" scoped>
 .ada-input {
-  @apply tw-flex tw-whitespace-nowrap tw-min-w-0;
-  border-radius: var(--border-radius-input);
+  @apply tw-flex tw-whitespace-nowrap tw-min-w-0 tw-mx-auto tw-items-center;
 
   .input-container {
-    @apply tw-p-[4px] tw-min-w-0 tw-flex tw-justify-between;
-    background-color: rgba(var(--c-primary), 0.1);
-    border-radius: var(--border-radius-input);
-  
-    &:dir(rtl) {
-      padding: 0 0 0 6px;
-    }
-
+    @apply tw-flex tw-justify-center tw-bg-primary/10 tw-text-primary tw-rounded tw-max-w-full tw-items-center;
     input {
-      @apply tw-min-w-0 tw-inline;
+      @apply tw-min-w-0 tw-w-10 tw-text-center tw-bg-transparent tw-text-inherit tw-py-[4px];
       outline-style: none;
       line-height: inherit;
       font-size: inherit;
-      padding: 0 3px 0 3px;
-      background-color: white;
-      border-radius: var(--border-radius-input);
-      direction: ltr;
-
-      &:nth-child(odd) {
-        margin: 0 3px;
+      direction: ltr; 
+      &:nth-child(5) {
+        @apply tw-w-16;
       }
-
-      &:nth-child(2) {
-        margin: 0;
-      }
+    }
+    ::placeholder {
+      @apply tw-text-primary/30;
+    }
+    
+    >span {
+      @apply tw-text-primary/60;
     }
   }
 
@@ -88,12 +118,18 @@ watch(
     <div class="label">
       {{ label }}
     </div>
-    <div class="input-container" @focus="active = true" @blur="active = false" :class="{ active: active }">
-      <slot name="prepend"> </slot>
-      <ada-input type="number" v-model="day" @input="change" :min="1" :max="31" @focus="active = true" @blur="active = false"/>
-      <ada-input type="number" v-model="month" @input="change" :min="1" :max="12" @focus="active = true" @blur="active = false"/>
-      <ada-input type="number" v-model="year" @input="change" :min="1400" :max="9999" @focus="active = true" @blur="active = false"/>
-      <slot name="append"></slot>
+    <slot name="prepend"> </slot>
+    <div class="input-container" :class="{ active: active }">
+      <input type="text" v-model="cDay"  maxlength="2" min="1" max="31" @keypress="dayValidate" placeholder="01"
+      @focus="active = true" @blur="active = false"
+      ><span>/</span>
+      <input type="text" v-model="cMonth" maxlength="2" min="1" max="12" @keypress="monthValidate" placeholder="01"
+      @focus="active = true" @blur="active = false"
+      ><span>/</span>
+      <input type="text" v-model="cYear" maxlength="4" min="1" max="1500" @keypress="yearValidate" placeholder="1400"
+      @focus="active = true" @blur="active = false"
+      >
     </div>
+    <slot name="append"></slot>
   </label>
 </template>

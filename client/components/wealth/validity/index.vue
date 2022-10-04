@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { AutoCompleteItem } from "~/types";
 
+const day = ref<string>('')
+const month = ref<string>('')
+const year = ref<string>('')
 
 const items = [
   new AutoCompleteItem("1", "روز"),
@@ -19,12 +22,29 @@ const select = (item: AutoCompleteItem):void =>{
   value.value = item
 }
 
+
 </script>
+
+<style lang="postcss" scoped>
+.window {
+  .ada-input {
+    @apply tw-justify-between;
+    & :deep(.input-container) {
+      @apply tw-font-bold;
+      width: calc(100% - 50px);
+    }
+    .ada-button {
+    @apply tw-bg-error tw-text-white tw-m-0 tw-px-5 tw-w-14 tw-h-full;
+  }
+  }
+  
+ 
+}
+</style>
+
 <template>
   <Windows>
     <windows-item value="select" :selected="window">
-      <!-- <select-box v-bind="$attrs" :items="items" keyPath="$.id" v-model="value">
-      </select-box> -->
       <select-box :value="value" keyPath="$.id" v-bind="$attrs" id="credit-wealth">
         <template #items>
           <ul class="tw-m-0 tw-p-0">
@@ -36,13 +56,13 @@ const select = (item: AutoCompleteItem):void =>{
       </select-box>
     </windows-item>
     <windows-item value="date" :selected="window">
-      <date-input>
+      <date-input v-model:day="day" v-model:month="month" v-model:year="year">
         <template #append>
           <ada-btn @click="
             () => {
-              value = null;
+              value = items[0];
             }
-          " color="error" :height="18" class="tw-mt-1 tw-px-5" dark>
+          ">
             {{ $t("general.cancellation") }}
           </ada-btn>
         </template>
