@@ -22,7 +22,7 @@ const appManager = useAsrTrader();
 const instrumentManager = useInstrument();
 const bottomPanel = useBottomPanel();
 const rtl = appManager.rtl;
-
+const locale = appManager.locale;
 const toggleMenu = ref<null | string>(null);
 
 const searchItem = ref<string>("");
@@ -39,6 +39,7 @@ const drawer = computed({
 const loading = ref(false);
 const myMessages: Message[] = reactive([]);
 const messages: Message[] = reactive([]);
+
 const origins = messageManager.state.origins;
 
 const selected = computed(() => instrumentManager.state.selected);
@@ -132,42 +133,44 @@ async function load(query: Ref<MessageQuery>) {
 }
 
 async function trigger_show_message(message: Message) {
-  console.log(message)
   try {
-    let mes: any = null;
-    if (message.seenDate) {
-      mes = message;
-    } else {
-      bottomPanel.setLoading(true);
-      mes = (await messageManager.getMessage(message.id)).data;
-    }
-
+    bottomPanel.setLoading(true);
+    const mes = (await messageManager.getMessage(message.id)).data;
     const tab = {
-      title: getTitle(mes.messageType ?? mes.type),
-      params: [{ body: mes.message.body ?? mes.message }],
+      title: getTitle(mes.type),
+      params: [{ body: mes.message.body }],
       children: [
         {
-          title: getTitle(mes.messageType ?? mes.type),
+          title: getTitle(mes.type),
           secondTitle: mes.title,
           params: [],
           deletable: false,
         },
       ],
-      current: `${getTitle(mes.messageType ?? mes.type)}`,
+      current: `${getTitle(mes.type)}`,
       deletable: true,
     };
-
+    seenMessage(mes)
     const res = bottomPanel.existDeletableTab();
     if (res) bottomPanel.removeTab(res);
     bottomPanel.registerTab(tab);
     bottomPanel.activeTab = tab;
-    loadMessages();
-    loadMyMessages();
   } catch (e) {
     console.log(e);
   } finally {
     bottomPanel.setLoading(false);
   }
+}
+
+function seenMessage(message) {
+  let meses = null
+  if(toggleMenu.value === 'general.all') {
+    meses = messages
+  }else{
+    meses = myMessages
+  }
+  const res = meses.find((item)=> item.id === message.id)
+  res.seenDate = new Date().toLocaleDateString(locale)
 }
 
 const getTitle = (type: number) => {
@@ -181,7 +184,6 @@ const getTitle = (type: number) => {
     return "categories.news";
   }
 };
-
 
 loadMessages();
 loadMyMessages();

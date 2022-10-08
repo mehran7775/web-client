@@ -49,7 +49,7 @@ function openMsg(n: number) {
       code = "RLC";
     }
   }
-  messageManager.activeAxactCategory(code);
+  messageManager.activeExactCategory(code);
   instrumentManager.select(props.value);
   panelManager.LeftPanelMini = false;
 }

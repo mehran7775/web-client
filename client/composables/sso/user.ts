@@ -226,6 +226,8 @@ export const useUser = defineStore("user", () => {
   async function doLogout(): Promise<void> {
     try {
       await jwtManager.logout(axios.value);
+      console.log(route.path)
+      setHome(route.path)
     } finally {
       logout();
     }

@@ -71,7 +71,7 @@ export default defineComponent({
 <style lang="postcss" scoped>
 .menu-global {
   .ada-button {
-    @apply tw-bg-transparent tw-w-9;
+    @apply tw-bg-transparent tw-w-[28px];
 
     .icon{
       @apply tw-text-primary tw-text-lg;
@@ -93,7 +93,7 @@ export default defineComponent({
 }
 </style>
 <template>
-  <ada-menu :active="menu" :mTop="35" :mWidth="145" :mLeft="15">
+  <ada-menu :active="menu" :mTop="33.5" :mWidth="145" :mLeft="5">
     <template #activator>
       <ada-btn
         @click.stop="()=> menu = !menu" :class="{ active: menu }" v-ada-click-outside="()=> menu = false">

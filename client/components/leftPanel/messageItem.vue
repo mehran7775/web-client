@@ -30,7 +30,6 @@ const locale = appManager.locale;
 const date = () => {
   return new Date(props.dateTime!.split("T")[0]).toLocaleDateString(locale);
 };
-const iconName = ref<string>('')
 
 
 //////
@@ -96,7 +95,6 @@ function setName(value: MessageOrigin) {
 <template>
   <div class="message" v-bind="$attrs" @click="show_message()">
     <ada-btn color="transparent" class="template">
-        
       <ada-icon
         :size="26"
         :class="`tw-text-${calculateTextColorIcon(origin)} tw-mt-3`"

@@ -19,12 +19,13 @@ export const useNotifications = defineStore("notifications", () => {
 
   const axios = useAxios().createInstance();
   const instManager = useInstrument();
-
+  
   async function initNotifications(inst: Array<string>): Promise<any> {
     //InitCache
 
     //Get message sources
     const { data } = await getMessageSource(inst, axios);
+    console.log(data)
     const groupData = data.data.reduce((r, i, arr) => {
       r[i.instrumentCode] = r[i.instrumentCode] || [];
       r[i.instrumentCode].push({
@@ -46,8 +47,20 @@ export const useNotifications = defineStore("notifications", () => {
     return state.value.cache;
   }
 
+
+  function removeNotification(instrumentCode: string, origin: MessageOrigin) {
+    const notifs = state.value.cache[instrumentCode]
+    const notif = notifs.find(({params})=> params.origin === origin)
+    if(notif.params.messagesCount === 1) {
+      notifs.splice(notifs.indexOf(notif), 1)
+    }else {
+      notif.params.messagesCount -= 1
+    }
+  }
+
   return {
     state,
     initNotifications,
+    removeNotification
   };
 });

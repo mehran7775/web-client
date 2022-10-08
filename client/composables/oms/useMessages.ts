@@ -65,7 +65,7 @@ export const useMessages = defineStore("messages", () => {
   ): Promise<AxiosResponse<PaginatedResult<AutoCompleteItem>>> {
     return await GetMessageFilters(name, axios);
   }
-  function activeAxactCategory(code: Code) {
+  function activeExactCategory(code: Code) {
     state.categories.forEach((item)=> {
       if (item.code === code){
         item.active = true
@@ -82,6 +82,6 @@ export const useMessages = defineStore("messages", () => {
     getMessage,
     getMessages,
     getMessageFilters,
-    activeAxactCategory
+    activeExactCategory
   };
 });

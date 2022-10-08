@@ -50,7 +50,7 @@ const triggerChatRoom = ()=> {
 
 <style lang="postcss" scoped>
 .page {
-  @apply tw-relative tw-block tw-overflow-clip tw-h-screen tw-pt-[42px] tw-pb-[64px] tw-bg-gray4/5;
+  @apply tw-relative tw-block tw-overflow-x-hidden tw-overflow-y-auto tw-h-screen tw-pt-[42px] tw-pb-[64px] tw-bg-gray4/5;
 
   > header {
     @apply tw-flex tw-fixed tw-w-full tw-justify-between tw-items-center tw-align-middle;

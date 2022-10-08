@@ -42,7 +42,7 @@ const style = computed(() => {
 .menu {
     @apply tw-absolute tw-bg-white tw-outline-none tw-shadow-lg tw-overflow-y-auto tw-p-0 tw-m-0 tw-rounded-b;
     max-width: 465px;
-    max-height: 50vh;
+    max-height: calc(50vh - 76px);
     z-index: 999;
 
     ul li {
