@@ -36,11 +36,10 @@ const drawer = computed({
   },
 });
 
-
 const loading = ref(false);
 const myMessages: Message[] = reactive([]);
 const messages: Message[] = reactive([]);
-const origins = messageManager.state.origins
+const origins = messageManager.state.origins;
 
 const selected = computed(() => instrumentManager.state.selected);
 
@@ -70,7 +69,7 @@ const items = [
   // { title: "oms.openingTrade" },
 ];
 
-const categories = messageManager.state.categories
+const categories = messageManager.state.categories;
 
 /////
 
@@ -82,25 +81,26 @@ watch(toggleMenu, (newVal, oldVal) => {
   }
 });
 
-watch(selected, (newval) => {
-  if (newval) {
-    myMessageQuery.value.filters.title = "(" + newval?.name;
-    messageQuery.value.filters.title = "(" + newval?.name;
-  } else {
-    myMessageQuery.value.filters.title = null;
-    messageQuery.value.filters.title = null;
-  }
+watch(
+  selected,
+  (newval) => {
+    if (newval) {
+      myMessageQuery.value.filters.title = "(" + newval?.name;
+      messageQuery.value.filters.title = "(" + newval?.name;
+    } else {
+      myMessageQuery.value.filters.title = null;
+      messageQuery.value.filters.title = null;
+    }
+    loadMyMessages();
+    loadMessages();
+  },
+  { deep: true }
+);
+
+watch(categories, () => {
   loadMyMessages();
   loadMessages();
-}, { deep: true });
-
-
-
-watch(categories, ()=> {
-  loadMyMessages();
-  loadMessages();
-})
-
+});
 
 //////////////////
 
@@ -131,30 +131,44 @@ async function load(query: Ref<MessageQuery>) {
   }
 }
 
-function trigger_show_message(message: Message) {
-  const tab = {
-    title: getTitle(message.type),
-    params: [
-      { body: message.message }
-    ],
-    children: [
-      {
-        title: getTitle(message.type),
-        secondTitle: message.title,
-        params: [],
-        deletable: false
-      },
-    ],
-    current: `${getTitle(message.type)}`,
-    deletable: true
+async function trigger_show_message(message: Message) {
+  console.log(message)
+  try {
+    let mes: any = null;
+    if (message.seenDate) {
+      mes = message;
+    } else {
+      bottomPanel.setLoading(true);
+      mes = (await messageManager.getMessage(message.id)).data;
+    }
+
+    const tab = {
+      title: getTitle(mes.messageType ?? mes.type),
+      params: [{ body: mes.message.body ?? mes.message }],
+      children: [
+        {
+          title: getTitle(mes.messageType ?? mes.type),
+          secondTitle: mes.title,
+          params: [],
+          deletable: false,
+        },
+      ],
+      current: `${getTitle(mes.messageType ?? mes.type)}`,
+      deletable: true,
+    };
+
+    const res = bottomPanel.existDeletableTab();
+    if (res) bottomPanel.removeTab(res);
+    bottomPanel.registerTab(tab);
+    bottomPanel.activeTab = tab;
+    loadMessages();
+    loadMyMessages();
+  } catch (e) {
+    console.log(e);
+  } finally {
+    bottomPanel.setLoading(false);
   }
-  const res = bottomPanel.existDeletableTab()
-  if(res) bottomPanel.removeTab(res)
-  bottomPanel.registerTab(tab)
-  bottomPanel.activeTab = tab;
-
 }
-
 
 const getTitle = (type: number) => {
   if (type === 1) {
@@ -167,6 +181,7 @@ const getTitle = (type: number) => {
     return "categories.news";
   }
 };
+
 
 loadMessages();
 loadMyMessages();
@@ -198,13 +213,16 @@ loadMyMessages();
     max-width: 48px;
     flex-basis: 48px;
   }
-  .ada-button, .ada-tooltip-container :deep(.ada-button){
+  .ada-button,
+  .ada-tooltip-container :deep(.ada-button) {
     @apply tw-bg-transparent tw-w-10;
 
     &.active {
       @apply tw-bg-primary tw-bg-opacity-20 tw-text-primary;
 
-      i{ @apply tw-text-primary }
+      i {
+        @apply tw-text-primary;
+      }
     }
   }
   .tab-items {
@@ -250,10 +268,7 @@ loadMyMessages();
       <ada-list class="tw-pb-1 tw-overflow-visible">
         <ada-list-item v-for="item in items" :key="item.title" :value="item">
           <template #item="{ value }">
-            <ada-btn
-              :model="value.title"
-              @click="$emit('update:mini', !mini)"
-            >
+            <ada-btn :model="value.title" @click="$emit('update:mini', !mini)">
               <span v-text="$t(value.title)"></span>
             </ada-btn>
           </template>
@@ -324,8 +339,8 @@ loadMyMessages();
             :flags="message.flags"
             :message="message.message.body"
             :seenDate="message.seenDate"
-            style="height: 58.9px"
-            @click="trigger_show_message"
+            style="height: 60.1px"
+            @triggerShowMessage="trigger_show_message"
           />
         </div>
       </div>
