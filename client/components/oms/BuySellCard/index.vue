@@ -84,7 +84,11 @@ const tab = computed({
 const wholePrice = ref<number>(0);
 const count = computed(
   () => {
-    const res = Math.round(wholePrice.value / priceVal.value * (1 + wage.value.sell))
+    const res = Math.floor(wholePrice.value / priceVal.value * (1 + wage.value.sell))
+    if(isNaN(res) || res == Infinity){
+      countVal.value = 0
+      return 0
+    }
     countVal.value = res
     return res
   }
@@ -443,7 +447,7 @@ instrumentManager
                   <ada-icon>isax-lock-1</ada-icon>
                 </ada-btn>
 
-                <ada-menu :active="activeCalculator" :mWidth="196" :mLeft="-11" :mTop="25">
+                <ada-menu :active="activeCalculator" :mWidth="180" :mLeft="-11.5" :mTop="30">
                   <template #activator>
                     <ada-btn
                       @click.stop="activeCalculator = !activeCalculator"
@@ -661,7 +665,7 @@ instrumentManager
                 </ada-btn>
                 <ada-menu
                   :active="activeCalculatorSell"
-                  :mWidth="196" :mLeft="-11" :mTop="28"
+                  :mWidth="180" :mLeft="-11.5" :mTop="30"
                 >
                   <template #activator>
                     <ada-btn

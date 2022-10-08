@@ -89,7 +89,7 @@ async function uploadSetting() {
   if (content.value) {
     await userManager.update_settings({
       path: "/",
-      value: content.value,
+      value: JSON.parse(content.value),
     });
     triggerUploadModal.value = false
   }
