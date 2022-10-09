@@ -25,7 +25,6 @@ export const useNotifications = defineStore("notifications", () => {
 
     //Get message sources
     const { data } = await getMessageSource(inst, axios);
-    console.log(data)
     const groupData = data.data.reduce((r, i, arr) => {
       r[i.instrumentCode] = r[i.instrumentCode] || [];
       r[i.instrumentCode].push({

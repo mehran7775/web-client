@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Ref } from "vue";
 import { useInstrument, useOrder, useAxios } from "@/composables";
-import { InstrumentCache, InstrumentSearchModel, Side } from "@/types";
+import { InstrumentCache, InstrumentSearchModel, Side, TabItem } from "@/types";
 import { object, number, AnyObjectSchema } from "yup";
 import { getWage } from "@/repositories/wealth/wealth_manager";
 import { useBottomPanel } from "~/composables";
@@ -17,8 +17,9 @@ const props = defineProps<{
 
 //////////////
 
-const buyForm = ref<AnyObjectSchema | null>(null);
-const sellForm = ref<AnyObjectSchema | null>(null);
+// const buyForm = ref<AnyObjectSchema | null>(null);
+// const sellForm = ref<AnyObjectSchema | null>(null);
+const bottomPanel = useBottomPanel()
 const axios = useAxios();
 const instrumentManager = useInstrument();
 const orderManager = useOrder();
@@ -103,24 +104,29 @@ const wageCalculate = computed(
 
 
 
-async function check() {
-  if (buyForm.value) {
-    try {
-      await buyForm.value.validate({
-        quantity: countVal.value,
-        fee: priceVal.value,
-      });
-      return true;
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
-  }
-  return false;
+// async function check() {
+//   if (buyForm.value) {
+//     try {
+//       await buyForm.value.validate({
+//         quantity: countVal.value,
+//         fee: priceVal.value,
+//       });
+//       return true;
+//     } catch (e) {
+//       console.log(e);
+//       return false;
+//     }
+//   }
+//   return false;
+// }
+
+const check = ():boolean => {
+  if(countVal.value && priceVal.value) return true
+  return false
 }
 
-async function placeOrder(options: { draft: boolean }) {
-  if (await check()) {
+function placeOrder(options: { draft: boolean }) {
+  if (check()) {
     const param: any = { ...order.value };
     if (options.draft) param.flags = param.flags | 1;
     param.termsAndConditions = agreement.value;
@@ -131,12 +137,10 @@ async function placeOrder(options: { draft: boolean }) {
       .placeOrder(param)
       .then((res) => {
         if (res.status === 201) {
-          options.draft
-            ? (useBottomPanel().$state._titles[0].default =
-                "bottom-panel.orders.drafts")
-            : (useBottomPanel().$state._titles[0].default =
-                "bottom-panel.orders.all");
-          useBottomPanel()._activeTab = useBottomPanel().$state._titles[0];
+          const tab: TabItem = bottomPanel.state._tabs["bottom-panel.orders.all"]
+          options.draft ? tab.current = "bottom-panel.orders.drafts"
+          :tab.current = "bottom-panel.orders.all"
+          bottomPanel.activeTab = tab
           orderManager.last_update = new Date().toISOString();
           updateData();
         }
@@ -168,28 +172,28 @@ instrumentManager
     active.value = data[0];
     countVal.value = 0;
     priceVal.value = active.value.minAllowedPrice;
-    buyForm.value = object({
-      quantity: number()
-        .min(
-          active.value.minQuantityPerOrder,
-          "oms.order.validation.minQuantity: " +
-            active.value.minQuantityPerOrder
-        )
-        .max(
-          active.value.maxQuantityPerOrder > 0
-            ? active.value.maxQuantityPerOrder
-            : Infinity,
-          "oms.order.validation.maxQuantity"
-        ),
-      fee: number()
-        .min(active.value.minAllowedPrice, "oms.order.validation.minPrice")
-        .max(
-          active.value.maxAllowedPrice > 0
-            ? active.value.maxAllowedPrice
-            : Infinity,
-          "oms.order.validation.MaxPrice"
-        ),
-    });
+    // buyForm.value = object({
+    //   quantity: number()
+    //     .min(
+    //       active.value.minQuantityPerOrder,
+    //       "oms.order.validation.minQuantity: " +
+    //         active.value.minQuantityPerOrder
+    //     )
+    //     .max(
+    //       active.value.maxQuantityPerOrder > 0
+    //         ? active.value.maxQuantityPerOrder
+    //         : Infinity,
+    //       "oms.order.validation.maxQuantity"
+    //     ),
+    //   fee: number()
+    //     .min(active.value.minAllowedPrice, "oms.order.validation.minPrice")
+    //     .max(
+    //       active.value.maxAllowedPrice > 0
+    //         ? active.value.maxAllowedPrice
+    //         : Infinity,
+    //       "oms.order.validation.MaxPrice"
+    //     ),
+    // });
     getWage(
       props.insId.toString(),
       order.value.side,
@@ -590,11 +594,7 @@ instrumentManager
           <div class="tw-justify-center">
             <ada-btn
               class="draft"
-              @click="
-                () => {
-                  placeOrder({ draft: true });
-                }
-              "
+              @click.stop="placeOrder({ draft: true })"
               depressed
               :tabindex="tab == 1 ? '-1' : null"
             >
@@ -607,17 +607,9 @@ instrumentManager
               class="buy"
               height="24px"
               :disabled="!active || (active.status & 3) != 3"
-              @click="
-                () => {
-                  placeOrder({ draft: false });
-                }
-              "
+              @click.stop="placeOrder({ draft: false })"
               depressed
-              v-bind:style="
-                countVal > 1 && priceVal
-                  ? 'background-color: var(--c-success-rgb)'
-                  : null
-              "
+              :class="[countVal > 1 && priceVal ? 'tw-bg-success tw-text-white': null]"
             >
               {{ $t("oms.buy-btn") }}
             </ada-btn>
@@ -825,13 +817,10 @@ instrumentManager
             <ada-btn
               class="sell"
               :disabled="!active || (active.status & 3) != 3"
-              @click="
-                () => {
-                  placeOrder({ draft: false });
-                }
-              "
+              @click.stop="placeOrder({ draft: false })"
               depressed
               :tabindex="tab == 2 ? '1' : null"
+              :class="[countVal > 1 && priceVal ? 'tw-bg-error tw-text-white': null]"
             >
               {{ $t("oms.sell-btn") }}
             </ada-btn>

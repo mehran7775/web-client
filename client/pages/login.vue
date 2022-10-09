@@ -122,7 +122,7 @@ function setFocus(el: string | null = null) {
       form {
         margin-left: auto;
         margin-right: auto;
-        max-width: 45%;
+        max-width: 322px;
       }
 
       .legend {

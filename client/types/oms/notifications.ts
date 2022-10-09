@@ -5,6 +5,5 @@ export interface Notification {
   params: {
     origin: number,
     messagesCount: MessageOrigin
-    id: number | string
   };
 }

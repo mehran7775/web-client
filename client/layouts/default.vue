@@ -38,9 +38,7 @@ const rtl = computed(() => appManager.rtl);
         <div class="pie-1 pie"></div>
         <div class="pie-2 pie"></div>
         <main :class="[locale, rtl ? 'rtl fa' : 'ltr en']">
-        <transition name="slide-fade">
-            <nuxt-page />
-        </transition>
+         <NuxtPage />
         </main>
         <footer :class="[locale, rtl ? 'rtl' : 'ltr']" class="tw-justify-start tw-text-start tw-h-[32px]">
             <span>
