@@ -5800,6 +5800,13 @@ uvu@^0.5.0:
     kleur "^4.0.3"
     sade "^1.7.3"
 
+vee-validate@^4.6.10:
+  version "4.6.10"
+  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-4.6.10.tgz#7fb7e8ae991854e3c5e284cd1cda92db63e3a8b3"
+  integrity sha512-B5zdWnz3uijuio/6wV6PlM2m+pyt0+hfKJnz8B7JzT/umUo+TRsQ6PsZynUVhq5S8P54vLWbw3ay908fITWtsw==
+  dependencies:
+    "@vue/devtools-api" "^6.1.4"
+
 vfile-location@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/vfile-location/-/vfile-location-4.0.1.tgz#06f2b9244a3565bef91f099359486a08b10d3a95"

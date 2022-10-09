@@ -27,6 +27,7 @@
     "jalali-moment": "^3.3.11",
     "luxon": "latest",
     "pinia": "latest",
+    "vee-validate": "^4.6.10",
     "vue-i18n": "^9.2.2",
     "yup": "^0.32.11"
   }

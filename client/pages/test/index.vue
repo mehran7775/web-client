@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import UploadableFile from "~/types/upload/UploadableFile";
 import { useUploadAbleFile } from "~~/composables";
+import { useField } from 'vee-validate'
+import { object, number, AnyObjectSchema } from "yup";
+
 
 const uploadFile = useUploadAbleFile();
 
@@ -18,6 +21,19 @@ const secondValue1 = ref(null)
 const day = ref<string>('')
 const month = ref<string>('')
 const year = ref<string>('')
+
+function isRequired(value: string) {
+  if (value && value.trim()) {
+    return true;
+  }
+  return 'This is required';
+} 
+
+const { value, errorMessage } = useField('input', isRequired)
+
+
+
+
 
 function receive_files_uploaded(e: any) {
   files.value = e.detail.value;
@@ -145,6 +161,16 @@ function changeState() {
           <ada-btn class="tw-mr-5">gfg</ada-btn>
         </template>
       </date-input>
+
+
+
+      <br>
+      <input class="tw-bg-success" type="text" v-model="value" name="input">
+      <span>{{errorMessage}}</span>
+      ////////////////////////////////////////
+      <br>
+
+      <!-- <ada-input v-model="inputModel"></ada-input> -->
     </div>
   </NuxtLayout>
 </template>

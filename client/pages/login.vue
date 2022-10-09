@@ -7,6 +7,10 @@ import { required } from "@/utils/rules";
 import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
 import { useUser } from "@/composables";
 import { useI18n } from "vue-i18n";
+import { useForm, useField } from 'vee-validate'
+import { object, string } from 'yup'
+
+
 
 const appManager = useAsrTrader();
 const userManager = useUser();
@@ -20,21 +24,41 @@ const userref: Ref<any> = ref(null);
 const passref: Ref<any> = ref(null);
 const captcharef: Ref<any> = ref(null);
 const otpref: Ref<any> = ref(null);
-const checkTries = userManager.checkTries;
-const rules = {
-  required,
-};
 
 const loading: Ref<boolean> = ref(false);
 const showPassword: Ref<boolean> = ref(false);
+
+
+const loginSchema = object({
+  username: string().required('fdgh'),
+  password: string().required()
+})
+
+const { errors, useFieldModel, setFieldValue, setErrors } = useForm({
+  validationSchema: loginSchema,
+
+})
+// setFieldTouched({})
+
+setErrors({
+  username: 'This field is invalid', // auto-complete for `email` and `password`
+});
+
+const [username, password] = useFieldModel([
+  'username',
+  'password'
+])
+
+
 const data: Ref<LoginModel> = ref({
   userName: "",
   password: "",
   passwordType: PasswordType.static,
   captcha: "",
 });
-const snacs = reactive([]);
-const failedCount = userManager.tryCount;
+
+// const snacs = reactive([]);
+// const failedCount = userManager.tryCount;
 const rtl = appManager.rtl;
 
 async function login(data: LoginModel) {
@@ -208,9 +232,10 @@ function setFocus(el: string | null = null) {
           <div class="logo"></div>
           <legend class="legend" v-text="$t('login.title')"></legend>
           <ada-input
-            v-model="data.userName"
+            v-model="username"
             tabIndex="1"
             ref="userref"
+            name="username"
             :label="$t('user.username')"
             class="login-input"
             @keyup.enter="setFocus()"
@@ -246,6 +271,7 @@ function setFocus(el: string | null = null) {
               </ada-icon>
             </template>
           </ada-input>
+          <span v-text="errors.username" class="tw-text-error"></span>
           <otp
             v-if="data.passwordType == 2"
             timer="90"
@@ -261,7 +287,8 @@ function setFocus(el: string | null = null) {
           />
           <ada-input
             v-if="data.passwordType == 1"
-            v-model="data.password"
+            v-model="password"
+            name="password"
             tabIndex="2"
             ref="passref"
             :label="
@@ -316,6 +343,7 @@ function setFocus(el: string | null = null) {
               </ada-icon>
             </template>
           </ada-input>
+          <span v-text="errors.password" class="tw-text-error"></span>
           <div class="tw-h-2" :style="{ 'text-align': rtl ? 'left' : 'right' }">
             <nuxt-link to="/reset-password" class="tw-text-primary">
               {{ $t("login.forget-password") }}
