@@ -3,13 +3,18 @@ import { Ref } from "vue";
 import { AxiosError } from "axios";
 import { LoginModel, PasswordType } from "@/types";
 import { ErrorExtractor } from "~/utils/error";
-import { required } from "@/utils/rules";
 import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
 import { useUser } from "@/composables";
 import { useI18n } from "vue-i18n";
-import { useForm, useField } from 'vee-validate'
+import { useForm, useField, configure } from 'vee-validate'
 import { object, string, number, mixed } from 'yup'
 
+// configure({
+//   validateOnBlur: true,
+//   validateOnChange: true,
+//   validateOnInput: true,
+//   validateOnModelUpdate: true,
+// });
 
 
 const appManager = useAsrTrader();
@@ -38,7 +43,7 @@ const loginSchema = object({
   passwordType: number().required()
 })
 
-const { errors, useFieldModel,setValues, handleSubmit, setErrors, validate, validateField } = useForm({
+const { errors,setValues, handleSubmit, validateField, setErrors } = useForm({
   validationSchema: loginSchema,
   initialValues: {
     userName: '',
@@ -46,15 +51,19 @@ const { errors, useFieldModel,setValues, handleSubmit, setErrors, validate, vali
     passwordType: PasswordType.static,
     captcha: ''
   },
-  validateOnMount: false
 })
 
-const [userName, password, captcha, passwordType] = useFieldModel([
-  'userName',
-  'password',
-  'captcha',
-  'passwordType'
-])
+// const [userName, password, captcha, passwordType] = useFieldModel([
+//   'userName',
+//   'password',
+//   'captcha',
+//   'passwordType'
+// ])
+
+const { value:userName } = useField<string>('userName')
+const { value:password } = useField<string>('password')
+const { value:passwordType } = useField<PasswordType>('passwordType')
+const { value:captcha } = useField<number>('captcha')
 
 // const { valid } = await validateField('userName');
 
@@ -264,6 +273,7 @@ function setFocus(el: string | null = null) {
             </template>
             <template #append>
               <ada-icon
+                class="tw-cursor-pointer"
                 :size="24"
                 @click="
                   () => {
@@ -274,7 +284,7 @@ function setFocus(el: string | null = null) {
                       });
                   }
                 "
-                :color="keyboard.active ? 'primary' : 'black'"
+                :class="keyboard.active ? 'tw-text-primary' : null"
               >
                 isax-keyboard
               </ada-icon>
@@ -326,15 +336,16 @@ function setFocus(el: string | null = null) {
             <template #append>
               <ada-icon
                 :size="24"
-                class="tw-mx-1"
+                class="tw-mx-1 tw-cursor-pointer"
                 :color="showPassword ? 'primary' : null"
                 @click="showPassword = !showPassword"
               >
                 isax-eye
               </ada-icon>
               <ada-icon
+                 class="tw-cursor-pointer"
                 :size="24"
-                :color="keyboard.active ? 'primary' : 'black'"
+                :class="keyboard.active ? 'tw-text-primary' : null"
                 @click="
                   () => {
                     keyboard.active = !keyboard.active;
@@ -432,6 +443,7 @@ function setFocus(el: string | null = null) {
           <ada-icon :size="24">mdi-dots-horizontal</ada-icon>
         </ada-btn>
       </div>
+      <virtual-keyboard />
     </div>
   </div>
 </template>

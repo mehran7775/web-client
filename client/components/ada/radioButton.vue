@@ -20,10 +20,10 @@ const value: Ref<any> = inject("toggle-ref", ref(1));
 
 <style lang="postcss" scoped>
 .radio {
-    @apply tw-relative tw-m-auto tw-max-w-full;
+    @apply tw-relative tw-m-auto tw-max-w-full tw-w-full;
 
     label {
-        @apply tw-flex tw-items-center tw-justify-center tw-py-1 tw-px-[1rem] tw-my-auto tw-mx-[10px] tw-rounded;
+        @apply tw-flex tw-items-center tw-justify-center tw-py-1 tw-px-[1rem] tw-my-auto tw-mx-[10px] tw-rounded tw-w-1/2;
         min-width: 50px;
         transition: all .2s;
 
