@@ -8,11 +8,12 @@ import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
 import { useUser } from "@/composables";
 import { useI18n } from "vue-i18n";
 import { useForm, useField } from 'vee-validate'
-import { object, string } from 'yup'
+import { object, string, number, mixed } from 'yup'
 
 
 
 const appManager = useAsrTrader();
+const locale = appManager.locale;
 const userManager = useUser();
 const router = useRouter();
 const keyboard = ref(useVirtualKeyBoard());
@@ -30,41 +31,42 @@ const showPassword: Ref<boolean> = ref(false);
 
 
 const loginSchema = object({
-  username: string().required('fdgh'),
-  password: string().required()
+  userName: string().required(i18n.t("error.validation.required", { name: i18n.t("user.username") })),
+  password: string().required(i18n.t("error.validation.required", { name: i18n.t("user.password") })),
+  captcha: string().typeError(i18n.t("error.validation.number", { name: i18n.t("login.captcha") }))
+  .required(i18n.t("error.validation.required", { name: i18n.t("login.captcha") })),
+  passwordType: number().required()
 })
 
-const { errors, useFieldModel, setFieldValue, setErrors } = useForm({
+const { errors, useFieldModel,setValues, handleSubmit, setErrors, validate, validateField } = useForm({
   validationSchema: loginSchema,
-
+  initialValues: {
+    userName: '',
+    password:'',
+    passwordType: PasswordType.static,
+    captcha: ''
+  },
+  validateOnMount: false
 })
-// setFieldTouched({})
 
-setErrors({
-  username: 'This field is invalid', // auto-complete for `email` and `password`
-});
-
-const [username, password] = useFieldModel([
-  'username',
-  'password'
+const [userName, password, captcha, passwordType] = useFieldModel([
+  'userName',
+  'password',
+  'captcha',
+  'passwordType'
 ])
 
+// const { valid } = await validateField('userName');
 
-const data: Ref<LoginModel> = ref({
-  userName: "",
-  password: "",
-  passwordType: PasswordType.static,
-  captcha: "",
-});
 
 // const snacs = reactive([]);
 // const failedCount = userManager.tryCount;
 const rtl = appManager.rtl;
 
-async function login(data: LoginModel) {
+const login = handleSubmit (async (values, actions) => {
   loading.value = true;
   try {
-    const res = await userManager.login(data);
+    const res = await userManager.login(values);
     if (res >= 200 && res < 300) {
       const user = userManager.me;
       router.push(user.settings?.home ?? "/watchlist/wealth");
@@ -91,14 +93,14 @@ async function login(data: LoginModel) {
       }
       snack.showMessage({ content: res, color: "error", timeout: 1000 });
     }
-    if (err.response.status === 401) data.captcha = "";
+    if (err.response.status === 401) setValues({ captcha: "" })
   } finally {
     loading.value = false;
   }
-}
-function captchaResult(code: string) {
-  data.value.captcha = code;
-}
+})
+// function captchaResult(code: string) {
+//   captcha = code;
+// }
 
 function requestOtp() {
   otpref.value.focus();
@@ -140,6 +142,12 @@ function setFocus(el: string | null = null) {
       .login-input {
         .scaffold {
           @apply tw-h-[38px] tw-px-1;
+        }
+        &.inValid .scaffold {
+          @apply tw-border-error tw-shadow-[0_0_3px_0] tw-shadow-error;
+        }
+        &.valid .scaffold {
+          @apply tw-border-success tw-shadow-[0_0_3px_0] tw-shadow-success;
         }
       }
 
@@ -228,22 +236,23 @@ function setFocus(el: string | null = null) {
     <div class="pie-1 pie"></div>
     <div class="login-page">
       <fieldset class="login-cmp">
-        <form ref="frm" @submit.prevent="login(data)">
+        <form ref="frm" @submit="login">
           <div class="logo"></div>
           <legend class="legend" v-text="$t('login.title')"></legend>
           <ada-input
-            v-model="username"
+            v-model="userName"
             tabIndex="1"
             ref="userref"
             name="username"
             :label="$t('user.username')"
             class="login-input"
+            :class="{inValid : errors?.userName, valid:false}"
             @keyup.enter="setFocus()"
             @focus="
               () => {
                 if (keyboard.active)
                   keyboard.setListener((key) => {
-                    data.userName = data.userName + key;
+                    setValues({ userName: userName + key }) 
                   });
               }
             "
@@ -261,7 +270,7 @@ function setFocus(el: string | null = null) {
                     keyboard.active = !keyboard.active;
                     if (keyboard.active)
                       keyboard.setListener((key) => {
-                        data.userName = data.userName + key;
+                        setValues({ userName: userName + key }) 
                       });
                   }
                 "
@@ -271,35 +280,30 @@ function setFocus(el: string | null = null) {
               </ada-icon>
             </template>
           </ada-input>
-          <span v-text="errors.username" class="tw-text-error"></span>
+          <div v-text="errors.userName" class="tw-text-error tw-h-[24px]"></div>
           <otp
-            v-if="data.passwordType == 2"
+            v-if="passwordType == 2"
             timer="90"
             tabindex="2"
-            class="tw-mt-[32px] login-input"
+            class="login-input"
             ref="otpref"
             @request="requestOtp"
-            @keyup.enter="
-              () => {
-                login(data);
-              }
-            "
+            @keyup.enter="login"
           />
           <ada-input
-            v-if="data.passwordType == 1"
+            v-if="passwordType == 1"
             v-model="password"
             name="password"
             tabIndex="2"
             ref="passref"
-            :label="
-              data.passwordType == 2 ? $t('login.otp') : $t('user.password')
+            :label="$t('user.password')
             "
             class="tw-block login-input"
-            :class="{ 'pass-star': !showPassword }"
+            :class="{ 'pass-star': !showPassword , inValid: errors?.password}"
             :type="showPassword ? 'text' : 'password'"
             @keyup.enter="
               () => {
-                if (false) login(data);
+                if (false) login;
                 else setFocus('captch');
               }
             "
@@ -307,7 +311,9 @@ function setFocus(el: string | null = null) {
               () => {
                 if (keyboard.active)
                   keyboard.setListener((key) => {
-                    data.password = data.password + key;
+                    setValues({
+                      password: password + key
+                    }) 
                   });
               }
             "
@@ -334,7 +340,9 @@ function setFocus(el: string | null = null) {
                     keyboard.active = !keyboard.active;
                     if (keyboard.active)
                       keyboard.setListener((key) => {
-                        data.password = data.password + key;
+                        setValues({
+                          password: password + key
+                        }) 
                       });
                   }
                 "
@@ -343,7 +351,8 @@ function setFocus(el: string | null = null) {
               </ada-icon>
             </template>
           </ada-input>
-          <span v-text="errors.password" class="tw-text-error"></span>
+          <div v-if="passwordType == 1" v-text="errors.password" class="tw-text-error tw-h-[24px]"></div>
+          <div v-if="passwordType == 2" v-text="" class="tw-text-error tw-h-[24px]"></div>
           <div class="tw-h-2" :style="{ 'text-align': rtl ? 'left' : 'right' }">
             <nuxt-link to="/reset-password" class="tw-text-primary">
               {{ $t("login.forget-password") }}
@@ -352,13 +361,14 @@ function setFocus(el: string | null = null) {
           <div class="tw-m-0 tw-mt-[4px] tw-p-0" style="font-size: 10px"></div>
           <div v-if="true" class="tw-m-0 tw-p-0 tw-mt-1 tw-mb-4">
             <simple-captcha
-              v-model="data.captcha"
+              v-model="captcha"
               tabIndex="3"
               ref="captcharef"
               class="captcha login-input"
+              :class="{inValid : errors?.captcha}"
               @keyup.enter="
                 () => {
-                  if (passref) login(data);
+                  if (passref) login;
                   else if (otpref) {
                     requestOtp();
                     otpref.focus();
@@ -373,8 +383,9 @@ function setFocus(el: string | null = null) {
               outlined
               dense
             />
+            <div class="tw-block tw-text-error tw-h-[24px]" v-text="errors.captcha"></div>
           </div>
-          <ada-toggle v-model="data.passwordType" class="tw-m-0 tw-p-0">
+          <ada-toggle v-model="passwordType" class="tw-m-0 tw-p-0">
             <ada-radio-button
               :items="[
                 { value: 1, label: 'login.static' },
