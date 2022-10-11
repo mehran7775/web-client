@@ -1,23 +1,22 @@
 <script lang="ts" setup>
 import { Ref } from "vue";
 
-const emit = defineEmits(["request", "update:modelValue"]);
-const props = defineProps(["value", "timer", "height"])
+const emit = defineEmits(["request", "update"]);
+const props = defineProps(["timer", "height"])
 const appManager = useAsrTrader();
 const otpref: Ref<any> = ref(null);
 
 const counter = ref(0);
 let timer: NodeJS.Timeout | null = null;
 
+const otpModel = ref<string>('')
+
 const formatter = appManager.formatter;
-const otp = computed({
-  get() {
-    return props.value;
-  },
-  set(val) {
-    emit("update:modelValue", val);
-  },
-});
+
+watch(otpModel, (val)=> {
+  emit('update', val)
+})
+
 function setTimer() {
   counter.value = props.timer;
   timer = setInterval(() => {
@@ -31,7 +30,7 @@ function setTimer() {
 function focus() {
   otpref.value.focus();
 }
-defineExpose({ otp, otpref, formatter, counter, setTimer, focus });
+defineExpose({  otpref, formatter, counter, setTimer, focus });
 
 </script>
 
@@ -68,7 +67,7 @@ defineExpose({ otp, otpref, formatter, counter, setTimer, focus });
 
 <template>
   <div>
-    <ada-input ref="otpref" class="otp" v-bind="$attrs" :label="$t('login.otp')">
+    <ada-input ref="otpref" class="otp" v-bind="$attrs" :label="$t('login.otp')" v-model="otpModel">
       <template #append>
         <ada-btn class="sms" :width="100" :disabled="counter > 0" @click="() => $emit('request')" :height="height - 8">
           <span v-if="counter == 0">

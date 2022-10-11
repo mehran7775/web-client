@@ -2,6 +2,7 @@
 const appManager = useAsrTrader();
 const locale = computed(() => appManager.locale);
 const rtl = computed(() => appManager.rtl);
+const snacks = useSnacks().snacks
 </script>
 
 <style lang="postcss" scoped>
@@ -45,5 +46,9 @@ const rtl = computed(() => appManager.rtl);
                 {{ $t("general.copyRight") }}
             </span>
         </footer>
+        <!-- //TODO -->
+        <!-- <TransitionGroup tag="dialog" name="snack" class="snacks">
+        </TransitionGroup> -->
+        <ada-snacks/>
     </div>
 </template>

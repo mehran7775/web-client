@@ -3,11 +3,22 @@ import { reactive, ref } from "vue";
 import { Snack, SnackState } from "@/types/stores";
 
 export const useSnacks = defineStore("snacks", () => {
-  const state = ref<SnackState>({
-    Snacks: reactive([]),
-  });
+  // const state = ref<SnackState>({
+  //   Snacks: reactive([]),
+  // });
+
+  const state = reactive<{
+    Snacks: Array<Snack>
+  }>({
+    Snacks: []
+  })
+
+
+  const snacks = computed(()=> state.Snacks)
+
+
   function showMessage(snack: Snack) {
-    state.value.Snacks.splice(0, 0, snack);
+    state.Snacks.splice(0, 0, snack);
     hideMessage(snack);
   }
   function hideMessage(snack: Snack) {
@@ -16,12 +27,13 @@ export const useSnacks = defineStore("snacks", () => {
     }, snack.timeout ?? 1000);
   }
   function close(snack: Snack) {
-    if (state.value.Snacks.indexOf(snack) > -1)
-      state.value.Snacks.splice(state.value.Snacks.indexOf(snack), 1);
+    if (state.Snacks.indexOf(snack) > -1)
+      state.Snacks.splice(state.Snacks.indexOf(snack), 1);
   }
 
   return {
     state,
+    snacks,
     showMessage,
     close,
   };

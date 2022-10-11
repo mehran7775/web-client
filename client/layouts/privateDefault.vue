@@ -7,6 +7,8 @@ const bottomPanelManager = useBottomPanel();
 const wealthManager = useWealth();
 const wbsocket = useWebSocket();
 
+const snacks = useSnacks().snacks
+
 const locale = computed(() => appManager.locale);
 const rtl = computed(() => appManager.rtl);
 const rightMenu = ref({
@@ -374,6 +376,6 @@ const triggerChatRoom = ()=> {
     <ada-btn id="chat-footer" class="floating-button" @click="triggerChatRoom">
       <ada-icon color="white" :size="24"> isax-messages-2-bold </ada-icon>
     </ada-btn>
-    <ada-snacks />
+    <ada-snacks/>
   </div>
 </template>

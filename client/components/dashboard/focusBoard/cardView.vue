@@ -55,13 +55,12 @@ defineExpose({
   height: 320px;
 
   >.card-view {
-    @apply tw-transition tw-shadow-md;
-    position: relative;
+    @apply tw-transition tw-shadow-md tw-relative tw-box-border;
     background-color: white;
     border-left: 1px solid #e0e0e0;
     border-right: 1px solid #e0e0e0;
     cursor: pointer;
-    max-height: 320px;
+    max-height: 319px;
    
 
     &.active {

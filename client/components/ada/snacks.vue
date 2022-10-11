@@ -4,7 +4,7 @@ import { useSnacks } from "@/composables";
 import { Snack } from "@/types/stores"
 
 const snackManager = useSnacks();
-const snacks = computed(() => snackManager.state.Snacks)
+const snacks = snackManager.snacks
 
 function close(snack: Snack) {
   snackManager.close(snack);
@@ -60,3 +60,4 @@ function close(snack: Snack) {
     </div>
   </TransitionGroup>
 </template>
+

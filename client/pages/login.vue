@@ -6,16 +6,8 @@ import { ErrorExtractor } from "~/utils/error";
 import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
 import { useUser } from "@/composables";
 import { useI18n } from "vue-i18n";
-import { useForm, useField, configure } from 'vee-validate'
-import { object, string, number, mixed } from 'yup'
-
-// configure({
-//   validateOnBlur: true,
-//   validateOnChange: true,
-//   validateOnInput: true,
-//   validateOnModelUpdate: true,
-// });
-
+import { useForm, useField, validate } from "vee-validate";
+import { object, string, number, mixed } from "yup";
 
 const appManager = useAsrTrader();
 const locale = appManager.locale;
@@ -35,49 +27,86 @@ const loading: Ref<boolean> = ref(false);
 const showPassword: Ref<boolean> = ref(false);
 
 
+const messageContent = await queryContent(`${ useAsrTrader().locale.split('-')[0] }/login/message`).find()
+
+
+
+
 
 
 const loginSchema = object({
-  userName: string().required(i18n.t("error.validation.required", { name: i18n.t("user.username") })),
-  password: string().required(i18n.t("error.validation.required", { name: i18n.t("user.password") })),
-  captcha: string().typeError(i18n.t("error.validation.number", { name: i18n.t("login.captcha") }))
-  .required(i18n.t("error.validation.required", { name: i18n.t("login.captcha") })),
-  passwordType: number().required()
-})
+  userName: string().required(
+    i18n.t("error.validation.required", { name: i18n.t("user.username") })
+  ),
+  password: string().required(
+    i18n.t("error.validation.required", { name: i18n.t("user.password") })
+  ),
+  otpModel: string().required(
+    i18n.t("error.validation.required", { name: i18n.t("login.otp") })
+  ),
+  captcha: string()
+    .typeError(
+      i18n.t("error.validation.number", { name: i18n.t("login.captcha") })
+    )
+    .required(
+      i18n.t("error.validation.required", { name: i18n.t("login.captcha") })
+    ),
+  passwordType: number().required(),
+});
 
-const { errors,setValues, handleSubmit, validateField, setErrors } = useForm({
-  validationSchema: loginSchema,
-  initialValues: {
-    userName: '',
-    password:'',
-    passwordType: PasswordType.static,
-    captcha: ''
-  },
-})
-// const [userName, password, captcha, passwordType] = useFieldModel([
-//   'userName',
-//   'password',
-//   'captcha',
-//   'passwordType'
-// ])
+const { errors, setValues, resetForm, validate, setFieldError, validateField, setErrors } =
+  useForm({
+    validationSchema: loginSchema,
+    initialValues: {
+      userName: "",
+      password: "",
+      passwordType: PasswordType.static,
+      captcha: "",
+      otpModel: ""
+
+    },
+  });
 
 // const { value:userName, meta:metaUserName, handleBlur, validate } = useField<string>('userName', null, { validateOnValueUpdate: false })
-  const { value:userName, meta:metaUserName, handleBlur, validate:usernameValidate } = useField<string>('userName')
-const { value:password, meta:metaPassword, validate: passwordValidate } = useField<string>('password')
-const { value:passwordType } = useField<PasswordType>('passwordType')
-const { value:captcha, meta:metaCaptcha, validate:captchaValidate } = useField<number>('captcha')
+const {
+  value: userName,
+  meta: metaUserName
+} = useField<string>("userName");
+const {
+  value: password,
+  meta: metaPassword
+} = useField<string>("password");
+
+const {
+value: otpModel,
+meta: metaOtp
+} = useField<string>("otpModel");
+
+const { value: passwordType } = useField<PasswordType>("passwordType");
+const {
+  value: captcha,
+  meta: metaCaptcha,
+  resetField: resetCaptchaField
+} = useField<string>("captcha");
 // const { valid } = await validateField('userName');
-
-
 
 
 // const snacs = reactive([]);
 // const failedCount = userManager.tryCount;
 const rtl = appManager.rtl;
 
-const login = handleSubmit (async (values, actions) => {
-  loading.value = true;
-  try {
+
+
+const login = async () => {  
+  if(await validation(passwordType.value)) {
+    loading.value = true;
+    try {
+    const values ={
+      userName: userName.value,
+      password: password.value,
+      passwordType: passwordType.value,
+      captcha: captcha.value
+    }
     const res = await userManager.login(values);
     if (res >= 200 && res < 300) {
       const user = userManager.me;
@@ -86,33 +115,64 @@ const login = handleSubmit (async (values, actions) => {
         content: "login.successful",
         color: "white",
         timeout: 3000,
-        bg: "success"
+        bg: "success",
+      });
+      resetForm({
+        values: {
+          userName: "",
+          password: "",
+          captcha: "",
+          passwordType: PasswordType.static,
+          otpModel: ""
+        },
       });
     }
   } catch (err: any) {
     captcharef.value.refreshCaptcha();
     const error = ErrorExtractor(err as AxiosError);
+    // actions.setFieldValue("captcha", '')
+    
     if (error.detail.length == 0)
-      snack.showMessage({
-        content: "errors." + error.code,
-        color: "error",
-        timeout: 2000,
-      });
+    snack.showMessage({
+      content: "errors." + error.code,
+      color: "error",
+      timeout: 2000,
+      bg: "error"
+    });
     else {
       let res = "";
       for (let e in error.detail) {
         res += i18n.t(error.detail[e].type) + "\r\n";
       }
-      snack.showMessage({ content: res, color: "error", timeout: 1000 });
+      resetCaptchaField()
+      if(error.detail[0].loc == "user" ) {
+        setFieldError('userName', 'username invalid')
+        setFieldError('password', 'password invalid')
+      }else if(error.detail[0].loc == "captcha") {
+        setFieldError('captcha', 'captcha invalid')
+      }
+
+      snack.showMessage({ content: res, color: "error", timeout: 1500, bg: "error" });
     }
-    if (err.response.status === 401) setValues({ captcha: "" })
   } finally {
     loading.value = false;
   }
-})
-// function captchaResult(code: string) {
-//   captcha = code;
-// }
+  }
+}
+async function validation (passwordType: PasswordType) {
+  let res: boolean = false
+  const { valid: validuserName } = await validateField('userName')
+  const { valid: validCaptcha } = await validateField('captcha')
+  if(passwordType === PasswordType.static) {
+    const { valid } = await validateField('password')
+    res = valid && validuserName && validCaptcha
+    return res
+  }
+  const { valid } = await validateField('otpModel')
+  res = valid && validuserName && validCaptcha
+  return res
+}
+
 
 function requestOtp() {
   otpref.value.focus();
@@ -142,7 +202,7 @@ function setFocus(el: string | null = null) {
 #login-page {
   @apply tw-h-full;
   .login-page {
-    @apply tw-flex tw-h-full; 
+    @apply tw-flex tw-h-full;
 
     .login-cmp {
       @apply tw-overflow-y-auto tw-w-full tw-h-full md:tw-w-1/2 tw-flex tw-items-center tw-bg-white;
@@ -167,6 +227,10 @@ function setFocus(el: string | null = null) {
         margin-left: auto;
         margin-right: auto;
         max-width: 322px;
+
+        .messageContent {
+          @apply tw-text-justify tw-mt-6 tw-text-gray3;
+        }
       }
 
       .legend {
@@ -248,7 +312,7 @@ function setFocus(el: string | null = null) {
     <div class="pie-1 pie"></div>
     <div class="login-page">
       <fieldset class="login-cmp">
-        <form ref="frm" @submit="login">
+        <form ref="frm" @submit.prevent="login">
           <div class="logo"></div>
           <legend class="legend" v-text="$t('login.title')"></legend>
           <ada-input
@@ -258,13 +322,13 @@ function setFocus(el: string | null = null) {
             name="username"
             :label="$t('user.username')"
             class="login-input"
-            :class="{inValid : errors?.userName, valid:metaUserName.valid}"
+            :class="{ inValid: errors?.userName, valid: metaUserName?.valid && !errors?.userName }"
             @keyup.enter="setFocus()"
             @focus="
               () => {
                 if (keyboard.active)
                   keyboard.setListener((key) => {
-                    setValues({ userName: userName + key }) 
+                    setValues({ userName: userName + key });
                   });
               }
             "
@@ -283,7 +347,7 @@ function setFocus(el: string | null = null) {
                     keyboard.active = !keyboard.active;
                     if (keyboard.active)
                       keyboard.setListener((key) => {
-                        setValues({ userName: userName + key }) 
+                        setValues({ userName: userName + key });
                       });
                   }
                 "
@@ -293,26 +357,36 @@ function setFocus(el: string | null = null) {
               </ada-icon>
             </template>
           </ada-input>
-          <div v-text="errors.userName" class="tw-text-error tw-h-[24px]"></div>
+          <div v-text="errors?.userName" class="tw-text-error tw-h-[24px]"></div>
           <otp
             v-if="passwordType == 2"
+            @update="(val)=> otpModel = val"
             timer="90"
             tabindex="2"
             class="login-input"
+            :class="{ inValid: errors?.otpModel, valid: metaOtp?.valid && !errors?.otpModel }"
             ref="otpref"
             @request="requestOtp"
             @keyup.enter="login"
           />
+          <div
+            v-if="passwordType == 2"
+            v-text="errors?.otpModel"
+            class="tw-text-error tw-h-[24px]"
+          ></div>
           <ada-input
             v-if="passwordType == 1"
             v-model="password"
             name="password"
             tabIndex="2"
             ref="passref"
-            :label="$t('user.password')
-            "
+            :label="$t('user.password')"
             class="tw-block login-input"
-            :class="{ 'pass-star': !showPassword , inValid: errors?.password, valid:metaPassword.valid}"
+            :class="{
+              'pass-star': !showPassword,
+              inValid: errors?.password,
+              valid: metaPassword?.valid && !errors?.password,
+            }"
             :type="showPassword ? 'text' : 'password'"
             @keyup.enter="
               () => {
@@ -325,8 +399,8 @@ function setFocus(el: string | null = null) {
                 if (keyboard.active)
                   keyboard.setListener((key) => {
                     setValues({
-                      password: password + key
-                    }) 
+                      password: password + key,
+                    });
                   });
               }
             "
@@ -346,7 +420,7 @@ function setFocus(el: string | null = null) {
                 isax-eye
               </ada-icon>
               <ada-icon
-                 class="tw-cursor-pointer"
+                class="tw-cursor-pointer"
                 :size="24"
                 :class="keyboard.active ? 'tw-text-primary' : null"
                 @click="
@@ -355,8 +429,8 @@ function setFocus(el: string | null = null) {
                     if (keyboard.active)
                       keyboard.setListener((key) => {
                         setValues({
-                          password: password + key
-                        }) 
+                          password: password + key,
+                        });
                       });
                   }
                 "
@@ -365,8 +439,16 @@ function setFocus(el: string | null = null) {
               </ada-icon>
             </template>
           </ada-input>
-          <div v-if="passwordType == 1" v-text="errors.password" class="tw-text-error tw-h-[24px]"></div>
-          <div v-if="passwordType == 2" v-text="" class="tw-text-error tw-h-[24px]"></div>
+          <div
+            v-if="passwordType == 1"
+            v-text="errors?.password"
+            class="tw-text-error tw-h-[24px]"
+          ></div>
+          <div
+            v-if="passwordType == 2"
+            v-text=""
+            class="tw-text-error tw-h-[24px]"
+          ></div>
           <div class="tw-h-2" :style="{ 'text-align': rtl ? 'left' : 'right' }">
             <nuxt-link to="/reset-password" class="tw-text-primary">
               {{ $t("login.forget-password") }}
@@ -379,7 +461,7 @@ function setFocus(el: string | null = null) {
               tabIndex="3"
               ref="captcharef"
               class="captcha login-input"
-              :class="{ inValid : errors?.captcha, valid: metaCaptcha.valid }"
+              :class="{ inValid: errors?.captcha, valid: metaCaptcha?.valid && !errors?.captcha }"
               @keyup.enter="
                 () => {
                   if (passref) login;
@@ -389,15 +471,14 @@ function setFocus(el: string | null = null) {
                   }
                 }
               "
-              @focus="
-                () => {
-                  keyboard.active = false;
-                }
-              "
+              @focus="keyboard.active = false"
               outlined
               dense
             />
-            <div class="tw-block tw-text-error tw-h-[24px]" v-text="errors.captcha"></div>
+            <div
+              class="tw-block tw-text-error tw-h-[24px]"
+              v-text="errors?.captcha"
+            ></div>
           </div>
           <ada-toggle v-model="passwordType" class="tw-m-0 tw-p-0">
             <ada-radio-button
@@ -424,10 +505,7 @@ function setFocus(el: string | null = null) {
           >
             {{ $t("login.registration") }}
           </ada-btn>
-          <div
-            class="tw-text-justify tw-mt-6 tw-text-gray3"
-            v-html="$t('login.alerts')"
-          ></div>
+          <ContentDoc :path="messageContent[0]._path" class="messageContent"/>
         </form>
       </fieldset>
       <ada-content-slider path="/login-slider" id="login-slider">
