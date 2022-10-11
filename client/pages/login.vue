@@ -444,11 +444,6 @@ function setFocus(el: string | null = null) {
             v-text="errors?.password"
             class="tw-text-error tw-h-[24px]"
           ></div>
-          <div
-            v-if="passwordType == 2"
-            v-text=""
-            class="tw-text-error tw-h-[24px]"
-          ></div>
           <div class="tw-h-2" :style="{ 'text-align': rtl ? 'left' : 'right' }">
             <nuxt-link to="/reset-password" class="tw-text-primary">
               {{ $t("login.forget-password") }}
