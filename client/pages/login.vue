@@ -35,6 +35,8 @@ const loading: Ref<boolean> = ref(false);
 const showPassword: Ref<boolean> = ref(false);
 
 
+
+
 const loginSchema = object({
   userName: string().required(i18n.t("error.validation.required", { name: i18n.t("user.username") })),
   password: string().required(i18n.t("error.validation.required", { name: i18n.t("user.password") })),
@@ -52,7 +54,6 @@ const { errors,setValues, handleSubmit, validateField, setErrors } = useForm({
     captcha: ''
   },
 })
-
 // const [userName, password, captcha, passwordType] = useFieldModel([
 //   'userName',
 //   'password',
@@ -60,12 +61,14 @@ const { errors,setValues, handleSubmit, validateField, setErrors } = useForm({
 //   'passwordType'
 // ])
 
-const { value:userName } = useField<string>('userName')
-const { value:password } = useField<string>('password')
+// const { value:userName, meta:metaUserName, handleBlur, validate } = useField<string>('userName', null, { validateOnValueUpdate: false })
+  const { value:userName, meta:metaUserName, handleBlur, validate:usernameValidate } = useField<string>('userName')
+const { value:password, meta:metaPassword, validate: passwordValidate } = useField<string>('password')
 const { value:passwordType } = useField<PasswordType>('passwordType')
-const { value:captcha } = useField<number>('captcha')
-
+const { value:captcha, meta:metaCaptcha, validate:captchaValidate } = useField<number>('captcha')
 // const { valid } = await validateField('userName');
+
+
 
 
 // const snacs = reactive([]);
@@ -255,7 +258,7 @@ function setFocus(el: string | null = null) {
             name="username"
             :label="$t('user.username')"
             class="login-input"
-            :class="{inValid : errors?.userName, valid:false}"
+            :class="{inValid : errors?.userName, valid:metaUserName.valid}"
             @keyup.enter="setFocus()"
             @focus="
               () => {
@@ -309,7 +312,7 @@ function setFocus(el: string | null = null) {
             :label="$t('user.password')
             "
             class="tw-block login-input"
-            :class="{ 'pass-star': !showPassword , inValid: errors?.password}"
+            :class="{ 'pass-star': !showPassword , inValid: errors?.password, valid:metaPassword.valid}"
             :type="showPassword ? 'text' : 'password'"
             @keyup.enter="
               () => {
@@ -376,7 +379,7 @@ function setFocus(el: string | null = null) {
               tabIndex="3"
               ref="captcharef"
               class="captcha login-input"
-              :class="{inValid : errors?.captcha}"
+              :class="{ inValid : errors?.captcha, valid: metaCaptcha.valid }"
               @keyup.enter="
                 () => {
                   if (passref) login;
