@@ -2,10 +2,13 @@
 import { Ref } from "vue";
 import { useInstrument, useOrder, useAxios } from "@/composables";
 import { InstrumentCache, InstrumentSearchModel, Side, TabItem } from "@/types";
-import { object, number, AnyObjectSchema } from "yup";
+import { object, number, AnyObjectSchema, lazy } from "yup";
+import { useI18n } from "vue-i18n";
 import { getWage } from "@/repositories/wealth/wealth_manager";
 import { useBottomPanel } from "~/composables";
 import { useForm, useField } from 'vee-validate'; 
+import { required } from "~~/utils/rules";
+
 
 ////////////////
 
@@ -21,6 +24,7 @@ const props = defineProps<{
 // const buyForm = ref<AnyObjectSchema | null>(null);
 // const sellForm = ref<AnyObjectSchema | null>(null);
 const bottomPanel = useBottomPanel()
+const i18n = useI18n();
 const axios = useAxios();
 const instrumentManager = useInstrument();
 const orderManager = useOrder();
@@ -31,75 +35,86 @@ const countLock = ref(false);
 const wage = ref({ buy: 0, sell: 0 });
 const agreement = ref(true);
 const orderDivision = ref(false);
-const accountTypefield = ref(0);
+// const accountTypefield = ref(0);
 const validatePercent = ref<number>(0);
 const activeCalculator = ref<boolean>(false);
 const activeCalculatorSell = ref<boolean>(false);
 const wholePrice = ref<number>(0);
 const formatter = appManager.formatter;
+const order = computed(() => orderManager.getForm(props.insId.toString()));
 
 getDetail()
 
-const formValidate = {
-  minCount: 0,
-  maxCount: 0,
-  minPrice: 0,
-  maxPrice: 0,
-}
+const validateCountShape =()=> number()
+  .typeError(i18n.t("error.validation.number", { name: i18n.t("oms.count") }))
+  .required(i18n.t("error.validation.required", { name: i18n.t("oms.count") }))
+  .min(active.value.minQuantityPerOrder, i18n.t("error.validation.min", { name: i18n.t("oms.count"), value: active.value.minQuantityPerOrder }))
 
-const formValue = {
-  countVal: 0,
-  priceVal: 0
-}
+
+const validatePriceShape = ()=> number().typeError(i18n.t("error.validation.number", { name: i18n.t("oms.price") }))
+  .required(i18n.t("error.validation.required", { name: i18n.t("oms.price") }))
+  .min(active.value.minAllowedPrice, i18n.t("error.validation.min", { name: i18n.t("oms.price"), value: active.value.minAllowedPrice }))
+  // .max(active.value.maxAllowedPrice, i18n.t("error.validation.max", { name: i18n.t("oms.price"), value: active.value.maxAllowedPrice })
 
 const schemaBuySell = object({
-  countVal: number().required().min(formValidate.minCount).max(formValidate.maxCount),
-  priceVal: number().required().min(formValidate.minPrice).max(formValidate.maxPrice)
+  countVal: lazy(()=> active.value.maxQuantityPerOrder > 0 ? validateCountShape()
+  .max(active.value.maxQuantityPerOrder, i18n.t("error.validation.max",{ name: i18n.t("oms.count"), value: active.value.maxQuantityPerOrder }))
+  : validateCountShape()),
+  priceVal:lazy(()=> active.value.maxAllowedPrice > 0 ? validatePriceShape()
+  .max(active.value.maxAllowedPrice, i18n.t("error.validation.max", { name: i18n.t("oms.price"), value: active.value.maxAllowedPrice }))
+  : validatePriceShape()),
+  accountTypefield: number().required()
 })
 
-const { validate, resetForm, setErrors, setValues } = useForm({
+const { errors, validate, resetForm, setErrors, setValues } = useForm({
   validationSchema: schemaBuySell,
   initialValues: {
-    countVal: 0,
-    priceVal: active.value.minAllowedPrice
+    countVal: order.value.quantity,
+    priceVal: order.value.enteredPrice,
+    accountTypefield: 1
   }
 })
+
+
+const { value:countVal, meta: countValMeta, validate: countValValidate } = useField<number>('countVal', null, { validateOnValueUpdate: false })
+const { value:priceVal, meta: priceValMeta, validate: priceValValidate } = useField<number>('priceVal', null, { validateOnValueUpdate: false })
+const { value:accountTypefield, meta: accountTypefieldMeta } = useField<number>('accountTypefield')
 
 
 
 //////////////// computed //////////
 
-const order = computed(() => orderManager.getForm(props.insId.toString()));
-const countVal = computed({
-  get() {
-    return order.value.quantity;
-  },
-  set(quantity) {
-    if (countLock.value) return;
-    orderManager.updateForm({
-      instrumentId: order.value.instrumentId,
-      quantity,
-    });
-  },
-});
-const priceVal = computed({
-  get() {
-    return order.value.enteredPrice;
-  },
-  set(enteredPrice) {
-    if (priceLock.value) return;
-    // console.log(enteredPrice)
-    orderManager.updateForm({
-      instrumentId: order.value.instrumentId,
-      enteredPrice,
-    });
-  },
-});
+// const countVal = computed({
+//   get() {
+//     return order.value.quantity;
+//   },
+//   set(quantity) {
+//     if (countLock.value) return;
+//     orderManager.updateForm({
+//       instrumentId: order.value.instrumentId,
+//       quantity,
+//     });
+//   },
+// });
+// const priceVal = computed({
+//   get() {
+//     return order.value.enteredPrice;
+//   },
+//   set(enteredPrice) {
+//     if (priceLock.value) return;
+//     // console.log(enteredPrice)
+//     orderManager.updateForm({
+//       instrumentId: order.value.instrumentId,
+//       enteredPrice,
+//     });
+//   },
+// });
 const baseTradeValue = computed(
-  () => order.value.quantity * order.value.enteredPrice
+  () => countVal.value * priceVal.value
 );
 const buyWage = computed(() => baseTradeValue.value * wage.value.buy);
 const sellWage = computed(() => baseTradeValue.value * wage.value.sell);
+
 const buyTradeValue = computed(() => baseTradeValue.value + buyWage.value);
 const sellTradeValue = computed(() => baseTradeValue.value + sellWage.value);
 const tab = computed({
@@ -113,7 +128,7 @@ const tab = computed({
     }
   },
 });
-const count = computed(
+const countSell = computed(
   () => {
     const res = Math.floor(wholePrice.value / priceVal.value * (1 + wage.value.sell))
     if(isNaN(res) || res == Infinity){
@@ -124,32 +139,32 @@ const count = computed(
     return res
   }
 );
-const wageCalculate = computed(
+const countBuy = computed(
   () => {
-    const res = priceVal.value * count.value * wage.value.sell
-    if(isNaN(res)) return 0
+    const res = Math.floor(wholePrice.value / priceVal.value * (1 + wage.value.sell))
+    if(isNaN(res) || res == Infinity){
+      countVal.value = 0
+      return 0
+    }
+    countVal.value = res
     return res
   }
 );
 
-
-
-// async function check() {
-//   if (buyForm.value) {
-//     try {
-//       await buyForm.value.validate({
-//         quantity: countVal.value,
-//         fee: priceVal.value,
-//       });
-//       return true;
-//     } catch (e) {
-//       console.log(e);
-//       return false;
-//     }
-//   }
-//   return false;
-// }
-
+const wageCalculateBuy = computed(
+  () => {
+    const res = priceVal.value * countBuy.value * wage.value.buy
+    if(isNaN(res)) return 0
+    return res
+  }
+);
+const wageCalculateSell = computed(
+  () => {
+    const res = priceVal.value * countSell.value * wage.value.sell
+    if(isNaN(res)) return 0
+    return res
+  }
+);
 
 
 //////////methods//////////////
@@ -207,28 +222,6 @@ async function getDetail() {
     countVal.value = 0;
     priceVal.value = active.value.minAllowedPrice;
 
-    // buyForm.value = object({
-    //   quantity: number()
-    //     .min(
-    //       active.value.minQuantityPerOrder,
-    //       "oms.order.validation.minQuantity: " +
-    //         active.value.minQuantityPerOrder
-    //     )
-    //     .max(
-    //       active.value.maxQuantityPerOrder > 0
-    //         ? active.value.maxQuantityPerOrder
-    //         : Infinity,
-    //       "oms.order.validation.maxQuantity"
-    //     ),
-    //   fee: number()
-    //     .min(active.value.minAllowedPrice, "oms.order.validation.minPrice")
-    //     .max(
-    //       active.value.maxAllowedPrice > 0
-    //         ? active.value.maxAllowedPrice
-    //         : Infinity,
-    //       "oms.order.validation.MaxPrice"
-    //     ),
-    // });
     getWage(
       props.insId.toString(),
       order.value.side,
@@ -389,6 +382,12 @@ async function getDetail() {
             @apply tw-font-bold tw-py-1;
           }
         }
+        &.valid .scaffold input{
+          @apply tw-border tw-border-success;
+        }
+        &.inValid .scaffold input{
+          @apply tw-border tw-border-error;
+        }
       }
       .ada-select {
         @apply tw-justify-between;
@@ -474,6 +473,11 @@ async function getDetail() {
               :id="`buyCountInputText-${insId}`"
               :readonly="countLock"
               class="inputColor"
+              @blur="countValValidate"
+              :class="{
+                inValid: errors?.countVal,
+                valid: countValMeta?.valid && countValMeta?.validated,
+              }"
               :min="!!active ? active.minQuantityPerOrder : 1"
               :max="!!active ? active.maxQuantityPerOrder || null : null"
             >
@@ -524,7 +528,7 @@ async function getDetail() {
                       <div>
                         <span>{{ $t("oms.wage") }}:</span>
                         <span>
-                          <numeric-field :value="wageCalculate" />
+                          <numeric-field :value="wageCalculateBuy" />
                         </span>
                       </div>
                       <div><ada-btn @click.stop="activeCalculator = false"><span v-text="$t('general.verify')"></span></ada-btn></div>
@@ -541,7 +545,12 @@ async function getDetail() {
               v-model="priceVal"
               activeBorder
               :readonly="priceLock"
+              @blur="priceValValidate"
               class="inputColor"
+              :class="{
+                inValid: errors?.priceVal,
+                valid: priceValMeta?.valid && priceValMeta?.validated,
+              }"
               :min="!!active ? active.minAllowedPrice : 1"
               :max="!!active ? active.maxAllowedPrice || null : null"
             >
@@ -564,6 +573,10 @@ async function getDetail() {
               v-model="accountTypefield"
               :label="$t('accounting.account.type')"
               class="tw-my-1 inputColor"
+              :class="{
+                inValid: errors?.accountTypefield,
+                valid: accountTypefieldMeta?.valid && accountTypefieldMeta?.validated,
+              }"
               height="24px"
               tabindex="-1"
             >
@@ -731,7 +744,7 @@ async function getDetail() {
                       <div>
                         <span>{{ $t("oms.wage") }}:</span>
                         <span>
-                          <numeric-field :value="wageCalculate" />
+                          <numeric-field :value="wageCalculateSell" />
                         </span>
                       </div>
                       <div><ada-btn @click.stop="activeCalculatorSell = false"><span v-text="$t('general.verify')"></span></ada-btn></div>

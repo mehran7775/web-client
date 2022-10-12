@@ -11,7 +11,9 @@
     },
     "validation": {
       "required": "{name} اجباری است.",
-      "number": "{name} باید شامل عدد باشد."
+      "number": "{name} باید شامل عدد باشد.",
+      "min": "{name} باید حداقل {value} باشد",
+      "max": "{name} باید حداکثر {value} باشد"
     }
   },
   "general": {
