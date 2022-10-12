@@ -5,6 +5,7 @@ import { InstrumentCache, InstrumentSearchModel, Side, TabItem } from "@/types";
 import { object, number, AnyObjectSchema } from "yup";
 import { getWage } from "@/repositories/wealth/wealth_manager";
 import { useBottomPanel } from "~/composables";
+import { useForm, useField } from 'vee-validate'; 
 
 ////////////////
 
@@ -23,8 +24,8 @@ const bottomPanel = useBottomPanel()
 const axios = useAxios();
 const instrumentManager = useInstrument();
 const orderManager = useOrder();
+const appManager = useAsrTrader();
 const active: Ref<InstrumentCache> = ref(new InstrumentCache());
-const order = computed(() => orderManager.getForm(props.insId.toString()));
 const priceLock = ref(false);
 const countLock = ref(false);
 const wage = ref({ buy: 0, sell: 0 });
@@ -34,10 +35,41 @@ const accountTypefield = ref(0);
 const validatePercent = ref<number>(0);
 const activeCalculator = ref<boolean>(false);
 const activeCalculatorSell = ref<boolean>(false);
-const appManager = useAsrTrader();
+const wholePrice = ref<number>(0);
 const formatter = appManager.formatter;
-////////////////////////
 
+getDetail()
+
+const formValidate = {
+  minCount: 0,
+  maxCount: 0,
+  minPrice: 0,
+  maxPrice: 0,
+}
+
+const formValue = {
+  countVal: 0,
+  priceVal: 0
+}
+
+const schemaBuySell = object({
+  countVal: number().required().min(formValidate.minCount).max(formValidate.maxCount),
+  priceVal: number().required().min(formValidate.minPrice).max(formValidate.maxPrice)
+})
+
+const { validate, resetForm, setErrors, setValues } = useForm({
+  validationSchema: schemaBuySell,
+  initialValues: {
+    countVal: 0,
+    priceVal: active.value.minAllowedPrice
+  }
+})
+
+
+
+//////////////// computed //////////
+
+const order = computed(() => orderManager.getForm(props.insId.toString()));
 const countVal = computed({
   get() {
     return order.value.quantity;
@@ -81,8 +113,6 @@ const tab = computed({
     }
   },
 });
-
-const wholePrice = ref<number>(0);
 const count = computed(
   () => {
     const res = Math.floor(wholePrice.value / priceVal.value * (1 + wage.value.sell))
@@ -119,6 +149,10 @@ const wageCalculate = computed(
 //   }
 //   return false;
 // }
+
+
+
+//////////methods//////////////
 
 const check = ():boolean => {
   if(countVal.value && priceVal.value) return true
@@ -165,13 +199,14 @@ function updateData() {
   validatePercent.value = 0;
   wholePrice.value = 0
 }
-
-instrumentManager
+async function getDetail() {
+  await instrumentManager
   .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
   .then((data: Array<InstrumentCache>) => {
     active.value = data[0];
     countVal.value = 0;
     priceVal.value = active.value.minAllowedPrice;
+
     // buyForm.value = object({
     //   quantity: number()
     //     .min(
@@ -204,8 +239,11 @@ instrumentManager
           buy: res.data,
           sell: res.data,
         };
-    });
+    })
+
   });
+}
+
 </script>
 
 <style lang="postcss" scoped>

@@ -6,8 +6,9 @@ import { ErrorExtractor } from "~/utils/error";
 import { useVirtualKeyBoard } from "@/utils/virtualKeyBoard";
 import { useUser } from "@/composables";
 import { useI18n } from "vue-i18n";
-import { useForm, useField, validate } from "vee-validate";
-import { object, string, number, mixed } from "yup";
+import { useForm, useField } from "vee-validate";
+import { object, string, number, mixed, lazy } from "yup";
+import { required } from "~~/utils/rules";
 
 const appManager = useAsrTrader();
 const locale = appManager.locale;
@@ -26,23 +27,28 @@ const otpref: Ref<any> = ref(null);
 const loading: Ref<boolean> = ref(false);
 const showPassword: Ref<boolean> = ref(false);
 
+const messageContent = await queryContent(
+  `${useAsrTrader().locale.split("-")[0]}/login/message`
+).find();
 
-const messageContent = await queryContent(`${ useAsrTrader().locale.split('-')[0] }/login/message`).find()
-
-
-
-
-
-
+//TODO create interface
 const loginSchema = object({
   userName: string().required(
     i18n.t("error.validation.required", { name: i18n.t("user.username") })
   ),
-  password: string().required(
-    i18n.t("error.validation.required", { name: i18n.t("user.password") })
+  password: lazy(() =>
+    passwordType.value === PasswordType.static
+      ? string().required(
+          i18n.t("error.validation.required", { name: i18n.t("user.password") })
+        )
+      : string()
   ),
-  otpModel: string().required(
-    i18n.t("error.validation.required", { name: i18n.t("login.otp") })
+  otpModel: lazy(() =>
+    passwordType.value === PasswordType.smsOtp
+      ? string().required(
+          i18n.t("error.validation.required", { name: i18n.t("login.otp") })
+        )
+      : string()
   ),
   captcha: string()
     .typeError(
@@ -54,125 +60,110 @@ const loginSchema = object({
   passwordType: number().required(),
 });
 
-const { errors, setValues, resetForm, validate, setFieldError, validateField, setErrors } =
-  useForm({
-    validationSchema: loginSchema,
-    initialValues: {
-      userName: "",
-      password: "",
-      passwordType: PasswordType.static,
-      captcha: "",
-      otpModel: ""
-
-    },
-  });
+const {
+  errors,
+  setValues,
+  resetForm,
+  validate,
+  setFieldError,
+  validateField,
+  setErrors,
+} = useForm({
+  validationSchema: loginSchema,
+  initialValues: {
+    userName: "",
+    password: "",
+    passwordType: PasswordType.static,
+    captcha: "",
+    otpModel: "",
+  },
+});
 
 // const { value:userName, meta:metaUserName, handleBlur, validate } = useField<string>('userName', null, { validateOnValueUpdate: false })
-const {
-  value: userName,
-  meta: metaUserName
-} = useField<string>("userName");
-const {
-  value: password,
-  meta: metaPassword
-} = useField<string>("password");
+const { value: userName, meta: metaUserName } = useField<string>("userName");
+const { value: password, meta: metaPassword } = useField<string>("password");
 
-const {
-value: otpModel,
-meta: metaOtp
-} = useField<string>("otpModel");
+const { value: otpModel, meta: metaOtp } = useField<string>("otpModel");
 
 const { value: passwordType } = useField<PasswordType>("passwordType");
 const {
   value: captcha,
   meta: metaCaptcha,
-  resetField: resetCaptchaField
+  resetField: resetCaptchaField,
 } = useField<string>("captcha");
-// const { valid } = await validateField('userName');
-
 
 // const snacs = reactive([]);
 // const failedCount = userManager.tryCount;
 const rtl = appManager.rtl;
 
-
-
-const login = async () => {  
-  if(await validation(passwordType.value)) {
+const login = async () => {
+  const { valid } = await validate()
+  if (valid) {
     loading.value = true;
     try {
-    const values ={
-      userName: userName.value,
-      password: password.value,
-      passwordType: passwordType.value,
-      captcha: captcha.value
-    }
-    const res = await userManager.login(values);
-    if (res >= 200 && res < 300) {
-      const user = userManager.me;
-      router.push(user.settings?.home ?? "/watchlist/wealth");
-      snack.showMessage({
-        content: "login.successful",
-        color: "white",
-        timeout: 3000,
-        bg: "success",
-      });
-      resetForm({
-        values: {
-          userName: "",
-          password: "",
-          captcha: "",
-          passwordType: PasswordType.static,
-          otpModel: ""
-        },
-      });
-    }
-  } catch (err: any) {
-    captcharef.value.refreshCaptcha();
-    const error = ErrorExtractor(err as AxiosError);
-    // actions.setFieldValue("captcha", '')
-    
-    if (error.detail.length == 0)
-    snack.showMessage({
-      content: "errors." + error.code,
-      color: "error",
-      timeout: 2000,
-      bg: "error"
-    });
-    else {
-      let res = "";
-      for (let e in error.detail) {
-        res += i18n.t(error.detail[e].type) + "\r\n";
+      const values = {
+        userName: userName.value,
+        password: password.value,
+        passwordType: passwordType.value,
+        captcha: captcha.value,
+      };
+      const res = await userManager.login(values);
+      if (res >= 200 && res < 300) {
+        const user = userManager.me;
+        router.push(user.settings?.home ?? "/watchlist/wealth");
+        snack.showMessage({
+          content: "login.successful",
+          color: "white",
+          timeout: 3000,
+          bg: "success",
+        });
+        resetForm({
+          values: {
+            userName: "",
+            password: "",
+            captcha: "",
+            passwordType: PasswordType.static,
+            otpModel: "",
+          },
+        });
       }
-      resetCaptchaField()
-      if(error.detail[0].loc == "user" ) {
-        setFieldError('userName', 'username invalid')
-        setFieldError('password', 'password invalid')
-      }else if(error.detail[0].loc == "captcha") {
-        setFieldError('captcha', 'captcha invalid')
+    } catch (err: any) {
+      captcharef.value.refreshCaptcha();
+      const error = ErrorExtractor(err as AxiosError);
+      // actions.setFieldValue("captcha", '')
+
+      if (error.detail.length == 0)
+        snack.showMessage({
+          content: "errors." + error.code,
+          color: "error",
+          timeout: 2000,
+          bg: "error",
+        });
+      else {
+        let res = "";
+        for (let e in error.detail) {
+          res += i18n.t(error.detail[e].type) + "\r\n";
+        }
+        resetCaptchaField();
+        if (error.detail[0].loc == "user") {
+          setFieldError("userName", "username invalid");
+          setFieldError("password", "password invalid");
+        } else if (error.detail[0].loc == "captcha") {
+          setFieldError("captcha", "captcha invalid");
+        }
+
+        snack.showMessage({
+          content: res,
+          color: "error",
+          timeout: 1500,
+          bg: "error",
+        });
       }
-
-      snack.showMessage({ content: res, color: "error", timeout: 1500, bg: "error" });
+    } finally {
+      loading.value = false;
     }
-  } finally {
-    loading.value = false;
   }
-  }
-}
-async function validation (passwordType: PasswordType) {
-  let res: boolean = false
-  const { valid: validuserName } = await validateField('userName')
-  const { valid: validCaptcha } = await validateField('captcha')
-  if(passwordType === PasswordType.static) {
-    const { valid } = await validateField('password')
-    res = valid && validuserName && validCaptcha
-    return res
-  }
-  const { valid } = await validateField('otpModel')
-  res = valid && validuserName && validCaptcha
-  return res
-}
-
+};
 
 function requestOtp() {
   otpref.value.focus();
@@ -322,7 +313,10 @@ function setFocus(el: string | null = null) {
             name="username"
             :label="$t('user.username')"
             class="login-input"
-            :class="{ inValid: errors?.userName, valid: metaUserName?.valid && !errors?.userName }"
+            :class="{
+              inValid: errors?.userName,
+              valid: metaUserName?.valid && !errors?.userName,
+            }"
             @keyup.enter="setFocus()"
             @focus="
               () => {
@@ -357,14 +351,21 @@ function setFocus(el: string | null = null) {
               </ada-icon>
             </template>
           </ada-input>
-          <div v-text="errors?.userName" class="tw-text-error tw-h-[24px]"></div>
+          <div
+            v-text="errors?.userName"
+            class="tw-text-error tw-h-[24px]"
+          ></div>
           <otp
             v-if="passwordType == 2"
-            @update="(val)=> otpModel = val"
+            @update:modelValue="val => otpModel = val"
+            :modelValue="otpModel"
             timer="90"
             tabindex="2"
             class="login-input"
-            :class="{ inValid: errors?.otpModel, valid: metaOtp?.valid && !errors?.otpModel }"
+            :class="{
+              inValid: errors?.otpModel,
+              valid: metaOtp?.valid && !errors?.otpModel && otpModel.length,
+            }"
             ref="otpref"
             @request="requestOtp"
             @keyup.enter="login"
@@ -456,7 +457,10 @@ function setFocus(el: string | null = null) {
               tabIndex="3"
               ref="captcharef"
               class="captcha login-input"
-              :class="{ inValid: errors?.captcha, valid: metaCaptcha?.valid && !errors?.captcha }"
+              :class="{
+                inValid: errors?.captcha,
+                valid: metaCaptcha?.valid && !errors?.captcha,
+              }"
               @keyup.enter="
                 () => {
                   if (passref) login;
@@ -500,7 +504,7 @@ function setFocus(el: string | null = null) {
           >
             {{ $t("login.registration") }}
           </ada-btn>
-          <ContentDoc :path="messageContent[0]._path" class="messageContent"/>
+          <ContentDoc :path="messageContent[0]._path" class="messageContent" />
         </form>
       </fieldset>
       <ada-content-slider path="/login-slider" id="login-slider">
