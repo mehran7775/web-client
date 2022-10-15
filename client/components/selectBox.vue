@@ -37,7 +37,7 @@ watch(()=> props.value, (newVal)=>{
 
 const getText: (item: any) => string = eval(
   "(item)=>{\
-    return " + props.textPath.replace(/^\$/, "item") + ".toString();\
+    return " + props.textPath.replace(/^\$/, "item") + "?.toString();\
   }"
 );
 

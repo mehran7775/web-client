@@ -39,6 +39,10 @@ watch(
     }, 750);
   }
 );
+
+const setValue = (e)=> {
+  emit('update:modelValue', e.target.value)
+}
 </script>
 
 <style lang="postcss" scoped>
@@ -114,10 +118,10 @@ watch(
       class="range"
       :dir="dir"
       type="range"
-      v-model="val"
+      :value="val"
       :min="min"
       :max="max"
-      @input="$emit('update:modelValue', val)"
+      @input="setValue"
       v-bind="$attrs"
     />
     <div class="process" :style="{ width: process + '%' }"></div>

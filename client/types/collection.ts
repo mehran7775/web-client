@@ -3,7 +3,14 @@ export interface KeyValuePairs<key, value> {
   value: value;
 }
 
-export class AutoCompleteItem {
+export interface AutoCompleteItemInterface {
+  id: string;
+  name: string;
+  fullName: string;
+}
+
+
+export class AutoCompleteItem implements AutoCompleteItemInterface {
   id: string;
   name: string;
   fullName: string;
@@ -13,6 +20,17 @@ export class AutoCompleteItem {
     this.fullName = fullname;
   }
 }
+
+
+
+
+export const defaultWealthValidityItems: AutoCompleteItemInterface[]  = [
+  new AutoCompleteItem("1", "روز"),
+  new AutoCompleteItem("4", "انجام و حذف"),
+  new AutoCompleteItem("3", "تا لغو"),
+  new AutoCompleteItem("2", "تا تاریخ"),
+];
+
 
 export interface Paginated {
   offset: number;

@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { AutoCompleteItem } from "~/types";
+import { AutoCompleteItem, AutoCompleteItemInterface } from "~/types";
+
+
+
+const props = defineProps<{
+  modelValue: AutoCompleteItemInterface
+}>()
+
+const emit = defineEmits(['update:modelValue'])
 
 const day = ref<string>('')
 const month = ref<string>('')
@@ -12,15 +20,7 @@ const items = [
   new AutoCompleteItem("2", "تا تاریخ"),
 ];
 
-const window = computed(() => (value.value?.id == "2" ? "date" : "select"));
-const value = ref<AutoCompleteItem | null>(items[0]);
-//TODO emit update
-
-
-
-const select = (item: AutoCompleteItem):void =>{
-  value.value = item
-}
+const window = computed(() => (props.modelValue?.id == "2" ? "date" : "select"))
 
 
 </script>
@@ -45,10 +45,10 @@ const select = (item: AutoCompleteItem):void =>{
 <template>
   <Windows>
     <windows-item value="select" :selected="window">
-      <select-box :value="value" keyPath="$.id" v-bind="$attrs" id="credit-wealth">
+      <select-box :value="modelValue" keyPath="$.id" v-bind="$attrs" id="credit-wealth">
         <template #items>
           <ul class="tw-m-0 tw-p-0">
-            <li v-for="item in items" :key="item.id" class="tw-p-2 tw-cursor-pointer hover:tw-bg-primary-100" @click="select(item)">
+            <li v-for="item in items" :key="item.id" class="tw-p-2 tw-cursor-pointer hover:tw-bg-primary-100" @click="$emit('update:modelValue', item)">
               <span v-text="item.name"></span>
             </li>
           </ul>
@@ -58,11 +58,7 @@ const select = (item: AutoCompleteItem):void =>{
     <windows-item value="date" :selected="window">
       <date-input v-model:day="day" v-model:month="month" v-model:year="year">
         <template #append>
-          <ada-btn @click="
-            () => {
-              value = items[0];
-            }
-          ">
+          <ada-btn @click.stop="$emit('update:modelValue', items[0])">
             {{ $t("general.cancellation") }}
           </ada-btn>
         </template>

@@ -2,7 +2,7 @@
 
 const props = withDefaults(
   defineProps<{
-    modelValue: number
+    modelValue: number|string
     height?: string;
     amount?: number;
     min?: number;
@@ -33,12 +33,15 @@ const maxCount = computed(() => {
   else return props.max;
 });
 const result = computed(() => {
-  if (props.total)
-    return Math.min(
+  let res = 0
+  if (props.total){
+    res = Math.min(
       Math.max(Math.round((val.value / 100) * props.total), minCount.value),
       maxCount.value
     );
-  else return 0;
+  }
+  emit('update:modelValue', res)
+  return res
 });
 
 
@@ -48,6 +51,7 @@ watch(
     setValue(update);
   }
 );
+
 function setValue(update: number | string) {
   if (typeof update == "string") update = parseInt(update);
   val.value = update > props.max ? props.max : update < props.min ? props.min : update;
@@ -61,7 +65,7 @@ function toPercent(value: number) {
 
 <template>
   <div class="percent-container">
-    <RangeSlider :min="min" :max="max" v-model="val" @update="setValue" class="tw-max-w-full" v-bind="$attrs"/>
+    <RangeSlider :min="min" :max="max" v-model="val" class="tw-max-w-full" v-bind="$attrs"/>
     <ada-input
       dir="rtl"
       :label="label"

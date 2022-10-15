@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Ref } from "vue";
 import { useInstrument, useOrder, useAxios } from "@/composables";
-import { InstrumentCache, InstrumentSearchModel, Side, TabItem } from "@/types";
+import { AutoCompleteItem, AutoCompleteItemInterface, defaultWealthValidityItems, InstrumentCache, InstrumentSearchModel, Side, TabItem } from "@/types";
 import { object, number, AnyObjectSchema, lazy } from "yup";
 import { useI18n } from "vue-i18n";
 import { getWage } from "@/repositories/wealth/wealth_manager";
@@ -21,8 +21,6 @@ const props = defineProps<{
 
 //////////////
 
-// const buyForm = ref<AnyObjectSchema | null>(null);
-// const sellForm = ref<AnyObjectSchema | null>(null);
 const bottomPanel = useBottomPanel()
 const i18n = useI18n();
 const axios = useAxios();
@@ -35,13 +33,13 @@ const countLock = ref(false);
 const wage = ref({ buy: 0, sell: 0 });
 const agreement = ref(true);
 const orderDivision = ref(false);
-// const accountTypefield = ref(0);
 const validatePercent = ref<number>(0);
 const activeCalculator = ref<boolean>(false);
 const activeCalculatorSell = ref<boolean>(false);
 const wholePrice = ref<number>(0);
 const formatter = appManager.formatter;
 const order = computed(() => orderManager.getForm(props.insId.toString()));
+
 
 getDetail()
 
@@ -63,52 +61,39 @@ const schemaBuySell = object({
   priceVal:lazy(()=> active.value.maxAllowedPrice > 0 ? validatePriceShape()
   .max(active.value.maxAllowedPrice, i18n.t("error.validation.max", { name: i18n.t("oms.price"), value: active.value.maxAllowedPrice }))
   : validatePriceShape()),
-  accountTypefield: number().required()
+  accountTypefield: object().required().test('accountTypefield', 'message', function(value):any{
+    if(value.id) return true
+    return false
+  }),
+  wealthValidityField: object().required().test('wealthValidityField', 'message', function(value):any{
+    if(value.id) return true
+    return false
+  })
 })
 
-const { errors, validate, resetForm, setErrors, setValues } = useForm({
+const { errors, validate, resetForm, setErrors, setValues, setFieldValue } = useForm({
   validationSchema: schemaBuySell,
   initialValues: {
     countVal: order.value.quantity,
     priceVal: order.value.enteredPrice,
-    accountTypefield: 1
+    accountTypefield: new AutoCompleteItem("1", "نزد کارگزار"),
+    wealthValidityField: defaultWealthValidityItems[0],
+
   }
 })
 
 
-const { value:countVal, meta: countValMeta, validate: countValValidate } = useField<number>('countVal', null, { validateOnValueUpdate: false })
-const { value:priceVal, meta: priceValMeta, validate: priceValValidate } = useField<number>('priceVal', null, { validateOnValueUpdate: false })
-const { value:accountTypefield, meta: accountTypefieldMeta } = useField<number>('accountTypefield')
+
+const { value:countVal, meta: countValMeta, validate: countValValidate } = useField<number>('countVal', null)
+const { value:priceVal, meta: priceValMeta, validate: priceValValidate } = useField<number>('priceVal', null)
+const { value:accountTypefield, meta: accountTypefieldMeta } = useField<AutoCompleteItemInterface>('accountTypefield')
+const { value:wealthValidityField, meta: wealthValidityFieldMeta } = useField<AutoCompleteItemInterface>('wealthValidityField')
+
 
 
 
 //////////////// computed //////////
 
-// const countVal = computed({
-//   get() {
-//     return order.value.quantity;
-//   },
-//   set(quantity) {
-//     if (countLock.value) return;
-//     orderManager.updateForm({
-//       instrumentId: order.value.instrumentId,
-//       quantity,
-//     });
-//   },
-// });
-// const priceVal = computed({
-//   get() {
-//     return order.value.enteredPrice;
-//   },
-//   set(enteredPrice) {
-//     if (priceLock.value) return;
-//     // console.log(enteredPrice)
-//     orderManager.updateForm({
-//       instrumentId: order.value.instrumentId,
-//       enteredPrice,
-//     });
-//   },
-// });
 const baseTradeValue = computed(
   () => countVal.value * priceVal.value
 );
@@ -208,8 +193,8 @@ function togglePriceLock() {
 }
 
 function updateData() {
-  countVal.value = 0;
-  priceVal.value = 0;
+  setFieldValue('countVal', 0)
+  setFieldValue('priceVal', 0)
   orderDivision.value = false;
   validatePercent.value = 0;
   wholePrice.value = 0
@@ -219,8 +204,8 @@ async function getDetail() {
   .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
   .then((data: Array<InstrumentCache>) => {
     active.value = data[0];
-    countVal.value = 0;
-    priceVal.value = active.value.minAllowedPrice;
+    setFieldValue('countVal', 0)
+    setFieldValue('priceVal', active.value.minAllowedPrice)
 
     getWage(
       props.insId.toString(),
@@ -235,6 +220,11 @@ async function getDetail() {
     })
 
   });
+}
+
+
+const testValidate = async() => {
+  console.log(await validate())
 }
 
 </script>
@@ -450,6 +440,7 @@ async function getDetail() {
     <ada-tabs v-model="tab" class="tabs">
       <ada-tab :model="1">
         <form class="frm">
+          <!-- <span @click="testValidate">testValidate</span> -->
           <div class="tw-col-span-2 tw-justify-center">
             <span class="tw-mx-3"
               >{{ $t("wealth.sharesCount") }} ({{ insName }}):
@@ -585,6 +576,7 @@ async function getDetail() {
           </div>
           <div class="tw-justify-between">
             <wealth-validity
+              v-model="wealthValidityField"
               height="24px"
               class="tw-my-1 inputColor"
               :label="$t('accounting.account.credit')"
@@ -781,6 +773,7 @@ async function getDetail() {
           </div>
           <div class="tw-justify-between">
             <wealth-account-type
+              v-model="accountTypefield"
               :label="$t('accounting.account.type')"
               class="tw-my-1 inputColor"
               height="24px"
@@ -791,6 +784,7 @@ async function getDetail() {
           </div>
           <div class="tw-justify-between">
             <wealth-validity
+              v-model="wealthValidityField"
               height="24px"
               class="tw-my-1 inputColor"
               :label="$t('accounting.account.credit')"
