@@ -56,7 +56,7 @@ const loginSchema = object({
     )
     .required(
       i18n.t("error.validation.required", { name: i18n.t("login.captcha") })
-    ),
+    ).length(6, i18n.t("error.validation.length", { name: i18n.t("login.captcha"), value:6 })),
   passwordType: number().required(),
 });
 
