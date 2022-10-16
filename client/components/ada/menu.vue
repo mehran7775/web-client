@@ -43,7 +43,7 @@ const style = computed(() => {
     @apply tw-absolute tw-bg-white tw-outline-none tw-shadow-lg tw-overflow-y-auto tw-p-0 tw-m-0 tw-rounded-b;
     max-width: 465px;
     max-height: calc(50vh - 76px);
-    z-index: 999;
+    z-index: 1000;
 
     ul li {
         @apply hover:tw-bg-primary/10;

@@ -61,9 +61,6 @@ export const useUser = defineStore("user", () => {
 
 
   // Mutations
-  function setHome(data: string) {
-    state.user.settings.home = data;
-  }
   function setRefreshingToken(data: boolean) {
     state.renewToken = data;
   }
@@ -225,8 +222,12 @@ export const useUser = defineStore("user", () => {
   }
   async function doLogout(): Promise<void> {
     try {
+      await update_settings({
+        path: "/home",
+        value: route.path,
+      });
       await jwtManager.logout(axios.value);
-      setHome(route.path)
+     
     } finally {
       logout();
     }
@@ -342,7 +343,6 @@ export const useUser = defineStore("user", () => {
     tmpWatchlist,
     showSearchModel,
     // Mutations
-    setHome,
     setRefreshingToken,
     tries,
     setToken,
