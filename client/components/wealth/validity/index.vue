@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { AutoCompleteItem, AutoCompleteItemInterface } from "~/types";
-
+import { useAsrTrader } from "~~/composables";
+import moment from 'jalali-moment'
 
 
 const props = defineProps<{
-  modelValue: AutoCompleteItemInterface
+  validityDate: string,
+  validityType: number
+
 }>()
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:validityDate', 'update:validityType'])
+const app = useAsrTrader();
 
 const day = ref<string>('')
 const month = ref<string>('')
@@ -20,8 +24,23 @@ const items = [
   new AutoCompleteItem("2", "تا تاریخ"),
 ];
 
-const window = computed(() => (props.modelValue?.id == "2" ? "date" : "select"))
 
+const selected = computed(()=> items.find((item)=> Number(item.id) === props.validityType))
+const window = computed(() => (props.validityType === 2 ? "date" : "select"))
+
+
+watch(()=> [ year.value, month.value, day.value ], ([ newYear, newMonth, newDay ])=> {
+  const shamsi = `${ newYear }-${ newMonth }-${ newDay }`
+  const mildai = moment.from(shamsi, app.locale.split('-')[0], 'YYYY/MM/DD')
+  const res = mildai.format("YYYY-MM-DDTHH:mm:ss.z")
+  res !== "Invalid date" ? emit('update:validityDate', res) : emit('update:validityDate', "")
+})
+
+
+
+const selectItem = (item: AutoCompleteItemInterface)=> {
+  emit('update:validityType', Number(item.id))
+}
 
 </script>
 
@@ -45,10 +64,10 @@ const window = computed(() => (props.modelValue?.id == "2" ? "date" : "select"))
 <template>
   <Windows>
     <windows-item value="select" :selected="window">
-      <select-box :value="modelValue" keyPath="$.id" v-bind="$attrs" id="credit-wealth">
+      <select-box :value="selected" keyPath="$.id" v-bind="$attrs" id="credit-wealth">
         <template #items>
           <ul class="tw-m-0 tw-p-0">
-            <li v-for="item in items" :key="item.id" class="tw-p-2 tw-cursor-pointer hover:tw-bg-primary-100" @click="$emit('update:modelValue', item)">
+            <li v-for="item in items" :key="item.id" class="tw-p-2 tw-cursor-pointer hover:tw-bg-primary-100" @click="selectItem(item)">
               <span v-text="item.name"></span>
             </li>
           </ul>
@@ -58,7 +77,7 @@ const window = computed(() => (props.modelValue?.id == "2" ? "date" : "select"))
     <windows-item value="date" :selected="window">
       <date-input v-model:day="day" v-model:month="month" v-model:year="year">
         <template #append>
-          <ada-btn @click.stop="$emit('update:modelValue', items[0])">
+          <ada-btn @click.stop="emit('update:validityType', 1)">
             {{ $t("general.cancellation") }}
           </ada-btn>
         </template>

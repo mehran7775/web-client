@@ -12,6 +12,8 @@
     "validation": {
       "required": "{name} اجباری است.",
       "number": "{name} باید شامل عدد باشد.",
+      "boolean": "{name} باید بولین باشد.",
+      "date": "فرمت تاریخ معتبر نمی باشد",
       "min": "{name} باید حداقل {value} باشد",
       "max": "{name} باید حداکثر {value} باشد"
     }
@@ -285,7 +287,8 @@
     "headToHeadPrice": "@:oms.price سر‌به‌سر",
     "tradeHistory": "@:general.history @:oms.trades",
     "tradeTypes": "@:general.types @:oms.trade",
-    "shareTypes": "@:general.types @:oms.share"
+    "shareTypes": "@:general.types @:oms.share",
+    "stockPercent": "@:general.percent @:oms.shares"
   },
   "wealth": {
     "wealth": "دارایی",

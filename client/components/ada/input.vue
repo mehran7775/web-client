@@ -33,6 +33,12 @@ const emit = defineEmits(["update:modelValue"]);
 
 const ltr = computed<string>(() => (props.type == "number" ? "ltr" : ""));
 const active = ref(false)
+const updateModelValue = (e)=> {
+  let res = null
+  props.type === "number" ? res = parseInt(e.target.value) : res = e.target.value
+  emit('update:modelValue', res)
+}
+
 
 </script>
 
@@ -79,7 +85,7 @@ const active = ref(false)
       <slot name="prepend" :active="active"> </slot>
       <input :type="type" @focus="() => { active = true }" @blur="() => { active = false }"
         :value="modelValue" :class="[ltr]"
-        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+        @input="updateModelValue"
         v-bind="{ min, max, minlength, maxlength, ...$attrs }" :readonly="readonly" :tabindex="tabIndex" />
       <slot name="append" :active="active"></slot>
     </div>

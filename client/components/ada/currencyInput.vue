@@ -26,11 +26,11 @@ const props = withDefaults(
 const emit = defineEmits(["update:modelValue"]);
 
 const active = ref(false);
-const join = (val: string): string=> {
+const join = (val: string): number=> {
   if (val.includes(",")) {
-    return val.replace(/\,/gi, "");
+    return Number(val.replace(/\,/gi, ""))
   }
-  return val
+  return Number(val)
 }
 
 const reg = /^[a-zA-Z ]$/;

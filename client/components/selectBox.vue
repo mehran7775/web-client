@@ -98,6 +98,7 @@ props.value ? select(props.value) : null
       }
     }
     .menu-global {
+      width: 100%;
       max-width: calc(100% - 24px);
     }
     .ada-button {

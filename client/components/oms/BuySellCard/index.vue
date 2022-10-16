@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { Ref } from "vue";
 import { useInstrument, useOrder, useAxios } from "@/composables";
-import { AutoCompleteItem, AutoCompleteItemInterface, defaultWealthValidityItems, InstrumentCache, InstrumentSearchModel, Side, TabItem } from "@/types";
-import { object, number, AnyObjectSchema, lazy } from "yup";
+import { AutoCompleteItem, AutoCompleteItemInterface, defaultWealthValidityItems, InstrumentCache, InstrumentSearchModel, OrderClass, OrderFlags, Side, TabItem } from "@/types";
+import { object, number, AnyObjectSchema, lazy, boolean, date, string } from "yup";
 import { useI18n } from "vue-i18n";
 import { getWage } from "@/repositories/wealth/wealth_manager";
 import { useBottomPanel } from "~/composables";
 import { useForm, useField } from 'vee-validate'; 
-import { required } from "~~/utils/rules";
 
 
 ////////////////
@@ -31,15 +30,12 @@ const active: Ref<InstrumentCache> = ref(new InstrumentCache());
 const priceLock = ref(false);
 const countLock = ref(false);
 const wage = ref({ buy: 0, sell: 0 });
-const agreement = ref(true);
-const orderDivision = ref(false);
-const validatePercent = ref<number>(0);
+
 const activeCalculator = ref<boolean>(false);
 const activeCalculatorSell = ref<boolean>(false);
 const wholePrice = ref<number>(0);
 const formatter = appManager.formatter;
 const order = computed(() => orderManager.getForm(props.insId.toString()));
-
 
 getDetail()
 
@@ -55,47 +51,51 @@ const validatePriceShape = ()=> number().typeError(i18n.t("error.validation.numb
   // .max(active.value.maxAllowedPrice, i18n.t("error.validation.max", { name: i18n.t("oms.price"), value: active.value.maxAllowedPrice })
 
 const schemaBuySell = object({
-  countVal: lazy(()=> active.value.maxQuantityPerOrder > 0 ? validateCountShape()
+  quantity: lazy(()=> active.value.maxQuantityPerOrder > 0 ? validateCountShape()
   .max(active.value.maxQuantityPerOrder, i18n.t("error.validation.max",{ name: i18n.t("oms.count"), value: active.value.maxQuantityPerOrder }))
   : validateCountShape()),
-  priceVal:lazy(()=> active.value.maxAllowedPrice > 0 ? validatePriceShape()
+  enteredPrice:lazy(()=> active.value.maxAllowedPrice > 0 ? validatePriceShape()
   .max(active.value.maxAllowedPrice, i18n.t("error.validation.max", { name: i18n.t("oms.price"), value: active.value.maxAllowedPrice }))
   : validatePriceShape()),
-  accountTypefield: object().required().test('accountTypefield', 'message', function(value):any{
-    if(value.id) return true
-    return false
-  }),
-  wealthValidityField: object().required().test('wealthValidityField', 'message', function(value):any{
-    if(value.id) return true
-    return false
-  })
+  accountType: number().required(),
+  validatePercent: number().typeError(i18n.t("error.validation.number", { name: i18n.t("wealth.order.creditPercent") }))
+  .min(0, i18n.t("error.validation.min", { name: i18n.t("wealth.order.creditPercent"), value: 0 }))
+  .max(100, i18n.t("error.validation.max",{ name: i18n.t("wealth.order.creditPercent"), value: 100 })),
+  orderDivision: boolean().typeError(i18n.t("error.validation.boolean", { name: i18n.t("oms.splitOrders") }))
+  .required(),
+  validityDate: lazy(()=> validityType.value === 2 ? string().required(): string()),
+  validityType: number().required()
+
 })
 
-const { errors, validate, resetForm, setErrors, setValues, setFieldValue } = useForm({
+const { errors, validate, resetForm, setErrors, setValues, setFieldValue, handleSubmit } = useForm({
   validationSchema: schemaBuySell,
   initialValues: {
-    countVal: order.value.quantity,
-    priceVal: order.value.enteredPrice,
-    accountTypefield: new AutoCompleteItem("1", "نزد کارگزار"),
-    wealthValidityField: defaultWealthValidityItems[0],
+    quantity: order.value.quantity,
+    enteredPrice: order.value.enteredPrice,
+    accountType: 0,
+    validatePercent: 0,
+    orderDivision: false,
+    validityDate: "",
+    validityType: 1
 
   }
 })
 
-
-
-const { value:countVal, meta: countValMeta, validate: countValValidate } = useField<number>('countVal', null)
-const { value:priceVal, meta: priceValMeta, validate: priceValValidate } = useField<number>('priceVal', null)
-const { value:accountTypefield, meta: accountTypefieldMeta } = useField<AutoCompleteItemInterface>('accountTypefield')
-const { value:wealthValidityField, meta: wealthValidityFieldMeta } = useField<AutoCompleteItemInterface>('wealthValidityField')
-
+const { value:quantity, meta: quantityMeta, validate: quantityValidate } = useField<number>('quantity')
+const { value:enteredPrice, meta: enteredPriceMeta, validate: enteredPriceValidate } = useField<number>('enteredPrice')
+const { value:accountType, meta: accountTypeMeta } = useField<number>('accountType')
+const { value:validatePercent, meta: validatePercentMeta, validate: validatePercentValidate } = useField<number>('validatePercent')
+const { value:orderDivision, meta: orderDivisionMeta, validate: orderDivisionValidate } = useField<boolean>('orderDivision')
+const { value:validityDate, meta: validityDateMeta, validate: validityDateValidate } = useField<string>('validityDate')
+const { value:validityType, meta: validityTypeMeta, validate: validityTypeValidate } = useField<number>('validityType')
 
 
 
 //////////////// computed //////////
 
 const baseTradeValue = computed(
-  () => countVal.value * priceVal.value
+  () => quantity.value * enteredPrice.value
 );
 const buyWage = computed(() => baseTradeValue.value * wage.value.buy);
 const sellWage = computed(() => baseTradeValue.value * wage.value.sell);
@@ -109,43 +109,43 @@ const tab = computed({
   set(value: any) {
     if (active.value) {
       orderManager.setSide(value, active.value.id.toString());
-      updateData();
+      // updateData();
     }
   },
 });
 const countSell = computed(
   () => {
-    const res = Math.floor(wholePrice.value / priceVal.value * (1 + wage.value.sell))
+    const res = Math.floor(wholePrice.value / enteredPrice.value * (1 + wage.value.sell))
     if(isNaN(res) || res == Infinity){
-      countVal.value = 0
+      quantity.value = 0
       return 0
     }
-    countVal.value = res
+    quantity.value = res
     return res
   }
 );
 const countBuy = computed(
   () => {
-    const res = Math.floor(wholePrice.value / priceVal.value * (1 + wage.value.sell))
+    const res = Math.floor(wholePrice.value / enteredPrice.value * (1 + wage.value.sell))
     if(isNaN(res) || res == Infinity){
-      countVal.value = 0
+      quantity.value = 0
       return 0
     }
-    countVal.value = res
+    quantity.value = res
     return res
   }
 );
 
 const wageCalculateBuy = computed(
   () => {
-    const res = priceVal.value * countBuy.value * wage.value.buy
+    const res = enteredPrice.value * countBuy.value * wage.value.buy
     if(isNaN(res)) return 0
     return res
   }
 );
 const wageCalculateSell = computed(
   () => {
-    const res = priceVal.value * countSell.value * wage.value.sell
+    const res = enteredPrice.value * countSell.value * wage.value.sell
     if(isNaN(res)) return 0
     return res
   }
@@ -155,35 +155,39 @@ const wageCalculateSell = computed(
 //////////methods//////////////
 
 const check = ():boolean => {
-  if(countVal.value && priceVal.value) return true
+  if(quantity.value && enteredPrice.value) return true
   return false
 }
 
-function placeOrder(options: { draft: boolean }) {
-  if (check()) {
-    const param: any = { ...order.value };
-    if (options.draft) param.flags = param.flags | 1;
-    param.termsAndConditions = agreement.value;
-    param.orderDivision = orderDivision.value;
-    param.draft = options.draft;
-    param.accountType = accountTypefield.value;
-    orderManager
+const placeOrder =({ draft })=> handleSubmit(async (values, actions)=>{
+    const { valid } = await validate()
+    if(valid) {
+      const param = {...order.value, ...values} 
+      param['draft'] = draft
+      param['termsAndConditions'] = true
+      param['instrumentId'] = props.insId
+      if(draft) param['flags']= OrderFlags.Draft;
+      try{
+        orderManager
       .placeOrder(param)
       .then((res) => {
         if (res.status === 201) {
           const tab: TabItem = bottomPanel.state._tabs["bottom-panel.orders.all"]
-          options.draft ? tab.current = "bottom-panel.orders.drafts"
+          draft ? tab.current = "bottom-panel.orders.drafts"
           :tab.current = "bottom-panel.orders.all"
           bottomPanel.activeTab = tab
           orderManager.last_update = new Date().toISOString();
-          updateData();
+          actions.resetForm()
+          orderManager.updateForm(new OrderClass())
         }
       })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
-}
+      }catch(e) {
+        orderManager.updateForm(values)
+        console.log(e)
+      }
+    }
+})()
+
 
 function toggleCountLock() {
   countLock.value = !countLock.value;
@@ -193,8 +197,8 @@ function togglePriceLock() {
 }
 
 function updateData() {
-  setFieldValue('countVal', 0)
-  setFieldValue('priceVal', 0)
+  setFieldValue('quantity', 0)
+  setFieldValue('enteredPrice', 0)
   orderDivision.value = false;
   validatePercent.value = 0;
   wholePrice.value = 0
@@ -204,8 +208,8 @@ async function getDetail() {
   .getInstrumentsDetail(new InstrumentSearchModel([props.insId]))
   .then((data: Array<InstrumentCache>) => {
     active.value = data[0];
-    setFieldValue('countVal', 0)
-    setFieldValue('priceVal', active.value.minAllowedPrice)
+    setFieldValue('quantity', 0)
+    setFieldValue('enteredPrice', active.value.minAllowedPrice)
 
     getWage(
       props.insId.toString(),
@@ -286,6 +290,17 @@ const testValidate = async() => {
 
         &:checked {
           @apply tw-bg-primary;
+        }
+      }
+
+      .windows.valid{
+        & :deep(.active .input-container){
+          @apply tw-border tw-border-success;
+        }
+      }
+      .windows.inValid{
+        & :deep(.active .input-container){
+          @apply tw-border tw-border-error;
         }
       }
     }
@@ -459,15 +474,14 @@ const testValidate = async() => {
           <div class="tw-justify-between">
             <ada-input
               :label="$t('oms.count')"
-              v-model="countVal"
+              v-model="quantity"
               type="number"
               :id="`buyCountInputText-${insId}`"
               :readonly="countLock"
               class="inputColor"
-              @blur="countValValidate"
               :class="{
-                inValid: errors?.countVal,
-                valid: countValMeta?.valid && countValMeta?.validated,
+                inValid: errors?.quantity,
+                valid: quantityMeta?.valid && quantityMeta?.validated,
               }"
               :min="!!active ? active.minQuantityPerOrder : 1"
               :max="!!active ? active.maxQuantityPerOrder || null : null"
@@ -512,7 +526,7 @@ const testValidate = async() => {
                       </ada-currency-input>
                       <ada-currency-input
                         :label="$t('instrument.price')"
-                        v-model="priceVal"
+                        v-model="enteredPrice"
                       >
                       </ada-currency-input>
 
@@ -533,21 +547,20 @@ const testValidate = async() => {
           <div class="tw-justify-between">
             <ada-currency-input
               :label="$t('oms.price')"
-              v-model="priceVal"
+              v-model="enteredPrice"
               activeBorder
               :readonly="priceLock"
-              @blur="priceValValidate"
               class="inputColor"
               :class="{
-                inValid: errors?.priceVal,
-                valid: priceValMeta?.valid && priceValMeta?.validated,
+                inValid: errors?.enteredPrice,
+                valid: enteredPriceMeta?.valid && enteredPriceMeta?.validated,
               }"
               :min="!!active ? active.minAllowedPrice : 1"
               :max="!!active ? active.maxAllowedPrice || null : null"
             >
               <template #append>
                 <ada-btn
-                  :class="['tw-mx-1', priceLock ? 'active' : '']"
+                  :class="['tw-mr-1', priceLock ? 'active' : '']"
                   :width="24"
                   :height="24"
                   @click="togglePriceLock"
@@ -561,12 +574,11 @@ const testValidate = async() => {
           </div>
           <div class="tw-justify-between">
             <wealth-account-type
-              v-model="accountTypefield"
               :label="$t('accounting.account.type')"
               class="tw-my-1 inputColor"
               :class="{
-                inValid: errors?.accountTypefield,
-                valid: accountTypefieldMeta?.valid && accountTypefieldMeta?.validated,
+                inValid: errors?.accountType,
+                valid: accountTypeMeta?.valid && accountTypeMeta?.validated,
               }"
               height="24px"
               tabindex="-1"
@@ -576,11 +588,16 @@ const testValidate = async() => {
           </div>
           <div class="tw-justify-between">
             <wealth-validity
-              v-model="wealthValidityField"
+              v-model:validityDate="validityDate"
+              v-model:validityType="validityType"
               height="24px"
               class="tw-my-1 inputColor"
               :label="$t('accounting.account.credit')"
               tabindex="-1"
+              :class="{
+                inValid: errors?.validityDate,
+                valid: validityDateMeta?.valid && validityDateMeta?.validated,
+              }"
             >
             </wealth-validity>
           </div>
@@ -592,22 +609,27 @@ const testValidate = async() => {
               class="tw-flex tw-flex-grow inputColor"
               :min="30"
               :max="100"
-              :total="countVal"
+              :total="quantity"
               :amount="100"
               tabindex="-1"
             >
             </oms-buy-sell-card-percent>
           </div>
           <div class="tw-justify-between">
-            <ada-currency-input
+            <ada-input
               :label="$t('wealth.order.creditPercent')"
               class="tw-h-[24px] inputColor"
+              type="number"
               :min="0"
               :max="100"
               v-model="validatePercent"
               tabindex="-1"
+              :class="{
+                inValid: errors?.validatePercent,
+                valid: validatePercentMeta?.valid && validatePercentMeta?.validated,
+              }"
             >
-            </ada-currency-input>
+            </ada-input>
             <div class="bar"></div>
           </div>
           <div class="tw-justify-between">
@@ -652,7 +674,7 @@ const testValidate = async() => {
               :disabled="!active || (active.status & 3) != 3"
               @click.stop="placeOrder({ draft: false })"
               depressed
-              :class="[countVal > 1 && priceVal ? 'tw-bg-success tw-text-white': null]"
+              :class="[quantity > 1 && enteredPrice ? 'tw-bg-success tw-text-white': null]"
             >
               {{ $t("oms.buy-btn") }}
             </ada-btn>
@@ -677,12 +699,17 @@ const testValidate = async() => {
             <numeric-field :value="1000" />
           </div>
           <div class="tw-justify-between">
-            <ada-currency-input
+            <ada-input
               :label="$t('oms.count')"
-              v-model="countVal"
+              v-model="quantity"
+              type="number"
               :id="`sellCountInputText-${insId}`"
               :readonly="countLock"
               class="tw-mt-1 inputColor"
+              :class="{
+                inValid: errors?.quantity,
+                valid: quantityMeta?.valid && quantityMeta?.validated,
+              }"
               activeBorder
               :min="!!active ? active.minQuantityPerOrder : 1"
               :max="!!active ? active.maxQuantityPerOrder || null : null"
@@ -729,7 +756,7 @@ const testValidate = async() => {
                       </ada-currency-input>
                       <ada-currency-input
                         :label="$t('instrument.price')"
-                        v-model="priceVal"
+                        v-model="enteredPrice"
                       >
                       </ada-currency-input>
 
@@ -744,15 +771,19 @@ const testValidate = async() => {
                   </template>
                 </ada-menu>
               </template>
-            </ada-currency-input>
+            </ada-input>
             <div class="bar"></div>
           </div>
           <div class="tw-justify-between">
             <ada-currency-input
               :label="$t('oms.price')"
-              v-model="priceVal"
+              v-model="enteredPrice"
               :readonly="priceLock"
               class="tw-mt-1 inputColor"
+              :class="{
+                inValid: errors?.enteredPrice,
+                valid: enteredPriceMeta?.valid && enteredPriceMeta?.validated,
+              }"
               activeBorder
               :min="!!active ? active.minAllowedPrice : 1"
               :max="!!active ? active.maxAllowedPrice || null : null"
@@ -773,9 +804,12 @@ const testValidate = async() => {
           </div>
           <div class="tw-justify-between">
             <wealth-account-type
-              v-model="accountTypefield"
               :label="$t('accounting.account.type')"
               class="tw-my-1 inputColor"
+              :class="{
+                inValid: errors?.accountType,
+                valid: accountTypeMeta?.valid && accountTypeMeta?.validated,
+              }"
               height="24px"
               tabindex="-1"
             >
@@ -784,11 +818,16 @@ const testValidate = async() => {
           </div>
           <div class="tw-justify-between">
             <wealth-validity
-              v-model="wealthValidityField"
+              v-model:validityDate="validityDate"
+              v-model:validityType="validityType"
               height="24px"
               class="tw-my-1 inputColor"
               :label="$t('accounting.account.credit')"
               tabindex="-1"
+              :class="{
+                inValid: errors?.validityDate,
+                valid: validityDateMeta?.valid && validityDateMeta?.validated,
+              }"
             >
             </wealth-validity>
           </div>
@@ -799,23 +838,28 @@ const testValidate = async() => {
               height="31px"
               class="tw-flex tw-flex-grow inputColor"
               :min="30"
-              :total="countVal"
+              :total="quantity"
               :amount="100"
               tabindex="-1"
             >
             </oms-buy-sell-card-percent>
           </div>
           <div class="tw-justify-between">
-            <ada-currency-input
-              label="درصد سهام"
+            <ada-input
+              :label="$t('oms.stockPercent')"
+              type="number"
               class="tw-h-[24px] inputColor"
               :min="0"
               :max="100"
               v-model="validatePercent"
               tabindex="-1"
               activeBorder
+              :class="{
+                inValid: errors?.validatePercent,
+                valid: validatePercentMeta?.valid && validatePercentMeta?.validated,
+              }"
             >
-            </ada-currency-input>
+            </ada-input>
             <div class="bar"></div>
           </div>
           <div class="tw-justify-between">
@@ -865,7 +909,7 @@ const testValidate = async() => {
               @click.stop="placeOrder({ draft: false })"
               depressed
               :tabindex="tab == 2 ? '1' : null"
-              :class="[countVal > 1 && priceVal ? 'tw-bg-error tw-text-white': null]"
+              :class="[quantity > 1 && enteredPrice ? 'tw-bg-error tw-text-white': null]"
             >
               {{ $t("oms.sell-btn") }}
             </ada-btn>

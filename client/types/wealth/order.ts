@@ -1,4 +1,5 @@
 import { SearchModel } from "@/types";
+import { DateTime } from "luxon";
 
 export interface Order {
   id: number;
@@ -15,6 +16,52 @@ export interface Order {
   validityType: ValidationType;
   validityDate: string | null;
   flags: number;
+}
+
+export class OrderClass implements Order {
+  id: number;
+  instrumentId: number;
+  creationDate: string;
+  quantity: number;
+  remainQuantity: number;
+  minQuantity: number;
+  discloseQuantity: number;
+  enteredPrice: number;
+  triggerPrice: number;
+  side: Side;
+  orderType: OrderType;
+  validityType: ValidationType;
+  validityDate: string;
+  flags: number;
+  constructor(
+    id = 0,
+    instrumentId = 0,
+    minQuantity= 0,
+    orderType = OrderType.Market,
+    quantity= 0,
+    remainQuantity = 0,
+    discloseQuantity = 0,
+    enteredPrice = 0,
+    triggerPrice = 0,
+    side = Side.Buy,
+    validityType = ValidationType.Day,
+    validityDate = "",
+    flags = 0,
+  ){
+    this.id = id,
+    this.instrumentId = instrumentId,
+    this.minQuantity= minQuantity,
+    this.orderType = orderType,
+    this.quantity= quantity,
+    this.remainQuantity = remainQuantity,
+    this.discloseQuantity = discloseQuantity,
+    this.enteredPrice = enteredPrice,
+    this.triggerPrice = triggerPrice,
+    this.side = side,
+    this.validityType = validityType,
+    this.validityDate = validityDate,
+    this.flags = flags
+  }
 }
 
 export class OrderSearchModel implements SearchModel {

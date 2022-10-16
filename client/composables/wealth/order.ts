@@ -3,12 +3,14 @@ import {
   InstrumentCache,
   InstrumentSearchModel,
   Order,
+  OrderClass,
   OrderSearchModel,
   OrderType,
   PaginatedResult,
   Side,
   ValidationType,
   Wealth,
+  
 } from "~/types";
 import { useInstrument, useAxios, useWealth, useUser } from "..";
 import orderManager from "@/repositories/wealth/order_manager";
@@ -29,22 +31,7 @@ export const useOrder = defineStore("order", () => {
   function getForm(id: string) {
     let tmp = orderFormCache[id]; 
     if (typeof tmp == "undefined") {
-      tmp = ref(<Order>{
-        creationDate: DateTime.now().toISO(),
-        discloseQuantity: 0,
-        enteredPrice: 0,
-        flags: 0,
-        id: 0,
-        instrumentId: parseInt(id),
-        minQuantity: 0,
-        orderType: OrderType.Market,
-        quantity: 0,
-        remainQuantity: 0,
-        side: Side.Buy,
-        triggerPrice: 0,
-        validityDate: "",
-        validityType: ValidationType.Day,
-      });
+      tmp = ref<Order>(new OrderClass());
       orderFormCache[id] = tmp;
     }
     return tmp.value;
