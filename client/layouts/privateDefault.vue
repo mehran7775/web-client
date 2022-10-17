@@ -7,7 +7,7 @@ const bottomPanelManager = useBottomPanel();
 const wealthManager = useWealth();
 const wbsocket = useWebSocket();
 
-const snacks = useSnacks().snacks
+const snacks = useSnacks().snacks;
 
 const locale = computed(() => appManager.locale);
 const rtl = computed(() => appManager.rtl);
@@ -25,6 +25,8 @@ const rmini = computed({
     if (!lmini.value) lmini.value = true;
   },
 });
+
+
 const lmini = computed({
   get: () => bottomPanelManager.LeftPanelMini,
   set(val) {
@@ -43,11 +45,10 @@ const home = computed(() => userManager.me.settings?.home);
 const clipped = ref(true);
 const invisibleFinInfo = ref(false);
 
-
-const triggerChatRoom = ()=> {
-  rmini.value = !rmini.value
-  appManager.setMenu('menu.chat')
-}
+const triggerChatRoom = () => {
+  rmini.value = !rmini.value;
+  appManager.setMenu("menu.chat");
+};
 </script>
 
 <style lang="postcss" scoped>
@@ -60,7 +61,7 @@ const triggerChatRoom = ()=> {
     left: 0;
     height: 42px;
     background-color: #f9fafe;
-    box-shadow: 0 1px 4px rgba(0,0,0,.05)!important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
 
     * {
       @apply tw-leading-[42px];
@@ -147,12 +148,6 @@ const triggerChatRoom = ()=> {
     }
   }
 
-  .dashboardmain-page {
-    @apply tw-transition-all tw-ease-in-out tw-duration-700 tw-bg-primary/5;
-    padding-left: 48px !important;
-    padding-right: 48px !important;
-  }
-
   .mainBackground {
     background-color: rgba(var(--c-default), 0.05);
 
@@ -165,21 +160,6 @@ const triggerChatRoom = ()=> {
       background-color: white;
       content: "";
     }
-  }
-
-  @media (min-width: 960px) {
-    .dashboardmain-page {
-      &.left {
-        padding-left: 256px !important;
-      }
-
-      &.right {
-        padding-right: 256px !important;
-      }
-    }
-  }
-
-  @media (max-width: 959px) {
   }
 
   .dashboardmain-nuxt {
@@ -221,6 +201,23 @@ const triggerChatRoom = ()=> {
 
       &:hover {
         @apply tw-bg-primary/5;
+      }
+    }
+  }
+
+  .dashboardmain-page {
+    @apply tw-transition-all tw-ease-in-out tw-duration-700 tw-bg-primary/5;
+    padding-left: 48px !important;
+    padding-right: 48px !important;
+  }
+  @media (min-width: 960px) {
+    .dashboardmain-page {
+      &.left {
+        padding-left: 256px !important;
+      }
+
+      &.right {
+        padding-right: 256px !important;
       }
     }
   }
@@ -322,14 +319,14 @@ const triggerChatRoom = ()=> {
         <nuxt-page />
       </div>
     </main>
-    <bottom-panel
+    <!-- <bottom-panel
       class="dashboardmain-page"
       :class="{
-        right: !rightMenu.mini,
+        right: !rmini,
         left: !lmini,
       }"
       :slideToBottom="invisibleFinInfo"
-    />
+    /> -->
     <footer
       v-if="!invisibleFinInfo"
       class="footer dashboardmain-page"
@@ -376,6 +373,6 @@ const triggerChatRoom = ()=> {
     <ada-btn id="chat-footer" class="floating-button" @click="triggerChatRoom">
       <ada-icon color="white" :size="24"> isax-messages-2-bold </ada-icon>
     </ada-btn>
-    <ada-snacks/>
+    <ada-snacks />
   </div>
 </template>

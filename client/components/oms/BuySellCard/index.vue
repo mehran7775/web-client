@@ -716,7 +716,7 @@ const testValidate = async() => {
             >
               <template #append>
                 <ada-btn
-                  :class="['tw-mx-1', countLock ? 'active' : '']"
+                  :class="[ countLock ? 'active' : '']"
                   :width="24"
                   :height="24"
                   @click="toggleCountLock"
@@ -779,7 +779,7 @@ const testValidate = async() => {
               :label="$t('oms.price')"
               v-model="enteredPrice"
               :readonly="priceLock"
-              class="tw-mt-1 inputColor"
+              class="inputColor"
               :class="{
                 inValid: errors?.enteredPrice,
                 valid: enteredPriceMeta?.valid && enteredPriceMeta?.validated,

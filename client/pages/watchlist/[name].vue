@@ -74,6 +74,6 @@ defineExpose({
       <DashboardWatchList :searchModel="userManager.showSearchModel"/>
     </div>
     <loading :loading="loadingRef" />
+    <bottom-panel ></bottom-panel>
   </div>
-
 </template>

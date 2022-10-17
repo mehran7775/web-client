@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { TabItem } from "@/types"
+import { find } from "property-information";
 import { useInstrument, useBottomPanel } from "~~/composables";
 import defaultTabs from "./tabs";
 
 
 const instrumentManager = useInstrument();
 const bottomPanel = useBottomPanel();
-
+const route = useRoute()
 
 const tabs = computed(() => bottomPanel.tabs);
 const tab = computed({
@@ -17,6 +18,15 @@ const tab = computed({
     bottomPanel.activeTab = val
   }
 });
+
+watch(()=> route.params, (val)=> {
+  if(val.slug){
+    setActiveWithRoute(val.slug as string)
+  }
+})
+
+
+
 
 function close() {
   tab.value = null;
@@ -44,14 +54,25 @@ for (let i in defaultTabs) {
 }
 
 
+function setActiveWithRoute(slug: string) {
+  console.log(tabs.value)
+}
+
+
+
 </script>
 
 <style lang="postcss" scoped>
 .ada-bottom-panel {
-  @apply tw-flex tw-flex-col tw-flex-grow tw-w-full;
+  @apply tw-flex tw-flex-col tw-flex-grow;
   @apply tw-transition-all tw-ease-in-out tw-duration-700;
   position: fixed;
   bottom: 32px;
+  left: 48px;
+  right: 48px;
+  width: calc(100% - 96px);
+  /* left: 48px;
+  right: 48px; */
 
   &.slideToBottom {
     bottom: 0;
@@ -148,6 +169,21 @@ for (let i in defaultTabs) {
 }
 </style>
 
+<style lang="postcss">
+.dashboardmain-page{
+  &.left{
+    .ada-bottom-panel {
+      @apply tw-pl-[208px]
+    }
+  }
+  &.right{
+    .ada-bottom-panel {
+      @apply tw-pr-[208px]
+    }
+  }
+}
+</style>
+
 <template>
   <footer class="ada-bottom-panel" :class="{
     half: tab != null && !expanded,
@@ -168,7 +204,9 @@ for (let i in defaultTabs) {
       </div>
       <header class="header">
         <ada-toggle v-model="active" class="b-tabs">
-          <ada-btn class="tab-title" v-for="(t, i) in tab.children" :key="t.title" :model="t">
+          <ada-btn class="tab-title" v-for="(t, i) in tab.children" :key="t.title" :model="t" 
+          :to="`/watchlist/${ $route.params.name }/${ t.path }`"
+          >
             {{ $t(t.title) }}  <span v-if="t.secondTitle">{{ ` - ${ t.secondTitle }` }}</span>
             <div v-if="i != tab.children.length - 1" class="bar"></div>
           </ada-btn>
@@ -185,6 +223,7 @@ for (let i in defaultTabs) {
     </div>
     <ada-toggle class="b-tabs" v-model="tab">
       <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.title"
+      :to="`/watchlist/${ $route.params.name }/${ t.path }`"
         :model="t">
         <span :class="{ 'active': tab != null && tab.title == t.title }">
           {{ $t(t.title) }}
