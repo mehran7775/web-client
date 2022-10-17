@@ -705,7 +705,7 @@ const testValidate = async() => {
               type="number"
               :id="`sellCountInputText-${insId}`"
               :readonly="countLock"
-              class="tw-mt-1 inputColor"
+              class="inputColor"
               :class="{
                 inValid: errors?.quantity,
                 valid: quantityMeta?.valid && quantityMeta?.validated,
@@ -779,7 +779,7 @@ const testValidate = async() => {
               :label="$t('oms.price')"
               v-model="enteredPrice"
               :readonly="priceLock"
-              class="tw-mt-1 inputColor"
+              class="inputColor"
               :class="{
                 inValid: errors?.enteredPrice,
                 valid: enteredPriceMeta?.valid && enteredPriceMeta?.validated,
