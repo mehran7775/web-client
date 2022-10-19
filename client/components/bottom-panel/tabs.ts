@@ -1,9 +1,12 @@
 import { TabItem, OrderFlags } from "@/types";
 const panels: Array<TabItem> = [
   {
-    path: "orders",
+    path: "orders-all",
     title: "bottom-panel.orders.all",
-    params: {},
+    params: {
+      offset: 0,
+      length: 20,
+    },
     component: "bottom-panel-defaultOrderList",
     children: [
       {
@@ -40,7 +43,7 @@ const panels: Array<TabItem> = [
         deletable: false,
       },
       {
-        path:"orders-active",
+        path:"orders-canceled",
         title: "bottom-panel.orders.canceled",
         params: {
           offset: 0,
@@ -50,11 +53,11 @@ const panels: Array<TabItem> = [
         deletable: false,
       },
     ],
-    current: "bottom-panel.orders.all",
+    current: "orders-all",
     deletable: false,
   },
   {
-    path:"completeInfo",
+    path:"completeInfo-depth",
     title: "bottom-panel.completeInfo.index",
     params: {},
     component: "bottom-panel-deepInformation",
@@ -85,11 +88,11 @@ const panels: Array<TabItem> = [
         deletable: false,
       },
     ],
-    current: "bottom-panel.completeInfo.depth",
+    current: "completeInfo-depth",
     deletable: false,
   },
   {
-    path: "archive",
+    path: "archive-tradesHistory",
     title: "bottom-panel.archive.index",
     params: {},
     component: "bottom-panel-archive",
@@ -118,10 +121,10 @@ const panels: Array<TabItem> = [
       },
     ],
     deletable: false,
-    current: "bottom-panel.archive.tradesHistory",
+    current: "archive-tradesHistory",
   },
   {
-    path: "statisticsKeys",
+    path: "statisticsKeys-fiveDay",
     title: "bottom-panel.statisticsKeys.index",
     params: {},
     children: [
@@ -140,10 +143,10 @@ const panels: Array<TabItem> = [
       },
     ],
     deletable: false,
-    current: "bottom-panel.statisticsKeys.fiveDay",
+    current: "statisticsKeys-fiveDay",
   },
   {
-    path: "more",
+    path: "more-presentation",
     title: "bottom-panel.more.index",
     params: {},
     children: [
@@ -160,7 +163,7 @@ const panels: Array<TabItem> = [
         deletable: false,
       },
     ],
-    current: "bottom-panel.more.presentation",
+    current: "more-presentation",
     deletable: false,
     component: "lazy-pages-login"
   },

@@ -10,6 +10,7 @@ const bottomPanel = useBottomPanel();
 const route = useRoute()
 
 const tabs = computed(() => bottomPanel.tabs);
+
 const tab = computed({
   get() {
     return bottomPanel.activeTab
@@ -19,11 +20,11 @@ const tab = computed({
   }
 });
 
-watch(()=> route.params, (val)=> {
-  if(val.slug){
-    setActiveWithRoute(val.slug as string)
-  }
-})
+// watch(()=> route.params, (val)=> {
+//   if(val.slug){
+//     setTabWithRoute(val.slug as string)
+//   }
+// })
 
 
 
@@ -40,11 +41,11 @@ const expanded = computed(() => bottomPanel.expanded)
 const active = computed({
   get() {
     if (tab.value && tab.value.current) {
-      return tab.value.children.find(q => q.title == tab.value.current)
+      return tab.value.children.find(q => q.path == tab.value.current)
     }
     return null;
   }, set(val) {
-    tab.value.current = val?.title
+    tab.value.current = val?.path
   }
 });
 
@@ -54,9 +55,32 @@ for (let i in defaultTabs) {
 }
 
 
-function setActiveWithRoute(slug: string) {
-  console.log(tabs.value)
+function findOffset (tab: TabItem) {
+  let offset = 
+  active.value?.params.offset ?? 
+  tab.params?.offset ?? 0
+  return offset
 }
+function findLength(tab: TabItem) {
+  let length = 
+  active.value?.params.length ??
+  tab.params?.length ?? 0
+  return length
+}
+
+// function setTabWithRoute(slug: string) {
+//   let mTab:TabItem = {
+//     path: sluga
+//   }
+//   if(slug.includes('-')){
+//     mTab = slug.split('-')[0]
+//     slug = slug.replace(/\-/gi, ".")
+//   }else mTab = slug
+
+
+//   console.log(slug)
+//   console.log(tabs.value)
+// }
 
 
 
@@ -205,7 +229,7 @@ function setActiveWithRoute(slug: string) {
       <header class="header">
         <ada-toggle v-model="active" class="b-tabs">
           <ada-btn class="tab-title" v-for="(t, i) in tab.children" :key="t.title" :model="t" 
-          :to="`/watchlist/${ $route.params.name }/${ t.path }`"
+          :to="`/watchlist/${ $route.params.name }/${ t.path }?offset=${ t.params?.offset ?? 0 }&length=${ t.params.length ?? 0}`"
           >
             {{ $t(t.title) }}  <span v-if="t.secondTitle">{{ ` - ${ t.secondTitle }` }}</span>
             <div v-if="i != tab.children.length - 1" class="bar"></div>
@@ -223,7 +247,7 @@ function setActiveWithRoute(slug: string) {
     </div>
     <ada-toggle class="b-tabs" v-model="tab">
       <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.title"
-      :to="`/watchlist/${ $route.params.name }/${ t.path }`"
+      :to="`/watchlist/${ $route.params.name }/${ t.current ?? t.path }?offset=${ findOffset(t) }&length=${ findLength(t) }`"
         :model="t">
         <span :class="{ 'active': tab != null && tab.title == t.title }">
           {{ $t(t.title) }}
