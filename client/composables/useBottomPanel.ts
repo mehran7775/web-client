@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { DeepOptions, TabItem } from "@/types";
 import { WritableComputedRef } from "vue";
+import defaultTabs from "@/components/bottom-panel/tabs";
 
 export const useBottomPanel = defineStore("bottom-panel", () => {
   const state = ref({
@@ -11,10 +12,17 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
     _loading: false,
   });
 
+  for (let i in defaultTabs) {
+    registerTab((defaultTabs as Array<TabItem>)[i]);
+  }
+  
+
+
   const tabs = computed(() => Object.values(state.value._tabs));
+
   const activeTab: WritableComputedRef<TabItem | null> = computed({
     set(val: TabItem) {
-      state.value._activeTab = val?.title;
+      state.value._activeTab = val?.name;
     },
     get() {
       return state.value._activeTab
@@ -27,7 +35,7 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
   const loading = computed(() => state.value._loading);
 
   function registerTab(tab: TabItem) {
-    state.value._tabs[tab.title] = tab;
+    state.value._tabs[tab.name] = tab;
   }
   function toggleExpand() {
     state.value._expanded = !state.value._expanded;

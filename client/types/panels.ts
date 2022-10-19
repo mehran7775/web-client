@@ -40,7 +40,8 @@ export interface TabItem {
   path: string;
   title: string;
   secondTitle?: string;
-  params: { [key: string]: any };
+  params?: { [key: string]: any };
+  name?: string;
   children?: Array<TabItem>;
   current?: string;
   component?: string;

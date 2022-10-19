@@ -2,12 +2,11 @@
 import { TabItem } from "@/types"
 import { find } from "property-information";
 import { useInstrument, useBottomPanel } from "~~/composables";
-import defaultTabs from "./tabs";
+
 
 
 const instrumentManager = useInstrument();
 const bottomPanel = useBottomPanel();
-const route = useRoute()
 
 const tabs = computed(() => bottomPanel.tabs);
 
@@ -19,13 +18,6 @@ const tab = computed({
     bottomPanel.activeTab = val
   }
 });
-
-// watch(()=> route.params, (val)=> {
-//   if(val.slug){
-//     setTabWithRoute(val.slug as string)
-//   }
-// })
-
 
 
 
@@ -41,47 +33,25 @@ const expanded = computed(() => bottomPanel.expanded)
 const active = computed({
   get() {
     if (tab.value && tab.value.current) {
-      return tab.value.children.find(q => q.path == tab.value.current)
+      return tab.value.children.find(q => q.name == tab.value.current)
     }
     return null;
   }, set(val) {
-    tab.value.current = val?.path
+    tab.value.current = val?.name
   }
 });
 
-//Register Default Tabs
-for (let i in defaultTabs) {
-  bottomPanel.registerTab((defaultTabs as Array<TabItem>)[i]);
-}
-
 
 function findOffset (tab: TabItem) {
-  let offset = 
-  active.value?.params.offset ?? 
+  let offset = active.value?.params.offset ?? 
   tab.params?.offset ?? 0
   return offset
 }
 function findLength(tab: TabItem) {
-  let length = 
-  active.value?.params.length ??
+  let length = active.value?.params.length ??
   tab.params?.length ?? 0
   return length
 }
-
-// function setTabWithRoute(slug: string) {
-//   let mTab:TabItem = {
-//     path: sluga
-//   }
-//   if(slug.includes('-')){
-//     mTab = slug.split('-')[0]
-//     slug = slug.replace(/\-/gi, ".")
-//   }else mTab = slug
-
-
-//   console.log(slug)
-//   console.log(tabs.value)
-// }
-
 
 
 </script>
@@ -228,8 +198,8 @@ function findLength(tab: TabItem) {
       </div>
       <header class="header">
         <ada-toggle v-model="active" class="b-tabs">
-          <ada-btn class="tab-title" v-for="(t, i) in tab.children" :key="t.title" :model="t" 
-          :to="`/watchlist/${ $route.params.name }/${ t.path }?offset=${ t.params?.offset ?? 0 }&length=${ t.params.length ?? 0}`"
+          <ada-btn class="tab-title" v-for="(t, i) in tab.children" :key="t.path" :model="t" 
+          :to="`/watchlist/${ $route.params.name }/${ t.path }`"
           >
             {{ $t(t.title) }}  <span v-if="t.secondTitle">{{ ` - ${ t.secondTitle }` }}</span>
             <div v-if="i != tab.children.length - 1" class="bar"></div>
@@ -245,9 +215,9 @@ function findLength(tab: TabItem) {
         </ada-btn>
       </header>
     </div>
-    <ada-toggle class="b-tabs" v-model="tab">
-      <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.title"
-      :to="`/watchlist/${ $route.params.name }/${ t.current ?? t.path }?offset=${ findOffset(t) }&length=${ findLength(t) }`"
+    <ada-toggle class="b-tabs" v-model="tab" nameKey="path">
+      <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.path"
+      :to="`/watchlist/${ $route.params.name }/${ t.current }`"
         :model="t">
         <span :class="{ 'active': tab != null && tab.title == t.title }">
           {{ $t(t.title) }}

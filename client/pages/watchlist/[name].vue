@@ -8,8 +8,23 @@ definePageMeta({
 
 const route = useRoute();
 const userManager = useUser();
+const bottomPanelComposable = useBottomPanel();
 const loadingRef = ref(false);
+
+
 const name = route.params.name as string ?? "new";
+
+// watch(()=> route.params, (val)=> {
+//   if(val.slug){
+//     console.log(val.slug)
+//     setTabWithRoute(val.slug as string)
+//   }
+// })
+
+// if(route.params.slug) {
+//   setTabWithRoute(route.params.slug as string)
+// }
+
 
 const edited = computed(
   () =>
@@ -35,6 +50,16 @@ async function apply() {
     loadingRef.value = false;
   }
 }
+
+function setTabWithRoute(slug: string) {
+  const prefixSlug = slug.split('-')[0]
+  const res = bottomPanelComposable.tabs.find((tab)=> tab.path.includes(prefixSlug))
+  res.current = slug
+  bottomPanelComposable.activeTab = res
+}
+
+
+
 defineExpose({
   reset,
   loadingRef,
@@ -74,6 +99,7 @@ defineExpose({
       <DashboardWatchList :searchModel="userManager.showSearchModel"/>
     </div>
     <loading :loading="loadingRef" />
+    
     <bottom-panel ></bottom-panel>
   </div>
 </template>
