@@ -215,9 +215,9 @@ function findLength(tab: TabItem) {
         </ada-btn>
       </header>
     </div>
-    <ada-toggle class="b-tabs" v-model="tab" nameKey="path">
+    <ada-toggle class="b-tabs" v-model="tab" nameKey="name">
       <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.path"
-      :to="`/watchlist/${ $route.params.name }/${ t.current }`"
+      :to="`/watchlist/${ $route.params.name }/${ t.path }`"
         :model="t">
         <span :class="{ 'active': tab != null && tab.title == t.title }">
           {{ $t(t.title) }}

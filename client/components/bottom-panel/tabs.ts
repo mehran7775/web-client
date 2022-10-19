@@ -14,7 +14,7 @@ const panels: Array<TabItem> = [
         path:"orders-all?offset=0&length=20",
         title: "bottom-panel.orders.all",
         deletable: false,
-        name: "order-all"
+        name: "orders-all"
       },
       {
         path:`orders-draft?offset=0&length=20&flags=${ OrderFlags.Draft }`,
