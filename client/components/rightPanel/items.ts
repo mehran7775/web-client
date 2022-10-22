@@ -9,126 +9,114 @@ export function getMenuItems(
   watchList: ComputedRef<Array<MenuItem>>, secondWatchList: any
 ): Array<MenuItem> {
   return [
-    {
-      icon: "lotfi-task-square",
-      title: "menu.watchList",
-      children: [
-        {
-          icon: "mdi-basket",
-          title: "menu.wealth",
-          to: "/watchlist/wealth",
-          bookmarkPosition: BookmarkPosition.ToolBar,
-        },
-        {
-          icon: "lotfi-task-square",
-          title: "menu.basket",
-          children: watchList,
-        },
-        {
-          icon: "lotfi-task-square",
-          title: "menu.bests",
-          children: secondWatchList
-        },
-        {
-          icon: "lotfi-task-square",
-          title: "menu.industries",
-          to: "/watchlist/industries",
-        },
-        {
-          icon: "lotfi-task-square",
-          title: "menu.boards",
-          to: "/watchlist/boards",
-        },
-        {
-          icon: "lotfi-task-square",
-          title: "menu.instrumentTypes",
-          to: "/watchlist/instrumentTypes",
-        },
-        {
-          icon: "lotfi-task-square",
-          title: "menu.conditional",
-          to: "/watchlist/conditional",
-        },
-      ],
-    },
+    // {
+    //   icon: "lotfi-task-square",
+    //   title: "menu.watchList",
+    //   children: [
+    //     {
+    //       icon: "mdi-basket",
+    //       title: "menu.wealth",
+    //       to: "/watchlist/wealth",
+    //       bookmarkPosition: BookmarkPosition.ToolBar,
+    //     },
+    //     {
+    //       icon: "lotfi-task-square",
+    //       title: "menu.basket",
+    //       children: watchList,
+    //     },
+    //     {
+    //       icon: "lotfi-task-square",
+    //       title: "menu.bests",
+    //       children: secondWatchList
+    //     },
+    //     {
+    //       icon: "lotfi-task-square",
+    //       title: "menu.industries",
+    //       to: "/watchlist/industries",
+    //     },
+    //     {
+    //       icon: "lotfi-task-square",
+    //       title: "menu.boards",
+    //       to: "/watchlist/boards",
+    //     },
+    //     {
+    //       icon: "lotfi-task-square",
+    //       title: "menu.instrumentTypes",
+    //       to: "/watchlist/instrumentTypes",
+    //     },
+    //     {
+    //       icon: "lotfi-task-square",
+    //       title: "menu.conditional",
+    //       to: "/watchlist/conditional",
+    //     },
+    //   ],
+    // },
     {
       icon: "isax-graph",
       title: "menu.portfolio",
-      children: [
-        {
-          icon: "isax-graph",
-          title: "menu.brokerage",
-          to: "/portfolio/brokerage",
-          bookmarkPosition: BookmarkPosition.RightPanel,
-        },
-        {
-          icon: "isax-graph",
-          title: "menu.realtime",
-          to: "/portfolio/realtime",
-          bookmarkPosition: BookmarkPosition.RightPanel,
-        },
-      ],
+      to: "/portfolio"
     },
     {
       icon: "isax-calculator",
       title: "menu.accounting",
+      to: "/accounting",
       children: [
         {
           icon: "isax-card-receive",
           title: "menu.deposit",
           to: "/accounting/deposit",
           color: "success",
-          bookmarkPosition: BookmarkPosition.RightPanel,
         },
         {
-          icon: "lotfi-receipt-edit-3",
-          title: "menu.depositReport",
-          to: "/accounting/deposit-report",
-          bookmarkPosition: BookmarkPosition.RightPanel,
+          icon: "isax-card-receive",
+          title: "menu.receiptRegister",
+          to: "/accounting/receiptRegister",
+          color: "success",
         },
+        // {
+        //   icon: "lotfi-receipt-edit-3",
+        //   title: "menu.depositReport",
+        //   to: "/accounting/deposit-report",
+        // },
         {
           icon: "isax-card-send",
           title: "menu.refund",
           to: "/accounting/refund",
           color: "error",
-          bookmarkPosition: BookmarkPosition.RightPanel,
         },
-        {
-          icon: "lotfi-receipt-edit",
-          title: "menu.refundReport",
-          to: "/accounting/refund-report",
-          bookmarkPosition: BookmarkPosition.RightPanel,
-        },
+        // {
+        //   icon: "lotfi-receipt-edit",
+        //   title: "menu.refundReport",
+        //   to: "/accounting/refund-report",
+        //   bookmarkPosition: BookmarkPosition.RightPanel,
+        // },
         {
           icon: "lotfi-empty-wallet-tick",
           title: "menu.credits",
           to: "/accounting/credits",
-          bookmarkPosition: BookmarkPosition.RightPanel,
         },
       ],
     },
     {
       icon: "isax-money-change",
       title: "menu.trades",
+      to: "trades",
       children: [
         {
           icon: "lotfi-receipt-edit-2",
           title: "menu.tradesReport",
           to: "tradesReport",
-          bookmarkPosition: BookmarkPosition.RightPanel,
         },
         {
           icon: "lotfi-group",
           title: "menu.switchBrokerage",
           to: "switchBrokerage",
           color: "warning",
-          bookmarkPosition: BookmarkPosition.RightPanel,
         },
         {
           icon: "lotfi-receipt-edit-1",
           title: "menu.switchBrokerageReport",
           to: "switchBrokerageReport",
-          bookmarkPosition: BookmarkPosition.RightPanel,
         },
       ],
     },

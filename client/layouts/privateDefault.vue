@@ -314,8 +314,6 @@ const triggerChatRoom = () => {
       :class="{ right: !rightMenu.mini, left: !lmini }"
     >
       <div :class="['dashboardmain-nuxt', collaps ? 'collaps' : null]">
-        <!-- <transition name="slide-fade" mode="out-in" appear>
-        </transition> -->
         <nuxt-page />
       </div>
     </main>

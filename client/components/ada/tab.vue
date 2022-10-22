@@ -52,6 +52,6 @@ const cls = computed(() => val.value == props.model || name.value == props.name 
 </style>
 <template>
     <div class="tab" :class="cls">
-        <slot></slot>
+        <slot v-if="cls"></slot>
     </div>
 </template>

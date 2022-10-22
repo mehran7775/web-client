@@ -7,22 +7,18 @@ import { useInstrument, useBottomPanel } from "~~/composables";
 
 const instrumentManager = useInstrument();
 const bottomPanel = useBottomPanel();
+const router = useRouter()
+const route = useRoute()
 
 const tabs = computed(() => bottomPanel.tabs);
 
-const tab = computed({
-  get() {
-    return bottomPanel.activeTab
-  },
-  set(val: TabItem) {
-    bottomPanel.activeTab = val
-  }
-});
+const tab = computed(()=> bottomPanel.activeTab);
 
 
 
 function close() {
-  tab.value = null;
+  router.push(`/watchlist/${ route.params.name }`)
+  bottomPanel.activeTab = null;
 }
 function expand() {
   bottomPanel.toggleExpand();
@@ -41,17 +37,17 @@ const active = computed({
   }
 });
 
+function findPath(tab: TabItem) {
+  let path = ''
+  if(tab.children){
+    path = tab.children.find(t => t.name === tab.current).path
+  }else {
+    path = tab.path
+  }
+  return path
+}
 
-function findOffset (tab: TabItem) {
-  let offset = active.value?.params.offset ?? 
-  tab.params?.offset ?? 0
-  return offset
-}
-function findLength(tab: TabItem) {
-  let length = active.value?.params.length ??
-  tab.params?.length ?? 0
-  return length
-}
+
 
 
 </script>
@@ -188,7 +184,7 @@ function findLength(tab: TabItem) {
         <ada-tabs v-model="tab">
           <lazy-ada-tab v-for="t in tabs" :key="t.title" :model="t">
             <component v-if="t.component" :is="t.component" v-model="active" :tabs="t.children"></component>
-            <template v-if="t.params.length">
+            <template v-if="t.params?.length">
               <div v-for="p in t.params">
                 <p v-if="p.body" v-text="p.body"></p>
               </div>
@@ -217,7 +213,7 @@ function findLength(tab: TabItem) {
     </div>
     <ada-toggle class="b-tabs" v-model="tab" nameKey="name">
       <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.path"
-      :to="`/watchlist/${ $route.params.name }/${ t.path }`"
+      :to="`/watchlist/${ $route.params.name }/${ findPath(t) }`"
         :model="t">
         <span :class="{ 'active': tab != null && tab.title == t.title }">
           {{ $t(t.title) }}

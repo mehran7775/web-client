@@ -3,10 +3,6 @@ const panels: Array<TabItem> = [
   {
     path: "orders-all?offset=0&length=20",
     title: "bottom-panel.orders.all",
-    params: {
-      offset: 0,
-      length: 20,
-    },
     name: "orders",
     component: "bottom-panel-defaultOrderList",
     children: [
@@ -41,21 +37,18 @@ const panels: Array<TabItem> = [
   {
     path:"completeInfo-depth",
     title: "bottom-panel.completeInfo.index",
-    params: {},
-    name: "information",
+    name: "completeInfo",
     component: "bottom-panel-deepInformation",
     children: [
       {
         path:"completeInfo-depth",
         title: "bottom-panel.completeInfo.depth",
-        params: {},
         deletable: false,
         name: "completeInfo-depth"
       },
       {
         path:"completeInfo-myGroups",
         title: "bottom-panel.completeInfo.myGroups",
-        params: {},
         component: "bottom-panel-deepInformation-sameSector",
         deletable: false,
         name: "completeInfo-myGroups"
@@ -63,14 +56,12 @@ const panels: Array<TabItem> = [
       {
         path:"completeInfo-holdersCombination",
         title: "bottom-panel.completeInfo.holdersCombination",
-        params: {},
         deletable: false,
         name: "completeInfo-holdersCombination"
       },
       {
         path:"completeInfo-type",
         title: "bottom-panel.completeInfo.type",
-        params: {},
         deletable: false,
         name: "completeInfo-type"
       },
@@ -81,7 +72,6 @@ const panels: Array<TabItem> = [
   {
     path: "archive-tradesHistory",
     title: "bottom-panel.archive.index",
-    params: {},
     name: "archive",
     component: "bottom-panel-archive",
     children: [
@@ -95,14 +85,12 @@ const panels: Array<TabItem> = [
       {
         path: "archive-holdersCompition",
         title: "bottom-panel.archive.holdersCompition",
-        params: {},
         deletable: false,
         name: "archive-holdersCompition"
       },
       {
         path: "archive-type",
         title: "bottom-panel.archive.type",
-        params: {},
         deletable: false,
         name: "archive-type"
       },
@@ -113,21 +101,18 @@ const panels: Array<TabItem> = [
   {
     path: "statisticsKeys-fiveDay",
     title: "bottom-panel.statisticsKeys.index",
-    params: {},
     name: "statisticsKeys",
     children: [
       {
-        
          path: "statisticsKeys-fiveDay",
         title: "bottom-panel.statisticsKeys.fiveDay",
-        params: {},
+   
         deletable: false,
         name: "statisticsKeys-fiveDay"
       },
       {
          path: "statisticsKeys-threeDay",
         title: "bottom-panel.statisticsKeys.threeDay",
-        params: {},
         deletable: false,
         name: "statisticsKeys-threeDay"
       },
@@ -138,20 +123,17 @@ const panels: Array<TabItem> = [
   {
     path: "more-presentation",
     title: "bottom-panel.more.index",
-    params: {},
     name: "more",
     children: [
       {
         path: "more-presentation",
         title: "bottom-panel.more.presentation",
-        params: {},
         deletable: false,
         name: "more-presentation"
       },
       {
         path: "more-directorate",
         title: "bottom-panel.more.directorate",
-        params: {},
         deletable: false,
         name: "more-directorate"
       },

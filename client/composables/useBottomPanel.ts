@@ -31,6 +31,18 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
     },
   });
 
+  // const activeChildTab = computed({
+  //   get() {
+  //     if (activeTab.value && activeTab.value.current) {
+  //       return activeTab.value.children.find(q => q.name == activeTab.value.current)
+  //     }
+  //     return null;
+  //   }, set(val) {
+  //     activeTab.value.current = val?.name
+  //   }
+  // });
+
+
   const expanded = computed(() => state.value._expanded);
   const loading = computed(() => state.value._loading);
 

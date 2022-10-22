@@ -14,16 +14,15 @@ const loadingRef = ref(false);
 
 const name = route.params.name as string ?? "new";
 
-// watch(()=> route.params, (val)=> {
-//   if(val.slug){
-//     console.log(val.slug)
-//     setTabWithRoute(val.slug as string)
-//   }
-// })
+watch(()=> route.params, (val)=> {
+  if(val.slug){
+    setTabWithRoute(val.slug as string, false)
+  }
+})
 
-// if(route.params.slug) {
-//   setTabWithRoute(route.params.slug as string)
-// }
+if(route.params.slug) {
+  setTabWithRoute(route.params.slug as string, true)
+}
 
 
 const edited = computed(
@@ -51,10 +50,10 @@ async function apply() {
   }
 }
 
-function setTabWithRoute(slug: string) {
+function setTabWithRoute(slug: string, init: boolean) {
   const prefixSlug = slug.split('-')[0]
-  const res = bottomPanelComposable.tabs.find((tab)=> tab.path.includes(prefixSlug))
-  res.current = slug
+  const res = bottomPanelComposable.tabs.find((tab)=> tab.name.includes(prefixSlug))
+  if(init) res.current = slug
   bottomPanelComposable.activeTab = res
 }
 
@@ -100,6 +99,8 @@ defineExpose({
     </div>
     <loading :loading="loadingRef" />
     
-    <bottom-panel ></bottom-panel>
+    <Transition name="slide-fade">
+      <bottom-panel ></bottom-panel>
+    </Transition>
   </div>
 </template>

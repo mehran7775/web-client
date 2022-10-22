@@ -394,7 +394,8 @@
     "brokerage": "@:oms.brokerage",
     "conditional": "@:general.conditional",
     "saveSettings": "@:general.download @:general.settings",
-    "uploadSettings": "@:general.upload @:general.settings"
+    "uploadSettings": "@:general.upload @:general.settings",
+    "receiptRegister": "@:general.save فیش"
   },
   "bottom-panel": {
     "completeInfo": {
