@@ -10,7 +10,8 @@ export class MenuItem {
   text?: string;
   color?: string;
   to?: string;
-  children?: Array<MenuItem> | ComputedRef<Array<MenuItem>>;
+  name?: string;
+  children?: Array<MenuItem>;
   bookmarkPosition?: BookmarkPosition | null = null;
   click?: Function;
   constructor(icon: string, title: string) {

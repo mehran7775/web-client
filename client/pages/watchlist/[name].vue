@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { InstrumentCache, InstrumentSearchModel, SearchModel } from "~/types";
 import { useUser } from "~/composables";
+import { resolveEnvPrefix } from "vite";
 
 definePageMeta({
   layout: "private-default"
@@ -52,7 +53,13 @@ async function apply() {
 
 function setTabWithRoute(slug: string, init: boolean) {
   const prefixSlug = slug.split('-')[0]
-  const res = bottomPanelComposable.tabs.find((tab)=> tab.name.includes(prefixSlug))
+  let res = bottomPanelComposable.tabs.find((tab)=> tab.name.includes(prefixSlug))
+  if(!res) {
+    res = bottomPanelComposable.optionsTabs.find((tab)=> tab.path.includes(prefixSlug))
+    bottomPanelComposable.registerTab(res)
+    slug = res.children?.find((t)=> t.path?.includes(slug)).name
+
+  }
   if(init) res.current = slug
   bottomPanelComposable.activeTab = res
 }

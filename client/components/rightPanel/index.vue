@@ -31,6 +31,7 @@ const emit = defineEmits([
 const userManager = useUser();
 const appManager = useAsrTrader();
 const router = useRouter();
+const route = useRoute()
 const sh = useShortcut();
 const chat = useChat();
 
@@ -86,38 +87,8 @@ const messages = chat.state.messages;
 const optionMessage = ref<boolean>(false)
 const activeOptionMessage = ref<boolean>(false)
 
-const secondWatchList = ref<MenuItem[]>([
-  {
-    bookmarkPosition: 1,
-    icon: "isax-eye",
-    text: "تابلوخوانی",
-    title: "تابلوخوانی",
-    to: "/watchList/تابلوخوانی",
-  },
-  {
-    bookmarkPosition: 1,
-    icon: "isax-eye",
-    text: "توصیفی",
-    title: "توصیفی",
-    to: "/watchList/توصیفی",
-  },
-  {
-    bookmarkPosition: 1,
-    icon: "isax-eye",
-    text: "تکنیکال",
-    title: "تکنیکال",
-    to: "/watchList/تکنیکال",
-  },
-  {
-    bookmarkPosition: 1,
-    icon: "isax-eye",
-    text: "بنیادی",
-    title: "بنیادی",
-    to: "/watchList/بنیادی",
-  },
-]);
 
-const items = getMenuItems(watchList, secondWatchList);
+const items = getMenuItems();
 
 const drawer = computed({
   get() {
@@ -221,6 +192,8 @@ function unmark(data: MenuItem) {
 //   bottomPanel.registerTab(tab);
 //   bottomPanel.activeTab = tab;
 // }
+
+
 
 const isExistTab = (tab: TabItem): boolean => {
   if (bottomPanel.state._tabs[tab.title]) {
@@ -378,6 +351,7 @@ if (process.client) {
       <ada-tooltip v-for="item in items" :key="item.title" position="left">
         <template #activator>
           <ada-btn
+          @click.stop="bottomPanel.assignTab(item)"
           >
             <ada-icon
               size="18"

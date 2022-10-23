@@ -40,9 +40,9 @@ const active = computed({
 function findPath(tab: TabItem) {
   let path = ''
   if(tab.children){
-    path = tab.children.find(t => t.name === tab.current).path
+    path = tab.children.find(t => t.name === tab.current)?.path ?? ''
   }else {
-    path = tab.path
+    path = tab.path ?? ''
   }
   return path
 }
@@ -194,8 +194,8 @@ function findPath(tab: TabItem) {
       </div>
       <header class="header">
         <ada-toggle v-model="active" class="b-tabs">
-          <ada-btn class="tab-title" v-for="(t, i) in tab.children" :key="t.path" :model="t" 
-          :to="`/watchlist/${ $route.params.name }/${ t.path }`"
+          <ada-btn class="tab-title" v-for="(t, i) in tab.children" :key="t.title" :model="t" 
+          :to="`/watchlist/${ $route.params.name }/${ t.path?? '' }`"
           >
             {{ $t(t.title) }}  <span v-if="t.secondTitle">{{ ` - ${ t.secondTitle }` }}</span>
             <div v-if="i != tab.children.length - 1" class="bar"></div>
