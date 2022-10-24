@@ -183,7 +183,12 @@ function findPath(tab: TabItem) {
       <div class="contents">
         <ada-tabs v-model="tab">
           <lazy-ada-tab v-for="t in tabs" :key="t.title" :model="t">
-            <component v-if="t.component" :is="t.component" v-model="active" :tabs="t.children"></component>
+            <component v-if="t.component" :is="t.component" v-model="active" :tabs="t.children">          
+              
+            </component>
+            <template v-for="child in t.children">
+            <component v-if="active.name === child.name && child.component" :is="child.component"></component>
+            </template>
             <template v-if="t.params?.length">
               <div v-for="p in t.params">
                 <p v-if="p.body" v-text="p.body"></p>

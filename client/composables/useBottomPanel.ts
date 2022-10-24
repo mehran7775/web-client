@@ -28,6 +28,7 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
         path: i.to,
         name: i.name,
         icon: i.icon,
+        component: i.component ?? '',
         deleteAble: false,
       });
     });
@@ -69,7 +70,7 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
     state._loading = payload;
   }
   function removeTab(tab: TabItem): void {
-    if(state._tabs[tab.title] ) delete state._tabs[tab.title]
+    if(state._tabs[tab.name] ) delete state._tabs[tab.name]
   }
   function removeOptionTab(tab: TabItem): void {
     if(state._tabs[tab.name] ) delete state._tabs[tab.name]

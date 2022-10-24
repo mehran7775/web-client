@@ -14,6 +14,7 @@ export class MenuItem {
   children?: Array<MenuItem>;
   bookmarkPosition?: BookmarkPosition | null = null;
   click?: Function;
+  component?: string; 
   constructor(icon: string, title: string) {
     this.icon = icon;
     this.title = title;

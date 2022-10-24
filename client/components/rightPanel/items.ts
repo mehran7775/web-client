@@ -60,7 +60,8 @@ export function getMenuItems(): Array<MenuItem> {
           title: "menu.portfolio",
           to: "portfolio",
           color: "success",
-          name: "portfolio"
+          name: "portfolio",
+          component: ""
         }
       ]
     },
@@ -75,14 +76,16 @@ export function getMenuItems(): Array<MenuItem> {
           title: "menu.deposit",
           to: "accounting-deposit",
           color: "success",
-          name: "accouting-deposit"
+          name: "accounting-deposit",
+          component: "pages-accounting-deposit"
         },
         {
           icon: "isax-card-receive",
           title: "menu.receiptRegister",
           to: "accounting-receiptRegister",
           color: "success",
-          name: "accounting.receiptRegister"
+          name: "accounting.receiptRegister",
+          component: ""
         },
         // {
         //   icon: "lotfi-receipt-edit-3",
