@@ -10,9 +10,11 @@ export class MenuItem {
   text?: string;
   color?: string;
   to?: string;
-  children?: Array<MenuItem> | ComputedRef<Array<MenuItem>>;
+  name?: string;
+  children?: Array<MenuItem>;
   bookmarkPosition?: BookmarkPosition | null = null;
   click?: Function;
+  component?: string; 
   constructor(icon: string, title: string) {
     this.icon = icon;
     this.title = title;
@@ -37,9 +39,11 @@ export function CreateBookmark(item: MenuItem): Bookmark {
 }
 
 export interface TabItem {
+  path?: string;
   title: string;
   secondTitle?: string;
-  params: { [key: string]: any };
+  params?: { [key: string]: any };
+  name?: string;
   children?: Array<TabItem>;
   current?: string;
   component?: string;

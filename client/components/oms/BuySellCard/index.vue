@@ -716,7 +716,7 @@ const testValidate = async() => {
             >
               <template #append>
                 <ada-btn
-                  :class="['tw-mx-1', countLock ? 'active' : '']"
+                  :class="[ countLock ? 'active' : '']"
                   :width="24"
                   :height="24"
                   @click="toggleCountLock"

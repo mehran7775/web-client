@@ -12,18 +12,17 @@ import { useBottomPanel, useOrder } from "~~/composables";
 import DateTime from "../../date/time.vue";
 import NumericField from "../../numericField.vue";
 
-const props = withDefaults(defineProps<{
-  modelValue?: OrderSearchModel,
-}>(), {
-  modelValue: () => new OrderSearchModel(),
-})
 
-const searchModel = ref(props.modelValue)
+const props = defineProps<{
+  orders: Order[]
+}>()
+
 
 const bottomPanel = useBottomPanel();
 const orderManager = useOrder();
 const i18n = useI18n();
-const orders: Order[] = reactive([]);
+// const orders: Order[] = reactive([]);
+const route = useRoute()
 const cols = [
   new WatchListColumns(i18n.t("general.status").toString(), "flags"),
   new WatchListColumns(i18n.t("instrument.name").toString(), "name"),
@@ -42,9 +41,6 @@ const agreement = ref(true);
 
 
 
-watch(() => orderManager.last_update, () => {
-  getOrders()
-})
 
 
 
@@ -110,18 +106,6 @@ function hasValidityDate(order: Order) {
     && (order.validityDate != null)
 }
 
-function getOrders() {
-  bottomPanel.setLoading(true);
-  orders.splice(0, Infinity)
-  orderManager
-    .getOrders(searchModel.value)
-    .then((res: PaginatedResult<Order> | undefined) => {
-      if (res) orders.push(...res.data);
-      bottomPanel.setLoading(false);
-    });
-}
-
-getOrders();
 
 </script>
 

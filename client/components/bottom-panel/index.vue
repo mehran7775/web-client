@@ -1,25 +1,24 @@
 <script setup lang="ts">
 import { TabItem } from "@/types"
+import { find } from "property-information";
 import { useInstrument, useBottomPanel } from "~~/composables";
-import defaultTabs from "./tabs";
+
 
 
 const instrumentManager = useInstrument();
 const bottomPanel = useBottomPanel();
-
+const router = useRouter()
+const route = useRoute()
 
 const tabs = computed(() => bottomPanel.tabs);
-const tab = computed({
-  get() {
-    return bottomPanel.activeTab
-  },
-  set(val: TabItem) {
-    bottomPanel.activeTab = val
-  }
-});
+
+const tab = computed(()=> bottomPanel.activeTab);
+
+
 
 function close() {
-  tab.value = null;
+  router.push(`/watchlist/${ route.params.name }`)
+  bottomPanel.activeTab = null;
 }
 function expand() {
   bottomPanel.toggleExpand();
@@ -30,28 +29,40 @@ const expanded = computed(() => bottomPanel.expanded)
 const active = computed({
   get() {
     if (tab.value && tab.value.current) {
-      return tab.value.children.find(q => q.title == tab.value.current)
+      return tab.value.children.find(q => q.name == tab.value.current)
     }
     return null;
   }, set(val) {
-    tab.value.current = val?.title
+    tab.value.current = val?.name
   }
 });
 
-//Register Default Tabs
-for (let i in defaultTabs) {
-  bottomPanel.registerTab((defaultTabs as Array<TabItem>)[i]);
+function findPath(tab: TabItem) {
+  let path = ''
+  if(tab.children){
+    path = tab.children.find(t => t.name === tab.current)?.path ?? ''
+  }else {
+    path = tab.path ?? ''
+  }
+  return path
 }
+
+
 
 
 </script>
 
 <style lang="postcss" scoped>
 .ada-bottom-panel {
-  @apply tw-flex tw-flex-col tw-flex-grow tw-w-full;
+  @apply tw-flex tw-flex-col tw-flex-grow;
   @apply tw-transition-all tw-ease-in-out tw-duration-700;
   position: fixed;
   bottom: 32px;
+  left: 48px;
+  right: 48px;
+  width: calc(100% - 96px);
+  /* left: 48px;
+  right: 48px; */
 
   &.slideToBottom {
     bottom: 0;
@@ -148,6 +159,21 @@ for (let i in defaultTabs) {
 }
 </style>
 
+<style lang="postcss">
+.dashboardmain-page{
+  &.left{
+    .ada-bottom-panel {
+      @apply tw-pl-[208px]
+    }
+  }
+  &.right{
+    .ada-bottom-panel {
+      @apply tw-pr-[208px]
+    }
+  }
+}
+</style>
+
 <template>
   <footer class="ada-bottom-panel" :class="{
     half: tab != null && !expanded,
@@ -157,8 +183,13 @@ for (let i in defaultTabs) {
       <div class="contents">
         <ada-tabs v-model="tab">
           <lazy-ada-tab v-for="t in tabs" :key="t.title" :model="t">
-            <component v-if="t.component" :is="t.component" v-model="active" :tabs="t.children"></component>
-            <template v-if="t.params.length">
+            <component v-if="t.component" :is="t.component" v-model="active" :tabs="t.children">          
+              
+            </component>
+            <template v-for="child in t.children">
+            <component v-if="active.name === child.name && child.component" :is="child.component"></component>
+            </template>
+            <template v-if="t.params?.length">
               <div v-for="p in t.params">
                 <p v-if="p.body" v-text="p.body"></p>
               </div>
@@ -168,7 +199,9 @@ for (let i in defaultTabs) {
       </div>
       <header class="header">
         <ada-toggle v-model="active" class="b-tabs">
-          <ada-btn class="tab-title" v-for="(t, i) in tab.children" :key="t.title" :model="t">
+          <ada-btn class="tab-title" v-for="(t, i) in tab.children" :key="t.title" :model="t" 
+          :to="`/watchlist/${ $route.params.name }/${ t.path?? '' }`"
+          >
             {{ $t(t.title) }}  <span v-if="t.secondTitle">{{ ` - ${ t.secondTitle }` }}</span>
             <div v-if="i != tab.children.length - 1" class="bar"></div>
           </ada-btn>
@@ -183,8 +216,9 @@ for (let i in defaultTabs) {
         </ada-btn>
       </header>
     </div>
-    <ada-toggle class="b-tabs" v-model="tab">
-      <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.title"
+    <ada-toggle class="b-tabs" v-model="tab" nameKey="name">
+      <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.path"
+      :to="`/watchlist/${ $route.params.name }/${ findPath(t) }`"
         :model="t">
         <span :class="{ 'active': tab != null && tab.title == t.title }">
           {{ $t(t.title) }}

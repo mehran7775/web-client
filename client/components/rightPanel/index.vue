@@ -31,6 +31,7 @@ const emit = defineEmits([
 const userManager = useUser();
 const appManager = useAsrTrader();
 const router = useRouter();
+const route = useRoute()
 const sh = useShortcut();
 const chat = useChat();
 
@@ -86,38 +87,8 @@ const messages = chat.state.messages;
 const optionMessage = ref<boolean>(false)
 const activeOptionMessage = ref<boolean>(false)
 
-const secondWatchList = ref<MenuItem[]>([
-  {
-    bookmarkPosition: 1,
-    icon: "isax-eye",
-    text: "تابلوخوانی",
-    title: "تابلوخوانی",
-    to: "/watchList/تابلوخوانی",
-  },
-  {
-    bookmarkPosition: 1,
-    icon: "isax-eye",
-    text: "توصیفی",
-    title: "توصیفی",
-    to: "/watchList/توصیفی",
-  },
-  {
-    bookmarkPosition: 1,
-    icon: "isax-eye",
-    text: "تکنیکال",
-    title: "تکنیکال",
-    to: "/watchList/تکنیکال",
-  },
-  {
-    bookmarkPosition: 1,
-    icon: "isax-eye",
-    text: "بنیادی",
-    title: "بنیادی",
-    to: "/watchList/بنیادی",
-  },
-]);
 
-const items = getMenuItems(watchList, secondWatchList);
+const items = getMenuItems();
 
 const drawer = computed({
   get() {
@@ -201,26 +172,28 @@ function unmark(data: MenuItem) {
   }
 }
 
-function setOnBottomPanel(value: MenuItem): void {
-  const component = "pages-" + value.to.replaceAll("/", "-").substring(1);
-  const tab: TabItem = {
-    title: value.title,
-    params: {},
-    children: [],
-    current: value.title,
-    component: component,
-    deletable: true,
-  };
-  if (isExistTab(tab)) {
-    bottomPanel.removeTab(tab);
-    return;
-  }
-  const res = bottomPanel.existDeletableTab();
-  res ? bottomPanel.removeTab(res) : null;
+// function setOnBottomPanel(value: MenuItem): void {
+//   const component = "pages-" + value.to.replaceAll("/", "-").substring(1);
+//   const tab: TabItem = {
+//     title: value.title,
+//     params: {},
+//     children: [],
+//     current: value.title,
+//     component: component,
+//     deletable: true,
+//   };
+//   if (isExistTab(tab)) {
+//     bottomPanel.removeTab(tab);
+//     return;
+//   }
+//   const res = bottomPanel.existDeletableTab();
+//   res ? bottomPanel.removeTab(res) : null;
 
-  bottomPanel.registerTab(tab);
-  bottomPanel.activeTab = tab;
-}
+//   bottomPanel.registerTab(tab);
+//   bottomPanel.activeTab = tab;
+// }
+
+
 
 const isExistTab = (tab: TabItem): boolean => {
   if (bottomPanel.state._tabs[tab.title]) {
@@ -274,11 +247,8 @@ if (process.client) {
     touch-action: none;
     pointer-events: none;
   }
-  .toggle.tabs {
-    @apply tw-overflow-y-auto;
-  }
-  .toggle.tabs {
-    @apply tw-items-center tw-px-2 tw-shadow-[-2px_1px_2px_0] tw-shadow-primary/20;
+  .tabs {
+    @apply tw-items-center tw-px-2 tw-shadow-[-2px_1px_2px_0] tw-shadow-primary/20 tw-overflow-y-auto;
     padding-top: 8px;
     height: calc(100vh - 42px);
     padding-bottom: 54px;
@@ -377,16 +347,11 @@ if (process.client) {
     mobile-breakpoint="960"
     fixed
   >
-    <ada-toggle class="tabs" v-model="selected" vertical>
+    <div class="tabs">
       <ada-tooltip v-for="item in items" :key="item.title" position="left">
         <template #activator>
           <ada-btn
-            :model="item.title"
-            @click="
-              () => {
-                $emit('update:mini', !mini);
-              }
-            "
+          @click.stop="bottomPanel.assignTab(item)"
           >
             <ada-icon
               size="18"
@@ -403,11 +368,6 @@ if (process.client) {
         <template #activator>
           <ada-btn
             :to="item.to"
-            @click="
-              () => {
-                $emit('update:mini', true);
-              }
-            "
             depressed
           >
             <ada-icon size="18" :class="`tw-text-${item.color}`">
@@ -417,103 +377,8 @@ if (process.client) {
         </template>
         <span>{{ item.text ? item.text : $t(item.title) }}</span>
       </ada-tooltip>
-    </ada-toggle>
+    </div>
 
-    <ada-tabs class="tab-items" v-model="selected">
-      <ada-tab v-for="item in items" :key="item.title" :name="item.title">
-        <h6
-          class="tw-flex tw-flex-shrink-0 tw-h-[42px] tw-justify-center tw-items-center"
-        >
-          {{ $t(item.title) }}
-        </h6>
-        <ada-list>
-          <ada-list-item
-            v-for="(child, i) in item.children ? item.children : []"
-            :key="i"
-            :value="child"
-          >
-            <template #item="{ value }">
-              <div
-                class="tw-w-full tw-h-full tw-flex tw-justify-between tw-items-center"
-              >
-                <span
-                  >{{ value.text ? value.text : $t(value.title)
-                  }}{{ value.expand }}</span
-                >
-                <span
-                  v-if="value.to && value.to != ''"
-                  class="tw-flex tw-items-baseline"
-                >
-                  <ada-icon
-                    v-if="value.bookmarkPosition"
-                    size="1.34rem"
-                    :class="[
-                      isMarked(value) ? 'tw-text-primary' : 'tw-text-gray4',
-                    ]"
-                    @click.stop.prevent="
-                      () => {
-                        if (isMarked(value)) unmark(value);
-                        else mark(value);
-                      }
-                    "
-                    >{{
-                      isMarked(value) ? "mdi-bookmark" : "mdi-bookmark-outline"
-                    }}</ada-icon
-                  >
-                  <ada-icon
-                    v-if="!/watchlist/gi.test(value.to)"
-                    size="1.34rem"
-                    :class="[
-                      isExistTab(value) ? 'tw-text-primary' : 'tw-text-gray4',
-                    ]"
-                    @click.stop.prevent="setOnBottomPanel(value)"
-                    >{{
-                      isExistTab(value)
-                        ? "mdi-arrow-down-bold"
-                        : "mdi-arrow-down-bold-outline"
-                    }}</ada-icon
-                  >
-                </span>
-              </div>
-            </template>
-          </ada-list-item>
-        </ada-list>
-      </ada-tab>
-      <ada-tab name="menu.chat">
-        <div class="chatroom">
-          <header>
-            <div class="chatroom__avatar">
-              <ada-icon size="2.5rem">isax-frame-bold</ada-icon>
-            </div>
-            <!-- <img class="chatroom__avatar" src="/logo.png" /> -->
-          </header>
-          <body class="chatroom__messages">
-            <ada-list>
-              <ada-list-item
-                v-for="msg in messages"
-                :key="msg.id"
-                :class="[!msg.self ? 'tw-justify-end' : null]"
-              >
-              <ada-message-caht :msg="msg" class="chatroom__message"></ada-message-caht>
-              </ada-list-item>
-            </ada-list>
-          </body>
-
-          <footer class="chatroom__activator">
-            <p
-              contenteditable
-              :data-placeholder="$t('general.messagePlaceholder')"
-              @input="inputChat = ($event.target as HTMLElement).innerText"
-              @keyup.enter="sendMessage"
-            >
-              {{ inputChat }}
-            </p>
-            <ada-btn @click.stop="sendMessage">
-              <ada-icon size="2.5rem">mdi-send-circle</ada-icon>
-            </ada-btn>
-          </footer>
-        </div>
-      </ada-tab>
-    </ada-tabs>
+  
   </ada-nav>
 </template>
