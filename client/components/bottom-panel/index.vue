@@ -187,7 +187,7 @@ function findPath(tab: TabItem) {
               
             </component>
             <template v-for="child in t.children">
-            <component v-if="active.name === child.name && child.component" :is="child.component"></component>
+            <component v-if="active.name === child.name && child.component && !t.component" :is="child.component"></component>
             </template>
             <template v-if="t.params?.length">
               <div v-for="p in t.params">

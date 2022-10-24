@@ -24,7 +24,7 @@ div {
 
     >input {
 
-        @apply tw-bg-transparent tw-text-primary tw-outline-hidden tw-border-none;
+        @apply tw-bg-transparent tw-text-primary tw-outline-none tw-border-none;
 
         &::placeholder {
             @apply tw-text-primary
