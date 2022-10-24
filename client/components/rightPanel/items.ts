@@ -116,26 +116,26 @@ export function getMenuItems(): Array<MenuItem> {
     {
       icon: "isax-money-change",
       title: "menu.trades",
-      to: "tradesReport",
+      to: "trades",
       name: "trades",
       children: [
         {
           icon: "lotfi-receipt-edit-2",
           title: "menu.tradesReport",
-          to: "tradesReport",
+          to: "trades-report",
           name: "tradesReport"
         },
         {
           icon: "lotfi-group",
           title: "menu.switchBrokerage",
-          to: "switchBrokerage",
+          to: "trades-switchBrokerage",
           color: "warning",
           name: "switchBrokerage"
         },
         {
           icon: "lotfi-receipt-edit-1",
           title: "menu.switchBrokerageReport",
-          to: "switchBrokerageReport",
+          to: "trades-switchBrokerageReport",
           name: "switchBrokerageReport"
         },
       ],

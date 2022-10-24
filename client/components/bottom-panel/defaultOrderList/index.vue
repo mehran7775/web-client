@@ -18,7 +18,7 @@ const bottomPanel = useBottomPanel()
 const orders = reactive<{ items: Order[] }>({ items: [] })
 
 watch(() => [ route.query , orderManager.last_update ], () => {
-  getOrders(route.query)
+  getOrders(route.params.slug && route.query.length ? route.query : { offset: 0, length: 20})
 })
 
 async function getOrders(qu) {
@@ -33,7 +33,7 @@ async function getOrders(qu) {
 }
 
 
-getOrders(route.path.includes('orders-') ? route.query : { offset: 0, length: 20})
+getOrders(route.params.slug && route.query.length ? route.query : { offset: 0, length: 20})
 
 
 

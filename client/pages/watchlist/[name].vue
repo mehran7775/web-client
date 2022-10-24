@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { InstrumentCache, InstrumentSearchModel, SearchModel } from "~/types";
 import { useUser } from "~/composables";
 import { resolveEnvPrefix } from "vite";
 
@@ -69,8 +68,7 @@ function setTabWithRoute(slug: string, init: boolean) {
 defineExpose({
   reset,
   loadingRef,
-  edited,
-  // searchModel,
+  edited
 });
 
 
