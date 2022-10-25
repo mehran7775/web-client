@@ -71,6 +71,7 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
   }
   function removeTab(tab: TabItem): void {
     if(state._tabs[tab.name] ) delete state._tabs[tab.name]
+    router.push(`/watchlist/${ route.params.name }`)
   }
   function removeOptionTab(tab: TabItem): void {
     if(state._tabs[tab.name] ) delete state._tabs[tab.name]
