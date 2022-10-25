@@ -3,8 +3,7 @@
   src:  local('Ada Bourse Icons'),
     url('./fonts/ada-bourse.eot') format('embedded-opentype'),
     url('./fonts/ada-bourse.ttf') format('truetype'),
-    url('./fonts/ada-bourse.woff') format('woff'),
-    url('./fonts/ada-bourse.svg') format('svg');
+    url('./fonts/ada-bourse.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }

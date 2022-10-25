@@ -3,8 +3,7 @@
   src: local('iconsax'),
     url('./fonts/iconsax.woff2') format('woff2'),
     url('./fonts/iconsax.woff') format('woff'),
-    url('./fonts/iconsax.ttf') format('truetype'),
-    url('./fonts/iconsax.svg#iconsax') format('svg');
+    url('./fonts/iconsax.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: block;
