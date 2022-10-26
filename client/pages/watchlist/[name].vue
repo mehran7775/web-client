@@ -107,5 +107,6 @@ defineExpose({
     <Transition name="slide-fade">
       <bottom-panel ></bottom-panel>
     </Transition>
+    
   </div>
 </template>

@@ -2,9 +2,7 @@
 import { usePayment } from "@/composables";
 import { useAxios } from "@/composables";
 
-definePageMeta({
-  layout: "private-default",
-});
+
 
 const appManager = useAsrTrader();
 const lang: string = appManager.locale.split("-")[0];

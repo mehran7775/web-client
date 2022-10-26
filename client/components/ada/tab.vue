@@ -2,14 +2,28 @@
 import { Ref } from "vue";
 const props = withDefaults(defineProps<{
     model?: any,
-    name?: string
+    name?: string,
+    to?: string
 }>(), {
     model: null,
-    name: ''
+    name: '',
+    to: 'empty'
 });
 const val: Ref<any> = inject("tab-ref", ref(null));
 const name: Ref<any> = inject("tab-name", ref(null));
-const cls = computed(() => val.value == props.model || name.value == props.name ? 'tab--active' : '')
+
+
+    
+const route = useRoute()
+
+const cls = computed(() => val.value == props.model || name.value == props.name || route.path.includes(props.to) ? 'tab--active' : '')
+
+
+function setActiveTab() {
+    if(props.to){}
+}
+
+
 </script>
 <style lang="postcss" scoped>
 .tab {
@@ -52,6 +66,6 @@ const cls = computed(() => val.value == props.model || name.value == props.name 
 </style>
 <template>
     <div class="tab" :class="cls">
-        <slot ></slot>
+        <slot ></slot> 
     </div>
 </template>

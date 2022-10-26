@@ -4,6 +4,7 @@ const props = withDefaults(
     defineProps<{
         modelValue?: any;
         nameKey?: string;
+
     }>(),
     {
         modelValue: 0,
@@ -12,6 +13,7 @@ const props = withDefaults(
 );
 const val = ref(props.modelValue);
 const name = ref(eval(props.nameKey.replace('$', 'props.modelValue')))
+const route = useRoute()
 
 provide("tab-ref", val);
 provide("tab-name", name);
@@ -23,6 +25,8 @@ watch(
         name.value = eval(props.nameKey.replace('$', 'update'));
     }
 );
+
+
 </script>
 <style lang="postcss" scoped>
 .tabs {

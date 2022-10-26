@@ -1,8 +1,8 @@
 <template>
-    <NuxtLayout name="private">
-       
-    </NuxtLayout>
+index
+
 </template>
+
 
 <script setup lang="ts">
 

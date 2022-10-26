@@ -1,7 +1,6 @@
 <script setup lang="ts">
-definePageMeta({
-  layout: "private-default",
-});
+
+import { ref } from 'vue';
 
 const router = useRouter();
 const appManager = useAsrTrader();

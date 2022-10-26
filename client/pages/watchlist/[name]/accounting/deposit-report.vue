@@ -1,0 +1,3 @@
+<template>
+    deposit-report
+</template>
