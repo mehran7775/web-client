@@ -6,7 +6,6 @@ import {
   Message,
   MessageFilter,
   MessageQuery,
-  Tabs,
 } from "@/types";
 import {
   useAsrTrader,
@@ -24,6 +23,9 @@ const bottomPanel = useBottomPanel();
 const rtl = appManager.rtl;
 const locale = appManager.locale;
 const toggleMenu = ref<null | string>(null);
+const router = useRouter()
+const route = useRoute()
+
 
 const searchItem = ref<string>("");
 
@@ -136,25 +138,32 @@ async function trigger_show_message(message: Message) {
   try {
     bottomPanel.setLoading(true);
     const mes = (await messageManager.getMessage(message.id)).data;
+    console.log('mes', mes)
     const tab = {
-      title: getTitle(mes.type),
+      title: getTitle(mes.origin),
       params: [{ body: mes.message.body }],
       children: [
         {
-          title: getTitle(mes.type),
+          title: getTitle(mes.origin),
           secondTitle: mes.title,
           params: [],
           deletable: false,
+          path: message.path ?? 'message',
+          name: getTitle(mes.origin)
         },
       ],
-      current: `${getTitle(mes.type)}`,
+      current: getTitle(mes.origin),
+      name: getTitle(mes.origin),
       deletable: true,
+      path: message.path ?? 'message'
     };
     seenMessage(mes)
+    console.log(tab)
     const res = bottomPanel.existDeletableTab();
     if (res) bottomPanel.removeTab(res);
     bottomPanel.registerTab(tab);
     bottomPanel.activeTab = tab;
+    router.push(tab.path)
   } catch (e) {
     console.log(e);
   } finally {
@@ -174,11 +183,12 @@ function seenMessage(message) {
 }
 
 const getTitle = (type: number) => {
-  if (type === 1) {
+  console.log(type)
+  if (type == 1) {
     return "categories.marketModerator";
-  } else if (type === 4) {
+  } else if (type == 4) {
     return "categories.tedan";
-  } else if (type === 5) {
+  } else if (type == 5) {
     return "categories.codal";
   } else {
     return "categories.news";

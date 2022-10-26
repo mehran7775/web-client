@@ -63,7 +63,10 @@ async function rename(item: any) {
 }
 
 function select(val: any) {
-  if (props.autoRoute) router.push(val.to);
+  if (props.autoRoute){
+    if(route.params.slug) val.to = val.to + `/${ route.params.slug }`
+    router.push(val.to);
+  } 
 }
 refresh();
 function drag(ev: DragEvent) {}

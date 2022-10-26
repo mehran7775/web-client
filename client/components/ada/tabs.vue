@@ -12,8 +12,10 @@ const props = withDefaults(
 );
 const val = ref(props.modelValue);
 const name = ref(eval(props.nameKey.replace('$', 'props.modelValue')))
+
 provide("tab-ref", val);
 provide("tab-name", name);
+
 watch(
     () => props.modelValue,
     (update) => {

@@ -156,8 +156,8 @@ export function getMenuItems(): Array<MenuItem> {
     },
     {
       icon: "lotfi-wallet-money",
-      title: "menu.conditionalTrades",
-      to: "conditional-trades",
+      title: "menu.conditionalTrade",
+      to: "conditional-trade",
       bookmarkPosition: BookmarkPosition.RightPanel,
     },
     {

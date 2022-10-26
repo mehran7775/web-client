@@ -172,36 +172,6 @@ function unmark(data: MenuItem) {
   }
 }
 
-// function setOnBottomPanel(value: MenuItem): void {
-//   const component = "pages-" + value.to.replaceAll("/", "-").substring(1);
-//   const tab: TabItem = {
-//     title: value.title,
-//     params: {},
-//     children: [],
-//     current: value.title,
-//     component: component,
-//     deletable: true,
-//   };
-//   if (isExistTab(tab)) {
-//     bottomPanel.removeTab(tab);
-//     return;
-//   }
-//   const res = bottomPanel.existDeletableTab();
-//   res ? bottomPanel.removeTab(res) : null;
-
-//   bottomPanel.registerTab(tab);
-//   bottomPanel.activeTab = tab;
-// }
-
-
-
-const isExistTab = (tab: TabItem): boolean => {
-  if (bottomPanel.state._tabs[tab.title]) {
-    return true;
-  }
-  return false;
-};
-
 
 async function sendMessage(): Promise<void> {
   if (inputChat.value) {
@@ -218,6 +188,13 @@ async function sendMessage(): Promise<void> {
     inputChat.value = ''
   }
 }
+
+
+function isActiveItem (item: MenuItem) {
+  if(route.params.slug) return item.to.match((route.params?.slug as string).split('-')[0])
+  return false
+}
+
 
 if (process.client) {
   for (let i = 1; i < 10; i++) {
@@ -352,6 +329,7 @@ if (process.client) {
         <template #activator>
           <ada-btn
           @click.stop="bottomPanel.assignTab(item)"
+          :class="{ active: isActiveItem(item) }"
           >
             <ada-icon
               size="18"

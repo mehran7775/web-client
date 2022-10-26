@@ -58,6 +58,7 @@ export interface Message {
   flags: number;
   message: string;
   seenDate: string | null;
+  path?: string
 }
 
 export interface MessageSourceResult {
