@@ -405,6 +405,13 @@
       "holdersCombination": "ترکیب سهامداران",
       "type": "حقیقی و حقوقی"
     },
+    "furtherInformation": {
+      "index": "اطلاعات تکمیلی",
+      "depth": "عمق بازار",
+      "myGroups": "همگروه ها",
+      "holdersCombination": "ترکیب سهامداران",
+      "type": "حقیقی و حقوقی"
+    },
     "orders": {
       "all": "سفارشات",
       "drafts": "پیش‌نویس ها",

@@ -14,15 +14,15 @@ const loadingRef = ref(false);
 
 const name = route.params.name as string ?? "new";
 
-watch(()=> route.params, (val)=> {
-  if(val.slug){
-    setTabWithRoute(val.slug as string, false)
-  }
-})
+// watch(()=> route.params, (val)=> {
+//   if(val.slug){
+//     setTabWithRoute(val.slug as string, false)
+//   }
+// })
 
-if(route.params.slug) {
-  setTabWithRoute(route.params.slug as string, true)
-}
+// if(route.params.slug) {
+//   setTabWithRoute(route.params.slug as string, true)
+// }
 
 
 const edited = computed(
@@ -50,18 +50,18 @@ async function apply() {
   }
 }
 
-function setTabWithRoute(slug: string, init: boolean) {
-  const prefixSlug = slug.split('-')[0]
-  let res = bottomPanelComposable.tabs.find((tab)=> tab.name.includes(prefixSlug))
-  if(!res) {
-    res = bottomPanelComposable.optionsTabs.find((tab)=> tab.path.includes(prefixSlug))
-    bottomPanelComposable.registerTab(res)
-    slug = res.children?.find((t)=> t.path?.includes(slug)).name
+// function setTabWithRoute(slug: string, init: boolean) {
+//   const prefixSlug = slug.split('-')[0]
+//   let res = bottomPanelComposable.tabs.find((tab)=> tab.name.includes(prefixSlug))
+//   if(!res) {
+//     res = bottomPanelComposable.optionsTabs.find((tab)=> tab.path.includes(prefixSlug))
+//     bottomPanelComposable.registerTab(res)
+//     slug = res.children?.find((t)=> t.path?.includes(slug)).name
 
-  }
-  if(init) res.current = slug
-  bottomPanelComposable.activeTab = res
-}
+//   }
+//   if(init) res.current = slug
+//   bottomPanelComposable.activeTab = res
+// }
 
 
 
@@ -104,9 +104,12 @@ defineExpose({
     </div>
     <loading :loading="loadingRef" />
     
-    <Transition name="slide-fade">
-      <bottom-panel ></bottom-panel>
-    </Transition>
-    
+   
+    <bottom-panel>
+      <Transition name="slide-toggle">
+        <NuxtNestedPage />
+      </Transition>
+    </bottom-panel>
+
   </div>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBottomPanel, useInstrument } from "~~/composables";
-import DateTime from "../../date/time.vue";
-import NumericField from "../../numericField.vue";
+import DateTime from "@/components/date/time.vue";
+import NumericField from "@/components/numericField.vue";
 import { TradesHistory, WatchListColumns, PaginatedResult, TradesHistorySerachModel, DailyPrice, MarketHistory } from "@/types";
 import { useI18n } from "vue-i18n"
 

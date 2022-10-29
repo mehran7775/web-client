@@ -9,8 +9,8 @@ import {
   ValidationType,
 } from "@/types";
 import { useBottomPanel, useOrder } from "~~/composables";
-import DateTime from "../../date/time.vue";
-import NumericField from "../../numericField.vue";
+import DateTime from "@/components/date/time.vue";
+import NumericField from "@/components/numericField.vue";
 
 
 const props = defineProps<{

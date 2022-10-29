@@ -6,6 +6,7 @@ const props = withDefaults(
     type?: "button" | "submit" | "reset";
     icon?: boolean;
     to?: string;
+    match?: RegExp;
   }>(),
   {
     type: "button",
@@ -13,13 +14,22 @@ const props = withDefaults(
   }
 );
 const router = useRouter();
+const route = useRoute();
 
 const value: Ref<any> = inject("toggle-ref", ref(null));
+
 function click() {
   value.value = props.model;
-  if (props.to)
-    router.push(props.to)
+  if (props.to) router.push(props.to);
 }
+
+const isActive: (inp: string) => boolean = props.match
+  ? props.match.test
+  : props.to
+  ? (url) => url == props.to
+  : (obj) => value.value == props.model;
+
+if (isActive(route.path)) value.value = props.model;
 
 </script>
 
@@ -39,18 +49,23 @@ function click() {
     user-select: none;
     pointer-events: none;
   }
-
 }
 </style>
 
 <template>
-  <button class="ada-button" v-bind="$attrs" @click="
-    () => {
-      click();
-    }
-  " :class="[
-  typeof props.model != 'undefined' && props.model == value ? 'active' : '',
-]" :type="type">
+  <button
+    class="ada-button"
+    v-bind="$attrs"
+    @click="
+      () => {
+        click();
+      }
+    "
+    :class="[
+      typeof props.model != 'undefined' && props.model == value ? 'active' : '',
+    ]"
+    :type="type"
+  >
     <slot></slot>
   </button>
 </template>

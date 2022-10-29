@@ -34,13 +34,11 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
     });
     const tab: TabItem = {
       title: t.title,
-      path: t.to ,
-      name: t.name,
       deletable: true,
       children: childrens,
       current: t.children ? t.children[0].name : ''
     };
-    state._optionsTabs[tab.name]= tab
+    state._optionsTabs[tab.title]= tab
   });
 
   const tabs = computed(() => Object.values(state._tabs));
@@ -48,7 +46,8 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
 
   const activeTab: WritableComputedRef<TabItem | null> = computed({
     set(val: TabItem) {
-      state._activeTab = val?.name;
+      console.log('val')
+      state._activeTab = val?.title;
     },
     get() {
       return state._activeTab
@@ -61,7 +60,7 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
   const loading = computed(() => state._loading);
 
   function registerTab(tab: TabItem) {
-    state._tabs[tab.name] = tab;
+    state._tabs[tab.title] = tab;
   }
   function toggleExpand() {
     state._expanded = !state._expanded;
@@ -70,11 +69,11 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
     state._loading = payload;
   }
   function removeTab(tab: TabItem): void {
-    if(state._tabs[tab.name] ) delete state._tabs[tab.name]
+    if(state._tabs[tab.title] ) delete state._tabs[tab.title]
     router.push(`/watchlist/${ route.params.name }`)
   }
   function removeOptionTab(tab: TabItem): void {
-    if(state._tabs[tab.name] ) delete state._tabs[tab.name]
+    if(state._tabs[tab.title] ) delete state._tabs[tab.title]
   }
   function assignTab(item) {
     if(route.params.slug == item.to) return 
@@ -92,7 +91,6 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
     const tab: TabItem = {
       title: item.title,
       path: item.to,
-      name: item.name ?? '',
       deletable: true,
       children: obj,
       current: item.children ? item.children[0].to: item.title,

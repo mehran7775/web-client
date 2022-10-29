@@ -1,78 +1,79 @@
 import { TabItem, OrderFlags } from "@/types";
 const panels: Array<TabItem> = [
   {
-    path: "orders-all?offset=0&length=20",
     title: "bottom-panel.orders.all",
-    name: "orders",
     component: "bottom-panel-defaultOrderList",
     children: [
       {
-        path:"orders-all?offset=0&length=20",
+        path:"orders?offset=0&length=20",
         title: "bottom-panel.orders.all",
         deletable: false,
-        name: "orders-all"
+        match: /^ \/watchlist\/([^/]+?)\/orders-all\?[^/]\w$/g ,
+        
       },
       {
-        path:`orders-draft?offset=0&length=20&flags=${ OrderFlags.Draft }`,
+        path:`orders?offset=0&length=20&flags=${ OrderFlags.Draft }`,
         title: "bottom-panel.orders.drafts",
         deletable: false,
-        name: "orders-draft"
+        match: /^ \/watchlist\/([^/]+?)\/orders-drafts\?[^/]\w$/g ,
+        
       },
       {
-        path:`orders-active?offset=0&length=20&flags=${  OrderFlags.Confirmed | OrderFlags.PreOpening | OrderFlags.Created | OrderFlags.Sent }`,
+        path:`orders?offset=0&length=20&flags=${  OrderFlags.Confirmed | OrderFlags.PreOpening | OrderFlags.Created | OrderFlags.Sent }`,
         title: "bottom-panel.orders.actives",
         deletable: false,
-        name: "orders-active"
+        match: /^ \/watchlist\/([^/]+?)\/orders-actives\?[^/]\w$/g ,
+        
       },
       {
-        path: `orders-canceled?offset=0&length=20&flags=${ OrderFlags.Cancelled }`,
+        path: `orders?offset=0&length=20&flags=${ OrderFlags.Cancelled }`,
         title: "bottom-panel.orders.canceled",
         deletable: false,
-        name: "orders-canceled"
+        match: /^ \/watchlist\/([^/]+?)\/orders-canceled\?[^/]\w$/g ,
+        
       },
     ],
-    current: "orders-all",
+    match: /^ \/watchlist\/([^/]+?)\/orders\?[^/]\w\/?$/g ,
+    current: "orders?offset=0&length=20",
     deletable: false,
   },
   {
-    path:"completeInfo-depth",
     title: "bottom-panel.completeInfo.index",
-    name: "completeInfo",
-    component: "bottom-panel-deepInformation",
+    component: "bottom-panel-furtherInformation",
     children: [
       {
-        path:"completeInfo-depth",
-        title: "bottom-panel.completeInfo.depth",
+        path:"furtherInformation/depth",
+        title: "bottom-panel.furtherInformation.depth",
         deletable: false,
-        name: "completeInfo-depth"
+        match: /^ \/watchlist\/([^/]+?)\/furtherInformation-depth\?[^/]\w\/?$/g ,
       },
       {
-        path:"completeInfo-myGroups",
-        title: "bottom-panel.completeInfo.myGroups",
-        component: "bottom-panel-deepInformation-sameSector",
+        path:"furtherInformation/myGroups",
+        title: "bottom-panel.furtherInformation.myGroups",
+        component: "bottom-panel-furtherInformation-sameSector",
         deletable: false,
-        name: "completeInfo-myGroups"
+        match: /^ \/watchlist\/([^/]+?)\/furtherInformation-myGroups\?[^/]\w\/?$/g ,
       },
       {
-        path:"completeInfo-holdersCombination",
-        title: "bottom-panel.completeInfo.holdersCombination",
+        path:"furtherInformation/holdersCombination",
+        title: "bottom-panel.furtherInformation.holdersCombination",
         deletable: false,
-        name: "completeInfo-holdersCombination"
+        match: /^ \/watchlist\/([^/]+?)\/furtherInformation-holdersCombination[\w]\?[^/]\w\/?$/g ,
       },
       {
-        path:"completeInfo-type",
-        title: "bottom-panel.completeInfo.type",
+        path:"furtherInformation/type",
+        title: "bottom-panel.furtherInformation.type",
         deletable: false,
-        name: "completeInfo-type"
+        match: /^ \/watchlist\/([^/]+?)\/furtherInformation-type\?[^/]\w\/?$/g ,
       },
     ],
-    current: "completeInfo-depth",
+    match: /^ \/watchlist\/([^/]+?)\/furtherInformation-[\w]\?[^/]\w\/?$/g ,
+    current: "furtherInformation/depth",
     deletable: false,
   },
   {
-    path: "archive-tradesHistory",
     title: "bottom-panel.archive.index",
-    name: "archive",
+    match: /^ \/watchlist\/([^/]+?)\/archive-[\w]\?[^/]\w\/?$/g ,
     component: "bottom-panel-archive",
     children: [
       {
@@ -80,62 +81,63 @@ const panels: Array<TabItem> = [
         title: "bottom-panel.archive.tradesHistory",
         component:"bottom-panel-archive-tradeHistoryTransactions",
         deletable: false,
-        name: "archive-tradesHistory"
+        match: /^ \/watchlist\/([^/]+?)\/archive-tradesHistory\?[^/]\w\/?$/g ,
       },
       {
         path: "archive-holdersCompition",
         title: "bottom-panel.archive.holdersCompition",
         deletable: false,
-        name: "archive-holdersCompition"
+        match: /^ \/watchlist\/([^/]+?)\/archive-holdersCompition\?[^/]\w\/?$/g ,
       },
       {
         path: "archive-type",
         title: "bottom-panel.archive.type",
         deletable: false,
-        name: "archive-type"
+        match: /^ \/watchlist\/([^/]+?)\/archive-type\?[^/]\w\/?$/g ,
       },
     ],
     deletable: false,
     current: "archive-tradesHistory",
   },
   {
-    path: "statisticsKeys-fiveDay",
     title: "bottom-panel.statisticsKeys.index",
-    name: "statisticsKeys",
+    match: /^ \/watchlist\/([^/]+?)\/statisticsKeys-[\w]\?[^/]\w\/?$/g ,
     children: [
       {
          path: "statisticsKeys-fiveDay",
         title: "bottom-panel.statisticsKeys.fiveDay",
-   
+        
         deletable: false,
-        name: "statisticsKeys-fiveDay"
+        match: /^ \/watchlist\/([^/]+?)\/statisticsKeys-fiveDay\?[^/]\w\/?$/g ,
+        
       },
       {
          path: "statisticsKeys-threeDay",
         title: "bottom-panel.statisticsKeys.threeDay",
         deletable: false,
-        name: "statisticsKeys-threeDay"
+        match: /^ \/watchlist\/([^/]+?)\/statisticsKeys-threeDay\?[^/]\w\/?$/g ,
+        
       },
     ],
     deletable: false,
     current: "statisticsKeys-fiveDay",
   },
   {
-    path: "more-presentation",
     title: "bottom-panel.more.index",
-    name: "more",
+    match: /^ \/watchlist\/([^/]+?)\/more-[\w]\?[^/]\w\/?$/g ,
     children: [
       {
         path: "more-presentation",
         title: "bottom-panel.more.presentation",
         deletable: false,
-        name: "more-presentation"
+        match: /^ \/watchlist\/([^/]+?)\/statisticsKeys-presentation\?[^/]\w\/?$/g ,
+        
       },
       {
         path: "more-directorate",
         title: "bottom-panel.more.directorate",
         deletable: false,
-        name: "more-directorate"
+        match: /^ \/watchlist\/([^/]+?)\/statisticsKeys-directorate\?[^/]\w\/?$/g ,
       },
     ],
     current: "more-presentation",

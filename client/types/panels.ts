@@ -43,7 +43,7 @@ export interface TabItem {
   title: string;
   secondTitle?: string;
   params?: { [key: string]: any };
-  name?: string;
+  match?: RegExp;
   children?: Array<TabItem>;
   current?: string;
   component?: string;

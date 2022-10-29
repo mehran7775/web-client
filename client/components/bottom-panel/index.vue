@@ -12,8 +12,17 @@ const route = useRoute()
 
 const tabs = computed(() => bottomPanel.tabs);
 
-const tab = computed(()=> bottomPanel.activeTab);
 
+// onst tab = computed({
+//   get() {
+//     return bottomPanel.state._activeTab
+//         ? bottomPanel.state._tabs[bottomPanel.state._activeTab]
+//         : null;
+//   }, set(newVal: TabItem) {
+//     console.log('update')
+//     bottomPanel.state._activeTab = newVal?.name
+//   }
+// })
 
 
 function close() {
@@ -28,23 +37,24 @@ const expanded = computed(() => bottomPanel.expanded)
 
 const active = computed({
   get() {
-    if (tab.value && tab.value.current) {
-      return tab.value.children.find(q => q.name == tab.value.current)
+    if (bottomPanel.activeTab && bottomPanel.activeTab.current) {
+      return bottomPanel.activeTab.children.find(q => q.name == bottomPanel.activeTab.current)
     }
     return null;
   }, set(val) {
-    tab.value.current = val?.name
+    bottomPanel.activeTab.current = val?.name
   }
 });
 
 function findPath(tab: TabItem) {
-  let path = ''
-  if(tab.children){
-    path = tab.children.find(t => t.name === tab.current)?.path ?? ''
-  }else {
-    path = tab.path ?? ''
-  }
-  return path
+  // let path = ''
+  // if(tab.children){
+  //   path = tab.children.find(t => t.name === tab.current)?.path ?? ''
+  // }else {
+  //   path = tab.path ?? ''
+  // }
+  // return path
+  return tab.current ?? ''
 }
 
 
@@ -176,12 +186,13 @@ function findPath(tab: TabItem) {
 
 <template>
   <footer class="ada-bottom-panel" :class="{
-    half: tab != null && !expanded,
-    expanded: tab != null && expanded
+    half: bottomPanel.activeTab != null && !expanded,
+    expanded: bottomPanel.activeTab != null && expanded
   }">
-    <div class="detail" v-if="tab != null">
+  <!-- //   v-if="tab != null" -->
+    <div class="detail">
       <div class="contents">
-        <ada-tabs v-model="tab">
+        <!-- <ada-tabs v-model="tab">
           <lazy-ada-tab v-for="t in tabs" :key="t.title" :model="t">
             <component v-if="t.component" :is="t.component" v-model="active" :tabs="t.children">          
               
@@ -195,20 +206,22 @@ function findPath(tab: TabItem) {
               </div>
             </template>
           </lazy-ada-tab>
-        </ada-tabs>
+        </ada-tabs> -->
+        <slot></slot>
+
       </div>
       <header class="header">
         <ada-toggle v-model="active" class="b-tabs">
-          <ada-btn class="tab-title" v-for="(t, i) in tab.children" :key="t.title" :model="t" 
-          :to="`/watchlist/${ $route.params.name }/${ t.path?? '' }`"
+          <ada-btn class="tab-title" v-for="(t, i) in bottomPanel.activeTab?.children" :key="t.title" :model="t" 
+          :to="`/watchlist/${ $route.params.name }/${ t.path?? '' }` "
           >
             {{ $t(t.title) }}  <span v-if="t.secondTitle">{{ ` - ${ t.secondTitle }` }}</span>
-            <div v-if="i != tab.children.length - 1" class="bar"></div>
+            <div v-if="i != bottomPanel.activeTab.children.length - 1" class="bar"></div>
           </ada-btn>
         </ada-toggle>
         <ada-btn class="tw-mx-[5px] tw-h-[24px] tw-w-[24px]"
-          :class="[expanded && tab != null ? 'tw-bg-primary' : 'tw-bg-transparent']" @click="expand">
-          <ada-icon :class="[expanded && tab != null ? 'tw-text-white' : 'tw-text-primary']" :size="16"> isax-maximize-3
+          :class="[expanded && bottomPanel.activeTab != null ? 'tw-bg-primary' : 'tw-bg-transparent']" @click="expand">
+          <ada-icon :class="[expanded && bottomPanel.activeTab != null ? 'tw-text-white' : 'tw-text-primary']" :size="16"> isax-maximize-3
           </ada-icon>
         </ada-btn>
         <ada-btn class="tw-h-[24px] tw-w-[24px] tw-bg-primary" @click="close">
@@ -216,11 +229,12 @@ function findPath(tab: TabItem) {
         </ada-btn>
       </header>
     </div>
-    <ada-toggle class="b-tabs" v-model="tab" nameKey="name">
+  
+    <ada-toggle class="b-tabs" v-model="bottomPanel.activeTab" nameKey="name">
       <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.path"
-      :to="`/watchlist/${ $route.params.name }/${ findPath(t) }`"
+      :to="`/watchlist/${ $route.params.name }/${ t.current }`"
         :model="t">
-        <span :class="{ 'active': tab != null && tab.title == t.title }">
+        <span :class="{ 'active': bottomPanel.activeTab != null && bottomPanel.activeTab.title == t.title }">
           {{ $t(t.title) }}
           <span
             v-text="instrumentManager.state.selected && !t.deletable ? '-' + instrumentManager.state.selected.name : ''"></span>
@@ -232,6 +246,6 @@ function findPath(tab: TabItem) {
           </ada-icon>
         </ada-btn>
       </ada-btn>
-    </ada-toggle>
+    </ada-toggle> 
   </footer>
 </template>
