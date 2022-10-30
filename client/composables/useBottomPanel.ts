@@ -8,7 +8,7 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
   const router = useRouter();
   const route = useRoute();
   const state = reactive({
-    _activeTab: {} as TabItem,
+    _activeTab: null as TabItem | null,
     _expanded: false,
     _tabs: <{ [key: string]: TabItem }>reactive({}),
     _optionsTabs : <{ [key: string]: TabItem }>reactive({}),
@@ -46,7 +46,6 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
 
   const activeTab: WritableComputedRef<TabItem | null> = computed({
     set(val: TabItem) {
-      console.log('setActiveTab')
       state._activeTab = val
     },
     get() {

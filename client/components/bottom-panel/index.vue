@@ -180,24 +180,8 @@ const active = computed({
     half: bottomPanel.activeTab != null && !expanded,
     expanded: bottomPanel.activeTab != null && expanded
   }">
-  <!-- //   v-if="tab != null" -->
-    <div class="detail">
+    <div class="detail"  v-if="bottomPanel.activeTab">
       <div class="contents">
-        <!-- <ada-tabs v-model="tab">
-          <lazy-ada-tab v-for="t in tabs" :key="t.title" :model="t">
-            <component v-if="t.component" :is="t.component" v-model="active" :tabs="t.children">          
-              
-            </component>
-            <template v-for="child in t.children">
-            <component v-if="active.name === child.name && child.component && !t.component" :is="child.component"></component>
-            </template>
-            <template v-if="t.params?.length">
-              <div v-for="p in t.params">
-                <p v-if="p.body" v-text="p.body"></p>
-              </div>
-            </template>
-          </lazy-ada-tab>
-        </ada-tabs> -->
         <slot></slot>
 
       </div>

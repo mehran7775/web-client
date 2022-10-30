@@ -90,14 +90,14 @@ const panels: Array<TabItem> = [
         match: /^\/watchlist\/.+\/archive\/holdersCompition([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
       },
       {
-        path: "archive/type",
+        path: "archive/type?offset=0&length=20",
         title: "bottom-panel.archive.type",
         deletable: false,
         match: /^\/watchlist\/.+\/archive\/type([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
       },
     ],
     deletable: false,
-    current: "archive/tradesHistory",
+    current: "archive/tradesHistory?offset=0&length=20",
   },
   {
     title: "bottom-panel.statisticsKeys.index",
