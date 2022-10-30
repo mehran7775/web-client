@@ -3,26 +3,12 @@ import { TabItem } from "@/types"
 import { find } from "property-information";
 import { useInstrument, useBottomPanel } from "~~/composables";
 
-
-
 const instrumentManager = useInstrument();
 const bottomPanel = useBottomPanel();
 const router = useRouter()
 const route = useRoute()
 
 const tabs =  bottomPanel.tabs;
-
-
-// onst tab = computed({
-//   get() {
-//     return bottomPanel.state._activeTab
-//         ? bottomPanel.state._tabs[bottomPanel.state._activeTab]
-//         : null;
-//   }, set(newVal: TabItem) {
-//     console.log('update')
-//     bottomPanel.state._activeTab = newVal?.name
-//   }
-// })
 
 
 function close() {
@@ -45,9 +31,6 @@ const active = computed({
     bottomPanel.activeTab.current = val?.path
   }
 });
-
-
-// const subTabs = 
 
 
 
@@ -180,6 +163,7 @@ const active = computed({
     half: bottomPanel.activeTab != null && !expanded,
     expanded: bottomPanel.activeTab != null && expanded
   }">
+
     <div class="detail"  v-if="bottomPanel.activeTab">
       <div class="contents">
         <slot></slot>

@@ -113,12 +113,13 @@ defineExpose({
     <loading :loading="loadingRef" />
 
     <bottom-panel>
-      <Transition name="slide-fade">
-        <NuxtPage :key="$route.fullPath" :transition="{ name: 'bounce' }"
+      <!-- <Transition name="slide-fade"> -->
+        <div>
+          <NuxtPage :key="$route.fullPath"
           
         />
-        <!-- <NuxtPage/> -->
-      </Transition>
+        </div>
+      <!-- </Transition> -->
     </bottom-panel>
   </div>
 </template>
