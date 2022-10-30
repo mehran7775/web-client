@@ -10,7 +10,7 @@ const bottomPanel = useBottomPanel();
 const router = useRouter()
 const route = useRoute()
 
-const tabs = computed(() => bottomPanel.tabs);
+const tabs =  bottomPanel.tabs;
 
 
 // onst tab = computed({
@@ -38,25 +38,16 @@ const expanded = computed(() => bottomPanel.expanded)
 const active = computed({
   get() {
     if (bottomPanel.activeTab && bottomPanel.activeTab.current) {
-      return bottomPanel.activeTab.children.find(q => q.name == bottomPanel.activeTab.current)
+      return bottomPanel.activeTab.children.find(q => q.path == bottomPanel.activeTab.current)
     }
     return null;
   }, set(val) {
-    bottomPanel.activeTab.current = val?.name
+    bottomPanel.activeTab.current = val?.path
   }
 });
 
-function findPath(tab: TabItem) {
-  // let path = ''
-  // if(tab.children){
-  //   path = tab.children.find(t => t.name === tab.current)?.path ?? ''
-  // }else {
-  //   path = tab.path ?? ''
-  // }
-  // return path
-  return tab.current ?? ''
-}
 
+// const subTabs = 
 
 
 
@@ -213,6 +204,7 @@ function findPath(tab: TabItem) {
       <header class="header">
         <ada-toggle v-model="active" class="b-tabs">
           <ada-btn class="tab-title" v-for="(t, i) in bottomPanel.activeTab?.children" :key="t.title" :model="t" 
+          :match="t.match"
           :to="`/watchlist/${ $route.params.name }/${ t.path?? '' }` "
           >
             {{ $t(t.title) }}  <span v-if="t.secondTitle">{{ ` - ${ t.secondTitle }` }}</span>
@@ -230,10 +222,10 @@ function findPath(tab: TabItem) {
       </header>
     </div>
   
-    <ada-toggle class="b-tabs" v-model="bottomPanel.activeTab" nameKey="name">
+    <ada-toggle class="b-tabs" v-model="bottomPanel.activeTab">
       <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.path"
       :to="`/watchlist/${ $route.params.name }/${ t.current }`"
-        :model="t">
+        :model="t" :match="t.match">
         <span :class="{ 'active': bottomPanel.activeTab != null && bottomPanel.activeTab.title == t.title }">
           {{ $t(t.title) }}
           <span

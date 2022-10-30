@@ -23,14 +23,31 @@ function click() {
   if (props.to) router.push(props.to);
 }
 
-const isActive: (inp: string) => boolean = props.match
-  ? props.match.test
-  : props.to
-  ? (url) => url == props.to
-  : (obj) => value.value == props.model;
+// const isActive: (inp: string) => boolean = props.match
+//   ? props.match.test
+//   : props.to
+//   ? (url) => url == props.to
+//   : (obj) => value.value == props.model;
 
-if (isActive(route.path)) value.value = props.model;
+const isActive = (path: string): boolean => {
+  
+  // console.log(props.match)
+  return props.match
+    ? props.match.test(path)
+    : props.to
+    ? route.path == props.to
+    : false;
+};
 
+
+onMounted(() => {
+  if (isActive(route.path)) {
+    console.log(props.to,props.match)
+    
+    value.value = props.model;
+  }
+});
+//console.log(props.match, isActive(route.path));
 </script>
 
 <style lang="postcss" scoped>

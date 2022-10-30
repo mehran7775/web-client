@@ -12,6 +12,7 @@ const props = withDefaults(
 );
 const emit = defineEmits(["update:modelValue"]);
 const val = ref(props.modelValue);
+
 provide("toggle-ref", val);
 
 watch(
@@ -20,6 +21,7 @@ watch(
     val.value = update;
   }
 );
+
 watch(val, (update) => {
   emit("update:modelValue", update);
 });
