@@ -1,0 +1,3 @@
+<template>
+    credits
+</template>

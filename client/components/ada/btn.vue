@@ -15,8 +15,10 @@ const props = withDefaults(
 );
 const router = useRouter();
 const route = useRoute();
-
 const value: Ref<any> = inject("toggle-ref", ref(null));
+const matchPath = ref(null)
+
+
 
 function click() {
   value.value = props.model;
@@ -25,7 +27,6 @@ function click() {
 
 
 const isActive = (path: string): boolean => {
-  
   return props.match
     ? props.match.test(path)
     : props.to
@@ -35,12 +36,20 @@ const isActive = (path: string): boolean => {
 
 
 onMounted(() => {
-  if (isActive(route.path)) {
-    console.log(props.to,props.match)
-    
+  if (isActive(route.path)) { 
     value.value = props.model;
   }
 });
+
+// matchPath.value = props.match?.test(route.path)
+
+watch(()=> route.path, (newVal)=> { 
+  // matchPath.value = props.match?.test(newVal)
+  if(isActive(newVal)) value.value = props.model
+
+})
+
+
 </script>
 
 <style lang="postcss" scoped>
@@ -66,14 +75,8 @@ onMounted(() => {
   <button
     class="ada-button"
     v-bind="$attrs"
-    @click="
-      () => {
-        click();
-      }
-    "
-    :class="[
-      typeof props.model != 'undefined' && props.model == value ? 'active' : '',
-    ]"
+    @click="click"
+    :class="{ active: ( typeof props.model != 'undefined' && props.model == value ) || matchPath }"
     :type="type"
   >
     <slot></slot>

@@ -2,7 +2,6 @@ import { TabItem, OrderFlags } from "@/types";
 const panels: Array<TabItem> = [
   {
     title: "bottom-panel.orders.all",
-    component: "bottom-panel-defaultOrderList",
     children: [
       {
         path:"orders?offset=0&length=20",
@@ -36,10 +35,10 @@ const panels: Array<TabItem> = [
     match: /^\/watchlist\/.+\/orders([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
     current: "orders?offset=0&length=20",
     deletable: false,
+    const: true
   },
   {
     title: "bottom-panel.completeInfo.index",
-    component: "bottom-panel-furtherInformation",
     children: [
       {
         path:"furtherInformation/depth",
@@ -50,7 +49,6 @@ const panels: Array<TabItem> = [
       {
         path:"furtherInformation/myGroups",
         title: "bottom-panel.furtherInformation.myGroups",
-        component: "bottom-panel-furtherInformation-sameSector",
         deletable: false,
         match: /^\/watchlist\/.+\/furtherInformation\/myGroups([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
       },
@@ -70,16 +68,15 @@ const panels: Array<TabItem> = [
     match: /^\/watchlist\/.+\/furtherInformation\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
     current: "furtherInformation/depth",
     deletable: false,
+    const: true
   },
   {
     title: "bottom-panel.archive.index",
     match: /^\/watchlist\/.+\/archive\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
-    component: "bottom-panel-archive",
     children: [
       {
         path: "archive/tradesHistory?offset=0&length=20",
         title: "bottom-panel.archive.tradesHistory",
-        component:"bottom-panel-archive-tradeHistoryTransactions",
         deletable: false,
         match: /^\/watchlist\/.+\/archive\/tradesHistory([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
       },
@@ -98,6 +95,7 @@ const panels: Array<TabItem> = [
     ],
     deletable: false,
     current: "archive/tradesHistory?offset=0&length=20",
+    const: true
   },
   {
     title: "bottom-panel.statisticsKeys.index",
@@ -121,6 +119,7 @@ const panels: Array<TabItem> = [
     ],
     deletable: false,
     current: "statisticsKeys/fiveDay",
+    const: true
   },
   {
     title: "bottom-panel.more.index",
@@ -142,7 +141,7 @@ const panels: Array<TabItem> = [
     ],
     current: "more/presentation",
     deletable: false,
-    component: "lazy-pages-login"
+    const: true
   },
 ];
 

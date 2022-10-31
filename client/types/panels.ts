@@ -10,11 +10,10 @@ export class MenuItem {
   text?: string;
   color?: string;
   to?: string;
-  name?: string;
+  match: RegExp;
   children?: Array<MenuItem>;
   bookmarkPosition?: BookmarkPosition | null = null;
-  click?: Function;
-  component?: string; 
+  click?: Function; 
   constructor(icon: string, title: string) {
     this.icon = icon;
     this.title = title;
@@ -46,8 +45,8 @@ export interface TabItem {
   match?: RegExp;
   children?: Array<TabItem>;
   current?: string;
-  component?: string;
   deletable: boolean;
+  const?: boolean
 }
 
 export enum DeepOptions {

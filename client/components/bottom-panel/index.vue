@@ -8,7 +8,7 @@ const bottomPanel = useBottomPanel();
 const router = useRouter()
 const route = useRoute()
 
-const tabs =  bottomPanel.tabs;
+const tabs =  computed(()=> bottomPanel.tabs);
 
 
 function close() {

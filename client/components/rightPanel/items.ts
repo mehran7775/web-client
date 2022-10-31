@@ -7,136 +7,78 @@ export default {
 
 export function getMenuItems(): Array<MenuItem> {
   return [
-    // {
-    //   icon: "lotfi-task-square",
-    //   title: "menu.watchList",
-    //   children: [
-    //     {
-    //       icon: "mdi-basket",
-    //       title: "menu.wealth",
-    //       to: "/watchlist/wealth",
-    //       bookmarkPosition: BookmarkPosition.ToolBar,
-    //     },
-    //     {
-    //       icon: "lotfi-task-square",
-    //       title: "menu.basket",
-    //       children: watchList,
-    //     },
-    //     {
-    //       icon: "lotfi-task-square",
-    //       title: "menu.bests",
-    //       children: secondWatchList
-    //     },
-    //     {
-    //       icon: "lotfi-task-square",
-    //       title: "menu.industries",
-    //       to: "/watchlist/industries",
-    //     },
-    //     {
-    //       icon: "lotfi-task-square",
-    //       title: "menu.boards",
-    //       to: "/watchlist/boards",
-    //     },
-    //     {
-    //       icon: "lotfi-task-square",
-    //       title: "menu.instrumentTypes",
-    //       to: "/watchlist/instrumentTypes",
-    //     },
-    //     {
-    //       icon: "lotfi-task-square",
-    //       title: "menu.conditional",
-    //       to: "/watchlist/conditional",
-    //     },
-    //   ],
-    // },
     {
       icon: "isax-graph",
       title: "menu.portfolio",
-      to: "portfolio",
-      name: "portfolio",
+      match: /^\/watchlist\/.+\/portfolio([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
       children: [
         {
           icon: "isax-graph",
           title: "menu.portfolio",
           to: "portfolio",
           color: "success",
-          name: "portfolio",
-          component: ""
+          match: /^\/watchlist\/.+\/portfolio\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
         }
       ]
     },
     {
       icon: "isax-calculator",
       title: "menu.accounting",
-      to: "accounting-deposit",
-      name: "accounting",
+      match: /^\/watchlist\/.+\/accounting\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
       children: [
         {
           icon: "isax-card-receive",
           title: "menu.deposit",
-          to: "accounting-deposit",
+          to: "accounting/deposit",
           color: "success",
-          name: "accounting-deposit",
-          component: "pages-accounting-deposit"
+          match: /^\/watchlist\/.+\/accounting\/deposit([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
+          
         },
         {
           icon: "isax-card-receive",
           title: "menu.receiptRegister",
-          to: "accounting-receiptRegister",
+          to: "accounting/receiptRegister",
           color: "success",
-          name: "accounting.receiptRegister",
-          component: ""
+          match: /^\/watchlist\/.+\/accounting\/receiptRegister([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
         },
-        // {
-        //   icon: "lotfi-receipt-edit-3",
-        //   title: "menu.depositReport",
-        //   to: "/accounting/deposit-report",
-        // },
         {
           icon: "isax-card-send",
           title: "menu.refund",
-          to: "accounting-refund",
+          to: "accounting/refund",
           color: "error",
-          name: "accounting.refund"
+          match: /^\/watchlist\/.+\/accounting\/refund([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
         },
-        // {
-        //   icon: "lotfi-receipt-edit",
-        //   title: "menu.refundReport",
-        //   to: "/accounting/refund-report",
-        //   bookmarkPosition: BookmarkPosition.RightPanel,
-        // },
         {
           icon: "lotfi-empty-wallet-tick",
           title: "menu.credits",
-          to: "accounting-credits",
-          name: "menu.credits"
+          to: "accounting/credits",
+          match: /^\/watchlist\/.+\/accounting\/credits([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
         },
       ],
     },
     {
       icon: "isax-money-change",
       title: "menu.trades",
-      to: "trades",
-      name: "trades",
+      match: /^\/watchlist\/.+\/trades\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
       children: [
         {
           icon: "lotfi-receipt-edit-2",
           title: "menu.tradesReport",
-          to: "trades-report",
-          name: "tradesReport"
+          to: "trades/report",
+          match: /^\/watchlist\/.+\/trades\/report([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
         },
         {
           icon: "lotfi-group",
           title: "menu.switchBrokerage",
-          to: "trades-switchBrokerage",
+          to: "trades/switchBrokerage",
           color: "warning",
-          name: "switchBrokerage"
+          match: /^\/watchlist\/.+\/trades\/switchBrokerage([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
         },
         {
           icon: "lotfi-receipt-edit-1",
           title: "menu.switchBrokerageReport",
-          to: "trades-switchBrokerageReport",
-          name: "switchBrokerageReport"
+          to: "trades/switchBrokerageReport",
+          match: /^\/watchlist\/.+\/trades\/switchBrokerageReport([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
         },
       ],
     },
@@ -145,50 +87,56 @@ export function getMenuItems(): Array<MenuItem> {
       title: "menu.alerts",
       to: "alerts",
       bookmarkPosition: BookmarkPosition.RightPanel,
-      name:"alerts"
+      match: /^\/watchlist\/.+\/alerts\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
     },
     {
       icon: "isax-convert-card-outline",
       title: "menu.drafts",
       to: "drafts",
       bookmarkPosition: BookmarkPosition.RightPanel,
-      name: "drafts"
+      match: /^\/watchlist\/.+\/drafts\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
     },
     {
       icon: "lotfi-wallet-money",
       title: "menu.conditionalTrade",
       to: "conditional-trade",
       bookmarkPosition: BookmarkPosition.RightPanel,
+      match: /^\/watchlist\/.+\/conditional-trade\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
     },
     {
       icon: "isax-filter-edit",
       title: "menu.filter",
       to: "filters",
       bookmarkPosition: BookmarkPosition.RightPanel,
+       match: /^\/watchlist\/.+\/filters\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
     },
     {
       icon: "isax-status-up",
       title: "menu.technical",
       to: "technical",
       bookmarkPosition: BookmarkPosition.RightPanel,
+       match: /^\/watchlist\/.+\/technical\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
     },
     {
       icon: "lotfi-note-2",
       title: "menu.profit",
       to: "profit",
       bookmarkPosition: BookmarkPosition.RightPanel,
+       match: /^\/watchlist\/.+\/profit\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
     },
     {
       icon: "isax-map-outline",
       title: "menu.marketMap",
       to: "market-map",
       bookmarkPosition: BookmarkPosition.RightPanel,
+      match: /^\/watchlist\/.+\/market-map\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
     },
     {
       icon: "isax-setting-2",
       title: "menu.settings",
       to: "settings",
       bookmarkPosition: BookmarkPosition.RightPanel,
+      match: /^\/watchlist\/.+\/settings\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
     },
   ];
 }

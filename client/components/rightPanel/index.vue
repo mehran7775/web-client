@@ -190,10 +190,10 @@ async function sendMessage(): Promise<void> {
 }
 
 
-function isActiveItem (item: MenuItem) {
-  if(route.params.slug) return item.to.match((route.params?.slug as string).split('-')[0])
-  return false
-}
+// function isActiveItem (item: MenuItem) {
+//   if(route.params.slug) return item.to.match((route.params?.slug as string).split('-')[0])
+//   return false
+// }
 
 
 if (process.client) {
@@ -325,22 +325,25 @@ if (process.client) {
     fixed
   >
     <div class="tabs">
-      <ada-tooltip v-for="item in items" :key="item.title" position="left">
-        <template #activator>
-          <ada-btn
-          @click.stop="bottomPanel.assignTab(item)"
-          :class="{ active: isActiveItem(item) }"
-          >
-            <ada-icon
-              size="18"
-              :class="[item.color ? `tw-text-${item.color}` : null]"
+      <ada-toggle v-model="bottomPanel.activeTab" class="tw-flex-wrap">
+        <ada-tooltip v-for="item in items" :key="item.title" position="left">
+          <template #activator>
+            <ada-btn
+            @click.stop="bottomPanel.assignTab(item)"
+            :match="item.match"
+            :model="item"
             >
-              {{ item.icon }}
-            </ada-icon>
-          </ada-btn>
-        </template>
-        <span>{{ item.text ? item.text : $t(item.title) }}</span>
-      </ada-tooltip>
+              <ada-icon
+                size="18"
+                :class="[item.color ? `tw-text-${item.color}` : null]"
+              >
+                {{ item.icon }}
+              </ada-icon>
+            </ada-btn>
+          </template>
+          <span>{{ item.text ? item.text : $t(item.title) }}</span>
+        </ada-tooltip>
+      </ada-toggle>
       <hr class="divider" />
       <ada-tooltip v-for="item in shortcuts" :key="item.title" position="left">
         <template #activator>
