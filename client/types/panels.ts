@@ -40,6 +40,8 @@ export function CreateBookmark(item: MenuItem): Bookmark {
 export interface TabItem {
   path?: string;
   title: string;
+  icon?: string;
+  color?: string;
   secondTitle?: string;
   params?: { [key: string]: any };
   match?: RegExp;

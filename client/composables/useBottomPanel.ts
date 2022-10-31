@@ -18,29 +18,9 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
   for (let i in defaultTabs) {
     registerTab((defaultTabs as Array<TabItem>)[i]);
   }
-
-  getMenuItems().forEach((t) => {
-    let childrens = [];
-    if(t.children) t.children?.forEach((i) => {
-      childrens.push({
-        title: i.title,
-        path: i.to,
-        icon: i.icon,
-        match: i.match,
-        deleteAble: false,
-      });
-    });
-    const tab: TabItem = {
-      title: t.title,
-      deletable: true,
-      children: childrens,
-      match: t.match,
-      current: t.children ? t.children[0].to : '',
-      const: false
-    };
-    state._tabs[tab.title]= tab
-  });
-
+  for (let i in getMenuItems()) {
+    registerTab((getMenuItems() as Array<TabItem>)[i]);
+  }
   const tabs = computed(() => Object.values(state._tabs).filter( item => item.const ));
 
   const activeTab: WritableComputedRef<TabItem | null> = computed({

@@ -83,9 +83,9 @@ const watchList: ComputedRef<Array<MenuItem>> = computed(() => {
   return res;
 });
 
-const messages = chat.state.messages;
-const optionMessage = ref<boolean>(false)
-const activeOptionMessage = ref<boolean>(false)
+// const messages = chat.state.messages;
+// const optionMessage = ref<boolean>(false)
+// const activeOptionMessage = ref<boolean>(false)
 
 
 const items = getMenuItems();
@@ -188,12 +188,6 @@ async function sendMessage(): Promise<void> {
     inputChat.value = ''
   }
 }
-
-
-// function isActiveItem (item: MenuItem) {
-//   if(route.params.slug) return item.to.match((route.params?.slug as string).split('-')[0])
-//   return false
-// }
 
 
 if (process.client) {
@@ -341,7 +335,7 @@ if (process.client) {
               </ada-icon>
             </ada-btn>
           </template>
-          <span>{{ item.text ? item.text : $t(item.title) }}</span>
+          <span>{{ $t(item.title) }}</span>
         </ada-tooltip>
       </ada-toggle>
       <hr class="divider" />
