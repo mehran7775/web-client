@@ -32,6 +32,7 @@ const isActive = (path: string): boolean => {
 };
 
 onMounted(() => {
+  // console.log(props.match, props.model)
   if (isActive(route.path)) {
     value.value = props.model;
     matchPath.value = true
@@ -75,8 +76,7 @@ watch(
     @click="click"
     :class="{
       active:
-        (typeof props.model != 'undefined' && props.model == value) ||
-        matchPath,
+        (typeof props.model != 'undefined' && props.model == value) || matchPath,
     }"
     :type="type"
   >

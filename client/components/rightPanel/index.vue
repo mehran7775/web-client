@@ -323,7 +323,7 @@ if (process.client) {
         <ada-tooltip v-for="item in items" :key="item.title" position="left">
           <template #activator>
             <ada-btn
-            @click.stop="bottomPanel.assignTab(item)"
+            :to="`/watchlist/${ $route.params.name }/${ item.path }`"
             :match="item.match"
             :model="item"
             >

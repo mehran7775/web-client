@@ -1,5 +1,4 @@
-import { ComputedRef, Ref } from "vue";
-import { BookmarkPosition, MenuItem, TabItem } from "~/types";
+import { TabItem } from "~/types";
 
 export default {
   getMenuItems,
@@ -21,7 +20,7 @@ export function getMenuItems(): Array<TabItem> {
           deletable: false
         }
       ],
-      current: "portfolio",
+      path: "portfolio",
       const: false,
       deletable: true
     },
@@ -63,7 +62,7 @@ export function getMenuItems(): Array<TabItem> {
           deletable: false
         },
       ],
-      current: "accounting/deposit",
+      path: "accounting/deposit",
       const: false,
       deletable: true
     },
@@ -95,7 +94,7 @@ export function getMenuItems(): Array<TabItem> {
           deletable: false
         },
       ],
-      current: "trades/report",
+      path: "trades/report",
       const: false,
       deletable: true
     },
@@ -107,7 +106,6 @@ export function getMenuItems(): Array<TabItem> {
       const: false,
       deletable: true,
       children: [],
-      current: 'alerts'
     },
     {
       icon: "isax-convert-card-outline",
@@ -117,7 +115,6 @@ export function getMenuItems(): Array<TabItem> {
       const: false,
       deletable: true,
       children: [],
-      current: 'drafts'
     },
     {
       icon: "lotfi-wallet-money",
@@ -127,7 +124,6 @@ export function getMenuItems(): Array<TabItem> {
       const: false,
       deletable: true,
       children: [],
-      current: 'conditional-trade'
     },
     {
       icon: "isax-filter-edit",
@@ -137,7 +133,6 @@ export function getMenuItems(): Array<TabItem> {
       const: false,
       deletable: true,
       children: [],
-      current: 'filters'
     },
     {
       icon: "isax-status-up",
@@ -147,7 +142,6 @@ export function getMenuItems(): Array<TabItem> {
       const: false,
       deletable: true,
       children: [],
-      current: 'technical'
     },
     {
       icon: "lotfi-note-2",
@@ -157,7 +151,6 @@ export function getMenuItems(): Array<TabItem> {
       const: false,
       deletable: true,
       children: [],
-      current: 'profit'
     },
     {
       icon: "isax-map-outline",
@@ -167,7 +160,6 @@ export function getMenuItems(): Array<TabItem> {
       const: false,
       deletable: true,
       children: [],
-      current: 'market-map'
     },
     {
       icon: "isax-setting-2",
@@ -177,7 +169,6 @@ export function getMenuItems(): Array<TabItem> {
       const: false,
       deletable: true,
       children: [],
-      current: 'settings'
     },
   ];
 }

@@ -9,7 +9,8 @@ import {
   Message,
   AutoCompleteItem,
   MessageQuery,
-  MessageOrigin
+  MessageOrigin,
+  MessageFilter
 } from "@/types";
 import { MessageState } from "@/types/stores";
 import { AxiosResponse } from "axios";
@@ -48,17 +49,36 @@ export const useMessages = defineStore("messages", () => {
         code: "NEWS",
       },
     ],
-    origins: ["RLC"] as Code[]
-  });
+    origins: ["RLC"] as Code[],
+    _messagesCache: <{ [key: number]: Message }>{},
+    messageQuery: new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00", null)),
+    activeMessage: <Message | null>(null)
+  })
+
+  const message_active = computed({
+    get() { return state.activeMessage },
+    set(val: Message) { state.activeMessage = val }
+  })
+
   const axios = useAxios().createInstance();
 
-  async function getMessage(id: number): Promise<AxiosResponse<Message>> {
-    return await GetMessage(id, axios);
+  async function getMessage(id: number): Promise<Message> {
+    const msg = state._messagesCache[id]
+    if (msg)
+      return new Promise((resolve) => { resolve(msg) })
+    const { data } = await GetMessage(id, axios)
+    return data
   }
+
   async function getMessages(
     searchModel: MessageQuery
-  ): Promise<AxiosResponse<PaginatedResult<Message>>> {
-    return await GetMessageList(searchModel, axios);
+  ): Promise<PaginatedResult<Message>> {
+    //TODO Correct Message Cache
+    const { data } = await (await GetMessageList(searchModel, axios));
+    data.data.forEach( (el) => {
+      state._messagesCache[el.id] = el
+    });
+    return data;
   }
   async function getMessageFilters(
     name: string
@@ -66,10 +86,10 @@ export const useMessages = defineStore("messages", () => {
     return await GetMessageFilters(name, axios);
   }
   function activeExactCategory(code: Code) {
-    state.categories.forEach((item)=> {
-      if (item.code === code){
+    state.categories.forEach((item) => {
+      if (item.code === code) {
         item.active = true
-      }else {
+      } else {
         item.active = false
       }
     })
@@ -77,11 +97,15 @@ export const useMessages = defineStore("messages", () => {
     state.origins.push(code)
   }
 
+
+
+
   return {
     state,
+    message_active,
     getMessage,
     getMessages,
     getMessageFilters,
-    activeExactCategory
+    activeExactCategory,
   };
 });

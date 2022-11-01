@@ -1,4 +1,6 @@
 import { TabItem, OrderFlags } from "@/types";
+
+
 const panels: Array<TabItem> = [
   {
     title: "bottom-panel.orders.all",
@@ -33,7 +35,7 @@ const panels: Array<TabItem> = [
       },
     ],
     match: /^\/watchlist\/.+\/orders([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
-    current: "orders?offset=0&length=20",
+    path: "orders?offset=0&length=20",
     deletable: false,
     const: true
   },
@@ -66,7 +68,7 @@ const panels: Array<TabItem> = [
       },
     ],
     match: /^\/watchlist\/.+\/furtherInformation\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
-    current: "furtherInformation/depth",
+    path: "furtherInformation/depth",
     deletable: false,
     const: true
   },
@@ -94,7 +96,7 @@ const panels: Array<TabItem> = [
       },
     ],
     deletable: false,
-    current: "archive/tradesHistory?offset=0&length=20",
+    path: "archive/tradesHistory?offset=0&length=20",
     const: true
   },
   {
@@ -118,7 +120,7 @@ const panels: Array<TabItem> = [
       },
     ],
     deletable: false,
-    current: "statisticsKeys/fiveDay",
+    path: "statisticsKeys/fiveDay",
     const: true
   },
   {
@@ -139,10 +141,10 @@ const panels: Array<TabItem> = [
         match: /^\/watchlist\/.+\/more\/directorate([?](.+[=].+[&]?)+)?([\/]{1})?$/g ,
       },
     ],
-    current: "more/presentation",
+    path: "more/presentation",
     deletable: false,
     const: true
-  },
+  }
 ];
 
 export default panels;

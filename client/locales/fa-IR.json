@@ -395,7 +395,8 @@
     "conditional": "@:general.conditional",
     "saveSettings": "@:general.download @:general.settings",
     "uploadSettings": "@:general.upload @:general.settings",
-    "receiptRegister": "@:general.save فیش"
+    "receiptRegister": "@:general.save فیش",
+    "message": "پیام"
   },
   "bottom-panel": {
     "completeInfo": {

@@ -43,10 +43,8 @@ export interface TabItem {
   icon?: string;
   color?: string;
   secondTitle?: string;
-  params?: { [key: string]: any };
   match?: RegExp;
   children?: Array<TabItem>;
-  current?: string;
   deletable: boolean;
   const?: boolean
 }

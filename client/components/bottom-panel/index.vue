@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { TabItem } from "@/types"
-import { find } from "property-information";
 import { useInstrument, useBottomPanel } from "~~/composables";
 
 const instrumentManager = useInstrument();
@@ -23,12 +21,12 @@ const expanded = computed(() => bottomPanel.expanded)
 
 const active = computed({
   get() {
-    if (bottomPanel.activeTab && bottomPanel.activeTab.current) {
-      return bottomPanel.activeTab.children.find(q => q.path == bottomPanel.activeTab.current)
+    if (bottomPanel.activeTab && bottomPanel.activeTab.path) {
+      return bottomPanel.activeTab.children.find(q => q.path == bottomPanel.activeTab.path)
     }
     return null;
   }, set(val) {
-    bottomPanel.activeTab.current = val?.path
+    bottomPanel.activeTab.path = val?.path
   }
 });
 
@@ -164,7 +162,7 @@ const active = computed({
     expanded: bottomPanel.activeTab != null && expanded
   }">
 
-    <div class="detail"  v-if="bottomPanel.activeTab">
+    <div class="detail" v-if="bottomPanel.activeTab">
       <div class="contents">
         <slot></slot>
 
@@ -191,8 +189,8 @@ const active = computed({
     </div>
   
     <ada-toggle class="b-tabs" v-model="bottomPanel.activeTab">
-      <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.path"
-      :to="`/watchlist/${ $route.params.name }/${ t.current }`"
+      <ada-btn class="tab-title" v-for="(t, i) in tabs" :key="t.title"
+      :to="`/watchlist/${ $route.params.name }/${ t.path }`" v-show="t.const"
         :model="t" :match="t.match">
         <span :class="{ 'active': bottomPanel.activeTab != null && bottomPanel.activeTab.title == t.title }">
           {{ $t(t.title) }}

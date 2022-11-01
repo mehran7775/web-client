@@ -54,9 +54,9 @@ export interface Message {
   title: string;
   preview: string;
   origin: number;
-  type: MessageOrigin;
+  messageType: MessageOrigin;
   flags: number;
-  message: string;
+  message: { [key: string]: any };
   seenDate: string | null;
   path?: string
 }
@@ -67,7 +67,7 @@ export interface MessageSourceResult {
   messagesCount: number;
 }
 
-export interface MessageTemplate {}
+export interface MessageTemplate { }
 
 export interface MessageTemplate_1 extends MessageTemplate {
   body: String;
@@ -82,13 +82,13 @@ export interface MessageChatType {
   file?: File | null
 }
 
-export class MessageChat implements MessageChatType{
- readonly id: number
- readonly body: string
- readonly self: boolean 
- readonly date: string
- readonly time: string
- readonly file: File | null
+export class MessageChat implements MessageChatType {
+  readonly id: number
+  readonly body: string
+  readonly self: boolean
+  readonly date: string
+  readonly time: string
+  readonly file: File | null
 
   constructor(id: number, body: string, date: string, time: string = '11:50', file: File = null, self: boolean = true) {
     this.id = id

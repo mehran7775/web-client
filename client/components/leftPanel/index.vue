@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Ref } from "vue";
-import { AxiosResponse } from "axios";
 import {
   PaginatedResult,
   Message,
@@ -27,8 +26,6 @@ const router = useRouter()
 const route = useRoute()
 
 
-const searchItem = ref<string>("");
-
 const drawer = computed({
   get() {
     return props.modelValue;
@@ -39,8 +36,8 @@ const drawer = computed({
 });
 
 const loading = ref(false);
-const myMessages: Message[] = reactive([]);
-const messages: Message[] = reactive([]);
+
+const messages = reactive<Message[]>([])
 
 const origins = messageManager.state.origins;
 
@@ -55,21 +52,16 @@ const mini = computed({
   },
 });
 
-const myMessageQuery: Ref<MessageQuery> = ref(
-  new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00", null))
-);
 
-const messageQuery: Ref<MessageQuery> = ref(
-  new MessageQuery(0, 10, new MessageFilter([], "2019-01-01T00:00:00", null))
-);
+const messageQuery =  messageManager.state.messageQuery
 
-myMessageQuery.value.filters.origins = origins;
-messageQuery.value.filters.origins = origins;
+
+
+messageQuery.filters.origins = origins;
 
 const items = [
   { title: "general.me" },
   { title: "general.all" },
-  // { title: "oms.openingTrade" },
 ];
 
 const categories = messageManager.state.categories;
@@ -88,47 +80,41 @@ watch(
   selected,
   (newval) => {
     if (newval) {
-      myMessageQuery.value.filters.title = "(" + newval?.name;
-      messageQuery.value.filters.title = "(" + newval?.name;
+      messageQuery.filters.title = "(" + newval?.name;
     } else {
-      myMessageQuery.value.filters.title = null;
-      messageQuery.value.filters.title = null;
+      messageQuery.filters.title = null;
     }
-    loadMyMessages();
     loadMessages();
   },
   { deep: true }
 );
 
 watch(categories, () => {
-  loadMyMessages();
   loadMessages();
 });
 
 //////////////////
 
-function loadMyMessages() {
-  load(myMessageQuery).then((res) => {
-    myMessages.splice(0, Infinity);
-    myMessages.push(...res);
-    //myMessageQuery.value.offset = messages.length;
-  });
-}
+// function loadMyMessages() {
+//   load(myMessageQuery).then((res) => {
+//     myMessages.splice(0, Infinity);
+//     myMessages.push(...res);
+//   });
+// }
 
 function loadMessages() {
   load(messageQuery).then((res) => {
     messages.splice(0, Infinity);
     messages.push(...res);
-    //messageQuery.value.offset = messages.length;
   });
 }
 
-async function load(query: Ref<MessageQuery>) {
+async function load(query: MessageQuery) {
   loading.value = true;
   try {
-    const res: AxiosResponse<PaginatedResult<Message>> =
-      await messageManager.getMessages(query.value);
-    return res.data.data;
+    const res: PaginatedResult<Message> =
+      await messageManager.getMessages(query);
+    return res.data;
   } finally {
     loading.value = false;
   }
@@ -137,33 +123,27 @@ async function load(query: Ref<MessageQuery>) {
 async function trigger_show_message(message: Message) {
   try {
     bottomPanel.setLoading(true);
-    const mes = (await messageManager.getMessage(message.id)).data;
-    console.log('mes', mes)
+    const mes = (await messageManager.getMessage(message.id));
     const tab = {
-      title: getTitle(mes.origin),
-      params: [{ body: mes.message.body }],
+      title: bottomPanel.getTitle(mes.origin),
+      match: /^\/watchlist\/.+\/messages\/[^\/]+([?](.+[=].+[&]?)+)?([\/]{1})?$/g,
       children: [
         {
-          title: getTitle(mes.origin),
+          title: bottomPanel.getTitle(mes.origin),
           secondTitle: mes.title,
-          params: [],
           deletable: false,
-          path: message.path ?? 'message',
-          name: getTitle(mes.origin)
+          path:`messages/${ mes.id }`,
         },
       ],
-      current: getTitle(mes.origin),
-      name: getTitle(mes.origin),
-      deletable: true,
-      path: message.path ?? 'message'
+      path: `messages/${ mes.id }`,
+      const: false,
+      deletable: true
     };
     seenMessage(mes)
-    console.log(tab)
-    const res = bottomPanel.existDeletableTab();
-    if (res) bottomPanel.removeTab(res);
     bottomPanel.registerTab(tab);
     bottomPanel.activeTab = tab;
-    router.push(tab.path)
+    messageManager.message_active = message
+    router.push(`/watchlist/${ route.params.name }/messages/${ mes.id }`)
   } catch (e) {
     console.log(e);
   } finally {
@@ -172,38 +152,18 @@ async function trigger_show_message(message: Message) {
 }
 
 function seenMessage(message) {
-  let meses = null
-  if(toggleMenu.value === 'general.all') {
-    meses = messages
-  }else{
-    meses = myMessages
-  }
-  const res = meses.find((item)=> item.id === message.id)
+
+  const res = messages.find((item)=> item.id === message.id)
   res.seenDate = new Date().toLocaleDateString(locale)
 }
 
-const getTitle = (type: number) => {
-  console.log(type)
-  if (type == 1) {
-    return "categories.marketModerator";
-  } else if (type == 4) {
-    return "categories.tedan";
-  } else if (type == 5) {
-    return "categories.codal";
-  } else {
-    return "categories.news";
-  }
-};
-
 loadMessages();
-loadMyMessages();
+// loadMyMessages();
 </script>
 
 <style lang="postcss" scoped>
 .l-panel {
   font-size: 0.875rem;
-  /* padding-top: 42px; */
-  /* background-color: rgba(var(--c-primary), 0.01); */
   @apply tw-bg-red-600;
 
   &::after {
@@ -329,7 +289,7 @@ loadMyMessages();
               category.active = !category.active;
               if (category.active) origins.push(category.code);
               else origins.splice(origins.indexOf(category.code), 1);
-              loadMyMessages();
+              // loadMyMessages();
               loadMessages();
             }
           "
@@ -337,7 +297,7 @@ loadMyMessages();
       </div>
       <div id="messages">
         <div
-          v-for="message in toggleMenu == 'general.all' ? messages : myMessages"
+          v-for="message in messages"
           :key="message.id"
         >
           <hr class="line" />
