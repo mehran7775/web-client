@@ -368,7 +368,7 @@ const triggerChatRoom = () => {
         mdi-chevron-triple-right
       </ada-icon>
     </ada-btn>
-    <ada-btn id="chat-footer" class="floating-button" @click="triggerChatRoom">
+    <ada-btn id="chat-footer" class="floating-button" >
       <ada-icon color="white" :size="24"> isax-messages-2-bold </ada-icon>
     </ada-btn>
     <ada-snacks />

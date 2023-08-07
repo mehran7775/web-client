@@ -142,7 +142,7 @@ async function trigger_show_message(message: Message) {
     seenMessage(mes)
     bottomPanel.registerTab(tab);
     bottomPanel.activeTab = tab;
-    messageManager.message_active = message
+    messageManager.message_active = mes
     router.push(`/watchlist/${ route.params.name }/messages/${ mes.id }`)
   } catch (e) {
     console.log(e);

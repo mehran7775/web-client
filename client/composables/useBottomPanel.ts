@@ -95,7 +95,6 @@ export const useBottomPanel = defineStore("bottom-panel", () => {
   }
   function changeTabMessage(message: Message) {
     const tab = state._tabs[message.title]
-    console.log('tab',tab)
     tab.title = getTitle(message.origin)
     tab.path = `message/${ message.id }`
     tab.secondTitle = message.title

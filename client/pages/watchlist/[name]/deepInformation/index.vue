@@ -1,6 +1,13 @@
 <script lang="ts" setup>
 import { OrderSearchModel, TabItem } from "@/types"
 
+definePageMeta({
+  pageTransition: {
+    name: "page-fade",
+  },
+})
+
+
 const props = defineProps<{
     modelValue: TabItem,
     tabs: Array<TabItem>

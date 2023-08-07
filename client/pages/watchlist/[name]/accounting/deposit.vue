@@ -2,6 +2,12 @@
 import { usePayment } from "@/composables";
 import { useAxios } from "@/composables";
 
+definePageMeta({
+  pageTransition: {
+    name: "page-fade",
+  },
+})
+
 
 
 const appManager = useAsrTrader();

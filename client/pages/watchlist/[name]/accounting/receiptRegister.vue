@@ -1,6 +1,12 @@
 <script setup lang="ts">
-
 import { ref } from 'vue';
+
+definePageMeta({
+  pageTransition: {
+    name: "slide-fade",
+  },
+})
+
 
 const router = useRouter();
 const appManager = useAsrTrader();

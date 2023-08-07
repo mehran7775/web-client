@@ -1,5 +1,10 @@
 <script lang="ts" setup>
 import { TradesHistorySerachModel, TabItem } from "@/types";
+definePageMeta({
+  pageTransition: {
+    name: "page-fade",
+  },
+})
 
 const props = defineProps<{
   modelValue: TabItem;

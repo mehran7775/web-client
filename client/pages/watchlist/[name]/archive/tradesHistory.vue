@@ -5,6 +5,11 @@ import NumericField from "@/components/numericField.vue";
 import { TradesHistory, WatchListColumns, PaginatedResult, TradesHistorySerachModel, DailyPrice, MarketHistory } from "@/types";
 import { useI18n } from "vue-i18n"
 
+definePageMeta({
+  pageTransition: {
+    name: "page-fade",
+  },
+})
 const i18n = useI18n();
 const bottomPanelManager = useBottomPanel();
 const instrumentManager = useInstrument();
@@ -65,8 +70,6 @@ async function getTradeHistories() {
   if (task != null) {
     const { data } = await instrumentManager.getTradeHistories(model.value)
     const daily = await task;
-    console.log('model', model.value)
-    console.log('daily', daily)
     tradeHistories.push(...data.map((market) => {
       const ind = daily.findIndex((item) => item.dateTime == market.dateTime);
       return {
@@ -91,6 +94,7 @@ watch(() => instrumentManager.getSelected, (update) => {
 
 getTradeHistories();
 </script>
+
 
 <template>
   <ada-data-table :items="tradeHistories" :headers="cols" item-key="dateTime"

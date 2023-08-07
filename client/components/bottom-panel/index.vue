@@ -79,7 +79,8 @@ const active = computed({
     height: calc(100% - 32px);
 
     >.header {
-      @apply tw-absolute tw-flex tw-flex-grow tw-items-center tw-w-full tw-bg-primary/10 tw-shadow tw-shadow-primary/50;
+      @apply tw-absolute tw-flex tw-flex-grow tw-items-center tw-w-full;
+      @apply tw-overflow-x-auto tw-bg-primary/10 tw-shadow tw-shadow-primary/50;
       top: 0;
       left: 0;
       height: 32px;
@@ -111,7 +112,7 @@ const active = computed({
   }
 
   .b-tabs {
-    @apply tw-justify-start tw-w-full tw-relative tw-bg-primary/10;
+    @apply tw-justify-start tw-w-full tw-relative tw-bg-primary/10 tw-overflow-x-auto;
     box-shadow: 0 0 1px 0 #e2e2e2;
     min-height: 32px;
     max-height: 32px;

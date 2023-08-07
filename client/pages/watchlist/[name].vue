@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { useUser } from "~/composables";
-import { resolveEnvPrefix } from "vite";
 
 definePageMeta({
   layout: "private-default",
@@ -48,19 +47,6 @@ async function apply() {
   }
 }
 
-// function setTabWithRoute(slug: string, init: boolean) {
-//   const prefixSlug = slug.split('-')[0]
-//   let res = bottomPanelComposable.tabs.find((tab)=> tab.name.includes(prefixSlug))
-//   if(!res) {
-//     res = bottomPanelComposable.optionsTabs.find((tab)=> tab.path.includes(prefixSlug))
-//     bottomPanelComposable.registerTab(res)
-//     slug = res.children?.find((t)=> t.path?.includes(slug)).name
-
-//   }
-//   if(init) res.current = slug
-//   bottomPanelComposable.activeTab = res
-// }
-
 defineExpose({
   reset,
   loadingRef,
@@ -69,6 +55,7 @@ defineExpose({
 </script>
 
 <style lang="postcss" scoped></style>
+
 
 <template>
   <div class="tw-mx-auto">
@@ -113,13 +100,7 @@ defineExpose({
     <loading :loading="loadingRef" />
 
     <bottom-panel>
-      <!-- <Transition name="slide-fade"> -->
-        <div>
-          <NuxtPage :key="$route.fullPath"
-          
-        />
-        </div>
-      <!-- </Transition> -->
+      <NuxtPage />
     </bottom-panel>
   </div>
 </template>

@@ -1,3 +1,9 @@
-<template>
-    credits
-</template>
+<template>credits</template>
+
+<script lang="ts" setup>
+definePageMeta({
+  pageTransition: {
+    name: "page-fade",
+  },
+});
+</script>

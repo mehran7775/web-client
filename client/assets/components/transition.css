@@ -8,6 +8,16 @@
   opacity: 0;
 }
 
+.page-fade-enter-active,
+.page-fade-leave-active {
+  transition: all 0.4s;
+}
+.page-fade-enter-from,
+.page-fade-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+}
+
 .slide-bounce-enter-active {
   animation: bounce-in 0.5s;
 }
